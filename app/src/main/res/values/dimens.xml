@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="row_element_top_padding">16dp</dimen>
+    <dimen name="error_text_size">16sp</dimen>
+    <dimen name="error_text_size_top_padding">8dp</dimen>
+    <dimen name="thumb_icon_padding">16dp</dimen>
+    <dimen name="field_height">40dp</dimen>
+</resources>

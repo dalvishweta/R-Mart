@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.rmart.authentication.views.LoginFragment">
+
+    <TextView
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="64dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:textSize="26sp"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/white"/>
+    <com.rmart.baseclass.views.CustomEditTextWithErrorText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/user"
+        android:hint="@string/hint_mobile_number"
+        android:inputType="number"
+        android:maxLength="10"
+        app:error_trxt="@string/error_mobile_number"
+        />
+
+</LinearLayout>

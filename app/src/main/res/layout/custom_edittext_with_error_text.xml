@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/row_element_top_padding"
+    >
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:layout_height="@dimen/field_height"
+        android:layout_width="match_parent"
+        android:gravity="start|center"
+        android:id="@+id/edit_text_view"
+        android:paddingLeft="@dimen/thumb_icon_padding"
+        android:paddingRight="@dimen/thumb_icon_padding"
+        android:drawablePadding="4dp"
+        android:background="@drawable/custom_edit_text_bg"
+        android:maxLines="1"
+        android:minLines="1"
+        android:singleLine="true"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/error_text"
+        android:layout_width="wrap_content"
+        android:fontFamily="@font/roboto_regular"
+        android:textSize="@dimen/error_text_size"
+        android:textColor="@color/error_text_color"
+        android:layout_marginTop="@dimen/error_text_size_top_padding"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"/>
+</LinearLayout>
