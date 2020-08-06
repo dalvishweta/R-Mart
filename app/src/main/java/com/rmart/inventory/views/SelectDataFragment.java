@@ -2,8 +2,6 @@ package com.rmart.inventory.views;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -12,23 +10,21 @@ import android.view.ViewGroup;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
-public class InventoryHomeFragment extends BaseFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+public class SelectDataFragment extends BaseFragment {
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    public InventoryHomeFragment() {
+    public SelectDataFragment() {
         // Required empty public constructor
     }
 
-    public static InventoryHomeFragment newInstance(String param1, String param2) {
-        InventoryHomeFragment fragment = new InventoryHomeFragment();
+    public static SelectDataFragment newInstance(String param1, String param2) {
+        SelectDataFragment fragment = new SelectDataFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -49,11 +45,6 @@ public class InventoryHomeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inventory_home, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        return inflater.inflate(R.layout.fragment_select_data, container, false);
     }
 }

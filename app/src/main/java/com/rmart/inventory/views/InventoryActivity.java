@@ -14,4 +14,34 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+    @Override
+    public void goToRequestNewProduct() {
+
+    }
+
+    @Override
+    public void showMyCategories() {
+
+    }
+
+    @Override
+    public void showMySubCategories() {
+
+    }
+
+    @Override
+    public void goToSelectDataFragment() {
+
+    }
+
+    @Override
+    public void showMyProducts() {
+
+    }
+
+    @Override
+    public void showProductPreview() {
+
+    }
 }

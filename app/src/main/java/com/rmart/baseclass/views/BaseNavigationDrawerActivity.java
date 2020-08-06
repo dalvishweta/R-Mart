@@ -13,8 +13,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.rmart.R;
-import com.rmart.baseclass.views.BaseActivity;
-import com.rmart.baseclass.views.BaseFragment;
 
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
