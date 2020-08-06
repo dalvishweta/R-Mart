@@ -1,10 +1,12 @@
 package com.rmart.authentication.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.rmart.R;
 import com.rmart.authentication.OnAuthenticationClickedListener;
 import com.rmart.baseclass.views.BaseActivity;
+import com.rmart.inventory.views.InventoryActivity;
 
 public class AuthenticationActivity extends BaseActivity implements OnAuthenticationClickedListener {
 
@@ -27,7 +29,7 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
 
     @Override
     public void goToHomeActivity() {
-
+        startActivity(new Intent(AuthenticationActivity.this, InventoryActivity.class));
     }
 
     @Override
@@ -52,6 +54,5 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
 
     @Override
     public void goToProfileActivity() {
-
     }
 }

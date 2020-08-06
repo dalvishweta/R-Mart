@@ -3,6 +3,7 @@
     package="com.rmart">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,14 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".authentication.views.AuthenticationActivity"
-            android:theme="@style/AppThemeNoActionBar">
-        </activity>
-        <activity android:name=".baseclass.views.SplashScreen"
+        <activity android:name=".inventory.views.InventoryActivity"></activity>
+        <activity
+            android:name=".authentication.views.AuthenticationActivity"
+            android:theme="@style/AppThemeNoActionBar"></activity>
+        <activity
+            android:name=".baseclass.views.SplashScreen"
             android:theme="@style/AppThemeNoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

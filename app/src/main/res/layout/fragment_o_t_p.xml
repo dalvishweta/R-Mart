@@ -28,15 +28,16 @@
         android:layout_width="wrap_content"/>
 
 
-    <androidx.appcompat.widget.AppCompatEditText
+    <com.rmart.baseclass.views.CustomEditTextWithErrorText
+        android:id="@+id/otp"
+        android:layout_height="wrap_content"
+        android:layout_width="300dp"
         android:gravity="center"
         android:layout_marginTop="40dp"
         android:hint="@string/otp"
         android:textColor="@color/white"
         android:textSize="32sp"
-        android:fontFamily="@font/roboto_bold"
-        android:layout_height="wrap_content"
-        android:layout_width="150dp"/>
+        android:fontFamily="@font/roboto_bold"/>
 
     <TextView
         android:id="@+id/resend"

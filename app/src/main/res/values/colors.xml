@@ -11,4 +11,11 @@
     <color name="gray">#8B8B8B</color>
     <color name="register_color">#1966BE</color>
     <color name="forgot_password">#E6E6E6</color>
+
+    <color name="item_title_color">#333333</color>
+    <color name="item_sub_title_color">#6E6E6E</color>
+    <color name="item_bg">#D3F2F8</color>
+    <color name="item_bg_footer">#F9E4E4</color>
+    <color name="item_product_bg">#F9F9F9</color>
+    <color name="item_product_border">#E1E1E1</color>
 </resources>

@@ -24,4 +24,12 @@
     <string name="otp">OTP</string>
     <string name="resend_otp">Resend OTP?</string>
     <string name="send_otp">Send OTP</string>
+    <string name="change_password">Change Password</string>
+    <string name="hint_current_password">Current Password</string>
+    <string name="hint_new_password">New Password</string>
+    <string name="category"><![CDATA[Grocery & Staples]]></string>
+    <string name="sub_title_1">4 Sub Catergories</string>
+    <string name="sub_title_2">125 Products</string>
+    <string name="sub_item_name">Pulses</string>
+    <string name="strikeout"> <strike> 111 </strike> </string>
 </resources>

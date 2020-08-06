@@ -6,15 +6,20 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.rmart.R;
+import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 
-public class OTPFragment extends LoginBaseFragment {
+public class OTPFragment extends LoginBaseFragment implements TextWatcher {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final int INT_OTP_LENGTH = 4;
+    CustomEditTextWithErrorText otpEditText;
     private String mParam1;
     private String mParam2;
 
@@ -50,6 +55,25 @@ public class OTPFragment extends LoginBaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        otpEditText = view.findViewById(R.id.otp);
+        otpEditText.getAppCompatEditText().addTextChangedListener(this);
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        if(count == INT_OTP_LENGTH) {
+            mListener.goToHomeActivity();
+        }
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
 
     }
 }
