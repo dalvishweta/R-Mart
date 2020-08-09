@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="8"
+    android:padding="8dp"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/product_unit_base_bg">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/sub_title_1"
+        android:text="@string/product_unit"
+        style="@style/product_unit_value"
+        />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/sub_title_2"
+        style="@style/product_unit_cost"
+        android:layout_height="wrap_content"
+        android:text="Rs.98" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/sub_title_3"
+        android:text="@string/strikeout"
+        style="@style/product_unit_value"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/offer"
+        android:text="20%"
+        style="@style/product_unit_offer"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/unit_status"
+        style="@style/product_unit_in_active"/>
+</LinearLayout>

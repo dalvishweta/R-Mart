@@ -1,10 +1,7 @@
 package com.rmart.inventory.views;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
-import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.inventory.OnInventoryClickedListener;
 
@@ -13,6 +10,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        addFragment(MyCategoryListFragment.newInstance("",""), "MyCategoryFragment", false);
     }
 
     @Override
@@ -22,12 +20,12 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void showMyCategories() {
-
+        addFragment(MyCategoryListFragment.newInstance("",""), "MyCategoryFragment", false);
     }
 
     @Override
     public void showMySubCategories() {
-
+        replaceFragment(MySubCategoriesListFragment.newInstance("",""), "MySubCategoriesFragment",true);
     }
 
     @Override
@@ -37,11 +35,26 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void showMyProducts() {
-
+        replaceFragment(MyProductsListFragment.newInstance("",""), "MyProductsListFragment",true);
     }
 
     @Override
     public void showProductPreview() {
+        replaceFragment(ShowProductPreviewFragment.newInstance("",""), "ShowProductPreviewFragment",true);
+    }
+
+    @Override
+    public void updateProduct() {
+
+    }
+
+    @Override
+    public void requestNewProduct() {
+
+    }
+
+    @Override
+    public void requestNewBrand() {
 
     }
 }

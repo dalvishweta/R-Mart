@@ -11,11 +11,15 @@
     <color name="gray">#8B8B8B</color>
     <color name="register_color">#1966BE</color>
     <color name="forgot_password">#E6E6E6</color>
-
+    <color name="offer_color">#19BE2E</color>
     <color name="item_title_color">#333333</color>
     <color name="item_sub_title_color">#6E6E6E</color>
     <color name="item_bg">#D3F2F8</color>
     <color name="item_bg_footer">#F9E4E4</color>
     <color name="item_product_bg">#F9F9F9</color>
     <color name="item_product_border">#E1E1E1</color>
+    <color name="inventory_header_bg">#E5E5E5</color>
+    <color name="product_preview_title_color">#9F9F9F</color>
+    <color name="product_edit_color">#1EB138</color>
+    <color name="product_delete_color">#BFBFBF</color>
 </resources>

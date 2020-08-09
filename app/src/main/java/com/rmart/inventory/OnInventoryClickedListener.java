@@ -7,5 +7,8 @@ public interface OnInventoryClickedListener {
     void goToSelectDataFragment();
     void showMyProducts();
     void showProductPreview();
+    void updateProduct();
+    void requestNewProduct();
+    void requestNewBrand();
 
 }

@@ -32,4 +32,22 @@
     <string name="sub_title_2">125 Products</string>
     <string name="sub_item_name">Pulses</string>
     <string name="strikeout"> <strike> 111 </strike> </string>
+    <string name="line"> Not crossed <strike> crossed </strike> </string>
+    <string name="total_categories">5 Categories</string>
+    <string name="category_list">My Category list</string>
+    <string name="sub_category_list">My sub category list</string>
+    <string name="my_product_list">My product list</string>
+    <string name="total_products">15 Products</string>
+    <string name="total_sub_categories">6 Sub Categories</string>
+    <string name="product_name">Aashirvaad Atta</string>
+    <string name="product_unit">1 KG</string>
+    <string name="offer">20%\nOff</string>
+    <string name="product_description_title">Product Description</string>
+    <string name="product_description">Consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolortempora incidun</string>
+    <string name="product_regional_name">Product Regional Name</string>
+    <string name="product_regional_name_value">Neque porro</string>
+    <string name="product_expiry_title">Expiry</string>
+    <string name="product_expiry_title_value">12 Aug 2023</string>
+    <string name="delete">Delete</string>
+    <string name="edit">edit</string>
 </resources>

@@ -12,7 +12,7 @@
         android:layout_height="55dp">
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/category_count"
-            android:text="@string/total_sub_categories"
+            android:text="@string/total_products"
             android:fontFamily="@font/roboto_regular"
             android:textSize="16dp"
             android:textColor="@color/black"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"/>
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/sub_categories"
+        android:id="@+id/product_list"
         android:layout_below="@+id/category_header"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
