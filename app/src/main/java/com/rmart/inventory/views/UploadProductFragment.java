@@ -1,17 +1,16 @@
 package com.rmart.inventory.views;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.rmart.R;
-import com.rmart.baseclass.views.BaseFragment;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-public class UploadProductFragment extends BaseFragment {
+import com.rmart.R;
+
+public class UploadProductFragment extends BaseInventoryFragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -46,5 +45,21 @@ public class UploadProductFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_upload_product, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.findViewById(R.id.save).setOnClickListener(this);
+        view.findViewById(R.id.add_unit).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.add_unit) {
+            mListener.addUnit();
+        } else if (view.getId() == R.id.save) {
+            mListener.showProductPreview();
+        }
     }
 }

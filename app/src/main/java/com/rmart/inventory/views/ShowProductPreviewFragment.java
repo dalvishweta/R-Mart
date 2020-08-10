@@ -8,15 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.rmart.R;
-import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.inventory.adapters.ImageAdapter;
 
 import java.util.Objects;
 
-public class ShowProductPreviewFragment extends BaseFragment {
+public class ShowProductPreviewFragment extends BaseInventoryFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -58,5 +56,11 @@ public class ShowProductPreviewFragment extends BaseFragment {
         ViewPager viewPager2 =  view.findViewById(R.id.view_pager);
         ImageAdapter imageAdapter = new ImageAdapter(Objects.requireNonNull(getContext()));
         viewPager2.setAdapter(imageAdapter);
+        view.findViewById(R.id.edit).setOnClickListener(view1 -> {
+            mListener.updateProduct();
+        });
+        view.findViewById(R.id.delete).setOnClickListener(view1 -> {
+            Objects.requireNonNull(getActivity()).onBackPressed();
+        });
     }
 }

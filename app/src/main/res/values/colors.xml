@@ -3,7 +3,7 @@
     <color name="colorPrimary">#1EB138</color>
     <color name="colorPrimaryDark">#1EB138</color>
     <color name="colorAccent">#FF6161</color>
-    <color name="black">#000000</color>
+    <color name="black">#333333</color>
     <color name="button_bg">#FF9702</color>
     <color name="edit_text_hint">#707070</color>
     <color name="white">#ffffffff</color>
@@ -22,4 +22,16 @@
     <color name="product_preview_title_color">#9F9F9F</color>
     <color name="product_edit_color">#1EB138</color>
     <color name="product_delete_color">#BFBFBF</color>
+    <color name="item_accepted_top_bg">#F9AAAA</color>
+    <color name="item_packed_top_bg">#E1E175</color>
+    <color name="item_shipped_top_bg">#93D9E4</color>
+    <color name="item_delivered_top_bg">#E4BDF8</color>
+    <color name="item_rejected_top_bg">#EEC9A3</color>
+    <color name="item_canceled_top_bg">#CFD1D2</color>
+    <color name="item_accepted_bottom_bg">#F55C5C</color>
+    <color name="item_packed_bottom_bg">#BAC51B</color>
+    <color name="item_shipped_bottom_bg">#44A6B5</color>
+    <color name="item_delivered_bottom_bg">#B365DB</color>
+    <color name="item_rejected_bottom_bg">#F1993F</color>
+    <color name="item_canceled_bottom_bg">#8E8984</color>
 </resources>

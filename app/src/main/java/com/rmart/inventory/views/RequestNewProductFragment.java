@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 
-public class RequestNewProductFragment extends BaseFragment {
+public class RequestNewProductFragment extends BaseInventoryFragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";

@@ -22,13 +22,12 @@ import java.util.Objects;
 
 import static com.rmart.inventory.views.MyCategoryListFragment.LIST_TYPE;
 
-public class MySubCategoriesListFragment extends BaseFragment {
+public class MySubCategoriesListFragment extends BaseInventoryFragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
     private String mParam2;
-    private OnInventoryClickedListener mListener;
     private RecyclerView subCategoryRecycleView;
 
     public MySubCategoriesListFragment() {
@@ -55,11 +54,6 @@ public class MySubCategoriesListFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mListener = (OnInventoryClickedListener)context;
-    }
     @Override
     public void onResume() {
         super.onResume();

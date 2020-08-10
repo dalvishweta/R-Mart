@@ -1,13 +1,155 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.rmart.inventory.views.UploadProductFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            tools:context="com.rmart.inventory.views.UploadProductFragment">
 
-</FrameLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/choose_category"
+                android:drawableStart="@drawable/user"
+                android:drawableEnd="@drawable/down_arrow"
+                android:hint="@string/choose_category"
+                style="@style/upload_product_item_field"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/choose_sub_category"
+                android:drawableStart="@drawable/user"
+                android:hint="@string/choose_sub_category"
+                android:drawableEnd="@drawable/down_arrow"
+                style="@style/upload_product_item_field"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/choose_product"
+                android:drawableStart="@drawable/user"
+                android:hint="@string/choose_product"
+                android:drawableEnd="@drawable/down_arrow"
+                style="@style/upload_product_item_field"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/product_brand"
+                android:drawableStart="@drawable/user"
+                android:hint="@string/product_brand"
+                android:drawableEnd="@drawable/down_arrow"
+                style="@style/upload_product_item_field"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/product_regional_name"
+                android:drawableStart="@drawable/user"
+                android:hint="@string/product_regional_name"
+                style="@style/upload_product_item_field"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/product_description"
+                android:drawableStart="@drawable/user"
+                android:hint="@string/product_regional_name"
+                style="@style/upload_product_item_field"
+                android:minHeight="150dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:padding="8dp"
+            android:orientation="vertical"
+            android:background="#D1DDFF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:text="@string/upload_product_images"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/product_image"
+                android:layout_margin="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:padding="8dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:text="@string/product_video_link"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_margin="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/add_unit"
+                android:text="@string/add_units_text"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/add_unit"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:text="@string/add_units"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto_medium"
+                android:textColor="@color/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_below="@+id/add_unit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            tools:context="com.rmart.inventory.views.UploadProductFragment">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/delivery_days"
+                android:drawableStart="@drawable/user"
+                android:hint="@string/delivery_days"
+                style="@style/upload_product_item_field"
+                android:inputType="number"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/expiry"
+                android:drawableStart="@drawable/user"
+                android:hint="@string/expiry"
+                style="@style/upload_product_item_field"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_marginTop="16dp"
+                android:id="@+id/save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/roboto_regular"
+                android:background="@drawable/product_edit"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</ScrollView>

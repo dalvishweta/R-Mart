@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+tools:context="com.rmart.inventory.views.AddUnitDialog"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:padding="16dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/roboto_medium"
+        android:text="@string/unit_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/unit"
+        android:drawableStart="@drawable/user"
+        android:drawableEnd="@drawable/down_arrow"
+        android:hint="@string/units"
+        style="@style/upload_product_item_field"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/price"
+        android:drawableStart="@drawable/user"
+        android:hint="@string/price"
+        style="@style/upload_product_item_field"
+        android:inputType="number"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/discount"
+        android:drawableStart="@drawable/user"
+        android:hint="@string/discount"
+        android:inputType="number"
+        style="@style/upload_product_item_field"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:layout_marginTop="16dp"
+        android:id="@+id/switchButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/is_active"
+        android:textSize="16sp"
+        android:fontFamily="@font/roboto_regular"
+        android:textColor="@color/black"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_marginTop="16dp"
+        android:id="@+id/save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:fontFamily="@font/roboto_regular"
+        android:background="@drawable/product_edit"/>
+
+
+
+</LinearLayout>

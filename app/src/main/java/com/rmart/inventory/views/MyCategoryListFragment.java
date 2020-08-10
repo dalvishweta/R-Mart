@@ -20,16 +20,15 @@ import com.rmart.inventory.adapters.CategoryAdapter;
 
 import java.util.Objects;
 
-public class MyCategoryListFragment extends BaseFragment {
+public class MyCategoryListFragment extends BaseInventoryFragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    public static final int LIST_TYPE = 0;
+    public static final int LIST_TYPE = 1;
 
     private String mParam1;
     private String mParam2;
     private RecyclerView categoryRecycleView;
-    private OnInventoryClickedListener mListener;
 
     public MyCategoryListFragment() {
         // Required empty public constructor
@@ -59,11 +58,6 @@ public class MyCategoryListFragment extends BaseFragment {
         }
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mListener = (OnInventoryClickedListener)context;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

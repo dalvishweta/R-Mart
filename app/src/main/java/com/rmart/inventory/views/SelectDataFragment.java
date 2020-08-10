@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 
-public class SelectDataFragment extends BaseFragment {
+public class SelectDataFragment extends BaseInventoryFragment {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";

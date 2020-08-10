@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"/>
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
+        android:background="@color/white"
         android:id="@+id/category_list"
         android:layout_below="@+id/category_header"
         android:layout_alignParentBottom="true"

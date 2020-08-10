@@ -2,8 +2,12 @@ package com.rmart.inventory.views;
 
 import android.os.Bundle;
 
+import androidx.fragment.app.FragmentManager;
+
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.inventory.OnInventoryClickedListener;
+
+import java.util.Objects;
 
 public class InventoryActivity extends BaseNavigationDrawerActivity implements OnInventoryClickedListener {
 
@@ -45,7 +49,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void updateProduct() {
-
+        replaceFragment(UploadProductFragment.newInstance("",""), "UploadProductFragment",true);
     }
 
     @Override
@@ -56,5 +60,13 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     @Override
     public void requestNewBrand() {
 
+    }
+
+    @Override
+    public void addUnit() {
+        FragmentManager fm = getSupportFragmentManager();
+        AddUnitDialog addUnitDialog = AddUnitDialog.newInstance("","");
+        addUnitDialog.setCancelable(false);
+        addUnitDialog.show(fm, "AddUnitDialog");
     }
 }

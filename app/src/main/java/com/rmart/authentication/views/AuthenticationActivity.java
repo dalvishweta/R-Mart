@@ -7,6 +7,7 @@ import com.rmart.R;
 import com.rmart.authentication.OnAuthenticationClickedListener;
 import com.rmart.baseclass.views.BaseActivity;
 import com.rmart.inventory.views.InventoryActivity;
+import com.rmart.orders.views.OrdersActivity;
 
 public class AuthenticationActivity extends BaseActivity implements OnAuthenticationClickedListener {
 
@@ -29,7 +30,7 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
 
     @Override
     public void goToHomeActivity() {
-        startActivity(new Intent(AuthenticationActivity.this, InventoryActivity.class));
+        startActivity(new Intent(AuthenticationActivity.this, OrdersActivity.class));
     }
 
     @Override

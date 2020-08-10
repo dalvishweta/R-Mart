@@ -10,5 +10,5 @@ public interface OnInventoryClickedListener {
     void updateProduct();
     void requestNewProduct();
     void requestNewBrand();
-
+    void addUnit();
 }

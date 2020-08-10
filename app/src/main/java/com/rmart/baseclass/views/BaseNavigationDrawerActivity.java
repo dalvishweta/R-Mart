@@ -14,6 +14,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.rmart.R;
 
+import java.util.Objects;
+
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -52,10 +54,14 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
             return true;
+        } else if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+                return true;
         }
         return super.onOptionsItemSelected(item);
+        /**/
     }
 
     private void setNavigationView() {
@@ -64,9 +70,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         ActionBar ab = getSupportActionBar();
-        if (ab != null) {
+        /*if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
-        }
+        }*/
         navigationView = findViewById(R.id.nav_view);
         //signOut = navigationView.findViewById(R.id.sign_out_btn);
         navigationView.setNavigationItemSelectedListener(this);
@@ -155,11 +161,18 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
     // @Override
     public void showHamburgerIcon(boolean b) {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(b);   //hide hamburger button
+        /*if (getSupportActionBar() != null) {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+            // getSupportActionBar().setDisplayHomeAsUpEnabled(b);   //hide hamburger button
+        }*/
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            getSupportActionBar().setTitle("Select Image");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-    }
 
+    }
     @Override
     public void showBadge(boolean b) {
         /*if(null != badgeBase) {
