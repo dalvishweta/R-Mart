@@ -1,7 +1,5 @@
 package com.rmart.orders.models;
 
-import com.rmart.inventory.adapters.ProductAdapter;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 

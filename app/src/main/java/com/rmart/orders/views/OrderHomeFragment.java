@@ -63,6 +63,7 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        view.findViewById(R.id.accepted_orders).setOnClickListener(this);
         RecyclerView recyclerView = view.findViewById(R.id.other_order_names);
         ArrayList<OrderObject> orderObjects = new ArrayList<>();
         orderObjects.add(new OrderObject(getString(R.string.accepted_orders),"120",R.drawable.item_accepted_top_bg,R.drawable.item_accepted_bottom_bg));
@@ -76,7 +77,11 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
 
     @Override
     public void onClick(View view) {
-        OrderObject orderObject = (OrderObject) view.getTag();
-        mListener.showOrderList(orderObject);
+        if (view.getId() == R.id.accepted_orders) {
+            mListener.showOrderList(new OrderObject(getString(R.string.accepted_orders),"120",R.drawable.item_accepted_top_bg,R.drawable.item_accepted_bottom_bg));
+        } else {
+            OrderObject orderObject = (OrderObject) view.getTag();
+            mListener.showOrderList(orderObject);
+        }
     }
 }

@@ -9,43 +9,44 @@ import com.rmart.orders.models.OrderObject;
 
 public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOrdersInteractionListener {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", false);
+        addFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", true);
     }
 
     @Override
     public void goToHome() {
-       replaceFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", false);
+       replaceFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", true);
     }
 
-    @Override
-    public void goToOpenOrders() {
-        replaceFragment(OpenOrdersFragment.newInstance("", ""), "OpenOrdersFragment", false);
-    }
-
-    @Override
-    public void goToAcceptedOrders() {
-        replaceFragment(AcceptedOrdersFragment.newInstance("", ""), "AcceptedOrdersFragment", false);
-    }
-
-    @Override
-    public void goToPackedOrders() {
-        replaceFragment(PackedOrdersFragment.newInstance("", ""), "PackedOrdersFragment", false);
-    }
-
-    @Override
-    public void goToShippedOrders() {
-        replaceFragment(ShippedOrdersFragment.newInstance("", ""), "ShippedOrdersFragment", false);
-    }
+//    @Override
+//    public void goToOpenOrders() {
+//        replaceFragment(OpenOrdersFragment.newInstance("", ""), "OpenOrdersFragment", false);
+//    }
+//
+//    @Override
+//    public void goToAcceptedOrders() {
+//        replaceFragment(AcceptedOrdersFragment.newInstance("", ""), "AcceptedOrdersFragment", false);
+//    }
+//
+//    @Override
+//    public void goToPackedOrders() {
+//        replaceFragment(PackedOrdersFragment.newInstance("", ""), "PackedOrdersFragment", false);
+//    }
+//
+//    @Override
+//    public void goToShippedOrders() {
+//        replaceFragment(ShippedOrdersFragment.newInstance("", ""), "ShippedOrdersFragment", false);
+//    }
 
     @Override
     public void goToViewFullOrder(OrderListObject orderListObject) {
-        replaceFragment(ViewFullOrderFragment.newInstance(orderListObject, ""), "DeliveredOrdersFragment", false);
+        replaceFragment(ViewFullOrderFragment.newInstance(orderListObject, ""), "ViewFullOrderFragment", true);
     }
 
-    @Override
+/*    @Override
     public void goToRejectedOrders() {
         replaceFragment(RejectedOrdersFragment.newInstance("", ""), "RejectedOrdersFragment", false);
     }
@@ -53,7 +54,7 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
     @Override
     public void goToCanceledOrders() {
         replaceFragment(CanceledOrdersFragment.newInstance("", ""), "CanceledOrdersFragment", false);
-    }
+    }*/
 
     @Override
     public void showOrderList(OrderObject orderObject) {

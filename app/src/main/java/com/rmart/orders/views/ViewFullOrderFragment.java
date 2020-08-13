@@ -1,7 +1,6 @@
 package com.rmart.orders.views;
 
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
-import com.rmart.inventory.adapters.ProductAdapter;
 import com.rmart.orders.adapters.ProductListAdapter;
 import com.rmart.orders.models.OrderListObject;
 

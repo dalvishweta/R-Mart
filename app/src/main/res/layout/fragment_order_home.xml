@@ -6,7 +6,7 @@
     android:layout_margin="16dp"
     tools:context="com.rmart.orders.views.OrderHomeFragment">
     <LinearLayout
-        android:id="@+id/header"
+        android:id="@+id/accepted_orders"
         android:weightSum="3"
         android:orientation="horizontal"
         android:gravity="center"
@@ -45,7 +45,7 @@
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginTop="4dp"
-        android:layout_below="@+id/header"
+        android:layout_below="@+id/accepted_orders"
         android:layout_alignParentBottom="true"
         android:id="@+id/other_order_names"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
