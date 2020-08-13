@@ -30,9 +30,7 @@
     <string name="category"><![CDATA[Grocery & Staples]]></string>
     <string name="sub_title_1">4 Sub Catergories</string>
     <string name="sub_title_2">125 Products</string>
-    <string name="sub_item_name">Pulses</string>
     <string name="strikeout"> <strike> 111 </strike> </string>
-    <string name="line"> Not crossed <strike> crossed </strike> </string>
     <string name="total_categories">5 Categories</string>
     <string name="category_list">My Category list</string>
     <string name="sub_category_list">My sub category list</string>
@@ -67,14 +65,10 @@
     <string name="save">Save</string>
     <string name="is_active">Is Active</string>
     <string name="open_orders">Open Orders</string>
-    <string name="accepted_orders">Accepted Orders</string>
     <string name="packed_orders">Packed Orders</string>
-    <string name="shipped_orders">Shipped Orders</string>
-    <string name="delivered_orders">Delivered Orders</string>
-    <string name="rejected_orders">Rejected Orders</string>
     <string name="canceled_orders">Canceled Orders</string>
     <string name="all_orders">All Orders</string>
-    <string name="total_orders">Total you have 25 Open Orders</string>
+    <string name="total_orders">Total you have %1$d Open Orders</string>
     <string name="order_id">Order ID</string>
     <string name="data">Data</string>
     <string name="products">Products</string>
@@ -86,6 +80,6 @@
     <string name="quantity">Quantity:</string>
     <string name="unit">Unit :</string>
     <string name="cost">Cost :</string>
-    <string name="products_ordered">Products Ordered</string>
+    <string name="products_ordered">Products Ordered </string>
     <string name="accept">Accept</string>
 </resources>
