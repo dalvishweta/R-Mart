@@ -7,4 +7,5 @@
     <dimen name="field_height">48dp</dimen>
     <dimen name="text_regular_size">16sp</dimen>
     <dimen name="item_icon_corner_radius">16dp</dimen>
+    <dimen name="text_title">20sp</dimen>
 </resources>

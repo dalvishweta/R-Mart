@@ -1,6 +1,8 @@
 package com.rmart.orders.models;
 
-public class OrderObject {
+import java.io.Serializable;
+
+public class OrderObject implements Serializable {
     String name;
     String count;
     int bgTop;

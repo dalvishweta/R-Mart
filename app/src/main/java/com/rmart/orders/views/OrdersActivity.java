@@ -1,12 +1,11 @@
 package com.rmart.orders.views;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
-import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.orders.OnOrdersInteractionListener;
+import com.rmart.orders.models.OrderListObject;
+import com.rmart.orders.models.OrderObject;
 
 public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOrdersInteractionListener {
 
@@ -42,8 +41,8 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
     }
 
     @Override
-    public void goToDeliveredOrders() {
-        replaceFragment(DeliveredOrdersFragment.newInstance("", ""), "DeliveredOrdersFragment", false);
+    public void goToViewFullOrder(OrderListObject orderListObject) {
+        replaceFragment(ViewFullOrderFragment.newInstance(orderListObject, ""), "DeliveredOrdersFragment", false);
     }
 
     @Override
@@ -54,5 +53,10 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
     @Override
     public void goToCanceledOrders() {
         replaceFragment(CanceledOrdersFragment.newInstance("", ""), "CanceledOrdersFragment", false);
+    }
+
+    @Override
+    public void showOrderList(OrderObject orderObject) {
+        replaceFragment(OrderListFragment.newInstance(orderObject, ""), "OrderListFragment", true);
     }
 }

@@ -77,5 +77,6 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
     @Override
     public void onClick(View view) {
         OrderObject orderObject = (OrderObject) view.getTag();
+        mListener.showOrderList(orderObject);
     }
 }

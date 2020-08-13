@@ -34,4 +34,6 @@
     <color name="item_delivered_bottom_bg">#B365DB</color>
     <color name="item_rejected_bottom_bg">#F1993F</color>
     <color name="item_canceled_bottom_bg">#8E8984</color>
+    <color name="item_order_list_bg">#F2EDED</color>
+    <color name="item_order_list_count_bg">#DEDADA</color>
 </resources>
