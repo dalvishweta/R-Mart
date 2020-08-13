@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.orders.models.OrderListObject;
-import com.rmart.orders.models.OrderObject;
-import com.rmart.orders.views.viewholders.OrdersHomeViewHolder;
 import com.rmart.orders.views.viewholders.OrdersListItemViewHolder;
 
 import java.util.ArrayList;

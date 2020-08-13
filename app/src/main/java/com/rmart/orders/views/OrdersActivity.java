@@ -2,18 +2,23 @@ package com.rmart.orders.views;
 
 import android.os.Bundle;
 
+import androidx.lifecycle.ViewModelProvider;
+
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.orders.OnOrdersInteractionListener;
+import com.rmart.orders.models.MyOrdersViewModel;
 import com.rmart.orders.models.OrderListObject;
-import com.rmart.orders.models.OrderObject;
+import com.rmart.orders.models.OrdersByType;
 
 public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOrdersInteractionListener {
 
+    MyOrdersViewModel myOrdersViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", true);
+        myOrdersViewModel = new ViewModelProvider(this).get(MyOrdersViewModel.class);
+        addFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", false);
     }
 
     @Override
@@ -57,7 +62,7 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
     }*/
 
     @Override
-    public void showOrderList(OrderObject orderObject) {
-        replaceFragment(OrderListFragment.newInstance(orderObject, ""), "OrderListFragment", true);
+    public void showOrderList(OrdersByType ordersByType) {
+        replaceFragment(OrderListFragment.newInstance(ordersByType, ""), "OrderListFragment", true);
     }
 }

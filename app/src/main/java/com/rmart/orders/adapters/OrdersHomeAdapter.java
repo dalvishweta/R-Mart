@@ -8,8 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
-import com.rmart.inventory.views.viewholders.CategoryViewHolder;
-import com.rmart.orders.models.OrderObject;
+import com.rmart.orders.models.OrdersByType;
 import com.rmart.orders.views.viewholders.OrdersHomeViewHolder;
 
 import java.util.ArrayList;
@@ -17,9 +16,9 @@ import java.util.ArrayList;
 public class OrdersHomeAdapter extends RecyclerView.Adapter<OrdersHomeViewHolder> {
 
     View.OnClickListener onClickListener;
-    ArrayList<OrderObject> orderObjects;
-    public OrdersHomeAdapter(ArrayList<OrderObject> orderObjects, View.OnClickListener onClickListener) {
-        this.orderObjects = orderObjects;
+    ArrayList<OrdersByType> orderByTypes;
+    public OrdersHomeAdapter(ArrayList<OrdersByType> orderByTypes, View.OnClickListener onClickListener) {
+        this.orderByTypes = orderByTypes;
         this.onClickListener =onClickListener;
     }
     @NonNull
@@ -33,15 +32,16 @@ public class OrdersHomeAdapter extends RecyclerView.Adapter<OrdersHomeViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull OrdersHomeViewHolder holder, int position) {
-        OrderObject orderObject = orderObjects.get(position);
-        holder.orderCount.setText(orderObject.getCount());
-        holder.orderTitle.setText(orderObject.getName());
-        holder.orderCount.setBackgroundResource(orderObject.getBgTop());
-        holder.orderTitle.setBackgroundResource(orderObject.getBgBottom());
+        OrdersByType ordersByType = this.orderByTypes.get(position);
+        holder.itemView.setTag(ordersByType);
+        holder.orderCount.setText(ordersByType.getCount());
+        holder.orderTitle.setText(ordersByType.getOrderType());
+        holder.orderCount.setBackgroundResource(ordersByType.getBgTop());
+        holder.orderTitle.setBackgroundResource(ordersByType.getBgBottom());
     }
 
     @Override
     public int getItemCount() {
-        return orderObjects.size();
+        return orderByTypes.size();
     }
 }

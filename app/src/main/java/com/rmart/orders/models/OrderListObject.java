@@ -5,12 +5,10 @@ import java.util.ArrayList;
 
 public class OrderListObject implements Serializable {
     String date;
-    String count;
     String orderID;
     ArrayList<ProductObject> productObjects;
-    public OrderListObject(String date, String count, String orderID, ArrayList<ProductObject> productObjects) {
+    public OrderListObject(String date, String orderID, ArrayList<ProductObject> productObjects) {
         this.date = date;
-        this.count = count;
         this.orderID = orderID;
         this.productObjects = productObjects;
     }
@@ -24,11 +22,7 @@ public class OrderListObject implements Serializable {
     }
 
     public String getCount() {
-        return count;
-    }
-
-    public void setCount(String count) {
-        this.count = count;
+        return productObjects.size()+"";
     }
 
     public String getOrderID() {
