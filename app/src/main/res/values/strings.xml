@@ -94,4 +94,7 @@
     <string name="accepted">Accepted</string>
     <string name="returned">Returned</string>
     <string name="canceled">Canceled</string>
+    <string name="my_orders">My Orders</string>
+    <string name="inventory">My Inventory</string>
+    <string name="logout">Logout</string>
 </resources>

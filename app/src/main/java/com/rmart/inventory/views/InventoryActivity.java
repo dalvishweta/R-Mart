@@ -1,9 +1,11 @@
 package com.rmart.inventory.views;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.fragment.app.FragmentManager;
 
+import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.inventory.OnInventoryClickedListener;
 
@@ -68,5 +70,14 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
         AddUnitDialog addUnitDialog = AddUnitDialog.newInstance("","");
         addUnitDialog.setCancelable(false);
         addUnitDialog.show(fm, "AddUnitDialog");
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() != R.id.inventory) {
+            getToActivity(view.getId(), false);
+        } else {
+            getToActivity(view.getId(), true);
+        }
     }
 }

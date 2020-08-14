@@ -12,10 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#333333"
+        android:background="@color/colorPrimary"
         android:fitsSystemWindows="true"
-        app:itemTextColor="#333333"
-        app:headerLayout="@layout/navigation_header">
+        app:itemTextColor="@color/white">
 
         <include layout="@layout/navigation_left_menu_items" />
 

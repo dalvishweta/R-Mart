@@ -1,9 +1,11 @@
 package com.rmart.orders.views;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.orders.OnOrdersInteractionListener;
 import com.rmart.orders.viewmodel.MyOrdersViewModel;
@@ -34,5 +36,15 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
     @Override
     public void showOrderList() {
         replaceFragment(OrderListFragment.newInstance(""), "OrderListFragment", true);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() != R.id.orders) {
+            getToActivity(view.getId(), false);
+        } else {
+            getToActivity(view.getId(), true);
+        }
     }
 }
