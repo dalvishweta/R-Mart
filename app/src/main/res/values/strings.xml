@@ -72,7 +72,7 @@
     <string name="order_id">Order ID</string>
     <string name="data">Data</string>
     <string name="products">Products</string>
-    <string name="status_order">Status: Open Order</string>
+    <string name="status_order">Status: %1$s Order</string>
     <string name="payment_info">Payment Info</string>
     <string name="mode_of_payment">Mode of Payment:</string>
     <string name="delivery_charges">Delivery Charges:</string>
@@ -82,4 +82,16 @@
     <string name="cost">Cost :</string>
     <string name="products_ordered">Products Ordered </string>
     <string name="accept">Accept</string>
+    <string name="shipped_orders">Shipped Orders</string>
+    <string name="delivered_orders">Delivered Orders</string>
+    <string name="rejected_orders">Rejected Orders</string>
+    <string name="accepted_orders">Accepted Orders</string>
+    <string name="cancel">Cancel</string>
+    <string name="shipped">Shipped</string>
+    <string name="packed">Packed</string>
+    <string name="delivered">Delivered</string>
+    <string name="open">Open</string>
+    <string name="accepted">Accepted</string>
+    <string name="returned">Returned</string>
+    <string name="canceled">Canceled</string>
 </resources>

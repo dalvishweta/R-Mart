@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.orders.OnOrdersInteractionListener;
 import com.rmart.orders.models.MyOrdersViewModel;
-import com.rmart.orders.models.OrderListObject;
+import com.rmart.orders.models.OrderObject;
 import com.rmart.orders.models.OrdersByType;
 
 public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOrdersInteractionListener {
@@ -47,8 +47,8 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
 //    }
 
     @Override
-    public void goToViewFullOrder(OrderListObject orderListObject) {
-        replaceFragment(ViewFullOrderFragment.newInstance(orderListObject, ""), "ViewFullOrderFragment", true);
+    public void goToViewFullOrder(OrderObject orderObject) {
+        replaceFragment(ViewFullOrderFragment.newInstance(orderObject, ""), "ViewFullOrderFragment", true);
     }
 
 /*    @Override

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.orders.adapters.OrdersListAdapter;
-import com.rmart.orders.models.OrderListObject;
+import com.rmart.orders.models.OrderObject;
 import com.rmart.orders.models.OrdersByType;
 
 import java.util.Objects;
@@ -65,16 +65,16 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Resources res = getResources();
-        String text = String.format(res.getString(R.string.total_orders), allOrders.getOrderListObjects().size());
-        RecyclerView orderList = view.findViewById(R.id.order_list);
+        String text = String.format(res.getString(R.string.total_orders), allOrders.getOrderObjects().size());
         ((AppCompatTextView)view.findViewById(R.id.total_order)).setText(text);
-        OrdersListAdapter ordersListAdapter = new OrdersListAdapter(allOrders.getOrderListObjects(), this);
+        RecyclerView orderList = view.findViewById(R.id.order_list);
+        OrdersListAdapter ordersListAdapter = new OrdersListAdapter(allOrders.getOrderObjects(), this);
         orderList.setAdapter(ordersListAdapter);
     }
 
     @Override
     public void onClick(View view) {
-        OrderListObject orderListObject = (OrderListObject) view.getTag();
-        mListener.goToViewFullOrder(orderListObject);
+        OrderObject orderObject = (OrderObject) view.getTag();
+        mListener.goToViewFullOrder(orderObject);
     }
 }

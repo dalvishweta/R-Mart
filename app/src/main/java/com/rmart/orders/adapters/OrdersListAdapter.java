@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
-import com.rmart.orders.models.OrderListObject;
+import com.rmart.orders.models.OrderObject;
 import com.rmart.orders.views.viewholders.OrdersListItemViewHolder;
 
 import java.util.ArrayList;
@@ -16,8 +16,8 @@ import java.util.ArrayList;
 public class OrdersListAdapter extends RecyclerView.Adapter<OrdersListItemViewHolder> {
 
     View.OnClickListener onClickListener;
-    ArrayList<OrderListObject> orderList;
-    public OrdersListAdapter(ArrayList<OrderListObject> orderList, View.OnClickListener onClickListener) {
+    ArrayList<OrderObject> orderList;
+    public OrdersListAdapter(ArrayList<OrderObject> orderList, View.OnClickListener onClickListener) {
         this.orderList = orderList;
         this.onClickListener =onClickListener;
     }
@@ -32,11 +32,11 @@ public class OrdersListAdapter extends RecyclerView.Adapter<OrdersListItemViewHo
 
     @Override
     public void onBindViewHolder(@NonNull OrdersListItemViewHolder holder, int position) {
-        OrderListObject orderListObject = orderList.get(position);
-        holder.orderCount.setText(orderListObject.getCount());
-        holder.orderID.setText(orderListObject.getOrderID());
-        holder.date.setText(orderListObject.getDate());
-        holder.itemView.setTag(orderListObject);
+        OrderObject orderObject = orderList.get(position);
+        holder.orderCount.setText(orderObject.getCount());
+        holder.orderID.setText(orderObject.getOrderID());
+        holder.date.setText(orderObject.getDate());
+        holder.itemView.setTag(orderObject);
     }
 
     @Override

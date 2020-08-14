@@ -17,7 +17,6 @@ import com.rmart.orders.adapters.OrdersHomeAdapter;
 import com.rmart.orders.models.MyOrdersViewModel;
 import com.rmart.orders.models.OrdersByType;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class OrderHomeFragment extends BaseOrderFragment implements View.OnClickListener {
@@ -70,7 +69,7 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.accepted_orders).setOnClickListener(this);
-        ((AppCompatTextView)view.findViewById(R.id.open_order_count)).setText(Objects.requireNonNull(myOrdersViewModel.getOpenOrders().getValue()).getOrderListObjects().size()+"");
+        ((AppCompatTextView)view.findViewById(R.id.open_order_count)).setText(Objects.requireNonNull(myOrdersViewModel.getOpenOrders().getValue()).getOrderObjects().size()+"");
         RecyclerView recyclerView = view.findViewById(R.id.other_order_names);
         /*ArrayList<OrdersByType> orderByTypes = new ArrayList<>();
         orderByTypes.add(new OrdersByType(getString(R.string.accepted_orders),"120",R.drawable.item_accepted_top_bg,R.drawable.item_accepted_bottom_bg));

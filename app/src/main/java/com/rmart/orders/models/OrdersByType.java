@@ -8,15 +8,15 @@ public class OrdersByType implements Serializable {
     String count;
     int bgTop;
     int bgBottom;
-    ArrayList<OrderListObject> orderListObjects;
+    ArrayList<OrderObject> orderObjects;
 
-    public OrdersByType(String orderType, int bgTop, int bgBottom, ArrayList<OrderListObject> orderListObjects) {
+    public OrdersByType(String orderType, int bgTop, int bgBottom, ArrayList<OrderObject> orderObjects) {
 
         this.orderType = orderType;
-        this.count = orderListObjects.size()+"";
+        this.count = orderObjects.size()+"";
         this.bgTop = bgTop;
         this.bgBottom = bgBottom;
-        this.orderListObjects = orderListObjects;
+        this.orderObjects = orderObjects;
     }
 
     public String getOrderType() {
@@ -51,11 +51,11 @@ public class OrdersByType implements Serializable {
         this.bgBottom = bgBottom;
     }
 
-    public ArrayList<OrderListObject> getOrderListObjects() {
-        return orderListObjects;
+    public ArrayList<OrderObject> getOrderObjects() {
+        return orderObjects;
     }
 
-    public void setOrderListObjects(ArrayList<OrderListObject> orderListObjects) {
-        this.orderListObjects = orderListObjects;
+    public void setOrderObjects(ArrayList<OrderObject> orderObjects) {
+        this.orderObjects = orderObjects;
     }
 }

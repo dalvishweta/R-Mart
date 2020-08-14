@@ -21,17 +21,17 @@ public class MyOrdersViewModel extends ViewModel implements Serializable {
     private final MutableLiveData<OrdersByType> canceledOrders = new MutableLiveData<>();
 
     public MyOrdersViewModel() {
-        setOpenOrders(new OrdersByType("Open Orders", R.drawable.item_accepted_top_bg,R.drawable.item_accepted_bottom_bg, generateProductList("Open", 6, 5)));
-        setAcceptedOrders(new OrdersByType("Accepted Orders", R.drawable.item_accepted_top_bg,R.drawable.item_accepted_bottom_bg, generateProductList("Accepted", 10, 17)));
-        setPackedOrders(new OrdersByType("Packed Orders", R.drawable.item_packed_top_bg,R.drawable.item_packed_bottom_bg, generateProductList("Packed", 15, 8)));
-        setShippedOrders(new OrdersByType("Shipped Orders", R.drawable.item_shipped_top_bg,R.drawable.item_shipped_bottom_bg, generateProductList("Shipped", 9, 25)));
-        setDeliveredOrders(new OrdersByType("Delivered Orders", R.drawable.item_delivered_top_bg,R.drawable.item_delivered_bottom_bg, generateProductList("Delivered", 13, 6)));
-        setRejectedOrders(new OrdersByType("Rejected Orders", R.drawable.item_rejected_top_bg,R.drawable.item_rejected_bottom_bg, generateProductList("Rejected", 8, 14)));
-        setCanceledOrders(new OrdersByType("Canceled Orders", R.drawable.item_canceled_top_bg,R.drawable.item_canceled_bottom_bg, generateProductList("Canceled", 7, 20)));
+        setOpenOrders(new OrdersByType("Open Orders", R.drawable.item_accepted_top_bg,R.drawable.item_accepted_bottom_bg, generateProductList("Open", 6, 5, false)));
+        setAcceptedOrders(new OrdersByType("Accepted Orders", R.drawable.item_accepted_top_bg,R.drawable.item_accepted_bottom_bg, generateProductList("Accepted", 10, 17, false)));
+        setPackedOrders(new OrdersByType("Packed Orders", R.drawable.item_packed_top_bg,R.drawable.item_packed_bottom_bg, generateProductList("Packed", 15, 8, false)));
+        setShippedOrders(new OrdersByType("Shipped Orders", R.drawable.item_shipped_top_bg,R.drawable.item_shipped_bottom_bg, generateProductList("Shipped", 9, 25, false)));
+        setDeliveredOrders(new OrdersByType("Delivered Orders", R.drawable.item_delivered_top_bg,R.drawable.item_delivered_bottom_bg, generateProductList("Delivered", 13, 6, true)));
+        setRejectedOrders(new OrdersByType("Rejected Orders", R.drawable.item_rejected_top_bg,R.drawable.item_rejected_bottom_bg, generateProductList("Returned", 8, 14, true)));
+        setCanceledOrders(new OrdersByType("Canceled Orders", R.drawable.item_canceled_top_bg,R.drawable.item_canceled_bottom_bg, generateProductList("Canceled", 7, 20, true)));
     }
 
-    ArrayList<OrderListObject> generateProductList(String order, int orders, int products) {
-        ArrayList<OrderListObject> orderListObjects = new ArrayList<>();
+    ArrayList<OrderObject> generateProductList(String order, int orders, int products, boolean isDue) {
+        ArrayList<OrderObject> orderObjects = new ArrayList<>();
         Date date = Calendar.getInstance().getTime();
 
         for (int i = 0; i < orders; i++) {
@@ -39,27 +39,9 @@ public class MyOrdersViewModel extends ViewModel implements Serializable {
             for (int j = 0; j < products; j++ ) {
                 productObjects.add(new ProductObject(order + j+" Aashirvad Multigrain Atta" + date.getTime(), "1KG", "1", "100"));
             }
-            orderListObjects.add(new OrderListObject(i+" Aug 2020", date.getTime() + "", productObjects));
+            orderObjects.add(new OrderObject(i+" Aug 2020", date.getTime() + "", productObjects, order, isDue));
         }
-        /*orderListObjects.add(new OrderListObject("10 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("10 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("10 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("10 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("10 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("11 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("11 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("11 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("11 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("11 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("11 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("11 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("12 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("12 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("12 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("12 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("12 Aug 2020", date.getTime()+"", productObjects));
-        orderListObjects.add(new OrderListObject("12 Aug 2020", date.getTime()+"", productObjects));*/
-        return orderListObjects;
+        return orderObjects;
     }
     public void setOpenOrders(OrdersByType value) {
         this.openOrders.setValue(value);
