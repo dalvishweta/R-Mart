@@ -68,7 +68,7 @@
     <string name="packed_orders">Packed Orders</string>
     <string name="canceled_orders">Canceled Orders</string>
     <string name="all_orders">All Orders</string>
-    <string name="total_orders">Total you have %1$d Open Orders</string>
+    <string name="total_orders">Total you have %1$d %2$s</string>
     <string name="order_id">Order ID</string>
     <string name="data">Data</string>
     <string name="products">Products</string>
@@ -84,7 +84,7 @@
     <string name="accept">Accept</string>
     <string name="shipped_orders">Shipped Orders</string>
     <string name="delivered_orders">Delivered Orders</string>
-    <string name="rejected_orders">Rejected Orders</string>
+    <string name="returned_orders">Returned Orders</string>
     <string name="accepted_orders">Accepted Orders</string>
     <string name="cancel">Cancel</string>
     <string name="shipped">Shipped</string>

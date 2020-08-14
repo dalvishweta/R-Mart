@@ -26,13 +26,13 @@
     <color name="item_packed_top_bg">#E1E175</color>
     <color name="item_shipped_top_bg">#93D9E4</color>
     <color name="item_delivered_top_bg">#E4BDF8</color>
-    <color name="item_rejected_top_bg">#EEC9A3</color>
+    <color name="item_returned_top_bg">#EEC9A3</color>
     <color name="item_canceled_top_bg">#CFD1D2</color>
     <color name="item_accepted_bottom_bg">#F55C5C</color>
     <color name="item_packed_bottom_bg">#BAC51B</color>
     <color name="item_shipped_bottom_bg">#44A6B5</color>
     <color name="item_delivered_bottom_bg">#B365DB</color>
-    <color name="item_rejected_bottom_bg">#F1993F</color>
+    <color name="item_returned_bottom_bg">#F1993F</color>
     <color name="item_canceled_bottom_bg">#8E8984</color>
     <color name="item_order_list_bg">#F2EDED</color>
     <color name="item_order_list_count_bg">#DEDADA</color>

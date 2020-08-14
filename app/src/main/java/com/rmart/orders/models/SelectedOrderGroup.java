@@ -3,14 +3,14 @@ package com.rmart.orders.models;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class OrdersByType implements Serializable {
+public class SelectedOrderGroup implements Serializable {
     String orderType;
     String count;
     int bgTop;
     int bgBottom;
     ArrayList<OrderObject> orderObjects;
 
-    public OrdersByType(String orderType, int bgTop, int bgBottom, ArrayList<OrderObject> orderObjects) {
+    public SelectedOrderGroup(String orderType, int bgTop, int bgBottom, ArrayList<OrderObject> orderObjects) {
 
         this.orderType = orderType;
         this.count = orderObjects.size()+"";
@@ -57,5 +57,13 @@ public class OrdersByType implements Serializable {
 
     public void setOrderObjects(ArrayList<OrderObject> orderObjects) {
         this.orderObjects = orderObjects;
+    }
+    public void setOrderObjects(OrderObject orderObject) {
+        this.orderObjects.add(orderObject);
+        count = orderObjects.size()+"";
+    }
+    public void removeOrderObjects(OrderObject orderObject) {
+        this.orderObjects.remove(orderObject);
+        count = orderObjects.size()+"";
     }
 }

@@ -2,7 +2,7 @@ package com.rmart.orders;
 
 import com.rmart.baseclass.BaseListener;
 import com.rmart.orders.models.OrderObject;
-import com.rmart.orders.models.OrdersByType;
+import com.rmart.orders.models.SelectedOrderGroup;
 
 public interface OnOrdersInteractionListener extends BaseListener {
     void goToHome();
@@ -11,7 +11,7 @@ public interface OnOrdersInteractionListener extends BaseListener {
     void goToPackedOrders();
     void goToShippedOrders();*/
     void goToViewFullOrder(OrderObject orderObject);
-//    void goToRejectedOrders();
+//    void goToReturnedOrders();
 //    void goToCanceledOrders();
-    void showOrderList(OrdersByType ordersByType);
+    void showOrderList();
 }

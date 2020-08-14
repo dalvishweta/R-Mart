@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.orders.adapters.OrdersHomeAdapter;
-import com.rmart.orders.models.MyOrdersViewModel;
-import com.rmart.orders.models.OrdersByType;
+import com.rmart.orders.viewmodel.MyOrdersViewModel;
+import com.rmart.orders.models.SelectedOrderGroup;
 
 import java.util.Objects;
 
@@ -71,23 +71,23 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
         view.findViewById(R.id.accepted_orders).setOnClickListener(this);
         ((AppCompatTextView)view.findViewById(R.id.open_order_count)).setText(Objects.requireNonNull(myOrdersViewModel.getOpenOrders().getValue()).getOrderObjects().size()+"");
         RecyclerView recyclerView = view.findViewById(R.id.other_order_names);
-        /*ArrayList<OrdersByType> orderByTypes = new ArrayList<>();
-        orderByTypes.add(new OrdersByType(getString(R.string.accepted_orders),"120",R.drawable.item_accepted_top_bg,R.drawable.item_accepted_bottom_bg));
-        orderByTypes.add(new OrdersByType(getString(R.string.packed_orders),"110",R.drawable.item_packed_top_bg,R.drawable.item_packed_bottom_bg));
-        orderByTypes.add(new OrdersByType(getString(R.string.shipped_orders),"100",R.drawable.item_shipped_top_bg,R.drawable.item_shipped_bottom_bg));
-        orderByTypes.add(new OrdersByType(getString(R.string.delivered_orders),"90",R.drawable.item_delivered_top_bg,R.drawable.item_delivered_bottom_bg));
-        orderByTypes.add(new OrdersByType(getString(R.string.rejected_orders),"120",R.drawable.item_rejected_top_bg,R.drawable.item_rejected_bottom_bg));
-        orderByTypes.add(new OrdersByType(getString(R.string.canceled_orders),"150",R.drawable.item_canceled_top_bg,R.drawable.item_canceled_bottom_bg));*/
-        recyclerView.setAdapter(new OrdersHomeAdapter(myOrdersViewModel.getRecycleArrayList(), this));
+        myOrdersViewModel.getOrderGroupList().observe(Objects.requireNonNull(getActivity()), orderGroups -> {
+            if(orderGroups != null) {
+                recyclerView.setAdapter(new OrdersHomeAdapter(orderGroups, this));
+            }
+        });
+
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.accepted_orders) {
-            mListener.showOrderList(myOrdersViewModel.getOpenOrders().getValue());
+            myOrdersViewModel.getSelectedOrderGroup().setValue(myOrdersViewModel.getOpenOrders().getValue());
+            mListener.showOrderList();
         } else {
-            OrdersByType ordersByType = (OrdersByType) view.getTag();
-            mListener.showOrderList(ordersByType);
+            SelectedOrderGroup selectedOrderGroup = (SelectedOrderGroup) view.getTag();
+            myOrdersViewModel.getSelectedOrderGroup().setValue(selectedOrderGroup);
+            mListener.showOrderList();
         }
     }
 }

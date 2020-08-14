@@ -6,9 +6,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.orders.OnOrdersInteractionListener;
-import com.rmart.orders.models.MyOrdersViewModel;
+import com.rmart.orders.viewmodel.MyOrdersViewModel;
 import com.rmart.orders.models.OrderObject;
-import com.rmart.orders.models.OrdersByType;
+import com.rmart.orders.models.SelectedOrderGroup;
 
 public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOrdersInteractionListener {
 
@@ -26,43 +26,13 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
        replaceFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", true);
     }
 
-//    @Override
-//    public void goToOpenOrders() {
-//        replaceFragment(OpenOrdersFragment.newInstance("", ""), "OpenOrdersFragment", false);
-//    }
-//
-//    @Override
-//    public void goToAcceptedOrders() {
-//        replaceFragment(AcceptedOrdersFragment.newInstance("", ""), "AcceptedOrdersFragment", false);
-//    }
-//
-//    @Override
-//    public void goToPackedOrders() {
-//        replaceFragment(PackedOrdersFragment.newInstance("", ""), "PackedOrdersFragment", false);
-//    }
-//
-//    @Override
-//    public void goToShippedOrders() {
-//        replaceFragment(ShippedOrdersFragment.newInstance("", ""), "ShippedOrdersFragment", false);
-//    }
-
     @Override
     public void goToViewFullOrder(OrderObject orderObject) {
         replaceFragment(ViewFullOrderFragment.newInstance(orderObject, ""), "ViewFullOrderFragment", true);
     }
 
-/*    @Override
-    public void goToRejectedOrders() {
-        replaceFragment(RejectedOrdersFragment.newInstance("", ""), "RejectedOrdersFragment", false);
-    }
-
     @Override
-    public void goToCanceledOrders() {
-        replaceFragment(CanceledOrdersFragment.newInstance("", ""), "CanceledOrdersFragment", false);
-    }*/
-
-    @Override
-    public void showOrderList(OrdersByType ordersByType) {
-        replaceFragment(OrderListFragment.newInstance(ordersByType, ""), "OrderListFragment", true);
+    public void showOrderList() {
+        replaceFragment(OrderListFragment.newInstance(""), "OrderListFragment", true);
     }
 }

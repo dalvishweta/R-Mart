@@ -10,11 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.orders.adapters.ProductListAdapter;
 import com.rmart.orders.models.OrderObject;
+import com.rmart.orders.viewmodel.MyOrdersViewModel;
 
 import java.util.Objects;
 
@@ -23,10 +25,9 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-
     private OrderObject mOrderObject;
     private String mParam2;
-
+    MyOrdersViewModel viewModel;
     AppCompatButton mLeftButton, mRightButton;
     public ViewFullOrderFragment() {
         // Required empty public constructor
@@ -58,6 +59,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        viewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(MyOrdersViewModel.class);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_view_full_order, container, false);
     }
@@ -67,7 +69,9 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.product_list);
         mLeftButton = view.findViewById(R.id.left_button);
+        mLeftButton.setOnClickListener(this);
         mRightButton = view.findViewById(R.id.right_button);
+        mRightButton.setOnClickListener(this);
         setFooter();
         Resources res = getResources();
         String text = String.format(res.getString(R.string.status_order), mOrderObject.getOrderType());
@@ -106,25 +110,52 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
     @Override
     public void onClick(View view) {
+        viewModel.deleteOrder(mOrderObject, getResources());
+        String text  = ((AppCompatButton) view).getText().toString();
+        if(text.contains(getResources().getString(R.string.accept))) {
+            mOrderObject.setOrderType(getResources().getString(R.string.accepted));
+            updateToAccepted();
+        } else if(text.contains(getResources().getString(R.string.packed))) {
+            mOrderObject.setOrderType(getResources().getString(R.string.packed));
+            updateToPacked();
+        } else if(text.contains(getResources().getString(R.string.shipped))) {
+            mOrderObject.setOrderType(getResources().getString(R.string.shipped));
+            updateToShipped();
+        } else if(text.contains(getResources().getString(R.string.delivered))) {
+            mOrderObject.setOrderType(getResources().getString(R.string.delivered));
+            updateToDelivered();
+        } else if(text.contains(getResources().getString(R.string.returned))) {
+            mOrderObject.setOrderType(getResources().getString(R.string.returned));
+            updateToReturned();
+        } else if(text.contains(getResources().getString(R.string.cancel))) {
+            mOrderObject.setOrderType(getResources().getString(R.string.canceled));
+            updateToCancel();
+        }
+        Objects.requireNonNull(getActivity()).onBackPressed();
     }
 
     void updateToCancel() {
-
+        viewModel.setCanceledOrders(mOrderObject);
     }
     void updateToAccepted() {
-
+        viewModel.setAcceptedOrders(mOrderObject);
     }
     void updateToPacked() {
-
+        viewModel.setPackedOrders(mOrderObject);
+        // Objects.requireNonNull(viewModel.getPackedOrders().getValue()).getOrderObjects().add(mOrderObject);
     }
     void updateToShipped() {
-
+        viewModel.setShippedOrders(mOrderObject);
+        // Objects.requireNonNull(viewModel.getShippedOrders().getValue()).getOrderObjects().add(mOrderObject);
     }
     void updateToDelivered() {
 
+        viewModel.setDeliveredOrders(mOrderObject);
+        //Objects.requireNonNull(viewModel.getDeliveredOrders().getValue()).getOrderObjects().add(mOrderObject);
     }
-    void updateToRejected() {
-
+    void updateToReturned() {
+        viewModel.setReturnedOrders(mOrderObject);
+        //Objects.requireNonNull(viewModel.getReturnedOrders().getValue()).getOrderObjects().add(mOrderObject);
     }
 
     void isOpenOrder() {
