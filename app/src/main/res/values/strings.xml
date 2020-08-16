@@ -97,4 +97,8 @@
     <string name="my_orders">My Orders</string>
     <string name="inventory">My Inventory</string>
     <string name="logout">Logout</string>
+    <string name="verify_customer">Verify Customer</string>
+    <string name="please_enter_received_amount">Please enter received amount.</string>
+    <string name="received_amount_error">Received amount: %1$s and the Order amount: %2$s is not equal.\n Please check and re-enter again.</string>
+    <string name="error_enpty_received_amount">Please enter valid received amount.</string>
 </resources>

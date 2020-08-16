@@ -30,7 +30,7 @@ public class MyOrdersViewModel extends ViewModel implements Serializable {
 
     public MyOrdersViewModel() {
         setOpenOrders(new SelectedOrderGroup("Open Orders", R.drawable.item_accepted_top_bg,R.drawable.item_accepted_bottom_bg, generateProductList("Open", 1, 2, false)));
-        setAcceptedOrders(new SelectedOrderGroup("Accepted Orders", R.drawable.item_accepted_top_bg,R.drawable.item_accepted_bottom_bg, generateProductList("Accepted", 0, 0, false)));
+        setAcceptedOrders(new SelectedOrderGroup("Accepted Orders", R.drawable.item_accepted_top_bg,R.drawable.item_accepted_bottom_bg, generateProductList("Accepted", 1, 3, true)));
         setPackedOrders(new SelectedOrderGroup("Packed Orders", R.drawable.item_packed_top_bg,R.drawable.item_packed_bottom_bg, generateProductList("Packed", 0, 0, false)));
         setShippedOrders(new SelectedOrderGroup("Shipped Orders", R.drawable.item_shipped_top_bg,R.drawable.item_shipped_bottom_bg, generateProductList("Shipped", 0, 0, false)));
         setDeliveredOrders(new SelectedOrderGroup("Delivered Orders", R.drawable.item_delivered_top_bg,R.drawable.item_delivered_bottom_bg, generateProductList("Delivered", 0, 0, true)));

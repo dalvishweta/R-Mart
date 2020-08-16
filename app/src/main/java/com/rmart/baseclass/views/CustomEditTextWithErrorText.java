@@ -75,6 +75,10 @@ public class CustomEditTextWithErrorText extends LinearLayout {
                         appCompatEditText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(value)});
                         //.setMa(a.getInt(attr, R.string.app_name));
                         break;
+                    case R.styleable.CustomEditTextWithErrorText_android_background:
+                        appCompatEditText.setBackground(a.getDrawable(attr));
+                        //.setMa(a.getInt(attr, R.string.app_name));
+                        break;
                     default:
                         Log.d("TAG", "Unknown attribute for " + getClass().toString() + ": " + attr);
                         break;

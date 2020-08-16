@@ -42,6 +42,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
 
         nv = findViewById(R.id.nav_view);
+        findViewById(R.id.update_profile).setOnClickListener(this);
         findViewById(R.id.orders).setOnClickListener(this);
         findViewById(R.id.inventory).setOnClickListener(this);
         findViewById(R.id.change_password).setOnClickListener(this);
@@ -65,6 +66,8 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     break;
                 case R.id.logout:
                     Toast.makeText(getBaseContext(), "logout", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.update_profile:
                     break;
                 default:
                     break;

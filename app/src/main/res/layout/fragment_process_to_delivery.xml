@@ -1,0 +1,167 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.rmart.orders.views.ProcessToDeliveryFragment">
+    <ScrollView
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                style="@style/order_full_view_row"
+                >
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:text="Customer Name"
+                    style="@style/order_full_view_title"
+                    />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/name"
+                    style="@style/order_full_view_content"
+                    android:text="Vamshee Krishna"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:text="Contact number"
+                    style="@style/order_full_view_title"
+                    />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/contact_number"
+                    style="@style/order_full_view_content"
+                    android:text="7416226233"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/order_full_view_title"
+                    android:text="Delivery Address"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/address"
+                    style="@style/order_full_view_content"
+                    android:text="Vamshee Krishna, 18-1814, Sagar road, Hanuman pent, miryalguda, Nalgonda district, Telangana "
+                    />
+            </LinearLayout>
+            <LinearLayout
+                style="@style/order_full_view_row"
+                >
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:text="@string/payment_info"
+                    style="@style/order_full_view_title"
+                    android:layout_marginBottom="8dp"
+                    />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_weight="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:text="@string/order_amount"
+                        style="@style/order_full_view_payment"
+                        />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/amount"
+                        style="@style/order_full_view_payment"
+                        android:text="940"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_weight="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:text="@string/delivery_charges"
+                        style="@style/order_full_view_payment"
+                        />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/delivery_charges"
+                        style="@style/order_full_view_payment"
+                        android:text="60"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_weight="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:text="Total Amount:"
+                        style="@style/order_full_view_payment"
+                        android:fontFamily="@font/roboto_bold"
+                        />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/total_charges"
+                        style="@style/order_full_view_payment"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="1000"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_weight="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:text="@string/mode_of_payment"
+                        style="@style/order_full_view_payment"
+                        />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/payment_type"
+                        style="@style/order_full_view_payment"
+                        android:text="COD"/>
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/delivery_boy_info"
+                style="@style/order_full_view_row"
+                >
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:text="Delivery Boy Name"
+                    style="@style/order_full_view_title"
+                    />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delivery_boy_name"
+                    style="@style/order_full_view_content"
+                    android:text="Ravi"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:text="Delivery Boy number"
+                    style="@style/order_full_view_title"
+                    />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delivery_boy_number"
+                    style="@style/order_full_view_content"
+                    android:text="7416226233"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/received_amount"
+            android:drawableStart="@drawable/user"
+            android:hint="@string/please_enter_received_amount"
+            style="@style/upload_product_item_field"
+            android:minHeight="150dp"
+            android:inputType="number|numberSigned"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="60dp"
+            android:layout_marginBottom="40dp"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/submit"
+            android:background="@drawable/product_edit"
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="@dimen/text_regular_size"
+            android:text="@string/verify_customer"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</RelativeLayout>

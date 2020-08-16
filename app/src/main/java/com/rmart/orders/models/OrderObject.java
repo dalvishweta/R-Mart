@@ -15,14 +15,19 @@ public class OrderObject implements Serializable {
     String orderAmount;
     String modeType;
     String charges;
+
+
+    String deliveryBoyName;
+    String deliveryBoyNumber;
+
     boolean isDue;
 
     public OrderObject(String date, String orderID, ArrayList<ProductObject> productObjects, String orderType, boolean isDue) {
+
         this.date = date;
         this.orderID = orderID;
         this.orderType = orderType;
         this.productObjects = productObjects;
-
         this.customerName = orderID;
         this.customerNumber = "7416226233";
         this.customerAddress = "Vamshee Krishna, 18-1814, Sagar road, Hanuman pent, miryalguda, Nalgonda district, Telangana";
@@ -35,6 +40,9 @@ public class OrderObject implements Serializable {
         }else {
             modeType = "COD";
         }
+        deliveryBoyName = "Ravi";
+        deliveryBoyNumber ="9988776655";
+
     }
 
     public String getDate() {
@@ -135,5 +143,21 @@ public class OrderObject implements Serializable {
 
     public void setDue(boolean due) {
         isDue = due;
+    }
+
+    public String getDeliveryBoyName() {
+        return deliveryBoyName;
+    }
+
+    public void setDeliveryBoyName(String deliveryBoyName) {
+        this.deliveryBoyName = deliveryBoyName;
+    }
+
+    public String getDeliveryBoyNumber() {
+        return deliveryBoyNumber;
+    }
+
+    public void setDeliveryBoyNumber(String deliveryBoyNumber) {
+        this.deliveryBoyNumber = deliveryBoyNumber;
     }
 }

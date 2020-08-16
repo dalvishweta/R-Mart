@@ -124,6 +124,33 @@
                     android:text="Vamshee Krishna, 18-1814, Sagar road, Hanuman pent, miryalguda, Nalgonda district, Telangana "
                     />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/delivery_boy_info"
+                style="@style/order_full_view_row"
+                android:visibility="gone"
+                >
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:text="Delivery Boy Name"
+                    style="@style/order_full_view_title"
+                    />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delivery_boy_name"
+                    style="@style/order_full_view_content"
+                    android:text="Ravi"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:text="Delivery Boy number"
+                    style="@style/order_full_view_title"
+                    />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delivery_boy_number"
+                    style="@style/order_full_view_content"
+                    android:text="7416226233"/>
+
+            </LinearLayout>
+
+
             <LinearLayout
                 style="@style/order_full_view_row"
                 >

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +30,12 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private String mParam2;
     MyOrdersViewModel viewModel;
     AppCompatButton mLeftButton, mRightButton;
+    private AppCompatTextView tvStatus, dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType,
+            deliveryBoyName, deliveryBoyNumber;
+    private ProductListAdapter productAdapter;
+    private RecyclerView recyclerView;
+    private LinearLayout deliveryBoyInfo;
+
     public ViewFullOrderFragment() {
         // Required empty public constructor
     }
@@ -67,29 +74,50 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecyclerView recyclerView = view.findViewById(R.id.product_list);
+        recyclerView = view.findViewById(R.id.product_list);
         mLeftButton = view.findViewById(R.id.left_button);
         mLeftButton.setOnClickListener(this);
         mRightButton = view.findViewById(R.id.right_button);
         mRightButton.setOnClickListener(this);
-        setFooter();
-        Resources res = getResources();
-        String text = String.format(res.getString(R.string.status_order), mOrderObject.getOrderType());
         //Customer Info
-        ((AppCompatTextView)view.findViewById(R.id.status)).setText(text);
-        ((AppCompatTextView)view.findViewById(R.id.date_value)).setText(mOrderObject.getDate());
-        ((AppCompatTextView)view.findViewById(R.id.order_id_value)).setText(mOrderObject.getOrderID());
+        tvStatus = view.findViewById(R.id.status);
+        dateValue = view.findViewById(R.id.date_value);
+        orderIdValue = view.findViewById(R.id.order_id_value);
+
+       // delivery boy info
+        deliveryBoyInfo = view.findViewById(R.id.delivery_boy_info);
+        deliveryBoyInfo.setVisibility(View.GONE);
+        deliveryBoyName = view.findViewById(R.id.delivery_boy_name);
+        deliveryBoyNumber = view.findViewById(R.id.delivery_boy_number);
+
         //Payment info
+        tvAmount = view.findViewById(R.id.amount);
+        tvDeliveryCharges = view.findViewById(R.id.delivery_charges);
+        tvTotalCharges = view.findViewById(R.id.total_charges);
+        tvPaymentType = view.findViewById(R.id.payment_type);
 
-        ((AppCompatTextView)view.findViewById(R.id.amount)).setText(mOrderObject.getOrderAmount());
-        ((AppCompatTextView)view.findViewById(R.id.delivery_charges)).setText(mOrderObject.getCharges());
-        ((AppCompatTextView)view.findViewById(R.id.total_charges)).setText(mOrderObject.getTotalAmount());
-        ((AppCompatTextView)view.findViewById(R.id.payment_type)).setText(mOrderObject.getModeType());
+        setValuesToUI();
 
-        ProductListAdapter productAdapter = new ProductListAdapter(mOrderObject.getProductObjects(), this);
+        productAdapter = new ProductListAdapter(mOrderObject.getProductObjects(), this);
         recyclerView.setAdapter(productAdapter);
+
+    }
+    void setValuesToUI() {
+        orderIdValue.setText(mOrderObject.getOrderID());
+        dateValue.setText(mOrderObject.getDate());
+        tvAmount.setText(mOrderObject.getOrderAmount());
+        tvDeliveryCharges.setText(mOrderObject.getCharges());
+        tvTotalCharges.setText(mOrderObject.getTotalAmount());
+        tvPaymentType.setText(mOrderObject.getModeType());
+        updateUI();
     }
 
+    void updateUI() {
+        Resources res = getResources();
+        String text = String.format(res.getString(R.string.status_order), mOrderObject.getOrderType());
+        tvStatus.setText(text);
+        setFooter();
+    }
     private void setFooter() {
         if(mOrderObject.getOrderType().contains(getResources().getString(R.string.open))) {
             isOpenOrder();
@@ -122,8 +150,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
             mOrderObject.setOrderType(getResources().getString(R.string.shipped));
             updateToShipped();
         } else if(text.contains(getResources().getString(R.string.delivered))) {
-            mOrderObject.setOrderType(getResources().getString(R.string.delivered));
-            updateToDelivered();
+            mListener.goToProcessToDelivery(mOrderObject);
+            /**/
         } else if(text.contains(getResources().getString(R.string.returned))) {
             mOrderObject.setOrderType(getResources().getString(R.string.returned));
             updateToReturned();
@@ -131,7 +159,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
             mOrderObject.setOrderType(getResources().getString(R.string.canceled));
             updateToCancel();
         }
-        Objects.requireNonNull(getActivity()).onBackPressed();
+        updateUI();
+        // Objects.requireNonNull(getActivity()).onBackPressed();
     }
 
     void updateToCancel() {
@@ -188,6 +217,9 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     void isDeliveredOrder() {
         mLeftButton.setVisibility(View.GONE);
         mRightButton.setVisibility(View.GONE);
+        deliveryBoyInfo.setVisibility(View.VISIBLE);
+        deliveryBoyNumber.setText(mOrderObject.getDeliveryBoyNumber());
+        deliveryBoyName.setText(mOrderObject.getDeliveryBoyName());
     }
     void isReturnedOrder() {
         mLeftButton.setVisibility(View.GONE);

@@ -66,7 +66,7 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if(count == INT_OTP_LENGTH) {
+        if(count >= INT_OTP_LENGTH) {
             mListener.goToHomeActivity();
         }
 

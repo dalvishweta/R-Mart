@@ -23,6 +23,7 @@
         android:id="@+id/error_text"
         android:layout_width="wrap_content"
         android:fontFamily="@font/roboto_regular"
+        android:background="@android:color/transparent"
         android:textSize="@dimen/error_text_size"
         android:textColor="@color/error_text_color"
         android:layout_marginTop="@dimen/error_text_size_top_padding"

@@ -3,6 +3,7 @@ package com.rmart.orders.views;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.rmart.R;
@@ -25,12 +26,24 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
 
     @Override
     public void goToHome() {
-       replaceFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", true);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
     @Override
     public void goToViewFullOrder(OrderObject orderObject) {
         replaceFragment(ViewFullOrderFragment.newInstance(orderObject, ""), "ViewFullOrderFragment", true);
+    }
+
+    @Override
+    public void goToOTPValidation(OrderObject orderObject) {
+        replaceFragment(CustomerVerificationFragment.newInstance(orderObject, ""), "CustomerVerificationFragment", true);
+    }
+
+    @Override
+    public void goToProcessToDelivery(OrderObject orderObject) {
+        replaceFragment(ProcessToDeliveryFragment.newInstance(orderObject, ""), "ProcessToDeliveryFragment", true);
     }
 
     @Override
