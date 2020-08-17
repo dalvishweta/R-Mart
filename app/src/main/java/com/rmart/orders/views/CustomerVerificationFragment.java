@@ -76,7 +76,6 @@ public class CustomerVerificationFragment extends BaseOrderFragment implements T
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        Toast.makeText(getContext(), s+ " "+count, Toast.LENGTH_SHORT).show();
         if( s.toString().length() == 4) {
             updateToDelivered();
         }

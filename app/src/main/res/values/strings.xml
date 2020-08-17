@@ -101,4 +101,24 @@
     <string name="please_enter_received_amount">Please enter received amount.</string>
     <string name="received_amount_error">Received amount: %1$s and the Order amount: %2$s is not equal.\n Please check and re-enter again.</string>
     <string name="error_enpty_received_amount">Please enter valid received amount.</string>
+    <string name="please_enter_your_first_name">Please enter your first name</string>
+    <string name="please_enter_your_last_name">Please enter your last name</string>
+    <string name="please_enter_your_e_mail">Please enter your e-mail</string>
+    <string name="retailer_details">RETAILER DETAILS</string>
+    <string name="enter_your_business_name">Enter your Business Name</string>
+    <string name="enter_your_pan_number">Enter your PAN number</string>
+    <string name="enter_your_gst_number">Enter your GST number</string>
+    <string name="location_details">LOCATION DETAILS</string>
+    <string name="street_address">Street Address</string>
+    <string name="shop_no">Shop No</string>
+    <string name="land_mark">Land Mark</string>
+    <string name="district">District</string>
+    <string name="state">State</string>
+    <string name="update_my_profile">Update my profile</string>
+    <string name="save_my_profile">Save my profile</string>
+    <string name="location">LOCATION</string>
+    <string name="change_location">Change Location?</string>
+    <string name="view_my_profile">View My Profile</string>
+    <string name="edit_my_profile">Edit My Profile</string>
+    <string name="seve_profile">Save my profile</string>
 </resources>

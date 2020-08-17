@@ -176,9 +176,14 @@
         <item name="android:minLines">1</item>
         <item name="android:singleLine">true</item>
         <item name="android:layout_marginTop">8dp</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/text_regular_size</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="my_profile_tv" parent="upload_product_item_field">
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginEnd">24dp</item>
+    </style>
     <style name="list_items">
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_width">match_parent</item>
@@ -253,6 +258,18 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/nv_item_bg</item>
+    </style>
+
+    <style name="my_profile_title">
+        <item name="android:padding">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:background">#E6E6E6</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:shadowColor">#00000033</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_regular_size</item>
     </style>
 
 </resources>

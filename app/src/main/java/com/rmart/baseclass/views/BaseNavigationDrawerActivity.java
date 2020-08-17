@@ -17,6 +17,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.rmart.R;
 import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.orders.views.OrdersActivity;
+import com.rmart.profile.views.MyProfileActivity;
 
 import java.util.Objects;
 
@@ -68,6 +69,8 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     Toast.makeText(getBaseContext(), "logout", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.update_profile:
+                    intent = new Intent(BaseNavigationDrawerActivity.this, MyProfileActivity.class);
+                    startActivity(intent);
                     break;
                 default:
                     break;
