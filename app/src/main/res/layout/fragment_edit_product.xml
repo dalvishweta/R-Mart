@@ -1,9 +1,9 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.rmart.inventory.views.UploadProductFragment">
+    tools:context="com.rmart.inventory.views.EditProductFragment">
 
     <LinearLayout
         android:orientation="vertical"
@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            tools:context="com.rmart.inventory.views.UploadProductFragment">
+            tools:context="com.rmart.inventory.views.EditProductFragment">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/choose_category"
@@ -51,11 +51,17 @@
                 style="@style/upload_product_item_field"/>
 
             <androidx.appcompat.widget.AppCompatEditText
+                android:layout_marginTop="8dp"
+                android:padding="16dp"
+                android:drawablePadding="16dp"
+                android:background="@drawable/edit_product_field_bg"
+                android:gravity="start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/product_description"
                 android:drawableStart="@drawable/user"
-                android:hint="@string/product_regional_name"
-                style="@style/upload_product_item_field"
-                android:minHeight="150dp"/>
+                android:hint="@string/product_description_title"
+                android:text="@string/product_description"/>
         </LinearLayout>
         <LinearLayout
             android:padding="8dp"
@@ -115,6 +121,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/unit_base"
                 android:layout_below="@+id/add_unit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -124,7 +131,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            tools:context="com.rmart.inventory.views.UploadProductFragment">
+            tools:context="com.rmart.inventory.views.EditProductFragment">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/delivery_days"
@@ -152,4 +159,4 @@
     </LinearLayout>
 
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

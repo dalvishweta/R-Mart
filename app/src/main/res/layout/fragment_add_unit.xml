@@ -13,12 +13,13 @@ android:padding="16dp">
         android:text="@string/unit_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
+    <!--<androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/unit"
         android:drawableStart="@drawable/user"
-        android:drawableEnd="@drawable/down_arrow"
         android:hint="@string/units"
+        style="@style/upload_product_item_field"/>-->
+    <Spinner
+        android:id="@+id/unit"
         style="@style/upload_product_item_field"/>
 
     <androidx.appcompat.widget.AppCompatEditText
@@ -32,6 +33,13 @@ android:padding="16dp">
         android:id="@+id/discount"
         android:drawableStart="@drawable/user"
         android:hint="@string/discount"
+        android:inputType="number"
+        style="@style/upload_product_item_field"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/final_price"
+        android:drawableStart="@drawable/user"
+        android:hint="@string/after_discount"
         android:inputType="number"
         style="@style/upload_product_item_field"/>
 

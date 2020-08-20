@@ -55,5 +55,6 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
 
     @Override
     public void goToProfileActivity() {
+
     }
 }

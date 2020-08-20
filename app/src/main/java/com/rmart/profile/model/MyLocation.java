@@ -9,7 +9,7 @@ public class MyLocation {
     String landMark="Near Sai Temple Street";
     String district = "Nalgonda";
     String state = "Telangana";
-    Location myLocation;
+    LocationPoints myLocation;
 
     public String getStreetAddress() {
         return streetAddress;
@@ -51,11 +51,20 @@ public class MyLocation {
         this.state = state;
     }
 
-    public Location getMyLocation() {
+    public LocationPoints getMyLocation() {
         return myLocation;
     }
 
-    public void setMyLocation(Location myLocation) {
+    public void setMyLocation(LocationPoints myLocation) {
         this.myLocation = myLocation;
     }
+    public void setMyLocation(Double lat, Double lon) {
+        this.myLocation.setLatitude(lat);
+        this.myLocation.setLatitude(lon);
+    }
+    public void setMyLocation(String latitude, String longitude) {
+        this.myLocation.setLatitude(Double.parseDouble(latitude));
+        this.myLocation.setLongitude(Double.parseDouble(longitude));
+    }
+
 }

@@ -5,10 +5,29 @@ import com.rmart.R;
 import java.util.ArrayList;
 
 public class MyProfile {
+
+    static MyProfile myProfile;
+    public static final boolean DELIVERY = MyProfile.getInstance().getRoleType().equals("delivery");
+    public static final boolean RETAILER = MyProfile.getInstance().getRoleType().equals("retailer");
+    public static final boolean CUSTOMER = MyProfile.getInstance().getRoleType().equals("retailer");
+    public static MyProfile getInstance() {
+        if(null == myProfile) {
+            myProfile = new MyProfile();
+        }
+        return myProfile;
+    }
+    private  MyProfile() {
+        imageImages = new ArrayList<>();
+        imageImages.add(R.drawable.supermarket1);
+        imageImages.add(R.drawable.supermarket2);
+        imageImages.add(R.drawable.supermarket3);
+        myLocations.add(new MyLocation());
+    }
+    String roleType = "retailer";
     // RETAILER DETAILS
     String firstName = "Vamshee Krishna";
     String lastName = "Paleti";
-    String emailName = "vamsheekrishna.paleti@gmail.com";
+    String email = "vamsheekrishna.paleti@gmail.com";
     String mobileNumber = "7416226233";
 
     // BUSINESS DETAILS
@@ -18,14 +37,14 @@ public class MyProfile {
     String panNumber = "BOMPP1130D1";
 
     ArrayList<MyLocation> myLocations = new ArrayList<>();
-    MyProfile () {
-        imageImages = new ArrayList<>();
-        imageImages.add(R.drawable.supermarket1);
-        imageImages.add(R.drawable.supermarket2);
-        imageImages.add(R.drawable.supermarket3);
-        myLocations.add(new MyLocation());
+
+    public String getRoleType() {
+        return roleType;
     }
 
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -43,12 +62,12 @@ public class MyProfile {
         this.lastName = lastName;
     }
 
-    public String getEmailName() {
-        return emailName;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEmailName(String emailName) {
-        this.emailName = emailName;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getMobileNumber() {

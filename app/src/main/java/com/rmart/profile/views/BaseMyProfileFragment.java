@@ -28,10 +28,10 @@ public class BaseMyProfileFragment extends BaseFragment {
         mListener = null;
     }
 
-    public void setMapView(boolean isEditable) {
+    public void setMapView(boolean isEditable, String isFrom) {
         FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        MapsFragment mapsFragment = MapsFragment.newInstance(isEditable, "");
+        MapsFragment mapsFragment = MapsFragment.newInstance(isEditable, isFrom);
         fragmentTransaction.add(R.id.map_view, mapsFragment, "MapsFragment");
         fragmentTransaction.commit();
     }

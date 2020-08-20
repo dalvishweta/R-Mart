@@ -13,6 +13,7 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // MyProfileViewModel myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
         addFragment(ViewMyProfileFragment.newInstance("", ""), "ViewMyProfileFragment", false);
     }
 
@@ -37,6 +38,6 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void gotoMapView() {
-        replaceFragment(MapsFragment.newInstance(true, ""), "MapsFragment", true);
+        replaceFragment(MapsFragment.newInstance(true, "profile"), "MapsFragment", true);
     }
 }

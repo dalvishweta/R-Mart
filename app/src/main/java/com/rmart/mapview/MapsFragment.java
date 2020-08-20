@@ -29,6 +29,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.profile.model.LocationPoints;
+import com.rmart.profile.model.MyProfile;
 
 import java.util.Objects;
 
@@ -36,14 +38,16 @@ public class MapsFragment extends BaseFragment {
 
     private static final String ARG_PARAM1 = "ARG_PARAM1";
     private static final String ARG_PARAM2 = "ARG_PARAM2";
+    public static final String PROFILE = "profile";
     private FusedLocationProviderClient fusedLocationProviderClient;
     private SupportMapFragment mapFragment;
     private LocationManager locationManager;
-    private double latitude = 0.0;
-    private double longitude = 0.0;
+    // private double latitude = 0.0;
+    // private double longitude = 0.0;
     GoogleMap googleMap;
     private boolean isEditable;
-
+    private Location currentLocation;
+    String isFrom;
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
@@ -60,6 +64,7 @@ public class MapsFragment extends BaseFragment {
             }
         }
     };
+    // private MyProfile myProfile;
 
     private void editMyLocation(GoogleMap googleMap) {
         this.googleMap = googleMap;
@@ -67,17 +72,19 @@ public class MapsFragment extends BaseFragment {
             MarkerOptions marker = new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("New Marker");
             googleMap.clear();
             googleMap.addMarker(marker);
+            currentLocation = new Location("");
+            currentLocation.setLatitude(point.latitude);
+            currentLocation.setLongitude(point.longitude);
             System.out.println(point.latitude+"---"+ point.longitude);
+            updateLocationPoints();
         });
     }
 
-    private Location currentLocation;
-
-    public static MapsFragment newInstance(boolean isEditable, String param2) {
+    public static MapsFragment newInstance(boolean isEditable, String isFrom) {
         MapsFragment fragment = new MapsFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_PARAM1, isEditable);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM2, isFrom);
         fragment.setArguments(args);
         return fragment;
     }
@@ -86,6 +93,7 @@ public class MapsFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             isEditable = getArguments().getBoolean(ARG_PARAM1);
+            isFrom = getArguments().getString(ARG_PARAM2);
         }
     }
     @Override
@@ -107,8 +115,18 @@ public class MapsFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
+            if (isFrom.equals(PROFILE) ) {
+                // myProfile = MyProfile.getInstance();
+                LocationPoints location = MyProfile.getInstance().getMyLocations().get(0).getMyLocation();
+                if(location != null) {
+                    currentLocation = new Location("");
+                    currentLocation.setLongitude(location.getLongitude());
+                    currentLocation.setLatitude(location.getLatitude());
+                } else {
+                    fetchLocation();
+                }
+            }
             mapFragment.getMapAsync(callback);
-            fetchLocation();
         }
 
 
@@ -126,8 +144,8 @@ public class MapsFragment extends BaseFragment {
         task.addOnSuccessListener(location -> {
             if (location != null) {
                 currentLocation = location;
-                latitude = currentLocation.getLatitude();
-                longitude = currentLocation.getLongitude();
+                // latitude = currentLocation.getLatitude();
+                // longitude = currentLocation.getLongitude();
                 // Toast.makeText(getContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
                 //SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
                 if (mapFragment != null) {
@@ -163,13 +181,21 @@ public class MapsFragment extends BaseFragment {
             Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (locationGPS != null) {
                 currentLocation = locationGPS;
-                latitude = locationGPS.getLatitude();
-                longitude = locationGPS.getLongitude();
+                // latitude = locationGPS.getLatitude();
+                // longitude = locationGPS.getLongitude();
                 updateMap();
             } else {
                 MyLocation myLocation = new MyLocation(requireActivity());
                 myLocation.getLocation(locationResult);
             }
+            updateLocationPoints();
+        }
+    }
+
+    private void updateLocationPoints() {
+        if (isFrom.equals(PROFILE) ) {
+            LocationPoints myLocation = new LocationPoints(currentLocation.getLatitude(), currentLocation.getLongitude());
+            MyProfile.getInstance().getMyLocations().get(0).setMyLocation(myLocation);
         }
     }
 
@@ -179,10 +205,8 @@ public class MapsFragment extends BaseFragment {
         public void gotLocation(Location location) {
             if (location != null) {
                 currentLocation = location;
-                longitude = location.getLongitude();
-                latitude = location.getLatitude();
-                Log.d("locationGPS", "location longitude"+longitude);
-                Log.d("locationGPS", "location latitude"+latitude);
+                Log.d("locationGPS", "location longitude"+location.getLongitude());
+                Log.d("locationGPS", "location latitude"+location.getLatitude());
                 updateMap();
             }
         }

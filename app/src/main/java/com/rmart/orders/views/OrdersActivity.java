@@ -12,8 +12,12 @@ import com.rmart.orders.OnOrdersInteractionListener;
 import com.rmart.orders.viewmodel.MyOrdersViewModel;
 import com.rmart.orders.models.OrderObject;
 import com.rmart.orders.models.SelectedOrderGroup;
+import com.rmart.profile.model.MyProfile;
+
+import static com.rmart.profile.model.MyProfile.DELIVERY;
 
 public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOrdersInteractionListener {
+
 
     MyOrdersViewModel myOrdersViewModel;
 
@@ -21,12 +25,16 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myOrdersViewModel = new ViewModelProvider(this).get(MyOrdersViewModel.class);
-        addFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", false);
+        if (DELIVERY) {
+            myOrdersViewModel.getSelectedOrderGroup().setValue(myOrdersViewModel.getShippedOrders().getValue());
+            addFragment(OrderListFragment.newInstance(""), "OrderListFragment", false);
+        } else {
+            addFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", false);
+        }
     }
 
     @Override
     public void goToHome() {
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }

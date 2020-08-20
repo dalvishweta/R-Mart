@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:background="@color/inventory_header_bg"
+android:id="@+id/category_header"
+android:orientation="horizontal"
+android:layout_width="match_parent"
+android:layout_height="55dp">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_toStartOf="@+id/sort"
+        android:layout_marginStart="8dp"
+        android:id="@+id/category_count"
+        android:layout_alignParentStart="true"
+        android:text="@string/total_products"
+        android:fontFamily="@font/roboto_regular"
+        android:textSize="@dimen/text_regular_size"
+        android:layout_centerVertical="true"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <ImageView
+        android:layout_marginEnd="8dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/sort"
+        android:src="@drawable/filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>

@@ -10,6 +10,8 @@ public class MyProfileViewModel extends ViewModel {
 
     public MyProfileViewModel() {
         myProfileMutableLiveData = new MutableLiveData<>();
+        // MyProfile myProfile = new MyProfile();
+        myProfileMutableLiveData.setValue(MyProfile.getInstance());
     }
 
     public MutableLiveData<MyProfile> getMyProfileMutableLiveData() {

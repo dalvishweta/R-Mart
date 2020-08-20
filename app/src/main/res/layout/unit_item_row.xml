@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/text"
+    android:layout_width="match_parent"
+    android:background="@drawable/unit_view_bg"
+    android:drawableEnd="@drawable/down_arrow"
+    android:drawablePadding="16dp"
+    android:padding="16dp"
+    android:textColor="@color/black"
+    android:fontFamily="@font/roboto_regular"
+    android:layout_height="@dimen/field_height"/>

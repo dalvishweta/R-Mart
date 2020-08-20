@@ -1,4 +1,4 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,15 +28,14 @@
                 style="@style/item_title"
                 android:text="Aashirvad Multigrain Atta"
                 />
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
                 android:layout_below="@+id/product_name"
                 android:id="@+id/unit_base"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
+                tools:listitem="@layout/product_unit_base"
                 android:layout_height="wrap_content">
-                <include layout="@layout/product_unit_base"/>
-                <include layout="@layout/product_unit_base"/>
-            </LinearLayout>
+            </androidx.recyclerview.widget.RecyclerView>
         </RelativeLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -47,18 +46,21 @@
                 android:text="@string/product_description_title"
                 style="@style/product_preview_item_title"/>
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/product_description"
                 android:text="@string/product_description"
                 style="@style/product_preview_item_value"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:text="@string/product_regional_name"
                 style="@style/product_preview_item_title"/>
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/product_regional_name"
                 android:text="@string/product_regional_name_value"
                 style="@style/product_preview_item_value"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:text="@string/product_expiry_title"
                 style="@style/product_preview_item_title"/>
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/product_expiry"
                 android:text="@string/product_expiry_title_value"
                 style="@style/product_preview_item_value"/>
         </LinearLayout>
@@ -90,4 +92,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

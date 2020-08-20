@@ -4,19 +4,28 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.inventory.OnInventoryClickedListener;
-
-import java.util.Objects;
+import com.rmart.inventory.models.Product;
+import com.rmart.inventory.models.UnitObject;
+import com.rmart.inventory.viewmodel.InventoryViewModel;
 
 public class InventoryActivity extends BaseNavigationDrawerActivity implements OnInventoryClickedListener {
-
+    InventoryViewModel inventoryViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addFragment(MyCategoryListFragment.newInstance("",""), "MyCategoryFragment", false);
+        inventoryViewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
+        if (inventoryViewModel.getIsProductView().getValue().equals(InventoryViewModel.PRODUCT)) {
+            addFragment(MyProductsListFragment.newInstance("", ""), "MyProductsListFragment", false);
+        } else if (inventoryViewModel.getIsProductView().getValue().equals(InventoryViewModel.SUB_CATEGORY)) {
+            addFragment(MySubCategoriesListFragment.newInstance("", ""), "MyProductsListFragment", false);
+        } else {
+            addFragment(MyCategoryListFragment.newInstance("", ""), "MyCategoryFragment", false);
+        }
     }
 
     @Override
@@ -26,7 +35,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void showMyCategories() {
-        addFragment(MyCategoryListFragment.newInstance("",""), "MyCategoryFragment", false);
+        addFragment(MyCategoryListFragment.newInstance("",""), "MyCategoryFragment", true);
     }
 
     @Override
@@ -45,13 +54,13 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     }
 
     @Override
-    public void showProductPreview() {
-        replaceFragment(ShowProductPreviewFragment.newInstance("",""), "ShowProductPreviewFragment",true);
+    public void showProductPreview(Product product) {
+        replaceFragment(ShowProductPreviewFragment.newInstance(product,""), "ShowProductPreviewFragment",true);
     }
 
     @Override
-    public void updateProduct() {
-        replaceFragment(UploadProductFragment.newInstance("",""), "UploadProductFragment",true);
+    public void updateProduct(Product product) {
+        replaceFragment(EditProductFragment.newInstance(product,""), "UploadProductFragment",true);
     }
 
     @Override
@@ -65,11 +74,25 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     }
 
     @Override
-    public void addUnit() {
+    public void addUnit(UnitObject unitValue, BaseInventoryFragment fragment, int requestID) {
         FragmentManager fm = getSupportFragmentManager();
-        AddUnitDialog addUnitDialog = AddUnitDialog.newInstance("","");
+        AddUnitDialog addUnitDialog = AddUnitDialog.newInstance(unitValue,false);
         addUnitDialog.setCancelable(false);
+        addUnitDialog.setTargetFragment(fragment, requestID);
         addUnitDialog.show(fm, "AddUnitDialog");
+    }
+
+    @Override
+    public void goToHome() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        if (inventoryViewModel.getIsProductView().getValue().equals(InventoryViewModel.PRODUCT)) {
+            addFragment(MyProductsListFragment.newInstance("", ""), "MyProductsListFragment", false);
+        } else if (inventoryViewModel.getIsProductView().getValue().equals(InventoryViewModel.SUB_CATEGORY)) {
+            addFragment(MySubCategoriesListFragment.newInstance("", ""), "MyProductsListFragment", false);
+        } else {
+            addFragment(MyCategoryListFragment.newInstance("", ""), "MyCategoryFragment", false);
+        }
     }
 
     @Override

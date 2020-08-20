@@ -35,7 +35,7 @@ public class OrderObject implements Serializable {
         this.orderAmount = "900";
         this.charges = "100";
         this.isDue = isDue;
-        if(isDue) {
+        if(!isDue) {
             modeType = "Net Banking";
         }else {
             modeType = "COD";

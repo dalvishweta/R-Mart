@@ -1,6 +1,5 @@
 package com.rmart.inventory.views;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -14,13 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
-import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.inventory.OnInventoryClickedListener;
 import com.rmart.inventory.adapters.SubCategoryAdapter;
 
 import java.util.Objects;
 
-import static com.rmart.inventory.views.MyCategoryListFragment.LIST_TYPE;
+import static com.rmart.inventory.views.MyCategoryListFragment.isGridView;
 
 public class MySubCategoriesListFragment extends BaseInventoryFragment {
 
@@ -70,13 +67,13 @@ public class MySubCategoriesListFragment extends BaseInventoryFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         subCategoryRecycleView = view.findViewById(R.id.sub_categories);
-        SubCategoryAdapter subCategoryAdapter = new SubCategoryAdapter(LIST_TYPE, new View.OnClickListener() {
+        SubCategoryAdapter subCategoryAdapter = new SubCategoryAdapter(isGridView, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.showMyProducts();
             }
         });
-        if(LIST_TYPE == 1) {
+        if(isGridView) {
             subCategoryRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         } else {
             subCategoryRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));

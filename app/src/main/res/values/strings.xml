@@ -1,4 +1,5 @@
 <resources>
+    <!--https://xd.adobe.com/view/abf6f0b6-d078-41e6-8ed1-c1a53f4021d5-fea5/screen/176b1ba8-2022-4b76-807c-a13b274426dc/-->
     <string name="app_name">Rokad Mart</string>
     <string name="message">Message</string>
     <string name="close">Close</string>
@@ -30,16 +31,17 @@
     <string name="category"><![CDATA[Grocery & Staples]]></string>
     <string name="sub_title_1">4 Sub Catergories</string>
     <string name="sub_title_2">125 Products</string>
-    <string name="strikeout"> <strike> 111 </strike> </string>
-    <string name="total_categories">5 Categories</string>
+    <string name="strikeout"> <strike> %1$s </strike> </string>
+    <string name="total_categories">%1$d Categories</string>
     <string name="category_list">My Category list</string>
     <string name="sub_category_list">My sub category list</string>
     <string name="my_product_list">My product list</string>
-    <string name="total_products">15 Products</string>
+    <string name="total_products">%1$d Products</string>
     <string name="total_sub_categories">6 Sub Categories</string>
     <string name="product_name">Aashirvaad Atta</string>
     <string name="product_unit">1 KG</string>
-    <string name="offer">20%\nOff</string>
+    <string name="offer">%1$s \nOff</string>
+    <string name="offer_single_line">%1$s Off</string>
     <string name="product_description_title">Product Description</string>
     <string name="product_description">Consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolortempora incidun</string>
     <string name="product_regional_name">Product Regional Name</string>
@@ -64,6 +66,7 @@
     <string name="discount">Discount in %</string>
     <string name="save">Save</string>
     <string name="is_active">Is Active</string>
+    <string name="active">Active</string>
     <string name="open_orders">Open Orders</string>
     <string name="packed_orders">Packed Orders</string>
     <string name="canceled_orders">Canceled Orders</string>
@@ -121,4 +124,11 @@
     <string name="view_my_profile">View My Profile</string>
     <string name="edit_my_profile">Edit My Profile</string>
     <string name="seve_profile">Save my profile</string>
+    <string name="sort_by_category">Sort By Category</string>
+    <string name="sort_by_sub_category">Sort By Sub Category</string>
+    <string name="sort_by_product">Sort By Product</string>
+    <string name="available_other_sizes">Available in %1$s other sizes</string>
+    <string name="in_active">In Active</string>
+    <string name="delivered_in"> Delivered %1$s hour.</string>
+    <string name="after_discount">After discount: %1$s</string>
 </resources>
