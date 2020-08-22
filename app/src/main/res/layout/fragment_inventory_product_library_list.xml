@@ -10,10 +10,16 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <include
-        layout="@layout/add_product_layout"
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_marginTop="16dp"
+        android:id="@+id/add_product"
+        android:text="@string/product_not_available"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:layout_margin="16dp"
+        android:fontFamily="@font/roboto_regular"
+        android:background="@drawable/product_edit"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+        android:layout_width="match_parent" />
 </RelativeLayout>

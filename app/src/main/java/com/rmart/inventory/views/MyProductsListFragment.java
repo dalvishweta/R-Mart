@@ -3,18 +3,14 @@ package com.rmart.inventory.views;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +22,7 @@ import com.rmart.inventory.viewmodel.InventoryViewModel;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class MyProductsListFragment extends BaseInventoryFragment {
+public class MyProductsListFragment extends BaseInventoryFragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -36,9 +32,8 @@ public class MyProductsListFragment extends BaseInventoryFragment {
     private String mParam2;
     private RecyclerView productRecycleView;
     ProductAdapter productAdapter;
-    InventoryViewModel inventoryViewModel;
     private AppCompatTextView tvTotalCount;
-
+    LinearLayout addProduct;
     public MyProductsListFragment() {
         // Required empty public constructor
     }
@@ -70,7 +65,6 @@ public class MyProductsListFragment extends BaseInventoryFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        inventoryViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(InventoryViewModel.class);
         inventoryViewModel.getProductList().observe(getActivity(), products -> {
             if(null != products) {
                 updateList(products);
@@ -82,7 +76,9 @@ public class MyProductsListFragment extends BaseInventoryFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         productRecycleView = view.findViewById(R.id.product_list);
+        addProduct = view.findViewById(R.id.add_product);
         tvTotalCount = view.findViewById(R.id.category_count);
+        addProduct.setOnClickListener(this);
         view.findViewById(R.id.sort).setOnClickListener(param -> {
             PopupMenu popup = new PopupMenu(Objects.requireNonNull(getActivity()), param);
             //Inflating the Popup using xml file
@@ -112,11 +108,21 @@ public class MyProductsListFragment extends BaseInventoryFragment {
         try {
             tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), products.size()));
             productAdapter = new ProductAdapter(products, view1 -> {
-                mListener.showProductPreview((Product)view1.getTag());
-            });
+                Product product = (Product)view1.getTag();
+                int index = products.indexOf(product);
+                inventoryViewModel.setSelectedProduct(index);
+                mListener.showProductPreview(product, true);
+            }, 2);
             productRecycleView.setAdapter(productAdapter);
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.add_product) {
+            mListener.addNewProduct();
         }
     }
 }

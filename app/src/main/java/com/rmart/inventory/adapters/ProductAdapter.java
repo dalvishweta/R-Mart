@@ -1,6 +1,7 @@
 package com.rmart.inventory.adapters;
 
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
 
     View.OnClickListener onClickListener;
     ArrayList<Product> productList;
-    public ProductAdapter(ArrayList<Product> productList, View.OnClickListener onClickListener) {
+    int columnCount;
+    public ProductAdapter(ArrayList<Product> productList, View.OnClickListener onClickListener, int columnCount) {
         this.onClickListener =onClickListener;
         this.productList = productList;
+        this.columnCount = columnCount;
     }
     @NonNull
     @Override
@@ -29,26 +32,37 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
         View listItem;
         listItem= layoutInflater.inflate(R.layout.grid_product_layout, parent, false);
         listItem.setOnClickListener(onClickListener);
-        return new ProductViewHolder(listItem) ;
+        ProductViewHolder productViewHolder = new ProductViewHolder(listItem);
+        if(columnCount == 3) {
+            productViewHolder.tvItemTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            productViewHolder.availableUnits.setVisibility(View.GONE);
+            productViewHolder.availableUnits.setVisibility(View.GONE);
+            listItem.findViewById(R.id.row2).setVisibility(View.GONE);
+        } else {
+            productViewHolder.tvItemTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            productViewHolder.availableUnits.setVisibility(View.VISIBLE);
+            productViewHolder.availableUnits.setVisibility(View.VISIBLE);
+            listItem.findViewById(R.id.row2).setVisibility(View.VISIBLE);
+        }
+        return  productViewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
-        holder.itemView.setTag(product);
-        String html =  "<strike>" + product.getUnitObjects().get(0).getActualCost()+"</strike>";
-        holder.tvActual.setText(Html.fromHtml(html));
-        // holder.tvActual.setText(Html.fromHtml());
-        holder.tvFinalCost.setText(product.getUnitObjects().get(0).getFinalCost());
         holder.tvItemTitle.setText(product.getName());
-        String text = holder.itemView.getContext().getString(R.string.offer);
-        String temp =String.format(text, product.getUnitObjects().get(0).getDiscount());
-        holder.tvOffer.setText(temp);
+        holder.itemView.setTag(product);
+        if (product.getUnitObjects().size() >0) {
+            holder.tvActual.setText(Html.fromHtml("<strike> " + product.getUnitObjects().get(0).getActualCost()+" </strike>"));
+            holder.tvFinalCost.setText(product.getUnitObjects().get(0).getFinalCost());
+            holder.tvUnitValue.setText(product.getUnitObjects().get(0).getUnitValue());
+            holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer), product.getUnitObjects().get(0).getDiscount()+"%"));
+        }
         if(product.getUnitObjects().size()>1) {
             holder.availableUnits. setVisibility(View.VISIBLE);
             holder.availableUnits. setText(String.format(holder.itemView.getContext().getString(R.string.available_other_sizes), product.getUnitObjects().size()+""));
         } else {
-            holder.availableUnits. setVisibility(View.INVISIBLE);
+            holder.availableUnits. setVisibility(View.GONE);
         }
     }
 

@@ -18,31 +18,35 @@ public class InventoryViewModel extends ViewModel {
     MutableLiveData<ArrayList<Product>> productList;
     MutableLiveData<HashMap<String , ArrayList<Integer>>> categories;
     MutableLiveData<HashMap<String , ArrayList<Integer>>> subCategories;
+
+    MutableLiveData<Integer> selectedProduct;
+
     public InventoryViewModel() {
         isProductView = new MutableLiveData<>(PRODUCT);
         productList = new MutableLiveData<>(new ArrayList<>());
         categories = new MutableLiveData<>(new HashMap<>());
         subCategories = new MutableLiveData<>(new HashMap<>());
-        getProducts();
+        selectedProduct = new MutableLiveData<>(-1);
+        // getProducts();
     }
 
-    void getProducts() {
+    public MutableLiveData<Integer> getSelectedProduct() {
+        return selectedProduct;
+    }
+
+    public void setSelectedProduct( Integer selectedProduct) {
+        this.selectedProduct.setValue(selectedProduct);
+    }
+
+    public ArrayList<Product> getProducts() {
+        ArrayList<Product> products =new ArrayList<>();
         for(int i = 0; i<20; i++) {
             for(int j = 0; j<20; j++) {
                 Product product = new Product(i, j);
-                Objects.requireNonNull(productList.getValue()).add(product);
+                products.add(product);
             }
         }
-        for (int i = 0; i< productList.getValue().size(); i++) {
-            if (Objects.requireNonNull(categories.getValue()).containsKey(productList.getValue().get(i).getCategory())) {
-                Objects.requireNonNull(Objects.requireNonNull(categories.getValue()).get(productList.getValue().get(i).getCategory())).add(i);
-            } else {
-                ArrayList<Integer> arrayList = new ArrayList<>();
-                arrayList.add(i);
-                String key = productList.getValue().get(i).getCategory();
-                categories.getValue().put(key, arrayList);
-            }
-        }
+        return products;
     }
 
     public MutableLiveData<String> getIsProductView() {

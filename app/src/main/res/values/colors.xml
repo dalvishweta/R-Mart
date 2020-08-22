@@ -36,4 +36,7 @@
     <color name="item_canceled_bottom_bg">#8E8984</color>
     <color name="item_order_list_bg">#F2EDED</color>
     <color name="item_order_list_count_bg">#DEDADA</color>
+    <color name="add_product_bg_1">#059D20</color>
+    <color name="add_product_bg_2">#1EB138</color>
+    <color name="discount">#FF0000</color>
 </resources>

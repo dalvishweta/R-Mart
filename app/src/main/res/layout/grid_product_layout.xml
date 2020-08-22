@@ -19,7 +19,6 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/offer"
         style="@style/item_product_offer"
-        android:text="@string/offer"
         >
 
 
@@ -39,6 +38,7 @@
             android:text="@string/product_name"
             android:gravity="center"/>
         <LinearLayout
+            android:id="@+id/row2"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal"
@@ -46,18 +46,19 @@
             android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/sub_title_1"
-                android:text="@string/product_unit"
+                android:text="1KG"
                 style="@style/item_product_unit"
                 />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/sub_title_2"
                 style="@style/item_product_cost"
-                android:layout_height="wrap_content"
-                android:text="Rs.98" />
+                android:text="80"
+                android:layout_height="wrap_content"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/sub_title_3"
-                android:text="@string/strikeout"
+                android:text="20"
+                android:textColor="@color/discount"
                 style="@style/item_product_unit"/>
         </LinearLayout>
         <androidx.appcompat.widget.AppCompatTextView
@@ -67,7 +68,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/button_bg"
-            android:text="@string/available_other_sizes"
             />
     </LinearLayout>
 </RelativeLayout>

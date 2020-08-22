@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/add_product"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <FrameLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="50dp"
+        android:layout_height="50dp">
+        <View
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/add_product_icon_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="+"
+            android:textSize="30sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/product"
+        android:textSize="16sp"
+        android:textColor="@color/add_product_bg_1"
+        android:fontFamily="@font/roboto_bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

@@ -5,15 +5,13 @@ import com.rmart.inventory.models.UnitObject;
 import com.rmart.inventory.views.BaseInventoryFragment;
 
 public interface OnInventoryClickedListener {
-    void goToRequestNewProduct();
     void showMyCategories();
-    void showMySubCategories();
-    void goToSelectDataFragment();
-    void showMyProducts();
-    void showProductPreview(Product tag);
-    void updateProduct(Product product);
-    void requestNewProduct();
     void requestNewBrand();
+    void showMySubCategories();
+    void showMyProducts();
+    void showProductPreview(Product tag, boolean isEdit);
+    void updateProduct(Product product, boolean isEdit);
+    void addNewProduct();
     void addUnit(UnitObject unitValue, BaseInventoryFragment fragment, int requestID);
     void goToHome();
 }

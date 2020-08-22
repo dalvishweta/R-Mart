@@ -5,7 +5,6 @@ import android.view.View;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.inventory.OnInventoryClickedListener;
@@ -29,11 +28,6 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     }
 
     @Override
-    public void goToRequestNewProduct() {
-
-    }
-
-    @Override
     public void showMyCategories() {
         addFragment(MyCategoryListFragment.newInstance("",""), "MyCategoryFragment", true);
     }
@@ -44,28 +38,23 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     }
 
     @Override
-    public void goToSelectDataFragment() {
-
-    }
-
-    @Override
     public void showMyProducts() {
         replaceFragment(MyProductsListFragment.newInstance("",""), "MyProductsListFragment",true);
     }
 
     @Override
-    public void showProductPreview(Product product) {
-        replaceFragment(ShowProductPreviewFragment.newInstance(product,""), "ShowProductPreviewFragment",true);
+    public void showProductPreview(Product product, boolean isEdit) {
+        replaceFragment(ShowProductPreviewFragment.newInstance(product,isEdit), "ShowProductPreviewFragment",true);
     }
 
     @Override
-    public void updateProduct(Product product) {
-        replaceFragment(EditProductFragment.newInstance(product,""), "UploadProductFragment",true);
+    public void updateProduct(Product product, boolean isEdit) {
+        replaceFragment(EditProductFragment.newInstance(product,isEdit), "UploadProductFragment",true);
     }
 
     @Override
-    public void requestNewProduct() {
-
+    public void addNewProduct() {
+        replaceFragment(RequestNewProductFragment.newInstance("",""), "RequestNewProductFragment",true);
     }
 
     @Override

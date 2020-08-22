@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -138,6 +139,18 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             }
         });
         spinner = view.findViewById(R.id.unit);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                String text = unitObject.getAvailableUnits().get(pos);
+                unitObject.setUnitValue(text);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         isActive = view.findViewById(R.id.switchButton);
         unitAdapter = new UnitAdapter(unitObject.getAvailableUnits(), this.getContext());
         spinner.setAdapter(unitAdapter);
@@ -175,7 +188,6 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             if(_actualPrice.length()<=0) {
                 Toast.makeText(getContext(), "Please enter valid amount", Toast.LENGTH_SHORT).show();
             } else {
-                _actualPrice = unitObject.getActualCost();
                 Intent i = new Intent().putExtra(UNIT_VALUE, unitObject);
                 Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
             }

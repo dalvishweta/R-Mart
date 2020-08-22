@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,20 +25,20 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     private static final String ARG_PARAM2 = "param2";
     RecyclerView recyclerView;
     private  Product product;
-    private String mParam2;
+    private boolean isEdit;
     ImageAdapter imageAdapter;
     ViewPager viewPager;
 
-    AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry;
+    AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryInDays;
     public ShowProductPreviewFragment() {
         // Required empty public constructor
     }
 
-    public static ShowProductPreviewFragment newInstance(Product product, String param2) {
+    public static ShowProductPreviewFragment newInstance(Product product, boolean isEdit) {
         ShowProductPreviewFragment fragment = new ShowProductPreviewFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PRODUCT, product);
-        args.putString(ARG_PARAM2, param2);
+        args.putBoolean(ARG_PARAM2, isEdit);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,7 +48,13 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             product = (Product) getArguments().getSerializable(ARG_PRODUCT);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            isEdit = getArguments().getBoolean(ARG_PARAM2);
+        }
+        if(null != inventoryViewModel && isEdit) {
+            product = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
+            inventoryViewModel.getSelectedProduct().observe(Objects.requireNonNull(getActivity()), index -> {
+                product = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(index);
+            } );
         }
     }
 
@@ -65,15 +72,26 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         recyclerView = view.findViewById(R.id.unit_base);
         tvProductDescription = view.findViewById(R.id.product_description);
         tvProductRegionalName = view.findViewById(R.id.product_regional_name);
+        tvDeliveryInDays = view.findViewById(R.id.delivery);
         tvProductExpiry = view.findViewById(R.id.product_expiry);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         viewPager =  view.findViewById(R.id.view_pager);
-        view.findViewById(R.id.edit).setOnClickListener(view1 -> {
-            mListener.updateProduct(product);
-        });
-        view.findViewById(R.id.delete).setOnClickListener(view1 -> {
-            Objects.requireNonNull(getActivity()).onBackPressed();
-        });
+        AppCompatButton delete = view.findViewById(R.id.delete);
+        AppCompatButton edit = view.findViewById(R.id.edit);
+        if(isEdit) {
+            edit.setOnClickListener(view1 -> {
+                mListener.updateProduct(product, true);
+            });
+            delete.setOnClickListener(view1 -> {
+                Product object = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
+                Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).remove(object);
+                Objects.requireNonNull(getActivity()).onBackPressed();
+            });
+        } else {
+            delete.setVisibility(View.GONE);
+            edit.setText(getString(R.string.save));
+        }
+
         updateUi();
 
     }
@@ -82,7 +100,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         ImageAdapter imageAdapter = new ImageAdapter(Objects.requireNonNull(getContext()));
         viewPager.setAdapter(imageAdapter);
         tvProductName.setText(product.getName());
-
+        tvDeliveryInDays.setText(String.format(getString(R.string.delivery_in_days), product.getDeliveryInDays()));
         ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(product.getUnitObjects(), view -> {
 
         }, false);

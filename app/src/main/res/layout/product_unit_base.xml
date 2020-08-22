@@ -21,7 +21,8 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/sub_title_3"
         android:text="@string/strikeout"
-        style="@style/product_unit_value"/>
+        style="@style/product_unit_value"
+        android:textColor="@color/discount"/>
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/offer"
         android:text="20%"

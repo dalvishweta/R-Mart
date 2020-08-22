@@ -1,9 +1,12 @@
 package com.rmart.inventory.models;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-public class Product implements Serializable {
+public class Product implements Serializable, Cloneable {
     String category;
     String subCategory;
     String brand;
@@ -17,6 +20,27 @@ public class Product implements Serializable {
     ArrayList<UnitObject> unitObjects;
 
     public Product() {
+        setDummyData();
+    }
+
+    public Product(Product product) {
+        category = product.category;
+        subCategory = product.subCategory;;
+        brand = product.brand;
+        name = product.name;
+        description = product.description;
+        regionalName = product.regionalName;
+        videoLInk = product.videoLInk;
+        expiryDate = product.expiryDate;
+        deliveryInDays = product.deliveryInDays;
+        images = new ArrayList<>();
+        images.addAll(product.getImages());
+        unitObjects = new ArrayList<>();
+        unitObjects.addAll(product.getUnitObjects());
+    }
+
+
+    private void setDummyData() {
         category = "Grocery & Staples";
         subCategory = "Atta & Rice Items";
         brand = "Aashirvaad";
@@ -30,6 +54,12 @@ public class Product implements Serializable {
         unitObjects = new ArrayList<>();
     }
 
+    @NonNull
+    public Object clone() throws CloneNotSupportedException
+    {
+        return super.clone();
+    }
+
     public Product(int i, int j) {
         category = "Category " + i;
         subCategory = "Sub category "+j;
@@ -41,9 +71,9 @@ public class Product implements Serializable {
         expiryDate = "12 Aug 2023";
         images = new ArrayList<>();
         unitObjects = new ArrayList<>();
-        for (int k = 1 ; k<3; k++) {
-            unitObjects.add(new UnitObject(k));
-        }
+//        for (int k = 1 ; k<3; k++) {
+//            unitObjects.add(new UnitObject(k));
+//        }
     }
 
     public String getCategory() {
