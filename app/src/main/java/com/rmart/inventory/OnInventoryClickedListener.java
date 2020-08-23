@@ -11,7 +11,10 @@ public interface OnInventoryClickedListener {
     void showMyProducts();
     void showProductPreview(Product tag, boolean isEdit);
     void updateProduct(Product product, boolean isEdit);
-    void addNewProduct();
+    void addProductToInventory();
+    void requestToCreateProduct();
     void addUnit(UnitObject unitValue, BaseInventoryFragment fragment, int requestID);
     void goToHome();
+    void requestNewProduct(BaseInventoryFragment fragment, int requestID);
+    void applyFilter(BaseInventoryFragment fragment, int requestFilteredDataId);
 }

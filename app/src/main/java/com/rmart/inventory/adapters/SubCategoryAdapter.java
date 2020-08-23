@@ -3,17 +3,24 @@ package com.rmart.inventory.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
+import com.rmart.inventory.models.Product;
 import com.rmart.inventory.views.viewholders.SubCategoryViewHolder;
 
-public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryViewHolder> {
+import java.util.List;
+import java.util.Locale;
+
+public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryViewHolder>  implements Filterable {
 
     boolean isGridView;
     View.OnClickListener onClickListener;
+    private List<Product> filteredListData;
     public SubCategoryAdapter(boolean _listType, View.OnClickListener onClickListener) {
         isGridView = _listType;
         this.onClickListener =onClickListener;
@@ -40,5 +47,10 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryViewHold
     @Override
     public int getItemCount() {
         return 6;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return null;
     }
 }

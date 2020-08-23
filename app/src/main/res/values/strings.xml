@@ -1,5 +1,6 @@
 <resources>
     <!--https://xd.adobe.com/view/abf6f0b6-d078-41e6-8ed1-c1a53f4021d5-fea5/screen/176b1ba8-2022-4b76-807c-a13b274426dc/-->
+<!--    https://www.flaticon.com/free-icon/edit_860814?term=edit&page=1&position=82-->
     <string name="app_name">Rokad Mart</string>
     <string name="message">Message</string>
     <string name="close">Close</string>
@@ -135,7 +136,12 @@
     <string name="delivery_in_days">Delivery in %1$s days</string>
     <string name="product">Product</string>
     <string name="add_new_product">Add new product</string>
+    <string name="request_new_product">Create product</string>
     <string name="update">Update</string>
     <string name="product_not_available">Product not available?</string>
     <string name="item_added">You have added one product to your inventory.</string>
+    <string name="apply">Apply</string>
+    <string name="request_new_product_msg">Your request was successfully submitted. \n Once request is approved by the system you will get the confirmation Notification.</string>
+    <string name="hello">Hello: %1$s.</string>
+    <string name="send_request">Send Request</string>
 </resources>

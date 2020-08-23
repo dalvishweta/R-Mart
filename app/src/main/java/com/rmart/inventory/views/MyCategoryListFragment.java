@@ -74,7 +74,6 @@ public class MyCategoryListFragment extends BaseInventoryFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         categoryRecycleView = view.findViewById(R.id.category_list);
-
         tvTotalCount = view.findViewById(R.id.category_count);
         tvTotalCount.setText(String.format(getResources().getString(R.string.total_categories), Objects.requireNonNull(inventoryViewModel.getCategories().getValue()).keySet().size()));
         view.findViewById(R.id.sort).setOnClickListener(param -> {

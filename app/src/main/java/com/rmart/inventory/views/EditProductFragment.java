@@ -143,6 +143,9 @@ public class EditProductFragment extends BaseInventoryFragment implements View.O
             }  else if( Objects.requireNonNull(productDescription.getText()).toString().length()<=1) {
                 showDialog("", "Please enter valid product description");
                 return;
+            }  else if( Objects.requireNonNull(mClonedProduct).getUnitObjects().size()<1) {
+                showDialog("", "Please add at least one unit");
+                return;
             }
 
             mClonedProduct.setExpiryDate(expiry.getText().toString());

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +35,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     ProductAdapter productAdapter;
     private AppCompatTextView tvTotalCount;
     LinearLayout addProduct;
+    SearchView searchView;
     public MyProductsListFragment() {
         // Required empty public constructor
     }
@@ -51,6 +53,9 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(getActivity()).setTitle(getString(R.string.my_product_list));
+        /*InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+        searchView.clearFocus();*/
     }
 
     @Override
@@ -102,8 +107,33 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         });
         productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         updateList(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()));
-    }
 
+        setSearchView(view);
+    }
+    protected void setSearchView(@NonNull View view) {
+        if(null != productAdapter) {
+            searchView = view.findViewById(R.id.searchView);
+            searchView.setFocusable(false);
+            searchView.setIconified(false);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    if(query.length()<=0) {
+                        searchView.clearFocus();
+                        return true;
+
+                    }
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    productAdapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
+        }
+    }
     private void updateList(ArrayList<Product> products) {
         try {
             tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), products.size()));
@@ -122,7 +152,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.add_product) {
-            mListener.addNewProduct();
+            mListener.addProductToInventory();
         }
     }
 }

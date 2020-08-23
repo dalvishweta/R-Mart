@@ -53,8 +53,13 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     }
 
     @Override
-    public void addNewProduct() {
-        replaceFragment(RequestNewProductFragment.newInstance("",""), "RequestNewProductFragment",true);
+    public void addProductToInventory() {
+        replaceFragment(AddProductToInventory.newInstance("",""), "AddProductToInventory",true);
+    }
+
+    @Override
+    public void requestToCreateProduct() {
+        replaceFragment(AddProductInAPI.newInstance("",""), "AddProductInAPI",true);
     }
 
     @Override
@@ -82,6 +87,20 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
         } else {
             addFragment(MyCategoryListFragment.newInstance("", ""), "MyCategoryFragment", false);
         }
+    }
+
+    @Override
+    public void requestNewProduct(BaseInventoryFragment fragment, int requestID) {
+
+    }
+
+    @Override
+    public void applyFilter(BaseInventoryFragment fragment, int requestID) {
+        FragmentManager fm = getSupportFragmentManager();
+        FilterFragment filterFragment = FilterFragment.newInstance( "", "");
+        filterFragment.setCancelable(true);
+        filterFragment.setTargetFragment(fragment, requestID);
+        filterFragment.show(fm, "FilterFragment");
     }
 
     @Override

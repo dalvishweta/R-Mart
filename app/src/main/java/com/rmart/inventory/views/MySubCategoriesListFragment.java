@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -79,6 +80,28 @@ public class MySubCategoriesListFragment extends BaseInventoryFragment {
             subCategoryRecycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         }
         subCategoryRecycleView.setAdapter(subCategoryAdapter);
+        setSearchView(view, subCategoryAdapter);
     }
+    protected void setSearchView(@NonNull View view, SubCategoryAdapter subCategoryAdapter) {
+        if(null != subCategoryAdapter) {
+            SearchView searchView = view.findViewById(R.id.searchView);
+            searchView.setFocusable(true);
+            searchView.setIconified(false);
+            searchView.requestFocusFromTouch();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    subCategoryAdapter.getFilter().filter(query);
+                    // Toast.makeText(getActivity(), "onQueryTextSubmit "+query, Toast.LENGTH_LONG).show();
+                    return false;
+                }
 
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    subCategoryAdapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
+        }
+    }
 }

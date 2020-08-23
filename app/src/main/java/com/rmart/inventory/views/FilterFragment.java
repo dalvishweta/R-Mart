@@ -1,10 +1,12 @@
 package com.rmart.inventory.views;
 
+import android.app.Dialog;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,7 +27,6 @@ public class FilterFragment extends DialogFragment implements View.OnClickListen
 
     private String mParam1;
     private String mParam2;
-    private RecyclerView recycleView;
     public FilterFragment() {
         // Required empty public constructor
     }
@@ -47,6 +48,24 @@ public class FilterFragment extends DialogFragment implements View.OnClickListen
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null)
+        {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            Objects.requireNonNull(dialog.getWindow()).setLayout(width, height);
+        }
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        return super.onCreateDialog(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,9 +77,6 @@ public class FilterFragment extends DialogFragment implements View.OnClickListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.sort).setVisibility(View.GONE);
-        recycleView = view.findViewById(R.id.product_list);
-        recycleView.setLayoutManager(new LinearLayoutManager(getActivity()));
         ArrayList<String> list = new ArrayList<>();
         list.add("Apple");
         list.add("Banana");

@@ -1,16 +1,19 @@
 package com.rmart.inventory.views;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,32 +24,43 @@ import com.rmart.inventory.models.Product;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class RequestNewProductFragment extends BaseInventoryFragment implements View.OnClickListener {
+public class AddProductToInventory extends BaseInventoryFragment implements View.OnClickListener {
 
+    public static final int REQUEST_FILTERED_DATA_ID = 102;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     private String mParam1;
     private String mParam2;
     Product product;
-
+    private SearchView searchView;
+    private ImageView sortButton;
     private RecyclerView productRecycleView;
     ProductAdapter productAdapter;
     private AppCompatTextView tvTotalCount;
     AppCompatButton addProduct;
     ArrayList<Product> products;
-    public RequestNewProductFragment() {
+    public AddProductToInventory() {
         // Required empty public constructor
     }
 
-    public static RequestNewProductFragment newInstance(String param1, String param2) {
-        RequestNewProductFragment fragment = new RequestNewProductFragment();
+    public static AddProductToInventory newInstance(String param1, String param2) {
+        AddProductToInventory fragment = new AddProductToInventory();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+        searchView.clearFocus();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -65,22 +79,23 @@ public class RequestNewProductFragment extends BaseInventoryFragment implements 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         products = inventoryViewModel.getProducts();
-        return inflater.inflate(R.layout.fragment_inventory_product_library_list, container, false);
+        return inflater.inflate(R.layout.fragment_add_product_to_inventory, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         productRecycleView = view.findViewById(R.id.product_list);
-        addProduct = view.findViewById(R.id.add_product);
+        addProduct = view.findViewById(R.id.request_new_product);
         tvTotalCount = view.findViewById(R.id.category_count);
         addProduct.setOnClickListener(this);
-        view.findViewById(R.id.sort).setOnClickListener(param -> {
-
-        });
 
         productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         updateList(products);
+        setSearchView(view);
+        view.findViewById(R.id.sort).setOnClickListener(param -> {
+            mListener.applyFilter(this, REQUEST_FILTERED_DATA_ID);
+        });
     }
 
     private void updateList(ArrayList<Product> products) {
@@ -91,6 +106,8 @@ public class RequestNewProductFragment extends BaseInventoryFragment implements 
                 mListener.updateProduct(product, false);
             }, 3);
             productRecycleView.setAdapter(productAdapter);
+
+
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
         }
@@ -98,8 +115,28 @@ public class RequestNewProductFragment extends BaseInventoryFragment implements 
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.add_product) {
-            mListener.addNewProduct();
+        mListener.requestToCreateProduct();
+    }
+    protected void setSearchView(@NonNull View view) {
+        if(null != productAdapter) {
+            searchView = view.findViewById(R.id.searchView);
+            searchView.setFocusable(false);
+            searchView.setIconified(false);
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    productAdapter.getFilter().filter(query);
+                    // Toast.makeText(getActivity(), "onQueryTextSubmit "+query, Toast.LENGTH_LONG).show();
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    productAdapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
         }
     }
 }

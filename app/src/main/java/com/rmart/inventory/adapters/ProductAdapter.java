@@ -5,6 +5,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,16 +16,22 @@ import com.rmart.inventory.models.Product;
 import com.rmart.inventory.views.viewholders.ProductViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
+public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>  implements Filterable {
 
     View.OnClickListener onClickListener;
     ArrayList<Product> productList;
+    private List<Product> filteredListData;
+    private MyFilter myFilter;
     int columnCount;
+
     public ProductAdapter(ArrayList<Product> productList, View.OnClickListener onClickListener, int columnCount) {
         this.onClickListener =onClickListener;
         this.productList = productList;
         this.columnCount = columnCount;
+        this.filteredListData = new ArrayList<>();
+        this.filteredListData.addAll(productList);
     }
     @NonNull
     @Override
@@ -49,7 +57,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Product product = productList.get(position);
+        Product product = filteredListData.get(position);
         holder.tvItemTitle.setText(product.getName());
         holder.itemView.setTag(product);
         if (product.getUnitObjects().size() >0) {
@@ -68,6 +76,40 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return filteredListData.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        if (myFilter == null) {
+            myFilter = new MyFilter();
+        }
+        return myFilter;
+    }
+
+    private class MyFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            if (constraint != null && constraint.length() > 0) {
+                filteredListData.clear();
+                for (Product product : productList) {
+                    if (product.getName().toLowerCase().contains(constraint.toString().toLowerCase())) {
+                        filteredListData.add(product);
+                    }
+                }
+            }
+            results.count = filteredListData.size();
+            results.values = filteredListData;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteredListData = (List<Product>) results.values;
+            notifyDataSetChanged();
+        }
+    }
+
 }
