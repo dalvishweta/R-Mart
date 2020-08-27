@@ -4,12 +4,20 @@ import android.location.Location;
 
 public class MyLocation {
     // LOCATION DETAILS
-    String streetAddress = "Sai temple street, Hanuman Pet, Miryalguda.";
+    /*String streetAddress = "Sai temple street, Hanuman Pet, Miryalguda.";
     String shopNo = "18-1814";
     String landMark="Near Sai Temple Street";
     String district = "Nalgonda";
     String state = "Telangana";
+    LocationPoints myLocation;*/
+
+    String streetAddress;
+    String shopNo;
+    String landMark;
+    String district;
+    String state;
     LocationPoints myLocation;
+
 
     public String getStreetAddress() {
         return streetAddress;

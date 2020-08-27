@@ -2,12 +2,21 @@ package com.rmart.inventory.models;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.http.Field;
+
 public class Product implements Serializable, Cloneable {
+
+    @SerializedName("status")
+    @Expose
     String category;
+
     String subCategory;
     String brand;
     String name;

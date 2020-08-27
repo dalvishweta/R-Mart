@@ -7,41 +7,58 @@
     tools:context="com.rmart.orders.views.OrderHomeFragment">
     <LinearLayout
         android:id="@+id/accepted_orders"
-        android:weightSum="3"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:background="@drawable/open_orders_bg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:src="@drawable/open_orders"
-            android:layout_width="0dp"
-            android:layout_weight="1.2"
-            android:layout_height="wrap_content"/>
-        <LinearLayout
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/open_orders_bg"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/shop_name"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_medium"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center|start"/>
+        <LinearLayout
+            android:weightSum="3"
+            android:orientation="horizontal"
             android:gravity="center"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_weight="1.3"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/open_order_count"
-                android:text="70"
-                android:textColor="@color/white"
-                android:fontFamily="@font/roboto_regular"
-                android:textSize="70sp"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:src="@drawable/open_orders"
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
                 android:layout_height="wrap_content"/>
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/open_order_text"
-                android:text="@string/open_orders"
-                android:textColor="@color/white"
-                android:fontFamily="@font/roboto_bold"
-                android:textSize="21sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_weight="1.3"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/open_order_count"
+                    android:text="70"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textSize="70sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/open_order_text"
+                    android:text="@string/open_orders"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/roboto_bold"
+                    android:textSize="21sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginTop="4dp"

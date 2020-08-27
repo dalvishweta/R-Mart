@@ -29,6 +29,15 @@
             app:error_trxt="@string/error_full_name"
             />
         <com.rmart.baseclass.views.CustomEditTextWithErrorText
+            android:id="@+id/lase_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/user"
+            android:hint="@string/last_name"
+            android:inputType="text"
+            app:error_trxt="@string/error_full_name"
+            />
+        <com.rmart.baseclass.views.CustomEditTextWithErrorText
             android:id="@+id/mobile_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,6 +57,7 @@
             app:error_trxt="@string/error_mail"
             />
         <com.rmart.baseclass.views.CustomEditTextWithErrorText
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_password"
@@ -57,6 +67,7 @@
             app:error_trxt="@string/error_empty_password"
             />
         <com.rmart.baseclass.views.CustomEditTextWithErrorText
+            android:id="@+id/conform_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_password"

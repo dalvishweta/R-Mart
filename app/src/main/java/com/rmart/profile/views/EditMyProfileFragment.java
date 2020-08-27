@@ -1,5 +1,6 @@
 package com.rmart.profile.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.rmart.R;
+import com.rmart.authentication.views.AuthenticationActivity;
+import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyLocation;
 import com.rmart.profile.model.MyProfile;
 
@@ -22,17 +25,17 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private AppCompatEditText tvFirstName, tvLastName, tvMobileNumber, tvEmail, tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress, tvShopNO, tvLandMark, tvDistrict, tvState;
-    private String mParam1;
+    private boolean mIsFromLogin;
     private String mParam2;
     // private MyProfileViewModel myProfileViewModel;
 
     public EditMyProfileFragment() {
     }
 
-    public static EditMyProfileFragment newInstance(String param1, String param2) {
+    public static EditMyProfileFragment newInstance(boolean isEdit, String param2) {
         EditMyProfileFragment fragment = new EditMyProfileFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putBoolean(ARG_PARAM1, isEdit);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -42,7 +45,7 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mIsFromLogin = getArguments().getBoolean(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -100,12 +103,19 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
         tvShopName.setText(myProfile.getShopName());
         tvPANNumber.setText(myProfile.getPanNumber());
         tvGSTNumber.setText(myProfile.getGstNumber());
+        if(mIsFromLogin || myProfile.getMyLocations().size()<0) {
+            MyProfile.getInstance().setMyLocations(new MyLocation());
+        }
         ArrayList<MyLocation> locations = myProfile.getMyLocations();
-        tvStreetAddress.setText(locations.get(0).getStreetAddress());
-        tvShopNO.setText(locations.get(0).getShopNo());
-        tvLandMark.setText(locations.get(0).getLandMark());
-        tvDistrict.setText(locations.get(0).getDistrict());
-        tvState.setText(locations.get(0).getState());
+        if(MyProfile.getInstance().getRoleType().equals(MyProfile.RETAILER)) {
+            if(locations!= null && locations.size()>0) {
+                tvStreetAddress.setText(locations.get(0).getStreetAddress());
+                tvShopNO.setText(locations.get(0).getShopNo());
+                tvLandMark.setText(locations.get(0).getLandMark());
+                tvDistrict.setText(locations.get(0).getDistrict());
+                tvState.setText(locations.get(0).getState());
+            }
+        }
         setMapView(false, "profile");
     }
 
@@ -116,7 +126,12 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
                 mListener.gotoMapView();
                 break;
             case R.id.submit:
-                Objects.requireNonNull(getActivity()).onBackPressed();
+                if(!mIsFromLogin) {
+                    Objects.requireNonNull(getActivity()).onBackPressed();
+                } else {
+                    startActivity(new Intent(getContext(), OrdersActivity.class));
+                    Objects.requireNonNull(getActivity()).finish();
+                }
                 break;
         }
     }

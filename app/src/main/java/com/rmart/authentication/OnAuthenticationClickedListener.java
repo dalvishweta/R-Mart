@@ -7,4 +7,6 @@ public interface OnAuthenticationClickedListener {
     void validateOTP();
     void changePassword();
     void goToProfileActivity();
+
+    void validateMailOTP();
 }

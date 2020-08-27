@@ -1,5 +1,6 @@
 package com.rmart.profile.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -13,8 +14,20 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        boolean isFromLogin =false;
+        if(intent!= null) {
+            isFromLogin = intent.getBooleanExtra("is_edit", false);
+        }
+
+        if(isFromLogin) {
+            addFragment(EditMyProfileFragment.newInstance(isFromLogin, ""), "EditMyProfileFragment", false);
+        } else {
+            addFragment(ViewMyProfileFragment.newInstance("", ""), "ViewMyProfileFragment", false);
+        }
+
+
         // MyProfileViewModel myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
-        addFragment(ViewMyProfileFragment.newInstance("", ""), "ViewMyProfileFragment", false);
     }
 
     @Override
@@ -28,7 +41,7 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void gotoEditProfile() {
-        replaceFragment(EditMyProfileFragment.newInstance("", ""), "EditMyProfileFragment", true);
+        replaceFragment(EditMyProfileFragment.newInstance(false, ""), "EditMyProfileFragment", true);
     }
 
     @Override

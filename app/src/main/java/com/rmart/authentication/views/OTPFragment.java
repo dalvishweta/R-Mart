@@ -11,9 +11,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
+import com.rmart.profile.model.MyProfile;
+
+import java.util.Objects;
 
 public class OTPFragment extends LoginBaseFragment implements TextWatcher {
     private static final String ARG_PARAM1 = "param1";
@@ -57,6 +61,7 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
         super.onViewCreated(view, savedInstanceState);
         otpEditText = view.findViewById(R.id.otp);
         otpEditText.getAppCompatEditText().addTextChangedListener(this);
+        ((TextView)view.findViewById(R.id.otp_mobile_sent)).setText(String.format(getString(R.string.verification_code_mobile_hint), MyProfile.getInstance().getMobileNumber()));
     }
 
     @Override
@@ -66,7 +71,8 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if(count >= INT_OTP_LENGTH) {
+        if(s.toString().length() >= INT_OTP_LENGTH) {
+            Objects.requireNonNull(getActivity()).finish();
             mListener.goToHomeActivity();
         }
 

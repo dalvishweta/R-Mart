@@ -10,7 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.rmart.R;
-import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.RetrofitClientInstanceOld;
+import com.rmart.utilits.pojos.LoginResponse;
+import com.rmart.utilits.services.AuthenticationService;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class LoginFragment extends LoginBaseFragment implements View.OnClickListener {
@@ -61,11 +72,61 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.login) {
-            mListener.goToHomeActivity();
+            // mListener.validateMailOTP();
+            // checkCredentials();
+            MyProfile.getInstance();
+            if (MyProfile.getInstance().getMyLocations() == null || MyProfile.getInstance().getMyLocations().size() <= 0) {
+                mListener.goToProfileActivity();
+            } else {
+                mListener.goToHomeActivity();
+            }
         } else if (view.getId() == R.id.forgot_password) {
             mListener.goToForgotPassword();
         } else  {
             mListener.goToRegistration();
         }
+    }
+
+    private void checkCredentials() {
+        progressDialog.show();
+        AuthenticationService authenticationService = RetrofitClientInstanceOld.getRetrofitInstance().create(AuthenticationService.class);
+        authenticationService.login("deviceKey", "7416226233", "12345").enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
+                if (response.isSuccessful()) {
+                    LoginResponse data = response.body();
+                    if (data != null) {
+                        if (data.getStatus().equalsIgnoreCase("success")) {
+                            try {
+                                MyProfile.getInstance(data.getData().getProfileModel());
+                                if (MyProfile.getInstance().getMyLocations() == null || MyProfile.getInstance().getMyLocations().size() <= 0) {
+                                    mListener.goToProfileActivity();
+                                } else {
+                                    mListener.goToHomeActivity();
+                                }
+                                Objects.requireNonNull(getActivity()).onBackPressed();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            showDialog("", data.getMsg(), (dialogInterface, i) -> {
+                                if (data.getMsg().contains("verify")) {
+                                    mListener.validateOTP();
+                                } else if (data.getMsg().contains("mail_verify")) {
+                                    mListener.validateMailOTP();
+                                }
+                            });
+                        }
+                    }
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
+                showDialog("", t.getMessage());
+                progressDialog.dismiss();
+            }
+        });
     }
 }

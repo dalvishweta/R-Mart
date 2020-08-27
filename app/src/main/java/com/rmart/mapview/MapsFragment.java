@@ -76,7 +76,7 @@ public class MapsFragment extends BaseFragment {
             currentLocation.setLatitude(point.latitude);
             currentLocation.setLongitude(point.longitude);
             System.out.println(point.latitude+"---"+ point.longitude);
-            updateLocationPoints();
+            // updateLocationPoints();
         });
     }
 
@@ -113,12 +113,20 @@ public class MapsFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if(isEditable) {
+            view.findViewById(R.id.update_location).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.update_location).setOnClickListener(view1 -> updateLocationPoints());
+        } else {
+            view.findViewById(R.id.update_location).setVisibility(View.GONE);
+        }
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
         if (mapFragment != null) {
             if (isFrom.equals(PROFILE) ) {
                 // myProfile = MyProfile.getInstance();
-                LocationPoints location = MyProfile.getInstance().getMyLocations().get(0).getMyLocation();
-                if(location != null) {
+
+                if(MyProfile.getInstance().getMyLocation()!= null && MyProfile.getInstance().getMyLocations().get(0).getMyLocation()!= null) {
+                    LocationPoints location = MyProfile.getInstance().getMyLocation().getMyLocation();
                     currentLocation = new Location("");
                     currentLocation.setLongitude(location.getLongitude());
                     currentLocation.setLatitude(location.getLatitude());
@@ -188,15 +196,31 @@ public class MapsFragment extends BaseFragment {
                 MyLocation myLocation = new MyLocation(requireActivity());
                 myLocation.getLocation(locationResult);
             }
-            updateLocationPoints();
+            // updateLocationPoints();
         }
     }
 
     private void updateLocationPoints() {
-        if (isFrom.equals(PROFILE) ) {
-            LocationPoints myLocation = new LocationPoints(currentLocation.getLatitude(), currentLocation.getLongitude());
+        LocationPoints myLocation = new LocationPoints(currentLocation.getLatitude(), currentLocation.getLongitude());
+        if (MyProfile.getInstance().getMyLocations() == null || MyProfile.getInstance().getMyLocations().size() <= 0) {
+            com.rmart.profile.model.MyLocation location = new com.rmart.profile.model.MyLocation();
+            location.setMyLocation(myLocation);
+            MyProfile.getInstance().getMyLocations().add(location);
+        } else {
             MyProfile.getInstance().getMyLocations().get(0).setMyLocation(myLocation);
         }
+        Objects.requireNonNull(getActivity()).onBackPressed();
+       /* if (isFrom.equals(PROFILE) ) {
+            LocationPoints myLocation = new LocationPoints(currentLocation.getLatitude(), currentLocation.getLongitude());
+            if (MyProfile.getInstance().getMyLocations().size() <0) {
+                com.rmart.profile.model.MyLocation location = new com.rmart.profile.model.MyLocation();
+                location.setMyLocation(myLocation);
+                MyProfile.getInstance().getMyLocations().add(location);
+            } else {
+                MyProfile.getInstance().getMyLocations().get(0).setMyLocation(myLocation);
+            }
+            Objects.requireNonNull(getActivity()).onBackPressed();
+        }*/
     }
 
     public MyLocation.LocationResult locationResult = new MyLocation.LocationResult() {
@@ -217,6 +241,4 @@ public class MapsFragment extends BaseFragment {
             mapFragment.getMapAsync(callback);
         }
     }
-
-
 }

@@ -95,11 +95,16 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
         tvPANNumber.setText(myProfile.getPanNumber());
         tvGSTNumber.setText(myProfile.getGstNumber());
         ArrayList<MyLocation> locations = myProfile.getMyLocations();
-        tvStreetAddress.setText(locations.get(0).getStreetAddress());
-        tvShopNO.setText(locations.get(0).getShopNo());
-        tvLandMark.setText(locations.get(0).getLandMark());
-        tvDistrict.setText(locations.get(0).getDistrict());
-        tvState.setText(locations.get(0).getState());
+        if(MyProfile.getInstance().getRoleType().equals(MyProfile.RETAILER)) {
+            if(locations!= null && locations.size()>0) {
+                tvStreetAddress.setText(locations.get(0).getStreetAddress());
+                tvShopNO.setText(locations.get(0).getShopNo());
+                tvLandMark.setText(locations.get(0).getLandMark());
+                tvDistrict.setText(locations.get(0).getDistrict());
+                tvState.setText(locations.get(0).getState());
+            }
+        }
+
 
         setMapView(false, "profile");
     }

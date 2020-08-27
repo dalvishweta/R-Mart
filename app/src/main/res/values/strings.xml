@@ -12,17 +12,20 @@
     <string name="hint_mobile_number">Enter your mobile number</string>
     <string name="hint_password">Password</string>
     <string name="error_empty_password"><sup>*</sup>Password required.</string>
+    <string name="error_empty_confirm_password"><sup>*</sup>Confirm password required.</string>
+    <string name="mismatch_confirm_password">Your password and confirmation password do not match.</string>
     <string name="error_mobile_number">*Phone number required</string>
     <string name="register_left">Don\'t have an account?</string>
     <string name="register_right">Register</string>
     <string name="forgot_password">Forgot password</string>
     <string name="full_name">Full Name</string>
+    <string name="last_name">Last Name</string>
     <string name="error_full_name">Full name required.</string>
     <string name="hint_conform_password">Confirm Password</string>
     <string name="hint_mail">Enter your E-Mail</string>
     <string name="error_mail">Email required .</string>
     <string name="verification_code">Verification Code</string>
-    <string name="verification_code_mobile_hint">Please enter the verification code sent to +91 906** **345</string>
+    <string name="verification_code_mobile_hint">Please enter the verification code sent to %1$s</string>
     <string name="otp">OTP</string>
     <string name="resend_otp">Resend OTP?</string>
     <string name="send_otp">Send OTP</string>
@@ -144,4 +147,7 @@
     <string name="request_new_product_msg">Your request was successfully submitted. \n Once request is approved by the system you will get the confirmation Notification.</string>
     <string name="hello">Hello: %1$s.</string>
     <string name="send_request">Send Request</string>
+    <string name="is_edit">Edit Profile</string>
+    <string name="shop_name">%1$s</string>
+    <string name="update_location">Update location</string>
 </resources>

@@ -1,28 +1,18 @@
 package com.rmart.profile.model;
 
 import com.rmart.R;
+import com.rmart.utilits.pojos.ProfileModel;
 
 import java.util.ArrayList;
 
 public class MyProfile {
 
-    static MyProfile myProfile;
-    public static final boolean DELIVERY = MyProfile.getInstance().getRoleType().equals("delivery");
-    public static final boolean RETAILER = MyProfile.getInstance().getRoleType().equals("retailer");
-    public static final boolean CUSTOMER = MyProfile.getInstance().getRoleType().equals("retailer");
-    public static MyProfile getInstance() {
-        if(null == myProfile) {
-            myProfile = new MyProfile();
-        }
-        return myProfile;
-    }
-    private  MyProfile() {
-        imageImages = new ArrayList<>();
-        imageImages.add(R.drawable.supermarket1);
-        imageImages.add(R.drawable.supermarket2);
-        imageImages.add(R.drawable.supermarket3);
-        myLocations.add(new MyLocation());
-    }
+    static MyProfile myProfile = null;
+
+    public static final String DELIVERY = "Delivery";
+    public static final String RETAILER = "Retailer";
+    public static final String CUSTOMER = "Customer";
+
     String roleType = "retailer";
     // RETAILER DETAILS
     String firstName = "Vamshee Krishna";
@@ -36,7 +26,60 @@ public class MyProfile {
     String gstNumber = "gst-123456789";
     String panNumber = "BOMPP1130D1";
 
+    /*String roleType;
+    // RETAILER DETAILS
+    String firstName;
+    String lastName;
+    String email;
+    String mobileNumber;
+
+    // BUSINESS DETAILS
+    String shopName;
+    ArrayList<Integer> imageImages;
+    String gstNumber;
+    String panNumber;*/
+
+    MyLocation myLocation;
+
+    public static MyProfile getInstance() {
+        if(null == myProfile) {
+            myProfile = new MyProfile();
+        }
+        return myProfile;
+    }
+    public static MyProfile getInstance(boolean b) {
+        if (b) {
+            if(null == myProfile) {
+                myProfile = new MyProfile();
+            }
+        }
+
+        return myProfile;
+    }
+    /*private  MyProfile() {
+        imageImages = new ArrayList<>();
+        imageImages.add(R.drawable.supermarket1);
+        imageImages.add(R.drawable.supermarket2);
+        imageImages.add(R.drawable.supermarket3);
+        myLocations.add(new MyLocation());
+    }*/
+
+
     ArrayList<MyLocation> myLocations = new ArrayList<>();
+
+    public static MyProfile getInstance(ProfileModel profileModel) {
+        // myProfile = profileModel;
+        myProfile = new MyProfile();
+        myProfile.setFirstName(profileModel.getFirstName());
+        myProfile.setLastName(profileModel.getLastName());
+        myProfile.setEmail(profileModel.getEmail());
+        myProfile.setMobileNumber(profileModel.getMobileNumber());
+        myProfile.setRoleType(RETAILER);
+        if( myProfile.getMyLocations().size()<=0) {
+            myProfile.setMyLocations(new MyLocation());
+        }
+        return myProfile;
+    }
 
     public String getRoleType() {
         return roleType;
@@ -114,7 +157,18 @@ public class MyProfile {
         return myLocations;
     }
 
-    public void setMyLocations(ArrayList<MyLocation> myLocations) {
-        this.myLocations = myLocations;
+    public void setMyLocations(MyLocation myLocation) {
+        if (null == this.myLocations) {
+            this.myLocations = new ArrayList<>();
+        }
+        this.myLocations.add(myLocation);
+    }
+
+    public MyLocation getMyLocation() {
+        return myLocation;
+    }
+
+    public void setMyLocation(MyLocation myLocation) {
+        this.myLocation = myLocation;
     }
 }

@@ -9,6 +9,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.rmart.R;
+import com.rmart.baseclass.views.CustomEditTextWithErrorText;
+import com.rmart.utilits.RetrofitClientInstanceOld;
+import com.rmart.utilits.RetrofitInstance;
+import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.pojos.ProductPojo;
+import com.rmart.utilits.pojos.RegistrationResponse;
+import com.rmart.utilits.pojos.ValidateOTP;
+import com.rmart.utilits.services.AuthenticationService;
+import com.rmart.utilits.services.ProductList;
+
+import java.util.List;
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegistrationFragment extends LoginBaseFragment implements View.OnClickListener {
 
@@ -18,6 +34,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     private String mParam1;
     private String mParam2;
 
+    CustomEditTextWithErrorText tvFullName, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
     public RegistrationFragment() {
         // Required empty public constructor
     }
@@ -51,10 +68,129 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.register).setOnClickListener(this);
+        tvFullName = view.findViewById(R.id.full_name);
+        tvLastName = view.findViewById(R.id.lase_name);
+        tVMobileNumber = view.findViewById(R.id.mobile_number);
+        tvEmail = view.findViewById(R.id.email);
+        tvPassword = view.findViewById(R.id.password);
+        tvConformPassword = view.findViewById(R.id.conform_password);
     }
 
     @Override
     public void onClick(View view) {
-        mListener.validateOTP();
+        validateRegistration();
+        // mListener.validateOTP();
+
+    }
+
+    private void validateRegistration() {
+        String firstName, lastName, mobileNumber, email, password, conformPassword;
+        firstName = Objects.requireNonNull(tvFullName.getAppCompatEditText().getText()).toString();
+        lastName = Objects.requireNonNull(tvLastName.getAppCompatEditText().getText()).toString();
+        mobileNumber = Objects.requireNonNull(tVMobileNumber.getAppCompatEditText().getText()).toString();
+        email = Objects.requireNonNull(tvEmail.getAppCompatEditText().getText()).toString();
+        password = Objects.requireNonNull(tvPassword.getAppCompatEditText().getText()).toString();
+        conformPassword = Objects.requireNonNull(tvConformPassword.getAppCompatEditText().getText()).toString();
+
+        /*firstName = "ffff";
+        lastName = "lllll";
+        mobileNumber = "1234556";
+        email = "v@v.com";
+        password= "1234";
+        conformPassword = "1234";*/
+
+        if(firstName.length()<=2) {
+            showDialog("", getString(R.string.error_full_name));
+        } else if(lastName.length()<=2) {
+            showDialog("", getString(R.string.error_mobile_number));
+        } else if(mobileNumber.length()<=2) {
+            showDialog("", getString(R.string.error_mobile_number));
+        } else if(email.length()<=2) {
+            showDialog("", getString(R.string.error_mail));
+        } else if(password.length()<=2) {
+            showDialog("", getString(R.string.error_empty_password));
+        } else if(conformPassword.length()<=2) {
+            showDialog("", getString(R.string.error_empty_confirm_password));
+        } else if(!conformPassword.equals(password)) {
+            showDialog("", getString(R.string.mismatch_confirm_password));
+        } else {
+            progressDialog.show();
+            AuthenticationService authenticationService = RetrofitClientInstanceOld.getRetrofitInstance().create(AuthenticationService.class);
+            authenticationService.registration(firstName, lastName, mobileNumber, email, password, "2").enqueue(
+                    new Callback<RegistrationResponse>() {
+                        @Override
+                        public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
+                            if(response.isSuccessful()) {
+                                RegistrationResponse date = response.body();
+                                assert date != null;
+                                if(date.getStatus().equals("Success")) {
+                                    mListener.validateOTP();
+                                } else {
+                                    showDialog("", date.getMsg());
+                                }
+                            } else {
+                                showDialog("", response.message());
+                            }
+                            progressDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onFailure(Call<RegistrationResponse> call, Throwable t) {
+                            showDialog("", t.getMessage());
+                            progressDialog.dismiss();
+                        }
+                    }
+            );
+           /* authenticationService.getREGISTRATION().enqueue(new Callback<List<BaseResponse>>() {
+                @Override
+                public void onResponse(Call<List<BaseResponse>> call, Response<List<BaseResponse>> response) {
+                    if (response.isSuccessful()) {
+                        assert response.body() != null;
+                        showDialog("", response.body().toString());
+                        progressDialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<BaseResponse>> call, Throwable t) {
+                    progressDialog.dismiss();
+                }
+            });*/
+
+            /*authenticationService.getProducts().enqueue(new Callback<List<ProductPojo>>() {
+                @Override
+                public void onResponse(Call<List<ProductPojo>> call, Response<List<ProductPojo>> response) {
+                    if (response.isSuccessful()) {
+                        assert response.body() != null;
+                        showDialog("", response.body().toString());
+                        progressDialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<ProductPojo>> call, Throwable t) {
+                    progressDialog.dismiss();
+                }
+
+            });*/
+
+            /*progressDialog.show();
+            authenticationService.validateOTP("111332333", "3519").enqueue(new Callback<ValidateOTP>() {
+                @Override
+                public void onResponse(Call<ValidateOTP> call, Response<ValidateOTP> response) {
+                    if (response.isSuccessful()) {
+                        showDialog("", response.body().getMsg());
+                        progressDialog.dismiss();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ValidateOTP> call, Throwable t) {
+                    showDialog("", t.getMessage());
+                    progressDialog.dismiss();
+                }
+            });*/
+        }
     }
 }

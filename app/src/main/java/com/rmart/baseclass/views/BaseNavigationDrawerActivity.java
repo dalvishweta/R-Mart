@@ -11,12 +11,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.rmart.R;
 import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.orders.views.OrdersActivity;
+import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
 
 import java.util.Objects;
@@ -48,6 +50,12 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.inventory).setOnClickListener(this);
         findViewById(R.id.change_password).setOnClickListener(this);
         findViewById(R.id.logout).setOnClickListener(this);
+
+        if (MyProfile.getInstance() != null) {
+            ((AppCompatTextView)findViewById(R.id.name)).setText(MyProfile.getInstance().getFirstName());
+            ((AppCompatTextView)findViewById(R.id.mobile)).setText(MyProfile.getInstance().getMobileNumber());
+            ((AppCompatTextView)findViewById(R.id.gamil)).setText(MyProfile.getInstance().getEmail());
+        }
     }
 
     public void getToActivity(int id, boolean isSameActivity) {
@@ -85,6 +93,16 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             return true;
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void hideHamburgerIcon(){
+        assert getSupportActionBar() != null;   //null check
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);   //show back button
+    }
+    @Override
+    public void showHamburgerIcon(){
+        assert getSupportActionBar() != null;   //null check
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
     }
 
     @Override

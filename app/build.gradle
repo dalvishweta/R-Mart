@@ -6,11 +6,22 @@ android {
 
     defaultConfig {
         applicationId "com.rokad.mart"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        buildConfigField("String", "AUTH_USERNAME", '"admin"')
+        buildConfigField("String", "AUTH_PASSWORD", '"1234"')
+        buildConfigField("String", "BASE_URL", '"https://it.rokad.in/api/"')
+        /*/index_post?roll=2&full_name=ffff&last_name=lllll&email=v78557@v.com&mobile_number=12555555&password=1234556*/
+        buildConfigField("String", "REGISTRATION", '"Reg"')
+        buildConfigField("String", "LOGIN", '"login/login"')
+        buildConfigField("String", "VALIDATE_OTP", '"otpcheck"')
+        buildConfigField("String", 'RESEND_OTP', '"login/resendotp"')
+        buildConfigField("String", "FORGOT_PASSWORD", '"login/forgetpass"')
+        buildConfigField('String', 'PROFILE_UPDATE', '"login/updateprofile"')
+        buildConfigField('String', 'CHANGE_PASSWORD', '"login/changepassword"')
+        buildConfigField('String', 'PRODUCTS', '"products"')
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
@@ -49,5 +60,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0"
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
+
 
 }

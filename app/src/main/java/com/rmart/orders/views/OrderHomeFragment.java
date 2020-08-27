@@ -68,6 +68,7 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((AppCompatTextView)view.findViewById(R.id.shop_name)).setText(String.format(getString(R.string.shop_name), "Rejesh Super Market"));
         view.findViewById(R.id.accepted_orders).setOnClickListener(this);
         ((AppCompatTextView)view.findViewById(R.id.open_order_count)).setText(Objects.requireNonNull(myOrdersViewModel.getOpenOrders().getValue()).getOrderObjects().size()+"");
         RecyclerView recyclerView = view.findViewById(R.id.other_order_names);
