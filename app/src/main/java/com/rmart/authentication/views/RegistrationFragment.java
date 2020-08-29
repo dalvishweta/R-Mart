@@ -12,6 +12,7 @@ import com.rmart.R;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.utilits.RetrofitClientInstanceOld;
 import com.rmart.utilits.RetrofitInstance;
+import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.ProductPojo;
 import com.rmart.utilits.pojos.RegistrationResponse;
@@ -104,8 +105,12 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         } else if(lastName.length()<=2) {
             showDialog("", getString(R.string.error_mobile_number));
         } else if(mobileNumber.length()<=2) {
+            showDialog("", getString(R.string.required_mobile_number));
+        } else if(!Utils.isValidMobile(mobileNumber)) {
             showDialog("", getString(R.string.error_mobile_number));
         } else if(email.length()<=2) {
+            showDialog("", getString(R.string.required_mail));
+        } else if(!Utils.isValidEmail(email)) {
             showDialog("", getString(R.string.error_mail));
         } else if(password.length()<=2) {
             showDialog("", getString(R.string.error_empty_password));
