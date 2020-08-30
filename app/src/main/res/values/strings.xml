@@ -1,5 +1,5 @@
 <resources>
-    <!--https://xd.adobe.com/view/abf6f0b6-d078-41e6-8ed1-c1a53f4021d5-fea5/screen/176b1ba8-2022-4b76-807c-a13b274426dc/-->
+    <!-- https://xd.adobe.com/view/abf6f0b6-d078-41e6-8ed1-c1a53f4021d5-fea5/flow -->
 <!--    https://www.flaticon.com/free-icon/edit_860814?term=edit&page=1&position=82-->
     <string name="app_name">Rokad Mart</string>
     <string name="message">Message</string>
@@ -26,6 +26,8 @@
     <string name="hint_mail">Enter your E-Mail</string>
     <string name="required_mail">Email required .</string>
     <string name="error_mail">Please enter valid email.</string>
+    <string name="error_mobile">Please enter valid Mobile Number.</string>
+    <string name="error_password">Please enter valid Password.</string>
     <string name="verification_code">Verification Code</string>
     <string name="verification_code_mobile_hint">Please enter the verification code sent to %1$s</string>
     <string name="otp">OTP</string>
@@ -71,8 +73,8 @@
     <string name="price">Price</string>
     <string name="discount">Discount in %</string>
     <string name="save">Save</string>
-    <string name="is_active">Is Active</string>
-    <string name="active">Active</string>
+    <string name="is_active">In Stock</string>
+    <string name="active">Out of stock</string>
     <string name="open_orders">Open Orders</string>
     <string name="packed_orders">Packed Orders</string>
     <string name="canceled_orders">Canceled Orders</string>
@@ -152,4 +154,9 @@
     <string name="is_edit">Edit Profile</string>
     <string name="shop_name">%1$s</string>
     <string name="update_location">Update location</string>
+    <string name="required_password">Required password.</string>
+    <string name="error_role_login">You are trying to login with Retailer Application. Please check your credentials.</string>
+    <string name="error_otp">Please enter valid OTP</string>
+    <string name="error_internet">No internet Connection</string>
+    <string name="error_internet_text">Please turn on internet connection to continue</string>
 </resources>

@@ -6,27 +6,13 @@ import com.google.gson.annotations.SerializedName;
 public class LoginResponse extends BaseResponse {
     @SerializedName("data")
     @Expose
-    LoginData loginData;
+    ProfileModel loginData;
 
-    public LoginData getData() {
+    public ProfileModel getLoginData() {
         return loginData;
     }
 
-    public void setData(LoginData data) {
-        this.loginData = data;
-    }
-
-    public class LoginData{
-        @SerializedName("result")
-        @Expose
-        ProfileModel profileModel;
-
-        public ProfileModel getProfileModel() {
-            return profileModel;
-        }
-
-        public void setProfileModel(ProfileModel profileViewModel) {
-            this.profileModel = profileViewModel;
-        }
+    public void setLoginData(ProfileModel loginData) {
+        this.loginData = loginData;
     }
 }

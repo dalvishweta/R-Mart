@@ -45,7 +45,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     AppCompatEditText discount, actualPrice;
     AppCompatTextView finalPrice;
     Spinner spinner;
-    SwitchCompat isActive;
+    //SwitchCompat isActive;
     public AddUnitDialog() {
         // Required empty public constructor
     }
@@ -151,7 +151,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
             }
         });
-        isActive = view.findViewById(R.id.switchButton);
+        //isActive = view.findViewById(R.id.switchButton);
         unitAdapter = new UnitAdapter(unitObject.getAvailableUnits(), this.getContext());
         spinner.setAdapter(unitAdapter);
         actualPrice.setText(unitObject.getActualCost());
@@ -162,7 +162,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             finalPrice.setText(unitObject.getFinalCost());
         }
 
-        isActive.setChecked(unitObject.isActive());
+        // isActive.setChecked(unitObject.isActive());
 
     }
 

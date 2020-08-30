@@ -9,7 +9,7 @@
     >
     <LinearLayout
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/footer"
+        android:layout_above="@+id/register"
         android:layout_width="match_parent"
         android:layout_marginTop="32dp"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/smartphone"
             android:hint="@string/hint_mobile_number"
-            android:inputType="number"
+            android:inputType="textNoSuggestions|number"
             android:maxLength="10"
             app:error_trxt="@string/error_mobile_number"
             />
@@ -67,7 +67,7 @@
             app:error_trxt="@string/error_empty_password"
             />
         <com.rmart.baseclass.views.CustomEditTextWithErrorText
-            android:id="@+id/conform_password"
+            android:id="@+id/confirm_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_password"

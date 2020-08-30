@@ -4,17 +4,21 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class ProfileModel {
-    @SerializedName("User_id")
+    @SerializedName("id")
     @Expose
     String UserID;
 
-    @SerializedName("First Name")
+    @SerializedName("first_name")
     @Expose
     String firstName;
 
-    @SerializedName("Last Name")
+    @SerializedName("last_name")
     @Expose
     String lastName;
+
+    @SerializedName("gender")
+    @Expose
+    String gender;
 
     @SerializedName("DOB")
     @Expose
@@ -24,54 +28,25 @@ public class ProfileModel {
     @Expose
     String email;
 
-    @SerializedName("mobileno")
+    @SerializedName("mobile_number")
     @Expose
     String mobileNumber;
 
-    @SerializedName("Pincode")
+    @SerializedName("is_authenticated")
     @Expose
-    String pinCode;
+    String isAuthenticated;
 
     @SerializedName("profile image")
     @Expose
     String profileImage;
 
-    @SerializedName("address")
+    @SerializedName("role_id")
     @Expose
-    String address;
+    String roleID;
 
-    @SerializedName("address2")
+    @SerializedName("primary_add_id")
     @Expose
-    String district;
-
-    @SerializedName("state")
-    @Expose
-    String state;
-
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getDistrict() {
-        return district;
-    }
-
-    public void setDistrict(String district) {
-        this.district = district;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
+    String primaryAddressId;
 
     public String getUserID() {
         return UserID;
@@ -95,6 +70,14 @@ public class ProfileModel {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getDob() {
@@ -121,12 +104,12 @@ public class ProfileModel {
         this.mobileNumber = mobileNumber;
     }
 
-    public String getPinCode() {
-        return pinCode;
+    public String getIsAuthenticated() {
+        return isAuthenticated;
     }
 
-    public void setPinCode(String pinCode) {
-        this.pinCode = pinCode;
+    public void setIsAuthenticated(String isAuthenticated) {
+        this.isAuthenticated = isAuthenticated;
     }
 
     public String getProfileImage() {
@@ -135,5 +118,21 @@ public class ProfileModel {
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public String getRoleID() {
+        return roleID;
+    }
+
+    public void setRoleID(String roleID) {
+        this.roleID = roleID;
+    }
+
+    public String getPrimaryAddressId() {
+        return primaryAddressId;
+    }
+
+    public void setPrimaryAddressId(String primaryAddressId) {
+        this.primaryAddressId = primaryAddressId;
     }
 }

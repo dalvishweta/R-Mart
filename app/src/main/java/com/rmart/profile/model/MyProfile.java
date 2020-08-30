@@ -74,7 +74,7 @@ public class MyProfile {
         myProfile.setLastName(profileModel.getLastName());
         myProfile.setEmail(profileModel.getEmail());
         myProfile.setMobileNumber(profileModel.getMobileNumber());
-        myProfile.setRoleType(RETAILER);
+        myProfile.setRoleType(profileModel.getRoleID());
         if( myProfile.getMyLocations().size()<=0) {
             myProfile.setMyLocations(new MyLocation());
         }

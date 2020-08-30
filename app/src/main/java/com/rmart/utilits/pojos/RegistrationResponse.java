@@ -5,7 +5,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class RegistrationResponse extends BaseResponse {
 
-    /*@SerializedName("otp")
+    @SerializedName("otp")
     @Expose
-    private String otp = "";*/
+    private String otp = "";
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
+    }
 }

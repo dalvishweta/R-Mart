@@ -22,7 +22,8 @@ import retrofit2.http.POST;
 public interface AuthenticationService {
     @POST(BuildConfig.LOGIN)
     @FormUrlEncoded
-    Call<LoginResponse> login(@Field("device_key") String deviceKey, @Field("mobileno") String username,
+    Call<LoginResponse> login(@Field("device_key") String deviceKey,
+                              @Field("username") String username,
                               @Field("password") String password);
 
 
@@ -36,7 +37,8 @@ public interface AuthenticationService {
                                             @Field("mobile_number") String mobile,
                                             @Field("email") String email,
                                             @Field("password") String password,
-                                            @Field("roll") String roll_no);
+                                            @Field("roll") String roll_no,
+                                            @Field("client_id") String client_id);
 
     @FormUrlEncoded
     @POST(BuildConfig.VALIDATE_OTP)
@@ -45,14 +47,21 @@ public interface AuthenticationService {
 
     @POST(BuildConfig.FORGOT_PASSWORD)
     @FormUrlEncoded
-    Call<ForgotPasswordResponse> forgotPassword(@Field("mobileno") String mobile);
+    Call<ForgotPasswordResponse> forgotPassword(@Field("mobile_number") String mobile);
 
     @POST(BuildConfig.CHANGE_PASSWORD)
     @FormUrlEncoded
-    Call<ChangePasswordResponse> changePassword(@Field("user_id") String user_id,
-                                                @Field("mobileno") String mobileno,
-                                                @Field("old_password") String old_password,
-                                                @Field("new_password") String new_password);
+    Call<ChangePasswordResponse> changePassword(
+            @Field("mobile") String mobileno,
+            @Field("old_password") String old_password,
+            @Field("new_password") String new_password);
+
+    @POST(BuildConfig.CHANGE_PASSWORD_OTP)
+    @FormUrlEncoded
+    Call<ChangePasswordResponse> changePasswordOTP(
+            @Field("mobile") String mobileno,
+            @Field("otp") String otp,
+            @Field("cpassword") String new_password);
 
     @POST(BuildConfig.RESEND_OTP)
     @FormUrlEncoded

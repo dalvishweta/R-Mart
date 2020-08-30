@@ -10,17 +10,11 @@ import androidx.annotation.Nullable;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
-import com.rmart.utilits.RetrofitClientInstanceOld;
-import com.rmart.utilits.RetrofitInstance;
+import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.BaseResponse;
-import com.rmart.utilits.pojos.ProductPojo;
 import com.rmart.utilits.pojos.RegistrationResponse;
-import com.rmart.utilits.pojos.ValidateOTP;
 import com.rmart.utilits.services.AuthenticationService;
-import com.rmart.utilits.services.ProductList;
 
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -74,7 +68,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         tVMobileNumber = view.findViewById(R.id.mobile_number);
         tvEmail = view.findViewById(R.id.email);
         tvPassword = view.findViewById(R.id.password);
-        tvConformPassword = view.findViewById(R.id.conform_password);
+        tvConformPassword = view.findViewById(R.id.confirm_password);
     }
 
     @Override
@@ -120,8 +114,8 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             showDialog("", getString(R.string.mismatch_confirm_password));
         } else {
             progressDialog.show();
-            AuthenticationService authenticationService = RetrofitClientInstanceOld.getRetrofitInstance().create(AuthenticationService.class);
-            authenticationService.registration(firstName, lastName, mobileNumber, email, password, "2").enqueue(
+            AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
+            authenticationService.registration(firstName, lastName, mobileNumber, email, password, getString(R.string.role_id), "2").enqueue(
                     new Callback<RegistrationResponse>() {
                         @Override
                         public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
@@ -129,7 +123,9 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
                                 RegistrationResponse date = response.body();
                                 assert date != null;
                                 if(date.getStatus().equals("Success")) {
-                                    mListener.validateOTP();
+                                    showDialog("", date.getMsg()+" OTP: "+date.getOtp(),(click, i)-> {
+                                        mListener.validateOTP(mobileNumber);
+                                    });
                                 } else {
                                     showDialog("", date.getMsg());
                                 }

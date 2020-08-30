@@ -16,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.rmart.R;
+import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyProfile;
@@ -71,10 +72,16 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     startActivity(intent);
                     break;
                 case R.id.change_password:
-                    Toast.makeText(getBaseContext(), "change_password", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(BaseNavigationDrawerActivity.this, AuthenticationActivity.class);
+                    intent.putExtra(getString(R.string.change_password), true);
+                    startActivity(intent);
                     break;
                 case R.id.logout:
-                    Toast.makeText(getBaseContext(), "logout", Toast.LENGTH_SHORT).show();
+                    Intent in = new Intent(this, AuthenticationActivity.class);
+                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
+                    startActivity(in);
+                    finish();
+                    // Toast.makeText(getBaseContext(), "logout", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.update_profile:
                     intent = new Intent(BaseNavigationDrawerActivity.this, MyProfileActivity.class);

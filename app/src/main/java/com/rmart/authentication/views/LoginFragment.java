@@ -8,10 +8,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 
 import com.rmart.R;
+import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.profile.model.MyProfile;
-import com.rmart.utilits.RetrofitClientInstanceOld;
+import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.LoginResponse;
 import com.rmart.utilits.services.AuthenticationService;
 
@@ -28,10 +31,13 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public String mMobileNumber;
 
     private String mParam1;
     private String mParam2;
-
+    private String mPassword;
+    private String mDeviceKey;
+    AppCompatEditText etPassword, etMobileNumber;
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -64,6 +70,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        etMobileNumber = ((CustomEditTextWithErrorText)view.findViewById(R.id.mobile_number)).getAppCompatEditText();
+        etPassword = ((CustomEditTextWithErrorText)view.findViewById(R.id.password)).getAppCompatEditText();
         view.findViewById(R.id.login).setOnClickListener(this);
         view.findViewById(R.id.register).setOnClickListener(this);
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
@@ -73,13 +81,23 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     public void onClick(View view) {
         if(view.getId() == R.id.login) {
             // mListener.validateMailOTP();
-            // checkCredentials();
-            MyProfile.getInstance();
-            if (MyProfile.getInstance().getMyLocations() == null || MyProfile.getInstance().getMyLocations().size() <= 0) {
-                mListener.goToProfileActivity();
+            mMobileNumber = Objects.requireNonNull(etMobileNumber.getText()).toString();
+            mPassword = Objects.requireNonNull(etPassword.getText()).toString();
+            if(mMobileNumber.length()<=0 || !Utils.isValidMobile(mMobileNumber)) {
+                showDialog("", getString(R.string.error_mobile));
+            } else if(mPassword.length()<=0) {
+                showDialog("", getString(R.string.error_password));
             } else {
-                mListener.goToHomeActivity();
+                checkCredentials();
             }
+            /*
+                MyProfile.getInstance();
+                if (MyProfile.getInstance().getMyLocations() == null || MyProfile.getInstance().getMyLocations().size() <= 0) {
+                    mListener.goToProfileActivity();
+                } else {
+                    mListener.goToHomeActivity();
+                }
+            */
         } else if (view.getId() == R.id.forgot_password) {
             mListener.goToForgotPassword();
         } else  {
@@ -89,29 +107,36 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
 
     private void checkCredentials() {
         progressDialog.show();
-        AuthenticationService authenticationService = RetrofitClientInstanceOld.getRetrofitInstance().create(AuthenticationService.class);
-        authenticationService.login("deviceKey", "7416226233", "12345").enqueue(new Callback<LoginResponse>() {
+        AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
+        // mPassword = "12345";
+        mDeviceKey = "deviceKey";
+        authenticationService.login(mDeviceKey, mMobileNumber, mPassword).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
                     LoginResponse data = response.body();
                     if (data != null) {
                         if (data.getStatus().equalsIgnoreCase("success")) {
-                            try {
-                                MyProfile.getInstance(data.getData().getProfileModel());
-                                if (MyProfile.getInstance().getMyLocations() == null || MyProfile.getInstance().getMyLocations().size() <= 0) {
-                                    mListener.goToProfileActivity();
-                                } else {
-                                    mListener.goToHomeActivity();
+                            if(data.getLoginData().getRoleID().equalsIgnoreCase(getString(R.string.role_id))) {
+                                try {
+                                    MyProfile.getInstance(data.getLoginData());
+                                    if (MyProfile.getInstance().getMyLocations() == null || MyProfile.getInstance().getMyLocations().size() <= 0) {
+                                        mListener.goToProfileActivity();
+                                    } else {
+                                        mListener.goToHomeActivity();
+                                    }
+                                    Objects.requireNonNull(getActivity()).onBackPressed();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                                Objects.requireNonNull(getActivity()).onBackPressed();
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                            } else {
+                                showDialog("",getString(R.string.error_role_login));
                             }
+
                         } else {
                             showDialog("", data.getMsg(), (dialogInterface, i) -> {
                                 if (data.getMsg().contains("verify")) {
-                                    mListener.validateOTP();
+                                    mListener.validateOTP(mMobileNumber);
                                 } else if (data.getMsg().contains("mail_verify")) {
                                     mListener.validateMailOTP();
                                 }

@@ -38,9 +38,9 @@ public class BaseFragment extends Fragment {
         if(!internetConnectionAvailable()) {
             try {
                 AlertDialog.Builder builder =new AlertDialog.Builder(requireActivity());
-                builder.setTitle("No internet Connection");
-                builder.setMessage("Please turn on internet connection to continue");
-                builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
+                builder.setTitle(R.string.error_internet);
+                builder.setMessage(R.string.error_internet_text);
+                builder.setNegativeButton(getString(R.string.close), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

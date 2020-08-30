@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,16 +15,24 @@ import android.widget.TextView;
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.pojos.ValidateOTP;
+import com.rmart.utilits.services.AuthenticationService;
 
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OTPFragment extends LoginBaseFragment implements TextWatcher {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public static final int INT_OTP_LENGTH = 4;
     CustomEditTextWithErrorText otpEditText;
-    private String mParam1;
+    // private String mParam1;
     private String mParam2;
+    private String mMobileNumber;
 
     public OTPFragment() {
         // Required empty public constructor
@@ -44,7 +51,7 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mMobileNumber = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -72,7 +79,36 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if(s.toString().length() >= INT_OTP_LENGTH) {
+            progressDialog.show();
+            AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
+            authenticationService.validateOTP(mMobileNumber, s.toString()).enqueue(new Callback<ValidateOTP>() {
+                @Override
+                public void onResponse(Call<ValidateOTP> call, Response<ValidateOTP> response) {
+                    if(response.isSuccessful()) {
+                        ValidateOTP date = response.body();
+                        assert date != null;
+                        if(date.getStatus().equalsIgnoreCase("Succes")) {
+                            showDialog("", "Your account is activated please login.", (dialog, i) -> {
+                                mListener.goToHomePage();
+                            });
+                        } else {
+                            showDialog("", date.getMsg());
+                        }
+
+                    } else {
+                        showDialog("", response.message());
+                    }
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<ValidateOTP> call, Throwable t) {
+                    showDialog("", t.getMessage());
+                    progressDialog.dismiss();
+                }
+            });
             Objects.requireNonNull(getActivity()).finish();
+
             mListener.goToHomeActivity();
         }
 

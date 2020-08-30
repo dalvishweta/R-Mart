@@ -23,7 +23,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitClientInstanceOld {
+public class RetrofitClientInstance {
     private static Retrofit retrofit;
 
     private static String creds = String.format("%s:%s", BuildConfig.AUTH_USERNAME, BuildConfig.AUTH_PASSWORD);
