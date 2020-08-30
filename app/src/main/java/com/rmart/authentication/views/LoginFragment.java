@@ -16,6 +16,7 @@ import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.LoginResponse;
+import com.rmart.utilits.pojos.ResendOTPResponse;
 import com.rmart.utilits.services.AuthenticationService;
 
 import org.jetbrains.annotations.NotNull;
@@ -136,7 +137,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                         } else {
                             showDialog("", data.getMsg(), (dialogInterface, i) -> {
                                 if (data.getMsg().contains("verify")) {
-                                    mListener.validateOTP(mMobileNumber);
+                                    resendOTP();
                                 } else if (data.getMsg().contains("mail_verify")) {
                                     mListener.validateMailOTP();
                                 }
@@ -154,4 +155,31 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
             }
         });
     }
+
+    private void resendOTP() {
+        AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
+        authenticationService.resendOTP(mMobileNumber).enqueue(new Callback<ResendOTPResponse>() {
+            @Override
+            public void onResponse(Call<ResendOTPResponse> call, Response<ResendOTPResponse> response) {
+                if(response.isSuccessful()) {
+                    ResendOTPResponse date = response.body();
+                    assert date != null;
+                    if(date.getStatus().equals("Success")) {
+                        showDialog("", date.getMsg()+" OTP: "+date.getOtp(),((dialogInterface, i) -> mListener.validateOTP(mMobileNumber)));
+                    } else {
+                        showDialog("", date.getMsg());
+                    }
+                } else {
+                    showDialog("", response.message());
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<ResendOTPResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
 }

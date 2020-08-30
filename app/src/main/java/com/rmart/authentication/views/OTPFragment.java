@@ -16,6 +16,8 @@ import com.rmart.R;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.pojos.RegistrationResponse;
+import com.rmart.utilits.pojos.ResendOTPResponse;
 import com.rmart.utilits.pojos.ValidateOTP;
 import com.rmart.utilits.services.AuthenticationService;
 
@@ -68,7 +70,36 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
         super.onViewCreated(view, savedInstanceState);
         otpEditText = view.findViewById(R.id.otp);
         otpEditText.getAppCompatEditText().addTextChangedListener(this);
+        view.findViewById(R.id.resend).setOnClickListener(view1 -> {
+            resendOTP();
+        });
         ((TextView)view.findViewById(R.id.otp_mobile_sent)).setText(String.format(getString(R.string.verification_code_mobile_hint), MyProfile.getInstance().getMobileNumber()));
+    }
+
+    private void resendOTP() {
+        AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
+        authenticationService.resendOTP(mMobileNumber).enqueue(new Callback<ResendOTPResponse>() {
+            @Override
+            public void onResponse(Call<ResendOTPResponse> call, Response<ResendOTPResponse> response) {
+                if(response.isSuccessful()) {
+                    ResendOTPResponse date = response.body();
+                    assert date != null;
+                    if(date.getStatus().equals("Success")) {
+                        showDialog("", date.getMsg()+" OTP: "+date.getOtp());
+                    } else {
+                        showDialog("", date.getMsg());
+                    }
+                } else {
+                    showDialog("", response.message());
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<ResendOTPResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
@@ -87,7 +118,7 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
                     if(response.isSuccessful()) {
                         ValidateOTP date = response.body();
                         assert date != null;
-                        if(date.getStatus().equalsIgnoreCase("Succes")) {
+                        if(date.getStatus().equalsIgnoreCase("Success")) {
                             showDialog("", "Your account is activated please login.", (dialog, i) -> {
                                 mListener.goToHomePage();
                             });
@@ -107,9 +138,6 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
                     progressDialog.dismiss();
                 }
             });
-            Objects.requireNonNull(getActivity()).finish();
-
-            mListener.goToHomeActivity();
         }
 
     }

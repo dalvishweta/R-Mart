@@ -42,7 +42,7 @@ public interface AuthenticationService {
 
     @FormUrlEncoded
     @POST(BuildConfig.VALIDATE_OTP)
-    Call<ValidateOTP> validateOTP(@Field("mobileno") String mobile,
+    Call<ValidateOTP> validateOTP(@Field("mobile") String mobile,
                                   @Field("otp") String otp);
 
     @POST(BuildConfig.FORGOT_PASSWORD)
@@ -65,7 +65,7 @@ public interface AuthenticationService {
 
     @POST(BuildConfig.RESEND_OTP)
     @FormUrlEncoded
-    Call<ResendOTPResponse> resendOTP(@Field("mobileno") String mobile);
+    Call<ResendOTPResponse> resendOTP(@Field("mobile") String mobile);
 
     @POST(BuildConfig.PROFILE_UPDATE)
     @FormUrlEncoded

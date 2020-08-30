@@ -4,29 +4,16 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class ResendOTPResponse extends BaseResponse {
-    @SerializedName("data")
+
+    @SerializedName("otp")
     @Expose
-    ResendOTP resendOTP;
+    private String otp = "";
 
-    public ResendOTP getResendOTP() {
-        return resendOTP;
+    public String getOtp() {
+        return otp;
     }
 
-    public void setResendOTP(ResendOTP resendOTP) {
-        this.resendOTP = resendOTP;
-    }
-
-    class ResendOTP {
-        @SerializedName("otp")
-        @Expose
-        String otp;
-
-        public String getOtp() {
-            return otp;
-        }
-
-        public void setOtp(String otp) {
-            this.otp = otp;
-        }
+    public void setOtp(String otp) {
+        this.otp = otp;
     }
 }
