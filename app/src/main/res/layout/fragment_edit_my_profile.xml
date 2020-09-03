@@ -48,12 +48,13 @@ android:layout_height="match_parent">
             style="@style/my_profile_tv"
             android:inputType="number|numberSigned"
             android:textColor="@color/colorPrimary"/>
-        <androidx.appcompat.widget.AppCompatEditText
+        <androidx.appcompat.widget.AppCompatTextView
             android:hint="@string/please_enter_your_e_mail"
             android:id="@+id/email"
             android:drawableStart="@drawable/user"
             style="@style/my_profile_tv"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress"
+            android:textColor="@color/colorPrimary"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:visibility="gone"
             android:hint="@string/please_enter_your_date_of_birth"

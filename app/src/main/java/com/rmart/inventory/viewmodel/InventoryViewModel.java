@@ -3,17 +3,15 @@ package com.rmart.inventory.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.rmart.inventory.models.Product;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.ProductListResponse;
+import com.rmart.utilits.pojos.APIProductListResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.services.ProductService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,31 +47,6 @@ public class InventoryViewModel extends ViewModel {
     public void setSelectedProduct( Integer selectedProduct) {
         this.selectedProduct.setValue(selectedProduct);
     }
-    public void updateProductList() {
-        setShowLoadingDialog(true);
-        ProductService productService = RetrofitClientInstance.getRetrofitInstance().create(ProductService.class);
-        productService.getProducts("0", "100").enqueue(new Callback<ProductListResponse>() {
-            @Override
-            public void onResponse(Call<ProductListResponse> call, Response<ProductListResponse> response) {
-                if(response.isSuccessful()) {
-                    ProductListResponse data = response.body();
-                    assert data != null;
-                    if(data.getStatus().equals(Utils.SUCCESS)) {
-                        ArrayList<ProductResponse> products = data.getProductList();
-                    } else {
-
-                    }
-                }
-                setShowLoadingDialog(false);
-            }
-
-            @Override
-            public void onFailure(Call<ProductListResponse> call, Throwable t) {
-                setShowLoadingDialog(false);
-            }
-        });
-    }
-
     public MutableLiveData<Boolean> getShowLoadingDialog() {
         return showLoadingDialog;
     }

@@ -7,77 +7,81 @@
     android:padding="16dp"
     tools:context="com.rmart.authentication.views.LoginFragment"
     >
-    <LinearLayout
+    <ScrollView
         android:layout_alignParentTop="true"
         android:layout_above="@+id/register"
         android:layout_width="match_parent"
         android:layout_marginTop="32dp"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
-            style="@style/AuthenticationHeader"
-            android:text="@string/register_right"/>
+            <TextView
+                style="@style/AuthenticationHeader"
+                android:text="@string/register_right"/>
 
-        <com.rmart.baseclass.views.CustomEditTextWithErrorText
-            android:id="@+id/full_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/user"
-            android:hint="@string/full_name"
-            android:inputType="text"
-            app:error_trxt="@string/error_full_name"
-            />
-        <com.rmart.baseclass.views.CustomEditTextWithErrorText
-            android:id="@+id/lase_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/user"
-            android:hint="@string/last_name"
-            android:inputType="text"
-            app:error_trxt="@string/error_full_name"
-            />
-        <com.rmart.baseclass.views.CustomEditTextWithErrorText
-            android:id="@+id/mobile_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/smartphone"
-            android:hint="@string/hint_mobile_number"
-            android:inputType="textNoSuggestions|number"
-            android:maxLength="10"
-            app:error_trxt="@string/error_mobile_number"
-            />
-        <com.rmart.baseclass.views.CustomEditTextWithErrorText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/mail"
-            android:hint="@string/hint_mail"
-            android:inputType="textEmailAddress"
-            app:error_trxt="@string/error_mail"
-            />
-        <com.rmart.baseclass.views.CustomEditTextWithErrorText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_password"
-            android:hint="@string/hint_password"
-            android:inputType="numberPassword"
-            android:maxLength="5"
-            app:error_trxt="@string/error_empty_password"
-            />
-        <com.rmart.baseclass.views.CustomEditTextWithErrorText
-            android:id="@+id/confirm_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_password"
-            android:hint="@string/hint_conform_password"
-            android:inputType="numberPassword"
-            android:maxLength="5"
-            app:error_trxt="@string/error_empty_password"
-            />
-    </LinearLayout>
-
+            <com.rmart.baseclass.views.CustomEditTextWithErrorText
+                android:id="@+id/full_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/user"
+                android:hint="@string/full_name"
+                android:inputType="text"
+                app:error_trxt="@string/error_full_name"
+                />
+            <com.rmart.baseclass.views.CustomEditTextWithErrorText
+                android:id="@+id/lase_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/user"
+                android:hint="@string/last_name"
+                android:inputType="text"
+                app:error_trxt="@string/error_full_name"
+                />
+            <com.rmart.baseclass.views.CustomEditTextWithErrorText
+                android:id="@+id/mobile_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/smartphone"
+                android:hint="@string/hint_mobile_number"
+                android:inputType="textNoSuggestions|number"
+                android:maxLength="10"
+                app:error_trxt="@string/error_mobile_number"
+                />
+            <com.rmart.baseclass.views.CustomEditTextWithErrorText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/mail"
+                android:hint="@string/hint_mail"
+                android:inputType="textEmailAddress"
+                app:error_trxt="@string/error_mail"
+                />
+            <com.rmart.baseclass.views.CustomEditTextWithErrorText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_password"
+                android:hint="@string/hint_password"
+                android:inputType="numberPassword"
+                android:maxLength="5"
+                app:error_trxt="@string/error_empty_password"
+                />
+            <com.rmart.baseclass.views.CustomEditTextWithErrorText
+                android:id="@+id/confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_password"
+                android:hint="@string/hint_conform_password"
+                android:inputType="numberPassword"
+                android:maxLength="5"
+                app:error_trxt="@string/error_empty_password"
+                />
+        </LinearLayout>
+    </ScrollView>
     <androidx.appcompat.widget.AppCompatButton
         android:layout_alignParentBottom="true"
         android:id="@+id/register"

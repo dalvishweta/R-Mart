@@ -18,6 +18,7 @@ import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.viewmodels.AddressViewModel;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.AddressListResponse;
 import com.rmart.utilits.pojos.AddressResponse;
 import com.rmart.utilits.services.ProfileService;
 
@@ -111,6 +112,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         }
         if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
             mRetailerView.setVisibility(View.VISIBLE);
+            tvStreetAddress.setText(myAddress.getAddress());
         } else if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
             mRetailerView.setVisibility(View.GONE);
         } else {
@@ -138,13 +140,13 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             profileService.addAddress(myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                     myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                     myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
-                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID).enqueue(new Callback<AddressResponse>() {
+                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID).enqueue(new Callback<AddressListResponse>() {
                 @Override
-                public void onResponse(Call<AddressResponse> call, Response<AddressResponse> response) {
+                public void onResponse(Call<AddressListResponse> call, Response<AddressListResponse> response) {
                     if (response.isSuccessful()) {
-                        AddressResponse data = response.body();
+                        AddressListResponse data = response.body();
                         if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                            MyProfile.getInstance().getAddressResponses().add(data);
+                            MyProfile.getInstance().setAddressResponses(data.getResponse());
                             Objects.requireNonNull(getActivity()).onBackPressed();
                         } else {
                             myAddress = null;
@@ -155,7 +157,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 }
 
                 @Override
-                public void onFailure(Call<AddressResponse> call, Throwable t) {
+                public void onFailure(Call<AddressListResponse> call, Throwable t) {
                     showDialog("", t.getMessage());
                     progressDialog.dismiss();
                 }
@@ -166,14 +168,13 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             profileService.updateAddress(myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                     myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                     myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
-                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId()).enqueue(new Callback<AddressResponse>() {
+                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId()).enqueue(new Callback<AddressListResponse>() {
                 @Override
-                public void onResponse(Call<AddressResponse> call, Response<AddressResponse> response) {
+                public void onResponse(Call<AddressListResponse> call, Response<AddressListResponse> response) {
                     if (response.isSuccessful()) {
-                        AddressResponse data = response.body();
+                        AddressListResponse data = response.body();
                         if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                            MyProfile.getInstance().getAddressResponses().remove(0);
-                            MyProfile.getInstance().getAddressResponses().add(data);
+                            MyProfile.getInstance().setAddressResponses(data.getResponse());
                             Objects.requireNonNull(getActivity()).onBackPressed();
                         } else {
                             showDialog("", data.getMsg());
@@ -183,7 +184,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 }
 
                 @Override
-                public void onFailure(Call<AddressResponse> call, Throwable t) {
+                public void onFailure(Call<AddressListResponse> call, Throwable t) {
                     showDialog("", t.getMessage());
                     progressDialog.dismiss();
                 }

@@ -31,7 +31,9 @@ android {
         buildConfigField("String", "REGISTRATION", '"reg"')
         buildConfigField("String", "LOGIN", '"login"')
         buildConfigField('String', 'PROFILE_UPDATE', '"login/updateprofile"')
-        buildConfigField('String', 'PRODUCT_LIST', '"product"')
+        buildConfigField('String', 'API_PRODUCT_LIST', '"lib/product/product_list"')
+
+        build
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
@@ -63,13 +65,13 @@ android {
             dimension "rokard_mart"
             applicationIdSuffix ".retailer"
             versionNameSuffix "-retailer"
-            buildConfigField("String", "IS_RETAILER", '"4"')
+            buildConfigField("String", "ROLE_ID", '"4"')
         }
         delivery {
             dimension "rokard_mart"
             applicationIdSuffix ".delivery"
             versionNameSuffix "-delivery"
-            buildConfigField("String", "IS_DELIVERY", '"6"')
+            buildConfigField("String", "ROLE_ID", '"6"')
         }
     }
 

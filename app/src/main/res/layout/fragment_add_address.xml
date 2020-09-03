@@ -14,7 +14,6 @@
             android:layout_height="wrap_content"
             tools:context="com.rmart.profile.views.ViewMyProfileFragment">
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/retailer_view"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -36,8 +35,7 @@
                     android:hint="@string/enter_your_pan_number"
                     android:id="@+id/pan_number"
                     android:drawableStart="@drawable/user"
-                    style="@style/my_profile_tv"
-                    android:inputType="number"/>
+                    style="@style/my_profile_tv"/>
                 <androidx.appcompat.widget.AppCompatEditText
                     android:hint="@string/enter_your_gst_number"
                     android:id="@+id/gst_number"
@@ -71,6 +69,7 @@
                 style="@style/my_profile_tv"
                 android:inputType="text"/>
             <androidx.appcompat.widget.AppCompatEditText
+                android:visibility="gone"
                 android:hint="@string/district"
                 android:id="@+id/district"
                 android:drawableStart="@drawable/user"

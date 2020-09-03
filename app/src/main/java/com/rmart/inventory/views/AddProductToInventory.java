@@ -20,11 +20,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.R;
 import com.rmart.inventory.adapters.ProductAdapter;
 import com.rmart.inventory.models.Product;
+import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.APIProductListResponse;
 import com.rmart.utilits.pojos.ProductResponse;
+import com.rmart.utilits.services.ProductService;
 
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddProductToInventory extends BaseInventoryFragment implements View.OnClickListener {
 
@@ -80,7 +88,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        products = (ArrayList<ProductResponse>) new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values());
+        // products = new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values());
         return inflater.inflate(R.layout.fragment_add_product_to_inventory, container, false);
     }
 
@@ -91,9 +99,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         addProduct = view.findViewById(R.id.request_new_product);
         tvTotalCount = view.findViewById(R.id.category_count);
         addProduct.setOnClickListener(this);
-
+        updateProductList();
         productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        updateList(products);
         setSearchView(view);
         view.findViewById(R.id.sort).setOnClickListener(param -> {
             mListener.applyFilter(this, REQUEST_FILTERED_DATA_ID);
@@ -124,12 +131,10 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             searchView = view.findViewById(R.id.searchView);
             searchView.setFocusable(false);
             searchView.setIconified(false);
-
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     productAdapter.getFilter().filter(query);
-                    // Toast.makeText(getActivity(), "onQueryTextSubmit "+query, Toast.LENGTH_LONG).show();
                     return false;
                 }
 
@@ -141,4 +146,31 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             });
         }
     }
+
+
+    public void updateProductList() {
+        progressDialog.show();
+        ProductService productService = RetrofitClientInstance.getRetrofitInstance().create(ProductService.class);
+        productService.getAPIProducts("0", "100").enqueue(new Callback<APIProductListResponse>() {
+            @Override
+            public void onResponse(Call<APIProductListResponse> call, Response<APIProductListResponse> response) {
+                if(response.isSuccessful()) {
+                    APIProductListResponse data = response.body();
+                    if(data.getStatus().equals(Utils.SUCCESS)) {
+                        products = data.getProductList();
+                        updateList(products);
+                    } else {
+                        showDialog("", data.getMsg());
+                    }
+                }
+                progressDialog.dismiss();
+            }
+            @Override
+            public void onFailure(Call<APIProductListResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                showDialog("", t.getMessage());
+            }
+        });
+    }
+
 }

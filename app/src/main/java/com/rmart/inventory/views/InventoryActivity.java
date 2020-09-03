@@ -19,14 +19,14 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         inventoryViewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
-        inventoryViewModel.updateProductList();
-        if (inventoryViewModel.getIsProductView().getValue().equals(InventoryViewModel.PRODUCT)) {
+        addFragment(MyProductsListFragment.newInstance("", ""), "MyProductsListFragment", false);
+        /*if (inventoryViewModel.getIsProductView().getValue().equals(InventoryViewModel.PRODUCT)) {
             addFragment(MyProductsListFragment.newInstance("", ""), "MyProductsListFragment", false);
         } else if (inventoryViewModel.getIsProductView().getValue().equals(InventoryViewModel.SUB_CATEGORY)) {
             addFragment(MySubCategoriesListFragment.newInstance("", ""), "MyProductsListFragment", false);
         } else {
             addFragment(MyCategoryListFragment.newInstance("", ""), "MyCategoryFragment", false);
-        }
+        }*/
     }
 
     @Override

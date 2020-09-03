@@ -34,8 +34,8 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private AppCompatEditText tvFirstName, tvLastName, tvEmail;
-    AppCompatTextView tvMobileNumber;
+    private AppCompatEditText tvFirstName, tvLastName;
+    AppCompatTextView tvMobileNumber, tvEmail;
     private boolean mIsFromLogin;
     private String mParam2;
     private Spinner spinner;

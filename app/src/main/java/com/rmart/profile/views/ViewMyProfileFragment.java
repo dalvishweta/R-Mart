@@ -159,9 +159,6 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
         }
         setMapView(false, "profile");
         */
-
-
-
     }
 
     @Override
