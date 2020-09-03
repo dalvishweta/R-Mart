@@ -3,7 +3,11 @@ package com.rmart.utilits.pojos;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ProfileModel {
+import java.util.ArrayList;
+
+public class ProfileResponse {
+
+
     @SerializedName("id")
     @Expose
     String UserID;
@@ -47,6 +51,10 @@ public class ProfileModel {
     @SerializedName("primary_add_id")
     @Expose
     String primaryAddressId;
+
+    @SerializedName("address_data")
+    @Expose
+    ArrayList<AddressResponse> addressResponses;
 
     public String getUserID() {
         return UserID;
@@ -134,5 +142,13 @@ public class ProfileModel {
 
     public void setPrimaryAddressId(String primaryAddressId) {
         this.primaryAddressId = primaryAddressId;
+    }
+
+    public ArrayList<AddressResponse> getAddressResponses() {
+        return addressResponses;
+    }
+
+    public void setAddressResponses(ArrayList<AddressResponse> addressResponses) {
+        this.addressResponses = addressResponses;
     }
 }

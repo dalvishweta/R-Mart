@@ -1,6 +1,6 @@
 <resources>
     <!-- https://xd.adobe.com/view/abf6f0b6-d078-41e6-8ed1-c1a53f4021d5-fea5/flow -->
-<!--    https://www.flaticon.com/free-icon/edit_860814?term=edit&page=1&position=82-->
+    <!--    https://www.flaticon.com/free-icon/edit_860814?term=edit&page=1&position=82-->
     <string name="app_name">Rokad Mart</string>
     <string name="message">Message</string>
     <string name="close">Close</string>
@@ -131,7 +131,7 @@
     <string name="change_location">Change Location?</string>
     <string name="view_my_profile">View My Profile</string>
     <string name="edit_my_profile">Edit My Profile</string>
-    <string name="seve_profile">Save my profile</string>
+    <string name="save_profile">Save my profile</string>
     <string name="sort_by_category">Sort By Category</string>
     <string name="sort_by_sub_category">Sort By Sub Category</string>
     <string name="sort_by_product">Sort By Product</string>
@@ -159,4 +159,15 @@
     <string name="error_otp">Please enter valid OTP</string>
     <string name="error_internet">No internet Connection</string>
     <string name="error_internet_text">Please turn on internet connection to continue</string>
+    <string name="profile_details">Profile Details</string>
+    <string name="please_enter_your_date_of_birth">Enter DOB</string>
+    <string name="save_details">Save Details</string>
+    <string name="pin_code">Pin code</string>
+    <string name="city">City</string>
+    <string name="delivery_radius">Delivery Radius</string>
+    <string name="profile">My Profile</string>
+    <string name="gender">Gender</string>
+    <string name="add_address">Add address</string>
+    <string name="update_address">Update address</string>
+    <string name="address_list_item">Rajesh Agarwal #405, Abc Towers, 1-2 33, \nGandhi Nagar, Mumbai\n 523987</string>
 </resources>

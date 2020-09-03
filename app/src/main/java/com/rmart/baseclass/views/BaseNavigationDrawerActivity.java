@@ -2,14 +2,10 @@ package com.rmart.baseclass.views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -21,8 +17,6 @@ import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
-
-import java.util.Objects;
 
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {

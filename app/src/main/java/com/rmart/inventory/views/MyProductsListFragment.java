@@ -19,9 +19,11 @@ import com.rmart.R;
 import com.rmart.inventory.adapters.ProductAdapter;
 import com.rmart.inventory.models.Product;
 import com.rmart.inventory.viewmodel.InventoryViewModel;
+import com.rmart.utilits.pojos.ProductResponse;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class MyProductsListFragment extends BaseInventoryFragment implements View.OnClickListener {
 
@@ -70,10 +72,13 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        inventoryViewModel.getProductList().observe(getActivity(), products -> {
+        /*inventoryViewModel.getProductList().observe(getActivity(), products -> {
             if(null != products) {
                 updateList(products);
             }
+        });*/
+        inventoryViewModel.getProductList().observe(Objects.requireNonNull(getActivity()), data-> {
+            updateList(new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values()));
         });
         return inflater.inflate(R.layout.fragment_inventory_product_list, container, false);
     }
@@ -106,7 +111,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
             popup.show(); //showing popup menu
         });
         productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        updateList(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()));
+        updateList(new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values()));
 
         setSearchView(view);
     }
@@ -134,7 +139,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
             });
         }
     }
-    private void updateList(ArrayList<Product> products) {
+    private void updateList(ArrayList<ProductResponse> products) {
         try {
             tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), products.size()));
             productAdapter = new ProductAdapter(products, view1 -> {

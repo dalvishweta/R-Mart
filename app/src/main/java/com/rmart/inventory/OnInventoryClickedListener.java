@@ -3,6 +3,7 @@ package com.rmart.inventory;
 import com.rmart.inventory.models.Product;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.inventory.views.BaseInventoryFragment;
+import com.rmart.utilits.pojos.ProductResponse;
 
 public interface OnInventoryClickedListener {
     void showMyCategories();
@@ -10,7 +11,7 @@ public interface OnInventoryClickedListener {
     void showMySubCategories();
     void showMyProducts();
     void showProductPreview(Product tag, boolean isEdit);
-    void updateProduct(Product product, boolean isEdit);
+    void updateProduct(ProductResponse product, boolean isEdit);
     void addProductToInventory();
     void requestToCreateProduct();
     void addUnit(UnitObject unitValue, BaseInventoryFragment fragment, int requestID);

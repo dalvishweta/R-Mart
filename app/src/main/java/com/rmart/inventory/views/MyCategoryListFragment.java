@@ -98,12 +98,7 @@ public class MyCategoryListFragment extends BaseInventoryFragment {
                     popup.show(); //showing popup menu
 
                 });
-        CategoryAdapter categoryAdapter = new CategoryAdapter(isGridView, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mListener.showMySubCategories();
-            }
-        });
+        CategoryAdapter categoryAdapter = new CategoryAdapter(isGridView, view1 -> mListener.showMySubCategories());
         if(isGridView) {
             categoryRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         } else {

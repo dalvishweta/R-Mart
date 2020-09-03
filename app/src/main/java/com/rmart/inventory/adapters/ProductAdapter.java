@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.R;
 import com.rmart.inventory.models.Product;
 import com.rmart.inventory.views.viewholders.ProductViewHolder;
+import com.rmart.utilits.pojos.ProductResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +22,12 @@ import java.util.List;
 public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>  implements Filterable {
 
     View.OnClickListener onClickListener;
-    ArrayList<Product> productList;
-    private List<Product> filteredListData;
+    ArrayList<ProductResponse> productList;
+    private List<ProductResponse> filteredListData;
     private MyFilter myFilter;
     int columnCount;
 
-    public ProductAdapter(ArrayList<Product> productList, View.OnClickListener onClickListener, int columnCount) {
+    public ProductAdapter(ArrayList<ProductResponse> productList, View.OnClickListener onClickListener, int columnCount) {
         this.onClickListener =onClickListener;
         this.productList = productList;
         this.columnCount = columnCount;
@@ -57,7 +58,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>  imp
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Product product = filteredListData.get(position);
+        ProductResponse product = filteredListData.get(position);
         holder.tvItemTitle.setText(product.getName());
         holder.itemView.setTag(product);
         if (product.getUnitObjects().size() >0) {
@@ -94,7 +95,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>  imp
             FilterResults results = new FilterResults();
             if (constraint != null && constraint.length() > 0) {
                 filteredListData.clear();
-                for (Product product : productList) {
+                for (ProductResponse product : productList) {
                     if (product.getName().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         filteredListData.add(product);
                     }
@@ -107,7 +108,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>  imp
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            filteredListData = (List<Product>) results.values;
+            filteredListData = (List<ProductResponse>) results.values;
             notifyDataSetChanged();
         }
     }

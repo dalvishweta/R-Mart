@@ -115,7 +115,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         } else {
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-            authenticationService.registration(firstName, lastName, mobileNumber, email, password, getString(R.string.role_id), "2").enqueue(
+            authenticationService.registration(firstName, lastName, mobileNumber, email, password, getString(R.string.role_id), Utils.CLIENT_ID).enqueue(
                     new Callback<RegistrationResponse>() {
                         @Override
                         public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {

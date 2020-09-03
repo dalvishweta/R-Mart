@@ -21,6 +21,7 @@ import com.rmart.R;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.inventory.models.Product;
 import com.rmart.inventory.models.UnitObject;
+import com.rmart.utilits.pojos.ProductResponse;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -33,8 +34,8 @@ public class EditProductFragment extends BaseInventoryFragment implements View.O
     public static final int INT_UPDATE_UNIT = 102;
     public static final String UNIT_VALUE = "unit_value";
 
-    private Product mClonedProduct;
-    private Product mProduct;
+    private ProductResponse mClonedProduct;
+    private ProductResponse mProduct;
     private boolean isEdit;
 
     ArrayList<String> availableUnits1 = new ArrayList<>();
@@ -46,7 +47,7 @@ public class EditProductFragment extends BaseInventoryFragment implements View.O
         // Required empty public constructor
     }
 
-    public static EditProductFragment newInstance(Product product, boolean isEdit) {
+    public static EditProductFragment newInstance(ProductResponse product, boolean isEdit) {
         EditProductFragment fragment = new EditProductFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PRODUCT, product);
@@ -59,13 +60,13 @@ public class EditProductFragment extends BaseInventoryFragment implements View.O
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mProduct = (Product) getArguments().getSerializable(ARG_PRODUCT);
+            mProduct = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
             if(null == mProduct) {
-                mClonedProduct = new Product();
-                mProduct = new Product();
+                mClonedProduct = new ProductResponse();
+                mProduct = new ProductResponse();
             } else {
                 try {
-                    mClonedProduct = new Product(mProduct);
+                    mClonedProduct = new ProductResponse(mProduct);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -113,7 +114,7 @@ public class EditProductFragment extends BaseInventoryFragment implements View.O
     }
 
     private void updateUI() {
-        chooseCategory.setText(mClonedProduct.getCategory());
+        // chooseCategory.setText(mClonedProduct.getCategory());
         chooseSubCategory.setText(mClonedProduct.getSubCategory());
         chooseProduct.setText(mClonedProduct.getName());
         productBrand.setText(mClonedProduct.getBrand());
@@ -154,13 +155,13 @@ public class EditProductFragment extends BaseInventoryFragment implements View.O
             mClonedProduct.setDescription(productDescription.getText().toString());
 
             if (isEdit) {
-                Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).remove(mProduct);
-                Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).add(inventoryViewModel.getSelectedProduct().getValue(), mClonedProduct);
+                Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).remove(mProduct.getProductID());
+                Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);
                 Integer index = inventoryViewModel.getSelectedProduct().getValue();
                 inventoryViewModel.getSelectedProduct().setValue(index);
 
             } else {
-                Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).add(mClonedProduct);
+                Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);
             }
             showToast();
             // mListener.showProductPreview((Product) view.getTag());

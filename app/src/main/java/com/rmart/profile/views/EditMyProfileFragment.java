@@ -1,34 +1,47 @@
 package com.rmart.profile.views;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.rmart.R;
-import com.rmart.authentication.views.AuthenticationActivity;
-import com.rmart.orders.views.OrdersActivity;
-import com.rmart.profile.model.MyLocation;
+import com.rmart.inventory.adapters.UnitAdapter;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.LoginResponse;
+import com.rmart.utilits.pojos.ProfileResponse;
+import com.rmart.utilits.pojos.UpdateProfileResponse;
+import com.rmart.utilits.services.ProfileService;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class EditMyProfileFragment extends BaseMyProfileFragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private AppCompatEditText tvFirstName, tvLastName, tvMobileNumber, tvEmail, tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress, tvShopNO, tvLandMark, tvDistrict, tvState;
+    private AppCompatEditText tvFirstName, tvLastName, tvEmail;
+    AppCompatTextView tvMobileNumber;
     private boolean mIsFromLogin;
     private String mParam2;
+    private Spinner spinner;
+    private String selectedGender;
     // private MyProfileViewModel myProfileViewModel;
-
+    ArrayList<String> strings = new ArrayList<>();
     public EditMyProfileFragment() {
     }
 
@@ -74,25 +87,34 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
         tvLastName = view.findViewById(R.id.last_name);
         tvMobileNumber = view.findViewById(R.id.mobile_number);
         tvEmail = view.findViewById(R.id.email);
-        tvShopName = view.findViewById(R.id.shop_name);
-        tvPANNumber = view.findViewById(R.id.pan_number);
-        tvGSTNumber = view.findViewById(R.id.gst_number);
+        spinner = view.findViewById(R.id.gender);
 
-        tvStreetAddress = view.findViewById(R.id.street_address);
-        tvShopNO = view.findViewById(R.id.shop_no);
-        tvLandMark = view.findViewById(R.id.land_mark);
-        tvDistrict = view.findViewById(R.id.district);
 
-        tvState = view.findViewById(R.id.state);
-        tvDistrict = view.findViewById(R.id.district);
+        strings.add("Male");
+        strings.add("Femail");
+        strings.add("Other");
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                selectedGender = strings.get(pos);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        UnitAdapter unitAdapter = new UnitAdapter(strings, this.getContext());
+        spinner.setAdapter(unitAdapter);
         view.findViewById(R.id.submit).setOnClickListener(this);
 
         updateUI(Objects.requireNonNull(MyProfile.getInstance()));
 
 
         view.findViewById(R.id.submit).setOnClickListener(this);
-        view.findViewById(R.id.update_location).setOnClickListener(this);
+        // view.findViewById(R.id.update_location).setOnClickListener(this);
 
     }
     private void updateUI(MyProfile myProfile) {
@@ -100,23 +122,10 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
         tvLastName.setText(myProfile.getLastName());
         tvMobileNumber.setText(myProfile.getMobileNumber());
         tvEmail.setText(myProfile.getEmail());
-        tvShopName.setText(myProfile.getShopName());
-        tvPANNumber.setText(myProfile.getPanNumber());
-        tvGSTNumber.setText(myProfile.getGstNumber());
-        if(mIsFromLogin || myProfile.getMyLocations().size()<0) {
+        spinner.setSelection(strings.indexOf(myProfile.getGender()));
+        /*if(mIsFromLogin || myProfile.getMyLocations().size()<0) {
             MyProfile.getInstance().setMyLocations(new MyLocation());
-        }
-        ArrayList<MyLocation> locations = myProfile.getMyLocations();
-        if(MyProfile.getInstance().getRoleType().equals(MyProfile.RETAILER)) {
-            if(locations!= null && locations.size()>0) {
-                tvStreetAddress.setText(locations.get(0).getStreetAddress());
-                tvShopNO.setText(locations.get(0).getShopNo());
-                tvLandMark.setText(locations.get(0).getLandMark());
-                tvDistrict.setText(locations.get(0).getDistrict());
-                tvState.setText(locations.get(0).getState());
-            }
-        }
-        setMapView(false, "profile");
+        }*/
     }
 
     @Override
@@ -126,11 +135,38 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
                 mListener.gotoMapView();
                 break;
             case R.id.submit:
-                if(!mIsFromLogin) {
-                    Objects.requireNonNull(getActivity()).onBackPressed();
+                String email = Objects.requireNonNull(tvEmail.getText()).toString();
+                if (!Utils.isValidEmail(email)) {
+                    showDialog("", getString(R.string.required_mail));
                 } else {
-                    startActivity(new Intent(getContext(), OrdersActivity.class));
-                    Objects.requireNonNull(getActivity()).finish();
+                    progressDialog.show();
+                    ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
+                    profileService.updateProfile(MyProfile.getInstance().getMobileNumber(),
+                            tvFirstName.getText().toString(), tvLastName.getText().toString(), MyProfile.getInstance().getUserID(),
+                            selectedGender, email, MyProfile.getInstance().getPrimaryAddressId()).enqueue(new Callback<LoginResponse>() {
+                        @Override
+                        public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                            if(response.isSuccessful()) {
+                                LoginResponse data = response.body();
+                                if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                    data.getLoginData().setAddressResponses(MyProfile.getInstance().getAddressResponses());
+                                    MyProfile.setInstance(data.getLoginData());
+                                    Objects.requireNonNull(getActivity()).onBackPressed();
+                                } else {
+                                    showDialog("", data.getMsg());
+                                }
+                            } else {
+                                showDialog("", response.message());
+                            }
+                            progressDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onFailure(Call<LoginResponse> call, Throwable t) {
+                            progressDialog.dismiss();
+                            showDialog("", t.getMessage());
+                        }
+                    });
                 }
                 break;
         }

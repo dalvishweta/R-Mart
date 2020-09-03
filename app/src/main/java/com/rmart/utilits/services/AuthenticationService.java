@@ -5,7 +5,6 @@ import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.ChangePasswordResponse;
 import com.rmart.utilits.pojos.ForgotPasswordResponse;
 import com.rmart.utilits.pojos.LoginResponse;
-import com.rmart.utilits.pojos.ProductPojo;
 import com.rmart.utilits.pojos.RegistrationResponse;
 import com.rmart.utilits.pojos.ResendOTPResponse;
 import com.rmart.utilits.pojos.ResponseUpdateProfile;
@@ -90,8 +89,8 @@ public interface AuthenticationService {
     Call<ValidateOTP> validateMailOTP(@Field("email") String email,
                                       @Field("otp") String otp);
 
-    @GET(BuildConfig.PRODUCTS)
-    Call<List<ProductPojo>> getProducts();
+//    @GET(BuildConfig.PRODUCTS)
+//    Call<List<ProductPojo>> getProducts();
 
     @GET(BuildConfig.REGISTRATION)
     Call<List<BaseResponse>> getREGISTRATION();

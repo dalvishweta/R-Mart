@@ -16,6 +16,7 @@ import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.LoginResponse;
+import com.rmart.utilits.pojos.ProfileResponse;
 import com.rmart.utilits.pojos.ResendOTPResponse;
 import com.rmart.utilits.services.AuthenticationService;
 
@@ -120,8 +121,9 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                         if (data.getStatus().equalsIgnoreCase("success")) {
                             if(data.getLoginData().getRoleID().equalsIgnoreCase(getString(R.string.role_id))) {
                                 try {
-                                    MyProfile.getInstance(data.getLoginData());
-                                    if (MyProfile.getInstance().getMyLocations() == null || MyProfile.getInstance().getMyLocations().size() <= 0) {
+                                    ProfileResponse profileResponse = data.getLoginData();
+                                    MyProfile.setInstance(profileResponse);
+                                    if (MyProfile.getInstance().getPrimaryAddressId() == null) {
                                         mListener.goToProfileActivity();
                                     } else {
                                         mListener.goToHomeActivity();
@@ -133,7 +135,6 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                             } else {
                                 showDialog("",getString(R.string.error_role_login));
                             }
-
                         } else {
                             showDialog("", data.getMsg(), (dialogInterface, i) -> {
                                 if (data.getMsg().contains("verify")) {
@@ -157,6 +158,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     }
 
     private void resendOTP() {
+        progressDialog.show();
         AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
         authenticationService.resendOTP(mMobileNumber).enqueue(new Callback<ResendOTPResponse>() {
             @Override

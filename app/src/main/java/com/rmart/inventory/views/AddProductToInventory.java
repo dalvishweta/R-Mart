@@ -20,9 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.R;
 import com.rmart.inventory.adapters.ProductAdapter;
 import com.rmart.inventory.models.Product;
+import com.rmart.utilits.pojos.ProductResponse;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class AddProductToInventory extends BaseInventoryFragment implements View.OnClickListener {
 
@@ -39,7 +41,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     ProductAdapter productAdapter;
     private AppCompatTextView tvTotalCount;
     AppCompatButton addProduct;
-    ArrayList<Product> products;
+    ArrayList<ProductResponse> products;
     public AddProductToInventory() {
         // Required empty public constructor
     }
@@ -78,7 +80,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        products = inventoryViewModel.getProducts();
+        products = (ArrayList<ProductResponse>) new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values());
         return inflater.inflate(R.layout.fragment_add_product_to_inventory, container, false);
     }
 
@@ -98,11 +100,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         });
     }
 
-    private void updateList(ArrayList<Product> products) {
+    private void updateList(ArrayList<ProductResponse> products) {
         try {
             tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), products.size()));
             productAdapter = new ProductAdapter(products, view1 -> {
-                Product product = (Product)view1.getTag();
+                ProductResponse product = (ProductResponse) view1.getTag();
                 mListener.updateProduct(product, false);
             }, 3);
             productRecycleView.setAdapter(productAdapter);

@@ -39,4 +39,6 @@
     <color name="add_product_bg_1">#059D20</color>
     <color name="add_product_bg_2">#1EB138</color>
     <color name="discount">#FF0000</color>
+    <color name="submit_top">#FF9702</color>
+    <color name="submit_bottom">#FF3A3A</color>
 </resources>

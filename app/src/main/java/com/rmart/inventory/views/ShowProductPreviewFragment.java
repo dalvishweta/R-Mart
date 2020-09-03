@@ -17,6 +17,7 @@ import com.rmart.R;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.inventory.models.Product;
+import com.rmart.utilits.pojos.ProductResponse;
 
 import java.util.Objects;
 
@@ -24,7 +25,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     private static final String ARG_PRODUCT = "param1";
     private static final String ARG_PARAM2 = "param2";
     RecyclerView recyclerView;
-    private  Product product;
+    private ProductResponse product;
     private boolean isEdit;
     ImageAdapter imageAdapter;
     ViewPager viewPager;
@@ -47,7 +48,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            product = (Product) getArguments().getSerializable(ARG_PRODUCT);
+            product = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
             isEdit = getArguments().getBoolean(ARG_PARAM2);
         }
         if(null != inventoryViewModel && isEdit) {
@@ -83,7 +84,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
                 mListener.updateProduct(product, true);
             });
             delete.setOnClickListener(view1 -> {
-                Product object = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
+                ProductResponse object = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
                 Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).remove(object);
                 Objects.requireNonNull(getActivity()).onBackPressed();
             });

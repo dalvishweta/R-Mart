@@ -3,8 +3,6 @@ package com.rmart.authentication.views;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.fragment.app.FragmentManager;
-
 import com.rmart.R;
 import com.rmart.authentication.OnAuthenticationClickedListener;
 import com.rmart.baseclass.views.BaseActivity;

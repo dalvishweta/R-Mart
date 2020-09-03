@@ -11,6 +11,7 @@ import com.rmart.inventory.OnInventoryClickedListener;
 import com.rmart.inventory.models.Product;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.inventory.viewmodel.InventoryViewModel;
+import com.rmart.utilits.pojos.ProductResponse;
 
 public class InventoryActivity extends BaseNavigationDrawerActivity implements OnInventoryClickedListener {
     InventoryViewModel inventoryViewModel;
@@ -18,6 +19,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         inventoryViewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
+        inventoryViewModel.updateProductList();
         if (inventoryViewModel.getIsProductView().getValue().equals(InventoryViewModel.PRODUCT)) {
             addFragment(MyProductsListFragment.newInstance("", ""), "MyProductsListFragment", false);
         } else if (inventoryViewModel.getIsProductView().getValue().equals(InventoryViewModel.SUB_CATEGORY)) {
@@ -48,7 +50,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     }
 
     @Override
-    public void updateProduct(Product product, boolean isEdit) {
+    public void updateProduct(ProductResponse product, boolean isEdit) {
         replaceFragment(EditProductFragment.newInstance(product,isEdit), "UploadProductFragment",true);
     }
 

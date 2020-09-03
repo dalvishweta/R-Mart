@@ -16,12 +16,9 @@ import com.rmart.R;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
-import com.rmart.utilits.pojos.RegistrationResponse;
 import com.rmart.utilits.pojos.ResendOTPResponse;
 import com.rmart.utilits.pojos.ValidateOTP;
 import com.rmart.utilits.services.AuthenticationService;
-
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,7 +70,7 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
         view.findViewById(R.id.resend).setOnClickListener(view1 -> {
             resendOTP();
         });
-        ((TextView)view.findViewById(R.id.otp_mobile_sent)).setText(String.format(getString(R.string.verification_code_mobile_hint), MyProfile.getInstance().getMobileNumber()));
+        ((TextView)view.findViewById(R.id.otp_mobile_sent)).setText(String.format(getString(R.string.verification_code_mobile_hint),mMobileNumber));
     }
 
     private void resendOTP() {

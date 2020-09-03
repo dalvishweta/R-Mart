@@ -21,6 +21,13 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
+    public static final String SUCCESS = "Success";
+
+    public static final String RETAILER_ID = "4";
+    public static final String CUSTOMER_ID = "5";
+    public static final String DELIVERY_ID = "6";
+
+    public static final String CLIENT_ID = "2";
     public static boolean isValidMobile(String phone) {
         String regex = "[0-9]+";
         Pattern p = Pattern.compile(regex);

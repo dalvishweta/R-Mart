@@ -1,7 +1,7 @@
 package com.rmart.profile.model;
 
-import com.rmart.R;
-import com.rmart.utilits.pojos.ProfileModel;
+import com.rmart.utilits.pojos.AddressResponse;
+import com.rmart.utilits.pojos.ProfileResponse;
 
 import java.util.ArrayList;
 
@@ -13,80 +13,47 @@ public class MyProfile {
     public static final String RETAILER = "Retailer";
     public static final String CUSTOMER = "Customer";
 
-    String roleType = "retailer";
-    // RETAILER DETAILS
-    String firstName = "Vamshee Krishna";
-    String lastName = "Paleti";
-    String email = "vamsheekrishna.paleti@gmail.com";
-    String mobileNumber = "7416226233";
-
-    // BUSINESS DETAILS
-    String shopName = "Vamshee Food Enterprises";
-    ArrayList<Integer> imageImages;
-    String gstNumber = "gst-123456789";
-    String panNumber = "BOMPP1130D1";
-
-    /*String roleType;
-    // RETAILER DETAILS
+    String UserID;
     String firstName;
     String lastName;
+    String gender;
+    String dob;
     String email;
     String mobileNumber;
-
-    // BUSINESS DETAILS
-    String shopName;
-    ArrayList<Integer> imageImages;
-    String gstNumber;
-    String panNumber;*/
-
-    MyLocation myLocation;
+    String isAuthenticated;
+    String profileImage;
+    String roleID;
+    String primaryAddressId;
+    ArrayList<AddressResponse> addressResponses;
 
     public static MyProfile getInstance() {
-        if(null == myProfile) {
-            myProfile = new MyProfile();
-        }
         return myProfile;
     }
-    public static MyProfile getInstance(boolean b) {
-        if (b) {
-            if(null == myProfile) {
-                myProfile = new MyProfile();
-            }
-        }
 
-        return myProfile;
-    }
-    /*private  MyProfile() {
-        imageImages = new ArrayList<>();
-        imageImages.add(R.drawable.supermarket1);
-        imageImages.add(R.drawable.supermarket2);
-        imageImages.add(R.drawable.supermarket3);
-        myLocations.add(new MyLocation());
-    }*/
-
-
-    ArrayList<MyLocation> myLocations = new ArrayList<>();
-
-    public static MyProfile getInstance(ProfileModel profileModel) {
-        // myProfile = profileModel;
+    public static void setInstance(ProfileResponse profileResponse) {
         myProfile = new MyProfile();
-        myProfile.setFirstName(profileModel.getFirstName());
-        myProfile.setLastName(profileModel.getLastName());
-        myProfile.setEmail(profileModel.getEmail());
-        myProfile.setMobileNumber(profileModel.getMobileNumber());
-        myProfile.setRoleType(profileModel.getRoleID());
-        if( myProfile.getMyLocations().size()<=0) {
-            myProfile.setMyLocations(new MyLocation());
+        myProfile.UserID = profileResponse.getUserID();
+        myProfile.firstName= profileResponse.getFirstName();
+        myProfile.lastName= profileResponse.getLastName();
+        myProfile.gender = profileResponse.getGender();
+        myProfile.dob = profileResponse.getDob();
+        myProfile.email = profileResponse.getEmail();
+        myProfile.mobileNumber = profileResponse.getMobileNumber();
+        myProfile.isAuthenticated = profileResponse.getIsAuthenticated();
+        myProfile.profileImage = profileResponse.getProfileImage();
+        myProfile.roleID = profileResponse.getRoleID();
+        myProfile.primaryAddressId = profileResponse.getPrimaryAddressId();
+        if(profileResponse.getAddressResponses().size()>0) {
+            myProfile.setAddressResponses(profileResponse.getAddressResponses());
         }
-        return myProfile;
+
+    }
+    public String getUserID() {
+        return UserID;
     }
 
-    public String getRoleType() {
-        return roleType;
-    }
-
-    public void setRoleType(String roleType) {
-        this.roleType = roleType;
+    public void setUserID(String userID) {
+        UserID = userID;
     }
 
     public String getFirstName() {
@@ -105,6 +72,22 @@ public class MyProfile {
         this.lastName = lastName;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -121,54 +104,46 @@ public class MyProfile {
         this.mobileNumber = mobileNumber;
     }
 
-    public String getShopName() {
-        return shopName;
+    public String getIsAuthenticated() {
+        return isAuthenticated;
     }
 
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
+    public void setIsAuthenticated(String isAuthenticated) {
+        this.isAuthenticated = isAuthenticated;
     }
 
-    public ArrayList<Integer> getImageImages() {
-        return imageImages;
+    public String getProfileImage() {
+        return profileImage;
     }
 
-    public void setImageImages(ArrayList<Integer> imageImages) {
-        this.imageImages = imageImages;
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
-    public String getGstNumber() {
-        return gstNumber;
+    public String getRoleID() {
+        return roleID;
     }
 
-    public void setGstNumber(String gstNumber) {
-        this.gstNumber = gstNumber;
+    public void setRoleID(String roleID) {
+        this.roleID = roleID;
     }
 
-    public String getPanNumber() {
-        return panNumber;
+    public String getPrimaryAddressId() {
+        return primaryAddressId;
     }
 
-    public void setPanNumber(String panNumber) {
-        this.panNumber = panNumber;
+    public void setPrimaryAddressId(String primaryAddressId) {
+        this.primaryAddressId = primaryAddressId;
     }
 
-    public ArrayList<MyLocation> getMyLocations() {
-        return myLocations;
-    }
-
-    public void setMyLocations(MyLocation myLocation) {
-        if (null == this.myLocations) {
-            this.myLocations = new ArrayList<>();
+    public ArrayList<AddressResponse> getAddressResponses() {
+        if(null == addressResponses) {
+            addressResponses = new ArrayList<>();
         }
-        this.myLocations.add(myLocation);
+        return addressResponses;
     }
 
-    public MyLocation getMyLocation() {
-        return myLocation;
-    }
-
-    public void setMyLocation(MyLocation myLocation) {
-        this.myLocation = myLocation;
+    public void setAddressResponses(ArrayList<AddressResponse> addressResponses) {
+        this.addressResponses = addressResponses;
     }
 }

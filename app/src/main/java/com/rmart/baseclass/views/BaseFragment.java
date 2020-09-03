@@ -17,7 +17,8 @@ import com.rmart.R;
 
 import java.util.Objects;
 
-import static com.rmart.baseclass.Utils.internetConnectionAvailable;
+import static com.rmart.utilits.Utils.internetConnectionAvailable;
+
 
 public class BaseFragment extends Fragment {
 

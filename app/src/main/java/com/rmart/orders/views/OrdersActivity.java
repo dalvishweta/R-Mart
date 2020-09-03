@@ -14,6 +14,7 @@ import com.rmart.orders.viewmodel.MyOrdersViewModel;
 import com.rmart.profile.model.MyProfile;
 
 import static com.rmart.profile.model.MyProfile.CUSTOMER;
+import static com.rmart.profile.model.MyProfile.DELIVERY;
 
 
 public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOrdersInteractionListener {
@@ -24,7 +25,7 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myOrdersViewModel = new ViewModelProvider(this).get(MyOrdersViewModel.class);
-        if (MyProfile.getInstance().getRoleType().equals(CUSTOMER)) {
+        if (MyProfile.getInstance().getRoleID().equals(DELIVERY)) {
             myOrdersViewModel.getSelectedOrderGroup().setValue(myOrdersViewModel.getShippedOrders().getValue());
             addFragment(OrderListFragment.newInstance(""), "OrderListFragment", false);
         } else {
