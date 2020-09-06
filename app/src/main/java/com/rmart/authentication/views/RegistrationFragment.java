@@ -97,7 +97,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         if(firstName.length()<=2) {
             showDialog("", getString(R.string.error_full_name));
         } else if(lastName.length()<=2) {
-            showDialog("", getString(R.string.error_mobile_number));
+            showDialog("", getString(R.string.error_last_name));
         } else if(mobileNumber.length()<=2) {
             showDialog("", getString(R.string.required_mobile_number));
         } else if(!Utils.isValidMobile(mobileNumber)) {

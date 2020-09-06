@@ -1,34 +1,44 @@
 package com.rmart.inventory.views;
 
-import android.content.Context;
-import android.content.res.Resources;
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.rmart.R;
-import com.rmart.inventory.adapters.ProductAdapter;
-import com.rmart.inventory.models.Product;
+import com.rmart.inventory.adapters.CustomStringAdapter;
+import com.rmart.inventory.adapters.ProductUnitAdapter;
+import com.rmart.inventory.models.UnitObject;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.APIProductListResponse;
+import com.rmart.utilits.pojos.APIBrandListResponse;
+import com.rmart.utilits.pojos.APIBrandResponse;
+import com.rmart.utilits.pojos.APIUnitMeasureListResponse;
+import com.rmart.utilits.pojos.APIUnitMeasureResponse;
+import com.rmart.utilits.pojos.AddProductToInventoryResponse;
 import com.rmart.utilits.pojos.ProductResponse;
-import com.rmart.utilits.services.ProductService;
+import com.rmart.utilits.services.APIService;
+import com.rmart.utilits.services.VendorInventoryService;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,141 +46,282 @@ import retrofit2.Response;
 
 public class AddProductToInventory extends BaseInventoryFragment implements View.OnClickListener {
 
-    public static final int REQUEST_FILTERED_DATA_ID = 102;
-    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PRODUCT = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final int INT_ADD_UNIT = 101;
+    public static final int INT_UPDATE_UNIT = 102;
+    public static final String UNIT_VALUE = "unit_value";
 
-    private String mParam1;
-    private String mParam2;
-    Product product;
-    private SearchView searchView;
-    private ImageView sortButton;
-    private RecyclerView productRecycleView;
-    ProductAdapter productAdapter;
-    private AppCompatTextView tvTotalCount;
-    AppCompatButton addProduct;
-    ArrayList<ProductResponse> products;
+    private ProductResponse mClonedProduct;
+    private ProductResponse mProduct;
+    private boolean isEdit;
+
+    ArrayList<APIUnitMeasureResponse> unitMeasurements = new ArrayList<>();
+    ArrayList<APIBrandResponse> apiBrandResponses = new ArrayList<>();
+
+    public AppCompatTextView chooseCategory, chooseSubCategory, chooseProduct;
+    CustomStringAdapter customStringAdapter;
+    Spinner productBrand;
+    AppCompatEditText expiry, productRegionalName, deliveryDays, productDescription;
+    private RecyclerView recyclerView;
+    APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
+    private ArrayList<String> availableBrands = new ArrayList<>();
+
     public AddProductToInventory() {
         // Required empty public constructor
     }
 
-    public static AddProductToInventory newInstance(String param1, String param2) {
+    public static AddProductToInventory newInstance(ProductResponse product, boolean isEdit) {
         AddProductToInventory fragment = new AddProductToInventory();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_PRODUCT, product);
+        args.putBoolean(ARG_PARAM2, isEdit);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-        searchView.clearFocus();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle(getString(R.string.add_new_product));
-    }
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        // products = new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values());
-        return inflater.inflate(R.layout.fragment_add_product_to_inventory, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        productRecycleView = view.findViewById(R.id.product_list);
-        addProduct = view.findViewById(R.id.request_new_product);
-        tvTotalCount = view.findViewById(R.id.category_count);
-        addProduct.setOnClickListener(this);
-        updateProductList();
-        productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        setSearchView(view);
-        view.findViewById(R.id.sort).setOnClickListener(param -> {
-            mListener.applyFilter(this, REQUEST_FILTERED_DATA_ID);
-        });
-    }
-
-    private void updateList(ArrayList<ProductResponse> products) {
-        try {
-            tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), products.size()));
-            productAdapter = new ProductAdapter(products, view1 -> {
-                ProductResponse product = (ProductResponse) view1.getTag();
-                mListener.updateProduct(product, false);
-            }, 3);
-            productRecycleView.setAdapter(productAdapter);
-
-
-        } catch (Resources.NotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        mListener.requestToCreateProduct();
-    }
-    protected void setSearchView(@NonNull View view) {
-        if(null != productAdapter) {
-            searchView = view.findViewById(R.id.searchView);
-            searchView.setFocusable(false);
-            searchView.setIconified(false);
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    productAdapter.getFilter().filter(query);
-                    return false;
+            mProduct = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
+            if(null == mProduct) {
+                mClonedProduct = new ProductResponse();
+                mProduct = new ProductResponse();
+            } else {
+                try {
+                    mClonedProduct = new ProductResponse(mProduct);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showDialog("", e.getMessage());
                 }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    productAdapter.getFilter().filter(newText);
-                    return false;
-                }
-            });
-        }
-    }
-
-
-    public void updateProductList() {
-        progressDialog.show();
-        ProductService productService = RetrofitClientInstance.getRetrofitInstance().create(ProductService.class);
-        productService.getAPIProducts("0", "100").enqueue(new Callback<APIProductListResponse>() {
-            @Override
-            public void onResponse(Call<APIProductListResponse> call, Response<APIProductListResponse> response) {
-                if(response.isSuccessful()) {
-                    APIProductListResponse data = response.body();
-                    if(data.getStatus().equals(Utils.SUCCESS)) {
-                        products = data.getProductList();
-                        updateList(products);
-                    } else {
-                        showDialog("", data.getMsg());
-                    }
-                }
-                progressDialog.dismiss();
             }
+            isEdit = getArguments().getBoolean(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+
+        getUnitMeasuresFromAPI();
+        getBrandFromAPI();
+//        availableUnits1.add("1 KG");
+//        availableUnits1.add("2 KG");
+//        availableUnits1.add("5 KG");
+//        availableUnits1.add("10 KG");
+//        availableUnits1.add("25 KG");
+        return inflater.inflate(R.layout.fragment_edit_product, container, false);
+    }
+
+    private void getBrandFromAPI() {
+        apiService.getAPIBrandList().enqueue(new Callback<APIBrandListResponse>() {
             @Override
-            public void onFailure(Call<APIProductListResponse> call, Throwable t) {
-                progressDialog.dismiss();
+            public void onResponse(Call<APIBrandListResponse> call, Response<APIBrandListResponse> response) {
+                if(response.isSuccessful()) {
+                    APIBrandListResponse data = response.body();
+                    assert data != null;
+                    apiBrandResponses = data.getArrayList();
+                    for ( APIBrandResponse apiBrandResponse: apiBrandResponses) {
+                        availableBrands.add(apiBrandResponse.getBrandName());
+                    }
+                    customStringAdapter = new CustomStringAdapter(availableBrands, getActivity());
+                    productBrand.setAdapter(customStringAdapter);
+                } else {
+                    showDialog("", response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<APIBrandListResponse> call, Throwable t) {
                 showDialog("", t.getMessage());
             }
         });
     }
 
+    private void getUnitMeasuresFromAPI() {
+        apiService.getAPIUnitMeasureList().enqueue(new Callback<APIUnitMeasureListResponse>() {
+            @Override
+            public void onResponse(Call<APIUnitMeasureListResponse> call, Response<APIUnitMeasureListResponse> response) {
+                if(response.isSuccessful()) {
+                    APIUnitMeasureListResponse data = response.body();
+                    assert data != null;
+                    unitMeasurements = data.getArrayList();
+
+                } else {
+                    showDialog("", response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<APIUnitMeasureListResponse> call, Throwable t) {
+                showDialog("", t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        chooseCategory = view.findViewById(R.id.choose_category);
+        chooseSubCategory = view.findViewById(R.id.choose_sub_category);
+        chooseProduct = view.findViewById(R.id.choose_product);
+        productBrand = view.findViewById(R.id.product_brand);
+        productBrand.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                mClonedProduct.setBrandName(apiBrandResponses.get(pos).getBrandName());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        productRegionalName = view.findViewById(R.id.product_regional_name);
+        productDescription = view.findViewById(R.id.product_description);
+        expiry = view.findViewById(R.id.expiry);
+        deliveryDays = view.findViewById(R.id.delivery_days);
+        recyclerView = view.findViewById(R.id.unit_base);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        // addUnit = view.findViewById(R.id.add_unit);
+        AppCompatButton save = (AppCompatButton)view.findViewById(R.id.save);
+        if (isEdit) {
+            save.setText(getString(R.string.update));
+            save.setOnClickListener(this);
+        } else {
+            save.setText(getString(R.string.save));
+            save.setOnClickListener(this);
+        }
+        view.findViewById(R.id.add_unit).setOnClickListener(this);
+
+        updateUI();
+    }
+
+    private void updateUI() {
+        // chooseCategory.setText(mClonedProduct.getCategory());
+        if (null != mClonedProduct) {
+            chooseSubCategory.setText(mClonedProduct.getSubCategory());
+            chooseProduct.setText(mClonedProduct.getName());
+            // productBrand.setText(mClonedProduct.getBrand());
+            productRegionalName.setText(mClonedProduct.getRegionalName());
+            productDescription.setText(mClonedProduct.getDescription());
+            expiry.setText(mClonedProduct.getExpiryDate());
+            deliveryDays.setText(mClonedProduct.getDeliveryInDays());
+            updateList();
+        }
+
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.add_unit) {
+            mListener.addUnit(new UnitObject(unitMeasurements), this, INT_ADD_UNIT);
+        } else if (view.getId() == R.id.save) {
+            if( Objects.requireNonNull(expiry.getText()).toString().length()<=2) {
+                showDialog("", "Please enter valid expiry date.");
+                return;
+            } else if( Objects.requireNonNull(productRegionalName.getText()).toString().length()<=1) {
+                showDialog("", "Please enter valid Regional name.");
+                return;
+            } /*else if( Objects.requireNonNull(deliveryDays.getText()).toString().length()<=0) {
+                showDialog("", "Please enter valid days to delivery.");
+                return;
+            } */ else if( Objects.requireNonNull(productDescription.getText()).toString().length()<=1) {
+                showDialog("", "Please enter valid product description");
+                return;
+            }  else if( Objects.requireNonNull(mClonedProduct).getUnitObjects().size()<1) {
+                showDialog("", "Please add at least one unit");
+                return;
+            }
+
+            mClonedProduct.setExpiryDate(expiry.getText().toString());
+            mClonedProduct.setRegionalName(productRegionalName.getText().toString());
+            mClonedProduct.setDeliveryInDays(deliveryDays.getText().toString());
+            mClonedProduct.setDescription(productDescription.getText().toString());
+
+            if (isEdit) {
+                /*Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).remove(mProduct.getProductID());
+                Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);
+                Integer index = inventoryViewModel.getSelectedProduct().getValue();
+                inventoryViewModel.getSelectedProduct().setValue(index);*/
+
+            } else {
+
+                VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
+                // Gson gson = new Gson();
+                Gson gson = new GsonBuilder().create();
+                JsonElement jsonElement = gson.toJsonTree(mClonedProduct);
+                JsonObject jsonObject = (JsonObject) jsonElement;
+                // JsonObject product = gson.toJson(mClonedProduct);
+                // JsonObject jsonObject = new JsonObject();
+                vendorInventoryService.addProductToInventory(jsonObject).enqueue(new Callback<AddProductToInventoryResponse>() {
+                    @Override
+                    public void onResponse(Call<AddProductToInventoryResponse> call, Response<AddProductToInventoryResponse> response) {
+                        if(response.isSuccessful()) {
+                            AddProductToInventoryResponse data = response.body();
+                            if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                showDialog("", response.message());
+                            } else {
+                                showDialog("", data.getMsg(), (dialog, index)-> {
+                                    Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);
+                                    Objects.requireNonNull(getActivity()).onBackPressed();
+                                });
+                            }
+                        } else {
+                            showDialog("", response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AddProductToInventoryResponse> call, Throwable t) {
+                        showDialog("", t.getMessage());
+                    }
+                });
+
+            }
+            // showToast();
+            // mListener.showProductPreview((Product) view.getTag());
+        }
+    }
+
+    private void showToast() {
+        showDialog("", mClonedProduct.getName() + " is successfully added to your Inventory.", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Objects.requireNonNull(getActivity()).onBackPressed();
+            }
+        });
+        // Toast.makeText(getContext(), getString(R.string.item_added), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == INT_ADD_UNIT) {
+            if (resultCode == Activity.RESULT_OK) {
+                Bundle bundle = data.getExtras();
+                assert bundle != null;
+                UnitObject unitData = (UnitObject) bundle.getSerializable(UNIT_VALUE);
+                mClonedProduct.getUnitObjects().add(unitData);
+                updateList();
+            } /*else if(requestCode == INT_UPDATE_UNIT) {
+                Bundle bundle = data.getExtras();
+                assert bundle != null;
+                UnitObject unitData = (UnitObject) bundle.getSerializable(UNIT_VALUE);
+                mClonedProduct.getUnitObjects().add(unitData);
+            }*/
+        }
+    }
+
+    private void updateList() {
+        ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(mClonedProduct.getUnitObjects(), view -> {
+            UnitObject unitObject = (UnitObject) view.getTag();
+            mClonedProduct.getUnitObjects().remove(unitObject);
+            updateList();
+        }, true);
+        recyclerView.setAdapter(unitBaseAdapter);
+    }
+    
 }

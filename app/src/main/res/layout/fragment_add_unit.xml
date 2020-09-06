@@ -18,16 +18,48 @@ android:padding="16dp">
         android:drawableStart="@drawable/user"
         android:hint="@string/units"
         style="@style/upload_product_item_field"/>-->
-    <Spinner
+    <!--<Spinner
         android:id="@+id/unit"
-        style="@style/upload_product_item_field"/>
+        style="@style/upload_product_item_field"/>-->
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/value_of_unit"
-        android:drawableStart="@drawable/user"
-        android:hint="@string/price"
-        style="@style/upload_product_item_field"
-        android:inputType="number"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Spinner
+            android:id="@+id/unit"
+            android:layout_width="0dp"
+            android:layout_weight="1.30"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            style="@style/upload_product_item_field"
+            android:layout_marginEnd="0dp"
+            android:paddingEnd="0dp"
+            android:background="@drawable/curve_left_bg"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/value_of_unit"
+            android:layout_width="0dp"
+            android:layout_weight=".70"
+            android:layout_height="wrap_content"
+            android:hint="@string/value_of_unit"
+            android:minHeight="50dp"
+            style="@style/upload_product_item_field"
+            android:inputType="numberDecimal"
+            android:background="@drawable/no_curve_bg"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/display_unit"
+            android:layout_width="0dp"
+            android:layout_weight="1.4"
+            android:layout_height="wrap_content"
+            android:hint="@string/display_unit"
+            android:minHeight="50dp"
+            style="@style/upload_product_item_field"
+            android:background="@drawable/curve_right_bg"/>
+
+    </LinearLayout>
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/price"
         android:drawableStart="@drawable/user"
@@ -49,7 +81,7 @@ android:padding="16dp">
         android:inputType="number"
         style="@style/upload_product_item_field"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/quantity"
         android:drawableStart="@drawable/user"
         android:hint="@string/quantity"
@@ -58,20 +90,34 @@ android:padding="16dp">
 
 
     <Spinner
-        android:id="@+id/unit_state"
+        android:id="@+id/product_status"
         style="@style/upload_product_item_field"/>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_marginTop="16dp"
-        android:id="@+id/save"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:fontFamily="@font/roboto_regular"
-        android:background="@drawable/product_edit"/>
-
-
-
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginTop="16dp"
+            android:id="@+id/cancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_regular"
+            android:background="@drawable/product_delete"/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:id="@+id/save"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto_regular"
+            android:background="@drawable/product_edit"/>
+    </LinearLayout>
 </LinearLayout>

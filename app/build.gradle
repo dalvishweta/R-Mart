@@ -17,23 +17,31 @@ android {
         buildConfigField('String', 'CHANGE_PASSWORD_OTP', '"changepassword"')
         buildConfigField('String', 'CHANGE_PASSWORD', '"changepassword/update"')
         buildConfigField("String", "VALIDATE_OTP", '"otpcheck"')
-        buildConfigField("String", "VALIDATE_OTP", '"otpcheck"')
         buildConfigField("String", 'RESEND_OTP', '"Otpcheck/resendotp"')
+        buildConfigField("String", "REGISTRATION", '"reg"')
+        buildConfigField("String", "LOGIN", '"login"')
+
+
 
         /* Profile */
+
+        buildConfigField('String', 'PROFILE_UPDATE', '"login/updateprofile"')
+        buildConfigField('String', 'API_PRODUCT_LIST', '"lib/product/product_list"')
+        buildConfigField("String", 'UPDATE_PROFILE', '"updateprofile"')
 
         buildConfigField("String", 'ADD_ADDRESS', '"updateprofile/addAddress"')
         buildConfigField("String", 'UPDATE_ADDRESS', '"updateprofile/updateAddress"')
         buildConfigField("String", 'DELETE_ADDRESS', '"updateprofile/deleteAddress"')
-        buildConfigField("String", 'UPDATE_PROFILE', '"updateprofile"')
 
-        /*/index_post?roll=2&full_name=ffff&last_name=lllll&email=v78557@v.com&mobile_number=12555555&password=1234556*/
-        buildConfigField("String", "REGISTRATION", '"reg"')
-        buildConfigField("String", "LOGIN", '"login"')
-        buildConfigField('String', 'PROFILE_UPDATE', '"login/updateprofile"')
-        buildConfigField('String', 'API_PRODUCT_LIST', '"lib/product/product_list"')
+        /*API Service*/
+        buildConfigField("String", 'API_UNITIES', '"Unit"')
+        buildConfigField("String", 'API_STOCKE', '"Stock"')
+        buildConfigField("String", 'API_BRANDS', '"Brand"')
+        buildConfigField("String", 'API_CATEGORIES', '"Categories"')
 
-        build
+        /*Vendor inventory services*/
+
+        buildConfigField("String", 'VENDOR_INVENTORY_ADD_PRODUCT', '"vendor/product/add_product"')
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {

@@ -18,7 +18,7 @@ import com.rmart.profile.model.MyProfile;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class AddProductInAPI extends BaseInventoryFragment implements View.OnClickListener {
+public class AddProductToAPI extends BaseInventoryFragment implements View.OnClickListener {
 
     public static final int REQUEST_FILTERED_DATA_ID = 102;
     private static final String ARG_PARAM1 = "param1";
@@ -27,12 +27,12 @@ public class AddProductInAPI extends BaseInventoryFragment implements View.OnCli
     private String mParam1;
     private String mParam2;
     Product product;
-    public AddProductInAPI() {
+    public AddProductToAPI() {
         // Required empty public constructor
     }
 
-    public static AddProductInAPI newInstance(String param1, String param2) {
-        AddProductInAPI fragment = new AddProductInAPI();
+    public static AddProductToAPI newInstance(String param1, String param2) {
+        AddProductToAPI fragment = new AddProductToAPI();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

@@ -13,13 +13,11 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.rmart.R;
-import com.rmart.inventory.adapters.UnitAdapter;
+import com.rmart.inventory.adapters.CustomStringAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.LoginResponse;
-import com.rmart.utilits.pojos.ProfileResponse;
-import com.rmart.utilits.pojos.UpdateProfileResponse;
 import com.rmart.utilits.services.ProfileService;
 
 import java.util.ArrayList;
@@ -106,8 +104,8 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
             }
         });
 
-        UnitAdapter unitAdapter = new UnitAdapter(strings, this.getContext());
-        spinner.setAdapter(unitAdapter);
+        CustomStringAdapter customStringAdapter = new CustomStringAdapter(strings, this.getContext());
+        spinner.setAdapter(customStringAdapter);
         view.findViewById(R.id.submit).setOnClickListener(this);
 
         updateUI(Objects.requireNonNull(MyProfile.getInstance()));

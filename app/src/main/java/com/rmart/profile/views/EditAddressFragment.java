@@ -74,7 +74,6 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRetailerView = view.findViewById(R.id.retailer_view);
-
         tvShopName = view.findViewById(R.id.shop_name);
         tvPANNumber = view.findViewById(R.id.pan_number);
         tvGSTNumber = view.findViewById(R.id.gst_number);
@@ -112,7 +111,9 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         }
         if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
             mRetailerView.setVisibility(View.VISIBLE);
-            tvStreetAddress.setText(myAddress.getAddress());
+            if (null != myAddress) {
+                tvStreetAddress.setText(myAddress.getAddress());
+            }
         } else if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
             mRetailerView.setVisibility(View.GONE);
         } else {

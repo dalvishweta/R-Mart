@@ -61,15 +61,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>  imp
         ProductResponse product = filteredListData.get(position);
         holder.tvItemTitle.setText(product.getName());
         holder.itemView.setTag(product);
-        if (product.getUnitObjects().size() >0) {
+        if(null != product.getUnitObjects() && product.getUnitObjects().size()>1) {
+            holder.availableUnits. setVisibility(View.VISIBLE);
+            holder.availableUnits. setText(String.format(holder.itemView.getContext().getString(R.string.available_other_sizes), product.getUnitObjects().size()+""));
+
             holder.tvActual.setText(Html.fromHtml("<strike> " + product.getUnitObjects().get(0).getActualCost()+" </strike>"));
             holder.tvFinalCost.setText(product.getUnitObjects().get(0).getFinalCost());
             holder.tvUnitValue.setText(product.getUnitObjects().get(0).getUnitValue());
             holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer), product.getUnitObjects().get(0).getDiscount()+"%"));
-        }
-        if(product.getUnitObjects().size()>1) {
-            holder.availableUnits. setVisibility(View.VISIBLE);
-            holder.availableUnits. setText(String.format(holder.itemView.getContext().getString(R.string.available_other_sizes), product.getUnitObjects().size()+""));
+
         } else {
             holder.availableUnits. setVisibility(View.GONE);
         }

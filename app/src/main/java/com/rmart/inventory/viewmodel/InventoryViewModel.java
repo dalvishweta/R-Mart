@@ -3,19 +3,12 @@ package com.rmart.inventory.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.rmart.utilits.RetrofitClientInstance;
-import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.APIProductListResponse;
+import com.rmart.utilits.pojos.APIStockResponse;
 import com.rmart.utilits.pojos.ProductResponse;
-import com.rmart.utilits.services.ProductService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class InventoryViewModel extends ViewModel {
 
@@ -30,6 +23,7 @@ public class InventoryViewModel extends ViewModel {
     MutableLiveData<Boolean> showLoadingDialog;
     MutableLiveData<String> showText;
     MutableLiveData<Integer> selectedProduct;
+    MutableLiveData<ArrayList<APIStockResponse>> apiStocks;
 
     public InventoryViewModel() {
         isProductView = new MutableLiveData<>(PRODUCT);
@@ -38,6 +32,15 @@ public class InventoryViewModel extends ViewModel {
         subCategories = new MutableLiveData<>(new HashMap<>());
         selectedProduct = new MutableLiveData<>(-1);
         showLoadingDialog = new MutableLiveData<>(false);
+        apiStocks = new MutableLiveData<>();
+    }
+
+    public MutableLiveData<ArrayList<APIStockResponse>> getApiStocks() {
+        return apiStocks;
+    }
+
+    public void setApiStocks(ArrayList<APIStockResponse> apiStocks) {
+        this.apiStocks.setValue(apiStocks);
     }
 
     public MutableLiveData<Integer> getSelectedProduct() {

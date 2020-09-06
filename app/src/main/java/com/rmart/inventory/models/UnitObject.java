@@ -1,32 +1,43 @@
 package com.rmart.inventory.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.rmart.utilits.pojos.APIUnitMeasureResponse;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class UnitObject implements Serializable {
-    ArrayList<String> availableUnits;
+    ArrayList<APIUnitMeasureResponse> availableUnits;
     int minDiscount;
     int maxDiscount;
 
     int id;
     String unitType;
-    String unitValue;
+    String unitMeasure;
+    String unitValue = "";
+
+    @SerializedName("unit_name")
+    @Expose
+    String displayUnitValue;
+
+    @SerializedName("selling_price")
+    @Expose
     String finalCost;
+    @SerializedName("unit_price")
+    @Expose
     String actualCost;
+    @SerializedName("discount")
+    @Expose
     String discount;
     boolean isActive;
+    String productStatus;
 
-    public UnitObject(int k) {
+    @SerializedName("stock_id")
+    @Expose
+    String productStatusID;
 
-        id = 101;
-        unitType = "KG";
-        unitValue = k+"";
-        finalCost = "800Rs";
-        actualCost = "1000Rs";
-        discount = "20";
-        isActive = true;
-    }
-    public UnitObject(ArrayList<String> availableUnits1) {
+    public UnitObject(ArrayList<APIUnitMeasureResponse> availableUnits1) {
         this.availableUnits = availableUnits1;
         id = 101;
         unitType = "";
@@ -38,6 +49,39 @@ public class UnitObject implements Serializable {
     }
     public UnitObject() {
     }
+
+    public String getProductStatusID() {
+        return productStatusID;
+    }
+
+    public void setProductStatusID(String productStatusID) {
+        this.productStatusID = productStatusID;
+    }
+
+    public String getUnitMeasure() {
+        return unitMeasure;
+    }
+
+    public void setUnitMeasure(String unitMeasure) {
+        this.unitMeasure = unitMeasure;
+    }
+
+    public String getDisplayUnitValue() {
+        return displayUnitValue;
+    }
+
+    public void setDisplayUnitValue(String displayUnitValue) {
+        this.displayUnitValue = displayUnitValue;
+    }
+
+    public String getProductStatus() {
+        return productStatus;
+    }
+
+    public void setProductStatus(String productStatus) {
+        this.productStatus = productStatus;
+    }
+
     public int getId() {
         return id;
     }
@@ -94,14 +138,6 @@ public class UnitObject implements Serializable {
         isActive = active;
     }
 
-    public ArrayList<String> getAvailableUnits() {
-        return availableUnits;
-    }
-
-    public void setAvailableUnits(ArrayList<String> availableUnits) {
-        this.availableUnits = availableUnits;
-    }
-
     public int getMinDiscount() {
         return minDiscount;
     }
@@ -116,5 +152,13 @@ public class UnitObject implements Serializable {
 
     public void setMaxDiscount(int maxDiscount) {
         this.maxDiscount = maxDiscount;
+    }
+
+    public ArrayList<APIUnitMeasureResponse> getAvailableUnits() {
+        return availableUnits;
+    }
+
+    public void setAvailableUnits(ArrayList<APIUnitMeasureResponse> availableUnits) {
+        this.availableUnits = availableUnits;
     }
 }

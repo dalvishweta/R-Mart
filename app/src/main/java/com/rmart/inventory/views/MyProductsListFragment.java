@@ -19,11 +19,21 @@ import com.rmart.R;
 import com.rmart.inventory.adapters.ProductAdapter;
 import com.rmart.inventory.models.Product;
 import com.rmart.inventory.viewmodel.InventoryViewModel;
+import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.APIProductListResponse;
+import com.rmart.utilits.pojos.APIStockListResponse;
+import com.rmart.utilits.pojos.APIStockResponse;
 import com.rmart.utilits.pojos.ProductResponse;
+import com.rmart.utilits.services.APIService;
 
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MyProductsListFragment extends BaseInventoryFragment implements View.OnClickListener {
 
@@ -37,6 +47,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     ProductAdapter productAdapter;
     private AppCompatTextView tvTotalCount;
     LinearLayout addProduct;
+    PopupMenu popup;
     SearchView searchView;
     public MyProductsListFragment() {
         // Required empty public constructor
@@ -82,6 +93,36 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         });
         return inflater.inflate(R.layout.fragment_inventory_product_list, container, false);
     }
+
+    public void getStockList() {
+        progressDialog.show();
+        APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
+        apiService.getAPIStockList().enqueue(new Callback<APIStockListResponse>() {
+            @Override
+            public void onResponse(Call<APIStockListResponse> call, Response<APIStockListResponse> response) {
+                if(response.isSuccessful()) {
+                    APIStockListResponse data = response.body();
+                    assert data != null;
+                    inventoryViewModel.setApiStocks(data.getArrayList());
+                    ArrayList<APIStockResponse> apiStocks = inventoryViewModel.getApiStocks().getValue();
+                    assert apiStocks != null;
+                    for (APIStockResponse apiStockResponse : apiStocks) {
+                        popup.getMenu().add(apiStockResponse.getStockName());
+                    }
+
+                } else {
+                    showDialog("", response.message());
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<APIStockListResponse> call, Throwable t) {
+                progressDialog.dismiss();
+            }
+        });
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -89,13 +130,17 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         addProduct = view.findViewById(R.id.add_product);
         tvTotalCount = view.findViewById(R.id.category_count);
         addProduct.setOnClickListener(this);
+
+        popup = new PopupMenu(Objects.requireNonNull(getActivity()), view.findViewById(R.id.sort));
+        getStockList();
+        // Inflating the Popup using xml file
+        // popup.getMenuInflater().inflate(R.menu.inventory_view_products, popup.getMenu());
+
         view.findViewById(R.id.sort).setOnClickListener(param -> {
-            PopupMenu popup = new PopupMenu(Objects.requireNonNull(getActivity()), param);
-            //Inflating the Popup using xml file
-            popup.getMenuInflater().inflate(R.menu.inventory_view_products, popup.getMenu());
-            //registering popup with OnMenuItemClickListener
+
+            // registering popup with OnMenuItemClickListener
             popup.setOnMenuItemClickListener(item -> {
-                if(item.getItemId() == R.id.sort_category) {
+               /* if(item.getItemId() == R.id.sort_category) {
                     inventoryViewModel.setIsProductView(InventoryViewModel.CATEGORY);
                     mListener.goToHome();
                 } else if(item.getItemId() == R.id.sort_sub_category) {
@@ -104,11 +149,11 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                 } else if(item.getItemId() == R.id.sort_product) {
                     inventoryViewModel.setIsProductView(InventoryViewModel.PRODUCT);
                     mListener.goToHome();
-                }
+                }*/
                 return true;
             });
 
-            popup.show(); //showing popup menu
+            popup.show(); // showing popup menu
         });
         productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         updateList(new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values()));

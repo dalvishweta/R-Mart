@@ -51,17 +51,17 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void updateProduct(ProductResponse product, boolean isEdit) {
-        replaceFragment(EditProductFragment.newInstance(product,isEdit), "UploadProductFragment",true);
+        replaceFragment(AddProductToInventory.newInstance(product,isEdit), "UploadProductFragment",true);
     }
 
     @Override
     public void addProductToInventory() {
-        replaceFragment(AddProductToInventory.newInstance("",""), "AddProductToInventory",true);
+        replaceFragment(SelectProductFromInventory.newInstance("",""), "AddProductToInventory",true);
     }
 
     @Override
     public void requestToCreateProduct() {
-        replaceFragment(AddProductInAPI.newInstance("",""), "AddProductInAPI",true);
+        replaceFragment(AddProductToAPI.newInstance("",""), "AddProductInAPI",true);
     }
 
     @Override

@@ -10,13 +10,14 @@ import android.widget.BaseAdapter;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.rmart.R;
+import com.rmart.utilits.pojos.APIUnitMeasureResponse;
 
 import java.util.ArrayList;
 
-public class UnitAdapter extends BaseAdapter {
+public class CustomStringAdapter extends BaseAdapter {
     ArrayList<String> units;
     LayoutInflater inflter;
-    public UnitAdapter(ArrayList<String> units, Context context) {
+    public CustomStringAdapter(ArrayList<String> units, Context context) {
         this.units = units;
         inflter = (LayoutInflater.from(context));
     }

@@ -14,9 +14,21 @@ public class APIProductListResponse extends BaseResponse {
     @Expose
     String endIndex;
 
+    @SerializedName("product_image_path")
+    @Expose
+    String productImagePath;
+
     @SerializedName("data")
     @Expose
     ArrayList<ProductResponse> productList;
+
+    public String getProductImagePath() {
+        return productImagePath;
+    }
+
+    public void setProductImagePath(String productImagePath) {
+        this.productImagePath = productImagePath;
+    }
 
     public String getStartIndex() {
         return startIndex;
