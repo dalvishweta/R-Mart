@@ -101,7 +101,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         ImageAdapter imageAdapter = new ImageAdapter(Objects.requireNonNull(getContext()));
         viewPager.setAdapter(imageAdapter);
         tvProductName.setText(product.getName());
-        tvDeliveryInDays.setText(String.format(getString(R.string.delivery_in_days), product.getDeliveryInDays()));
+        tvDeliveryInDays.setText(String.format(getString(R.string.delivery_in_days), product.getDelivery_days()));
         ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(product.getUnitObjects(), view -> {
 
         }, false);
@@ -109,6 +109,6 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
 
         tvProductDescription.setText(product.getDescription());
         tvProductRegionalName.setText(product.getRegionalName());
-        tvProductExpiry.setText(product.getExpiryDate());
+        tvProductExpiry.setText(product.getExpiry_date());
     }
 }

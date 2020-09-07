@@ -207,8 +207,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             // productBrand.setText(mClonedProduct.getBrand());
             productRegionalName.setText(mClonedProduct.getRegionalName());
             productDescription.setText(mClonedProduct.getDescription());
-            expiry.setText(mClonedProduct.getExpiryDate());
-            deliveryDays.setText(mClonedProduct.getDeliveryInDays());
+            expiry.setText(mClonedProduct.getExpiry_date());
+            deliveryDays.setText(mClonedProduct.getDelivery_days());
             updateList();
         }
 
@@ -237,9 +237,9 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 return;
             }
 
-            mClonedProduct.setExpiryDate(expiry.getText().toString());
+            mClonedProduct.setExpiry_date(expiry.getText().toString());
             mClonedProduct.setRegionalName(productRegionalName.getText().toString());
-            mClonedProduct.setDeliveryInDays(deliveryDays.getText().toString());
+            mClonedProduct.setDelivery_days(deliveryDays.getText().toString());
             mClonedProduct.setDescription(productDescription.getText().toString());
 
             if (isEdit) {

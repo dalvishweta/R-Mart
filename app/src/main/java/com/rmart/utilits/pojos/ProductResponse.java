@@ -28,9 +28,6 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @Expose
     String categoryID;
 
-    String subCategory;
-    String brandName;
-
     @SerializedName("brand")
     @Expose
     String brandID;
@@ -43,12 +40,16 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @Expose
     String videoLInk;
 
-    String expiryDate;
-    String deliveryInDays;
-    ArrayList<String> images = new ArrayList<>();
     @SerializedName("units")
     @Expose
     ArrayList<UnitObject> unitObjects = new ArrayList<>();
+
+
+    String subCategory;
+    String brandName;
+    String expiry_date;
+    String delivery_days;
+    ArrayList<String> images = new ArrayList<>();
 
     public ProductResponse() {
 
@@ -66,8 +67,8 @@ public class ProductResponse extends BaseResponse implements Serializable {
         brandName = product.brandName;
         regionalName = product.regionalName;
         videoLInk = product.videoLInk;
-        expiryDate = product.expiryDate;
-        deliveryInDays = product.deliveryInDays;
+        expiry_date = product.expiry_date;
+        delivery_days = product.delivery_days;
         images = new ArrayList<>();
         images.addAll(product.getImages());
         unitObjects = new ArrayList<>();
@@ -154,20 +155,20 @@ public class ProductResponse extends BaseResponse implements Serializable {
         this.videoLInk = videoLInk;
     }
 
-    public String getExpiryDate() {
-        return expiryDate;
+    public String getExpiry_date() {
+        return expiry_date;
     }
 
-    public void setExpiryDate(String expiryDate) {
-        this.expiryDate = expiryDate;
+    public void setExpiry_date(String expiry_date) {
+        this.expiry_date = expiry_date;
     }
 
-    public String getDeliveryInDays() {
-        return deliveryInDays;
+    public String getDelivery_days() {
+        return delivery_days;
     }
 
-    public void setDeliveryInDays(String deliveryInDays) {
-        this.deliveryInDays = deliveryInDays;
+    public void setDelivery_days(String delivery_days) {
+        this.delivery_days = delivery_days;
     }
 
     public ArrayList<String> getImages() {
