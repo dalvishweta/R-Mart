@@ -44,4 +44,6 @@
     <color name="blue_color">#1F59BC</color>
     <color name="change_text_color">#4A148C</color>
     <color name="grey_color_two">#676767</color>
+    <color name="green">#0AC811</color>
+    <color name="sky_blue">#0099FF</color>
 </resources>

@@ -5,4 +5,5 @@
     <string name="app_name">Retailer Rokad Mart </string>
     <string name="role_id">4</string>
     <string name="error_role_login">You are trying to login in Retailer Application. Please check your credentials.</string>
+    <string name="preference_file_key">retailer</string>
 </resources>

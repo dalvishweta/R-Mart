@@ -31,6 +31,10 @@ public class Utils {
     public static final String CUSTOMER_ID = "5";
     public static final String DELIVERY_ID = "6";
 
+    public static final String RETAILER = "retailer";
+    public static final String CUSTOMER = "customer";
+    public static final String DELIVERY = "delivery";
+
     public static final String CLIENT_ID = "2";
     public static boolean isValidMobile(String phone) {
         String regex = "[0-9]+";
