@@ -32,7 +32,6 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
             addFragment(ViewMyProfileFragment.newInstance("", ""), "ViewMyProfileFragment", false);
         }
 
-
         // MyProfileViewModel myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
     }
 

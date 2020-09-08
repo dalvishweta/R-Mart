@@ -173,4 +173,9 @@
     <string name="address_list_item">Rajesh Agarwal #405, Abc Towers, 1-2 33, \nGandhi Nagar, Mumbai\n 523987</string>
     <string name="value_of_unit">Value</string>
     <string name="display_unit">1KG</string>
+    <string name="no_information_available">No Information Available</string>
+    <string name="view_address">View Address</string>
+    <string name="search_for_shop">Search For shop</string>
+    <string name="showing_results_based_on">Showing Results based on</string>
+    <string name="change">Change</string>
 </resources>

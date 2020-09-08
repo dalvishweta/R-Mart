@@ -1,7 +1,7 @@
 package com.rmart.authentication.views;
 
 import android.os.Bundle;
-
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,11 +35,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     private static final String ARG_PARAM2 = "param2";
     public String mMobileNumber;
 
-    private String mParam1;
-    private String mParam2;
     private String mPassword;
-    private String mDeviceKey;
-    AppCompatEditText etPassword, etMobileNumber;
+    private AppCompatEditText etPassword, etMobileNumber;
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -51,15 +48,6 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -77,29 +65,23 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
         view.findViewById(R.id.login).setOnClickListener(this);
         view.findViewById(R.id.register).setOnClickListener(this);
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
+
+        etMobileNumber.setText("8686378737");
+        etPassword.setText("12345");
     }
 
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.login) {
-            // mListener.validateMailOTP();
-            mMobileNumber = Objects.requireNonNull(etMobileNumber.getText()).toString();
+            mMobileNumber = Objects.requireNonNull(etMobileNumber.getText()).toString().trim();
             mPassword = Objects.requireNonNull(etPassword.getText()).toString();
-            if(mMobileNumber.length()<=0 || !Utils.isValidMobile(mMobileNumber)) {
+            if (TextUtils.isEmpty(mMobileNumber) || !Utils.isValidMobile(mMobileNumber)) {
                 showDialog("", getString(R.string.error_mobile));
-            } else if(mPassword.length()<=0) {
+            } else if (TextUtils.isEmpty(mPassword)) {
                 showDialog("", getString(R.string.error_password));
             } else {
                 checkCredentials();
             }
-            /*
-                MyProfile.getInstance();
-                if (MyProfile.getInstance().getMyLocations() == null || MyProfile.getInstance().getMyLocations().size() <= 0) {
-                    mListener.goToProfileActivity();
-                } else {
-                    mListener.goToHomeActivity();
-                }
-            */
         } else if (view.getId() == R.id.forgot_password) {
             mListener.goToForgotPassword();
         } else  {
@@ -108,80 +90,93 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     }
 
     private void checkCredentials() {
-        progressDialog.show();
-        AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-        // mPassword = "12345";
-        mDeviceKey = "deviceKey";
-        authenticationService.login(mDeviceKey, mMobileNumber, mPassword).enqueue(new Callback<LoginResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
-                if (response.isSuccessful()) {
-                    LoginResponse data = response.body();
-                    if (data != null) {
-                        if (data.getStatus().equalsIgnoreCase("success")) {
-                            if(data.getLoginData().getRoleID().equalsIgnoreCase(getString(R.string.role_id))) {
-                                try {
-                                    ProfileResponse profileResponse = data.getLoginData();
-                                    MyProfile.setInstance(profileResponse);
-                                    if (MyProfile.getInstance().getPrimaryAddressId() == null) {
+        if (NetworkUtility.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
+            // mPassword = "12345";
+            String mDeviceKey = "deviceKey";
+            authenticationService.login(mDeviceKey, mMobileNumber, mPassword).enqueue(new Callback<LoginResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
+                    if (response.isSuccessful()) {
+                        LoginResponse data = response.body();
+                        if (data != null) {
+                            if (data.getStatus().equalsIgnoreCase("success")) {
+                                if (data.getLoginData().getRoleID().equalsIgnoreCase(getString(R.string.role_id))) {
+                                    try {
+                                        ProfileResponse profileResponse = data.getLoginData();
+                                        MyProfile.setInstance(profileResponse);
+                                        /*if (MyProfile.getInstance().getPrimaryAddressId() == null) {
+                                            mListener.goToProfileActivity();
+                                        } else {
+                                            mListener.goToHomeActivity();
+                                        }*/
                                         mListener.goToProfileActivity();
-                                    } else {
-                                        mListener.goToHomeActivity();
+                                        Objects.requireNonNull(getActivity()).onBackPressed();
+                                    } catch (Exception e) {
+                                        showDialog(e.getMessage());
                                     }
-                                    Objects.requireNonNull(getActivity()).onBackPressed();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                } else {
+                                    showDialog("", getString(R.string.error_role_login));
                                 }
                             } else {
-                                showDialog("",getString(R.string.error_role_login));
+                                showDialog("", data.getMsg(), (dialogInterface, i) -> {
+                                    if (data.getMsg().contains("verify")) {
+                                        resendOTP();
+                                    } else if (data.getMsg().contains("mail_verify")) {
+                                        mListener.validateMailOTP();
+                                    }
+                                });
                             }
                         } else {
-                            showDialog("", data.getMsg(), (dialogInterface, i) -> {
-                                if (data.getMsg().contains("verify")) {
-                                    resendOTP();
-                                } else if (data.getMsg().contains("mail_verify")) {
-                                    mListener.validateMailOTP();
-                                }
-                            });
+                            showDialog(getString(R.string.no_information_available));
                         }
                     }
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
-                showDialog("", t.getMessage());
-                progressDialog.dismiss();
-            }
-        });
+                @Override
+                public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
+                    showDialog("", t.getMessage());
+                    progressDialog.dismiss();
+                }
+            });
+        } else {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+        }
     }
 
     private void resendOTP() {
-        progressDialog.show();
-        AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-        authenticationService.resendOTP(mMobileNumber).enqueue(new Callback<ResendOTPResponse>() {
-            @Override
-            public void onResponse(Call<ResendOTPResponse> call, Response<ResendOTPResponse> response) {
-                if(response.isSuccessful()) {
-                    ResendOTPResponse date = response.body();
-                    assert date != null;
-                    if(date.getStatus().equals("Success")) {
-                        showDialog("", date.getMsg()+" OTP: "+date.getOtp(),((dialogInterface, i) -> mListener.validateOTP(mMobileNumber)));
+        if (NetworkUtility.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
+            authenticationService.resendOTP(mMobileNumber).enqueue(new Callback<ResendOTPResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<ResendOTPResponse> call, @NotNull Response<ResendOTPResponse> response) {
+                    if (response.isSuccessful()) {
+                        ResendOTPResponse data = response.body();
+                        if (data != null) {
+                            if (data.getStatus().equals("Success")) {
+                                showDialog("", data.getMsg() + " OTP: " + data.getOtp(), ((dialogInterface, i) -> mListener.validateOTP(mMobileNumber)));
+                            } else {
+                                showDialog("", data.getMsg());
+                            }
+                        } else {
+                            showDialog(getString(R.string.no_information_available));
+                        }
                     } else {
-                        showDialog("", date.getMsg());
+                        showDialog("", response.message());
                     }
-                } else {
-                    showDialog("", response.message());
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
-            }
 
-            @Override
-            public void onFailure(Call<ResendOTPResponse> call, Throwable t) {
+                @Override
+                public void onFailure(@NotNull Call<ResendOTPResponse> call, @NotNull Throwable t) {
 
-            }
-        });
+                }
+            });
+        } else {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+        }
     }
-
 }

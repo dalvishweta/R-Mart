@@ -35,7 +35,6 @@ public class SplashScreen extends BaseActivity {
             }*/
             finish();
         },1000);
-
     }
 
     @Override

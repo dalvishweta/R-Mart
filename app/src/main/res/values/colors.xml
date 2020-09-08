@@ -41,4 +41,7 @@
     <color name="discount">#FF0000</color>
     <color name="submit_top">#FF9702</color>
     <color name="submit_bottom">#FF3A3A</color>
+    <color name="blue_color">#1F59BC</color>
+    <color name="change_text_color">#4A148C</color>
+    <color name="grey_color_two">#676767</color>
 </resources>

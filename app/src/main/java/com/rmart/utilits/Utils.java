@@ -1,5 +1,6 @@
 package com.rmart.utilits;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,6 +8,9 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -36,33 +40,23 @@ public class Utils {
         // return false
         Matcher m = p.matcher(phone);
 
-        if (m.matches() && (phone != null && !phone.isEmpty()) && phone.length() == 10
-                &&
-                (Integer.parseInt(String.valueOf(phone.charAt(0))) > 5 && Integer.parseInt(String.valueOf(phone.charAt(0))) < 10)) {
+        int i = Integer.parseInt(String.valueOf(phone.charAt(0)));
+        int i1 = Integer.parseInt(String.valueOf(phone.charAt(0)));
+        if (m.matches() && phone.length() == 10 && Integer.parseInt(String.valueOf(phone.charAt(0))) > 5 && Integer.parseInt(String.valueOf(phone.charAt(0))) < 10) {
             return android.util.Patterns.PHONE.matcher(phone).matches();
         }
         return false;
     }
 
-    public static boolean internetConnectionAvailable() {
-        InetAddress inetAddress = null;
-        try {
-            Future<InetAddress> future = Executors.newSingleThreadExecutor().submit(new Callable<InetAddress>() {
-                @Override
-                public InetAddress call() {
-                    try {
-                        return InetAddress.getByName("google.com");
-                    } catch (UnknownHostException e) {
-                        return null;
-                    }
-                }
-            });
-            inetAddress = future.get(3000, TimeUnit.MILLISECONDS);
-            future.cancel(true);
-        } catch (Exception e) {
-            Log.d("Exception", "Exception: " + e.getMessage());
+    public static Boolean isNetworkConnected(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        Network network = connectivityManager.getActiveNetwork();
+        NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
+        if(capabilities != null) {
+            return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(
+                    NetworkCapabilities.TRANSPORT_CELLULAR);
         }
-        return inetAddress!=null && !inetAddress.equals("");
+        return false;
     }
 
     public static boolean isValidWord(String word) {

@@ -5,4 +5,6 @@
     <color name="submit_top">#4A148C</color>
     <color name="submit_bottom">#4A148C</color>
     <color name="product_edit_color">#4A148C</color>
+    <color name="green">#0AC811</color>
+    <color name="sky_blue">#0099FF</color>
 </resources>

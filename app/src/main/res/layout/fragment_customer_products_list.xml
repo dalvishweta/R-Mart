@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/searchLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/grey_rounded_borders_bg"
+        android:minHeight="40dp">
+
+        <ImageView
+            android:id="@+id/iv_search_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="20dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/search" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_product_search_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@id/iv_search_field"
+            android:background="@android:color/transparent"
+            android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"
+            android:hint="@string/search_for_shop"
+            android:inputType="textCapSentences"
+            android:lines="1"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/blue_color"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/products_list_field"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/changeAddressLayout"
+        android:layout_below="@id/searchLayout"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <RelativeLayout
+        android:id="@+id/changeAddressLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:minHeight="60dp">
+
+        <Button
+            android:id="@+id/btn_change_field"
+            style="@style/text_style_medium_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:text="@string/change"
+            android:textAllCaps="false"
+            android:textColor="@color/change_text_color" />
+
+        <TextView
+            android:id="@+id/tv_showing_results_based_on"
+            style="@style/text_style_medium_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toStartOf="@id/btn_change_field"
+            android:gravity="center_vertical"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="@string/showing_results_based_on"
+            android:textColor="@color/grey_color_two" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_address_field"
+            style="@style/text_style_medium_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_showing_results_based_on"
+            android:layout_marginStart="10dp"
+            android:layout_toStartOf="@id/btn_change_field"
+            android:gravity="center_vertical"
+            android:minHeight="40dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp" />
+    </RelativeLayout>
+</RelativeLayout>

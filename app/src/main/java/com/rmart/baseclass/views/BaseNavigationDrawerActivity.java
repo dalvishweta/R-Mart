@@ -18,6 +18,8 @@ import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -31,13 +33,14 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         super.setContentView(R.layout.nav_view_content);
 
         dl = findViewById(R.id.drawer_layout);
-        t = new ActionBarDrawerToggle(this, dl,R.string.Open, R.string.Close);
+        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
 
         dl.addDrawerListener(t);
         t.syncState();
 
-        assert getSupportActionBar() != null;   //null check
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
+        }
 
         nv = findViewById(R.id.nav_view);
         findViewById(R.id.update_profile).setOnClickListener(this);
@@ -47,7 +50,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.logout).setOnClickListener(this);
 
         if (MyProfile.getInstance() != null) {
-            ((AppCompatTextView)findViewById(R.id.name)).setText(MyProfile.getInstance().getFirstName());
+            ((AppCompatTextView) findViewById(R.id.name)).setText(MyProfile.getInstance().getFirstName());
             ((AppCompatTextView)findViewById(R.id.mobile)).setText(MyProfile.getInstance().getMobileNumber());
             ((AppCompatTextView)findViewById(R.id.gamil)).setText(MyProfile.getInstance().getEmail());
         }
@@ -87,23 +90,26 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         }
         dl.closeDrawer(nv);
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(t.onOptionsItemSelected(item))
+    @Override
+    public boolean onOptionsItemSelected(@NotNull MenuItem item) {
+        if (t.onOptionsItemSelected(item))
             return true;
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
-    public void hideHamburgerIcon(){
-        assert getSupportActionBar() != null;   //null check
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);   //show back button
+    public void hideHamburgerIcon() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);   //hide back button
+        }
     }
     @Override
-    public void showHamburgerIcon(){
-        assert getSupportActionBar() != null;   //null check
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
+    public void showHamburgerIcon() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
+        }
     }
 
     @Override
