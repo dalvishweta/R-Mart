@@ -19,24 +19,24 @@ import com.rmart.R;
 /**
  * Created by Satya Seshu on 07/09/20.
  */
-public class CustomerProductsListFragment extends CustomerHomeFragment {
+public class VendorListViewFragment extends CustomerHomeFragment {
 
     private RecyclerView productsListField;
     private AppCompatTextView tvAddressField;
     private AppCompatEditText etProductsSearchField;
 
-    public static CustomerProductsListFragment getInstance() {
-        CustomerProductsListFragment customerProductsListFragment = new CustomerProductsListFragment();
+    public static VendorListViewFragment getInstance() {
+        VendorListViewFragment vendorListViewFragment = new VendorListViewFragment();
         Bundle extras = new Bundle();
-        customerProductsListFragment.setArguments(extras);
-        return customerProductsListFragment;
+        vendorListViewFragment.setArguments(extras);
+        return vendorListViewFragment;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_customer_products_list, container, false);
+        return inflater.inflate(R.layout.fragment_vendor_list_view, container, false);
     }
 
     @Override

@@ -11,4 +11,6 @@ public interface OnAuthenticationClickedListener {
     void validateMailOTP();
 
     void goToHomePage();
+
+    void goToCustomerHomeActivity();
 }

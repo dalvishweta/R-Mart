@@ -178,4 +178,6 @@
     <string name="search_for_shop">Search For shop</string>
     <string name="showing_results_based_on">Showing Results based on</string>
     <string name="change">Change</string>
+    <string name="uid">uid</string>
+    <string name="aid">aid</string>
 </resources>

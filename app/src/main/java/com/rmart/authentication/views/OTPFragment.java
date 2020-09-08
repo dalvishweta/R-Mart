@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
-import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.pojos.ResendOTPResponse;
 import com.rmart.utilits.pojos.ValidateOTP;

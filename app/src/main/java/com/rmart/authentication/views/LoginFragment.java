@@ -1,5 +1,7 @@
 package com.rmart.authentication.views;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -90,7 +92,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     }
 
     private void checkCredentials() {
-        if (NetworkUtility.isNetworkConnected(requireActivity())) {
+        if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
             // mPassword = "12345";
@@ -106,12 +108,25 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                     try {
                                         ProfileResponse profileResponse = data.getLoginData();
                                         MyProfile.setInstance(profileResponse);
-                                        /*if (MyProfile.getInstance().getPrimaryAddressId() == null) {
+                                        if (MyProfile.getInstance().getPrimaryAddressId() == null) {
                                             mListener.goToProfileActivity();
                                         } else {
-                                            mListener.goToHomeActivity();
-                                        }*/
-                                        mListener.goToProfileActivity();
+                                            switch (data.getLoginData().getRoleID()) {
+                                                case Utils.CUSTOMER_ID:
+                                                    mListener.goToCustomerHomeActivity();
+                                                    SharedPreferences sharedPref = Objects.requireNonNull(getActivity()).getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                                    editor.putString(getString(R.string.uid), Utils.CUSTOMER_ID);
+                                                    editor.apply();
+                                                    break;
+                                                case Utils.RETAILER_ID:
+                                                    mListener.goToHomeActivity();
+                                                    break;
+                                                case Utils.DELIVERY_ID:
+                                                    break;
+                                            }
+                                        }
+                                        // mListener.goToProfileActivity();
                                         Objects.requireNonNull(getActivity()).onBackPressed();
                                     } catch (Exception e) {
                                         showDialog(e.getMessage());
@@ -147,7 +162,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     }
 
     private void resendOTP() {
-        if (NetworkUtility.isNetworkConnected(requireActivity())) {
+        if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
             authenticationService.resendOTP(mMobileNumber).enqueue(new Callback<ResendOTPResponse>() {

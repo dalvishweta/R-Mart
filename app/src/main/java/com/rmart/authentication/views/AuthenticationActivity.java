@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.rmart.R;
 import com.rmart.authentication.OnAuthenticationClickedListener;
 import com.rmart.baseclass.views.BaseActivity;
+import com.rmart.customer.home.views.CustomerHomeActivity;
 import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
@@ -89,6 +90,14 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
         finish();
         /*FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);*/
+    }
+
+    @Override
+    public void goToCustomerHomeActivity() {
+        Intent in = new Intent(this, CustomerHomeActivity.class);
+        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
+        startActivity(in);
+        finish();
     }
 
 
