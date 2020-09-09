@@ -102,7 +102,6 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         tvProductName.setText(product.getName());
         tvDeliveryInDays.setText(String.format(getString(R.string.delivery_in_days), product.getDelivery_days()));
         ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(product.getUnitObjects(), view -> {
-
         }, false);
         recyclerView.setAdapter(unitBaseAdapter);
 

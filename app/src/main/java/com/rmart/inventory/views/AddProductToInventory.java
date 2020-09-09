@@ -29,6 +29,7 @@ import com.rmart.inventory.models.UnitObject;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.custom_views.CustomDatePicker;
 import com.rmart.utilits.pojos.APIBrandListResponse;
 import com.rmart.utilits.pojos.APIBrandResponse;
 import com.rmart.utilits.pojos.APIUnitMeasureListResponse;
@@ -63,7 +64,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     public AppCompatTextView chooseCategory, chooseSubCategory, chooseProduct;
     CustomStringAdapter customStringAdapter;
     Spinner productBrand;
-    AppCompatEditText expiry, productRegionalName, deliveryDays, productDescription;
+    AppCompatEditText productRegionalName, deliveryDays, productDescription;
+    AppCompatTextView expiry;
     private RecyclerView recyclerView;
     APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
     private ArrayList<String> availableBrands = new ArrayList<>();
@@ -183,6 +185,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         productRegionalName = view.findViewById(R.id.product_regional_name);
         productDescription = view.findViewById(R.id.product_description);
         expiry = view.findViewById(R.id.expiry);
+        expiry.setOnClickListener(this);
         deliveryDays = view.findViewById(R.id.delivery_days);
         recyclerView = view.findViewById(R.id.unit_base);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -298,6 +301,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             }
             // showToast();
             // mListener.showProductPreview((Product) view.getTag());
+        } else if (view.getId() == R.id.expiry) {
+            new CustomDatePicker((AppCompatTextView)view, getActivity(), Utils.DD_MM_YYYY);
         }
     }
 
