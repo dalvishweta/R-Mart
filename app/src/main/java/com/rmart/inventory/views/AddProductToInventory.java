@@ -26,6 +26,7 @@ import com.rmart.R;
 import com.rmart.inventory.adapters.CustomStringAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.inventory.models.UnitObject;
+import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.APIBrandListResponse;
@@ -170,7 +171,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         productBrand.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                mClonedProduct.setBrandName(apiBrandResponses.get(pos).getBrandName());
+                mClonedProduct.setBrand(apiBrandResponses.get(pos).getBrandName());
             }
 
             @Override
@@ -255,6 +256,16 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 Gson gson = new GsonBuilder().create();
                 JsonElement jsonElement = gson.toJsonTree(mClonedProduct);
                 JsonObject jsonObject = (JsonObject) jsonElement;
+                jsonObject.addProperty("stock_id","5");
+                jsonObject.addProperty("expiry_date",mClonedProduct.getExpiry_date());
+                jsonObject.addProperty("delivery_days","3");
+                jsonObject.addProperty("quantity", "2");
+                jsonObject.addProperty("client_id", "2");
+                jsonObject.addProperty("user_id", MyProfile.getInstance().getUserID());
+                jsonObject.addProperty("product_video_link", "https://www.youtube.com/watch?v=pWjfA4hBNe8&ab_channel=CricketCloud");
+                jsonObject.addProperty("product_library_id", "20");
+                jsonObject.addProperty("brand", 2);
+
                 // JsonObject product = gson.toJson(mClonedProduct);
                 // JsonObject jsonObject = new JsonObject();
                 vendorInventoryService.addProductToInventory(jsonObject).enqueue(new Callback<AddProductToInventoryResponse>() {
@@ -262,8 +273,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                     public void onResponse(Call<AddProductToInventoryResponse> call, Response<AddProductToInventoryResponse> response) {
                         if(response.isSuccessful()) {
                             AddProductToInventoryResponse data = response.body();
+                            assert data != null;
                             if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                showDialog("", response.message());
+                                showDialog(mClonedProduct.getName() + getString(R.string.add_success_product), response.message(), (dialog, i) -> {
+                                    Objects.requireNonNull(getActivity()).onBackPressed();
+                                });
                             } else {
                                 showDialog("", data.getMsg(), (dialog, index)-> {
                                     Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);

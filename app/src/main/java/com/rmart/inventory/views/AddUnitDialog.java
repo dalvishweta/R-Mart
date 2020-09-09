@@ -45,7 +45,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     UnitObject unitObject;
     private boolean mIsEdit;
     CustomStringAdapter customStringAdapter, productStatusAdapter;
-    AppCompatEditText discount, actualPrice, valueOfUnit;
+    AppCompatEditText discount, actualPrice, valueOfUnit, quantity, quantityValue;
     AppCompatTextView finalPrice, displayUnit;
     Spinner spinner, productStatusSpinner;
     private InventoryViewModel inventoryViewModel;
@@ -166,6 +166,11 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         });
         spinner = view.findViewById(R.id.unit);
         productStatusSpinner = view.findViewById(R.id.product_status);
+        quantity = view.findViewById(R.id.quantity);
+
+        quantityValue = view.findViewById(R.id.quantity_value);
+
+
         productStatusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
@@ -191,6 +196,23 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
             }
         });
+        quantity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String temp = charSequence.toString()+" "+unitObject.getUnitMeasure();
+                quantityValue.setText(temp);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         //isActive = view.findViewById(R.id.switchButton);
         for (APIUnitMeasureResponse unitMeasureResponse : unitObject.getAvailableUnits()) {
             availableUnitsMeasurements.add(unitMeasureResponse.getAttributesName());
@@ -206,7 +228,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         spinner.setAdapter(customStringAdapter);
         actualPrice.setText(unitObject.getActualCost());
         discount.setText(unitObject.getDiscount());
-
+        quantity.setText(unitObject.getQuantity());
         if(unitObject.getFinalCost().length()<=0) {
             calculateFinalCost(0, 0);
         } else {
@@ -215,8 +237,8 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     }
 
     private void updateDisplayValue() {
-        unitObject.setUnitValue(Objects.requireNonNull(valueOfUnit.getText()).toString());
-        unitObject.setDisplayUnitValue(unitObject.getUnitValue()+ " "+unitObject.getUnitMeasure());
+        unitObject.setUnit_number(Objects.requireNonNull(valueOfUnit.getText()).toString());
+        unitObject.setDisplayUnitValue(unitObject.getUnit_number()+ " "+unitObject.getUnitMeasure());
         displayUnit.setText(unitObject.getDisplayUnitValue());
     }
 
@@ -243,11 +265,15 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 }
             }
             String _actualPrice = Objects.requireNonNull(actualPrice.getText()).toString();
+            String _quantity = Objects.requireNonNull(quantity.getText()).toString();
             if(_actualPrice.length()<=0) {
-                Toast.makeText(getContext(), "Please enter valid amount", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.error_unit_amount, Toast.LENGTH_SHORT).show();
+            } else if (_quantity.length()<=0) {
+                Toast.makeText(getContext(), R.string.error_valid_quantity, Toast.LENGTH_SHORT).show();
             } else {
-                Intent i = new Intent().putExtra(UNIT_VALUE, unitObject);
-                Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
+                unitObject.setQuantity(_quantity);
+                    Intent i = new Intent().putExtra(UNIT_VALUE, unitObject);
+                    Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
             }
             dismiss();
         } else if (view.getId() == R.id.cancel) {

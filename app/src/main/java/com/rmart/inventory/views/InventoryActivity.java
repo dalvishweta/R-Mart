@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.inventory.OnInventoryClickedListener;
-import com.rmart.inventory.models.Product;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.inventory.viewmodel.InventoryViewModel;
 import com.rmart.utilits.pojos.ProductResponse;
@@ -47,7 +46,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     }
 
     @Override
-    public void showProductPreview(Product product, boolean isEdit) {
+    public void showProductPreview(ProductResponse product, boolean isEdit) {
         replaceFragment(ShowProductPreviewFragment.newInstance(product,isEdit), "ShowProductPreviewFragment",true);
     }
 

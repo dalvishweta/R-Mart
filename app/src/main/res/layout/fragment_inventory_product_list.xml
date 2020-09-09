@@ -4,12 +4,17 @@
     android:layout_height="match_parent"
     tools:context="com.rmart.inventory.views.MyCategoryListFragment">
     <include layout="@layout/inventory_list_header"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/product_list"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_below="@+id/category_header"
-        android:layout_alignParentBottom="true"
+        android:id="@+id/swipe_refresh_items"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/product_list"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <include
         layout="@layout/add_product_layout"
         android:layout_alignParentBottom="true"

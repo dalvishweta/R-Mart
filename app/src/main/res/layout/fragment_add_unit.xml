@@ -29,14 +29,14 @@ android:padding="16dp">
         android:layout_height="wrap_content">
         <Spinner
             android:id="@+id/unit"
-            android:layout_width="0dp"
-            android:layout_weight="1.30"
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             style="@style/upload_product_item_field"
             android:layout_marginEnd="0dp"
             android:paddingEnd="0dp"
-            android:background="@drawable/curve_left_bg"/>
+            android:background="@drawable/curve_left_bg"
+            android:layout_width="0dp"
+            android:layout_weight="1.30"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/value_of_unit"
@@ -81,13 +81,29 @@ android:padding="16dp">
         android:inputType="number"
         style="@style/upload_product_item_field"/>
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/quantity"
-        android:drawableStart="@drawable/user"
-        android:hint="@string/quantity"
-        android:inputType="number"
-        style="@style/upload_product_item_field"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/quantity"
+            android:drawableStart="@drawable/user"
+            android:hint="@string/quantity"
+            android:inputType="number"
+            style="@style/upload_product_item_field"
+            android:background="@drawable/curve_left_bg"
+            android:layout_width="0dp"
+            android:layout_weight="1"/>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/quantity_value"
+            android:hint="@string/quantity"
+            android:inputType="number"
+            style="@style/upload_product_item_field"
+            android:background="@drawable/curve_right_bg"
+            android:layout_width="0dp"
+            android:layout_weight="1"/>
 
+    </LinearLayout>
 
     <Spinner
         android:id="@+id/product_status"

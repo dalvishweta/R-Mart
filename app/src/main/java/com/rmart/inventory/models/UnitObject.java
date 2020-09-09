@@ -8,46 +8,86 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class UnitObject implements Serializable {
-    ArrayList<APIUnitMeasureResponse> availableUnits;
-    int minDiscount;
-    int maxDiscount;
-
-    int id;
-    String unitType;
-    String unitMeasure;
-    String unitValue = "";
-
     @SerializedName("unit_name")
     @Expose
     String displayUnitValue;
 
+    @SerializedName("unit_unique_id")
+    @Expose
+    String unitUniqueID;
+
     @SerializedName("selling_price")
     @Expose
     String finalCost;
+
+    @SerializedName("quantity")
+    @Expose
+    String quantity;
+
     @SerializedName("unit_price")
     @Expose
     String actualCost;
+
     @SerializedName("discount")
     @Expose
     String discount;
-    boolean isActive;
-    String productStatus;
+
+    @SerializedName("unit_stock_status_id")
+    @Expose
+    String unitStockStatusID;
 
     @SerializedName("stock_id")
     @Expose
     String productStatusID;
 
+    @SerializedName("unit_number")
+    @Expose
+    String unit_number;
+
+    boolean isActive;
+    String productStatus;
+    int minDiscount;
+    int maxDiscount;
+    int id;
+    String unitType;
+    String unitMeasure;
+    ArrayList<APIUnitMeasureResponse> availableUnits;
+
     public UnitObject(ArrayList<APIUnitMeasureResponse> availableUnits1) {
         this.availableUnits = availableUnits1;
         id = 101;
         unitType = "";
-        unitValue = "";
+        unit_number = "";
         finalCost = "";
         actualCost = "";
         discount = "";
         isActive = false;
     }
     public UnitObject() {
+    }
+
+    public String getUnitUniqueID() {
+        return unitUniqueID;
+    }
+
+    public void setUnitUniqueID(String unitUniqueID) {
+        this.unitUniqueID = unitUniqueID;
+    }
+
+    public String getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getUnitStockStatusID() {
+        return unitStockStatusID;
+    }
+
+    public void setUnitStockStatusID(String unitStockStatusID) {
+        this.unitStockStatusID = unitStockStatusID;
     }
 
     public String getProductStatusID() {
@@ -98,12 +138,12 @@ public class UnitObject implements Serializable {
         this.unitType = unitType;
     }
 
-    public String getUnitValue() {
-        return unitValue;
+    public String getUnit_number() {
+        return unit_number;
     }
 
-    public void setUnitValue(String unitValue) {
-        this.unitValue = unitValue;
+    public void setUnit_number(String unit_number) {
+        this.unit_number = unit_number;
     }
 
     public String getFinalCost() {

@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
-import com.rmart.inventory.models.Product;
 import com.rmart.inventory.views.viewholders.ProductViewHolder;
 import com.rmart.utilits.pojos.ProductResponse;
 
@@ -63,15 +62,29 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>  imp
         holder.itemView.setTag(product);
         if(null != product.getUnitObjects() && product.getUnitObjects().size()>1) {
             holder.availableUnits. setVisibility(View.VISIBLE);
+            holder.unitView.setVisibility(View.VISIBLE);
+            holder.tvOffer.setVisibility(View.GONE);
+            try {
+                int discount = Integer.parseInt(product.getUnitObjects().get(0).getDiscount());
+                if (discount>0) {
+                    holder.tvOffer.setVisibility(View.VISIBLE);
+                }
+
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+
             holder.availableUnits. setText(String.format(holder.itemView.getContext().getString(R.string.available_other_sizes), product.getUnitObjects().size()+""));
 
             holder.tvActual.setText(Html.fromHtml("<strike> " + product.getUnitObjects().get(0).getActualCost()+" </strike>"));
             holder.tvFinalCost.setText(product.getUnitObjects().get(0).getFinalCost());
-            holder.tvUnitValue.setText(product.getUnitObjects().get(0).getUnitValue());
+            holder.tvUnitValue.setText(product.getUnitObjects().get(0).getUnit_number());
             holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer), product.getUnitObjects().get(0).getDiscount()+"%"));
 
         } else {
             holder.availableUnits. setVisibility(View.GONE);
+            holder.unitView.setVisibility(View.GONE);
+            holder.tvOffer.setVisibility(View.GONE);
         }
     }
 

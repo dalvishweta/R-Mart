@@ -3,7 +3,6 @@ package com.rmart.utilits.pojos;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rmart.inventory.models.UnitObject;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -28,9 +27,9 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @Expose
     String categoryID;
 
-    @SerializedName("brand")
+/*    @SerializedName("brand")
     @Expose
-    String brandID;
+    String brandID;*/
 
     @SerializedName("product_regional_name")
     @Expose
@@ -40,16 +39,33 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @Expose
     String videoLInk;
 
+    @SerializedName("product_details")
+    @Expose
+    String productDetails;
+
+    @SerializedName("display_image")
+    @Expose
+    String displayImage;
+
+    @SerializedName("product_cat_id")
+    @Expose
+    String productCatID;
+
     @SerializedName("units")
     @Expose
     ArrayList<UnitObject> unitObjects = new ArrayList<>();
 
+    @SerializedName("images")
+    @Expose
+    ArrayList<ImageURLResponse> images = new ArrayList<>();
+
+    @SerializedName("brand")
+    @Expose
+    String brand;
 
     String subCategory;
-    String brandName;
     String expiry_date;
     String delivery_days;
-    ArrayList<String> images = new ArrayList<>();
 
     public ProductResponse() {
 
@@ -62,9 +78,9 @@ public class ProductResponse extends BaseResponse implements Serializable {
         name = product.name;
         description = product.description;
         categoryID = product.categoryID;
-        brandID = product.brandID;
+        // brandID = product.brandID;
         subCategory = product.subCategory;;
-        brandName = product.brandName;
+        brand = product.brand;
         regionalName = product.regionalName;
         videoLInk = product.videoLInk;
         expiry_date = product.expiry_date;
@@ -75,13 +91,13 @@ public class ProductResponse extends BaseResponse implements Serializable {
         unitObjects.addAll(product.getUnitObjects());
     }
 
-    public String getBrandID() {
+/*    public String getBrandID() {
         return brandID;
     }
 
     public void setBrandID(String brandID) {
         this.brandID = brandID;
-    }
+    }*/
 
     public String getProductID() {
         return productID;
@@ -131,14 +147,6 @@ public class ProductResponse extends BaseResponse implements Serializable {
         this.subCategory = subCategory;
     }
 
-    public String getBrandName() {
-        return brandName;
-    }
-
-    public void setBrandName(String brandName) {
-        this.brandName = brandName;
-    }
-
     public String getRegionalName() {
         return regionalName;
     }
@@ -171,11 +179,11 @@ public class ProductResponse extends BaseResponse implements Serializable {
         this.delivery_days = delivery_days;
     }
 
-    public ArrayList<String> getImages() {
+    public ArrayList<ImageURLResponse> getImages() {
         return images;
     }
 
-    public void setImages(ArrayList<String> images) {
+    public void setImages(ArrayList<ImageURLResponse> images) {
         this.images = images;
     }
 
@@ -185,5 +193,37 @@ public class ProductResponse extends BaseResponse implements Serializable {
 
     public void setUnitObjects(ArrayList<UnitObject> unitObjects) {
         this.unitObjects = unitObjects;
+    }
+
+    public String getProductDetails() {
+        return productDetails;
+    }
+
+    public void setProductDetails(String productDetails) {
+        this.productDetails = productDetails;
+    }
+
+    public String getDisplayImage() {
+        return displayImage;
+    }
+
+    public void setDisplayImage(String displayImage) {
+        this.displayImage = displayImage;
+    }
+
+    public String getProductCatID() {
+        return productCatID;
+    }
+
+    public void setProductCatID(String productCatID) {
+        this.productCatID = productCatID;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 }

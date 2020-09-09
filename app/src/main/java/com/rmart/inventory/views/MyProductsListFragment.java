@@ -12,24 +12,26 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.rmart.R;
 import com.rmart.inventory.adapters.ProductAdapter;
-import com.rmart.inventory.models.Product;
 import com.rmart.inventory.viewmodel.InventoryViewModel;
+import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.APIProductListResponse;
 import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.APIStockResponse;
+import com.rmart.utilits.pojos.ProductListResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.services.APIService;
+import com.rmart.utilits.services.VendorInventoryService;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,6 +51,8 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     LinearLayout addProduct;
     PopupMenu popup;
     SearchView searchView;
+    VendorInventoryService vendorInventoryService;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     public MyProductsListFragment() {
         // Required empty public constructor
     }
@@ -88,9 +92,12 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                 updateList(products);
             }
         });*/
+        inventoryViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(InventoryViewModel.class);
         inventoryViewModel.getProductList().observe(Objects.requireNonNull(getActivity()), data-> {
             updateList(new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values()));
         });
+        vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
+        getProductList();
         return inflater.inflate(R.layout.fragment_inventory_product_list, container, false);
     }
 
@@ -129,13 +136,18 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         productRecycleView = view.findViewById(R.id.product_list);
         addProduct = view.findViewById(R.id.add_product);
         tvTotalCount = view.findViewById(R.id.category_count);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_items);
+        // Your code to make your refresh action
+        // CallYourRefreshingMethod();
+        mSwipeRefreshLayout.setOnRefreshListener(this::getProductList);
+
         addProduct.setOnClickListener(this);
 
-        popup = new PopupMenu(Objects.requireNonNull(getActivity()), view.findViewById(R.id.sort));
         getStockList();
+
+        popup = new PopupMenu(Objects.requireNonNull(getActivity()), view.findViewById(R.id.sort));
         // Inflating the Popup using xml file
         // popup.getMenuInflater().inflate(R.menu.inventory_view_products, popup.getMenu());
-
         view.findViewById(R.id.sort).setOnClickListener(param -> {
 
             // registering popup with OnMenuItemClickListener
@@ -157,9 +169,46 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         });
         productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         updateList(new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values()));
-
         setSearchView(view);
     }
+
+    private void getProductList() {
+        vendorInventoryService.getProductList("0", MyProfile.getInstance().getMobileNumber(), "1,2,3,4,5,6,7","2").enqueue(new Callback<ProductListResponse>() {
+            @Override
+            public void onResponse(Call<ProductListResponse> call, Response<ProductListResponse> response) {
+                if(response.isSuccessful()) {
+                    ProductListResponse data = response.body();
+                    assert data != null;
+                    if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                        if(data.getProductResponses().size()<=0) {
+                            mListener.addProductToInventory();
+                        } else {
+                            for (ProductResponse productResponse : data.getProductResponses()) {
+                                inventoryViewModel.setProductList(productResponse);
+                            }
+                            updateList(new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values()));
+                        }
+                    } else {
+                        showDialog("", data.getMsg());
+                    }
+                } else {
+                    showDialog("", response.message());
+                }
+                if(mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductListResponse> call, Throwable t) {
+                showDialog("", t.getMessage());
+                if(mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            }
+        });
+    }
+
     protected void setSearchView(@NonNull View view) {
         if(null != productAdapter) {
             searchView = view.findViewById(R.id.searchView);
@@ -188,10 +237,28 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         try {
             tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), products.size()));
             productAdapter = new ProductAdapter(products, view1 -> {
-                Product product = (Product)view1.getTag();
-                int index = products.indexOf(product);
-                inventoryViewModel.setSelectedProduct(index);
-                mListener.showProductPreview(product, true);
+                ProductResponse product = (ProductResponse)view1.getTag();
+                vendorInventoryService.getProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<ProductResponse>() {
+                    @Override
+                    public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                        if (response.isSuccessful()) {
+                            inventoryViewModel.setSelectedProduct(product.getProductCatID());
+                            mListener.showProductPreview(product, true);
+
+                        } else {
+                            showDialog("", "");
+                        }
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProductResponse> call, Throwable t) {
+                        showDialog("", t.getMessage());
+                        progressDialog.dismiss();
+                    }
+                });
+                // int index = products.indexOf(product);
+
             }, 2);
             productRecycleView.setAdapter(productAdapter);
         } catch (Resources.NotFoundException e) {

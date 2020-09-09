@@ -180,4 +180,7 @@
     <string name="change">Change</string>
     <string name="uid">uid</string>
     <string name="aid">aid</string>
+    <string name="error_unit_amount">Please enter valid amount</string>
+    <string name="error_valid_quantity">Please enter valid Quantity</string>
+    <string name="add_success_product">is Successfully added in your inventory.</string>
 </resources>

@@ -17,7 +17,9 @@ import com.rmart.R;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.inventory.models.Product;
+import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.pojos.ProductResponse;
+import com.rmart.utilits.services.VendorInventoryService;
 
 import java.util.Objects;
 
@@ -29,13 +31,12 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     private boolean isEdit;
     ImageAdapter imageAdapter;
     ViewPager viewPager;
-
     AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryInDays;
     public ShowProductPreviewFragment() {
         // Required empty public constructor
     }
 
-    public static ShowProductPreviewFragment newInstance(Product product, boolean isEdit) {
+    public static ShowProductPreviewFragment newInstance(ProductResponse product, boolean isEdit) {
         ShowProductPreviewFragment fragment = new ShowProductPreviewFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PRODUCT, product);
@@ -51,12 +52,10 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
             product = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
             isEdit = getArguments().getBoolean(ARG_PARAM2);
         }
-        if(null != inventoryViewModel && isEdit) {
-            product = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
+        /*product = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
             inventoryViewModel.getSelectedProduct().observe(Objects.requireNonNull(getActivity()), index -> {
                 product = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(index);
-            } );
-        }
+            } );*/
     }
 
     @Override

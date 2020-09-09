@@ -22,7 +22,7 @@ public class InventoryViewModel extends ViewModel {
     MutableLiveData<HashMap<String , ArrayList<Integer>>> subCategories;
     MutableLiveData<Boolean> showLoadingDialog;
     MutableLiveData<String> showText;
-    MutableLiveData<Integer> selectedProduct;
+    MutableLiveData<String> selectedProduct;
     MutableLiveData<ArrayList<APIStockResponse>> apiStocks;
 
     public InventoryViewModel() {
@@ -30,7 +30,7 @@ public class InventoryViewModel extends ViewModel {
         productList = new MutableLiveData<>(new HashMap<>());
         categories = new MutableLiveData<>(new HashMap<>());
         subCategories = new MutableLiveData<>(new HashMap<>());
-        selectedProduct = new MutableLiveData<>(-1);
+        selectedProduct = new MutableLiveData<>();
         showLoadingDialog = new MutableLiveData<>(false);
         apiStocks = new MutableLiveData<>();
     }
@@ -43,11 +43,11 @@ public class InventoryViewModel extends ViewModel {
         this.apiStocks.setValue(apiStocks);
     }
 
-    public MutableLiveData<Integer> getSelectedProduct() {
+    public MutableLiveData<String> getSelectedProduct() {
         return selectedProduct;
     }
 
-    public void setSelectedProduct( Integer selectedProduct) {
+    public void setSelectedProduct(String selectedProduct) {
         this.selectedProduct.setValue(selectedProduct);
     }
     public MutableLiveData<Boolean> getShowLoadingDialog() {
@@ -73,6 +73,8 @@ public class InventoryViewModel extends ViewModel {
     public void setProductList(ProductResponse product) {
         if (!Objects.requireNonNull(productList.getValue()).containsKey(product.getProductID())) {
             this.productList.getValue().put(product.getProductID(), product);
+        } else {
+
         }
     }
 
