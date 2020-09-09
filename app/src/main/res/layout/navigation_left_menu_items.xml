@@ -6,30 +6,36 @@
     android:background="@color/colorPrimary">
 
     <include layout="@layout/navigation_header"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/nv_item_view"
                 android:id="@+id/orders"
                 android:text="@string/my_orders"
                 android:drawableStart="@drawable/orders"/>
+
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/nv_item_view"
                 android:id="@+id/inventory"
                 android:text="@string/inventory"
-                android:drawableLeft="@drawable/inventory_nv"/>
+                android:drawableStart="@drawable/inventory_nv"/>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/change_password"
                 android:text="@string/change_password"
-                android:drawableLeft="@drawable/password_nv"
+                android:drawableStart="@drawable/password_nv"
                 style="@style/nv_item_view"/>
+
             <androidx.appcompat.widget.AppCompatTextView
-                android:drawableLeft="@drawable/logout_nv"
+                android:drawableStart="@drawable/logout_nv"
                 android:id="@+id/logout"
                 android:text="@string/logout"
                 style="@style/nv_item_view"/>

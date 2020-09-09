@@ -9,10 +9,7 @@ import android.os.Handler;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.authentication.views.AuthenticationActivity;
-import com.rmart.customer.home.views.CustomerHomeActivity;
-import com.rmart.orders.views.OrdersActivity;
-import com.rmart.profile.model.MyProfile;
-import com.rmart.profile.views.MyProfileActivity;
+import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.utilits.Utils;
 
 public class SplashScreen extends BaseActivity {
@@ -30,13 +27,13 @@ public class SplashScreen extends BaseActivity {
                 sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                 String uid = sharedPref.getString(getString(R.string.uid), "-1");
                 String aid = sharedPref.getString(getString(R.string.aid), "-1");
-                assert aid != null;
-                if (!aid.equalsIgnoreCase( "-1")) {
-                    Intent intent = new Intent(SplashScreen.this, CustomerHomeActivity.class);
-                    startActivity(intent);
-                }else {
-                    Intent intent = new Intent(SplashScreen.this, AuthenticationActivity.class);
-                    startActivity(intent);
+                if (aid != null) {
+                    if (!aid.equalsIgnoreCase("-1")) {
+                        Intent intent = new Intent(SplashScreen.this, CustomerHomeActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(SplashScreen.this, AuthenticationActivity.class);
+                        startActivity(intent);
                     /*MyProfile myProfile = MyProfile.getInstance();
                     if (null == myProfile || null == myProfile.getRoleID()) {
                         Intent intent = new Intent(SplashScreen.this, AuthenticationActivity.class);
@@ -48,8 +45,8 @@ public class SplashScreen extends BaseActivity {
                             startActivity(intent);
                         }
                     }*/
+                    }
                 }
-
             } else {
                 Intent intent = new Intent(SplashScreen.this, AuthenticationActivity.class);
                 startActivity(intent);

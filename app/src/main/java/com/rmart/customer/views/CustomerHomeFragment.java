@@ -1,4 +1,4 @@
-package com.rmart.customer.home.views;
+package com.rmart.customer.views;
 
 import com.rmart.baseclass.views.BaseFragment;
 

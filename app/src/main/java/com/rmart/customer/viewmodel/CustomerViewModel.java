@@ -1,4 +1,4 @@
-package com.rmart.customer.home.viewmodel;
+package com.rmart.customer.viewmodel;
 
 /**
  * Created by Satya Seshu on 07/09/20.

@@ -39,6 +39,9 @@ android {
         buildConfigField("String", 'API_BRANDS', '"Brand"')
         buildConfigField("String", 'API_CATEGORIES', '"Categories"')
 
+        /* customer api services */
+        buildConfigField("String", "CUSTOMER_SHOPS_LIST", '"customer/VendorShop/getShopList"')
+
         /*Vendor inventory services*/
 
         buildConfigField("String", 'VENDOR_INVENTORY_ADD_PRODUCT', '"vendor/product/add_product"')
@@ -111,10 +114,19 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0"
     implementation 'com.google.android.gms:play-services-location:17.0.0'
 
+    // retrofit
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.9.0'
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
+
+    implementation 'jp.wasabeef:recyclerview-animators:2.0.0'
 
     implementation 'androidx.cardview:cardview:1.0.0'
+
+    //volley
+    implementation 'com.android.volley:volley:1.1.1'
+
+    implementation 'androidx.navigation:navigation-fragment:2.3.0'
+    implementation 'androidx.navigation:navigation-ui:2.3.0'
 }

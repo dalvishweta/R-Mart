@@ -1,8 +1,8 @@
 package com.rmart.utilits.services;
 
 import com.rmart.BuildConfig;
+import com.rmart.inventory.models.Product;
 import com.rmart.utilits.pojos.APIBrandListResponse;
-import com.rmart.utilits.pojos.APIBrandResponse;
 import com.rmart.utilits.pojos.APICategoryListResponse;
 import com.rmart.utilits.pojos.APIProductListResponse;
 import com.rmart.utilits.pojos.APIStockListResponse;

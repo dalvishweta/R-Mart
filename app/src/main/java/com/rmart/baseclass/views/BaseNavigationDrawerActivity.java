@@ -42,7 +42,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
         }
 
-        nv = findViewById(R.id.nav_view);
+        nv = findViewById(R.id.navigation_view);
         findViewById(R.id.update_profile).setOnClickListener(this);
         findViewById(R.id.orders).setOnClickListener(this);
         findViewById(R.id.inventory).setOnClickListener(this);

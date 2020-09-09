@@ -183,4 +183,10 @@
     <string name="error_unit_amount">Please enter valid amount</string>
     <string name="error_valid_quantity">Please enter valid Quantity</string>
     <string name="add_success_product">is Successfully added in your inventory.</string>
+
+    <string name="navigation_drawer_open">Navigation Drawer Open</string>
+    <string name="navigation_drawer_close">Navigation Drawer Close</string>
+    <string name="add_new_address">Add New Address</string>
+    <string name="select_this_address">Select this Address</string>
+    <string name="delivery_address">Delivery Address</string>
 </resources>

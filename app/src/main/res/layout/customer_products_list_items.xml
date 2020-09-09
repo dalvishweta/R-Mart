@@ -5,20 +5,32 @@
     android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/profile_layout"
+        android:id="@+id/shop_image_layout"
         android:layout_width="125dp"
         android:layout_height="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/iv_profile_image"
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/iv_shop_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@string/app_name"
             android:scaleType="fitXY"
+            android:background="@mipmap/ic_launcher"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <com.rmart.baseclass.views.ProgressBarCircular
+            android:id="@+id/profile_circular_field"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_favourite_image"
@@ -27,8 +39,17 @@
             android:layout_margin="5dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/heart"
-            app:layout_constraintEnd_toEndOf="@id/iv_profile_image"
+            android:background="@color/gray"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="@id/iv_shop_image"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_shop_image"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
@@ -40,7 +61,7 @@
         android:padding="5dp"
         android:scaleType="fitXY"
         android:src="@drawable/message"
-        app:layout_constraintBottom_toBottomOf="@id/profile_layout"
+        app:layout_constraintBottom_toBottomOf="@id/shop_image_layout"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
@@ -64,11 +85,11 @@
         android:layout_marginStart="10dp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@id/iv_call_field"
-        app:layout_constraintStart_toEndOf="@id/profile_layout"
+        app:layout_constraintStart_toEndOf="@id/shop_image_layout"
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <Button
+    <TextView
         android:id="@+id/tv_view_address_field"
         style="@style/text_style_medium_normal"
         android:layout_width="0dp"
@@ -82,7 +103,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_shop_name_field"
         app:layout_constraintBottom_toTopOf="@id/tv_phone_no_field"
         app:layout_constraintEnd_toStartOf="@id/iv_call_field"
-        app:layout_constraintStart_toEndOf="@id/profile_layout"/>
+        app:layout_constraintStart_toEndOf="@id/shop_image_layout"/>
 
     <TextView
         android:id="@+id/tv_phone_no_field"
@@ -93,5 +114,7 @@
         android:textColor="@color/item_sub_title_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/iv_call_field"
-        app:layout_constraintStart_toEndOf="@id/profile_layout"/>
+        app:layout_constraintStart_toEndOf="@id/shop_image_layout" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

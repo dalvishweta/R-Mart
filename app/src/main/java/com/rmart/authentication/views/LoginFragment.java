@@ -68,8 +68,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
         view.findViewById(R.id.register).setOnClickListener(this);
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
 
-        etMobileNumber.setText("7416226233");
-        etPassword.setText("1234");
+        etMobileNumber.setText("8686378737");
+        etPassword.setText("12345");
     }
 
     @Override

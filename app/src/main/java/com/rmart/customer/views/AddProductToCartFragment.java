@@ -1,4 +1,4 @@
-package com.rmart.customer.home.views;
+package com.rmart.customer.views;
 
 public class AddProductToCartFragment extends CustomerHomeFragment {
 }

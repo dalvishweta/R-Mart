@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.rmart.R;
 import com.rmart.authentication.OnAuthenticationClickedListener;
 import com.rmart.baseclass.views.BaseActivity;
-import com.rmart.customer.home.views.CustomerHomeActivity;
+import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
