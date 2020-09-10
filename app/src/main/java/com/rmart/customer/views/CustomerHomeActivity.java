@@ -17,7 +17,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_authenticatin);
+        //setContentView(R.layout.activity_authenticatin);
 
         replaceFragment(VendorListViewFragment.getInstance(),"VendorListViewFragment",false);
     }
