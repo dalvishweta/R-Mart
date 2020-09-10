@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
+import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.profile.model.MyProfile;
@@ -68,8 +69,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
         view.findViewById(R.id.register).setOnClickListener(this);
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
 
-        etMobileNumber.setText("8686378737");
-        etPassword.setText("12345");
+        etMobileNumber.setText(BuildConfig.LOGIN_USERNAME);
+        etPassword.setText(BuildConfig.LOGIN_PASSWORD);
     }
 
     @Override

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.rmart">
 
     <!--
@@ -19,6 +20,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
         <!--
@@ -35,7 +37,6 @@
 
         <activity android:name=".profile.views.MyProfileActivity"
             android:screenOrientation="portrait"/>
-
         <activity android:name=".orders.views.OrdersActivity"
             android:screenOrientation="portrait"/>
         <activity
@@ -56,8 +57,7 @@
         </activity>
         <activity
             android:name=".customer.views.CustomerHomeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar"/>
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
