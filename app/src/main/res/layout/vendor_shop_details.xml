@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@drawable/transparent_rectangle_background_bg">
+
+    <ImageView
+        android:id="@+id/iv_message_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/green_color_rounded_circle"
+        android:contentDescription="@string/app_name"
+        android:padding="5dp"
+        android:scaleType="fitXY"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="10dp"
+        android:src="@drawable/message" />
+
+    <ImageView
+        android:id="@+id/iv_call_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/sky_blue_color_rounded_circle"
+        android:contentDescription="@string/app_name"
+        android:padding="5dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/phone"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_toStartOf="@id/iv_message_field"/>
+
+    <TextView
+        android:id="@+id/tv_shop_name_field"
+        style="@style/text_style_medium_bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_toStartOf="@id/iv_call_field"
+        android:textColor="@color/white" />
+
+
+    <TextView
+        android:id="@+id/tv_view_address_field"
+        style="@style/text_style_medium_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/view_address"
+        android:layout_toStartOf="@id/iv_call_field"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:layout_centerVertical="true"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/tv_phone_no_field"
+        style="@style/text_style_medium_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_toStartOf="@id/iv_call_field"
+        android:textColor="@color/white" />
+</RelativeLayout>

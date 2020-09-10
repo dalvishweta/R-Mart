@@ -189,4 +189,5 @@
     <string name="add_new_address">Add New Address</string>
     <string name="select_this_address">Select this Address</string>
     <string name="delivery_address">Delivery Address</string>
+    <string name="search_for_products">Search For Products</string>
 </resources>
