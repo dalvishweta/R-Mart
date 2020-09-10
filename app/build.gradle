@@ -45,6 +45,7 @@ android {
         /*Vendor inventory services*/
 
         buildConfigField("String", 'VENDOR_INVENTORY_ADD_PRODUCT', '"vendor/product/add_product"')
+        buildConfigField("String", 'VENDOR_INVENTORY_EDIT_PRODUCT', '"vendor/product/edit_product"')
         buildConfigField("String", 'VENDOR_INVENTORY_GET_PRODUCT_LIST', '"vendor/product/product_list"')
         buildConfigField("String", 'VENDOR_INVENTORY_GET_PRODUCT', '"vendor/product/view_product"')
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

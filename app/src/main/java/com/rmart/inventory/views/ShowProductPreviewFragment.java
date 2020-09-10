@@ -17,6 +17,7 @@ import com.rmart.R;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.inventory.models.Product;
+import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.services.VendorInventoryService;
@@ -100,7 +101,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         ImageAdapter imageAdapter = new ImageAdapter(Objects.requireNonNull(getContext()));
         viewPager.setAdapter(imageAdapter);
         tvProductName.setText(product.getName());
-        tvDeliveryInDays.setText(String.format(getString(R.string.delivery_in_days), product.getDelivery_days()));
+        tvDeliveryInDays.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getDeliveryInDays()));
         ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(product.getUnitObjects(), view -> {
         }, false);
         recyclerView.setAdapter(unitBaseAdapter);

@@ -251,7 +251,46 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);
                 Integer index = inventoryViewModel.getSelectedProduct().getValue();
                 inventoryViewModel.getSelectedProduct().setValue(index);*/
+                Gson gson = new GsonBuilder().create();
+                JsonElement jsonElement = gson.toJsonTree(mClonedProduct);
+                JsonObject jsonObject = (JsonObject) jsonElement;
 
+                jsonObject.addProperty("stock_id","5");
+                jsonObject.addProperty("quantity", "2");
+                jsonObject.addProperty("brand", 2);
+                jsonObject.addProperty("expiry_date",mClonedProduct.getExpiry_date());
+
+                jsonObject.addProperty("delivery_days","3");
+                jsonObject.addProperty("client_id", "2");
+                jsonObject.addProperty("user_id", MyProfile.getInstance().getUserID());
+                jsonObject.addProperty("product_video_link", "https://www.youtube.com/watch?v=pWjfA4hBNe8&ab_channel=CricketCloud");
+
+                RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class).editProductToInventory(jsonObject).enqueue(new Callback<AddProductToInventoryResponse>() {
+                    @Override
+                    public void onResponse(Call<AddProductToInventoryResponse> call, Response<AddProductToInventoryResponse> response) {
+                        if(response.isSuccessful()) {
+                            AddProductToInventoryResponse data = response.body();
+                            assert data != null;
+                            if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                showDialog(mClonedProduct.getName() + getString(R.string.add_success_product), response.message(), (dialog, i) -> {
+                                    Objects.requireNonNull(getActivity()).onBackPressed();
+                                });
+                            } else {
+                                showDialog("", data.getMsg(), (dialog, index)-> {
+                                    Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);
+                                    Objects.requireNonNull(getActivity()).onBackPressed();
+                                });
+                            }
+                        } else {
+                            showDialog("", response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AddProductToInventoryResponse> call, Throwable t) {
+                        showDialog("", t.getMessage());
+                    }
+                });
             } else {
 
                 VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
@@ -259,15 +298,16 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 Gson gson = new GsonBuilder().create();
                 JsonElement jsonElement = gson.toJsonTree(mClonedProduct);
                 JsonObject jsonObject = (JsonObject) jsonElement;
+
                 jsonObject.addProperty("stock_id","5");
-                jsonObject.addProperty("expiry_date",mClonedProduct.getExpiry_date());
-                jsonObject.addProperty("delivery_days","3");
                 jsonObject.addProperty("quantity", "2");
+                jsonObject.addProperty("brand", 2);
+                jsonObject.addProperty("expiry_date",mClonedProduct.getExpiry_date());
+
+                jsonObject.addProperty("delivery_days","3");
                 jsonObject.addProperty("client_id", "2");
                 jsonObject.addProperty("user_id", MyProfile.getInstance().getUserID());
                 jsonObject.addProperty("product_video_link", "https://www.youtube.com/watch?v=pWjfA4hBNe8&ab_channel=CricketCloud");
-                jsonObject.addProperty("product_library_id", "20");
-                jsonObject.addProperty("brand", 2);
 
                 // JsonObject product = gson.toJson(mClonedProduct);
                 // JsonObject jsonObject = new JsonObject();

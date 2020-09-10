@@ -23,6 +23,7 @@ public class MyProfile {
     String isAuthenticated;
     String profileImage;
     String roleID;
+    String deliveryInDays = "5";
     String primaryAddressId;
     ArrayList<AddressResponse> addressResponses;
 
@@ -145,5 +146,13 @@ public class MyProfile {
 
     public void setAddressResponses(ArrayList<AddressResponse> addressResponses) {
         this.addressResponses = addressResponses;
+    }
+
+    public String getDeliveryInDays() {
+        return deliveryInDays;
+    }
+
+    public void setDeliveryInDays(String deliveryInDays) {
+        this.deliveryInDays = deliveryInDays;
     }
 }

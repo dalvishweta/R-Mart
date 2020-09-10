@@ -53,17 +53,17 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitViewHold
         holder.tvFinalCost.setText(unit.getFinalCost());
         holder.tvUnitValue.setText(unit.getDisplayUnitValue());
         holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer_single_line), unit.getDiscount()+"%"));
-        holder.tvIUnitState.setText(unit.getProductStatus());
-        if(unit.getProductStatus().equalsIgnoreCase("Available")) {
+        /*
+            holder.tvIUnitState.setText(unit.getProductStatus());
+            if(unit.getProductStatus().equalsIgnoreCase("Available")) {
 
-        }
-        /*if(unit.isActive()) {
+            }
+        */
+        if(unit.getUnitStockStatusID().equalsIgnoreCase("5")) {
             holder.tvIUnitState.setTextColor(holder.itemView.getContext().getColor(R.color.colorPrimary));
-            holder.tvIUnitState.setText(holder.itemView.getContext().getString(R.string.active));
         } else {
             holder.tvIUnitState.setTextColor(holder.itemView.getContext().getColor(R.color.gray));
-            holder.tvIUnitState.setText(holder.itemView.getContext().getString(R.string.in_active));
-        }*/
+        }
     }
 
     @Override

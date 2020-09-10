@@ -262,6 +262,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             for (APIStockResponse apiStockResponse : Objects.requireNonNull(inventoryViewModel.getApiStocks().getValue())) {
                 if (unitObject.getProductStatus().equalsIgnoreCase(apiStockResponse.getStockName())) {
                     unitObject.setProductStatusID(apiStockResponse.getStockID());
+                    unitObject.setUnitStockStatusID(apiStockResponse.getStockID());
                 }
             }
             String _actualPrice = Objects.requireNonNull(actualPrice.getText()).toString();
@@ -278,15 +279,6 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             dismiss();
         } else if (view.getId() == R.id.cancel) {
             this.dismiss();
-            /*ArrayList<ItemData> itemData = new ArrayList<>();
-            itemData.add(new ItemData("1 KGS", 0));
-            itemData.add(new ItemData("2 KGS", 0));
-            itemData.add(new ItemData("3 KGS", 0));
-            itemData.add(new ItemData("4 KGS", 0));
-            FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-            OptionSelectionFragment optionSelectionFragment = OptionSelectionFragment.newInstance("", itemData);
-            optionSelectionFragment.show(fragmentManager, "OptionSelectionFragment");
-            optionSelectionFragment.setCancelable(false);*/
         }
     }
 }

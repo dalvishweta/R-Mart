@@ -11,6 +11,9 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @Expose
     String productID;
 
+    @SerializedName("product_lib_id")
+    @Expose
+    String productLibID;
     @SerializedName("product_image")
     @Expose
     String productImage;
@@ -85,6 +88,7 @@ public class ProductResponse extends BaseResponse implements Serializable {
         videoLInk = product.videoLInk;
         expiry_date = product.expiry_date;
         delivery_days = product.delivery_days;
+        productLibID = product.productLibID;
         images = new ArrayList<>();
         images.addAll(product.getImages());
         unitObjects = new ArrayList<>();
@@ -98,6 +102,14 @@ public class ProductResponse extends BaseResponse implements Serializable {
     public void setBrandID(String brandID) {
         this.brandID = brandID;
     }*/
+
+    public String getProductLibID() {
+        return productLibID;
+    }
+
+    public void setProductLibID(String productLibID) {
+        this.productLibID = productLibID;
+    }
 
     public String getProductID() {
         return productID;
