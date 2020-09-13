@@ -67,6 +67,15 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @Expose
     String brand;
 
+
+    @SerializedName("brand_id")
+    @Expose
+    String brandID;
+
+
+    @SerializedName("brand_name")
+    @Expose
+    String brandName;
     String subCategory;
     String expiry_date;
     String delivery_days;
@@ -85,6 +94,8 @@ public class ProductResponse extends BaseResponse implements Serializable {
         // brandID = product.brandID;
         subCategory = product.subCategory;;
         brand = product.brand;
+        brandID = product.brandID;
+        brandName = product.brandName;
         regionalName = product.regionalName;
         videoLInk = product.videoLInk;
         expiry_date = product.expiry_date;
@@ -238,5 +249,21 @@ public class ProductResponse extends BaseResponse implements Serializable {
 
     public void setBrand(String brand) {
         this.brand = brand;
+    }
+
+    public String getBrandID() {
+        return brandID;
+    }
+
+    public void setBrandID(String brandID) {
+        this.brandID = brandID;
+    }
+
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
     }
 }

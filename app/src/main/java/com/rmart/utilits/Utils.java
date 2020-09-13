@@ -36,6 +36,8 @@ public class Utils {
     public static final String DELIVERY = "delivery";
 
     public static final String DD_MM_YYYY = "dd-MM-yyyy";
+    public static final String MM_DD_YYYY = "MM-dd-yyyy";
+    public static final String YYYY_MM_DD = "yyyy-MM-dd";
 
     public static final String CLIENT_ID = "2";
     public static boolean isValidMobile(String phone) {

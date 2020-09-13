@@ -25,11 +25,13 @@ public class InventoryViewModel extends ViewModel {
     MutableLiveData<String> selectedProduct;
     MutableLiveData<ArrayList<APIStockResponse>> apiStocks;
 
+    HashMap<String , APIStockResponse> apiStockMap;
     public InventoryViewModel() {
         isProductView = new MutableLiveData<>(PRODUCT);
         productList = new MutableLiveData<>(new HashMap<>());
         categories = new MutableLiveData<>(new HashMap<>());
         subCategories = new MutableLiveData<>(new HashMap<>());
+        apiStockMap = new HashMap<>();
         selectedProduct = new MutableLiveData<>();
         showLoadingDialog = new MutableLiveData<>(false);
         apiStocks = new MutableLiveData<>();
@@ -41,6 +43,17 @@ public class InventoryViewModel extends ViewModel {
 
     public void setApiStocks(ArrayList<APIStockResponse> apiStocks) {
         this.apiStocks.setValue(apiStocks);
+        for (APIStockResponse apiStockResponse : apiStocks) {
+            apiStockMap.put(apiStockResponse.getStockID(), apiStockResponse);
+        }
+    }
+
+    public HashMap<String, APIStockResponse> getApiStockMap() {
+        return apiStockMap;
+    }
+
+    public void setApiStockMap(HashMap<String, APIStockResponse> apiStockMap) {
+        this.apiStockMap = apiStockMap;
     }
 
     public MutableLiveData<String> getSelectedProduct() {

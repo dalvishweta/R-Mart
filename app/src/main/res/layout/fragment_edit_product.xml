@@ -44,16 +44,17 @@
                 style="@style/upload_product_item_field"/>
 
 
-            <Spinner
+            <!--<Spinner
+                android:visibility="gone"
                 android:id="@+id/product_brand"
-                style="@style/upload_product_item_field"/>
-            <!--<androidx.appcompat.widget.AppCompatTextView
+                style="@style/upload_product_item_field"/>-->
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/product_brand"
                 android:text="@string/product_brand"
                 android:drawableStart="@drawable/user"
                 android:hint="@string/product_brand"
                 android:textColor="@color/colorPrimary"
-                style="@style/upload_product_item_field"/>-->
+                style="@style/upload_product_item_field"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/product_regional_name"

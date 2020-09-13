@@ -2,19 +2,22 @@ package com.rmart.inventory.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rmart.utilits.pojos.APIStockResponse;
 import com.rmart.utilits.pojos.APIUnitMeasureResponse;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Objects;
 
 public class UnitObject implements Serializable {
     @SerializedName("unit_name")
     @Expose
     String displayUnitValue;
 
-    @SerializedName("unit_unique_id")
+    @SerializedName("unit_id")
     @Expose
-    String unitUniqueID;
+    String unitID;
 
     @SerializedName("selling_price")
     @Expose
@@ -32,17 +35,17 @@ public class UnitObject implements Serializable {
     @Expose
     String discount;
 
-    @SerializedName("unit_stock_status_id")
-    @Expose
-    String unitStockStatusID;
-
     @SerializedName("stock_id")
     @Expose
-    String productStatusID;
+    String stockID;
 
     @SerializedName("unit_number")
     @Expose
     String unit_number;
+
+    @SerializedName("stock_name")
+    @Expose
+    String stockName;
 
     boolean isActive;
     String productStatus;
@@ -52,9 +55,11 @@ public class UnitObject implements Serializable {
     String unitType;
     String unitMeasure;
     ArrayList<APIUnitMeasureResponse> availableUnits;
+    HashMap<String, APIStockResponse> apiStockMap;
 
     public UnitObject(ArrayList<APIUnitMeasureResponse> availableUnits1) {
         this.availableUnits = availableUnits1;
+        this.apiStockMap = apiStockMap;
         id = 101;
         unitType = "";
         unit_number = "";
@@ -63,15 +68,13 @@ public class UnitObject implements Serializable {
         discount = "";
         isActive = false;
     }
-    public UnitObject() {
+
+    public String getUnitID() {
+        return unitID;
     }
 
-    public String getUnitUniqueID() {
-        return unitUniqueID;
-    }
-
-    public void setUnitUniqueID(String unitUniqueID) {
-        this.unitUniqueID = unitUniqueID;
+    public void setUnitID(String unitID) {
+        this.unitID = unitID;
     }
 
     public String getQuantity() {
@@ -82,20 +85,12 @@ public class UnitObject implements Serializable {
         this.quantity = quantity;
     }
 
-    public String getUnitStockStatusID() {
-        return unitStockStatusID;
+    public String getStockID() {
+        return stockID;
     }
 
-    public void setUnitStockStatusID(String unitStockStatusID) {
-        this.unitStockStatusID = unitStockStatusID;
-    }
-
-    public String getProductStatusID() {
-        return productStatusID;
-    }
-
-    public void setProductStatusID(String productStatusID) {
-        this.productStatusID = productStatusID;
+    public void setStockID(String stockID) {
+        this.stockID = stockID;
     }
 
     public String getUnitMeasure() {
@@ -201,4 +196,15 @@ public class UnitObject implements Serializable {
     public void setAvailableUnits(ArrayList<APIUnitMeasureResponse> availableUnits) {
         this.availableUnits = availableUnits;
     }
+
+    public String getStockName() {
+        return stockName;
+    }
+    public String getStockName(String id) {
+        return Objects.requireNonNull(apiStockMap.get(id)).getStockName();
+    }
+    public void setStockName(String stockName) {
+        this.stockName = stockName;
+    }
+
 }

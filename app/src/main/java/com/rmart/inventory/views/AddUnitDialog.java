@@ -73,7 +73,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             unitObject = (UnitObject) getArguments().getSerializable(ARG_PARAM1);
             mIsEdit = getArguments().getBoolean(ARG_PARAM2);
         }
-        inventoryViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(InventoryViewModel.class);
+        inventoryViewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
     }
     @Override
     public void onResume() {
@@ -261,8 +261,8 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         if(view.getId() == R.id.save) {
             for (APIStockResponse apiStockResponse : Objects.requireNonNull(inventoryViewModel.getApiStocks().getValue())) {
                 if (unitObject.getProductStatus().equalsIgnoreCase(apiStockResponse.getStockName())) {
-                    unitObject.setProductStatusID(apiStockResponse.getStockID());
-                    unitObject.setUnitStockStatusID(apiStockResponse.getStockID());
+                    unitObject.setStockID(apiStockResponse.getStockID());
+                    unitObject.setStockID(apiStockResponse.getStockID());
                 }
             }
             String _actualPrice = Objects.requireNonNull(actualPrice.getText()).toString();

@@ -62,22 +62,28 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        myOrdersViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(MyOrdersViewModel.class);
+        myOrdersViewModel = new ViewModelProvider(requireActivity()).get(MyOrdersViewModel.class);
         return inflater.inflate(R.layout.fragment_order_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((AppCompatTextView)view.findViewById(R.id.shop_name)).setText(String.format(getString(R.string.shop_name), MyProfile.getInstance().getAddressResponses().get(0).getShopName()));
-        view.findViewById(R.id.accepted_orders).setOnClickListener(this);
-        ((AppCompatTextView)view.findViewById(R.id.open_order_count)).setText(Objects.requireNonNull(myOrdersViewModel.getOpenOrders().getValue()).getOrderObjects().size()+"");
-        RecyclerView recyclerView = view.findViewById(R.id.other_order_names);
-        myOrdersViewModel.getOrderGroupList().observe(Objects.requireNonNull(getActivity()), orderGroups -> {
-            if(orderGroups != null) {
-                recyclerView.setAdapter(new OrdersHomeAdapter(orderGroups, this));
-            }
-        });
+        try {
+            ((AppCompatTextView)view.findViewById(R.id.shop_name)).setText(String.format(getString(R.string.shop_name), MyProfile.getInstance().getAddressResponses().get(0).getShopName()));
+            view.findViewById(R.id.accepted_orders).setOnClickListener(this);
+            ((AppCompatTextView)view.findViewById(R.id.open_order_count)).setText(Objects.requireNonNull(myOrdersViewModel.getOpenOrders().getValue()).getOrderObjects().size()+"");
+            RecyclerView recyclerView = view.findViewById(R.id.other_order_names);
+            myOrdersViewModel.getOrderGroupList().observe(requireActivity(), orderGroups -> {
+                if(orderGroups != null) {
+                    recyclerView.setAdapter(new OrdersHomeAdapter(orderGroups, this));
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 

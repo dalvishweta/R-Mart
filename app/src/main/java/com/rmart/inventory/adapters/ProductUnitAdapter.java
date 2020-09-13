@@ -59,11 +59,13 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitViewHold
 
             }
         */
-        if(unit.getUnitStockStatusID().equalsIgnoreCase("5")) {
+
+        if(unit.getStockID().equalsIgnoreCase("5")) {
             holder.tvIUnitState.setTextColor(holder.itemView.getContext().getColor(R.color.colorPrimary));
         } else {
             holder.tvIUnitState.setTextColor(holder.itemView.getContext().getColor(R.color.gray));
         }
+
     }
 
     @Override

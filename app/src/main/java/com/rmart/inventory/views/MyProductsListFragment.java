@@ -70,7 +70,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle(getString(R.string.my_product_list));
+        requireActivity().setTitle(getString(R.string.my_product_list));
         /*InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
         searchView.clearFocus();*/
@@ -93,8 +93,8 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                 updateList(products);
             }
         });*/
-        inventoryViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(InventoryViewModel.class);
-        inventoryViewModel.getProductList().observe(Objects.requireNonNull(getActivity()), data-> {
+        inventoryViewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
+        inventoryViewModel.getProductList().observe(requireActivity(), data-> {
             updateList(new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values()));
         });
         vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
@@ -146,7 +146,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
 
         getStockList();
 
-        popup = new PopupMenu(Objects.requireNonNull(getActivity()), view.findViewById(R.id.sort));
+        popup = new PopupMenu(requireActivity(), view.findViewById(R.id.sort));
         // Inflating the Popup using xml file
         // popup.getMenuInflater().inflate(R.menu.inventory_view_products, popup.getMenu());
         view.findViewById(R.id.sort).setOnClickListener(param -> {
@@ -174,7 +174,8 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     }
 
     private void getProductList() {
-        vendorInventoryService.getProductList("0", MyProfile.getInstance().getMobileNumber(), "1,2,3,4,5,6,7","2").enqueue(new Callback<ProductListResponse>() {
+        progressDialog.show();
+        vendorInventoryService.getProductList("0", MyProfile.getInstance().getMobileNumber(), "1,2,3,4,5,6,7").enqueue(new Callback<ProductListResponse>() {
             @Override
             public void onResponse(Call<ProductListResponse> call, Response<ProductListResponse> response) {
                 if(response.isSuccessful()) {
@@ -198,6 +199,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                 if(mSwipeRefreshLayout.isRefreshing()) {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
+                progressDialog.dismiss();
             }
 
             @Override
@@ -206,6 +208,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                 if(mSwipeRefreshLayout.isRefreshing()) {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
+                progressDialog.dismiss();
             }
         });
     }
@@ -237,6 +240,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     private void updateList(ArrayList<ProductResponse> products) {
         try {
             tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), products.size()));
+            progressDialog.show();
             productAdapter = new ProductAdapter(products, view1 -> {
                 ProductResponse product = (ProductResponse)view1.getTag();
                 vendorInventoryService.getProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<ShowProductResponse>() {

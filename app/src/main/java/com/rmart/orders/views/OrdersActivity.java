@@ -23,12 +23,17 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myOrdersViewModel = new ViewModelProvider(this).get(MyOrdersViewModel.class);
-        if (MyProfile.getInstance().getRoleID().equals(Utils.DELIVERY_ID)) {
-            myOrdersViewModel.getSelectedOrderGroup().setValue(myOrdersViewModel.getShippedOrders().getValue());
-            addFragment(OrderListFragment.newInstance(""), "OrderListFragment", false);
-        } else if (MyProfile.getInstance().getRoleID().equals(Utils.RETAILER_ID)) {
-            addFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", false);
+        try {
+            if (MyProfile.getInstance().getRoleID().equals(Utils.DELIVERY_ID)) {
+                myOrdersViewModel.getSelectedOrderGroup().setValue(myOrdersViewModel.getShippedOrders().getValue());
+                addFragment(OrderListFragment.newInstance(""), "OrderListFragment", false);
+            } else if (MyProfile.getInstance().getRoleID().equals(Utils.RETAILER_ID)) {
+                addFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     @Override

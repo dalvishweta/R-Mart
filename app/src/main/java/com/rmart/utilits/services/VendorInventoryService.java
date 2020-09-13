@@ -6,6 +6,7 @@ import com.rmart.inventory.models.Product;
 import com.rmart.inventory.views.AddProductToInventory;
 import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.utilits.pojos.AddProductToInventoryResponse;
+import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.ProductListResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.pojos.ShowProductResponse;
@@ -30,11 +31,20 @@ public interface VendorInventoryService {
     @FormUrlEncoded
     Call<ProductListResponse> getProductList(@Field("start_index") String startIndex,
                                              @Field("mobile") String mobile,
-                                             @Field("stock_type") String stockType,
-                                             @Field("category_id") String categoryID);
+                                             @Field("stock_type") String stockType);
 
     @POST(BuildConfig.VENDOR_INVENTORY_GET_PRODUCT)
     @FormUrlEncoded
     Call<ShowProductResponse> getProduct(@Field("product_id") String productID,
                                          @Field("user_id") String userID);
+
+    @POST(BuildConfig.VENDOR_INVENTORY_PRODUCT_DELETE_UNIT)
+    @FormUrlEncoded
+    Call<ShowProductResponse> deleteProductUnit(@Field("user_id") String userID,
+                                                @Field("unit_id") String unitID);
+
+    @POST(BuildConfig.VENDOR_INVENTORY_DELETE_PRODUCT)
+    @FormUrlEncoded
+    Call<BaseResponse> deleteProduct(@Field("product_id") String productID,
+                                     @Field("user_id") String userID);
 }

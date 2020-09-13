@@ -1,5 +1,6 @@
 package com.rmart.inventory.views;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,10 +20,16 @@ import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.inventory.models.Product;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.services.VendorInventoryService;
 
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ShowProductPreviewFragment extends BaseInventoryFragment {
     private static final String ARG_PRODUCT = "param1";
@@ -65,7 +72,11 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_inventory_product_preview, container, false);
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        requireActivity().setTitle(getString(R.string.product_details));
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -84,9 +95,29 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
                 mListener.updateProduct(product, true);
             });
             delete.setOnClickListener(view1 -> {
-                ProductResponse object = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
-                Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).remove(object);
-                Objects.requireNonNull(getActivity()).onBackPressed();
+                progressDialog.show();
+                VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
+                vendorInventoryService.deleteProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<BaseResponse>() {
+                    @Override
+                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                        BaseResponse data = response.body();
+                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            ProductResponse object = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
+                            Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).remove(object);
+                            requireActivity().onBackPressed();
+                        } else {
+                            showDialog("", data.getMsg(), (dialogInterface, i) -> requireActivity().onBackPressed());
+                        }
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseResponse> call, Throwable t) {
+                        showDialog("", t.getMessage());
+                        progressDialog.dismiss();
+                    }
+                });
+
             });
         } else {
             delete.setVisibility(View.GONE);
@@ -98,7 +129,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     }
 
     private void updateUi() {
-        ImageAdapter imageAdapter = new ImageAdapter(Objects.requireNonNull(getContext()));
+        ImageAdapter imageAdapter = new ImageAdapter(requireContext());
         viewPager.setAdapter(imageAdapter);
         tvProductName.setText(product.getName());
         tvDeliveryInDays.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getDeliveryInDays()));

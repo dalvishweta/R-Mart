@@ -36,6 +36,7 @@ import com.rmart.utilits.pojos.APIUnitMeasureListResponse;
 import com.rmart.utilits.pojos.APIUnitMeasureResponse;
 import com.rmart.utilits.pojos.AddProductToInventoryResponse;
 import com.rmart.utilits.pojos.ProductResponse;
+import com.rmart.utilits.pojos.ShowProductResponse;
 import com.rmart.utilits.services.APIService;
 import com.rmart.utilits.services.VendorInventoryService;
 
@@ -61,9 +62,9 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     ArrayList<APIUnitMeasureResponse> unitMeasurements = new ArrayList<>();
     ArrayList<APIBrandResponse> apiBrandResponses = new ArrayList<>();
 
-    public AppCompatTextView chooseCategory, chooseSubCategory, chooseProduct;
-    CustomStringAdapter customStringAdapter;
-    Spinner productBrand;
+    public AppCompatTextView chooseCategory, chooseSubCategory, chooseProduct, productBrand;
+    // CustomStringAdapter customStringAdapter;
+    // Spinner productBrand;
     AppCompatEditText productRegionalName, deliveryDays, productDescription;
     AppCompatTextView expiry;
     private RecyclerView recyclerView;
@@ -118,6 +119,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     }
 
     private void getBrandFromAPI() {
+        progressDialog.show();
         apiService.getAPIBrandList().enqueue(new Callback<APIBrandListResponse>() {
             @Override
             public void onResponse(Call<APIBrandListResponse> call, Response<APIBrandListResponse> response) {
@@ -128,21 +130,24 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                     for ( APIBrandResponse apiBrandResponse: apiBrandResponses) {
                         availableBrands.add(apiBrandResponse.getBrandName());
                     }
-                    customStringAdapter = new CustomStringAdapter(availableBrands, getActivity());
-                    productBrand.setAdapter(customStringAdapter);
+                    // customStringAdapter = new CustomStringAdapter(availableBrands, getActivity());
+                    //productBrand.setAdapter(customStringAdapter);
                 } else {
                     showDialog("", response.message());
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<APIBrandListResponse> call, Throwable t) {
                 showDialog("", t.getMessage());
+                progressDialog.dismiss();
             }
         });
     }
 
     private void getUnitMeasuresFromAPI() {
+        progressDialog.show();
         apiService.getAPIUnitMeasureList().enqueue(new Callback<APIUnitMeasureListResponse>() {
             @Override
             public void onResponse(Call<APIUnitMeasureListResponse> call, Response<APIUnitMeasureListResponse> response) {
@@ -154,11 +159,13 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 } else {
                     showDialog("", response.message());
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<APIUnitMeasureListResponse> call, Throwable t) {
                 showDialog("", t.getMessage());
+                progressDialog.dismiss();
             }
         });
     }
@@ -170,7 +177,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         chooseSubCategory = view.findViewById(R.id.choose_sub_category);
         chooseProduct = view.findViewById(R.id.choose_product);
         productBrand = view.findViewById(R.id.product_brand);
-        productBrand.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*productBrand.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 mClonedProduct.setBrand(apiBrandResponses.get(pos).getBrandName());
@@ -180,7 +187,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
-        });
+        });*/
 
         productRegionalName = view.findViewById(R.id.product_regional_name);
         productDescription = view.findViewById(R.id.product_description);
@@ -213,6 +220,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             productDescription.setText(mClonedProduct.getDescription());
             expiry.setText(mClonedProduct.getExpiry_date());
             deliveryDays.setText(mClonedProduct.getDelivery_days());
+            productBrand.setText(mClonedProduct.getBrandName());
             updateList();
         }
 
@@ -245,6 +253,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             mClonedProduct.setRegionalName(productRegionalName.getText().toString());
             mClonedProduct.setDelivery_days(deliveryDays.getText().toString());
             mClonedProduct.setDescription(productDescription.getText().toString());
+            progressDialog.show();
 
             if (isEdit) {
                 /*Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).remove(mProduct.getProductID());
@@ -264,7 +273,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 jsonObject.addProperty("client_id", "2");
                 jsonObject.addProperty("user_id", MyProfile.getInstance().getUserID());
                 jsonObject.addProperty("product_video_link", "https://www.youtube.com/watch?v=pWjfA4hBNe8&ab_channel=CricketCloud");
-
                 RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class).editProductToInventory(jsonObject).enqueue(new Callback<AddProductToInventoryResponse>() {
                     @Override
                     public void onResponse(Call<AddProductToInventoryResponse> call, Response<AddProductToInventoryResponse> response) {
@@ -273,22 +281,24 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                             assert data != null;
                             if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 showDialog(mClonedProduct.getName() + getString(R.string.add_success_product), response.message(), (dialog, i) -> {
-                                    Objects.requireNonNull(getActivity()).onBackPressed();
+                                    requireActivity().onBackPressed();
                                 });
                             } else {
                                 showDialog("", data.getMsg(), (dialog, index)-> {
                                     Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);
-                                    Objects.requireNonNull(getActivity()).onBackPressed();
+                                    requireActivity().onBackPressed();
                                 });
                             }
                         } else {
                             showDialog("", response.message());
                         }
+                        progressDialog.dismiss();
                     }
 
                     @Override
                     public void onFailure(Call<AddProductToInventoryResponse> call, Throwable t) {
                         showDialog("", t.getMessage());
+                        progressDialog.dismiss();
                     }
                 });
             } else {
@@ -318,23 +328,24 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                             AddProductToInventoryResponse data = response.body();
                             assert data != null;
                             if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                showDialog(mClonedProduct.getName() + getString(R.string.add_success_product), response.message(), (dialog, i) -> {
-                                    Objects.requireNonNull(getActivity()).onBackPressed();
+                                showDialog("", mClonedProduct.getName()+" "+ getString(R.string.add_success_product), (dialog, i) -> {
+                                    requireActivity().onBackPressed();
                                 });
                             } else {
                                 showDialog("", data.getMsg(), (dialog, index)-> {
                                     Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);
-                                    Objects.requireNonNull(getActivity()).onBackPressed();
+                                    requireActivity().onBackPressed();
                                 });
                             }
                         } else {
                             showDialog("", response.message());
-                        }
+                        }progressDialog.dismiss();
                     }
 
                     @Override
                     public void onFailure(Call<AddProductToInventoryResponse> call, Throwable t) {
                         showDialog("", t.getMessage());
+                        progressDialog.dismiss();
                     }
                 });
 
@@ -342,7 +353,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             // showToast();
             // mListener.showProductPreview((Product) view.getTag());
         } else if (view.getId() == R.id.expiry) {
-            new CustomDatePicker((AppCompatTextView)view, getActivity(), Utils.DD_MM_YYYY);
+            new CustomDatePicker((AppCompatTextView)view, getActivity(), Utils.YYYY_MM_DD);
         }
     }
 
@@ -350,7 +361,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         showDialog("", mClonedProduct.getName() + " is successfully added to your Inventory.", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Objects.requireNonNull(getActivity()).onBackPressed();
+                requireActivity().onBackPressed();
             }
         });
         // Toast.makeText(getContext(), getString(R.string.item_added), Toast.LENGTH_SHORT).show();
@@ -376,9 +387,33 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
 
     private void updateList() {
         ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(mClonedProduct.getUnitObjects(), view -> {
+
+            progressDialog.show();
             UnitObject unitObject = (UnitObject) view.getTag();
-            mClonedProduct.getUnitObjects().remove(unitObject);
-            updateList();
+            VendorInventoryService inventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
+            inventoryService.deleteProductUnit(MyProfile.getInstance().getUserID(), unitObject.getUnitID()).enqueue(new Callback<ShowProductResponse>() {
+                @Override
+                public void onResponse(Call<ShowProductResponse> call, Response<ShowProductResponse> response) {
+                    if( response.isSuccessful() ) {
+                        ShowProductResponse data = response.body();
+                        if ( data.getStatus().equalsIgnoreCase(Utils.SUCCESS) ) {
+                            mClonedProduct.getUnitObjects().remove(unitObject);
+                            updateList();
+                        } else {
+                            showDialog(data.getMsg());
+                        }
+                    } else {
+                        showDialog(response.message());
+                    }
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<ShowProductResponse> call, Throwable t) {
+                    showDialog(t.getMessage());
+                    progressDialog.dismiss();
+                }
+            });
         }, true);
         recyclerView.setAdapter(unitBaseAdapter);
     }
