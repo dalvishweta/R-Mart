@@ -61,8 +61,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/product_description"
                 android:drawableStart="@drawable/user"
-                android:hint="@string/product_description_title"
-                android:text="@string/product_description"/>
+                android:hint="@string/product_description"/>
         </LinearLayout>
         <LinearLayout
             android:padding="8dp"

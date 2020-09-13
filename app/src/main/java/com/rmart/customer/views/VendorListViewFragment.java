@@ -13,10 +13,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
+import com.rmart.baseclass.CallBackInterface;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.CustomerProductsListAdapter;
 import com.rmart.customer.models.CustomerProductsModel;
@@ -134,15 +137,28 @@ public class VendorListViewFragment extends CustomerHomeFragment {
         });
 
         productsList = new ArrayList<>();
-        customerProductsListAdapter = new CustomerProductsListAdapter(requireActivity(), productsList);
+
+        DividerItemDecoration divider = new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL);
+        divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(requireActivity(), R.drawable.recycler_decoration_divider)));
+        productsListField.addItemDecoration(divider);
+
+        customerProductsListAdapter = new CustomerProductsListAdapter(requireActivity(), productsList, callBackListener);
         productsListField.setAdapter(customerProductsListAdapter);
-        
+
         view.findViewById(R.id.btn_change_address_field).setOnClickListener(v-> {
             changeAddressSelected();
         });
 
         getShopsList();
     }
+
+    private CallBackInterface callBackListener = pObject -> {
+        if(pObject instanceof CustomerProductsModel) {
+            onCustomerHomeInteractionListener.gotoVendorProductDetails((CustomerProductsModel) pObject);
+        } else if(pObject instanceof Integer) {
+
+        }
+    };
 
     private void changeAddressSelected() {
         onCustomerHomeInteractionListener.gotoChangeAddress();
@@ -170,11 +186,13 @@ public class VendorListViewFragment extends CustomerHomeFragment {
 
     private void getShopsList() {
         if (Utils.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName).enqueue(new Callback<CustomerProductsResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<CustomerProductsResponse> call, @NotNull Response<CustomerProductsResponse> response) {
+                    progressDialog.dismiss();
                     if (response.isSuccessful()) {
                         CustomerProductsResponse data = response.body();
                         if (data != null) {
@@ -189,7 +207,7 @@ public class VendorListViewFragment extends CustomerHomeFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<CustomerProductsResponse> call, @NotNull Throwable t) {
-
+                    progressDialog.dismiss();
                 }
             });
         }

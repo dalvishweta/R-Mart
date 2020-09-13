@@ -72,7 +72,7 @@
                 android:id="@+id/product_description"
                 android:minHeight="50dp"
                 android:drawableStart="@drawable/user"
-                android:hint="@string/product_description_title"/>
+                android:hint="@string/product_description"/>
         </LinearLayout>
         <LinearLayout
             android:padding="8dp"

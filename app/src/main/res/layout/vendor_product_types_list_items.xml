@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="130dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/grey_rounded_borders_bg_three">
+
+    <TextView
+        android:id="@+id/tv_discount_percent_field"
+        style="@style/text_style_medium_normal"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/green_rounded_border_bg"
+        android:gravity="center"
+        android:textColor="@color/white" />
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/iv_product_image_field"
+        android:layout_width="60dp"
+        android:layout_height="90dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:background="@mipmap/ic_launcher"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/tv_product_name_field"
+        style="@style/text_style_medium_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@id/iv_product_image_field"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:id="@+id/price_details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_product_name_field"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_quantity_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray" />
+
+        <TextView
+            android:id="@+id/tv_current_price_field"
+            style="@style/text_style_medium_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_total_price_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/gray" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@id/price_details_layout" />
+</RelativeLayout>

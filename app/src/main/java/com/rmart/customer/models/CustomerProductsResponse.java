@@ -13,7 +13,7 @@ public class CustomerProductsResponse extends BaseResponse {
 
     @SerializedName("data")
     @Expose
-    CustomerProductsList customerShopsList;
+    private CustomerProductsList customerShopsList;
 
     public CustomerProductsList getCustomerShopsList() {
         return customerShopsList;

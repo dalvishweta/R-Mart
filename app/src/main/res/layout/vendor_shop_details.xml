@@ -12,7 +12,7 @@
         android:contentDescription="@string/app_name"
         android:padding="5dp"
         android:scaleType="fitXY"
-        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="10dp"
         android:src="@drawable/message" />
@@ -25,9 +25,9 @@
         android:background="@drawable/sky_blue_color_rounded_circle"
         android:contentDescription="@string/app_name"
         android:padding="5dp"
+        android:layout_centerVertical="true"
         android:scaleType="fitXY"
         android:src="@drawable/phone"
-        android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
         android:layout_toStartOf="@id/iv_message_field"/>
 
@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_toStartOf="@id/iv_call_field"
         android:textColor="@color/white" />
 
@@ -48,10 +49,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="@string/view_address"
         android:layout_toStartOf="@id/iv_call_field"
         android:textColor="@color/white"
+        android:layout_marginEnd="10dp"
         android:textAllCaps="false"
+        android:maxLines="1"
         android:layout_centerVertical="true"
         android:background="@android:color/transparent"
         android:gravity="center_vertical"/>
@@ -62,6 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
         android:layout_toStartOf="@id/iv_call_field"

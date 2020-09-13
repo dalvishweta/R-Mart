@@ -51,8 +51,7 @@
     <string name="product_unit">1 KG</string>
     <string name="offer">%1$s \nOff</string>
     <string name="offer_single_line">%1$s Off</string>
-    <string name="product_description_title">Product Description</string>
-    <string name="product_description">Consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolortempora incidun</string>
+    <string name="product_description">Product Description</string>
     <string name="product_regional_name">Product Regional Name</string>
     <string name="product_regional_name_value">Neque porro</string>
     <string name="product_expiry_title">Expiry</string>
@@ -190,4 +189,21 @@
     <string name="select_this_address">Select this Address</string>
     <string name="delivery_address">Delivery Address</string>
     <string name="search_for_products">Search For Products</string>
+    <string name="view_all">View All</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="buy_now">Buy Now</string>
+    <string name="view_more">View More</string>
+    <string name="related_products">Related Products</string>
+    <string name="show_less">Show Less</string>
+    <string name="proceed_to_buy">Proceed to buy</string>
+    <string name="move_to_wish_list">Move to wishlist</string>
+    <string name="delete_product">Delete Product</string>
+    <string name="choose_payment_mode">Choose Payment Mode</string>
+    <string name="cash_on_delivery">Cash On Delivery</string>
+    <string name="internet_banking">Internet Banking</string>
+    <string name="my_wallet">My Wallet</string>
+    <string name="proceed">Proceed</string>
+    <string name="please_select_payment_type">Please Select Payment Type</string>
 </resources>

@@ -41,6 +41,7 @@ android {
 
         /* customer api services */
         buildConfigField("String", "CUSTOMER_SHOPS_LIST", '"customer/VendorShop/getShopList"')
+        buildConfigField("String", "VENDOR_PRODUCT_DETAILS", '"customer/VendorShop/getCatProductList"')
 
         /*Vendor inventory services*/
 
@@ -136,4 +137,6 @@ dependencies {
 
     implementation 'androidx.navigation:navigation-fragment:2.3.0'
     implementation 'androidx.navigation:navigation-ui:2.3.0'
+
+    implementation 'org.apache.commons:commons-lang3:3.11'
 }

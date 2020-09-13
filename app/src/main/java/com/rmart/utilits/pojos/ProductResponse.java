@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class ProductResponse extends BaseResponse implements Serializable {
+
     @SerializedName("product_id")
     @Expose
     String productID;

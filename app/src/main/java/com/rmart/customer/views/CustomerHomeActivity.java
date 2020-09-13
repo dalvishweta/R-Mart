@@ -1,16 +1,13 @@
 package com.rmart.customer.views;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
-import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
+import com.rmart.customer.models.CustomerProductsModel;
+import com.rmart.customer.models.VendorProductDataResponse;
+import com.rmart.customer.models.VendorProductDetailsResponse;
 
 public class CustomerHomeActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
 
@@ -30,5 +27,20 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     @Override
     public void gotoChangeAddress() {
         addFragment(ChangeAddressFragment.getInstance(),"ChangeAddressFragment",false);
+    }
+
+    @Override
+    public void gotoVendorProductDetails(CustomerProductsModel customerProductsModel) {
+        addFragment(VendorProductDetailsFragment.getInstance(customerProductsModel),"VendorProductDetailsFragment",false);
+    }
+
+    @Override
+    public void gotoProductDescDetails(VendorProductDataResponse vendorProductDataDetails) {
+        addFragment(ProductCartDetailsFragment.getInstance(vendorProductDataDetails),"ProductCartDetailsFragment",false);
+    }
+
+    @Override
+    public void gotoPaymentScreen() {
+        addFragment(MakePaymentFragment.getInstance("", ""),"MakePaymentFragment",false);
     }
 }

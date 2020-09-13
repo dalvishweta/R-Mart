@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -18,9 +17,9 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
 import com.rmart.RMartApplication;
+import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.views.ProgressBarCircular;
 import com.rmart.customer.models.CustomerProductsModel;
-import com.rmart.inventory.models.Product;
 import com.rmart.utilits.HttpsTrustManager;
 
 import java.util.ArrayList;
@@ -36,13 +35,15 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
     private List<CustomerProductsModel> filteredListData;
     private MyFilter myFilter;
     private ImageLoader imageLoader;
+    private CallBackInterface callBackListener;
 
-    public CustomerProductsListAdapter(Context context, List<CustomerProductsModel> productList) {
+    public CustomerProductsListAdapter(Context context, List<CustomerProductsModel> productList, CallBackInterface callBackListener) {
         this.productList = productList;
         layoutInflater = LayoutInflater.from(context);
         filteredListData = new ArrayList<>();
         this.filteredListData.addAll(productList);
         imageLoader = RMartApplication.getInstance().getImageLoader();
+        this.callBackListener = callBackListener;
     }
 
     public void updateItems(List<CustomerProductsModel> listData) {
@@ -63,6 +64,7 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
         CustomerProductsModel customerProductsModel = productList.get(position);
         holder.tvShopNameField.setText(customerProductsModel.getShopName());
         holder.tvPhoneNoField.setText(customerProductsModel.getShopMobileNo());
+        holder.tvViewAddressField.setText(customerProductsModel.getShopAddress());
 
         String shopImageUrl = customerProductsModel.getShopImage();
         if(!TextUtils.isEmpty(shopImageUrl)) {
@@ -72,11 +74,18 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
                             .ic_dialog_alert));
             holder.ivShopImageField.setImageUrl(shopImageUrl, imageLoader);
         }
+
+        holder.ivShopImageField.setTag(position);
+        holder.ivShopImageField.setOnClickListener(v -> {
+            int tag = (int) v.getTag();
+            CustomerProductsModel selectedDetails = productList.get(tag);
+            callBackListener.callBackReceived(selectedDetails);
+        });
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return filteredListData.size();
     }
 
     @Override
@@ -108,6 +117,12 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
             ivCallIconField = itemView.findViewById(R.id.iv_call_field);
             ivMessageField = itemView.findViewById(R.id.iv_message_field);
             progressBarCircular = itemView.findViewById(R.id.profile_circular_field);
+            /*itemView.setTag(this.getLayoutPosition());
+            itemView.setOnClickListener(v -> {
+                int tag = (int) itemView.getTag();
+                CustomerProductsModel customerProductsModel = productList.get(tag);
+                callBackListener.callBackReceived(customerProductsModel);
+            });*/
         }
     }
 

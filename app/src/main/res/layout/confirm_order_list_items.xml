@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/iv_product_image_field"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tv_product_name_field"
+        style="@style/text_style_medium_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@id/iv_product_image_field"
+        android:gravity="center"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:id="@+id/price_details_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_product_name_field"
+        android:layout_toEndOf="@id/iv_product_image_field"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_quantity_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray" />
+
+        <TextView
+            android:id="@+id/tv_current_price_field"
+            style="@style/text_style_medium_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_total_price_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/gray" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/increment_or_decrement_layout_field"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_below="@id/price_details_layout"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_toEndOf="@id/iv_product_image_field"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_minus_field"
+            style="@style/text_style_extra_medium_normal"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/left_side_grey_corners_bg"
+            android:gravity="center"
+            android:text="@string/minus"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_no_of_quantity_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/grey_color_five"
+            android:gravity="center"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/btn_add_field"
+            style="@style/text_style_extra_medium_normal"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/right_side_grey_corners_bg"
+            android:text="@string/plus"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttons_layout_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/increment_or_decrement_layout_field"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_move_to_wish_list_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/move_to_wish_list"
+            android:textAllCaps="false"
+            android:textColor="@color/black" />
+
+        <Button
+            android:id="@+id/btn_delete_product_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/delete_product"
+            android:textAllCaps="false"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@id/buttons_layout_field" />
+</RelativeLayout>

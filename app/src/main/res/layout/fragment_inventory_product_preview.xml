@@ -77,7 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/product_description_title"
+                    android:text="@string/product_description"
                     style="@style/product_preview_item_title"/>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/product_description"
