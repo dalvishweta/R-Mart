@@ -10,14 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.R;
 import com.rmart.orders.models.SelectedOrderGroup;
 import com.rmart.orders.views.viewholders.OrdersHomeViewHolder;
+import com.rmart.utilits.pojos.orders.StateOfOrders;
 
 import java.util.ArrayList;
 
 public class OrdersHomeAdapter extends RecyclerView.Adapter<OrdersHomeViewHolder> {
 
     View.OnClickListener onClickListener;
-    ArrayList<SelectedOrderGroup> orderByTypes;
-    public OrdersHomeAdapter(ArrayList<SelectedOrderGroup> orderByTypes, View.OnClickListener onClickListener) {
+    ArrayList<StateOfOrders> orderByTypes;
+    public OrdersHomeAdapter(ArrayList<StateOfOrders> orderByTypes, View.OnClickListener onClickListener) {
         this.orderByTypes = orderByTypes;
         this.onClickListener =onClickListener;
     }
@@ -32,10 +33,11 @@ public class OrdersHomeAdapter extends RecyclerView.Adapter<OrdersHomeViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull OrdersHomeViewHolder holder, int position) {
-        SelectedOrderGroup selectedOrderGroup = this.orderByTypes.get(position);
+        StateOfOrders selectedOrderGroup = this.orderByTypes.get(position);
         holder.itemView.setTag(selectedOrderGroup);
         holder.orderCount.setText(selectedOrderGroup.getCount());
-        holder.orderTitle.setText(selectedOrderGroup.getOrderType());
+        holder.orderTitle.setText(selectedOrderGroup.getStatusName());
+
         holder.orderCount.setBackgroundResource(selectedOrderGroup.getBgTop());
         holder.orderTitle.setBackgroundResource(selectedOrderGroup.getBgBottom());
     }

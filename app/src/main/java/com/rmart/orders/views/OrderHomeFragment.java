@@ -14,11 +14,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.orders.adapters.OrdersHomeAdapter;
+import com.rmart.orders.adapters.OrdersListAdapter;
 import com.rmart.orders.viewmodel.MyOrdersViewModel;
 import com.rmart.orders.models.SelectedOrderGroup;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.orders.OrderStateListResponse;
+import com.rmart.utilits.pojos.orders.StateOfOrders;
+import com.rmart.utilits.services.OrderService;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static com.rmart.utilits.Utils.OPEN_ORDER_STATUS;
 
 public class OrderHomeFragment extends BaseOrderFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
@@ -27,7 +41,11 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
     private String mParam1;
     private String mParam2;
 
+    private ArrayList<StateOfOrders> orderStatus;
+    private HashMap<String, Integer> mapOrderStatus = new HashMap<>();
+    private RecyclerView recyclerView;
     MyOrdersViewModel myOrdersViewModel;
+    private AppCompatTextView openOrderCount;
 
     public OrderHomeFragment() {
         // Required empty public constructor
@@ -55,14 +73,15 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle(getString(R.string.all_orders));
+        requireActivity().setTitle(getString(R.string.all_orders));
+        getOrderStatusFromServer();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        myOrdersViewModel = new ViewModelProvider(requireActivity()).get(MyOrdersViewModel.class);
+        // myOrdersViewModel = new ViewModelProvider(requireActivity()).get(MyOrdersViewModel.class);
         return inflater.inflate(R.layout.fragment_order_home, container, false);
     }
 
@@ -72,13 +91,13 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
         try {
             ((AppCompatTextView)view.findViewById(R.id.shop_name)).setText(String.format(getString(R.string.shop_name), MyProfile.getInstance().getAddressResponses().get(0).getShopName()));
             view.findViewById(R.id.accepted_orders).setOnClickListener(this);
-            ((AppCompatTextView)view.findViewById(R.id.open_order_count)).setText(Objects.requireNonNull(myOrdersViewModel.getOpenOrders().getValue()).getOrderObjects().size()+"");
-            RecyclerView recyclerView = view.findViewById(R.id.other_order_names);
-            myOrdersViewModel.getOrderGroupList().observe(requireActivity(), orderGroups -> {
+            openOrderCount = ((AppCompatTextView)view.findViewById(R.id.open_order_count));
+            recyclerView = view.findViewById(R.id.other_order_names);
+            /*myOrdersViewModel.getOrderGroupList().observe(requireActivity(), orderGroups -> {
                 if(orderGroups != null) {
-                    recyclerView.setAdapter(new OrdersHomeAdapter(orderGroups, this));
+
                 }
-            });
+            });*/
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,16 +105,64 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
 
 
     }
+    void getOrderStatusFromServer() {
+        progressDialog.show();
+        OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
+        orderService.getOrderHome(MyProfile.getInstance().getUserID()).enqueue(new Callback<OrderStateListResponse>() {
+            @Override
+            public void onResponse(Call<OrderStateListResponse> call, Response<OrderStateListResponse> response) {
+                if(response.isSuccessful()) {
+                    OrderStateListResponse data = response.body();
+                    assert data != null;
+                    if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                        orderStatus = data.getOrderStates();
+                        for (int i = 0; i< orderStatus.size(); i++) {
+                            orderStatus.get(i).updateBackgroundColor();
+                            mapOrderStatus.put(orderStatus.get(i).getStatus(), i);
+                        }
+                        updateUI();
+                    } else {
+                        showDialog(data.getMsg());
+                    }
+                } else {
+                    showDialog(response.message());
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<OrderStateListResponse> call, Throwable t) {
+                showDialog(t.getMessage());
+                progressDialog.dismiss();
+            }
+        });
+    }
+
+    private void updateUI() {
+
+        int position = mapOrderStatus.get(OPEN_ORDER_STATUS);
+        StateOfOrders data = orderStatus.get(position);
+        openOrderCount.setText(data.getCount());
+        ArrayList<StateOfOrders> list = (ArrayList<StateOfOrders>) orderStatus.clone();
+        int index=mapOrderStatus.get(OPEN_ORDER_STATUS);
+        list.remove(index);
+        recyclerView.setAdapter(new OrdersHomeAdapter(list, this));
+
+        /*ordersListAdapter = new OrdersListAdapter(orderStatus, this);
+        orderList.setAdapter(ordersListAdapter);*/
+
+    }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.accepted_orders) {
-            myOrdersViewModel.getSelectedOrderGroup().setValue(myOrdersViewModel.getOpenOrders().getValue());
-            mListener.showOrderList();
+            int position = mapOrderStatus.get(OPEN_ORDER_STATUS);
+            mListener.showOrderList(orderStatus.get(position));
+            /*myOrdersViewModel.getSelectedOrderGroup().setValue(myOrdersViewModel.getOpenOrders().getValue());
+            mListener.showOrderList();*/
         } else {
-            SelectedOrderGroup selectedOrderGroup = (SelectedOrderGroup) view.getTag();
-            myOrdersViewModel.getSelectedOrderGroup().setValue(selectedOrderGroup);
-            mListener.showOrderList();
+            StateOfOrders stateOfOrders = (StateOfOrders) view.getTag();
+            mListener.showOrderList(stateOfOrders);
         }
     }
 }

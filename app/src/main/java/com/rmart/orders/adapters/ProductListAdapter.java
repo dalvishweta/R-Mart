@@ -10,14 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.R;
 import com.rmart.inventory.views.viewholders.ProductItemViewHolder;
 import com.rmart.orders.models.ProductObject;
+import com.rmart.utilits.pojos.orders.Product;
 
 import java.util.ArrayList;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHolder> {
 
     View.OnClickListener onClickListener;
-    ArrayList<ProductObject> productList;
-    public ProductListAdapter(ArrayList<ProductObject> orderList, View.OnClickListener onClickListener) {
+    ArrayList<Product> productList;
+    public ProductListAdapter(ArrayList<Product> orderList, View.OnClickListener onClickListener) {
         this.productList = orderList;
         this.onClickListener =onClickListener;
     }
@@ -32,11 +33,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ProductItemViewHolder holder, int position) {
-        ProductObject productObject = productList.get(position);
+        Product productObject = productList.get(position);
         holder.price.setText(productObject.getPrice());
-        holder.productName.setText(productObject.getProductName());
+        holder.productName.setText(productObject.getProductID());
         holder.quantity.setText(productObject.getQuantity());
-        holder.units.setText(productObject.getUnits());
+        holder.units.setText(productObject.getUnit()+" " +productObject.getUnitMeasure());
     }
 
     @Override

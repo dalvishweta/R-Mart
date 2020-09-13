@@ -52,6 +52,12 @@ android {
         buildConfigField("String", 'VENDOR_INVENTORY_GET_PRODUCT', '"vendor/product/view_product"')
         buildConfigField("String", 'VENDOR_INVENTORY_PRODUCT_DELETE_UNIT', '"Unit/delete"')
 
+        /*Vendor order services*/
+        buildConfigField("String", 'VENDOR_ORDER_HOME', '"vendor/order/home"')
+        buildConfigField("String", 'VENDOR_ORDER_BY_STATUS', '"vendor/order/ordersByStatus"')
+        buildConfigField("String", 'VENDOR_ORDER_PRODUCTS', '"vendor/order/viewOrderById"')
+        buildConfigField("String", 'VENDOR_UPDATE_ORDER', '"vendor/order/updateOrder"')
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {

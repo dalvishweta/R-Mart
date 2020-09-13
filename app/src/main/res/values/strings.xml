@@ -79,7 +79,7 @@
     <string name="packed_orders">Packed Orders</string>
     <string name="canceled_orders">Canceled Orders</string>
     <string name="all_orders">All Orders</string>
-    <string name="total_orders">Total you have %1$d %2$s</string>
+    <string name="total_orders">Total you have %1$s %2$s</string>
     <string name="order_id">Order ID</string>
     <string name="data">Data</string>
     <string name="products">Products</string>

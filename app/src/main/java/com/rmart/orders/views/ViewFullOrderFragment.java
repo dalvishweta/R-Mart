@@ -18,21 +18,34 @@ import com.rmart.R;
 import com.rmart.orders.adapters.ProductListAdapter;
 import com.rmart.orders.models.OrderObject;
 import com.rmart.orders.viewmodel.MyOrdersViewModel;
+import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.orders.Order;
+import com.rmart.utilits.pojos.orders.OrderProductList;
+import com.rmart.utilits.pojos.orders.OrderProductListResponse;
+import com.rmart.utilits.services.OrderService;
+import com.rmart.utilits.services.UpdatedOrderStatus;
 
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private OrderObject mOrderObject;
+    private Order mOrderObject;
     private String mParam2;
     MyOrdersViewModel viewModel;
     AppCompatButton mLeftButton, mRightButton;
     private AppCompatTextView tvStatus, dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType,
             deliveryBoyName, deliveryBoyNumber;
     private ProductListAdapter productAdapter;
+    private OrderProductList orderProductList;
     private RecyclerView recyclerView;
     private LinearLayout deliveryBoyInfo;
 
@@ -41,7 +54,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     }
 
 
-    public static ViewFullOrderFragment newInstance(OrderObject param1, String param2) {
+    public static ViewFullOrderFragment newInstance(Order param1, String param2) {
         ViewFullOrderFragment fragment = new ViewFullOrderFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, param1);
@@ -54,19 +67,47 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mOrderObject = (OrderObject) getArguments().getSerializable(ARG_PARAM1);
+            mOrderObject = (Order) getArguments().getSerializable(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle("Order details");
+        requireActivity().setTitle("Order details");
+        getServerData();
     }
+
+    private void getServerData() {
+        progressDialog.show();
+        OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
+        orderService.getOrderProductList("0", MyProfile.getInstance().getUserID(), mOrderObject.getOrderID()).enqueue(new Callback<OrderProductListResponse>() {
+            @Override
+            public void onResponse(Call<OrderProductListResponse> call, Response<OrderProductListResponse> response) {
+                if(response.isSuccessful()) {
+                    OrderProductListResponse data = response.body();
+                    assert data != null;
+                    if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                        orderProductList  = data.getOrderStates();
+                        updateUI();
+                    } else {
+                        showDialog(data.getMsg());
+                    }
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<OrderProductListResponse> call, Throwable t) {
+                progressDialog.dismiss();
+            }
+        });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(MyOrdersViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(MyOrdersViewModel.class);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_view_full_order, container, false);
     }
@@ -98,72 +139,93 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
         setValuesToUI();
 
-        productAdapter = new ProductListAdapter(mOrderObject.getProductObjects(), this);
-        recyclerView.setAdapter(productAdapter);
-
     }
     void setValuesToUI() {
         orderIdValue.setText(mOrderObject.getOrderID());
-        dateValue.setText(mOrderObject.getDate());
-        tvAmount.setText(mOrderObject.getOrderAmount());
-        tvDeliveryCharges.setText(mOrderObject.getCharges());
-        tvTotalCharges.setText(mOrderObject.getTotalAmount());
-        tvPaymentType.setText(mOrderObject.getModeType());
-        updateUI();
+        dateValue.setText(mOrderObject.getOrderDate());
     }
 
     void updateUI() {
         Resources res = getResources();
-        String text = String.format(res.getString(R.string.status_order), mOrderObject.getOrderType());
+        String text = String.format(res.getString(R.string.status_order), mOrderObject.getOrderStatus());
         tvStatus.setText(text);
         setFooter();
+        tvDeliveryCharges.setText(orderProductList.getDeliveryCharges());
+        tvAmount.setText(orderProductList.getTotal_amt());
+        tvTotalCharges.setText(orderProductList.getTotal_amt());
+        tvPaymentType.setText(orderProductList.getMode_of_payment());
+        productAdapter = new ProductListAdapter(orderProductList.getProducts(), this);
+        recyclerView.setAdapter(productAdapter);
     }
     private void setFooter() {
-        if(mOrderObject.getOrderType().contains(getResources().getString(R.string.open))) {
+        if(mOrderObject.getOrderStatusID().contains(Utils.OPEN_ORDER_STATUS)) {
             isOpenOrder();
-        } else if(mOrderObject.getOrderType().contains(getResources().getString(R.string.accepted))) {
+        } else if(mOrderObject.getOrderStatusID().contains(Utils.ACCEPTED_ORDER_STATUS)) {
             isAcceptedOrder();
-        } else if(mOrderObject.getOrderType().contains(getResources().getString(R.string.packed))) {
+        } else if(mOrderObject.getOrderStatusID().contains(Utils.PACKED_ORDER_STATUS)) {
             isPackedOrder();
-        } else if(mOrderObject.getOrderType().contains(getResources().getString(R.string.shipped))) {
+        } else if(mOrderObject.getOrderStatusID().contains(Utils.SHIPPED_ORDER_STATUS)) {
             isShippedOrder();
-        } else if(mOrderObject.getOrderType().contains(getResources().getString(R.string.delivered))) {
+        } else if(mOrderObject.getOrderStatusID().contains(Utils.DELIVERED_ORDER_STATUS)) {
             isDeliveredOrder();
-        } else if(mOrderObject.getOrderType().contains(getResources().getString(R.string.returned))) {
+        } else if(mOrderObject.getOrderStatusID().contains(Utils.REJECT_ORDER_STATUS)) {
             isReturnedOrder();
-        } else if(mOrderObject.getOrderType().contains(getResources().getString(R.string.canceled))) {
+        } else if(mOrderObject.getOrderStatusID().contains(Utils.CANCEL_ORDER_STATUS)) {
             isCanceledOrder();
         }
     }
 
     @Override
     public void onClick(View view) {
-        viewModel.deleteOrder(mOrderObject, getResources());
+        // viewModel.deleteOrder(mOrderObject, getResources());
         String text  = ((AppCompatButton) view).getText().toString();
         if(text.contains(getResources().getString(R.string.accept))) {
-            mOrderObject.setOrderType(getResources().getString(R.string.accepted));
-            updateToAccepted();
+            // mOrderObject.setOrderType(getResources().getString(R.string.accepted));
+            updateOrderStatus(Utils.ACCEPTED_ORDER_STATUS);
         } else if(text.contains(getResources().getString(R.string.packed))) {
-            mOrderObject.setOrderType(getResources().getString(R.string.packed));
-            updateToPacked();
+            updateOrderStatus(Utils.PACKED_ORDER_STATUS);
         } else if(text.contains(getResources().getString(R.string.shipped))) {
-            mOrderObject.setOrderType(getResources().getString(R.string.shipped));
-            updateToShipped();
+            updateOrderStatus(Utils.SHIPPED_ORDER_STATUS);
         } else if(text.contains(getResources().getString(R.string.delivered))) {
-            mListener.goToProcessToDelivery(mOrderObject);
+            // mListener.goToProcessToDelivery(mOrderObject);
+            updateOrderStatus(Utils.DELIVERED_ORDER_STATUS);
             /**/
         } else if(text.contains(getResources().getString(R.string.returned))) {
-            mOrderObject.setOrderType(getResources().getString(R.string.returned));
-            updateToReturned();
+            updateOrderStatus(Utils.REJECT_ORDER_STATUS);
         } else if(text.contains(getResources().getString(R.string.cancel))) {
-            mOrderObject.setOrderType(getResources().getString(R.string.canceled));
-            updateToCancel();
+            updateOrderStatus(Utils.CANCEL_ORDER_STATUS);
         }
         updateUI();
         // Objects.requireNonNull(getActivity()).onBackPressed();
     }
 
-    void updateToCancel() {
+    private void updateOrderStatus(String newOrderStatus) {
+        progressDialog.show();
+        OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
+        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID() ,newOrderStatus).enqueue(new Callback<UpdatedOrderStatus>() {
+            @Override
+            public void onResponse(Call<UpdatedOrderStatus> call, Response<UpdatedOrderStatus> response) {
+                if(response.isSuccessful()) {
+                    UpdatedOrderStatus data = response.body();
+                    assert data != null;
+                    if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                        showDialog(data.getStatus(), data.getMsg(), ((dialogInterface, i) -> {
+                            requireActivity().onBackPressed();
+                        }));
+                    } else {
+                        showDialog(data.getMsg());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdatedOrderStatus> call, Throwable t) {
+
+            }
+        });
+    }
+
+    /*void updateToCancel() {
         viewModel.setCanceledOrders(mOrderObject);
     }
     void updateToAccepted() {
@@ -185,7 +247,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     void updateToReturned() {
         viewModel.setReturnedOrders(mOrderObject);
         //Objects.requireNonNull(viewModel.getReturnedOrders().getValue()).getOrderObjects().add(mOrderObject);
-    }
+    }*/
 
     void isOpenOrder() {
         mLeftButton.setBackgroundResource(R.drawable.btn_bg_canceled);
@@ -218,8 +280,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         mLeftButton.setVisibility(View.GONE);
         mRightButton.setVisibility(View.GONE);
         deliveryBoyInfo.setVisibility(View.VISIBLE);
-        deliveryBoyNumber.setText(mOrderObject.getDeliveryBoyNumber());
-        deliveryBoyName.setText(mOrderObject.getDeliveryBoyName());
+        /*deliveryBoyNumber.setText(mOrderObject.getDeliveryBoyNumber());
+        deliveryBoyName.setText(mOrderObject.getDeliveryBoyName());*/
     }
     void isReturnedOrder() {
         mLeftButton.setVisibility(View.GONE);
