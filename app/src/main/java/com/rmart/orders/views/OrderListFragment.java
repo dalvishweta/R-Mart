@@ -75,6 +75,7 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
     public void onResume() {
         super.onResume();
         // Objects.requireNonNull(getActivity()).setTitle(mSelectedOrderGroup.getOrderType());
+        startIndex = "0";
         getOrdersOfStatesFromServer();
     }
 
@@ -85,6 +86,7 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
             @Override
             public void onResponse(Call<OrdersByStatus> call, Response<OrdersByStatus> response) {
                 if(response.isSuccessful()) {
+                    progressDialog.dismiss();
                     data = response.body();
                     orders = data.getOrders();
                     assert data != null;
@@ -97,7 +99,6 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
                 } else {
                     showDialog(response.message());
                 }
-                progressDialog.dismiss();
             }
 
             @Override

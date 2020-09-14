@@ -42,7 +42,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private String mParam2;
     MyOrdersViewModel viewModel;
     AppCompatButton mLeftButton, mRightButton;
-    private AppCompatTextView tvStatus, dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType,
+    private AppCompatTextView tvStatus, tvFullName,dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType,
             deliveryBoyName, deliveryBoyNumber;
     private ProductListAdapter productAdapter;
     private OrderProductList orderProductList;
@@ -115,6 +115,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tvFullName = view.findViewById(R.id.name);
         recyclerView = view.findViewById(R.id.product_list);
         mLeftButton = view.findViewById(R.id.left_button);
         mLeftButton.setOnClickListener(this);
@@ -150,6 +151,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         String text = String.format(res.getString(R.string.status_order), mOrderObject.getOrderStatus());
         tvStatus.setText(text);
         setFooter();
+        tvFullName.setText(orderProductList.getFirstName()+" "+ orderProductList.getLastName());
         tvDeliveryCharges.setText(orderProductList.getDeliveryCharges());
         tvAmount.setText(orderProductList.getTotal_amt());
         tvTotalCharges.setText(orderProductList.getTotal_amt());
@@ -209,10 +211,12 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
                     UpdatedOrderStatus data = response.body();
                     assert data != null;
                     if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                        progressDialog.dismiss();
                         showDialog(data.getStatus(), data.getMsg(), ((dialogInterface, i) -> {
                             requireActivity().onBackPressed();
                         }));
                     } else {
+                        progressDialog.dismiss();
                         showDialog(data.getMsg());
                     }
                 }
@@ -220,7 +224,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
             @Override
             public void onFailure(Call<UpdatedOrderStatus> call, Throwable t) {
-
+                progressDialog.dismiss();
             }
         });
     }
