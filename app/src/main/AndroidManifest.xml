@@ -58,7 +58,7 @@
         <activity
             android:name=".customer.views.CustomerHomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppThemeNoActionBar" />
     </application>
 
 </manifest>

@@ -42,6 +42,13 @@ android {
         /* customer api services */
         buildConfigField("String", "CUSTOMER_SHOPS_LIST", '"customer/VendorShop/getShopList"')
         buildConfigField("String", "VENDOR_PRODUCT_DETAILS", '"customer/VendorShop/getCatProductList"')
+        buildConfigField("String", "VENDOR_PRODUCTS_LIST", '"customer/VendorShop/getCatProductList"')
+        buildConfigField("String", "VENDOR_PRODUCT_DETAILS", '"customer/VendorShop/getProductDetails"')
+        buildConfigField("String", "VENDOR_SHOW_ADD_TO_CART", '"customer/VendorShop/showAddToCart"')
+        buildConfigField("String", "VENDOR_DELETE_ADD_TO_CART", '"customer/VendorShop/deleteAddToCart"')
+        buildConfigField("String", "VENDOR_MOVE_TO_WISH_LIST", '"customer/VendorShop/addToWishlist"')
+        buildConfigField("String", "GET_SHOPPING_CART_LIST", '"customer/VendorShop/addToWishlist"')
+
 
         /*Vendor inventory services*/
 

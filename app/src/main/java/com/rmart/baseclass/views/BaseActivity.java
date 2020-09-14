@@ -31,6 +31,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseList
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.add(R.id.base_container, baseFragment, fragment_id);
+        if (isAddToBackStack) {
+            fragmentTransaction.addToBackStack(fragment_id);
+        }
         fragmentTransaction.commit();
     }
 }

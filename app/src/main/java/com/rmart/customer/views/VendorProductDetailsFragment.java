@@ -161,7 +161,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
     private CallBackInterface callBackListener = pObject -> {
         if(pObject instanceof VendorProductDataResponse) {
-            onCustomerHomeInteractionListener.gotoProductDescDetails((VendorProductDataResponse) pObject);
+            onCustomerHomeInteractionListener.gotoProductDescDetails((VendorProductDataResponse) pObject, customerProductsDetails);
         }
     };
 
@@ -189,11 +189,19 @@ public class VendorProductDetailsFragment extends BaseFragment {
                     if (response.isSuccessful()) {
                         VendorProductDetailsResponse body = response.body();
                         if (body != null) {
-                            List<VendorProductDataResponse> productDataList = body.getCustomerProductDetailsModel().getProductData();
-                            VendorProductShopDataResponse shopDataResponse = body.getCustomerProductDetailsModel().getShopData();
-                            updateShopDetailsUI(shopDataResponse);
-                            updateAdapter(productDataList);
+                            if (body.getStatus().equalsIgnoreCase("success")) {
+                                List<VendorProductDataResponse> productDataList = body.getCustomerProductDetailsModel().getProductData();
+                                VendorProductShopDataResponse shopDataResponse = body.getCustomerProductDetailsModel().getShopData();
+                                updateShopDetailsUI(shopDataResponse);
+                                updateAdapter(productDataList);
+                            } else {
+                                showDialog(body.getMsg());
+                            }
+                        } else {
+                            showDialog(getString(R.string.no_information_available));
                         }
+                    }  else {
+                        showDialog(getString(R.string.no_information_available));
                     }
                 }
 
@@ -202,7 +210,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
                     progressDialog.dismiss();
                 }
             });
-
         } else {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }

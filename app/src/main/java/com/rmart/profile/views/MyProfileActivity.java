@@ -29,7 +29,7 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
         if(MyProfile.getInstance().getPrimaryAddressId() == null) {
             addFragment(EditAddressFragment.newInstance(isFromLogin, null), "EditAddressFragment", false);
         } else {
-            addFragment(ViewMyProfileFragment.newInstance("", ""), "ViewMyProfileFragment", false);
+            addFragment(ViewMyProfileFragment.newInstance(), "ViewMyProfileFragment", false);
         }
 
         // MyProfileViewModel myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
@@ -46,7 +46,7 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void gotoEditProfile() {
-        replaceFragment(EditMyProfileFragment.newInstance(false, ""), "EditMyProfileFragment", true);
+        replaceFragment(EditMyProfileFragment.newInstance(false), "EditMyProfileFragment", true);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void gotoViewProfile() {
-        replaceFragment(ViewMyProfileFragment.newInstance("", ""), "ViewProfile", true);
+        replaceFragment(ViewMyProfileFragment.newInstance(), "ViewProfile", true);
     }
 
     @Override

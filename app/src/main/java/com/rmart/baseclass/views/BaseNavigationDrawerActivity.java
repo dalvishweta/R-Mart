@@ -8,7 +8,10 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.rmart.R;
@@ -23,26 +26,29 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
-    private DrawerLayout dl;
-    private ActionBarDrawerToggle t;
-    private NavigationView nv;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private NavigationView navigationView;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.nav_view_content);
 
-        dl = findViewById(R.id.drawer_layout);
-        t = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
+        drawerLayout = findViewById(R.id.drawer_layout);
 
-        dl.addDrawerListener(t);
-        t.syncState();
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
-        }
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.Open, R.string.Close);
 
-        nv = findViewById(R.id.navigation_view);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+        getSupportFragmentManager().addOnBackStackChangedListener(this::checkBackStack);
+
+        navigationView = findViewById(R.id.navigation_view);
         findViewById(R.id.update_profile).setOnClickListener(this);
         findViewById(R.id.orders).setOnClickListener(this);
         findViewById(R.id.inventory).setOnClickListener(this);
@@ -88,15 +94,49 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     break;
             }
         }
-        dl.closeDrawer(nv);
+        drawerLayout.closeDrawer(navigationView);
+    }
+
+    private void checkBackStack() {
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            if(getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+            toolbar.setNavigationOnClickListener(view -> onBackPressed());
+        } else {
+            if(getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            }
+            actionBarDrawerToggle.syncState();
+            setTitle(getResources().getString(R.string.app_name));
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(@NotNull MenuItem item) {
-        if (t.onOptionsItemSelected(item))
+        if (actionBarDrawerToggle.onOptionsItemSelected(item))
             return true;
-
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //Checks if the navigation drawer is open -- If so, close it
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        // If drawer is already close -- Do not override original functionality
+        else {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                this.finish();
+            } else {
+                getSupportFragmentManager().popBackStack();
+            }
+        }
     }
 
     @Override

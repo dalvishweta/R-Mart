@@ -22,13 +22,9 @@ import java.util.Objects;
 
 public class ViewMyProfileFragment extends BaseMyProfileFragment implements View.OnClickListener {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private AppCompatTextView tvEditProfile, tvEditAddress;
     private AppCompatTextView tvFirstName, tvLastName, tvMobileNumber, tvEmail, tvGender, addNewAddress;
     private AppCompatTextView tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress,tvCity, tvShopNO, tvDeliveryRadius, tvState, tvPINCode;
-    private String mParam1;
-    private String mParam2;
     RecyclerView recyclerView;
     AddressAdapter addressAdapter;
     // MyProfileViewModel myProfileViewModel;
@@ -36,28 +32,14 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
         // Required empty public constructor
     }
 
-    public static ViewMyProfileFragment newInstance(String param1, String param2) {
-        ViewMyProfileFragment fragment = new ViewMyProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public static ViewMyProfileFragment newInstance() {
+        return new ViewMyProfileFragment();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle(getString(R.string.view_my_profile));
+        Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.view_my_profile));
         updateUI(Objects.requireNonNull(MyProfile.getInstance()));
         if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
             setRetailerAddressData();
@@ -172,6 +154,8 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
                 break;
             case R.id.edit_profile:
                 mListener.gotoEditProfile();
+                break;
+            default:
                 break;
         }
     }

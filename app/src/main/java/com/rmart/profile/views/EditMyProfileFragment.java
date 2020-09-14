@@ -20,6 +20,8 @@ import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.LoginResponse;
 import com.rmart.utilits.services.ProfileService;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -35,7 +37,6 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
     private AppCompatEditText tvFirstName, tvLastName;
     AppCompatTextView tvMobileNumber, tvEmail;
     private boolean mIsFromLogin;
-    private String mParam2;
     private Spinner spinner;
     private String selectedGender;
     // private MyProfileViewModel myProfileViewModel;
@@ -43,11 +44,10 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
     public EditMyProfileFragment() {
     }
 
-    public static EditMyProfileFragment newInstance(boolean isEdit, String param2) {
+    public static EditMyProfileFragment newInstance(boolean isEdit) {
         EditMyProfileFragment fragment = new EditMyProfileFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_PARAM1, isEdit);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,15 +57,13 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mIsFromLogin = getArguments().getBoolean(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle(getString(R.string.edit_my_profile));
+        Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.edit_my_profile));
         updateUI(Objects.requireNonNull(MyProfile.getInstance()));
     }
 
@@ -73,7 +71,6 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        // myProfileViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(MyProfileViewModel.class);
         return inflater.inflate(R.layout.fragment_edit_my_profile, container, false);
     }
 
@@ -89,7 +86,7 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
 
 
         strings.add("Male");
-        strings.add("Femail");
+        strings.add("Female");
         strings.add("Other");
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -110,10 +107,7 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
 
         updateUI(Objects.requireNonNull(MyProfile.getInstance()));
 
-
         view.findViewById(R.id.submit).setOnClickListener(this);
-        // view.findViewById(R.id.update_location).setOnClickListener(this);
-
     }
     private void updateUI(MyProfile myProfile) {
         tvFirstName.setText(myProfile.getFirstName());
@@ -133,40 +127,48 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
                 mListener.gotoMapView();
                 break;
             case R.id.submit:
-                String email = Objects.requireNonNull(tvEmail.getText()).toString();
-                if (!Utils.isValidEmail(email)) {
-                    showDialog("", getString(R.string.required_mail));
-                } else {
-                    progressDialog.show();
-                    ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
-                    profileService.updateProfile(MyProfile.getInstance().getMobileNumber(),
-                            tvFirstName.getText().toString(), tvLastName.getText().toString(), MyProfile.getInstance().getUserID(),
-                            selectedGender, email, MyProfile.getInstance().getPrimaryAddressId()).enqueue(new Callback<LoginResponse>() {
-                        @Override
-                        public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                            if(response.isSuccessful()) {
-                                LoginResponse data = response.body();
-                                if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                    data.getLoginData().setAddressResponses(MyProfile.getInstance().getAddressResponses());
-                                    MyProfile.setInstance(data.getLoginData());
-                                    Objects.requireNonNull(getActivity()).onBackPressed();
-                                } else {
-                                    showDialog("", data.getMsg());
-                                }
-                            } else {
-                                showDialog("", response.message());
-                            }
-                            progressDialog.dismiss();
-                        }
-
-                        @Override
-                        public void onFailure(Call<LoginResponse> call, Throwable t) {
-                            progressDialog.dismiss();
-                            showDialog("", t.getMessage());
-                        }
-                    });
-                }
+                submitSelected();
                 break;
+            default:
+                break;
+        }
+    }
+
+    private void submitSelected() {
+        String email = Objects.requireNonNull(tvEmail.getText()).toString();
+        if (!Utils.isValidEmail(email)) {
+            showDialog("", getString(R.string.required_mail));
+        } else {
+            progressDialog.show();
+            ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
+            profileService.updateProfile(MyProfile.getInstance().getMobileNumber(),
+                    Objects.requireNonNull(tvFirstName.getText()).toString(), Objects.requireNonNull(tvLastName.getText()).toString(), MyProfile.getInstance().getUserID(),
+                    selectedGender, email, MyProfile.getInstance().getPrimaryAddressId()).enqueue(new Callback<LoginResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
+                    if(response.isSuccessful()) {
+                        LoginResponse data = response.body();
+                        if(data != null) {
+                            if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                data.getLoginData().setAddressResponses(MyProfile.getInstance().getAddressResponses());
+                                MyProfile.setInstance(data.getLoginData());
+                                Objects.requireNonNull(requireActivity()).onBackPressed();
+                            } else {
+                                showDialog("", data.getMsg());
+                            }
+                        }
+                    } else {
+                        showDialog("", response.message());
+                    }
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                    showDialog("", t.getMessage());
+                }
+            });
         }
     }
 }

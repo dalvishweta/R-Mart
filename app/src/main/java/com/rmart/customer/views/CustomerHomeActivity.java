@@ -8,6 +8,7 @@ import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerProductsModel;
 import com.rmart.customer.models.VendorProductDataResponse;
 import com.rmart.customer.models.VendorProductDetailsResponse;
+import com.rmart.customer.models.VendorProductShopDataResponse;
 
 public class CustomerHomeActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
 
@@ -26,21 +27,21 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
 
     @Override
     public void gotoChangeAddress() {
-        addFragment(ChangeAddressFragment.getInstance(),"ChangeAddressFragment",false);
+        addFragment(ChangeAddressFragment.getInstance(),"ChangeAddressFragment",true);
     }
 
     @Override
     public void gotoVendorProductDetails(CustomerProductsModel customerProductsModel) {
-        addFragment(VendorProductDetailsFragment.getInstance(customerProductsModel),"VendorProductDetailsFragment",false);
+        addFragment(VendorProductDetailsFragment.getInstance(customerProductsModel),"VendorProductDetailsFragment",true);
     }
 
     @Override
-    public void gotoProductDescDetails(VendorProductDataResponse vendorProductDataDetails) {
-        addFragment(ProductCartDetailsFragment.getInstance(vendorProductDataDetails),"ProductCartDetailsFragment",false);
+    public void gotoProductDescDetails(VendorProductDataResponse vendorProductDetails, CustomerProductsModel vendorShopDetails) {
+        addFragment(ProductCartDetailsFragment.getInstance(vendorProductDetails, vendorShopDetails),"ProductCartDetailsFragment",true);
     }
 
     @Override
     public void gotoPaymentScreen() {
-        addFragment(MakePaymentFragment.getInstance("", ""),"MakePaymentFragment",false);
+        addFragment(MakePaymentFragment.getInstance("", ""),"MakePaymentFragment",true);
     }
 }

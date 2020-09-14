@@ -115,7 +115,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                             switch (data.getLoginData().getRoleID()) {
                                                 case Utils.CUSTOMER_ID:
                                                     mListener.goToCustomerHomeActivity();
-                                                    SharedPreferences sharedPref = Objects.requireNonNull(getActivity()).getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                                                    SharedPreferences sharedPref = Objects.requireNonNull(requireActivity()).getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                                                     SharedPreferences.Editor editor = sharedPref.edit();
                                                     editor.putString(getString(R.string.uid), Utils.CUSTOMER_ID);
                                                     editor.apply();
@@ -128,7 +128,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                             }
                                         }
                                         // mListener.goToProfileActivity();
-                                        Objects.requireNonNull(getActivity()).onBackPressed();
+                                        Objects.requireNonNull(requireActivity()).onBackPressed();
                                     } catch (Exception e) {
                                         showDialog(e.getMessage());
                                     }

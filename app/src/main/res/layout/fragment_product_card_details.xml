@@ -48,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="40dp"
+                android:visibility="gone"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/left_arrow" />
 
@@ -130,7 +131,7 @@
                 android:layout_marginStart="50dp"
                 android:orientation="horizontal">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_minus_field"
                     style="@style/text_style_extra_medium_normal"
                     android:layout_width="50dp"
@@ -151,7 +152,7 @@
                     android:gravity="center"
                     android:textColor="@color/black" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_add_field"
                     style="@style/text_style_extra_medium_normal"
                     android:layout_width="50dp"
@@ -188,7 +189,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="5"
-                android:text="Aashirvaad Shudh Chakki Whole Wheat Atta is ground with utmost precision, using the traditional chakki-grinding process by picking the choicest of grains to give you fresh and 100% pure wheat flour. Enriched with wholesome vitamins, it can be used to prepare the softest of roti's."
                 android:textColor="@color/item_sub_title_color" />
 
             <LinearLayout
@@ -208,6 +208,7 @@
                     android:layout_marginStart="10dp"
                     android:gravity="center_vertical"
                     android:text="@string/view_more"
+                    android:visibility="gone"
                     android:textAllCaps="false" />
 
                 <ImageView
@@ -284,6 +285,7 @@
             android:minHeight="40dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
+            android:visibility="gone"
             android:text="@string/related_products"
             android:textColor="@color/blue_color_two" />
 
@@ -295,6 +297,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:reverseLayout="false" />
     </RelativeLayout>

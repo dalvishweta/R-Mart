@@ -1,6 +1,7 @@
 package com.rmart.customer.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
+import com.rmart.RMartApplication;
+import com.rmart.baseclass.CallBackInterface;
+import com.rmart.baseclass.Constants;
+import com.rmart.customer.models.ContentModel;
+import com.rmart.customer.models.ProductInCartDetailsModel;
+import com.rmart.utilits.HttpsTrustManager;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Satya Seshu on 12/09/20.
@@ -21,11 +29,15 @@ import java.util.ArrayList;
 public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdapter.ViewHolder> {
 
     private LayoutInflater layoutInflater;
-    private ArrayList<Object> listData;
+    private List<ProductInCartDetailsModel> listData;
+    private CallBackInterface callBackListener;
+    private ImageLoader imageLoader;
 
-    public ConfirmOrdersAdapter(Context context, ArrayList<Object> listData) {
+    public ConfirmOrdersAdapter(Context context, List<ProductInCartDetailsModel> listData, CallBackInterface callBackListener) {
         layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
+        this.callBackListener = callBackListener;
+        imageLoader = RMartApplication.getInstance().getImageLoader();
     }
 
     @NonNull
@@ -37,22 +49,48 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        ProductInCartDetailsModel dataObject = listData.get(position);
+        holder.tvProductNameField.setText(dataObject.getProductName());
+        holder.tvNoOfQuantityField.setText(dataObject.getTotalProductCartQty());
+        String productImageUrl = dataObject.getProductImage();
+        if (!TextUtils.isEmpty(productImageUrl)) {
+            HttpsTrustManager.allowAllSSL();
+            imageLoader.get(productImageUrl, ImageLoader.getImageListener(holder.ivProductImageField,
+                    R.mipmap.ic_launcher, android.R.drawable
+                            .ic_dialog_alert));
+            holder.ivProductImageField.setImageUrl(productImageUrl, imageLoader);
+        }
         holder.btnMoveToWishListField.setTag(position);
         holder.btnMoveToWishListField.setOnClickListener(v -> {
-
+            int tag = (int) v.getTag();
+            ContentModel contentModel = new ContentModel();
+            contentModel.setStatus(Constants.TAG_MOVE_TO_WISH_LIST);
+            contentModel.setValue(listData.get(tag));
+            callBackListener.callBackReceived(contentModel);
         });
         holder.deleteProductField.setTag(position);
         holder.deleteProductField.setOnClickListener(v -> {
-
+            int tag = (int) v.getTag();
+            ContentModel contentModel = new ContentModel();
+            contentModel.setStatus(Constants.TAG_DELETE);
+            contentModel.setValue(listData.get(tag));
+            callBackListener.callBackReceived(contentModel);
         });
         holder.btnMinusField.setTag(position);
         holder.btnMinusField.setOnClickListener(v -> {
-
+            int tag = (int) v.getTag();
+            ContentModel contentModel = new ContentModel();
+            contentModel.setStatus(Constants.TAG_MINUS);
+            contentModel.setValue(listData.get(tag));
+            callBackListener.callBackReceived(contentModel);
         });
         holder.btnPlusField.setTag(position);
         holder.btnPlusField.setOnClickListener(v -> {
-
+            int tag = (int) v.getTag();
+            ContentModel contentModel = new ContentModel();
+            contentModel.setStatus(Constants.TAG_PLUS);
+            contentModel.setValue(listData.get(tag));
+            callBackListener.callBackReceived(contentModel);
         });
     }
 

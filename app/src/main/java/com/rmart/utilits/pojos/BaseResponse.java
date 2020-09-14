@@ -11,7 +11,6 @@ public class BaseResponse implements Serializable {
     @Expose
     private String status = "";
 
-
     @SerializedName("msg")
     @Expose
     private String msg ="";

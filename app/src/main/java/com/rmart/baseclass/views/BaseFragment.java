@@ -165,4 +165,20 @@ public class BaseFragment extends Fragment {
         }
     }
 
+    protected void showDialog(String msg, CallBackInterface  callBackInterface) {
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
+            builder.setTitle(getString(R.string.message));
+            builder.setCancelable(false);
+            builder.setMessage(msg);
+            builder.setNegativeButton("close", (dialogInterface, i) -> callBackInterface.callBackReceived(Constants.TAG_SUCCESS));
+            AlertDialog alertDialog = builder.create();
+            if (!requireActivity().isFinishing()) {
+                alertDialog.show();
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
 }
