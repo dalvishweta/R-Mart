@@ -29,7 +29,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
-    private Toolbar toolbar;
+    //private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +38,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
         drawerLayout = findViewById(R.id.drawer_layout);
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.Open, R.string.Close);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.Open, R.string.Close);
 
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
@@ -102,7 +102,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             if(getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
-            toolbar.setNavigationOnClickListener(view -> onBackPressed());
+            //toolbar.setNavigationOnClickListener(view -> onBackPressed());
         } else {
             if(getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
