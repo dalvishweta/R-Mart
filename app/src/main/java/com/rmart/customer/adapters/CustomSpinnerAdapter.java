@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.rmart.R;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Satya Seshu on 12/09/20.
@@ -18,11 +21,20 @@ import java.util.ArrayList;
 public class CustomSpinnerAdapter extends BaseAdapter {
 
     private LayoutInflater layoutInflater;
-    private ArrayList<Object> listData;
+    private List<Object> listData;
+    private boolean changeTextColor = false;
+    private int whiteColor;
+    private int blackColor;
 
-    public CustomSpinnerAdapter(Context context, ArrayList<Object> listData) {
+    public CustomSpinnerAdapter(Context context, List<Object> listData) {
         layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
+        whiteColor = ContextCompat.getColor(context, R.color.white);
+        blackColor = ContextCompat.getColor(context, R.color.black);
+    }
+
+    public void changeTextColor() {
+        changeTextColor = true;
     }
 
     @Override
@@ -51,10 +63,15 @@ public class CustomSpinnerAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        if(changeTextColor) {
+            holder.tvTextField.setTextColor(blackColor);
+        } else {
+            holder.tvTextField.setTextColor(whiteColor);
+        }
         Object dataObject = listData.get(position);
         if (dataObject instanceof CustomerProductsDetailsUnitModel) {
             CustomerProductsDetailsUnitModel unitDetails = (CustomerProductsDetailsUnitModel) dataObject;
-            String unitMeasureDetails = String.format("%s %s", unitDetails.getUnitNumber(), unitDetails.getUnitMeasure());
+            String unitMeasureDetails = String.format("%s %s", unitDetails.getUnitNumber(), unitDetails.getShortUnitMeasure());
             holder.tvTextField.setText(unitMeasureDetails);
         }
         return convertView;

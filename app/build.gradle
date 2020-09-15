@@ -48,6 +48,8 @@ android {
         buildConfigField("String", "VENDOR_DELETE_ADD_TO_CART", '"customer/VendorShop/deleteAddToCart"')
         buildConfigField("String", "VENDOR_MOVE_TO_WISH_LIST", '"customer/VendorShop/addToWishlist"')
         buildConfigField("String", "GET_SHOPPING_CART_LIST", '"customer/VendorShop/addToWishlist"')
+        buildConfigField("String", "VENDOR_ADD_TO_CART", '"customer/VendorShop/addToCart"')
+        buildConfigField("String", "VENDOR_REMOVE_FROM_CART", '"customer/VendorShop/deleteAddToCart"')
 
 
         /*Vendor inventory services*/

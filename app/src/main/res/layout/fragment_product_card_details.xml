@@ -80,15 +80,15 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <TextView
+            <Spinner
                 android:id="@+id/tv_quantity_field"
                 style="@style/text_style_medium_normal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gray" />
+                android:textColor="@android:color/transparent" />
 
             <TextView
-                android:id="@+id/tv_current_price_field"
+                android:id="@+id/tv_selling_price_field"
                 style="@style/text_style_medium_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

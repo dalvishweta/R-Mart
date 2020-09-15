@@ -54,7 +54,6 @@ public class ConfirmOrderFragment extends BaseFragment {
     private ConfirmOrdersAdapter confirmOrdersAdapter;
     private ProductInCartDetailsModel selectedProductInCartDetails;
 
-
     public ConfirmOrderFragment() {
         // Required empty public constructor
     }

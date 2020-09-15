@@ -1,12 +1,14 @@
 package com.rmart.customer.views;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -24,6 +26,7 @@ import com.rmart.RMartApplication;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.CustomSpinnerAdapter;
+import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.models.CustomerProductsModel;
 import com.rmart.customer.models.ProductDetailsDescModel;
@@ -60,8 +63,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private ImageView ivLeftArrowImageField;
     private ImageView ivRightArrowImageField;
     private TextView tvProductNameField;
-    private TextView tvQuantityField;
-    private TextView tvCurrentPriceField;
+    private TextView tvSellingPriceField;
     private TextView tvTotalPriceField;
     private AppCompatButton btnMinusField;
     private AppCompatButton btnPlusField;
@@ -79,6 +81,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private TextView tvViewMoreField;
     private ImageView ivViewMoreImageField;
     private int productImagePosition = 1;
+    private CustomerProductsDetailsUnitModel productUnitDetails;
 
     private List<String> productsImagesList;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
@@ -174,8 +177,8 @@ public class ProductCartDetailsFragment extends BaseFragment {
         ivLeftArrowImageField = view.findViewById(R.id.iv_left_arrow_field);
         ivRightArrowImageField = view.findViewById(R.id.iv_right_arrow_field);
         tvProductNameField = view.findViewById(R.id.tv_product_name_field);
-        tvQuantityField = view.findViewById(R.id.tv_quantity_field);
-        tvCurrentPriceField = view.findViewById(R.id.tv_current_price_field);
+        quantitySpinnerField = view.findViewById(R.id.tv_quantity_field);
+        tvSellingPriceField = view.findViewById(R.id.tv_selling_price_field);
         tvTotalPriceField = view.findViewById(R.id.tv_total_price_field);
         btnMinusField = view.findViewById(R.id.btn_minus_field);
         tvNoOfQuantityField = view.findViewById(R.id.tv_no_of_quantity_field);
@@ -306,6 +309,38 @@ public class ProductCartDetailsFragment extends BaseFragment {
         });
 
         ivRightArrowImageField.setVisibility(productImagePosition == productsImagesList.size() ? View.GONE : View.VISIBLE);
+
+        List<CustomerProductsDetailsUnitModel> productUnitsList = productDetailsDescModel.getUnits();
+        List<Object> updatedProductsUnitsList = new ArrayList<>(productUnitsList);
+        if(!updatedProductsUnitsList.isEmpty()) {
+            CustomSpinnerAdapter productsUnitSpinnerAdapter = new CustomSpinnerAdapter(requireActivity(), updatedProductsUnitsList);
+            productsUnitSpinnerAdapter.changeTextColor();
+            quantitySpinnerField.setAdapter(productsUnitSpinnerAdapter);
+        }
+
+        quantitySpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Object lSelectedItem = quantitySpinnerField.getSelectedItem();
+                if(lSelectedItem instanceof CustomerProductsDetailsUnitModel) {
+                    productUnitDetails = (CustomerProductsDetailsUnitModel) lSelectedItem;
+                    updateUnitPriceDetails();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void updateUnitPriceDetails() {
+        String sellingPrice = String.format("Rs.%s", productUnitDetails.getSellingPrice());
+        tvSellingPriceField.setText(sellingPrice);
+        String totalPrice = productUnitDetails.getUnitPrice();
+        tvTotalPriceField.setText(totalPrice);
+        tvTotalPriceField.setPaintFlags(tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
     }
 
     private void showCloseDialog(String title, String message) {
@@ -315,11 +350,51 @@ public class ProductCartDetailsFragment extends BaseFragment {
     }
 
     private void addToCartSelected() {
+        if (Utils.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            String clientID = "2";
+            Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),
+                    productUnitDetails.getProductUnitId(), productUnitDetails.getProductUnitQuantity());
+            call.enqueue(new Callback<AddToCartResponseDetails>() {
+                @Override
+                public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        AddToCartResponseDetails body = response.body();
+                        if (body != null) {
+                            if (body.getStatus().equalsIgnoreCase("success")) {
+                                AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = body.getAddToCartDataResponse();
+                                if (addToCartDataResponse != null) {
+                                    Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
+                                    showDialog(getString(R.string.added_to_cart));
+                                } else {
+                                    showDialog(getString(R.string.no_information_available));
+                                }
+                            } else {
+                                showDialog(body.getMsg());
+                            }
+                        } else {
+                            showDialog(getString(R.string.no_information_available));
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
+                    }
+                }
 
+                @Override
+                public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                    showDialog(t.getMessage());
+                }
+            });
+        } else {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+        }
     }
 
     private void buyNowSelected() {
-        onCustomerHomeInteractionListener.gotoConfirmOrdersScreen(vendorShopDetails);
+        onCustomerHomeInteractionListener.gotoPaymentScreen();
     }
 
     private void favouriteSelected() {

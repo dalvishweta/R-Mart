@@ -1,6 +1,7 @@
 package com.rmart.utilits.services;
 
 import com.rmart.BuildConfig;
+import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.ProductDetailsDescResponse;
 import com.rmart.customer.models.ProductInCartResponse;
 import com.rmart.customer.models.VendorProductDetailsResponse;
@@ -64,5 +65,15 @@ public interface CustomerProductsService {
     @POST(BuildConfig.VENDOR_MOVE_TO_WISH_LIST)
     @FormUrlEncoded
     Call<BaseResponse> getShoppingCartList();
+
+    @POST(BuildConfig.VENDOR_ADD_TO_CART)
+    @FormUrlEncoded
+    Call<AddToCartResponseDetails> addToCart(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
+                                             @Field("product_unit_id") int productUnitId, @Field("product_quantity") int productQuantity);
+
+    @POST(BuildConfig.VENDOR_ADD_TO_CART)
+    @FormUrlEncoded
+    Call<AddToCartResponseDetails> removeFromCart(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
+                                             @Field("product_unit_id") int productUnitId, @Field("product_quantity") int productQuantity);
 
 }

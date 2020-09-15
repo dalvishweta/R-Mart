@@ -30,7 +30,10 @@ public class CustomerProductsDetailsUnitModel implements Serializable {
     private String unitMeasure;
     @SerializedName("product_unit_quantity")
     @Expose
-    private String productUnitQuantity;
+    private Integer productUnitQuantity;
+    @SerializedName("short_unit_measure")
+    @Expose
+    private String shortUnitMeasure;
 
     public Integer getProductUnitId() {
         return productUnitId;
@@ -80,11 +83,19 @@ public class CustomerProductsDetailsUnitModel implements Serializable {
         this.unitMeasure = unitMeasure;
     }
 
-    public String getProductUnitQuantity() {
+    public Integer getProductUnitQuantity() {
         return productUnitQuantity;
     }
 
-    public void setProductUnitQuantity(String productUnitQuantity) {
+    public void setProductUnitQuantity(Integer productUnitQuantity) {
         this.productUnitQuantity = productUnitQuantity;
+    }
+
+    public String getShortUnitMeasure() {
+        return shortUnitMeasure;
+    }
+
+    public void setShortUnitMeasure(String shortUnitMeasure) {
+        this.shortUnitMeasure = shortUnitMeasure;
     }
 }

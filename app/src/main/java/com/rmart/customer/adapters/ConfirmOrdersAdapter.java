@@ -113,6 +113,8 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivProductImageField = itemView.findViewById(R.id.iv_product_image_field);
+            tvProductNameField = itemView.findViewById(R.id.tv_product_name_field);
             tvCurrentPriceField = itemView.findViewById(R.id.tv_current_price_field);
             tvTotalPriceField = itemView.findViewById(R.id.tv_total_price_field);
             btnMinusField = itemView.findViewById(R.id.btn_minus_field);
