@@ -14,4 +14,6 @@ public interface OnCustomerHomeInteractionListener {
     void gotoProductDescDetails(VendorProductDataResponse vendorProductDataDetails, CustomerProductsModel vendorShopDetails);
 
     void gotoPaymentScreen();
+
+    void gotoConfirmOrdersScreen(CustomerProductsModel vendorShopDetails);
 }

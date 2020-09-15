@@ -31,6 +31,7 @@ import com.rmart.customer.models.VendorProductDataResponse;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.customer.models.VendorProductShopDataResponse;
 import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.services.CustomerProductsService;
@@ -104,6 +105,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        LoggerInfo.printLog("Fragment", "VendorProductDetailsFragment");
         return inflater.inflate(R.layout.fragment_vendor_product_details, container, false);
     }
 

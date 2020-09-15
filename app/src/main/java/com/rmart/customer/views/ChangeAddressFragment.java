@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.customer.adapters.ChangeAddressAdapter;
+import com.rmart.utilits.LoggerInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        LoggerInfo.printLog("Fragment", "ChangeAddressFragment");
         return inflater.inflate(R.layout.fragment_change_address, container, false);
     }
 

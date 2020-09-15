@@ -24,6 +24,7 @@ import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.CustomerProductsListAdapter;
 import com.rmart.customer.models.CustomerProductsModel;
 import com.rmart.customer.models.CustomerProductsResponse;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.services.CustomerProductsService;
@@ -67,6 +68,7 @@ public class VendorListViewFragment extends CustomerHomeFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        LoggerInfo.printLog("Fragment", "VendorListViewFragment");
         return inflater.inflate(R.layout.fragment_vendor_list_view, container, false);
     }
 

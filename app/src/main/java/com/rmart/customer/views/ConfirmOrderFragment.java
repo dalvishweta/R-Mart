@@ -23,6 +23,7 @@ import com.rmart.customer.models.CustomerProductsModel;
 import com.rmart.customer.models.ProductInCartDetailsModel;
 import com.rmart.customer.models.ProductInCartResponse;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.BaseResponse;
@@ -79,6 +80,7 @@ public class ConfirmOrderFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        LoggerInfo.printLog("Fragment", "ConfirmOrderFragment");
         return inflater.inflate(R.layout.fragment_confirm_order, container, false);
     }
 

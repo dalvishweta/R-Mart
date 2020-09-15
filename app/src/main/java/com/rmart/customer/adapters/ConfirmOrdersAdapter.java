@@ -51,7 +51,7 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ProductInCartDetailsModel dataObject = listData.get(position);
         holder.tvProductNameField.setText(dataObject.getProductName());
-        holder.tvNoOfQuantityField.setText(dataObject.getTotalProductCartQty());
+        holder.tvNoOfQuantityField.setText(String.valueOf(dataObject.getTotalProductCartQty()));
         String productImageUrl = dataObject.getProductImage();
         if (!TextUtils.isEmpty(productImageUrl)) {
             HttpsTrustManager.allowAllSSL();

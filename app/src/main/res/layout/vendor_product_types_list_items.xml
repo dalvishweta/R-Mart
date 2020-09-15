@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="130dp"
-    android:layout_height="wrap_content"
+    android:layout_height="180dp"
     android:background="@drawable/grey_rounded_borders_bg_three">
 
     <TextView
@@ -26,10 +26,11 @@
 
     <TextView
         android:id="@+id/tv_product_name_field"
-        style="@style/text_style_medium_normal"
+        style="@style/text_style_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:maxLines="2"
         android:layout_below="@id/iv_product_image_field"
         android:layout_centerHorizontal="true"
         android:textColor="@color/black" />

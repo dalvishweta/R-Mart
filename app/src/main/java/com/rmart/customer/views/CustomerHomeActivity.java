@@ -7,8 +7,6 @@ import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerProductsModel;
 import com.rmart.customer.models.VendorProductDataResponse;
-import com.rmart.customer.models.VendorProductDetailsResponse;
-import com.rmart.customer.models.VendorProductShopDataResponse;
 
 public class CustomerHomeActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
 
@@ -17,7 +15,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_authenticatin);
 
-        replaceFragment(VendorListViewFragment.getInstance(),"VendorListViewFragment",false);
+        replaceFragment(VendorListViewFragment.getInstance(), VendorListViewFragment.class.getName(),false);
     }
 
     @Override
@@ -27,21 +25,26 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
 
     @Override
     public void gotoChangeAddress() {
-        addFragment(ChangeAddressFragment.getInstance(),"ChangeAddressFragment",true);
+        addFragment(ChangeAddressFragment.getInstance(),ChangeAddressFragment.class.getName(),true);
     }
 
     @Override
     public void gotoVendorProductDetails(CustomerProductsModel customerProductsModel) {
-        addFragment(VendorProductDetailsFragment.getInstance(customerProductsModel),"VendorProductDetailsFragment",true);
+        addFragment(VendorProductDetailsFragment.getInstance(customerProductsModel),VendorProductDetailsFragment.class.getName(),true);
     }
 
     @Override
     public void gotoProductDescDetails(VendorProductDataResponse vendorProductDetails, CustomerProductsModel vendorShopDetails) {
-        addFragment(ProductCartDetailsFragment.getInstance(vendorProductDetails, vendorShopDetails),"ProductCartDetailsFragment",true);
+        addFragment(ProductCartDetailsFragment.getInstance(vendorProductDetails, vendorShopDetails), ProductCartDetailsFragment.class.getName(), true);
     }
 
     @Override
     public void gotoPaymentScreen() {
-        addFragment(MakePaymentFragment.getInstance("", ""),"MakePaymentFragment",true);
+        addFragment(MakePaymentFragment.getInstance("", ""), MakePaymentFragment.class.getName(), true);
+    }
+
+    @Override
+    public void gotoConfirmOrdersScreen(CustomerProductsModel vendorShopDetails) {
+        addFragment(ConfirmOrderFragment.getInstance(vendorShopDetails), ConfirmOrderFragment.class.getName(), true);
     }
 }

@@ -1,5 +1,6 @@
 package com.rmart.customer.views;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -21,6 +22,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.CustomSpinnerAdapter;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.models.CustomerProductsModel;
@@ -29,6 +31,7 @@ import com.rmart.customer.models.ProductDetailsDescResponse;
 import com.rmart.customer.models.VendorProductDataResponse;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.services.CustomerProductsService;
@@ -78,6 +81,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private int productImagePosition = 1;
 
     private List<String> productsImagesList;
+    private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
 
     static ProductCartDetailsFragment getInstance(VendorProductDataResponse vendorProductDataDetails, CustomerProductsModel vendorShopDetails) {
         ProductCartDetailsFragment productCartDetailsFragment = new ProductCartDetailsFragment();
@@ -98,10 +102,19 @@ public class ProductCartDetailsFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof OnCustomerHomeInteractionListener) {
+            onCustomerHomeInteractionListener = (OnCustomerHomeInteractionListener) context;
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        LoggerInfo.printLog("Fragment", "ProductCartDetailsFragment");
         return inflater.inflate(R.layout.fragment_product_card_details, container, false);
     }
 
@@ -306,7 +319,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     }
 
     private void buyNowSelected() {
-
+        onCustomerHomeInteractionListener.gotoConfirmOrdersScreen(vendorShopDetails);
     }
 
     private void favouriteSelected() {

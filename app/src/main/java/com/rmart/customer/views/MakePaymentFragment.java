@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
+import com.rmart.utilits.LoggerInfo;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,6 +82,7 @@ public class MakePaymentFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        LoggerInfo.printLog("Fragment", "MakePaymentFragment");
         return inflater.inflate(R.layout.fragment_make_payment, container, false);
     }
 
