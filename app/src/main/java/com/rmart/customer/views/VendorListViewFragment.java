@@ -24,9 +24,11 @@ import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.CustomerProductsListAdapter;
 import com.rmart.customer.models.CustomerProductsModel;
 import com.rmart.customer.models.CustomerProductsResponse;
+import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.AddressResponse;
 import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +47,6 @@ import retrofit2.Response;
  */
 public class VendorListViewFragment extends CustomerHomeFragment {
 
-    private AppCompatTextView tvAddressField;
     private AppCompatEditText etProductsSearchField;
     private int currentPage = 0;
     private List<CustomerProductsModel> productsList;
@@ -90,7 +91,7 @@ public class VendorListViewFragment extends CustomerHomeFragment {
     private void loadUIComponents(View view) {
 
         RecyclerView productsListField = view.findViewById(R.id.products_list_field);
-        tvAddressField = view.findViewById(R.id.tv_address_field);
+        AppCompatTextView tvAddressField = view.findViewById(R.id.tv_address_field);
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
         ImageView ivSearchField = view.findViewById(R.id.iv_search_field);
         etProductsSearchField.addTextChangedListener(new TextWatcher() {
@@ -147,9 +148,22 @@ public class VendorListViewFragment extends CustomerHomeFragment {
         customerProductsListAdapter = new CustomerProductsListAdapter(requireActivity(), productsList, callBackListener);
         productsListField.setAdapter(customerProductsListAdapter);
 
-        view.findViewById(R.id.btn_change_address_field).setOnClickListener(v-> {
+        view.findViewById(R.id.btn_change_address_field).setOnClickListener(v -> {
             changeAddressSelected();
         });
+
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            ArrayList<AddressResponse> addressList = myProfile.getAddressResponses();
+            if (addressList != null && !addressList.isEmpty()) {
+                for (AddressResponse addressResponse : addressList) {
+                    if (addressResponse.getIsActive() == 1) {
+                        tvAddressField.setText(addressResponse.getAddress());
+                        break;
+                    }
+                }
+            }
+        }
 
         getShopsList();
     }

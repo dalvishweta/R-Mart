@@ -64,9 +64,9 @@ public class CustomSpinnerAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         if(changeTextColor) {
-            holder.tvTextField.setTextColor(blackColor);
-        } else {
             holder.tvTextField.setTextColor(whiteColor);
+        } else {
+            holder.tvTextField.setTextColor(blackColor);
         }
         Object dataObject = listData.get(position);
         if (dataObject instanceof CustomerProductsDetailsUnitModel) {

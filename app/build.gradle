@@ -67,6 +67,10 @@ android {
         buildConfigField("String", 'VENDOR_ORDER_PRODUCTS', '"vendor/order/viewOrderById"')
         buildConfigField("String", 'VENDOR_UPDATE_ORDER', '"vendor/order/updateOrder"')
 
+        // update profile
+        buildConfigField("String", 'UPDATE_PROFILE_IMAGE', '"updateprofile"')
+        //
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
@@ -157,4 +161,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.0'
 
     implementation 'org.apache.commons:commons-lang3:3.11'
+
+    //image cropping
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 }

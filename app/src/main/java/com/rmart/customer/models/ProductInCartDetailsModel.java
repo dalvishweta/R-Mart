@@ -18,12 +18,18 @@ public class ProductInCartDetailsModel implements Serializable {
     @SerializedName("cart_id")
     @Expose
     private Integer cartId;
+    @SerializedName("unit_number")
+    @Expose
+    private String unitNumber;
     @SerializedName("total_product_cart_qty")
     @Expose
-    private int totalProductCartQty;
+    private Integer totalProductCartQty;
     @SerializedName("unit_measure")
     @Expose
     private String unitMeasure;
+    @SerializedName("short_unit_measure")
+    @Expose
+    private String shortUnitMeasure;
     @SerializedName("total_unit_price")
     @Expose
     private String totalUnitPrice;
@@ -33,15 +39,18 @@ public class ProductInCartDetailsModel implements Serializable {
     @SerializedName("product_name")
     @Expose
     private String productName;
-    @SerializedName("product_id")
-    @Expose
-    private int productId;
     @SerializedName("product_image")
     @Expose
     private String productImage;
     @SerializedName("product_expiry_date")
     @Expose
     private String productExpiryDate;
+    @SerializedName("vendor_id")
+    @Expose
+    private Integer vendorId;
+    @SerializedName("product_id")
+    @Expose
+    private Integer productId;
 
     public Integer getCartId() {
         return cartId;
@@ -49,6 +58,14 @@ public class ProductInCartDetailsModel implements Serializable {
 
     public void setCartId(Integer cartId) {
         this.cartId = cartId;
+    }
+
+    public String getUnitNumber() {
+        return unitNumber;
+    }
+
+    public void setUnitNumber(String unitNumber) {
+        this.unitNumber = unitNumber;
     }
 
     public Integer getTotalProductCartQty() {
@@ -65,6 +82,14 @@ public class ProductInCartDetailsModel implements Serializable {
 
     public void setUnitMeasure(String unitMeasure) {
         this.unitMeasure = unitMeasure;
+    }
+
+    public String getShortUnitMeasure() {
+        return shortUnitMeasure;
+    }
+
+    public void setShortUnitMeasure(String shortUnitMeasure) {
+        this.shortUnitMeasure = shortUnitMeasure;
     }
 
     public String getTotalUnitPrice() {
@@ -107,11 +132,19 @@ public class ProductInCartDetailsModel implements Serializable {
         this.productExpiryDate = productExpiryDate;
     }
 
-    public int getProductId() {
+    public Integer getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(Integer vendorId) {
+        this.vendorId = vendorId;
+    }
+
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 

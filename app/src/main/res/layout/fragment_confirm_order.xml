@@ -38,14 +38,15 @@
         android:layout_margin="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_proceed_to_buy_field"
         style="@style/text_style_medium_normal"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="50dp"
+        android:layout_gravity="center"
         android:textSize="20sp"
         android:background="@drawable/add_to_cart_background_bg"
         android:text="@string/proceed_to_buy"

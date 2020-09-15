@@ -4,18 +4,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
+import com.rmart.baseclass.CallBackInterface;
 import com.rmart.customer.adapters.ChangeAddressAdapter;
+import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
+import com.rmart.utilits.pojos.AddressResponse;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 
@@ -25,8 +27,7 @@ import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 public class ChangeAddressFragment extends CustomerHomeFragment {
 
     private ChangeAddressAdapter changeAddressAdapter;
-    private RecyclerView addressListField;
-    private List<Object> addressList;
+    private ArrayList<AddressResponse> addressList;
 
     public static ChangeAddressFragment getInstance() {
         ChangeAddressFragment changeAddressFragment = new ChangeAddressFragment();
@@ -50,27 +51,58 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     }
 
     private void loadUIComponents(View view) {
-        addressListField = view.findViewById(R.id.addresses_list_field);
-        Button btnAddNewAddressField = view.findViewById(R.id.btn_add_new_address);
-        btnAddNewAddressField.setOnClickListener(v-> {
+        RecyclerView addressListField = view.findViewById(R.id.addresses_list_field);
+        AppCompatButton btnAddNewAddressField = view.findViewById(R.id.btn_add_new_address);
+        btnAddNewAddressField.setOnClickListener(v -> {
             addNewAddressSelected();
         });
-        Button btnSelectThisAddress = view.findViewById(R.id.btn_select_this_address);
-        btnSelectThisAddress.setOnClickListener(v-> {
-            addSelectAddressSelected();
+        AppCompatButton btnSelectThisAddress = view.findViewById(R.id.btn_select_this_address);
+        btnSelectThisAddress.setOnClickListener(v -> {
+            selectThisAddressSelected();
         });
         addressListField.setHasFixedSize(false);
         addressListField.setItemAnimator(new SlideInDownAnimator());
-        addressList = new ArrayList<>();
 
-        changeAddressAdapter = new ChangeAddressAdapter(requireActivity(), addressList);
-        addressListField.setAdapter(changeAddressAdapter);
+
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            addressList = myProfile.getAddressResponses();
+            if (addressList != null && !addressList.isEmpty()) {
+                changeAddressAdapter = new ChangeAddressAdapter(requireActivity(), addressList, callBackListener);
+                addressListField.setAdapter(changeAddressAdapter);
+            }
+        }
     }
 
-    private void addSelectAddressSelected() {
+    private CallBackInterface callBackListener = pObject -> {
+        if (pObject instanceof AddressResponse) {
+            AddressResponse addressResponse = (AddressResponse) pObject;
+            resetAddressList();
+            int index = addressList.indexOf(addressResponse);
+            if (index > -1) {
+                addressResponse.setIsActive(1);
+                addressList.set(index, addressResponse);
+                changeAddressAdapter.notifyItemChanged(index);
+            }
+        }
+    };
 
+    private void resetAddressList() {
+        for (int i = 0; i < addressList.size(); i++) {
+            AddressResponse addressResponse = addressList.get(i);
+            addressResponse.setIsActive(0);
+            addressList.set(i, addressResponse);
+            changeAddressAdapter.notifyItemChanged(i);
+        }
+
+    }
+
+    private void selectThisAddressSelected() {
+        MyProfile.getInstance().setAddressResponses(addressList);
+        requireActivity().getSupportFragmentManager().popBackStack();
     }
 
     private void addNewAddressSelected() {
+
     }
 }

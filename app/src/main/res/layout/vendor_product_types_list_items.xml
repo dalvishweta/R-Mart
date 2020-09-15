@@ -31,6 +31,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:maxLines="2"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         android:layout_below="@id/iv_product_image_field"
         android:layout_centerHorizontal="true"
         android:textColor="@color/black" />
@@ -51,7 +53,7 @@
             android:textColor="@color/gray" />
 
         <TextView
-            android:id="@+id/tv_current_price_field"
+            android:id="@+id/tv_selling_price_field"
             style="@style/text_style_medium_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

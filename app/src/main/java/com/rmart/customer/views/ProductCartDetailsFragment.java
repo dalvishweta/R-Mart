@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -65,23 +66,18 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private TextView tvProductNameField;
     private TextView tvSellingPriceField;
     private TextView tvTotalPriceField;
-    private AppCompatButton btnMinusField;
-    private AppCompatButton btnPlusField;
     private TextView tvNoOfQuantityField;
-    private TextView tvProductDescTitleField;
     private TextView tvProductDescField;
     private LinearLayout viewMoreLayoutField;
-    private AppCompatButton btnAddToCartField;
-    private LinearLayout btnBuyNowField;
-    private RecyclerView relatedProductsListField;
     private ImageLoader imageLoader;
-    private Spinner quantitySpinnerField;
+    private TextView tvQuantityField;
     private int noOfQuantity = 1;
     private boolean isViewMoreSelected = false;
     private TextView tvViewMoreField;
     private ImageView ivViewMoreImageField;
     private int productImagePosition = 1;
     private CustomerProductsDetailsUnitModel productUnitDetails;
+    private Spinner quantitySpinnerField;
 
     private List<String> productsImagesList;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
@@ -177,18 +173,17 @@ public class ProductCartDetailsFragment extends BaseFragment {
         ivLeftArrowImageField = view.findViewById(R.id.iv_left_arrow_field);
         ivRightArrowImageField = view.findViewById(R.id.iv_right_arrow_field);
         tvProductNameField = view.findViewById(R.id.tv_product_name_field);
-        quantitySpinnerField = view.findViewById(R.id.tv_quantity_field);
+        tvQuantityField = view.findViewById(R.id.tv_quantity_field);
         tvSellingPriceField = view.findViewById(R.id.tv_selling_price_field);
         tvTotalPriceField = view.findViewById(R.id.tv_total_price_field);
-        btnMinusField = view.findViewById(R.id.btn_minus_field);
+        AppCompatButton btnMinusField = view.findViewById(R.id.btn_minus_field);
         tvNoOfQuantityField = view.findViewById(R.id.tv_no_of_quantity_field);
-        btnPlusField = view.findViewById(R.id.btn_add_field);
-        tvProductDescTitleField = view.findViewById(R.id.tv_product_description_title_field);
+        AppCompatButton btnPlusField = view.findViewById(R.id.btn_add_field);
         tvProductDescField = view.findViewById(R.id.tv_product_description_field);
         viewMoreLayoutField = view.findViewById(R.id.view_more_layout_field);
-        btnAddToCartField = view.findViewById(R.id.btn_add_to_cart_field);
-        btnBuyNowField = view.findViewById(R.id.btn_buy_now_field);
-        relatedProductsListField = view.findViewById(R.id.related_products_list_field);
+        Button btnAddToCartField = view.findViewById(R.id.btn_add_to_cart_field);
+        LinearLayout btnBuyNowField = view.findViewById(R.id.btn_buy_now_field);
+        RecyclerView relatedProductsListField = view.findViewById(R.id.related_products_list_field);
         quantitySpinnerField = view.findViewById(R.id.quantity_spinner_field);
         tvViewMoreField = view.findViewById(R.id.tv_view_more_field);
         ivViewMoreImageField = view.findViewById(R.id.iv_view_more_image_field);
@@ -310,14 +305,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
         ivRightArrowImageField.setVisibility(productImagePosition == productsImagesList.size() ? View.GONE : View.VISIBLE);
 
-        List<CustomerProductsDetailsUnitModel> productUnitsList = productDetailsDescModel.getUnits();
-        List<Object> updatedProductsUnitsList = new ArrayList<>(productUnitsList);
-        if(!updatedProductsUnitsList.isEmpty()) {
-            CustomSpinnerAdapter productsUnitSpinnerAdapter = new CustomSpinnerAdapter(requireActivity(), updatedProductsUnitsList);
-            productsUnitSpinnerAdapter.changeTextColor();
-            quantitySpinnerField.setAdapter(productsUnitSpinnerAdapter);
-        }
-
         quantitySpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -333,6 +320,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
             }
         });
+        tvProductDescField.setText(productDetailsDescModel.getProductDetails());
     }
 
     private void updateUnitPriceDetails() {
@@ -341,6 +329,9 @@ public class ProductCartDetailsFragment extends BaseFragment {
         String totalPrice = productUnitDetails.getUnitPrice();
         tvTotalPriceField.setText(totalPrice);
         tvTotalPriceField.setPaintFlags(tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+        String quantityDetails = String.format("%s %s", productUnitDetails.getUnitNumber(), productUnitDetails.getShortUnitMeasure());
+        tvQuantityField.setText(quantityDetails);
     }
 
     private void showCloseDialog(String title, String message) {
@@ -355,7 +346,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                    productUnitDetails.getProductUnitId(), productUnitDetails.getProductUnitQuantity());
+                    productUnitDetails.getProductUnitId(), noOfQuantity);
             call.enqueue(new Callback<AddToCartResponseDetails>() {
                 @Override
                 public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
@@ -394,7 +385,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     }
 
     private void buyNowSelected() {
-        onCustomerHomeInteractionListener.gotoPaymentScreen();
+        onCustomerHomeInteractionListener.gotoConfirmOrdersScreen(vendorShopDetails);
     }
 
     private void favouriteSelected() {

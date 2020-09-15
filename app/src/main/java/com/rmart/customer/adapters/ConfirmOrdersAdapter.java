@@ -1,6 +1,7 @@
 package com.rmart.customer.adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,15 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
         holder.tvProductNameField.setText(dataObject.getProductName());
         holder.tvNoOfQuantityField.setText(String.valueOf(dataObject.getTotalProductCartQty()));
         String productImageUrl = dataObject.getProductImage();
+
+        String quantityDetails = String.format("%s %s", dataObject.getUnitNumber(), dataObject.getShortUnitMeasure());
+        holder.tvQuantityDetailsField.setText(quantityDetails);
+        String sellingPrice = String.format("Rs.%s", dataObject.getTotalSellingPrice());
+        holder.tvSellingPriceField.setText(sellingPrice);
+
+        holder.tvTotalPriceField.setText(dataObject.getTotalUnitPrice());
+        holder.tvTotalPriceField.setPaintFlags(holder.tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
         if (!TextUtils.isEmpty(productImageUrl)) {
             HttpsTrustManager.allowAllSSL();
             imageLoader.get(productImageUrl, ImageLoader.getImageListener(holder.ivProductImageField,
@@ -68,8 +78,8 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
             contentModel.setValue(listData.get(tag));
             callBackListener.callBackReceived(contentModel);
         });
-        holder.deleteProductField.setTag(position);
-        holder.deleteProductField.setOnClickListener(v -> {
+        holder.btnDeleteProductField.setTag(position);
+        holder.btnDeleteProductField.setOnClickListener(v -> {
             int tag = (int) v.getTag();
             ContentModel contentModel = new ContentModel();
             contentModel.setStatus(Constants.TAG_DELETE);
@@ -102,24 +112,28 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         Button btnMoveToWishListField;
-        Button deleteProductField;
+        Button btnDeleteProductField;
         NetworkImageView ivProductImageField;
         TextView tvProductNameField;
         Button btnMinusField;
         Button btnPlusField;
         TextView tvNoOfQuantityField;
-        TextView tvCurrentPriceField;
+        TextView tvSellingPriceField;
         TextView tvTotalPriceField;
+        TextView tvQuantityDetailsField;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProductImageField = itemView.findViewById(R.id.iv_product_image_field);
             tvProductNameField = itemView.findViewById(R.id.tv_product_name_field);
-            tvCurrentPriceField = itemView.findViewById(R.id.tv_current_price_field);
+            tvSellingPriceField = itemView.findViewById(R.id.tv_selling_price_field);
             tvTotalPriceField = itemView.findViewById(R.id.tv_total_price_field);
             btnMinusField = itemView.findViewById(R.id.btn_minus_field);
             tvNoOfQuantityField = itemView.findViewById(R.id.tv_no_of_quantity_field);
             btnPlusField = itemView.findViewById(R.id.btn_add_field);
+            btnMoveToWishListField = itemView.findViewById(R.id.btn_move_to_wish_list_field);
+            btnDeleteProductField = itemView.findViewById(R.id.btn_delete_product_field);
+            tvQuantityDetailsField = itemView.findViewById(R.id.tv_quantity_field);
         }
     }
 }

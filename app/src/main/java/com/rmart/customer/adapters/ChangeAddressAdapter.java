@@ -4,13 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
-import com.rmart.customer.models.CustomerProductsModel;
+import com.rmart.baseclass.CallBackInterface;
+import com.rmart.utilits.pojos.AddressResponse;
 
 import java.util.List;
 
@@ -19,16 +21,18 @@ import java.util.List;
  */
 public class ChangeAddressAdapter extends RecyclerView.Adapter<ChangeAddressAdapter.ViewHolder> {
 
-    private List<Object> productList;
+    private List<AddressResponse> listData;
     private LayoutInflater layoutInflater;
+    private CallBackInterface callBackListener;
 
-    public ChangeAddressAdapter(Context context, List<Object> productList) {
-        this.productList = productList;
+    public ChangeAddressAdapter(Context context, List<AddressResponse> listData, CallBackInterface callBackListener) {
+        this.listData = listData;
         layoutInflater = LayoutInflater.from(context);
+        this.callBackListener = callBackListener;
     }
 
-    public void updateItems(List<Object> listData) {
-        this.productList = listData;
+    public void updateItems(List<AddressResponse> listData) {
+        this.listData = listData;
     }
 
     @NonNull
@@ -40,18 +44,29 @@ public class ChangeAddressAdapter extends RecyclerView.Adapter<ChangeAddressAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //CustomerProductsModel customerProductsModel = productList.get(position);
-        //holder.tvAddressField.setText(customerProductsModel.getShopMobileNo());
+        AddressResponse addressResponse = listData.get(position);
+        holder.tvAddressField.setText(new StringBuilder().append(addressResponse.getAddress()).append(addressResponse.getCity()).
+                append(addressResponse.getState()).append(addressResponse.getPinCode()));
+
+        holder.ivAddressCheckableField.setImageResource(addressResponse.getIsActive() == 1 ? R.drawable.ic_checked : R.drawable.ic_un_checked);
+        holder.ivAddressCheckableField.setTag(position);
+        holder.ivAddressCheckableField.setOnClickListener(v -> {
+            int tag = (int) v.getTag();
+            AddressResponse selectedAddress = listData.get(tag);
+            if (selectedAddress.getIsActive() == 0) {
+                callBackListener.callBackReceived(selectedAddress);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return listData.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView ivAddressCheckableField;
+        ImageView ivAddressCheckableField;
         TextView tvAddressField;
 
         public ViewHolder(@NonNull View itemView) {

@@ -3,9 +3,15 @@ package com.rmart.utilits.pojos;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 public class AddressResponse extends BaseResponse implements Serializable {
+
     @SerializedName("id")
     @Expose
     String id;
@@ -104,7 +110,7 @@ public class AddressResponse extends BaseResponse implements Serializable {
 
     @SerializedName("is_active")
     @Expose
-    String isActive;
+    Integer isActive;
 
     @SerializedName("delivery_days_before_time")
     @Expose
@@ -306,11 +312,11 @@ public class AddressResponse extends BaseResponse implements Serializable {
         this.updatedBY = updatedBY;
     }
 
-    public String getIsActive() {
+    public Integer getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(String isActive) {
+    public void setIsActive(Integer isActive) {
         this.isActive = isActive;
     }
 
@@ -329,4 +335,28 @@ public class AddressResponse extends BaseResponse implements Serializable {
     public void setClientID(String clientID) {
         this.clientID = clientID;
     }
+
+    @NotNull
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id).toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof AddressResponse)) {
+            return false;
+        }
+        AddressResponse rhs = ((AddressResponse) other);
+        return new EqualsBuilder().append(id, rhs.id).isEquals();
+    }
+
 }

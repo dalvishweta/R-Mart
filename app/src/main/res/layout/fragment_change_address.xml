@@ -23,7 +23,7 @@
         android:layout_margin="25dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_select_this_address"
         style="@style/text_style_medium_bold"
         android:layout_width="match_parent"
@@ -38,7 +38,7 @@
         android:textAllCaps="false"
         android:textColor="@color/white" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_add_new_address"
         style="@style/text_style_medium_bold"
         android:layout_width="match_parent"

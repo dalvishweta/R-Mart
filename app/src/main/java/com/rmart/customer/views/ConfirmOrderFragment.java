@@ -159,8 +159,10 @@ public class ConfirmOrderFragment extends BaseFragment {
                 moveToWishSelected();
             } else if (contentModel.getStatus().equalsIgnoreCase(Constants.TAG_MINUS)) {
                 selectedProductInCartDetails = (ProductInCartDetailsModel) contentModel.getValue();
+                deleteQuantityCountSelected();
             } else if (contentModel.getStatus().equalsIgnoreCase(Constants.TAG_PLUS)) {
                 selectedProductInCartDetails = (ProductInCartDetailsModel) contentModel.getValue();
+                addMoreQuantityCountSelected();
             }
         }
     };
@@ -246,6 +248,9 @@ public class ConfirmOrderFragment extends BaseFragment {
             if (index > -1) {
                 productInCartDetailsList.remove(index);
                 confirmOrdersAdapter.notifyItemRemoved(index);
+                if (productInCartDetailsList.size() == 0) {
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                }
             }
         });
     }
@@ -254,5 +259,31 @@ public class ConfirmOrderFragment extends BaseFragment {
         showDialog(title, message, pObject -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
+    }
+
+    private void deleteQuantityCountSelected() {
+        int count = selectedProductInCartDetails.getTotalProductCartQty();
+        if (count > 0) {
+            count--;
+            selectedProductInCartDetails.setTotalProductCartQty(count);
+            int index = productInCartDetailsList.indexOf(selectedProductInCartDetails);
+            if (index > -1) {
+                productInCartDetailsList.set(index, selectedProductInCartDetails);
+                confirmOrdersAdapter.notifyItemChanged(index);
+            }
+        }
+    }
+
+    private void addMoreQuantityCountSelected() {
+        int count = selectedProductInCartDetails.getTotalProductCartQty();
+        if (count <= 50) {
+            count++;
+            selectedProductInCartDetails.setTotalProductCartQty(count);
+            int index = productInCartDetailsList.indexOf(selectedProductInCartDetails);
+            if (index > -1) {
+                productInCartDetailsList.set(index, selectedProductInCartDetails);
+                confirmOrdersAdapter.notifyItemChanged(index);
+            }
+        }
     }
 }

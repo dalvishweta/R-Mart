@@ -1,6 +1,7 @@
 package com.rmart.customer.adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.text.TextUtils;
 import android.view.Display;
@@ -59,6 +60,14 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
             holder.ivProductImageField.setImageUrl(productImageUrl, imageLoader);
         }
         holder.tvProductNameField.setText(dataObject.getProductName());
+
+        /*String quantityDetails = String.format("%s %s", dataObject.getUnitNumber(), dataObject.getShortUnitMeasure());
+        holder.tvQuantityDetailsField.setText(quantityDetails);
+        String sellingPrice = String.format("Rs.%s", dataObject.getTotalSellingPrice());
+        holder.tvSellingPriceField.setText(sellingPrice);
+
+        holder.tvTotalPriceField.setText(dataObject.getTotalUnitPrice());
+        holder.tvTotalPriceField.setPaintFlags(holder.tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);*/
     }
 
     @Override
@@ -72,7 +81,7 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
         TextView tvProductNameField;
         TextView tvDiscountPercentageField;
         TextView tvQuantityField;
-        TextView tvCurrentPriceField;
+        TextView tvSellingPriceField;
         TextView tvTotalPriceField;
 
         public ViewHolder(@NonNull View itemView) {
@@ -81,7 +90,7 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
             tvProductNameField = itemView.findViewById(R.id.tv_product_name_field);
             tvDiscountPercentageField = itemView.findViewById(R.id.tv_discount_percent_field);
             tvQuantityField = itemView.findViewById(R.id.tv_quantity_field);
-            tvCurrentPriceField = itemView.findViewById(R.id.tv_current_price_field);
+            tvSellingPriceField = itemView.findViewById(R.id.tv_selling_price_field);
             tvTotalPriceField = itemView.findViewById(R.id.tv_total_price_field);
         }
     }

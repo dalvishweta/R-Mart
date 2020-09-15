@@ -30,22 +30,7 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
 
-        <activity android:name=".profile.views.MyProfileActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".orders.views.OrdersActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".inventory.views.InventoryActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".authentication.views.AuthenticationActivity"
-            android:theme="@style/AppThemeNoActionBar"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".baseclass.views.SplashScreen"
             android:screenOrientation="portrait"
@@ -55,10 +40,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".profile.views.MyProfileActivity"
+            android:theme="@style/AppThemeNoActionBar"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".orders.views.OrdersActivity"
+            android:theme="@style/AppThemeNoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".inventory.views.InventoryActivity"
+            android:theme="@style/AppThemeNoActionBar"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".authentication.views.AuthenticationActivity"
+            android:theme="@style/AppThemeNoActionBar"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".customer.views.CustomerHomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
     </application>
 
 </manifest>

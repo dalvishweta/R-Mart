@@ -5,10 +5,11 @@
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/iv_product_image_field"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:scaleType="fitXY"
         android:src="@mipmap/ic_launcher" />
 
     <TextView
@@ -18,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginTop="15dp"
         android:layout_toEndOf="@id/iv_product_image_field"
         android:gravity="center"
@@ -30,6 +32,8 @@
         android:layout_below="@id/tv_product_name_field"
         android:layout_toEndOf="@id/iv_product_image_field"
         android:gravity="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:orientation="horizontal">
 
         <TextView
@@ -40,7 +44,7 @@
             android:textColor="@color/gray" />
 
         <TextView
-            android:id="@+id/tv_current_price_field"
+            android:id="@+id/tv_selling_price_field"
             style="@style/text_style_medium_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,18 +64,18 @@
     <LinearLayout
         android:id="@+id/increment_or_decrement_layout_field"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_below="@id/price_details_layout"
         android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
         android:layout_toEndOf="@id/iv_product_image_field"
         android:orientation="horizontal">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_minus_field"
             style="@style/text_style_extra_medium_normal"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:background="@drawable/left_side_grey_corners_bg"
             android:gravity="center"
@@ -81,18 +85,18 @@
         <TextView
             android:id="@+id/tv_no_of_quantity_field"
             style="@style/text_style_medium_normal"
-            android:layout_width="60dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@color/grey_color_five"
             android:gravity="center"
             android:textColor="@color/black" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_add_field"
             style="@style/text_style_extra_medium_normal"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/right_side_grey_corners_bg"
             android:text="@string/plus"
             android:textColor="@color/black" />
@@ -133,6 +137,6 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="10dp"
         android:layout_below="@id/buttons_layout_field" />
 </RelativeLayout>
