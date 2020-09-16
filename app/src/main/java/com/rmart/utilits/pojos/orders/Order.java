@@ -17,6 +17,14 @@ public class Order extends BaseResponse {
     @Expose
     private String productCount;
 
+    /*@SerializedName("status")
+    @Expose
+    private String status = "";*/
+
+    @SerializedName("status_displayName")
+    @Expose
+    private String statusDisplay = "";
+
     private String orderStatus;
     private String orderStatusID;
     public String getOrderID() {
@@ -57,5 +65,25 @@ public class Order extends BaseResponse {
 
     public void setOrderStatusID(String orderStatusID) {
         this.orderStatusID = orderStatusID;
+    }
+/*
+
+    @Override
+    public String getStatus() {
+        return status;
+    }
+
+    @Override
+    public void setStatus(String status) {
+        this.status = status;
+    }
+*/
+
+    public String getStatusDisplay() {
+        return statusDisplay;
+    }
+
+    public void setStatusDisplay(String statusDisplay) {
+        this.statusDisplay = statusDisplay;
     }
 }

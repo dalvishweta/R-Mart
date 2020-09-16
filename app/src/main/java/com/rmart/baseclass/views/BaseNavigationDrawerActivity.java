@@ -15,6 +15,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.rmart.R;
 import com.rmart.authentication.views.AuthenticationActivity;
+import com.rmart.customer.views.CustomerHomeActivity;
+import com.rmart.customer_order.views.CustomerOrdersActivity;
 import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyProfile;
@@ -51,6 +53,8 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.update_profile).setOnClickListener(this);
         findViewById(R.id.orders).setOnClickListener(this);
         findViewById(R.id.inventory).setOnClickListener(this);
+        findViewById(R.id.shopping).setOnClickListener(this);
+        findViewById(R.id.customer_orders).setOnClickListener(this);
         findViewById(R.id.change_password).setOnClickListener(this);
         findViewById(R.id.logout).setOnClickListener(this);
 
@@ -87,6 +91,14 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     break;
                 case R.id.update_profile:
                     intent = new Intent(BaseNavigationDrawerActivity.this, MyProfileActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.customer_orders:
+                    intent = new Intent(this, CustomerOrdersActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.shopping:
+                    intent = new Intent(this, CustomerHomeActivity.class);
                     startActivity(intent);
                     break;
                 default:

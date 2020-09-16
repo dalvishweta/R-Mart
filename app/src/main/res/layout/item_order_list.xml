@@ -72,6 +72,32 @@
             android:layout_width="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
+            android:gravity="end"
+            android:id="@+id/status_value"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/order_id_value"
+            android:layout_toEndOf="@+id/order_id"
+            android:text="Approved"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:visibility="gone"
+            android:id="@+id/status"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/order_id_value"
+            android:text="@string/status"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_height="wrap_content"/>
+
     </RelativeLayout>
     <LinearLayout
         android:gravity="center"

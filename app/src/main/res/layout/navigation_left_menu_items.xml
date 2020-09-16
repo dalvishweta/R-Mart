@@ -29,6 +29,18 @@
                 android:drawableStart="@drawable/inventory_nv"/>
 
             <androidx.appcompat.widget.AppCompatTextView
+                style="@style/nv_item_view"
+                android:id="@+id/shopping"
+                android:text="@string/shopping"
+                android:drawableStart="@drawable/inventory_nv"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/nv_item_view"
+                android:id="@+id/customer_orders"
+                android:text="@string/my_orders"
+                android:drawableStart="@drawable/inventory_nv"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/change_password"
                 android:text="@string/change_password"
                 android:drawableStart="@drawable/password_nv"

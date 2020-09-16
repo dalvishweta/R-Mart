@@ -1,18 +1,24 @@
 package com.rmart.inventory.adapters;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
+import com.rmart.RMartApplication;
 import com.rmart.inventory.views.viewholders.ProductViewHolder;
+import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.pojos.ProductResponse;
 
 import java.util.ArrayList;
@@ -75,11 +81,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>  imp
             }
 
             holder.availableUnits. setText(String.format(holder.itemView.getContext().getString(R.string.available_other_sizes), product.getUnitObjects().size()+""));
-
+            updateImage(product.getDisplayImage(), holder.itemImg);
             holder.tvActual.setText(Html.fromHtml("<strike> " + product.getUnitObjects().get(0).getActualCost()+" </strike>"));
             holder.tvFinalCost.setText(product.getUnitObjects().get(0).getFinalCost());
             holder.tvUnitValue.setText(product.getUnitObjects().get(0).getUnit_number());
             holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer), product.getUnitObjects().get(0).getDiscount()+"%"));
+            //updateImage();
 
         } else {
             holder.availableUnits. setVisibility(View.GONE);
@@ -125,5 +132,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>  imp
             notifyDataSetChanged();
         }
     }
-
+    private void updateImage(String imageUrl, NetworkImageView imageView) {
+        if (!TextUtils.isEmpty(imageUrl)) {
+            HttpsTrustManager.allowAllSSL();
+            RMartApplication.getInstance().getImageLoader().get(imageUrl, ImageLoader.getImageListener(imageView, R.mipmap.ic_launcher, android.R.drawable
+                            .ic_dialog_alert));
+            imageView.setImageUrl(imageUrl, RMartApplication.getInstance().getImageLoader());
+        }
+    }
 }

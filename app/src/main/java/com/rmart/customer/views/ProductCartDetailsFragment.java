@@ -69,7 +69,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private TextView tvNoOfQuantityField;
     private TextView tvProductDescField;
     private LinearLayout viewMoreLayoutField;
-    private ImageLoader imageLoader;
+    //private ImageLoader imageLoader;
     private TextView tvQuantityField;
     private int noOfQuantity = 1;
     private boolean isViewMoreSelected = false;
@@ -188,7 +188,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
         tvViewMoreField = view.findViewById(R.id.tv_view_more_field);
         ivViewMoreImageField = view.findViewById(R.id.iv_view_more_image_field);
 
-        imageLoader = RMartApplication.getInstance().getImageLoader();
+        // imageLoader = RMartApplication.getInstance().getImageLoader();
 
         btnMinusField.setOnClickListener(v -> {
             if (noOfQuantity > 0) {
@@ -250,10 +250,10 @@ public class ProductCartDetailsFragment extends BaseFragment {
         String productImageUrl = productsImagesList.get(productImagePosition - 1);
         if (!TextUtils.isEmpty(productImageUrl)) {
             HttpsTrustManager.allowAllSSL();
-            imageLoader.get(productImageUrl, ImageLoader.getImageListener(ivProductImageField,
+            RMartApplication.getInstance().getImageLoader().get(productImageUrl, ImageLoader.getImageListener(ivProductImageField,
                     R.mipmap.ic_launcher, android.R.drawable
                             .ic_dialog_alert));
-            ivProductImageField.setImageUrl(productImageUrl, imageLoader);
+            ivProductImageField.setImageUrl(productImageUrl, RMartApplication.getInstance().getImageLoader());
         }
     }
 

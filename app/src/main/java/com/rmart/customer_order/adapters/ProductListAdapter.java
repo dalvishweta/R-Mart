@@ -1,4 +1,4 @@
-package com.rmart.orders.adapters;
+package com.rmart.customer_order.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.inventory.views.viewholders.ProductItemViewHolder;
-import com.rmart.orders.models.ProductObject;
 import com.rmart.utilits.pojos.orders.Product;
 
 import java.util.ArrayList;

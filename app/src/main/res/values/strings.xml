@@ -209,4 +209,6 @@
     <string name="product_details">Product details</string>
     <string name="remove_from_cart">Remove From Cart</string>
     <string name="added_to_cart">Added to Cart</string>
+    <string name="shopping">Shopping</string>
+    <string name="status">Status</string>
 </resources>

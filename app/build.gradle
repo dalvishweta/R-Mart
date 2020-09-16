@@ -66,11 +66,11 @@ android {
         buildConfigField("String", 'VENDOR_ORDER_BY_STATUS', '"vendor/order/ordersByStatus"')
         buildConfigField("String", 'VENDOR_ORDER_PRODUCTS', '"vendor/order/viewOrderById"')
         buildConfigField("String", 'VENDOR_UPDATE_ORDER', '"vendor/order/updateOrder"')
-
         // update profile
         buildConfigField("String", 'UPDATE_PROFILE_IMAGE', '"updateprofile"')
-        //
-
+        /*Customer order services*/
+        buildConfigField("String", 'CUSTOMER_VIEW_ORDER_BY_ID', '"customer/order/viewOrderById"')
+        buildConfigField("String", 'CUSTOMER_VIEW_ALL_ORDERS', '"customer/order/ordersList"')
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {

@@ -8,21 +8,26 @@
     android:orientation="horizontal"
     android:background="@drawable/item_product_bg"
     android:weightSum="3">
-    <androidx.appcompat.widget.AppCompatImageView
+    <!--<androidx.appcompat.widget.AppCompatImageView
         android:paddingTop="8dp"
         android:id="@+id/item_img"
         android:layout_centerHorizontal="true"
         android:src="@drawable/item_image"
         android:layout_height="100dp"
         android:layout_width="match_parent"
-        />
+        />-->
+    <com.android.volley.toolbox.NetworkImageView
+        android:paddingTop="8dp"
+        android:id="@+id/item_img"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/item_image"
+        android:layout_height="100dp"
+        android:scaleType="centerInside"
+        android:layout_width="match_parent" />
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/offer"
         style="@style/item_product_offer"
-        >
-
-
-    </androidx.appcompat.widget.AppCompatTextView>
+        />
     <LinearLayout
         android:layout_below="@+id/item_img"
         android:translationZ="90dp"

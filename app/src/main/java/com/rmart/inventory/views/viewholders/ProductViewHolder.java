@@ -6,10 +6,12 @@ import android.widget.LinearLayout;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
 
 public class ProductViewHolder extends RecyclerView.ViewHolder {
     public AppCompatTextView tvItemTitle, tvUnitValue, tvFinalCost, tvActual, tvOffer, availableUnits;
+    public NetworkImageView itemImg;
     public LinearLayout unitView;
     public ProductViewHolder(View listItem) {
         super(listItem);
@@ -20,5 +22,6 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
         tvOffer = listItem.findViewById(R.id.offer);
         unitView = listItem.findViewById(R.id.row2);
         availableUnits = listItem.findViewById(R.id.available_units);
+        itemImg = listItem.findViewById(R.id.item_img);
     }
 }

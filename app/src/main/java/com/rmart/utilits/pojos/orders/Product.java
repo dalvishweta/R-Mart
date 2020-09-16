@@ -30,6 +30,18 @@ public class Product implements Serializable {
     @Expose
     private String user_id;
 
+    @SerializedName("product_name")
+    @Expose
+    private String productName;
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
     public String getQuantity() {
         return quantity;
     }

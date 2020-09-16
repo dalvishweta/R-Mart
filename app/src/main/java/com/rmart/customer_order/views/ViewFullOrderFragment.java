@@ -1,4 +1,4 @@
-package com.rmart.orders.views;
+package com.rmart.customer_order.views;
 
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -15,14 +15,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
-import com.rmart.orders.adapters.ProductListAdapter;
-import com.rmart.orders.viewmodel.MyOrdersViewModel;
+import com.rmart.customer_order.adapters.ProductListAdapter;
+import com.rmart.customer_order.viewmodel.MyOrdersViewModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.orders.Order;
 import com.rmart.utilits.pojos.orders.OrderProductList;
 import com.rmart.utilits.pojos.orders.OrderProductListResponse;
+import com.rmart.utilits.services.CustomerOrderService;
 import com.rmart.utilits.services.OrderService;
 import com.rmart.utilits.services.UpdatedOrderStatus;
 
@@ -77,8 +78,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
     private void getServerData() {
         progressDialog.show();
-        OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.getOrderProductList("0", MyProfile.getInstance().getUserID(), mOrderObject.getOrderID()).enqueue(new Callback<OrderProductListResponse>() {
+        CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
+        customerOrderService.viewOrderById(mOrderObject.getOrderID(), MyProfile.getInstance().getMobileNumber()).enqueue(new Callback<OrderProductListResponse>() {
             @Override
             public void onResponse(Call<OrderProductListResponse> call, Response<OrderProductListResponse> response) {
                 if(response.isSuccessful()) {
@@ -134,7 +135,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         tvDeliveryCharges = view.findViewById(R.id.delivery_charges);
         tvTotalCharges = view.findViewById(R.id.total_charges);
         tvPaymentType = view.findViewById(R.id.payment_type);
-
+        view.findViewById(R.id.bottom).setVisibility(View.GONE);
         setValuesToUI();
 
     }

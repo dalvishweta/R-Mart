@@ -25,7 +25,6 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
         // myOrdersViewModel = new ViewModelProvider(this).get(MyOrdersViewModel.class);
         try {
             if (MyProfile.getInstance().getRoleID().equals(Utils.DELIVERY_ID)) {
-                // myOrdersViewModel.getSelectedOrderGroup().setValue(myOrdersViewModel.getShippedOrders().getValue());
                 StateOfOrders stateOfOrders =  new StateOfOrders();
                 stateOfOrders.setStatus(Utils.SHIPPED_ORDER_STATUS);
                 addFragment(OrderListFragment.newInstance(stateOfOrders), "OrderListFragment", false);

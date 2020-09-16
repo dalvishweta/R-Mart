@@ -1,4 +1,4 @@
-package com.rmart.orders.views;
+package com.rmart.customer_order.views;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,13 +11,14 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
-import com.rmart.orders.adapters.OrdersListAdapter;
+import com.rmart.customer_order.adapters.OrdersListAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.orders.Order;
 import com.rmart.utilits.pojos.orders.OrdersByStatus;
 import com.rmart.utilits.pojos.orders.StateOfOrders;
+import com.rmart.utilits.services.CustomerOrderService;
 import com.rmart.utilits.services.OrderService;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class OrderListFragment extends BaseOrderFragment implements View.OnClickListener {
+public class CustomerOrderListFragment extends BaseOrderFragment implements View.OnClickListener {
 
     private static final String ARG_ORDER_OBJECT = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -34,6 +35,7 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
     // SelectedOrderGroup mSelectedOrderGroup;
     // private MyOrdersViewModel myOrdersViewModel;
     private OrdersListAdapter ordersListAdapter;
+
     private AppCompatTextView tvTotalOrder;
     private RecyclerView orderList;
     StateOfOrders stateOfOrders;
@@ -41,14 +43,14 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
     private ArrayList<Order> orders = new ArrayList<>();
     private OrdersByStatus data;
 
-    public OrderListFragment() {
+    public CustomerOrderListFragment() {
         // Required empty public constructor
     }
 
-    public static OrderListFragment newInstance(StateOfOrders param2) {
-        OrderListFragment fragment = new OrderListFragment();
+    public static CustomerOrderListFragment newInstance(String param2) {
+        CustomerOrderListFragment fragment = new CustomerOrderListFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,7 +59,7 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            stateOfOrders = (StateOfOrders) getArguments().getSerializable(ARG_PARAM2);
+            // stateOfOrders = (StateOfOrders) getArguments().getSerializable(ARG_PARAM2);
         }
 
     }
@@ -65,9 +67,6 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        // myOrdersViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(MyOrdersViewModel.class);
-        // mSelectedOrderGroup = myOrdersViewModel.getReturnedOrders().getValue();
         return inflater.inflate(R.layout.fragment_order_list, container, false);
     }
 
@@ -77,28 +76,36 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
         // Objects.requireNonNull(getActivity()).setTitle(mSelectedOrderGroup.getOrderType());
         startIndex = "0";
         getOrdersOfStatesFromServer();
+        requireActivity().setTitle(R.string.my_orders);
     }
 
     private void getOrdersOfStatesFromServer() {
         progressDialog.show();
-        OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.getStateOfOrder(startIndex, MyProfile.getInstance().getMobileNumber(), stateOfOrders.getStatus()).enqueue(new Callback<OrdersByStatus>() {
+        CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
+        customerOrderService.getStateOfOrder(startIndex, "9000000000" /*MyProfile.getInstance().getMobileNumber()*/).enqueue(new Callback<OrdersByStatus>() {
             @Override
             public void onResponse(Call<OrdersByStatus> call, Response<OrdersByStatus> response) {
                 if(response.isSuccessful()) {
-                    progressDialog.dismiss();
                     data = response.body();
                     orders = data.getOrders();
-                    assert data != null;
-                    if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        startIndex = data.getEndIndex();
-                        updateUI();
+                    if(orders.size() > 0) {
+                        assert data != null;
+                        if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            startIndex = data.getEndIndex();
+                            updateUI();
+                        } else {
+                            showDialog(data.getMsg());
+                        }
                     } else {
-                        showDialog(data.getMsg());
+                        showDialog("",data.getMsg(), (dialog, i) -> {
+                            requireActivity().onBackPressed();
+                        });
                     }
+
                 } else {
                     showDialog(response.message());
                 }
+                progressDialog.dismiss();
             }
 
             @Override
@@ -115,7 +122,11 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
         if (null == count || count.length()<=0) {
             count = "0";
         }
-        tvTotalOrder.setText(String.format(getResources().getString(R.string.total_orders), count,  stateOfOrders.getStatusName()));
+        if (null != stateOfOrders) {
+            tvTotalOrder.setText(String.format(getResources().getString(R.string.total_orders), count, stateOfOrders.getStatusName()));
+        } else {
+            tvTotalOrder.setVisibility(View.GONE);
+        }
         orderList.setAdapter(ordersListAdapter);
     }
 
@@ -124,22 +135,6 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
         super.onViewCreated(view, savedInstanceState);
         tvTotalOrder = view.findViewById(R.id.total_order);
         orderList = view.findViewById(R.id.order_list);
-
-       /* myOrdersViewModel.getSelectedOrderGroup().observe(Objects.requireNonNull(getActivity()), selectedOrderGroup -> {
-            try {
-                mSelectedOrderGroup = selectedOrderGroup;
-                ordersListAdapter = new OrdersListAdapter(mSelectedOrderGroup.getOrderObjects(), this);
-                tvTotalOrder.setText(String.format(getResources().getString(R.string.total_orders), mSelectedOrderGroup.getOrderObjects().size(),  mSelectedOrderGroup.getOrderType()));
-                orderList.setAdapter(ordersListAdapter);
-            } catch (Exception e) {
-
-            }
-
-        });*/
-        // tvTotalOrder.setText(String.format(getResources().getString(R.string.total_orders), mSelectedOrderGroup.getOrderObjects().size(),  mSelectedOrderGroup.getOrderType()));
-
-        /*ordersListAdapter = new OrdersListAdapter(mSelectedOrderGroup.getOrderObjects(), this);
-        orderList.setAdapter(ordersListAdapter);*/
     }
 
     @Override
@@ -152,8 +147,8 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
     @Override
     public void onClick(View view) {
         Order orderObject = (Order) view.getTag();
-        orderObject.setOrderStatus(stateOfOrders.getStatusName());
-        orderObject.setOrderStatusID(stateOfOrders.getStatus());
+        // orderObject.setOrderStatus(stateOfOrders.getStatusName());
+        //orderObject.setOrderStatusID(stateOfOrders.getStatus());
         mListener.goToViewFullOrder(orderObject);
     }
 }
