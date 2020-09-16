@@ -113,8 +113,8 @@ public class MapsFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        addressViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(AddressViewModel.class);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
+        addressViewModel = new ViewModelProvider(Objects.requireNonNull(requireActivity())).get(AddressViewModel.class);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(requireActivity()));
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
 
@@ -151,9 +151,9 @@ public class MapsFragment extends BaseFragment {
 
     private void fetchLocation() {
         if (ActivityCompat.checkSelfPermission(
-                Objects.requireNonNull(getContext()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Objects.requireNonNull(getActivity()), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+                Objects.requireNonNull(requireActivity()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Objects.requireNonNull(requireActivity()), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
             return;
         }
 
@@ -218,7 +218,7 @@ public class MapsFragment extends BaseFragment {
         } else {
             MyProfile.getInstance().getMyLocations().get(0).setMyLocation(myLocation);
         }*/
-        Objects.requireNonNull(getActivity()).onBackPressed();
+        Objects.requireNonNull(requireActivity()).onBackPressed();
     }
 
     public MyLocation.LocationResult locationResult = new MyLocation.LocationResult() {

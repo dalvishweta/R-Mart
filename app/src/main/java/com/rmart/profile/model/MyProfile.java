@@ -1,5 +1,9 @@
 package com.rmart.profile.model;
 
+import android.graphics.Bitmap;
+
+import androidx.lifecycle.MutableLiveData;
+
 import com.rmart.utilits.pojos.AddressResponse;
 import com.rmart.utilits.pojos.ProfileResponse;
 
@@ -13,19 +17,20 @@ public class MyProfile {
     public static final String RETAILER = "Retailer";
     public static final String CUSTOMER = "Customer";
 
-    String UserID;
-    String firstName;
-    String lastName;
-    String gender;
-    String dob;
-    String email;
-    String mobileNumber;
-    String isAuthenticated;
-    String profileImage;
-    String roleID;
-    String deliveryInDays = "5";
-    String primaryAddressId;
-    ArrayList<AddressResponse> addressResponses;
+    private String UserID;
+    private String firstName;
+    private String lastName;
+    private String gender;
+    private String dob;
+    private String email;
+    private String mobileNumber;
+    private String isAuthenticated;
+    private String profileImage;
+    private String roleID;
+    private String deliveryInDays = "5";
+    private String primaryAddressId;
+    private ArrayList<AddressResponse> addressResponses;
+    private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
 
     public static MyProfile getInstance() {
         return myProfile;
@@ -34,8 +39,8 @@ public class MyProfile {
     public static void setInstance(ProfileResponse profileResponse) {
         myProfile = new MyProfile();
         myProfile.UserID = profileResponse.getUserID();
-        myProfile.firstName= profileResponse.getFirstName();
-        myProfile.lastName= profileResponse.getLastName();
+        myProfile.firstName = profileResponse.getFirstName();
+        myProfile.lastName = profileResponse.getLastName();
         myProfile.gender = profileResponse.getGender();
         myProfile.dob = profileResponse.getDob();
         myProfile.email = profileResponse.getEmail();
@@ -154,5 +159,13 @@ public class MyProfile {
 
     public void setDeliveryInDays(String deliveryInDays) {
         this.deliveryInDays = deliveryInDays;
+    }
+
+    public MutableLiveData<Bitmap> getUserProfileImage() {
+        return userProfileImage;
+    }
+
+    public void setUserProfileImage(Bitmap userImageBitmap) {
+        userProfileImage.setValue(userImageBitmap);
     }
 }

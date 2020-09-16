@@ -13,6 +13,7 @@ import com.rmart.inventory.viewmodel.InventoryViewModel;
 import com.rmart.utilits.pojos.ProductResponse;
 
 public class InventoryActivity extends BaseNavigationDrawerActivity implements OnInventoryClickedListener {
+
     InventoryViewModel inventoryViewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

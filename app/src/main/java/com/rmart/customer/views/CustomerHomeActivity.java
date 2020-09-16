@@ -3,9 +3,11 @@ package com.rmart.customer.views;
 import android.os.Bundle;
 import android.view.View;
 
+import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerProductsModel;
+import com.rmart.customer.models.ShoppingCartResponseDetails;
 import com.rmart.customer.models.VendorProductDataResponse;
 
 public class CustomerHomeActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
@@ -20,7 +22,11 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
 
     @Override
     public void onClick(View view) {
-
+        if (view.getId() != R.id.shopping) {
+            getToActivity(view.getId(), false);
+        } else {
+            getToActivity(view.getId(), true);
+        }
     }
 
     @Override
@@ -44,7 +50,12 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     }
 
     @Override
-    public void gotoConfirmOrdersScreen(CustomerProductsModel vendorShopDetails) {
-        addFragment(ConfirmOrderFragment.getInstance(vendorShopDetails), ConfirmOrderFragment.class.getName(), true);
+    public void gotoShoppingCartScreen() {
+        addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
+    }
+
+    @Override
+    public void gotoSelectedShopDetails(ShoppingCartResponseDetails shoppingCartResponseDetails) {
+        addFragment(ConfirmOrderFragment.getInstance(shoppingCartResponseDetails), ConfirmOrderFragment.class.getName(), true);
     }
 }

@@ -56,11 +56,11 @@
 
     <ImageView
         android:id="@+id/iv_message_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:background="@drawable/green_color_rounded_circle"
         android:contentDescription="@string/app_name"
-        android:padding="5dp"
+        android:padding="8dp"
         android:layout_alignParentEnd="true"
         android:scaleType="fitXY"
         android:layout_alignParentBottom="true"
@@ -69,12 +69,12 @@
 
     <ImageView
         android:id="@+id/iv_call_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/sky_blue_color_rounded_circle"
         android:contentDescription="@string/app_name"
-        android:padding="5dp"
+        android:padding="8dp"
         android:scaleType="fitXY"
         android:layout_marginStart="10dp"
         android:layout_alignParentBottom="true"

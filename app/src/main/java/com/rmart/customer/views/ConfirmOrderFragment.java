@@ -22,6 +22,7 @@ import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsModel;
 import com.rmart.customer.models.ProductInCartDetailsModel;
 import com.rmart.customer.models.ProductInCartResponse;
+import com.rmart.customer.models.ShoppingCartResponseDetails;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -45,7 +46,7 @@ import retrofit2.Response;
  */
 public class ConfirmOrderFragment extends BaseFragment {
 
-    private CustomerProductsModel vendorShopDetails;
+    private ShoppingCartResponseDetails vendorShopDetails;
 
     private RecyclerView productsListField;
     private TextView tvShopNameField;
@@ -58,7 +59,7 @@ public class ConfirmOrderFragment extends BaseFragment {
         // Required empty public constructor
     }
 
-    public static ConfirmOrderFragment getInstance(CustomerProductsModel vendorShopDetails) {
+    public static ConfirmOrderFragment getInstance(ShoppingCartResponseDetails vendorShopDetails) {
         ConfirmOrderFragment fragment = new ConfirmOrderFragment();
         Bundle extras = new Bundle();
         extras.putSerializable("VendorShopDetails", vendorShopDetails);
@@ -71,7 +72,7 @@ public class ConfirmOrderFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle extras = getArguments();
         if (extras != null) {
-            vendorShopDetails = (CustomerProductsModel) extras.getSerializable("VendorShopDetails");
+            vendorShopDetails = (ShoppingCartResponseDetails) extras.getSerializable("VendorShopDetails");
         }
     }
 

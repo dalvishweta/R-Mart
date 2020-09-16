@@ -1,6 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:scrollbars="none">
 
     <LinearLayout
@@ -66,81 +67,28 @@
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
             style="@style/upload_product_item_field"/>
-        <!--<androidx.appcompat.widget.AppCompatTextView
-            android:text="@string/retailer_details"
-            style="@style/my_profile_title"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/enter_your_business_name"
-            android:id="@+id/shop_name"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="text"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/enter_your_pan_number"
-            android:id="@+id/pan_number"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="text"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/enter_your_gst_number"
-            android:id="@+id/gst_number"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="text"/>
-        <androidx.appcompat.widget.AppCompatTextView
-            android:text="@string/location_details"
-            style="@style/my_profile_title"/>
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/street_address"
-            android:id="@+id/street_address"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="text"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/shop_no"
-            android:id="@+id/shop_no"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="text"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/land_mark"
-            android:id="@+id/land_mark"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="text"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/district"
-            android:id="@+id/district"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="text"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/state"
-            android:id="@+id/state"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="text"/>
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="300dp">
-            <FrameLayout
-                android:id="@+id/map_view"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <com.rmart.baseclass.views.CircularNetworkImageView
+                android:id="@+id/iv_profile_image_field"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <Button
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="16dp"
-                android:padding="16dp"
-                android:background="@drawable/submit_button_bg"
-                android:id="@+id/update_location"
-                android:textColor="@color/white"
-                android:fontFamily="@font/roboto_bold"
-                android:text="@string/change_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </RelativeLayout>-->
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/avatar" />
+
+            <com.rmart.baseclass.views.ProgressBarCircular
+                android:id="@+id/profile_circular_field"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+
     </LinearLayout>
 
 </ScrollView>

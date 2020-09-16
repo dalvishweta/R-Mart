@@ -40,7 +40,7 @@ public class ProfileResponse {
     @Expose
     String isAuthenticated;
 
-    @SerializedName("profile image")
+    @SerializedName("image")
     @Expose
     String profileImage;
 

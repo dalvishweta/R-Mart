@@ -56,5 +56,6 @@ public interface ProfileService {
                                        @Field("user_id") String user_id,
                                        @Field("gender") String gender,
                                        @Field("email") String email,
-                                       @Field("primary_add_id") String primary_add_id);
+                                       @Field("primary_add_id") String primary_add_id,
+                                       @Field("image") String profileImage);
 }

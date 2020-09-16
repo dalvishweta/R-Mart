@@ -18,6 +18,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
 import com.rmart.RMartApplication;
+import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.models.VendorProductDataResponse;
 import com.rmart.utilits.HttpsTrustManager;
 
@@ -61,13 +62,17 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
         }
         holder.tvProductNameField.setText(dataObject.getProductName());
 
-        /*String quantityDetails = String.format("%s %s", dataObject.getUnitNumber(), dataObject.getShortUnitMeasure());
-        holder.tvQuantityDetailsField.setText(quantityDetails);
-        String sellingPrice = String.format("Rs.%s", dataObject.getTotalSellingPrice());
-        holder.tvSellingPriceField.setText(sellingPrice);
+        List<CustomerProductsDetailsUnitModel>  unitsList = dataObject.getUnits();
+        if(unitsList != null && !unitsList.isEmpty()) {
+            CustomerProductsDetailsUnitModel unitModelDetails = unitsList.get(0);
+            String quantityDetails = String.format("%s %s", unitModelDetails.getUnitNumber(), unitModelDetails.getShortUnitMeasure());
+            holder.tvQuantityField.setText(quantityDetails);
+            String sellingPrice = String.format("Rs.%s", unitModelDetails.getSellingPrice());
+            holder.tvSellingPriceField.setText(sellingPrice);
 
-        holder.tvTotalPriceField.setText(dataObject.getTotalUnitPrice());
-        holder.tvTotalPriceField.setPaintFlags(holder.tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);*/
+            holder.tvTotalPriceField.setText(unitModelDetails.getUnitPrice());
+            holder.tvTotalPriceField.setPaintFlags(holder.tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
     }
 
     @Override

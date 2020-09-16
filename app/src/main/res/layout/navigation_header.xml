@@ -7,7 +7,8 @@
     android:paddingBottom="8dp"
     android:background="@color/colorPrimaryDark">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.rmart.baseclass.views.CircularNetworkImageView
+        android:id="@+id/iv_user_profile_image"
         android:translationZ="90dp"
         android:layout_width="90dp"
         android:layout_height="130dp"
@@ -48,7 +49,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:textColor="@color/gray"
-            android:id="@+id/gamil"
+            android:id="@+id/email_id_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

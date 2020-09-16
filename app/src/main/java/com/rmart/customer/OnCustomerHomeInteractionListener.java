@@ -1,6 +1,7 @@
 package com.rmart.customer;
 
 import com.rmart.customer.models.CustomerProductsModel;
+import com.rmart.customer.models.ShoppingCartResponseDetails;
 import com.rmart.customer.models.VendorProductDataResponse;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.customer.models.VendorProductShopDataResponse;
@@ -15,5 +16,7 @@ public interface OnCustomerHomeInteractionListener {
 
     void gotoPaymentScreen();
 
-    void gotoConfirmOrdersScreen(CustomerProductsModel vendorShopDetails);
+    void gotoShoppingCartScreen();
+
+    void gotoSelectedShopDetails(ShoppingCartResponseDetails shoppingCartResponseDetails);
 }

@@ -1,6 +1,12 @@
 package com.rmart.profile.views;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,22 +18,35 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.rmart.R;
+import com.rmart.RMartApplication;
+import com.rmart.baseclass.views.CircularNetworkImageView;
+import com.rmart.baseclass.views.ProgressBarCircular;
 import com.rmart.inventory.adapters.CustomStringAdapter;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.CommonUtils;
+import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.LoginResponse;
 import com.rmart.utilits.services.ProfileService;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class EditMyProfileFragment extends BaseMyProfileFragment implements View.OnClickListener {
@@ -40,7 +59,12 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
     private Spinner spinner;
     private String selectedGender;
     // private MyProfileViewModel myProfileViewModel;
-    ArrayList<String> strings = new ArrayList<>();
+    private ArrayList<String> strings = new ArrayList<>();
+
+    private CircularNetworkImageView ivProfileImageField;
+    private ProgressBarCircular profileCircularBar;
+    private Bitmap profileImageBitmap;
+
     public EditMyProfileFragment() {
     }
 
@@ -64,7 +88,6 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.edit_my_profile));
-        updateUI(Objects.requireNonNull(MyProfile.getInstance()));
     }
 
     @Override
@@ -83,7 +106,9 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
         tvMobileNumber = view.findViewById(R.id.mobile_number);
         tvEmail = view.findViewById(R.id.email);
         spinner = view.findViewById(R.id.gender);
-
+        ivProfileImageField = view.findViewById(R.id.iv_profile_image_field);
+        ivProfileImageField.setOnClickListener(this);
+        profileCircularBar = view.findViewById(R.id.profile_circular_field);
 
         strings.add("Male");
         strings.add("Female");
@@ -110,14 +135,50 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
         view.findViewById(R.id.submit).setOnClickListener(this);
     }
     private void updateUI(MyProfile myProfile) {
-        tvFirstName.setText(myProfile.getFirstName());
-        tvLastName.setText(myProfile.getLastName());
-        tvMobileNumber.setText(myProfile.getMobileNumber());
-        tvEmail.setText(myProfile.getEmail());
-        spinner.setSelection(strings.indexOf(myProfile.getGender()));
-        /*if(mIsFromLogin || myProfile.getMyLocations().size()<0) {
-            MyProfile.getInstance().setMyLocations(new MyLocation());
-        }*/
+        if(myProfile != null) {
+            tvFirstName.setText(myProfile.getFirstName());
+            tvLastName.setText(myProfile.getLastName());
+            tvMobileNumber.setText(myProfile.getMobileNumber());
+            tvEmail.setText(myProfile.getEmail());
+            spinner.setSelection(strings.indexOf(myProfile.getGender()));
+            updateUserProfileImage();
+        }
+    }
+
+    private void updateUserProfileImage() {
+        Bitmap bitmap = MyProfile.getInstance().getUserProfileImage().getValue();
+        if (bitmap != null) {
+            profileCircularBar.setVisibility(View.GONE);
+            ivProfileImageField.setImageBitmap(bitmap);
+        } else {
+            String imageUrl = MyProfile.getInstance().getProfileImage();
+            if (!TextUtils.isEmpty(imageUrl)) {
+                HttpsTrustManager.allowAllSSL();
+                ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
+                imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                        profileCircularBar.setVisibility(View.GONE);
+                        profileImageBitmap = response.getBitmap();
+                        ivProfileImageField.setImageBitmap(profileImageBitmap);
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        profileCircularBar.setVisibility(View.GONE);
+                        ivProfileImageField.setImageResource(R.drawable.avatar);
+                    }
+                });
+                ivProfileImageField.setImageUrl(imageUrl, imageLoader);
+            } else {
+                Bitmap newBitmap = MyProfile.getInstance().getUserProfileImage().getValue();
+                if (newBitmap != null) {
+                    profileImageBitmap = newBitmap;
+                    ivProfileImageField.setImageBitmap(profileImageBitmap);
+                }
+                profileCircularBar.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
@@ -129,46 +190,123 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
             case R.id.submit:
                 submitSelected();
                 break;
+            case R.id.iv_profile_image_field:
+                profileSelected();
+                break;
             default:
                 break;
         }
     }
 
+    private void profileSelected() {
+        CropImage.activity()
+                .start(Objects.requireNonNull(requireActivity()), this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (result != null) {
+                if (resultCode == RESULT_OK) {
+                    try {
+                        Uri profileImageUri = result.getUri();
+                        if (profileImageUri != null) {
+                            InputStream imageStream = requireActivity().getContentResolver().openInputStream(profileImageUri);
+                            profileImageBitmap = BitmapFactory.decodeStream(imageStream);
+                            if (profileImageBitmap != null) {
+                                ivProfileImageField.setImageBitmap(profileImageBitmap);
+                            }
+                        }
+                    } catch (Exception ex) {
+                        showDialog("", ex.getMessage());
+                    }
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                    LoggerInfo.errorLog("cropping error", error.getMessage());
+                }
+            }
+        }
+    }
+
     private void submitSelected() {
+        String firstName = Objects.requireNonNull(tvFirstName.getText()).toString().trim();
+        if (TextUtils.isEmpty(firstName)) {
+            showDialog(getString(R.string.please_enter_your_first_name));
+            return;
+        }
+        String lastName = Objects.requireNonNull(tvLastName.getText()).toString().trim();
+        if (TextUtils.isEmpty(lastName)) {
+            showDialog(getString(R.string.please_enter_your_last_name));
+            return;
+        }
+        String mobileNumber = Objects.requireNonNull(tvLastName.getText()).toString().trim();
+        if (TextUtils.isEmpty(mobileNumber)) {
+            showDialog(getString(R.string.required_mobile_number));
+            return;
+        }
         String email = Objects.requireNonNull(tvEmail.getText()).toString();
-        if (!Utils.isValidEmail(email)) {
+        if (TextUtils.isEmpty(email) || !Utils.isValidEmail(email)) {
             showDialog("", getString(R.string.required_mail));
-        } else {
-            progressDialog.show();
-            ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
-            profileService.updateProfile(MyProfile.getInstance().getMobileNumber(),
-                    Objects.requireNonNull(tvFirstName.getText()).toString(), Objects.requireNonNull(tvLastName.getText()).toString(), MyProfile.getInstance().getUserID(),
-                    selectedGender, email, MyProfile.getInstance().getPrimaryAddressId()).enqueue(new Callback<LoginResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
-                    if(response.isSuccessful()) {
+            return;
+        }
+
+        progressDialog.show();
+        String encodedImage = getEncodedImage();
+        ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
+        profileService.updateProfile(MyProfile.getInstance().getMobileNumber(),
+                Objects.requireNonNull(tvFirstName.getText()).toString(), Objects.requireNonNull(tvLastName.getText()).toString(), MyProfile.getInstance().getUserID(),
+                selectedGender, email, MyProfile.getInstance().getPrimaryAddressId(), encodedImage).enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
+                try {
+                    if (response.isSuccessful()) {
                         LoginResponse data = response.body();
-                        if(data != null) {
+                        if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 data.getLoginData().setAddressResponses(MyProfile.getInstance().getAddressResponses());
                                 MyProfile.setInstance(data.getLoginData());
-                                Objects.requireNonNull(requireActivity()).onBackPressed();
+
+                                showDialog("", data.getMsg(), pObject -> {
+                                    if (profileImageBitmap != null) {
+                                        MyProfile.getInstance().setUserProfileImage(profileImageBitmap);
+                                    }
+                                    Objects.requireNonNull(requireActivity()).onBackPressed();
+                                });
                             } else {
-                                showDialog("", data.getMsg());
+                                showDialog(data.getMsg());
                             }
                         }
                     } else {
-                        showDialog("", response.message());
+                        showDialog(response.message());
                     }
+                } catch (Exception ex) {
+                    showDialog(ex.getMessage());
+                } finally {
                     progressDialog.dismiss();
                 }
+            }
 
-                @Override
-                public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
-                    progressDialog.dismiss();
-                    showDialog("", t.getMessage());
-                }
-            });
+            @Override
+            public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
+                progressDialog.dismiss();
+                showDialog("", t.getMessage());
+            }
+        });
+    }
+
+    private String getEncodedImage() {
+        try {
+            if (profileImageBitmap != null) {
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                profileImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                byte[] b = byteArrayOutputStream.toByteArray();
+                return Base64.encodeToString(b, Base64.DEFAULT);
+            }
+        } catch (Exception ex) {
+            LoggerInfo.errorLog("encode image exception", ex.getMessage());
         }
+        return "";
     }
 }

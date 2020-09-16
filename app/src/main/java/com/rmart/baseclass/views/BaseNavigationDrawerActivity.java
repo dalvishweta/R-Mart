@@ -1,7 +1,9 @@
 package com.rmart.baseclass.views;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -12,8 +14,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.google.android.material.navigation.NavigationView;
 import com.rmart.R;
+import com.rmart.RMartApplication;
 import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer_order.views.CustomerOrdersActivity;
@@ -21,6 +26,9 @@ import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
+import com.rmart.utilits.CommonUtils;
+import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.LoggerInfo;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,6 +39,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
     private Toolbar toolbar;
+    private CircularNetworkImageView ivProfileImageField;
+    private AppCompatTextView nameField;
+    private AppCompatTextView mobileField;
+    private AppCompatTextView emailIdField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +69,39 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.customer_orders).setOnClickListener(this);
         findViewById(R.id.change_password).setOnClickListener(this);
         findViewById(R.id.logout).setOnClickListener(this);
+        ivProfileImageField = findViewById(R.id.iv_user_profile_image);
 
-        if (MyProfile.getInstance() != null) {
-            ((AppCompatTextView) findViewById(R.id.name)).setText(MyProfile.getInstance().getFirstName());
-            ((AppCompatTextView)findViewById(R.id.mobile)).setText(MyProfile.getInstance().getMobileNumber());
-            ((AppCompatTextView)findViewById(R.id.gamil)).setText(MyProfile.getInstance().getEmail());
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+
+            nameField = findViewById(R.id.name);
+            mobileField = findViewById(R.id.mobile);
+            emailIdField = findViewById(R.id.email_id_field);
+
+            String imageUrl = myProfile.getProfileImage();
+            if (!TextUtils.isEmpty(imageUrl)) {
+                HttpsTrustManager.allowAllSSL();
+                ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
+                imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                        Bitmap bitmap = response.getBitmap();
+                        if (bitmap != null) {
+                            ivProfileImageField.setImageBitmap(bitmap);
+                        }
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        ivProfileImageField.setImageResource(R.drawable.avatar);
+                    }
+                });
+            }
+
+            myProfile.getUserProfileImage().observe(this, bitmap -> {
+                Bitmap newBitmap = CommonUtils.getCircularBitmap(bitmap);
+                ivProfileImageField.setImageBitmap(newBitmap);
+            });
         }
     }
 
@@ -112,6 +152,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
             if(getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
             }
             toolbar.setNavigationOnClickListener(view -> onBackPressed());
         } else {
@@ -139,9 +180,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         //Checks if the navigation drawer is open -- If so, close it
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        // If drawer is already close -- Do not override original functionality
-        else {
+        } else {
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                 this.finish();
             } else {
@@ -176,5 +215,28 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     @Override
     public void updateBadgeCount() {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LoggerInfo.printLog("BaseNavigationDrawerActivity", "On Resume");
+
+        updateUI();
+    }
+
+    private void updateUI() {
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            nameField.setText(myProfile.getFirstName());
+            mobileField.setText(myProfile.getMobileNumber());
+            emailIdField.setText(myProfile.getEmail());
+
+            Bitmap userProfileBitmap = myProfile.getUserProfileImage().getValue();
+            if (userProfileBitmap != null) {
+                Bitmap newBitmap = CommonUtils.getCircularBitmap(userProfileBitmap);
+                ivProfileImageField.setImageBitmap(newBitmap);
+            }
+        }
     }
 }

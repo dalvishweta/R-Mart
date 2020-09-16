@@ -4,6 +4,7 @@ import com.rmart.BuildConfig;
 import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.ProductDetailsDescResponse;
 import com.rmart.customer.models.ProductInCartResponse;
+import com.rmart.customer.models.ShoppingCartResponse;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.customer.models.CustomerProductsResponse;
 import com.rmart.utilits.pojos.BaseResponse;
@@ -62,9 +63,9 @@ public interface CustomerProductsService {
     Call<BaseResponse> moveToWishList(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") int customerId,
                                                       @Field("product_id") int productId);
 
-    @POST(BuildConfig.VENDOR_MOVE_TO_WISH_LIST)
+    @POST(BuildConfig.VENDORS_SHOW_SHOP_WISE_CART)
     @FormUrlEncoded
-    Call<BaseResponse> getShoppingCartList();
+    Call<ShoppingCartResponse> getShoppingCartList(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId);
 
     @POST(BuildConfig.VENDOR_ADD_TO_CART)
     @FormUrlEncoded

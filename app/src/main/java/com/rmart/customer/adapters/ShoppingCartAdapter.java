@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
+import com.rmart.customer.models.ShoppingCartResponseDetails;
 
 import java.util.List;
 
@@ -18,12 +19,16 @@ import java.util.List;
  */
 public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapter.ViewHolder> {
 
-    private List<Object> listData;
+    private List<ShoppingCartResponseDetails> listData;
     private LayoutInflater layoutInflater;
+    private String productsText;
+    private String productText;
 
-    public ShoppingCartAdapter(Context context, List<Object> listData) {
+    public ShoppingCartAdapter(Context context, List<ShoppingCartResponseDetails> listData) {
         this.listData = listData;
         layoutInflater = LayoutInflater.from(context);
+        productsText = context.getString(R.string.products);
+        productText = context.getString(R.string.product);
     }
 
     @NonNull
@@ -35,7 +40,14 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        ShoppingCartResponseDetails dataObject = listData.get(position);
+        holder.tvShopNameField.setText(dataObject.getShopName());
+        holder.tvContactNoField.setText(dataObject.getMobileNumber());
+        String totalPrice = "Rs." + dataObject.getCartPrice();
+        holder.tvTotalPriceField.setText(totalPrice);
+        int count = dataObject.getCartCount();
+        holder.tvTotalCountField.setText(String.valueOf(count));
+        holder.tvProductTextField.setText(count == 1 ? productText : productsText);
     }
 
     @Override

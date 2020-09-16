@@ -211,4 +211,6 @@
     <string name="added_to_cart">Added to Cart</string>
     <string name="shopping">Shopping</string>
     <string name="status">Status</string>
+    <string name="shopping_cart">Shopping Cart</string>
+    <string name="aadhar_number">Aadhar No</string>
 </resources>

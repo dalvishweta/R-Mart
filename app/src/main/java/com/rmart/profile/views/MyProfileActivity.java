@@ -20,9 +20,11 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new ViewModelProvider(this).get(AddressViewModel.class);
+
         Intent intent = getIntent();
         boolean isFromLogin =false;
-        if(intent!= null) {
+
+        if(intent != null) {
             isFromLogin = intent.getBooleanExtra("is_edit", false);
         }
 
@@ -46,21 +48,21 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void gotoEditProfile() {
-        replaceFragment(EditMyProfileFragment.newInstance(false), "EditMyProfileFragment", true);
+        addFragment(EditMyProfileFragment.newInstance(false), "EditMyProfileFragment", true);
     }
 
     @Override
     public void gotoEditAddress(AddressResponse address) {
-        replaceFragment(EditAddressFragment.newInstance(false, address), "EditAddressFragment", true);
+        addFragment(EditAddressFragment.newInstance(false, address), "EditAddressFragment", true);
     }
 
     @Override
     public void gotoViewProfile() {
-        replaceFragment(ViewMyProfileFragment.newInstance(), "ViewProfile", true);
+        addFragment(ViewMyProfileFragment.newInstance(), "ViewProfile", true);
     }
 
     @Override
     public void gotoMapView() {
-        replaceFragment(MapsFragment.newInstance(true, "profile"), "MapsFragment", true);
+        addFragment(MapsFragment.newInstance(true, "profile"), "MapsFragment", true);
     }
 }

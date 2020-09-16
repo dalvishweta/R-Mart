@@ -183,7 +183,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
         viewMoreLayoutField = view.findViewById(R.id.view_more_layout_field);
         Button btnAddToCartField = view.findViewById(R.id.btn_add_to_cart_field);
         LinearLayout btnBuyNowField = view.findViewById(R.id.btn_buy_now_field);
-        RecyclerView relatedProductsListField = view.findViewById(R.id.related_products_list_field);
         quantitySpinnerField = view.findViewById(R.id.quantity_spinner_field);
         tvViewMoreField = view.findViewById(R.id.tv_view_more_field);
         ivViewMoreImageField = view.findViewById(R.id.iv_view_more_image_field);
@@ -385,7 +384,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     }
 
     private void buyNowSelected() {
-        onCustomerHomeInteractionListener.gotoConfirmOrdersScreen(vendorShopDetails);
+        onCustomerHomeInteractionListener.gotoShoppingCartScreen();
     }
 
     private void favouriteSelected() {

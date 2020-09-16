@@ -2,12 +2,14 @@ package com.rmart.customer.adapters;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -75,12 +77,15 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
             holder.ivShopImageField.setImageUrl(shopImageUrl, imageLoader);
         }
 
-        holder.ivShopImageField.setTag(position);
+        /*holder.ivShopImageField.setTag(position);
         holder.ivShopImageField.setOnClickListener(v -> {
             int tag = (int) v.getTag();
             CustomerProductsModel selectedDetails = productList.get(tag);
             callBackListener.callBackReceived(selectedDetails);
-        });
+        });*/
+        holder.ivMessageField.setTag(position);
+        holder.ivCallIconField.setTag(position);
+        holder.itemView.setTag(position);
     }
 
     @Override
@@ -96,7 +101,7 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
         return myFilter;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         NetworkImageView ivShopImageField;
         TextView tvShopNameField;
@@ -116,13 +121,13 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
             ivFavouriteField = itemView.findViewById(R.id.iv_favourite_image);
             ivCallIconField = itemView.findViewById(R.id.iv_call_field);
             ivMessageField = itemView.findViewById(R.id.iv_message_field);
+
             progressBarCircular = itemView.findViewById(R.id.profile_circular_field);
-            /*itemView.setTag(this.getLayoutPosition());
             itemView.setOnClickListener(v -> {
                 int tag = (int) itemView.getTag();
-                CustomerProductsModel customerProductsModel = productList.get(tag);
-                callBackListener.callBackReceived(customerProductsModel);
-            });*/
+                CustomerProductsModel selectedDetails = filteredListData.get(tag);
+                callBackListener.callBackReceived(selectedDetails);
+            });
         }
     }
 

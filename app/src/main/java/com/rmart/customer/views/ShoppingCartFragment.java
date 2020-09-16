@@ -1,7 +1,7 @@
 package com.rmart.customer.views;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.ShoppingCartAdapter;
-import com.rmart.customer.models.VendorProductDataResponse;
-import com.rmart.customer.models.VendorProductDetailsResponse;
-import com.rmart.customer.models.VendorProductShopDataResponse;
+import com.rmart.customer.models.ShoppingCartResponse;
+import com.rmart.customer.models.ShoppingCartResponseDetails;
+import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.RecyclerTouchListener;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,12 +40,13 @@ import retrofit2.Response;
 public class ShoppingCartFragment extends BaseFragment {
 
     private RecyclerView shoppingCartListField;
-    private List<Object> shoppingCartList;
+    private List<ShoppingCartResponseDetails> shoppingCartList;
+    private ShoppingCartResponseDetails selectedShoppingCartDetails;
+    private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
 
-    public ShoppingCartFragment getInstance() {
+    public static ShoppingCartFragment getInstance() {
         ShoppingCartFragment shoppingCartFragment = new ShoppingCartFragment();
         Bundle extras = new Bundle();
-
         shoppingCartFragment.setArguments(extras);
         return shoppingCartFragment;
     }
@@ -57,6 +59,20 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof OnCustomerHomeInteractionListener) {
+            onCustomerHomeInteractionListener = (OnCustomerHomeInteractionListener) context;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.shopping_cart));
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadUIComponents(view);
@@ -65,17 +81,22 @@ public class ShoppingCartFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<BaseResponse> call = customerProductsService.getShoppingCartList();
-            call.enqueue(new Callback<BaseResponse>() {
+            Call<ShoppingCartResponse> call = customerProductsService.getShoppingCartList(clientID, 192, MyProfile.getInstance().getUserID());
+            call.enqueue(new Callback<ShoppingCartResponse>() {
                 @Override
-                public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
+                public void onResponse(@NotNull Call<ShoppingCartResponse> call, @NotNull Response<ShoppingCartResponse> response) {
                     progressDialog.dismiss();
                     if (response.isSuccessful()) {
-                        BaseResponse body = response.body();
+                        ShoppingCartResponse body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-
-                                setAdapter();
+                                List<ShoppingCartResponseDetails> shopWiseCartList = body.getShoppingCartResponse().getShopWiseCartDataList();
+                                if (shopWiseCartList != null && !shopWiseCartList.isEmpty()) {
+                                    shoppingCartList.addAll(shopWiseCartList);
+                                    setAdapter();
+                                } else {
+                                    showDialog(body.getMsg());
+                                }
                             } else {
                                 showDialog(body.getMsg());
                             }
@@ -88,7 +109,7 @@ public class ShoppingCartFragment extends BaseFragment {
                 }
 
                 @Override
-                public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
+                public void onFailure(@NotNull Call<ShoppingCartResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
                 }
             });
@@ -106,6 +127,30 @@ public class ShoppingCartFragment extends BaseFragment {
         DividerItemDecoration divider = new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(requireActivity(), R.drawable.recycler_decoration_divider_transparent)));
         shoppingCartListField.addItemDecoration(divider);
+
+        view.findViewById(R.id.btn_proceed_to_buy_field).setOnClickListener(v -> proceedToBuySelected());
+
+        shoppingCartListField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), "", shoppingCartListField, new RecyclerTouchListener.ClickListener() {
+
+            @Override
+            public void onClick(View view, int position) {
+                selectedShoppingCartDetails = shoppingCartList.get(position);
+                shopDetailsSelected();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+    }
+
+    private void shopDetailsSelected() {
+        onCustomerHomeInteractionListener.gotoSelectedShopDetails(selectedShoppingCartDetails);
+    }
+
+    private void proceedToBuySelected() {
+
     }
 
     private void showCloseDialog(String title, String message) {
