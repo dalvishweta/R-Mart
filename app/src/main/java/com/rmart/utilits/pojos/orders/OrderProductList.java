@@ -19,6 +19,11 @@ public class OrderProductList implements Serializable {
     @Expose
     private String createdDate;
 
+
+    @SerializedName("customer_number")
+    @Expose
+    private String customerNumber;
+
     @SerializedName("address")
     @Expose
     private String address;
@@ -128,5 +133,13 @@ public class OrderProductList implements Serializable {
 
     public void setProductAmount(String productAmount) {
         this.productAmount = productAmount;
+    }
+
+    public String getCustomerNumber() {
+        return customerNumber;
+    }
+
+    public void setCustomerNumber(String customerNumber) {
+        this.customerNumber = customerNumber;
     }
 }

@@ -40,8 +40,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private String mParam2;
     MyOrdersViewModel viewModel;
     AppCompatButton mLeftButton, mRightButton;
-    private AppCompatTextView tvStatus, tvFullName,dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType,
-            deliveryBoyName, deliveryBoyNumber;
+    private AppCompatTextView tvStatus, tvFullName,dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType, contactNumber;
     private ProductListAdapter productAdapter;
     private OrderProductList orderProductList;
     private RecyclerView recyclerView;
@@ -127,8 +126,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
        // delivery boy info
         deliveryBoyInfo = view.findViewById(R.id.delivery_boy_info);
         deliveryBoyInfo.setVisibility(View.GONE);
-        deliveryBoyName = view.findViewById(R.id.delivery_boy_name);
-        deliveryBoyNumber = view.findViewById(R.id.delivery_boy_number);
+        contactNumber = view.findViewById(R.id.contact_number);
 
         //Payment info
         tvAmount = view.findViewById(R.id.amount);
@@ -148,31 +146,15 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         Resources res = getResources();
         String text = String.format(res.getString(R.string.status_order), mOrderObject.getOrderStatus());
         tvStatus.setText(text);
-        setFooter();
+        // setFooter();
         tvFullName.setText(orderProductList.getFirstName()+" "+ orderProductList.getLastName());
         tvDeliveryCharges.setText(orderProductList.getDeliveryCharges());
         tvAmount.setText(orderProductList.getTotal_amt());
         tvTotalCharges.setText(orderProductList.getTotal_amt());
         tvPaymentType.setText(orderProductList.getMode_of_payment());
         productAdapter = new ProductListAdapter(orderProductList.getProducts(), this);
+        contactNumber.setText(orderProductList.getCustomerNumber());
         recyclerView.setAdapter(productAdapter);
-    }
-    private void setFooter() {
-        if(mOrderObject.getOrderStatusID().contains(Utils.OPEN_ORDER_STATUS)) {
-            isOpenOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.ACCEPTED_ORDER_STATUS)) {
-            isAcceptedOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.PACKED_ORDER_STATUS)) {
-            isPackedOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.SHIPPED_ORDER_STATUS)) {
-            isShippedOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.DELIVERED_ORDER_STATUS)) {
-            isDeliveredOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.REJECT_ORDER_STATUS)) {
-            isReturnedOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.CANCEL_ORDER_STATUS)) {
-            isCanceledOrder();
-        }
     }
 
     @Override

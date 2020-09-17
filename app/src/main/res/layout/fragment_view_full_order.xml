@@ -73,7 +73,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/order_id"
                         android:layout_alignParentStart="true"
-                        android:layout_below="@+id/date"
+                        android:layout_below="@+id/date_value"
                         android:text="@string/order_id"
                         android:textSize="16sp"
                         android:layout_width="wrap_content"
