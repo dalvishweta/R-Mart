@@ -10,7 +10,8 @@
     android:layout_marginTop="8dp"
     android:background="@drawable/item_order_list_bg"
     >
-    <ImageView
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/product_image"
         android:src="@drawable/item_product"
         android:layout_width="0dp"
         android:layout_weight="1"

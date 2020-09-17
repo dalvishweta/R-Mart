@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.rmart.R;
+import com.rmart.RMartApplication;
 import com.rmart.inventory.views.viewholders.ProductItemViewHolder;
 import com.rmart.utilits.pojos.orders.Product;
 
@@ -37,6 +39,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
         holder.productName.setText(productObject.getProductName());
         holder.quantity.setText(productObject.getQuantity());
         holder.units.setText(productObject.getUnit()+" " +productObject.getUnitMeasure());
+        if(productObject.getDisplayImage().length() > 10) {
+            ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
+            holder.imageView.setImageUrl("http://it.rokad.in/uploads/product_image/default_product.png", imageLoader);
+        }
     }
 
     @Override

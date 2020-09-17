@@ -2,6 +2,7 @@ package com.rmart.utilits.pojos.orders;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rmart.utilits.pojos.ProfileResponse;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,7 +46,9 @@ public class OrderProductList implements Serializable {
     @Expose
     ArrayList<Product> products;
 
-    // need to add these parameters
+    @SerializedName("vendurInfo")
+    @Expose
+    ProfileResponse vendorInfo;
 
     @SerializedName("delivery_charges")
     @Expose

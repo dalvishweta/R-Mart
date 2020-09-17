@@ -34,6 +34,9 @@ public class Product implements Serializable {
     @Expose
     private String productName;
 
+    @SerializedName("display_image")
+    @Expose
+    private String displayImage = "http://it.rokad.in/uploads/product_image/default_product.png";
     public String getProductName() {
         return productName;
     }
@@ -88,5 +91,13 @@ public class Product implements Serializable {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+
+    public String getDisplayImage() {
+        return displayImage;
+    }
+
+    public void setDisplayImage(String displayImage) {
+        this.displayImage = displayImage;
     }
 }

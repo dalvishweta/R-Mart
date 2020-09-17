@@ -226,4 +226,5 @@
     <string name="support">Support</string>
     <string name="version">Version</string>
     <string name="wish_list">Wish List</string>
+    <string name="vendor_name">Vendor Name</string>
 </resources>
