@@ -1,6 +1,7 @@
 package com.rmart.utilits.services;
 
 import com.rmart.BuildConfig;
+import com.rmart.utilits.pojos.UpdatedOrderStatus;
 import com.rmart.utilits.pojos.orders.OrderProductListResponse;
 import com.rmart.utilits.pojos.orders.OrderStateListResponse;
 import com.rmart.utilits.pojos.orders.OrdersByStatus;
@@ -30,6 +31,6 @@ public interface OrderService {
     @POST(BuildConfig.VENDOR_UPDATE_ORDER)
     @FormUrlEncoded
     Call<UpdatedOrderStatus> updateOrderStatus(@Field("order_id")String orderID,
-            @Field("user_id") String id,
-            @Field("status") String newOrderStatus);
+                                               @Field("user_id") String id,
+                                               @Field("status") String newOrderStatus);
 }

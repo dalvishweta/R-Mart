@@ -109,7 +109,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void onClick(View view) {
-        if (view.getId() != R.id.inventory) {
+        if (view.getId() != R.id.retailer_inventory) {
             getToActivity(view.getId(), false);
         } else {
             getToActivity(view.getId(), true);

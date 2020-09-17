@@ -34,13 +34,13 @@
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/orders"
+                    android:id="@+id/retailer_orders"
                     style="@style/nv_item_view"
                     android:drawableStart="@drawable/orders"
                     android:text="@string/my_orders" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/inventory"
+                    android:id="@+id/retailer_inventory"
                     style="@style/nv_item_view"
                     android:drawableStart="@drawable/inventory_nv"
                     android:text="@string/inventory" />

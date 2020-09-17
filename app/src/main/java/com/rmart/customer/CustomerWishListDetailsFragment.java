@@ -136,7 +136,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
 
     private void setAdapter() {
         if(!wishListCart.isEmpty()) {
-            CustomerWishListDetailsAdapter adapter = new CustomerWishListDetailsAdapter(requireActivity(), wishListCart)
+            CustomerWishListDetailsAdapter adapter = new CustomerWishListDetailsAdapter(requireActivity(), wishListCart);
         }
     }
 }

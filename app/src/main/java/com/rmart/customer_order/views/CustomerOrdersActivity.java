@@ -33,7 +33,7 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
 
     @Override
     public void onClick(View view) {
-        if (view.getId() != R.id.orders) {
+        if (view.getId() != R.id.retailer_orders) {
             getToActivity(view.getId(), false);
         } else {
             getToActivity(view.getId(), true);
