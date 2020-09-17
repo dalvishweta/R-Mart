@@ -24,7 +24,6 @@ import com.rmart.utilits.pojos.orders.Order;
 import com.rmart.utilits.pojos.orders.OrderProductList;
 import com.rmart.utilits.pojos.orders.OrderProductListResponse;
 import com.rmart.utilits.services.OrderService;
-import com.rmart.utilits.services.UpdatedOrderStatus;
 
 import retrofit2.Call;
 import retrofit2.Callback;

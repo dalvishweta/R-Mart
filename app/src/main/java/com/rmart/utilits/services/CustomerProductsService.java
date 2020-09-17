@@ -77,4 +77,9 @@ public interface CustomerProductsService {
     Call<AddToCartResponseDetails> removeFromCart(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
                                              @Field("product_unit_id") int productUnitId, @Field("product_quantity") int productQuantity);
 
+    @POST(BuildConfig.VENDOR_ADD_TO_CART)
+    @FormUrlEncoded
+    Call<AddToCartResponseDetails> getWishListDetails(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
+                                                  @Field("product_unit_id") int productUnitId, @Field("product_quantity") int productQuantity);
+
 }

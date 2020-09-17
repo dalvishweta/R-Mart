@@ -227,4 +227,5 @@
     <string name="version">Version</string>
     <string name="wish_list">Wish List</string>
     <string name="vendor_name">Vendor Name</string>
+    <string name="remove">Remove</string>
 </resources>

@@ -80,41 +80,7 @@ public class CustomerWishListFragment extends BaseFragment {
         loadUIComponents(view);
 
         if (Utils.isNetworkConnected(requireActivity())) {
-            progressDialog.show();
-            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
-            String clientID = "2";
-            Call<ShoppingCartResponse> call = customerProductsService.getShoppingCartList(clientID, 192, MyProfile.getInstance().getUserID());
-            call.enqueue(new Callback<ShoppingCartResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<ShoppingCartResponse> call, @NotNull Response<ShoppingCartResponse> response) {
-                    progressDialog.dismiss();
-                    if (response.isSuccessful()) {
-                        ShoppingCartResponse body = response.body();
-                        if (body != null) {
-                            if (body.getStatus().equalsIgnoreCase("success")) {
-                                List<ShoppingCartResponseDetails> shopWiseCartList = body.getShoppingCartResponse().getShopWiseCartDataList();
-                                if (shopWiseCartList != null && !shopWiseCartList.isEmpty()) {
-                                    wishListCart.addAll(shopWiseCartList);
-                                    setAdapter();
-                                } else {
-                                    showDialog(body.getMsg());
-                                }
-                            } else {
-                                showDialog(body.getMsg());
-                            }
-                        } else {
-                            showDialog(getString(R.string.no_information_available));
-                        }
-                    }  else {
-                        showDialog(getString(R.string.no_information_available));
-                    }
-                }
 
-                @Override
-                public void onFailure(@NotNull Call<ShoppingCartResponse> call, @NotNull Throwable t) {
-                    progressDialog.dismiss();
-                }
-            });
         } else {
             showCloseDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
