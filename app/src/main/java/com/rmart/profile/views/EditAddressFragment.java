@@ -1,9 +1,16 @@
 package com.rmart.profile.views;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -16,35 +23,49 @@ import com.rmart.R;
 import com.rmart.profile.model.MyAddress;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.viewmodels.AddressViewModel;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.AddressListResponse;
 import com.rmart.utilits.pojos.AddressResponse;
 import com.rmart.utilits.services.ProfileService;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
+
 public class EditAddressFragment extends BaseMyProfileFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private AppCompatEditText tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress,tvCity, tvShopNO, tvDeliveryRadius, tvPinCode, tvState;
+    private AppCompatEditText tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress, tvCity, tvShopNO, tvDeliveryRadius, tvPinCode, tvState;
     LinearLayout mRetailerView;
     AddressViewModel addressViewModel;
     AddressResponse myAddress;
+    private AppCompatEditText tvAadharNoField, tvKycNoField;
+    private ImageView ivAadharFrontImageField, ivAadharBackImageField, ivKycImageField;
+    private boolean aadharFrontSelected = false;
+    private boolean aadharBackSelected = false;
+    private boolean kycSelected = false;
+    private Bitmap aadharFrontImageBitmap, aadharBackImageBitmap, kycImageBitmap;
+    private boolean isAddNewAddress;
+
     public EditAddressFragment() {
         // Required empty public constructor
     }
 
-    public static EditAddressFragment newInstance(boolean isEdit, AddressResponse myAddress) {
+    public static EditAddressFragment newInstance(boolean isAddNewAddress, AddressResponse myAddress) {
         EditAddressFragment fragment = new EditAddressFragment();
         Bundle args = new Bundle();
-        args.putBoolean(ARG_PARAM1, isEdit);
+        args.putBoolean(ARG_PARAM1, isAddNewAddress);
         args.putSerializable(ARG_PARAM2, myAddress);
         fragment.setArguments(args);
         return fragment;
@@ -55,6 +76,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             myAddress = (AddressResponse) getArguments().getSerializable(ARG_PARAM2);
+            isAddNewAddress = getArguments().getBoolean(ARG_PARAM1);
         }
     }
 
@@ -82,14 +104,23 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         tvPinCode = view.findViewById(R.id.pin_code);
         tvState = view.findViewById(R.id.state);
         tvCity = view.findViewById(R.id.city);
+        ivAadharFrontImageField = view.findViewById(R.id.iv_aadhar_front_image_field);
+        ivAadharBackImageField = view.findViewById(R.id.iv_aadhar_back_image_field);
+        ivKycImageField = view.findViewById(R.id.iv_kyc_no_image_field);
+        tvAadharNoField = view.findViewById(R.id.tv_aadhar_number_no_field);
+        tvKycNoField = view.findViewById(R.id.tv_kyc_no_field);
 
         view.findViewById(R.id.add_address).setOnClickListener(this);
+        ivAadharFrontImageField.setOnClickListener(this);
+        ivAadharBackImageField.setOnClickListener(this);
+        ivKycImageField.setOnClickListener(this);
         updateUI();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        requireActivity().setTitle(getString(R.string.update_address));
         updateUI();
     }
 
@@ -108,31 +139,133 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         } else {
             Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.update_address));
         }
-        if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
+        if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
             mRetailerView.setVisibility(View.VISIBLE);
             if (null != myAddress) {
                 tvStreetAddress.setText(myAddress.getAddress());
             }
-        } else if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
+        } else if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
             mRetailerView.setVisibility(View.GONE);
         } else {
             mRetailerView.setVisibility(View.GONE);
         }
-
-        /*ArrayList<MyLocation> locations = myProfile.getMyLocations();
-
-
-        if(MyProfile.getInstance().getRoleType().equals(MyProfile.RETAILER)) {
-            if(locations!= null && locations.size()>0) {
-
-            }
-        }*/
         setMapView(false, "profile");
     }
 
+    private void resetImageFields() {
+        aadharFrontSelected = false;
+        aadharBackSelected = false;
+        kycSelected = false;
+    }
 
     @Override
     public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.add_address:
+                addAddressSelected();
+                break;
+            case R.id.iv_aadhar_front_image_field:
+                resetImageFields();
+                aadharFrontSelected = true;
+                capturePhotoSelected();
+                break;
+            case R.id.iv_aadhar_back_image_field:
+                resetImageFields();
+                aadharBackSelected = true;
+                capturePhotoSelected();
+                break;
+            case R.id.iv_kyc_no_image_field:
+                resetImageFields();
+                kycSelected = false;
+                capturePhotoSelected();
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void capturePhotoSelected() {
+        CropImage.activity()
+                .start(requireActivity(), this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (result != null) {
+                if (resultCode == RESULT_OK) {
+                    try {
+                        Uri profileImageUri = result.getUri();
+                        if (profileImageUri != null) {
+                            InputStream imageStream = requireActivity().getContentResolver().openInputStream(profileImageUri);
+                            if (aadharFrontSelected) {
+                                aadharFrontImageBitmap = BitmapFactory.decodeStream(imageStream);
+                                ivAadharFrontImageField.setImageBitmap(aadharFrontImageBitmap);
+                            } else if (aadharBackSelected) {
+                                aadharBackImageBitmap = BitmapFactory.decodeStream(imageStream);
+                                ivAadharBackImageField.setImageBitmap(aadharBackImageBitmap);
+                            } else if (kycSelected) {
+                                kycImageBitmap = BitmapFactory.decodeStream(imageStream);
+                                ivKycImageField.setImageBitmap(kycImageBitmap);
+                            }
+                        }
+                    } catch (Exception ex) {
+                        showDialog("", ex.getMessage());
+                    }
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                    LoggerInfo.errorLog("cropping error", error.getMessage());
+                }
+            }
+        }
+    }
+
+    private String getEncodedImage(Bitmap bitmap) {
+        try {
+            if (bitmap != null) {
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                byte[] b = byteArrayOutputStream.toByteArray();
+                return Base64.encodeToString(b, Base64.DEFAULT);
+            }
+        } catch (Exception ex) {
+            LoggerInfo.errorLog("encode image exception", ex.getMessage());
+        }
+        return "";
+    }
+
+    private void addAddressSelected() {
+        if (mRetailerView.getVisibility() == View.VISIBLE) {
+            String aadharNo = Objects.requireNonNull(tvAadharNoField.getText()).toString().trim();
+            if (TextUtils.isEmpty(aadharNo)) {
+                showDialog(getString(R.string.enter_your_aadhar_number));
+                return;
+            }
+            if (aadharNo.length() != 12) {
+                showDialog(getString(R.string.aadhar_number_error));
+                return;
+            }
+            if (aadharFrontImageBitmap == null) {
+                showDialog(getString(R.string.aadhar_front_image_required));
+                return;
+            }
+            if (aadharBackImageBitmap == null) {
+                showDialog(getString(R.string.aadhar_back_image_required));
+                return;
+            }
+            String kycNo = Objects.requireNonNull(tvKycNoField.getText()).toString().trim();
+            if (TextUtils.isEmpty(kycNo)) {
+                showDialog(getString(R.string.enter_your_kyc_number));
+                return;
+            }
+            if (kycImageBitmap == null) {
+                showDialog(getString(R.string.kyc_image_required));
+                return;
+            }
+        }
 
         progressDialog.show();
         if (myAddress == null) {

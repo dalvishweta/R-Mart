@@ -51,6 +51,8 @@ android {
         buildConfigField("String", "VENDOR_ADD_TO_CART", '"customer/VendorShop/addToCart"')
         buildConfigField("String", "VENDOR_REMOVE_FROM_CART", '"customer/VendorShop/deleteAddToCart"')
         buildConfigField("String", "VENDORS_SHOW_SHOP_WISE_CART", '"customer/VendorShop/showShopWiseCart"')
+        buildConfigField("String", "VENDORS_SHOW_WISH_LIST_CART", '"customer/VendorShop/showWishlistData"')
+        //showWishlistData
 
         /*Vendor inventory services*/
 
@@ -93,7 +95,7 @@ android {
         customer {
             dimension "rokard_mart"
             applicationIdSuffix ".customer"
-            versionNameSuffix "-customer"
+            /*versionNameSuffix "-customer"*/
             buildConfigField("String", "ROLE_ID", '"5"')
             buildConfigField("String", "LOGIN_USERNAME", '"8686378737"')
             buildConfigField("String", "LOGIN_PASSWORD", '"12345"')
@@ -103,7 +105,7 @@ android {
         retailer {
             dimension "rokard_mart"
             applicationIdSuffix ".retailer"
-            versionNameSuffix "-retailer"
+            /*versionNameSuffix "-retailer"*/
             buildConfigField("String", "ROLE_ID", '"4"')
             buildConfigField("String", "LOGIN_USERNAME", '"7416226233"')
             buildConfigField("String", "LOGIN_PASSWORD", '"1234"')

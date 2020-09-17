@@ -5,53 +5,94 @@
     android:orientation="vertical"
     android:background="@color/colorPrimary">
 
-    <include layout="@layout/navigation_header"/>
+    <include layout="@layout/navigation_header" />
 
-    <ScrollView
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_version_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="end"
+            android:minHeight="40dp"
+            android:textColor="@color/white" />
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_above="@id/tv_version_field">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/nv_item_view"
-                android:id="@+id/orders"
-                android:text="@string/my_orders"
-                android:drawableStart="@drawable/orders"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/nv_item_view"
-                android:id="@+id/inventory"
-                android:text="@string/inventory"
-                android:drawableStart="@drawable/inventory_nv"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/orders"
+                    style="@style/nv_item_view"
+                    android:drawableStart="@drawable/orders"
+                    android:text="@string/my_orders" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/nv_item_view"
-                android:id="@+id/shopping"
-                android:text="@string/shopping"
-                android:drawableStart="@drawable/inventory_nv"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/inventory"
+                    style="@style/nv_item_view"
+                    android:drawableStart="@drawable/inventory_nv"
+                    android:text="@string/inventory" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/nv_item_view"
-                android:id="@+id/customer_orders"
-                android:text="@string/my_orders"
-                android:drawableStart="@drawable/inventory_nv"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/shopping"
+                    style="@style/nv_item_view"
+                    android:drawableStart="@drawable/inventory_nv"
+                    android:text="@string/shopping" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/change_password"
-                android:text="@string/change_password"
-                android:drawableStart="@drawable/password_nv"
-                style="@style/nv_item_view"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/customer_orders"
+                    style="@style/nv_item_view"
+                    android:drawableStart="@drawable/inventory_nv"
+                    android:text="@string/my_orders" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:drawableStart="@drawable/logout_nv"
-                android:id="@+id/logout"
-                android:text="@string/logout"
-                style="@style/nv_item_view"/>
-        </LinearLayout>
-    </ScrollView>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/my_wish_list"
+                    style="@style/nv_item_view"
+                    android:drawableStart="@drawable/inventory_nv"
+                    android:text="@string/my_wish_list" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/my_wallet"
+                    style="@style/nv_item_view"
+                    android:drawableStart="@drawable/password_nv"
+                    android:text="@string/my_wallet" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/my_khata"
+                    style="@style/nv_item_view"
+                    android:drawableStart="@drawable/password_nv"
+                    android:text="@string/my_khata" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/support"
+                    style="@style/nv_item_view"
+                    android:drawableStart="@drawable/password_nv"
+                    android:text="@string/support" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/change_password"
+                    style="@style/nv_item_view"
+                    android:drawableStart="@drawable/password_nv"
+                    android:text="@string/change_password" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/logout"
+                    style="@style/nv_item_view"
+                    android:drawableStart="@drawable/logout_nv"
+                    android:text="@string/logout" />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
 </LinearLayout>

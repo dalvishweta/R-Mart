@@ -1,5 +1,6 @@
 package com.rmart.customer.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.customer.adapters.ChangeAddressAdapter;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.profile.views.MyProfileActivity;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.pojos.AddressResponse;
 
@@ -42,6 +44,12 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         LoggerInfo.printLog("Fragment", "ChangeAddressFragment");
         return inflater.inflate(R.layout.fragment_change_address, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requireActivity().setTitle(getString(R.string.change_address));
     }
 
     @Override
@@ -103,6 +111,8 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     }
 
     private void addNewAddressSelected() {
-
+        Intent intent = new Intent(requireActivity(), MyProfileActivity.class);
+        intent.putExtra("IsNewAddress", true);
+        startActivity(intent);
     }
 }

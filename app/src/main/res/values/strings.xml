@@ -213,4 +213,17 @@
     <string name="status">Status</string>
     <string name="shopping_cart">Shopping Cart</string>
     <string name="aadhar_number">Aadhar No</string>
+    <string name="enter_your_aadhar_number">Enter your Aadhar Number</string>
+    <string name="aadhar_number_error">Please Enter Valid Aadhar Number</string>
+    <string name="aadhar_front_image_required">Please Upload Aadhar Front Image</string>
+    <string name="aadhar_back_image_required">Please Upload Aadhar Back Image</string>
+    <string name="kyc_no">KYC No</string>
+    <string name="kyc_image_required">Please Upload KYC Image</string>
+    <string name="enter_your_kyc_number">Enter your KYC Number</string>
+    <string name="my_wish_list">My Wish List</string>
+    <string name="change_address">Change Address</string>
+    <string name="my_khata">My Khata</string>
+    <string name="support">Support</string>
+    <string name="version">Version</string>
+    <string name="wish_list">Wish List</string>
 </resources>

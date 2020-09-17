@@ -77,15 +77,10 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
             holder.ivShopImageField.setImageUrl(shopImageUrl, imageLoader);
         }
 
-        /*holder.ivShopImageField.setTag(position);
-        holder.ivShopImageField.setOnClickListener(v -> {
-            int tag = (int) v.getTag();
-            CustomerProductsModel selectedDetails = productList.get(tag);
-            callBackListener.callBackReceived(selectedDetails);
-        });*/
+        holder.ivShopImageField.setTag(position);
         holder.ivMessageField.setTag(position);
         holder.ivCallIconField.setTag(position);
-        holder.itemView.setTag(position);
+        //holder.itemView.setTag(position);
     }
 
     @Override
@@ -123,9 +118,14 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
             ivMessageField = itemView.findViewById(R.id.iv_message_field);
 
             progressBarCircular = itemView.findViewById(R.id.profile_circular_field);
-            itemView.setOnClickListener(v -> {
+            /*itemView.setOnClickListener(v -> {
                 int tag = (int) itemView.getTag();
                 CustomerProductsModel selectedDetails = filteredListData.get(tag);
+                callBackListener.callBackReceived(selectedDetails);
+            });*/
+            ivShopImageField.setOnClickListener(v -> {
+                int tag = (int) v.getTag();
+                CustomerProductsModel selectedDetails = productList.get(tag);
                 callBackListener.callBackReceived(selectedDetails);
             });
         }

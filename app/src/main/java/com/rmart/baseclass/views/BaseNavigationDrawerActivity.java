@@ -1,11 +1,13 @@
 package com.rmart.baseclass.views;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,6 +23,7 @@ import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.customer.views.CustomerHomeActivity;
+import com.rmart.customer.views.CustomerWishListActivity;
 import com.rmart.customer_order.views.CustomerOrdersActivity;
 import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.orders.views.OrdersActivity;
@@ -28,7 +31,6 @@ import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
 import com.rmart.utilits.CommonUtils;
 import com.rmart.utilits.HttpsTrustManager;
-import com.rmart.utilits.LoggerInfo;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -61,6 +63,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
         getSupportFragmentManager().addOnBackStackChangedListener(this::checkBackStack);
 
+        loadUIComponents();
+    }
+
+    private void loadUIComponents() {
         navigationView = findViewById(R.id.navigation_view);
         findViewById(R.id.update_profile).setOnClickListener(this);
         findViewById(R.id.orders).setOnClickListener(this);
@@ -69,6 +75,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.customer_orders).setOnClickListener(this);
         findViewById(R.id.change_password).setOnClickListener(this);
         findViewById(R.id.logout).setOnClickListener(this);
+        findViewById(R.id.my_wish_list).setOnClickListener(this);
         ivProfileImageField = findViewById(R.id.iv_user_profile_image);
 
         MyProfile myProfile = MyProfile.getInstance();
@@ -102,6 +109,14 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 Bitmap newBitmap = CommonUtils.getCircularBitmap(bitmap);
                 ivProfileImageField.setImageBitmap(newBitmap);
             });
+        }
+        TextView tvAppVersionField = findViewById(R.id.tv_version_field);
+        try {
+            String versionNo = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            String appVersion = String.format("%s : %s", getString(R.string.version), versionNo);
+            tvAppVersionField.setText(appVersion);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -141,6 +156,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     intent = new Intent(this, CustomerHomeActivity.class);
                     startActivity(intent);
                     break;
+                case R.id.my_wish_list:
+                    intent = new Intent(this, CustomerWishListActivity.class);
+                    startActivity(intent);
+                    break;
                 default:
                     break;
             }
@@ -150,11 +169,18 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
     private void checkBackStack() {
         if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            if(getSupportActionBar() != null) {
+            if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             }
-            toolbar.setNavigationOnClickListener(view -> onBackPressed());
+            toolbar.setNavigationOnClickListener(view -> {
+                int count = getSupportFragmentManager().getBackStackEntryCount();
+                if (count == 0) {
+                    drawerLayout.openDrawer(GravityCompat.START);
+                } else {
+                    onBackPressed();
+                }
+            });
         } else {
             if(getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -168,10 +194,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     public boolean onOptionsItemSelected(@NotNull MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item))
             return true;
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -220,8 +242,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     @Override
     protected void onResume() {
         super.onResume();
-        LoggerInfo.printLog("BaseNavigationDrawerActivity", "On Resume");
-
         updateUI();
     }
 
