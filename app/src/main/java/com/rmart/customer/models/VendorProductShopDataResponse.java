@@ -42,6 +42,12 @@ public class VendorProductShopDataResponse extends BaseResponse {
     @SerializedName("client_id")
     @Expose
     private Integer clientId;
+    @SerializedName("delivery_charges")
+    @Expose
+    private Integer deliveryCharges;
+    @SerializedName("shop_wishlist_status")
+    @Expose
+    private Integer shopWishListStatus;
 
     public String getShopMobileNo() {
         return shopMobileNo;
@@ -121,5 +127,21 @@ public class VendorProductShopDataResponse extends BaseResponse {
 
     public void setClientId(Integer clientId) {
         this.clientId = clientId;
+    }
+
+    public Integer getDeliveryCharges() {
+        return deliveryCharges;
+    }
+
+    public void setDeliveryCharges(Integer deliveryCharges) {
+        this.deliveryCharges = deliveryCharges;
+    }
+
+    public Integer getShopWishListStatus() {
+        return shopWishListStatus;
+    }
+
+    public void setShopWishListStatus(Integer shopWishListStatus) {
+        this.shopWishListStatus = shopWishListStatus;
     }
 }

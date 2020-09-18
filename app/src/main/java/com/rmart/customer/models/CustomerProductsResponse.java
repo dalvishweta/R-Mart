@@ -26,16 +26,16 @@ public class CustomerProductsResponse extends BaseResponse {
     public static class CustomerProductsList {
         @SerializedName("shop_list")
         @Expose
-        List<CustomerProductsModel> customerShopsList;
+        List<CustomerProductsShopDetailsModel> customerShopsList;
         @SerializedName("shop_total_count")
         @Expose
         private Integer shopTotalCount;
 
-        public List<CustomerProductsModel> getCustomerShopsList() {
+        public List<CustomerProductsShopDetailsModel> getCustomerShopsList() {
             return customerShopsList;
         }
 
-        public void setCustomerShopsList(List<CustomerProductsModel> customerShopsList) {
+        public void setCustomerShopsList(List<CustomerProductsShopDetailsModel> customerShopsList) {
             this.customerShopsList = customerShopsList;
         }
 

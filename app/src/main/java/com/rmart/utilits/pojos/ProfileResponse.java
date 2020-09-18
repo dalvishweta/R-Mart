@@ -10,7 +10,7 @@ public class ProfileResponse {
 
     @SerializedName("id")
     @Expose
-    String UserID;
+    String userID;
 
     @SerializedName("first_name")
     @Expose
@@ -56,12 +56,17 @@ public class ProfileResponse {
     @Expose
     ArrayList<AddressResponse> addressResponses;
 
+    //total_cart_count
+    @SerializedName("total_cart_count")
+    @Expose
+    Integer totalCartCount;
+
     public String getUserID() {
-        return UserID;
+        return userID;
     }
 
     public void setUserID(String userID) {
-        UserID = userID;
+        userID = userID;
     }
 
     public String getFirstName() {
@@ -150,5 +155,13 @@ public class ProfileResponse {
 
     public void setAddressResponses(ArrayList<AddressResponse> addressResponses) {
         this.addressResponses = addressResponses;
+    }
+
+    public Integer getTotalCartCount() {
+        return totalCartCount;
+    }
+
+    public void setTotalCartCount(Integer totalCartCount) {
+        this.totalCartCount = totalCartCount;
     }
 }

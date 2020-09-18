@@ -31,6 +31,7 @@ public class MyProfile {
     private String primaryAddressId;
     private ArrayList<AddressResponse> addressResponses;
     private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
+    private MutableLiveData<Integer> cartCount = new MutableLiveData<>();
 
     public static MyProfile getInstance() {
         return myProfile;
@@ -167,5 +168,13 @@ public class MyProfile {
 
     public void setUserProfileImage(Bitmap userImageBitmap) {
         userProfileImage.setValue(userImageBitmap);
+    }
+
+    public MutableLiveData<Integer> getCartCount() {
+        return cartCount;
+    }
+
+    public void setCartCount(Integer cartCount) {
+        this.cartCount.setValue(cartCount);
     }
 }

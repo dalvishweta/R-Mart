@@ -10,6 +10,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
         buildConfigField("String", "AUTH_USERNAME", '"admin"')
         buildConfigField("String", "AUTH_PASSWORD", '"1234"')
         buildConfigField("String", "BASE_URL", '"https://it.rokad.in/api/"')
@@ -51,8 +52,9 @@ android {
         buildConfigField("String", "VENDOR_ADD_TO_CART", '"customer/VendorShop/addToCart"')
         buildConfigField("String", "VENDOR_REMOVE_FROM_CART", '"customer/VendorShop/deleteAddToCart"')
         buildConfigField("String", "VENDORS_SHOW_SHOP_WISE_CART", '"customer/VendorShop/showShopWiseCart"')
-        buildConfigField("String", "VENDORS_SHOW_WISH_LIST_CART", '"customer/VendorShop/showWishlistData"')
-        //showWishlistData
+        buildConfigField("String", "VENDORS_SHOW_SHOP_WISE_WISH_LIST_CART", '"customer/VendorShop/showWishlistData"')
+        buildConfigField("String", "VENDORS_SHOW_WISH_LIST_CART", '"customer/VendorShop/showShopWiseWishlist"')
+        //showShopWiseWishlist
 
         /*Vendor inventory services*/
 

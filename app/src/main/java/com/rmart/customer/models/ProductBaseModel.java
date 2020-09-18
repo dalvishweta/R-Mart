@@ -15,7 +15,7 @@ public class ProductBaseModel implements Serializable {
 
     private String productCategoryName;
     private int productCategoryId;
-    private List<VendorProductDataResponse> productsList;
+    private List<CustomerProductDetailsModel> productsList;
 
     public String getProductCategoryName() {
         return productCategoryName;
@@ -33,11 +33,11 @@ public class ProductBaseModel implements Serializable {
         this.productCategoryId = productCategoryId;
     }
 
-    public List<VendorProductDataResponse> getProductsList() {
+    public List<CustomerProductDetailsModel> getProductsList() {
         return productsList;
     }
 
-    public void setProductsList(List<VendorProductDataResponse> productsList) {
+    public void setProductsList(List<CustomerProductDetailsModel> productsList) {
         this.productsList = productsList;
     }
 

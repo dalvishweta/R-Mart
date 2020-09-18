@@ -1,11 +1,11 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
+
     <item
-        android:id="@+id/live_ticket"
-        android:icon="@drawable/ticket"
-        android:title="Live Ticket"
-        app:actionLayout="@layout/ticket_menu_badge"
+        android:id="@+id/badge_menu"
+        android:title="@string/cart"
+        app:actionLayout="@layout/badge_menu"
         app:showAsAction="always"/>
 
 </menu>

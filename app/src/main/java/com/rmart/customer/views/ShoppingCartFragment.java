@@ -40,7 +40,7 @@ import retrofit2.Response;
 public class ShoppingCartFragment extends BaseFragment {
 
     private RecyclerView shoppingCartListField;
-    private List<ShoppingCartResponseDetails> shoppingCartList;
+    private List<ShoppingCartResponseDetails> shopWiseCartList;
     private ShoppingCartResponseDetails selectedShoppingCartDetails;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
 
@@ -70,15 +70,46 @@ public class ShoppingCartFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.shopping_cart));
+        getShopWiseCartList();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadUIComponents(view);
+    }
 
+    private void loadUIComponents(View view) {
+        shoppingCartListField = view.findViewById(R.id.shopping_cart_list_field);
+        shoppingCartListField.setHasFixedSize(false);
+
+        shopWiseCartList = new ArrayList<>();
+
+        DividerItemDecoration divider = new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL);
+        divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(requireActivity(), R.drawable.recycler_decoration_divider_transparent)));
+        shoppingCartListField.addItemDecoration(divider);
+
+        view.findViewById(R.id.btn_proceed_to_buy_field).setOnClickListener(v -> proceedToBuySelected());
+
+        shoppingCartListField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), "", shoppingCartListField, new RecyclerTouchListener.ClickListener() {
+
+            @Override
+            public void onClick(View view, int position) {
+                selectedShoppingCartDetails = shopWiseCartList.get(position);
+                shopDetailsSelected();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+    }
+
+    private void getShopWiseCartList() {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
+            shopWiseCartList.clear();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<ShoppingCartResponse> call = customerProductsService.getShoppingCartList(clientID, 192, MyProfile.getInstance().getUserID());
@@ -90,9 +121,9 @@ public class ShoppingCartFragment extends BaseFragment {
                         ShoppingCartResponse body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                List<ShoppingCartResponseDetails> shopWiseCartList = body.getShoppingCartResponse().getShopWiseCartDataList();
-                                if (shopWiseCartList != null && !shopWiseCartList.isEmpty()) {
-                                    shoppingCartList.addAll(shopWiseCartList);
+                                List<ShoppingCartResponseDetails> lShopWiseCartList = body.getShoppingCartResponse().getShopWiseCartDataList();
+                                if (lShopWiseCartList != null && !lShopWiseCartList.isEmpty()) {
+                                    shopWiseCartList.addAll(lShopWiseCartList);
                                     setAdapter();
                                 } else {
                                     showDialog(body.getMsg());
@@ -114,35 +145,8 @@ public class ShoppingCartFragment extends BaseFragment {
                 }
             });
         } else {
-            showCloseDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
-    }
-
-    private void loadUIComponents(View view) {
-        shoppingCartListField = view.findViewById(R.id.shopping_cart_list_field);
-        shoppingCartListField.setHasFixedSize(false);
-
-        shoppingCartList = new ArrayList<>();
-
-        DividerItemDecoration divider = new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL);
-        divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(requireActivity(), R.drawable.recycler_decoration_divider_transparent)));
-        shoppingCartListField.addItemDecoration(divider);
-
-        view.findViewById(R.id.btn_proceed_to_buy_field).setOnClickListener(v -> proceedToBuySelected());
-
-        shoppingCartListField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), "", shoppingCartListField, new RecyclerTouchListener.ClickListener() {
-
-            @Override
-            public void onClick(View view, int position) {
-                selectedShoppingCartDetails = shoppingCartList.get(position);
-                shopDetailsSelected();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
     }
 
     private void shopDetailsSelected() {
@@ -153,15 +157,9 @@ public class ShoppingCartFragment extends BaseFragment {
 
     }
 
-    private void showCloseDialog(String title, String message) {
-        showDialog(title, message, pObject -> {
-            requireActivity().getSupportFragmentManager().popBackStack();
-        });
-    }
-
     private void setAdapter() {
-        if(!shoppingCartList.isEmpty()) {
-            ShoppingCartAdapter shoppingCartAdapter = new ShoppingCartAdapter(requireActivity(), shoppingCartList);
+        if(!shopWiseCartList.isEmpty()) {
+            ShoppingCartAdapter shoppingCartAdapter = new ShoppingCartAdapter(requireActivity(), shopWiseCartList);
             shoppingCartListField.setAdapter(shoppingCartAdapter);
         }
     }

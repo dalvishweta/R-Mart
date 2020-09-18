@@ -34,6 +34,9 @@ public class CustomerProductsDetailsUnitModel implements Serializable {
     @SerializedName("short_unit_measure")
     @Expose
     private String shortUnitMeasure;
+    @SerializedName("product_discount")
+    @Expose
+    private Integer productDiscount;
 
     public Integer getProductUnitId() {
         return productUnitId;
@@ -97,5 +100,13 @@ public class CustomerProductsDetailsUnitModel implements Serializable {
 
     public void setShortUnitMeasure(String shortUnitMeasure) {
         this.shortUnitMeasure = shortUnitMeasure;
+    }
+
+    public Integer getProductDiscount() {
+        return productDiscount;
+    }
+
+    public void setProductDiscount(Integer productDiscount) {
+        this.productDiscount = productDiscount;
     }
 }

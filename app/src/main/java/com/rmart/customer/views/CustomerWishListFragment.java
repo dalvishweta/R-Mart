@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.customer.OnCustomerHomeInteractionListener;
-import com.rmart.customer.adapters.ShoppingCartAdapter;
-import com.rmart.customer.models.ShoppingCartResponse;
-import com.rmart.customer.models.ShoppingCartResponseDetails;
+import com.rmart.customer.OnCustomerWishListInteractionListener;
+import com.rmart.customer.adapters.WishListAdapter;
+import com.rmart.customer.models.WishListResponseDetails;
+import com.rmart.customer.models.WishListResponseModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RecyclerTouchListener;
@@ -41,9 +41,8 @@ import retrofit2.Response;
 public class CustomerWishListFragment extends BaseFragment {
 
     private RecyclerView wishListField;
-    private List<ShoppingCartResponseDetails> wishListCart;
-    private ShoppingCartResponseDetails selectedWishListDetails;
-    private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
+    private List<WishListResponseDetails> wishListCart;
+    private OnCustomerWishListInteractionListener onCustomerWishListInteractionListener;
 
     public static CustomerWishListFragment getInstance() {
         CustomerWishListFragment customerWishListFragment = new CustomerWishListFragment();
@@ -63,8 +62,8 @@ public class CustomerWishListFragment extends BaseFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof OnCustomerHomeInteractionListener) {
-            onCustomerHomeInteractionListener = (OnCustomerHomeInteractionListener) context;
+        if (context instanceof OnCustomerWishListInteractionListener) {
+            onCustomerWishListInteractionListener = (OnCustomerWishListInteractionListener) context;
         }
     }
 
@@ -72,18 +71,13 @@ public class CustomerWishListFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.wish_list));
+        getWishListData();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadUIComponents(view);
-
-        if (Utils.isNetworkConnected(requireActivity())) {
-
-        } else {
-            showCloseDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
-        }
     }
 
     private void loadUIComponents(View view) {
@@ -102,8 +96,8 @@ public class CustomerWishListFragment extends BaseFragment {
 
             @Override
             public void onClick(View view, int position) {
-                selectedWishListDetails = wishListCart.get(position);
-                shopDetailsSelected();
+                WishListResponseDetails selectedWishListDetails = wishListCart.get(position);
+                shopDetailsSelected(selectedWishListDetails.getVendorId());
             }
 
             @Override
@@ -113,24 +107,68 @@ public class CustomerWishListFragment extends BaseFragment {
         }));
     }
 
-    private void shopDetailsSelected() {
-        onCustomerHomeInteractionListener.gotoSelectedShopDetails(selectedWishListDetails);
+    private void getWishListData() {
+        if (Utils.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            wishListCart.clear();
+            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            String clientID = "2";
+            Call<WishListResponseModel> call = customerProductsService.getShowWishListData(clientID, MyProfile.getInstance().getUserID());
+            call.enqueue(new Callback<WishListResponseModel>() {
+                @Override
+                public void onResponse(@NotNull Call<WishListResponseModel> call, @NotNull Response<WishListResponseModel> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        WishListResponseModel body = response.body();
+                        if (body != null) {
+                            if (body.getStatus().equalsIgnoreCase("success")) {
+                                List<WishListResponseDetails> shopWiseCartList = body.getWishListResponseDataResponse().getWishListResponseDetails();
+                                if (shopWiseCartList != null && !shopWiseCartList.isEmpty()) {
+                                    wishListCart.addAll(shopWiseCartList);
+                                    setAdapter(body.getMsg());
+                                } else {
+                                    showCloseDialog(null, body.getMsg());
+                                }
+                            } else {
+                                showCloseDialog(null, body.getMsg());
+                            }
+                        } else {
+                            showCloseDialog(null, getString(R.string.no_information_available));
+                        }
+                    } else {
+                        showCloseDialog(null, getString(R.string.no_information_available));
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<WishListResponseModel> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                    showCloseDialog(null, t.getMessage());
+                }
+            });
+        } else {
+            showCloseDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+        }
+    }
+
+    private void showCloseDialog(String title, String message) {
+        showDialog(title, message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+    }
+
+    private void shopDetailsSelected(int vendorId) {
+        onCustomerWishListInteractionListener.gotoWishListDetailsScreen(vendorId);
     }
 
     private void proceedToBuySelected() {
 
     }
 
-    private void showCloseDialog(String title, String message) {
-        showDialog(title, message, pObject -> {
-            requireActivity().getSupportFragmentManager().popBackStack();
-        });
-    }
-
-    private void setAdapter() {
-        if(!wishListCart.isEmpty()) {
-            ShoppingCartAdapter shoppingCartAdapter = new ShoppingCartAdapter(requireActivity(), wishListCart);
-            wishListField.setAdapter(shoppingCartAdapter);
+    private void setAdapter(String message) {
+        if (!wishListCart.isEmpty()) {
+            WishListAdapter wishListAdapter = new WishListAdapter(requireActivity(), wishListCart);
+            wishListField.setAdapter(wishListAdapter);
+        } else {
+            showCloseDialog(null, message);
         }
     }
 }

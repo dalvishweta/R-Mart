@@ -34,6 +34,10 @@ public class ProductInCartResponse extends BaseResponse implements Serializable 
         @Expose
         private Integer totalCartCount;
 
+        @SerializedName("shop_data")
+        @Expose
+        private VendorProductShopDataResponse shopDetails;
+
         public List<ProductInCartDetailsModel> getProductInCartDetailsList() {
             return productInCartDetailsList;
         }
@@ -48,6 +52,14 @@ public class ProductInCartResponse extends BaseResponse implements Serializable 
 
         public void setTotalCartCount(Integer totalCartCount) {
             this.totalCartCount = totalCartCount;
+        }
+
+        public VendorProductShopDataResponse getShopDetails() {
+            return shopDetails;
+        }
+
+        public void setShopDetails(VendorProductShopDataResponse shopDetails) {
+            this.shopDetails = shopDetails;
         }
     }
 }

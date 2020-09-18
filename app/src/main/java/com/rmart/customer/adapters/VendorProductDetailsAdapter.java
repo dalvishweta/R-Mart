@@ -15,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
+import com.rmart.baseclass.Constants;
+import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.ProductBaseModel;
-import com.rmart.customer.models.VendorProductDataResponse;
+import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.utilits.RecyclerTouchListener;
 import com.rmart.utilits.custom_views.SpacesItemDecoration;
 
@@ -61,8 +63,8 @@ public class VendorProductDetailsAdapter extends RecyclerView.Adapter<VendorProd
     public void onBindViewHolder(@NonNull ItemsViewHolder holder, int position) {
         ProductBaseModel dataObject = filteredListData.get(position);
         holder.tvProductNameField.setText(dataObject.getProductCategoryName());
-        holder.btnViewAllField.setTag(dataObject.getProductCategoryId());
-        List<VendorProductDataResponse> productsList = dataObject.getProductsList();
+        holder.btnViewAllField.setTag(position);
+        List<CustomerProductDetailsModel> productsList = dataObject.getProductsList();
         if (productsList != null && !productsList.isEmpty()) {
             VendorProductTypesAdapter vendorProductTypesAdapter = new VendorProductTypesAdapter(context, dataObject.getProductsList());
             holder.productsTypesListField.setAdapter(vendorProductTypesAdapter);
@@ -119,7 +121,7 @@ public class VendorProductDetailsAdapter extends RecyclerView.Adapter<VendorProd
         }
     }
 
-    static class ItemsViewHolder extends RecyclerView.ViewHolder {
+    public class ItemsViewHolder extends RecyclerView.ViewHolder {
 
         RecyclerView productsTypesListField;
         TextView tvProductNameField;
@@ -134,6 +136,15 @@ public class VendorProductDetailsAdapter extends RecyclerView.Adapter<VendorProd
             LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
             productsTypesListField.setLayoutManager(layoutManager);
             productsTypesListField.addItemDecoration(new SpacesItemDecoration(20));
+
+            btnViewAllField.setOnClickListener(v -> {
+                int tag = (int) v.getTag();
+                ProductBaseModel selectedProductCategoryDetails = filteredListData.get(tag);
+                ContentModel contentModel = new ContentModel();
+                contentModel.setStatus(Constants.TAG_VIEW_ALL);
+                contentModel.setValue(selectedProductCategoryDetails);
+                callBackListener.callBackReceived(contentModel);
+            });
         }
     }
 }

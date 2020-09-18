@@ -18,6 +18,12 @@ public class ProductInCartDetailsModel implements Serializable {
     @SerializedName("cart_id")
     @Expose
     private Integer cartId;
+    @SerializedName("product_id")
+    @Expose
+    private Integer productId;
+    @SerializedName("product_unit_id")
+    @Expose
+    private Integer productUnitId;
     @SerializedName("unit_number")
     @Expose
     private String unitNumber;
@@ -48,9 +54,6 @@ public class ProductInCartDetailsModel implements Serializable {
     @SerializedName("vendor_id")
     @Expose
     private Integer vendorId;
-    @SerializedName("product_id")
-    @Expose
-    private Integer productId;
 
     public Integer getCartId() {
         return cartId;
@@ -58,6 +61,22 @@ public class ProductInCartDetailsModel implements Serializable {
 
     public void setCartId(Integer cartId) {
         this.cartId = cartId;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public Integer getProductUnitId() {
+        return productUnitId;
+    }
+
+    public void setProductUnitId(Integer productUnitId) {
+        this.productUnitId = productUnitId;
     }
 
     public String getUnitNumber() {
@@ -138,14 +157,6 @@ public class ProductInCartDetailsModel implements Serializable {
 
     public void setVendorId(Integer vendorId) {
         this.vendorId = vendorId;
-    }
-
-    public Integer getProductId() {
-        return productId;
-    }
-
-    public void setProductId(Integer productId) {
-        this.productId = productId;
     }
 
     @NotNull

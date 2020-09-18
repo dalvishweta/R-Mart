@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -19,10 +20,10 @@ import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.adapters.ConfirmOrdersAdapter;
 import com.rmart.customer.models.ContentModel;
-import com.rmart.customer.models.CustomerProductsModel;
 import com.rmart.customer.models.ProductInCartDetailsModel;
 import com.rmart.customer.models.ProductInCartResponse;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
+import com.rmart.customer.models.VendorProductShopDataResponse;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -32,6 +33,7 @@ import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,6 +56,7 @@ public class ConfirmOrderFragment extends BaseFragment {
     private List<ProductInCartDetailsModel> productInCartDetailsList;
     private ConfirmOrdersAdapter confirmOrdersAdapter;
     private ProductInCartDetailsModel selectedProductInCartDetails;
+    private AppCompatButton btnProceedToBuyField;
 
     public ConfirmOrderFragment() {
         // Required empty public constructor
@@ -94,6 +97,9 @@ public class ConfirmOrderFragment extends BaseFragment {
 
         tvShopNameField = view.findViewById(R.id.tv_shop_name_field);
         tvContactNoField = view.findViewById(R.id.tv_contact_no_field);
+
+        productInCartDetailsList = new ArrayList<>();
+        btnProceedToBuyField = view.findViewById(R.id.btn_proceed_to_buy_field);
     }
 
     @Override
@@ -116,7 +122,11 @@ public class ConfirmOrderFragment extends BaseFragment {
                             if (body.getStatus().equalsIgnoreCase("success")) {
                                 ProductInCartResponse.ProductInCartDetailsDataModel productInCartDetailsDataModel = body.getProductInCartDetailsDataModel();
                                 if (productInCartDetailsDataModel != null) {
-                                    productInCartDetailsList = productInCartDetailsDataModel.getProductInCartDetailsList();
+                                    VendorProductShopDataResponse shopDetails = productInCartDetailsDataModel.getShopDetails();
+                                    if (shopDetails != null) {
+                                        updateShopDetailsUI(shopDetails);
+                                    }
+                                    productInCartDetailsList.addAll(productInCartDetailsDataModel.getProductInCartDetailsList());
                                 }
                                 setAdapter();
                             } else {
@@ -132,7 +142,8 @@ public class ConfirmOrderFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<ProductInCartResponse> call, @NotNull Throwable t) {
-
+                    progressDialog.dismiss();
+                    showDialog(t.getMessage());
                 }
             });
         } else {
@@ -140,8 +151,14 @@ public class ConfirmOrderFragment extends BaseFragment {
         }
     }
 
+    private void updateShopDetailsUI(VendorProductShopDataResponse shopDetails) {
+        tvShopNameField.setText(shopDetails.getShopName());
+        tvContactNoField.setText(shopDetails.getShopMobileNo());
+    }
+
     private void setAdapter() {
-        if (productInCartDetailsList != null && !productInCartDetailsList.isEmpty()) {
+        if (!productInCartDetailsList.isEmpty()) {
+            btnProceedToBuyField.setVisibility(View.VISIBLE);
             confirmOrdersAdapter = new ConfirmOrdersAdapter(requireActivity(), productInCartDetailsList, callBackListener);
             productsListField.setAdapter(confirmOrdersAdapter);
         } else {
@@ -257,9 +274,7 @@ public class ConfirmOrderFragment extends BaseFragment {
     }
 
     private void showCloseDialog(String title, String message) {
-        showDialog(title, message, pObject -> {
-            requireActivity().getSupportFragmentManager().popBackStack();
-        });
+        showDialog(title, message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
     private void deleteQuantityCountSelected() {

@@ -21,9 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
-import com.rmart.customer.adapters.CustomerProductsListAdapter;
-import com.rmart.customer.models.CustomerProductsModel;
+import com.rmart.customer.adapters.VendorShopsListAdapter;
 import com.rmart.customer.models.CustomerProductsResponse;
+import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -45,21 +45,21 @@ import retrofit2.Response;
 /**
  * Created by Satya Seshu on 07/09/20.
  */
-public class VendorListViewFragment extends CustomerHomeFragment {
+public class VendorShopsListFragment extends CustomerHomeFragment {
 
     private AppCompatEditText etProductsSearchField;
     private int currentPage = 0;
-    private List<CustomerProductsModel> productsList;
+    private List<CustomerProductsShopDetailsModel> productsList;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int PAGE_SIZE = 20;
     private int totalShopsCount = 0;
     private String searchShopName = "";
-    private CustomerProductsListAdapter customerProductsListAdapter;
+    private VendorShopsListAdapter vendorShopsListAdapter;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
 
-    public static VendorListViewFragment getInstance() {
-        VendorListViewFragment vendorListViewFragment = new VendorListViewFragment();
+    public static VendorShopsListFragment getInstance() {
+        VendorShopsListFragment vendorListViewFragment = new VendorShopsListFragment();
         Bundle extras = new Bundle();
         vendorListViewFragment.setArguments(extras);
         return vendorListViewFragment;
@@ -69,7 +69,7 @@ public class VendorListViewFragment extends CustomerHomeFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        LoggerInfo.printLog("Fragment", "VendorListViewFragment");
+        LoggerInfo.printLog("Fragment", "VendorShopsListFragment");
         return inflater.inflate(R.layout.fragment_vendor_list_view, container, false);
     }
 
@@ -145,8 +145,8 @@ public class VendorListViewFragment extends CustomerHomeFragment {
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(requireActivity(), R.drawable.recycler_decoration_divider)));
         productsListField.addItemDecoration(divider);
 
-        customerProductsListAdapter = new CustomerProductsListAdapter(requireActivity(), productsList, callBackListener);
-        productsListField.setAdapter(customerProductsListAdapter);
+        vendorShopsListAdapter = new VendorShopsListAdapter(requireActivity(), productsList, callBackListener);
+        productsListField.setAdapter(vendorShopsListAdapter);
 
         view.findViewById(R.id.btn_change_address_field).setOnClickListener(v -> {
             changeAddressSelected();
@@ -169,8 +169,8 @@ public class VendorListViewFragment extends CustomerHomeFragment {
     }
 
     private CallBackInterface callBackListener = pObject -> {
-        if(pObject instanceof CustomerProductsModel) {
-            onCustomerHomeInteractionListener.gotoVendorProductDetails((CustomerProductsModel) pObject);
+        if(pObject instanceof CustomerProductsShopDetailsModel) {
+            onCustomerHomeInteractionListener.gotoVendorProductDetails((CustomerProductsShopDetailsModel) pObject);
         } else if(pObject instanceof Integer) {
 
         }
@@ -183,14 +183,14 @@ public class VendorListViewFragment extends CustomerHomeFragment {
     private void performSearch() {
         String newText = Objects.requireNonNull(etProductsSearchField.getText()).toString().trim();
         if (newText.length() < 1) {
-            customerProductsListAdapter.updateItems(new ArrayList<>());
-            customerProductsListAdapter.notifyDataSetChanged();
+            vendorShopsListAdapter.updateItems(new ArrayList<>());
+            vendorShopsListAdapter.notifyDataSetChanged();
         } else if (newText.length() == 3) {
             searchShopName = newText;
             currentPage = 0;
             getShopsList();
         } else {
-            customerProductsListAdapter.getFilter().filter(newText);
+            vendorShopsListAdapter.getFilter().filter(newText);
         }
     }
 
@@ -205,7 +205,7 @@ public class VendorListViewFragment extends CustomerHomeFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName).enqueue(new Callback<CustomerProductsResponse>() {
+            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, MyProfile.getInstance().getUserID()).enqueue(new Callback<CustomerProductsResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<CustomerProductsResponse> call, @NotNull Response<CustomerProductsResponse> response) {
                     progressDialog.dismiss();
@@ -214,7 +214,7 @@ public class VendorListViewFragment extends CustomerHomeFragment {
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase("success")) {
                                 totalShopsCount = data.getCustomerShopsList().getShopTotalCount();
-                                List<CustomerProductsModel> customerProductsList = data.getCustomerShopsList().getCustomerShopsList();
+                                List<CustomerProductsShopDetailsModel> customerProductsList = data.getCustomerShopsList().getCustomerShopsList();
                                 updateAdapter(customerProductsList);
                             }
                         }
@@ -229,10 +229,10 @@ public class VendorListViewFragment extends CustomerHomeFragment {
         }
     }
 
-    private void updateAdapter(List<CustomerProductsModel> customerProductsList) {
+    private void updateAdapter(List<CustomerProductsShopDetailsModel> customerProductsList) {
         productsList.addAll(customerProductsList);
-        customerProductsListAdapter.updateItems(customerProductsList);
-        customerProductsListAdapter.notifyDataSetChanged();
+        vendorShopsListAdapter.updateItems(customerProductsList);
+        vendorShopsListAdapter.notifyDataSetChanged();
         if (productsList.size() >= totalShopsCount) {
             isLastPage = true;
         } else {

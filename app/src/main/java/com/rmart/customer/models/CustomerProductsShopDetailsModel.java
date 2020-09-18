@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by Satya Seshu on 08/09/20.
  */
-public class CustomerProductsModel implements Serializable {
+public class CustomerProductsShopDetailsModel implements Serializable {
 
     @SerializedName("shop_mobile_no")
     @Expose
@@ -40,6 +40,9 @@ public class CustomerProductsModel implements Serializable {
     @SerializedName("client_id")
     @Expose
     private Integer clientId;
+    @SerializedName("shop_wishlist_status")
+    @Expose
+    private Integer shopWishListStatus;
 
     public String getShopMobileNo() {
         return shopMobileNo;
@@ -119,5 +122,13 @@ public class CustomerProductsModel implements Serializable {
 
     public void setClientId(Integer clientId) {
         this.clientId = clientId;
+    }
+
+    public Integer getShopWishListStatus() {
+        return shopWishListStatus;
+    }
+
+    public void setShopWishListStatus(Integer shopWishListStatus) {
+        this.shopWishListStatus = shopWishListStatus;
     }
 }

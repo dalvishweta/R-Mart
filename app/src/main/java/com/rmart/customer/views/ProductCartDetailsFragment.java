@@ -18,7 +18,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -29,10 +28,10 @@ import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.CustomSpinnerAdapter;
 import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
-import com.rmart.customer.models.CustomerProductsModel;
+import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductDetailsDescModel;
 import com.rmart.customer.models.ProductDetailsDescResponse;
-import com.rmart.customer.models.VendorProductDataResponse;
+import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
@@ -54,12 +53,12 @@ import retrofit2.Response;
  */
 public class ProductCartDetailsFragment extends BaseFragment {
 
-    private VendorProductDataResponse vendorProductDataDetails;
-    private CustomerProductsModel vendorShopDetails;
+    private CustomerProductDetailsModel vendorProductDataDetails;
+    private CustomerProductsShopDetailsModel vendorShopDetails;
     private ProductDetailsDescModel productDetailsDescModel;
 
     private ImageView ivFavouriteImageField;
-    private TextView tvDiscountDetailsField;
+    private TextView tvProductDiscountField;
     private NetworkImageView ivProductImageField;
     private ImageView ivLeftArrowImageField;
     private ImageView ivRightArrowImageField;
@@ -69,7 +68,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private TextView tvNoOfQuantityField;
     private TextView tvProductDescField;
     private LinearLayout viewMoreLayoutField;
-    //private ImageLoader imageLoader;
     private TextView tvQuantityField;
     private int noOfQuantity = 1;
     private boolean isViewMoreSelected = false;
@@ -82,7 +80,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private List<String> productsImagesList;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
 
-    static ProductCartDetailsFragment getInstance(VendorProductDataResponse vendorProductDataDetails, CustomerProductsModel vendorShopDetails) {
+    static ProductCartDetailsFragment getInstance(CustomerProductDetailsModel vendorProductDataDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
         ProductCartDetailsFragment productCartDetailsFragment = new ProductCartDetailsFragment();
         Bundle extras = new Bundle();
         extras.putSerializable("ProductCartDetails", vendorProductDataDetails);
@@ -96,8 +94,8 @@ public class ProductCartDetailsFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle extras = getArguments();
         if (extras != null) {
-            vendorProductDataDetails = (VendorProductDataResponse) extras.getSerializable("ProductCartDetails");
-            vendorShopDetails = (CustomerProductsModel) extras.getSerializable("VendorShopDetails");
+            vendorProductDataDetails = (CustomerProductDetailsModel) extras.getSerializable("ProductCartDetails");
+            vendorShopDetails = (CustomerProductsShopDetailsModel) extras.getSerializable("VendorShopDetails");
         }
     }
 
@@ -168,7 +166,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
     private void loadUIComponents(View view) {
         ivFavouriteImageField = view.findViewById(R.id.iv_favourite_image_field);
-        tvDiscountDetailsField = view.findViewById(R.id.tv_discount_percent_field);
+        tvProductDiscountField = view.findViewById(R.id.tv_product_discount_field);
         ivProductImageField = view.findViewById(R.id.iv_product_image_field);
         ivLeftArrowImageField = view.findViewById(R.id.iv_left_arrow_field);
         ivRightArrowImageField = view.findViewById(R.id.iv_right_arrow_field);
@@ -203,28 +201,16 @@ public class ProductCartDetailsFragment extends BaseFragment {
             }
         });
 
-        viewMoreLayoutField.setOnClickListener(v -> {
-            viewMoreSelected();
-        });
+        viewMoreLayoutField.setOnClickListener(v -> viewMoreSelected());
 
-        ivLeftArrowImageField.setOnClickListener(v -> {
-            updateLeftImageSelected();
-        });
-        ivRightArrowImageField.setOnClickListener(v -> {
-            updateRightImageSelected();
-        });
+        ivLeftArrowImageField.setOnClickListener(v -> updateLeftImageSelected());
+        ivRightArrowImageField.setOnClickListener(v -> updateRightImageSelected());
 
-        btnAddToCartField.setOnClickListener(v -> {
-            addToCartSelected();
-        });
+        btnAddToCartField.setOnClickListener(v -> addToCartSelected());
 
-        btnBuyNowField.setOnClickListener(v -> {
-            buyNowSelected();
-        });
+        btnBuyNowField.setOnClickListener(v -> buyNowSelected());
 
-        ivFavouriteImageField.setOnClickListener(v -> {
-            favouriteSelected();
-        });
+        ivFavouriteImageField.setOnClickListener(v -> favouriteSelected());
 
         updateQuantityDetails();
     }
@@ -334,9 +320,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     }
 
     private void showCloseDialog(String title, String message) {
-        showDialog(title, message, pObject -> {
-            requireActivity().getSupportFragmentManager().popBackStack();
-        });
+        showDialog(title, message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
     private void addToCartSelected() {
@@ -357,7 +341,8 @@ public class ProductCartDetailsFragment extends BaseFragment {
                                 AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = body.getAddToCartDataResponse();
                                 if (addToCartDataResponse != null) {
                                     Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
-                                    showDialog(getString(R.string.added_to_cart));
+                                    MyProfile.getInstance().setCartCount(totalCartCount);
+                                    showDialog(body.getMsg());
                                 } else {
                                     showDialog(getString(R.string.no_information_available));
                                 }

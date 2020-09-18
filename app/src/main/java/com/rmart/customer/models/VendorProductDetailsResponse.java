@@ -13,38 +13,38 @@ public class VendorProductDetailsResponse extends BaseResponse {
 
     @SerializedName("data")
     @Expose
-    private CustomerProductDetailsModel customerProductDetailsModel;
+    private VendorProductDataResponse vendorProductDataResponse;
 
-    public CustomerProductDetailsModel getCustomerProductDetailsModel() {
-        return customerProductDetailsModel;
+    public VendorProductDataResponse getVendorProductDataResponse() {
+        return vendorProductDataResponse;
     }
 
-    public void setCustomerProductDetailsModel(CustomerProductDetailsModel customerProductDetailsModel) {
-        this.customerProductDetailsModel = customerProductDetailsModel;
+    public void setVendorProductDataResponse(VendorProductDataResponse vendorProductDataResponse) {
+        this.vendorProductDataResponse = vendorProductDataResponse;
     }
 
-    public static class CustomerProductDetailsModel {
+    public static class VendorProductDataResponse {
         @SerializedName("product_data")
         @Expose
-        private List<VendorProductDataResponse> productData = null;
+        private List<CustomerProductDetailsModel> productsListData = null;
         @SerializedName("shop_data")
         @Expose
-        private VendorProductShopDataResponse shopData;
+        private VendorProductShopDataResponse vendorShopDetails;
 
-        public List<VendorProductDataResponse> getProductData() {
-            return productData;
+        public List<CustomerProductDetailsModel> getProductsListData() {
+            return productsListData;
         }
 
-        public void setProductData(List<VendorProductDataResponse> productData) {
-            this.productData = productData;
+        public void setProductsListData(List<CustomerProductDetailsModel> productsListData) {
+            this.productsListData = productsListData;
         }
 
-        public VendorProductShopDataResponse getShopData() {
-            return shopData;
+        public VendorProductShopDataResponse getVendorShopDetails() {
+            return vendorShopDetails;
         }
 
-        public void setShopData(VendorProductShopDataResponse shopData) {
-            this.shopData = shopData;
+        public void setVendorShopDetails(VendorProductShopDataResponse vendorShopDetails) {
+            this.vendorShopDetails = vendorShopDetails;
         }
     }
 }

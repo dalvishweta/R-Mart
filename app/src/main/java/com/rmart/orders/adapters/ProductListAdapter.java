@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.inventory.views.viewholders.ProductItemViewHolder;
-import com.rmart.orders.models.ProductObject;
 import com.rmart.utilits.pojos.orders.Product;
 
 import java.util.ArrayList;
@@ -37,7 +36,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
         holder.price.setText(productObject.getPrice());
         holder.productName.setText(productObject.getProductName());
         holder.quantity.setText(productObject.getQuantity());
-        holder.units.setText(productObject.getUnit()+" " +productObject.getUnitMeasure());
+        String unitsDetails = String.format("%s %s", productObject.getUnit(), productObject.getUnitMeasure());
+        holder.units.setText(unitsDetails);
     }
 
     @Override

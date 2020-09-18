@@ -2,14 +2,12 @@ package com.rmart.customer.adapters;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,7 +19,7 @@ import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.views.ProgressBarCircular;
-import com.rmart.customer.models.CustomerProductsModel;
+import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.utilits.HttpsTrustManager;
 
 import java.util.ArrayList;
@@ -30,16 +28,16 @@ import java.util.List;
 /**
  * Created by Satya Seshu on 07/09/20.
  */
-public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerProductsListAdapter.ViewHolder> implements Filterable {
+public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsListAdapter.ViewHolder> implements Filterable {
 
-    private List<CustomerProductsModel> productList;
+    private List<CustomerProductsShopDetailsModel> productList;
     private LayoutInflater layoutInflater;
-    private List<CustomerProductsModel> filteredListData;
+    private List<CustomerProductsShopDetailsModel> filteredListData;
     private MyFilter myFilter;
     private ImageLoader imageLoader;
     private CallBackInterface callBackListener;
 
-    public CustomerProductsListAdapter(Context context, List<CustomerProductsModel> productList, CallBackInterface callBackListener) {
+    public VendorShopsListAdapter(Context context, List<CustomerProductsShopDetailsModel> productList, CallBackInterface callBackListener) {
         this.productList = productList;
         layoutInflater = LayoutInflater.from(context);
         filteredListData = new ArrayList<>();
@@ -48,7 +46,7 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
         this.callBackListener = callBackListener;
     }
 
-    public void updateItems(List<CustomerProductsModel> listData) {
+    public void updateItems(List<CustomerProductsShopDetailsModel> listData) {
         this.productList = listData;
         this.filteredListData.clear();
         this.filteredListData.addAll(productList);
@@ -57,13 +55,13 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.customer_products_list_items, parent, false);
+        View view = layoutInflater.inflate(R.layout.vendor_shops_list_items, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CustomerProductsModel customerProductsModel = productList.get(position);
+        CustomerProductsShopDetailsModel customerProductsModel = productList.get(position);
         holder.tvShopNameField.setText(customerProductsModel.getShopName());
         holder.tvPhoneNoField.setText(customerProductsModel.getShopMobileNo());
         holder.tvViewAddressField.setText(customerProductsModel.getShopAddress());
@@ -80,7 +78,6 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
         holder.ivShopImageField.setTag(position);
         holder.ivMessageField.setTag(position);
         holder.ivCallIconField.setTag(position);
-        //holder.itemView.setTag(position);
     }
 
     @Override
@@ -125,7 +122,7 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
             });*/
             ivShopImageField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
-                CustomerProductsModel selectedDetails = productList.get(tag);
+                CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);
                 callBackListener.callBackReceived(selectedDetails);
             });
         }
@@ -138,7 +135,7 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
             FilterResults results = new FilterResults();
             if (constraint != null && constraint.length() > 0) {
                 filteredListData.clear();
-                for (CustomerProductsModel customerProductsModel : productList) {
+                for (CustomerProductsShopDetailsModel customerProductsModel : productList) {
                     if (customerProductsModel.getShopName().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         filteredListData.add(customerProductsModel);
                     }
@@ -151,7 +148,7 @@ public class CustomerProductsListAdapter extends RecyclerView.Adapter<CustomerPr
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            filteredListData = (List<CustomerProductsModel>) results.values;
+            filteredListData = (List<CustomerProductsShopDetailsModel>) results.values;
             notifyDataSetChanged();
         }
     }

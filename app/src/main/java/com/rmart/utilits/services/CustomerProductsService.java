@@ -7,6 +7,8 @@ import com.rmart.customer.models.ProductInCartResponse;
 import com.rmart.customer.models.ShoppingCartResponse;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.customer.models.CustomerProductsResponse;
+import com.rmart.customer.models.ShopWiseWishListResponseModel;
+import com.rmart.customer.models.WishListResponseModel;
 import com.rmart.utilits.pojos.BaseResponse;
 
 import retrofit2.Call;
@@ -21,29 +23,31 @@ public interface CustomerProductsService {
 
     @POST(BuildConfig.CUSTOMER_SHOPS_LIST)
     @FormUrlEncoded
-    Call<CustomerProductsResponse> getCustomerShopsList(@Field("client_id") String clientId,
-                                                        @Field("start_page") int currentPage, @Field("search_param") String searchShopName);
+    Call<CustomerProductsResponse> getCustomerShopsList(@Field("client_id") String clientId, @Field("start_page") int currentPage,
+                                                        @Field("search_param") String searchShopName, @Field("customer_id") String customerId);
 
-
-    @POST(BuildConfig.VENDOR_PRODUCTS_LIST)
-    @FormUrlEncoded
-    Call<VendorProductDetailsResponse> getVendorShopDetails(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("shop_id") int shopId);
 
     @POST(BuildConfig.VENDOR_PRODUCTS_LIST)
     @FormUrlEncoded
     Call<VendorProductDetailsResponse> getVendorShopDetails(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("shop_id") int shopId,
-                                                            @Field("category_id") int categoryId, @Field("start_page") int currentPage);
+                                                            @Field("customer_id") String customerId);
 
     @POST(BuildConfig.VENDOR_PRODUCTS_LIST)
     @FormUrlEncoded
     Call<VendorProductDetailsResponse> getVendorShopDetails(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("shop_id") int shopId,
-                                                            @Field("start_page") int currentPage, @Field("product_search_by_name") String searchShopName);
+                                                            @Field("category_id") int categoryId, @Field("start_page") int currentPage, @Field("customer_id") String customerId);
+
+    @POST(BuildConfig.VENDOR_PRODUCTS_LIST)
+    @FormUrlEncoded
+    Call<VendorProductDetailsResponse> getVendorShopDetails(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("shop_id") int shopId,
+                                                            @Field("start_page") int currentPage, @Field("product_search_by_name") String searchShopName,
+                                                            @Field("customer_id") String customerId);
 
     @POST(BuildConfig.VENDOR_PRODUCTS_LIST)
     @FormUrlEncoded
     Call<VendorProductDetailsResponse> getVendorShopDetails(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("shop_id") int shopId,
                                                             @Field("category_id") int categoryId, @Field("start_page") int currentPage,
-                                                            @Field("product_search_by_name") String searchShopName);
+                                                            @Field("product_search_by_name") String searchShopName, @Field("customer_id") String customerId);
 
     @POST(BuildConfig.VENDOR_PRODUCT_DETAILS)
     @FormUrlEncoded
@@ -74,12 +78,19 @@ public interface CustomerProductsService {
 
     @POST(BuildConfig.VENDOR_ADD_TO_CART)
     @FormUrlEncoded
-    Call<AddToCartResponseDetails> removeFromCart(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
-                                             @Field("product_unit_id") int productUnitId, @Field("product_quantity") int productQuantity);
-
-    @POST(BuildConfig.VENDOR_ADD_TO_CART)
-    @FormUrlEncoded
     Call<AddToCartResponseDetails> getWishListDetails(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
                                                   @Field("product_unit_id") int productUnitId, @Field("product_quantity") int productQuantity);
+
+    @POST(BuildConfig.VENDORS_SHOW_SHOP_WISE_CART)
+    @FormUrlEncoded
+    Call<ShopWiseWishListResponseModel> getShowShopWiseWishListData(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId);
+
+    @POST(BuildConfig.VENDOR_REMOVE_FROM_CART)
+    @FormUrlEncoded
+    Call<BaseResponse> removeFromCart(@Field("client_id") String clientId, @Field("cart_id") int cartId);
+
+    @POST(BuildConfig.VENDORS_SHOW_WISH_LIST_CART)
+    @FormUrlEncoded
+    Call<WishListResponseModel> getShowWishListData(@Field("client_id") String clientId, @Field("customer_id") String customerId);
 
 }

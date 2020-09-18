@@ -109,6 +109,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                     try {
                                         ProfileResponse profileResponse = data.getLoginData();
                                         MyProfile.setInstance(profileResponse);
+                                        MyProfile.getInstance().setCartCount(profileResponse.getTotalCartCount());
                                         if (MyProfile.getInstance().getPrimaryAddressId() == null) {
                                             mListener.goToProfileActivity();
                                         } else {

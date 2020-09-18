@@ -21,6 +21,7 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_margin="20dp"
+        android:visibility="gone"
         android:background="@drawable/add_to_cart_background_bg"
         android:text="@string/proceed_to_buy"
         android:textAllCaps="false"

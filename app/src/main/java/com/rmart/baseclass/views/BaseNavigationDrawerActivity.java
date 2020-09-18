@@ -5,8 +5,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,6 +48,8 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     private AppCompatTextView nameField;
     private AppCompatTextView mobileField;
     private AppCompatTextView emailIdField;
+    private TextView tvCartCountField;
+    private RelativeLayout badgeCountLayoutField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +107,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         ivProfileImageField = findViewById(R.id.iv_user_profile_image);
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
-
             nameField = findViewById(R.id.name);
             mobileField = findViewById(R.id.mobile);
             emailIdField = findViewById(R.id.email_id_field);
@@ -132,6 +135,12 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 Bitmap newBitmap = CommonUtils.getCircularBitmap(bitmap);
                 ivProfileImageField.setImageBitmap(newBitmap);
             });
+
+            myProfile.getCartCount().observe(this, count -> {
+                if (tvCartCountField != null) {
+                    tvCartCountField.setText(String.valueOf(count));
+                }
+            });
         }
         TextView tvAppVersionField = findViewById(R.id.tv_version_field);
         try {
@@ -143,8 +152,32 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.badge_menu_drawer, menu);
+
+        final MenuItem menuItem = menu.findItem(R.id.badge_menu);
+
+        View actionView = menuItem.getActionView();
+        tvCartCountField = actionView.findViewById(R.id.tv_cart_count_field);
+
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            Integer cartCount = myProfile.getCartCount().getValue();
+            tvCartCountField.setText(String.valueOf(cartCount));
+        }
+
+        badgeCountLayoutField = actionView.findViewById(R.id.cart_count_layout_field);
+        showBadge(true);
+        actionView.setOnClickListener(v -> {
+            // navigate
+        });
+
+        return true;
+    }
+
     public void getToActivity(int id, boolean isSameActivity) {
-        if(!isSameActivity) {
+        if (!isSameActivity) {
             Intent intent;
             switch (id) {
                 case R.id.retailer_orders:

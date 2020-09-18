@@ -152,7 +152,8 @@ public class BaseFragment extends Fragment {
     protected void showDialog(String title, String msg, CallBackInterface  callBackInterface) {
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
-            builder.setTitle(title);
+            if(TextUtils.isEmpty(title)) builder.setTitle(getString(R.string.message));
+            else builder.setTitle(title);
             builder.setCancelable(false);
             builder.setMessage(msg);
             builder.setNegativeButton("close", (dialogInterface, i) -> callBackInterface.callBackReceived(Constants.TAG_SUCCESS));

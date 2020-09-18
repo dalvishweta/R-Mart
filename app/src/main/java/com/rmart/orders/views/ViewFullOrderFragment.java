@@ -199,7 +199,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     }
 
     private void updateOrderStatus(String newOrderStatus) {
-        progressDialog.show();
+        /*progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
         orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID() ,newOrderStatus).enqueue(new Callback<UpdatedOrderStatus>() {
             @Override
@@ -223,7 +223,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
             public void onFailure(Call<UpdatedOrderStatus> call, Throwable t) {
                 progressDialog.dismiss();
             }
-        });
+        });*/
     }
 
     /*void updateToCancel() {

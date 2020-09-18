@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Satya Seshu on 10/09/20.
  */
-public class VendorProductDataResponse extends BaseResponse {
+public class CustomerProductDetailsModel extends BaseResponse {
 
     @SerializedName("product_name")
     @Expose

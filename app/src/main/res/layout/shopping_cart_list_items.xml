@@ -36,6 +36,7 @@
         android:layout_below="@id/tv_contact_no_field"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
+        android:visibility="gone"
         android:layout_marginTop="20dp"
         android:layout_toStartOf="@id/products_count_layout_field"
         android:gravity="center_vertical"

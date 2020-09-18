@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -22,14 +21,17 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
+import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.VendorProductDetailsAdapter;
-import com.rmart.customer.models.CustomerProductsModel;
+import com.rmart.customer.models.ContentModel;
+import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
-import com.rmart.customer.models.VendorProductDataResponse;
+import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.customer.models.VendorProductShopDataResponse;
+import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -48,34 +50,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link VendorProductDetailsFragment#getInstance} factory method to
- * create an instance of this fragment.
- */
 public class VendorProductDetailsFragment extends BaseFragment {
 
     private static final String ARG_PARAM1 = "param1";
-
-    // TODO: Rename and change types of parameters
 
     public VendorProductDetailsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @return A new instance of fragment VendorDetailsFragment.
-     */
-
-    private RecyclerView productsListField;
     private AppCompatEditText etProductsSearchField;
     private int currentPage = 0;
     private String searchProductName = "";
-    private CustomerProductsModel customerProductsDetails;
+    private CustomerProductsShopDetailsModel productsShopDetailsModel;
     private int productCategoryId = -1;
     private TextView tvShopNameField;
     private TextView tvPhoneNoField;
@@ -84,11 +70,12 @@ public class VendorProductDetailsFragment extends BaseFragment {
     private VendorProductDetailsAdapter vendorProductDetailsAdapter;
     private List<ProductBaseModel> vendorProductsList;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
+    private TextView tvProductDiscountField;
 
-    public static VendorProductDetailsFragment getInstance(CustomerProductsModel customerProductsModel) {
+    public static VendorProductDetailsFragment getInstance(CustomerProductsShopDetailsModel productsShopDetailsModel) {
         VendorProductDetailsFragment fragment = new VendorProductDetailsFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, customerProductsModel);
+        args.putSerializable(ARG_PARAM1, productsShopDetailsModel);
         fragment.setArguments(args);
         return fragment;
     }
@@ -97,7 +84,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            customerProductsDetails = (CustomerProductsModel) getArguments().getSerializable(ARG_PARAM1);
+            productsShopDetailsModel = (CustomerProductsShopDetailsModel) getArguments().getSerializable(ARG_PARAM1);
         }
     }
 
@@ -126,9 +113,10 @@ public class VendorProductDetailsFragment extends BaseFragment {
     }
 
     private void loadUIComponents(View view) {
-        productsListField = view.findViewById(R.id.products_list_field);
+        RecyclerView productsListField = view.findViewById(R.id.products_list_field);
         productsListField.setHasFixedSize(false);
 
+        tvProductDiscountField = view.findViewById(R.id.tv_product_discount_field);
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
         ImageView ivSearchField = view.findViewById(R.id.iv_search_field);
         etProductsSearchField.addTextChangedListener(new TextWatcher() {
@@ -162,27 +150,40 @@ public class VendorProductDetailsFragment extends BaseFragment {
     }
 
     private CallBackInterface callBackListener = pObject -> {
-        if(pObject instanceof VendorProductDataResponse) {
-            onCustomerHomeInteractionListener.gotoProductDescDetails((VendorProductDataResponse) pObject, customerProductsDetails);
+        if (pObject instanceof CustomerProductDetailsModel) {
+            onCustomerHomeInteractionListener.gotoProductDescDetails((CustomerProductDetailsModel) pObject, productsShopDetailsModel);
+        } else if (pObject instanceof ContentModel) {
+            ContentModel contentModel = (ContentModel) pObject;
+            String status = contentModel.getStatus();
+            if (status.equalsIgnoreCase(Constants.TAG_VIEW_ALL)) {
+                ProductBaseModel selectedProductCategoryDetails = (ProductBaseModel) contentModel.getValue();
+                currentPage = 0;
+                productCategoryId = selectedProductCategoryDetails.getProductCategoryId();
+                onCustomerHomeInteractionListener.gotoVendorSameProductListScreen(selectedProductCategoryDetails, productsShopDetailsModel);
+            }
         }
     };
 
     private void getVendorDetails() {
         if (Utils.isNetworkConnected(requireActivity())) {
+            vendorProductsList.clear();
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
+            String customerId = MyProfile.getInstance().getUserID();
             Call<VendorProductDetailsResponse> call;
             if (TextUtils.isEmpty(searchProductName) && currentPage == 0 && productCategoryId == -1) {
-                call = customerProductsService.getVendorShopDetails(clientID, customerProductsDetails.getVendorId(), customerProductsDetails.getShopId());
+                call = customerProductsService.getVendorShopDetails(clientID, productsShopDetailsModel.getVendorId(),
+                        productsShopDetailsModel.getShopId(), customerId);
             } else if (TextUtils.isEmpty(searchProductName) && currentPage != 0 && productCategoryId != -1) {
-                call = customerProductsService.getVendorShopDetails(clientID, customerProductsDetails.getVendorId(), customerProductsDetails.getShopId(), productCategoryId, productCategoryId);
+                call = customerProductsService.getVendorShopDetails(clientID, productsShopDetailsModel.getVendorId(),
+                        productsShopDetailsModel.getShopId(), productCategoryId, currentPage, searchProductName, customerId);
             } else if (!TextUtils.isEmpty(searchProductName) && currentPage != 0 && productCategoryId == -1) {
-                call = customerProductsService.getVendorShopDetails(clientID, customerProductsDetails.getVendorId(), customerProductsDetails.getShopId(),
-                        currentPage, searchProductName);
+                call = customerProductsService.getVendorShopDetails(clientID, productsShopDetailsModel.getVendorId(), productsShopDetailsModel.getShopId(),
+                        currentPage, searchProductName, customerId);
             } else {
-                call = customerProductsService.getVendorShopDetails(clientID, customerProductsDetails.getVendorId(), customerProductsDetails.getShopId(), productCategoryId,
-                        currentPage, searchProductName);
+                call = customerProductsService.getVendorShopDetails(clientID, productsShopDetailsModel.getVendorId(), productsShopDetailsModel.getShopId(), productCategoryId,
+                        currentPage, searchProductName, customerId);
             }
             call.enqueue(new Callback<VendorProductDetailsResponse>() {
                 @Override
@@ -192,8 +193,8 @@ public class VendorProductDetailsFragment extends BaseFragment {
                         VendorProductDetailsResponse body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                List<VendorProductDataResponse> productDataList = body.getCustomerProductDetailsModel().getProductData();
-                                VendorProductShopDataResponse shopDataResponse = body.getCustomerProductDetailsModel().getShopData();
+                                List<CustomerProductDetailsModel> productDataList = body.getVendorProductDataResponse().getProductsListData();
+                                VendorProductShopDataResponse shopDataResponse = body.getVendorProductDataResponse().getVendorShopDetails();
                                 updateShopDetailsUI(shopDataResponse);
                                 updateAdapter(productDataList);
                             } else {
@@ -217,12 +218,12 @@ public class VendorProductDetailsFragment extends BaseFragment {
         }
     }
 
-    private void updateAdapter(List<VendorProductDataResponse> productDataList) {
+    private void updateAdapter(List<CustomerProductDetailsModel> productDataList) {
         if(productDataList != null && !productDataList.isEmpty()) {
-            LinkedHashMap<ProductBaseModel, List<VendorProductDataResponse>> linkedMapDetails = groupDataIntoHashMap(productDataList);
-            for (Map.Entry<ProductBaseModel, List<VendorProductDataResponse>> entry : linkedMapDetails.entrySet()) {
+            LinkedHashMap<ProductBaseModel, List<CustomerProductDetailsModel>> linkedMapDetails = groupDataIntoHashMap(productDataList);
+            for (Map.Entry<ProductBaseModel, List<CustomerProductDetailsModel>> entry : linkedMapDetails.entrySet()) {
                 ProductBaseModel productBaseModel = entry.getKey();
-                List<VendorProductDataResponse> listData = entry.getValue();
+                List<CustomerProductDetailsModel> listData = entry.getValue();
                 if(listData != null && !listData.isEmpty()) {
                     productBaseModel.setProductsList(listData);
                     vendorProductsList.add(productBaseModel);
@@ -233,19 +234,19 @@ public class VendorProductDetailsFragment extends BaseFragment {
         vendorProductDetailsAdapter.notifyDataSetChanged();
     }
 
-    private LinkedHashMap<ProductBaseModel, List<VendorProductDataResponse>> groupDataIntoHashMap(List<VendorProductDataResponse> productDataList) {
-        LinkedHashMap<ProductBaseModel, List<VendorProductDataResponse>> groupedHashMap = new LinkedHashMap<>();
-        for(VendorProductDataResponse element : productDataList) {
+    private LinkedHashMap<ProductBaseModel, List<CustomerProductDetailsModel>> groupDataIntoHashMap(List<CustomerProductDetailsModel> productDataList) {
+        LinkedHashMap<ProductBaseModel, List<CustomerProductDetailsModel>> groupedHashMap = new LinkedHashMap<>();
+        for(CustomerProductDetailsModel element : productDataList) {
             ProductBaseModel productBaseModel = new ProductBaseModel();
             productBaseModel.setProductCategoryName(element.getParentCategoryName());
             productBaseModel.setProductCategoryId(element.getParentCategoryId());
             if(groupedHashMap.containsKey(productBaseModel)) {
-                List<VendorProductDataResponse> listData = groupedHashMap.get(productBaseModel);
+                List<CustomerProductDetailsModel> listData = groupedHashMap.get(productBaseModel);
                 if(listData != null) {
                     listData.add(element);
                 }
             } else {
-                List<VendorProductDataResponse> listData = new ArrayList<>();
+                List<CustomerProductDetailsModel> listData = new ArrayList<>();
                 listData.add(element);
                 groupedHashMap.put(productBaseModel, listData);
             }

@@ -6,7 +6,7 @@
     android:minHeight="200dp">
 
     <TextView
-        android:id="@+id/tv_discount_percent_field"
+        android:id="@+id/tv_product_discount_field"
         style="@style/text_style_medium_normal"
         android:layout_width="30dp"
         android:layout_height="40dp"
@@ -14,7 +14,6 @@
         android:gravity="center"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
-        android:text="20% \n Off"
         android:textColor="@color/green" />
 
     <com.android.volley.toolbox.NetworkImageView
@@ -85,7 +84,7 @@
         android:textColor="@color/white" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_delete_product_field"
+        android:id="@+id/btn_remove_product_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_add_to_cart_field"
