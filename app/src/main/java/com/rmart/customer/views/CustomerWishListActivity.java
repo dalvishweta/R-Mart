@@ -13,7 +13,6 @@ import com.rmart.customer.OnCustomerWishListInteractionListener;
 /**
  * Created by Satya Seshu on 17/09/20.
  */
-public class CustomerWishListActivity extends BaseNavigationDrawerActivity {
 public class CustomerWishListActivity extends BaseNavigationDrawerActivity implements OnCustomerWishListInteractionListener {
 
     @Override

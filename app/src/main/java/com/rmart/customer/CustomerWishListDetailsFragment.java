@@ -264,8 +264,6 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
         if (index > -1) {
             wishListCart.remove(index);
             customerWishListDetailsAdapter.notifyItemRemoved(index);
-        if(!wishListCart.isEmpty()) {
-            CustomerWishListDetailsAdapter adapter = new CustomerWishListDetailsAdapter(requireActivity(), wishListCart);
         }
     }
 }
