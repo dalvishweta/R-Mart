@@ -16,9 +16,6 @@ import com.rmart.utilits.pojos.orders.StateOfOrders;
 
 
 public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOrdersInteractionListener {
-
-    // MyOrdersViewModel myOrdersViewModel;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

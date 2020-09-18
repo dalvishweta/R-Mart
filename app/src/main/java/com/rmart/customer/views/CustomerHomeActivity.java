@@ -22,7 +22,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
 
     @Override
     public void onClick(View view) {
-        if (view.getId() != R.id.shopping) {
+        if (view.getId() != R.id.customer_shopping) {
             getToActivity(view.getId(), false);
         } else {
             getToActivity(view.getId(), true);

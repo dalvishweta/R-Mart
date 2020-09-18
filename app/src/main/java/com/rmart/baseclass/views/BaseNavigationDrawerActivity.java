@@ -1,8 +1,6 @@
 package com.rmart.baseclass.views;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -36,8 +34,6 @@ import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.Utils;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -73,30 +69,37 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
     private void loadUIComponents() {
         navigationView = findViewById(R.id.navigation_view);
-
-        switch (MyProfile.getInstance().getRoleID()) {
-            case Utils.CUSTOMER_ID:
-                /*mListener.goToCustomerHomeActivity();
-                SharedPreferences sharedPref = Objects.requireNonNull(requireActivity()).getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(getString(R.string.uid), Utils.CUSTOMER_ID);
-                editor.apply();*/
-                break;
-            case Utils.RETAILER_ID:
-                // mListener.goToHomeActivity();
-                break;
-            case Utils.DELIVERY_ID:
-                break;
-        }
-
         findViewById(R.id.update_profile).setOnClickListener(this);
         findViewById(R.id.retailer_orders).setOnClickListener(this);
         findViewById(R.id.retailer_inventory).setOnClickListener(this);
-        findViewById(R.id.shopping).setOnClickListener(this);
+        findViewById(R.id.customer_shopping).setOnClickListener(this);
         findViewById(R.id.customer_orders).setOnClickListener(this);
         findViewById(R.id.change_password).setOnClickListener(this);
         findViewById(R.id.logout).setOnClickListener(this);
         findViewById(R.id.my_wish_list).setOnClickListener(this);
+        switch (MyProfile.getInstance().getRoleID()) {
+            case Utils.CUSTOMER_ID:
+                findViewById(R.id.retailer_orders).setVisibility(View.GONE);
+                findViewById(R.id.retailer_inventory).setVisibility(View.GONE);
+                findViewById(R.id.retailer_orders).setVisibility(View.GONE);
+                break;
+
+            case Utils.RETAILER_ID:
+                findViewById(R.id.customer_shopping).setVisibility(View.GONE);
+                findViewById(R.id.customer_orders).setVisibility(View.GONE);
+                findViewById(R.id.my_wish_list).setVisibility(View.GONE);
+                findViewById(R.id.my_wallet).setVisibility(View.GONE);
+                break;
+            case Utils.DELIVERY_ID:
+                findViewById(R.id.retailer_inventory).setVisibility(View.GONE);
+                findViewById(R.id.retailer_orders).setVisibility(View.GONE);
+                findViewById(R.id.customer_shopping).setVisibility(View.GONE);
+                findViewById(R.id.customer_orders).setVisibility(View.GONE);
+                findViewById(R.id.my_wallet).setVisibility(View.GONE);
+                break;
+        }
+
+
         ivProfileImageField = findViewById(R.id.iv_user_profile_image);
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
@@ -172,7 +175,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     intent = new Intent(this, CustomerOrdersActivity.class);
                     startActivity(intent);
                     break;
-                case R.id.shopping:
+                case R.id.customer_shopping:
                     intent = new Intent(this, CustomerHomeActivity.class);
                     startActivity(intent);
                     break;

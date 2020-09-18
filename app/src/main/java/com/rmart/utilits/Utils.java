@@ -41,7 +41,7 @@ public class Utils {
 
     public static final String OPEN_ORDER_STATUS = "INI";
     public static final String CANCEL_ORDER_STATUS = "CN";
-    public static final String ACCEPTED_ORDER_STATUS = "ACPT";
+    public static final String ACCEPTED_ORDER_STATUS = "CF";
     public static final String SHIPPED_ORDER_STATUS = "SPD";
     public static final String PACKED_ORDER_STATUS = "PKD";
     public static final String DELIVERED_ORDER_STATUS = "DL";
