@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.text.Editable;
 import android.text.InputFilter;
@@ -26,7 +25,7 @@ import com.rmart.R;
 import com.rmart.baseclass.InputFilterMinMax;
 import com.rmart.inventory.adapters.CustomStringAdapter;
 import com.rmart.inventory.models.UnitObject;
-import com.rmart.inventory.viewmodel.InventoryViewModel;
+import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.APIStockResponse;
 import com.rmart.utilits.pojos.APIUnitMeasureResponse;
 
@@ -40,6 +39,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM3 = "param3";
 
     ArrayList<String> availableUnits;
     UnitObject unitObject;
@@ -48,19 +48,22 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     AppCompatEditText discount, actualPrice, valueOfUnit, quantity, quantityValue;
     AppCompatTextView finalPrice, displayUnit;
     Spinner spinner, productStatusSpinner;
-    private InventoryViewModel inventoryViewModel;
+    // private InventoryViewModel inventoryViewModel;
     ArrayList<String> availableUnitsMeasurements = new ArrayList<>();
     ArrayList<String> productStatus = new ArrayList<>();
-
+    ArrayList<APIStockResponse> apiStockResponses = new ArrayList<>();
+    APIStockListResponse apiStockListResponse;
     //SwitchCompat isActive;
     public AddUnitDialog() {
         // Required empty public constructor
     }
 
-    public static AddUnitDialog newInstance(UnitObject unitObject, boolean isEdit) {
+    public static AddUnitDialog newInstance(UnitObject unitObject, boolean isEdit, APIStockListResponse stockListResponse) {
+        // APIStockListResponse apiStockListResponse = stockListResponse;
         AddUnitDialog fragment = new AddUnitDialog();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, unitObject);
+        args.putSerializable(ARG_PARAM3, stockListResponse);
         args.putBoolean(ARG_PARAM2, isEdit);
         fragment.setArguments(args);
         return fragment;
@@ -71,9 +74,12 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             unitObject = (UnitObject) getArguments().getSerializable(ARG_PARAM1);
+            apiStockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM3);
+            assert apiStockListResponse != null;
+            apiStockResponses = apiStockListResponse.getArrayList();
             mIsEdit = getArguments().getBoolean(ARG_PARAM2);
         }
-        inventoryViewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
+        // inventoryViewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
     }
     @Override
     public void onResume() {
@@ -218,8 +224,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             availableUnitsMeasurements.add(unitMeasureResponse.getAttributesName());
         }
         customStringAdapter = new CustomStringAdapter(availableUnitsMeasurements, this.getContext());
-
-        for (APIStockResponse apiStockResponse : Objects.requireNonNull(inventoryViewModel.getApiStocks().getValue())) {
+        for (APIStockResponse apiStockResponse : apiStockResponses) {
             productStatus.add(apiStockResponse.getStockName());
         }
         productStatusAdapter = new CustomStringAdapter(productStatus, this.getContext());
@@ -258,8 +263,8 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.save) {
-            for (APIStockResponse apiStockResponse : Objects.requireNonNull(inventoryViewModel.getApiStocks().getValue())) {
+        if(view.getId() == R.id.save) {;
+            for (APIStockResponse apiStockResponse : apiStockResponses) {
                 if (unitObject.getProductStatus().equalsIgnoreCase(apiStockResponse.getStockName())) {
                     unitObject.setStockID(apiStockResponse.getStockID());
                     unitObject.setStockID(apiStockResponse.getStockID());

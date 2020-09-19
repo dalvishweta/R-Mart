@@ -21,11 +21,11 @@ import com.rmart.inventory.models.Product;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.APIProductListResponse;
+import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.services.APIService;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +37,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private String mParam1;
+    private APIStockListResponse apiStockListResponse;
     private String mParam2;
     Product product;
     private SearchView searchView;
@@ -51,10 +51,10 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
         // Required empty public constructor
     }
 
-    public static SelectProductFromInventory newInstance(String param1, String param2) {
+    public static SelectProductFromInventory newInstance(APIStockListResponse apiStockListResponse, String param2) {
         SelectProductFromInventory fragment = new SelectProductFromInventory();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putSerializable(ARG_PARAM1, apiStockListResponse);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -71,13 +71,13 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle(getString(R.string.add_new_product));
+        requireActivity().setTitle(getString(R.string.add_new_product));
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            apiStockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }

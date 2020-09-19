@@ -12,27 +12,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.rmart.R;
 import com.rmart.inventory.adapters.ProductAdapter;
-import com.rmart.inventory.viewmodel.InventoryViewModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.APIStockListResponse;
-import com.rmart.utilits.pojos.APIStockResponse;
 import com.rmart.utilits.pojos.ProductListResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.pojos.ShowProductResponse;
-import com.rmart.utilits.services.APIService;
 import com.rmart.utilits.services.VendorInventoryService;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -105,35 +100,6 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         return inflater.inflate(R.layout.fragment_inventory_product_list, container, false);
     }
 
-    public void getStockList() {
-        progressDialog.show();
-        APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
-        apiService.getAPIStockList().enqueue(new Callback<APIStockListResponse>() {
-            @Override
-            public void onResponse(Call<APIStockListResponse> call, Response<APIStockListResponse> response) {
-                if(response.isSuccessful()) {
-                    APIStockListResponse apiStockListResponse = response.body();
-                    assert apiStockListResponse != null;
-                    // inventoryViewModel.setApiStocks(data.getArrayList());
-                    ArrayList<APIStockResponse> apiStocks = apiStockListResponse.getArrayList();
-                    assert apiStocks != null;
-                    for (APIStockResponse apiStockResponse : apiStocks) {
-                        popup.getMenu().add(apiStockResponse.getStockName());
-                    }
-
-                } else {
-                    showDialog("", response.message());
-                }
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<APIStockListResponse> call, Throwable t) {
-                progressDialog.dismiss();
-            }
-        });
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -144,11 +110,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         // Your code to make your refresh action
         // CallYourRefreshingMethod();
         mSwipeRefreshLayout.setOnRefreshListener(this::getProductList);
-
         addProduct.setOnClickListener(this);
-
-        getStockList();
-
         popup = new PopupMenu(requireActivity(), view.findViewById(R.id.sort));
         // Inflating the Popup using xml file
         // popup.getMenuInflater().inflate(R.menu.inventory_view_products, popup.getMenu());

@@ -2,6 +2,7 @@ package com.rmart.inventory;
 
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.inventory.views.BaseInventoryFragment;
+import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 
 public interface OnInventoryClickedListener {

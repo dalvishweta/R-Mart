@@ -1,20 +1,18 @@
 package com.rmart.inventory.views;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,7 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rmart.R;
-import com.rmart.inventory.adapters.CustomStringAdapter;
+import com.rmart.inventory.adapters.ImageUploadAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.profile.model.MyProfile;
@@ -32,6 +30,7 @@ import com.rmart.utilits.Utils;
 import com.rmart.utilits.custom_views.CustomDatePicker;
 import com.rmart.utilits.pojos.APIBrandListResponse;
 import com.rmart.utilits.pojos.APIBrandResponse;
+import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.APIUnitMeasureListResponse;
 import com.rmart.utilits.pojos.APIUnitMeasureResponse;
 import com.rmart.utilits.pojos.AddProductToInventoryResponse;
@@ -49,8 +48,9 @@ import retrofit2.Response;
 
 public class AddProductToInventory extends BaseInventoryFragment implements View.OnClickListener {
 
-    private static final String ARG_PRODUCT = "param1";
+    private static final String ARG_PRODUCT = "product";
     private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "param1";
     public static final int INT_ADD_UNIT = 101;
     public static final int INT_UPDATE_UNIT = 102;
     public static final String UNIT_VALUE = "unit_value";
@@ -67,18 +67,20 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     // Spinner productBrand;
     AppCompatEditText productRegionalName, deliveryDays, productDescription;
     AppCompatTextView expiry;
-    private RecyclerView recyclerView;
+    private RecyclerView unitsRecyclerView, imagesRecyclerView;
     APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
     private ArrayList<String> availableBrands = new ArrayList<>();
+    private APIStockListResponse stockListResponse = null;
 
     public AddProductToInventory() {
         // Required empty public constructor
     }
 
-    public static AddProductToInventory newInstance(ProductResponse product, boolean isEdit) {
+    public static AddProductToInventory newInstance(ProductResponse product, boolean isEdit, APIStockListResponse stockListResponse) {
         AddProductToInventory fragment = new AddProductToInventory();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PRODUCT, product);
+        args.putSerializable(ARG_PARAM1, stockListResponse);
         args.putBoolean(ARG_PARAM2, isEdit);
         fragment.setArguments(args);
         return fragment;
@@ -89,6 +91,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mProduct = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
+            stockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
+
             if(null == mProduct) {
                 mClonedProduct = new ProductResponse();
                 mProduct = new ProductResponse();
@@ -190,14 +194,18 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         });*/
 
         productRegionalName = view.findViewById(R.id.product_regional_name);
+
         productDescription = view.findViewById(R.id.product_description);
         expiry = view.findViewById(R.id.expiry);
         expiry.setOnClickListener(this);
         deliveryDays = view.findViewById(R.id.delivery_days);
-        recyclerView = view.findViewById(R.id.unit_base);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        unitsRecyclerView = view.findViewById(R.id.unit_base);
+        imagesRecyclerView = view.findViewById(R.id.product_image);
+
+        unitsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        imagesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         // addUnit = view.findViewById(R.id.add_unit);
-        AppCompatButton save = (AppCompatButton)view.findViewById(R.id.save);
+        AppCompatButton save = view.findViewById(R.id.save);
         if (isEdit) {
             save.setText(getString(R.string.update));
             save.setOnClickListener(this);
@@ -223,8 +231,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             productBrand.setText(mClonedProduct.getBrandName());
             updateList();
         }
-
-
     }
 
     @Override
@@ -357,16 +363,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         }
     }
 
-    private void showToast() {
-        showDialog("", mClonedProduct.getName() + " is successfully added to your Inventory.", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                requireActivity().onBackPressed();
-            }
-        });
-        // Toast.makeText(getContext(), getString(R.string.item_added), Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == INT_ADD_UNIT) {
@@ -415,7 +411,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 }
             });
         }, true);
-        recyclerView.setAdapter(unitBaseAdapter);
+        unitsRecyclerView.setAdapter(unitBaseAdapter);
+        imagesRecyclerView.setAdapter(new ImageUploadAdapter(new ArrayList<>(), this));
     }
     
 }

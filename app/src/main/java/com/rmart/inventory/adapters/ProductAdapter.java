@@ -135,8 +135,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>  imp
     private void updateImage(String imageUrl, NetworkImageView imageView) {
         if (!TextUtils.isEmpty(imageUrl)) {
             HttpsTrustManager.allowAllSSL();
-            RMartApplication.getInstance().getImageLoader().get(imageUrl, ImageLoader.getImageListener(imageView, R.mipmap.ic_launcher, android.R.drawable
-                            .ic_dialog_alert));
+            RMartApplication.getInstance().getImageLoader().get(imageUrl, ImageLoader.getImageListener(imageView, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
             imageView.setImageUrl(imageUrl, RMartApplication.getInstance().getImageLoader());
         }
     }

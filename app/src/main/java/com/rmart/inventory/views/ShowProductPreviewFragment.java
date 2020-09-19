@@ -1,6 +1,5 @@
 package com.rmart.inventory.views;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,37 +16,38 @@ import androidx.viewpager.widget.ViewPager;
 import com.rmart.R;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
-import com.rmart.inventory.models.Product;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.services.VendorInventoryService;
-
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ShowProductPreviewFragment extends BaseInventoryFragment {
-    private static final String ARG_PRODUCT = "param1";
+    private static final String ARG_PRODUCT = "product";
     private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "param1";
     RecyclerView recyclerView;
     private ProductResponse product;
     private boolean isEdit;
     ImageAdapter imageAdapter;
     ViewPager viewPager;
+    APIStockListResponse apiStockListResponse;
     AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryInDays;
     public ShowProductPreviewFragment() {
         // Required empty public constructor
     }
 
-    public static ShowProductPreviewFragment newInstance(ProductResponse product, boolean isEdit) {
+    public static ShowProductPreviewFragment newInstance(ProductResponse product, boolean isEdit, APIStockListResponse apiStockListResponse) {
         ShowProductPreviewFragment fragment = new ShowProductPreviewFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PRODUCT, product);
+        args.putSerializable(ARG_PARAM1, apiStockListResponse);
         args.putBoolean(ARG_PARAM2, isEdit);
         fragment.setArguments(args);
         return fragment;
@@ -58,6 +58,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             product = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
+            apiStockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
             isEdit = getArguments().getBoolean(ARG_PARAM2);
         }
         /*product = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
