@@ -20,18 +20,16 @@ import com.rmart.customer_order.viewmodel.MyOrdersViewModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.UpdatedOrderStatus;
+import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
+import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
 import com.rmart.utilits.pojos.orders.Order;
-import com.rmart.utilits.pojos.orders.OrderProductList;
-import com.rmart.utilits.pojos.orders.OrderProductListResponse;
 import com.rmart.utilits.services.CustomerOrderService;
-import com.rmart.utilits.services.OrderService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnClickListener {
+public class CustomerViewFullOrderFragment extends BaseOrderFragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -42,17 +40,17 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     AppCompatButton mLeftButton, mRightButton;
     private AppCompatTextView tvStatus, tvFullName,dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType, contactNumber;
     private ProductListAdapter productAdapter;
-    private OrderProductList orderProductList;
+    private CustomerOrderProductList orderProductList;
     private RecyclerView recyclerView;
     private LinearLayout deliveryBoyInfo;
 
-    public ViewFullOrderFragment() {
+    public CustomerViewFullOrderFragment() {
         // Required empty public constructor
     }
 
 
-    public static ViewFullOrderFragment newInstance(Order param1, String param2) {
-        ViewFullOrderFragment fragment = new ViewFullOrderFragment();
+    public static CustomerViewFullOrderFragment newInstance(Order param1, String param2) {
+        CustomerViewFullOrderFragment fragment = new CustomerViewFullOrderFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -78,14 +76,14 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private void getServerData() {
         progressDialog.show();
         CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
-        customerOrderService.viewOrderById(mOrderObject.getOrderID(), MyProfile.getInstance().getMobileNumber()).enqueue(new Callback<OrderProductListResponse>() {
+        customerOrderService.viewOrderById(mOrderObject.getOrderID(), MyProfile.getInstance().getMobileNumber()).enqueue(new Callback<CustomerOrderProductResponse>() {
             @Override
-            public void onResponse(Call<OrderProductListResponse> call, Response<OrderProductListResponse> response) {
+            public void onResponse(Call<CustomerOrderProductResponse> call, Response<CustomerOrderProductResponse> response) {
                 if(response.isSuccessful()) {
-                    OrderProductListResponse data = response.body();
+                    CustomerOrderProductResponse data = response.body();
                     assert data != null;
                     if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        orderProductList  = data.getOrderStates();
+                        orderProductList  = data.getProductList();
                         updateUI();
                     } else {
                         showDialog(data.getMsg());
@@ -95,7 +93,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
             }
 
             @Override
-            public void onFailure(Call<OrderProductListResponse> call, Throwable t) {
+            public void onFailure(Call<CustomerOrderProductResponse> call, Throwable t) {
                 progressDialog.dismiss();
             }
         });
@@ -147,13 +145,13 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         String text = String.format(res.getString(R.string.status_order), mOrderObject.getOrderStatus());
         tvStatus.setText(text);
         // setFooter();
-        tvFullName.setText(orderProductList.getFirstName()+" "+ orderProductList.getLastName());
-        tvDeliveryCharges.setText(orderProductList.getDeliveryCharges());
-        tvAmount.setText(orderProductList.getTotal_amt());
-        tvTotalCharges.setText(orderProductList.getTotal_amt());
-        tvPaymentType.setText(orderProductList.getMode_of_payment());
-        productAdapter = new ProductListAdapter(orderProductList.getProducts(), this);
-        contactNumber.setText(orderProductList.getCustomerNumber());
+        tvFullName.setText(orderProductList.getVendorInfo().getFirstName()+" "+ orderProductList.getVendorInfo().getLastName());
+        tvDeliveryCharges.setText(orderProductList.getOrderInfo().getDeliveryCharges());
+        tvAmount.setText(orderProductList.getOrderInfo().getTotalAmt());
+        tvTotalCharges.setText(orderProductList.getOrderInfo().getTotalAmt());
+        tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
+        productAdapter = new ProductListAdapter(orderProductList.getProduct(), this);
+        contactNumber.setText(orderProductList.getVendorInfo().getMobileNumber());
         recyclerView.setAdapter(productAdapter);
     }
 

@@ -1,6 +1,7 @@
 package com.rmart.utilits.services;
 
 import com.rmart.BuildConfig;
+import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
 import com.rmart.utilits.pojos.orders.OrderProductListResponse;
 import com.rmart.utilits.pojos.orders.OrderStateListResponse;
 import com.rmart.utilits.pojos.orders.OrdersByStatus;
@@ -19,6 +20,12 @@ public interface CustomerOrderService {
 
     @POST(BuildConfig.CUSTOMER_VIEW_ORDER_BY_ID)
     @FormUrlEncoded
-    Call<OrderProductListResponse> viewOrderById(@Field("order_id") String orderID,
-                         @Field("customer_mobile") String customerMobile);
+    Call<CustomerOrderProductResponse> viewOrderById(@Field("order_id") String orderID,
+                                                     @Field("customer_mobile") String customerMobile);
+
+    @POST(BuildConfig.CUSTOMER_VIEW_ORDER_BY_ID)
+    @FormUrlEncoded
+    Call<OrderProductListResponse> updateOrderStatus(@Field("order_id")String orderID,
+                                                     @Field("user_id") String id,
+                                                     @Field("status") String newOrderStatus);
 }

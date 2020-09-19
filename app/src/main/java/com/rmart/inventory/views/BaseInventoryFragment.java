@@ -19,7 +19,7 @@ import java.util.Objects;
 
 public class BaseInventoryFragment extends BaseFragment {
     OnInventoryClickedListener mListener;
-    InventoryViewModel inventoryViewModel;
+    // InventoryViewModel inventoryViewModel;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -30,7 +30,7 @@ public class BaseInventoryFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        inventoryViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(InventoryViewModel.class);
+        // inventoryViewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
     }
 
 

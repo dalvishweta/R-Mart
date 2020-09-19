@@ -285,7 +285,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                                 });
                             } else {
                                 showDialog("", data.getMsg(), (dialog, index)-> {
-                                    Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);
+                                    // Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);
                                     requireActivity().onBackPressed();
                                 });
                             }
@@ -333,7 +333,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                                 });
                             } else {
                                 showDialog("", data.getMsg(), (dialog, index)-> {
-                                    Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);
+                                    // Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);
                                     requireActivity().onBackPressed();
                                 });
                             }

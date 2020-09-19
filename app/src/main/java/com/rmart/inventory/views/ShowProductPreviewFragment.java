@@ -102,8 +102,8 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
                     public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                         BaseResponse data = response.body();
                         if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                            ProductResponse object = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
-                            Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).remove(object);
+                            // ProductResponse object = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
+                            // Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).remove(object);
                             requireActivity().onBackPressed();
                         } else {
                             showDialog("", data.getMsg(), (dialogInterface, i) -> requireActivity().onBackPressed());

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -157,22 +158,25 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         getMenuInflater().inflate(R.menu.badge_menu_drawer, menu);
 
         final MenuItem menuItem = menu.findItem(R.id.badge_menu);
+        if (MyProfile.getInstance().getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
 
-        View actionView = menuItem.getActionView();
-        tvCartCountField = actionView.findViewById(R.id.tv_cart_count_field);
+            View actionView = menuItem.getActionView();
+            tvCartCountField = actionView.findViewById(R.id.tv_cart_count_field);
 
-        MyProfile myProfile = MyProfile.getInstance();
-        if (myProfile != null) {
-            Integer cartCount = myProfile.getCartCount().getValue();
-            tvCartCountField.setText(String.valueOf(cartCount));
+            MyProfile myProfile = MyProfile.getInstance();
+            if (myProfile != null) {
+                Integer cartCount = myProfile.getCartCount().getValue();
+                tvCartCountField.setText(String.valueOf(cartCount));
+            }
+
+            badgeCountLayoutField = actionView.findViewById(R.id.cart_count_layout_field);
+            showBadge(true);
+            actionView.setOnClickListener(v -> {
+                Toast.makeText(getApplicationContext(), "Action View", Toast.LENGTH_SHORT).show();
+            });
+        } else {
+            menuItem.setVisible(false);
         }
-
-        badgeCountLayoutField = actionView.findViewById(R.id.cart_count_layout_field);
-        showBadge(true);
-        actionView.setOnClickListener(v -> {
-            // navigate
-        });
-
         return true;
     }
 

@@ -21,7 +21,7 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
     @Override
     public void goToViewFullOrder(Order orderObject) {
         hideHamburgerIcon();
-        replaceFragment(ViewFullOrderFragment.newInstance(orderObject, ""), "ViewFullOrderFragment", true);
+        replaceFragment(CustomerViewFullOrderFragment.newInstance(orderObject, ""), "ViewFullOrderFragment", true);
     }
 
 
@@ -33,7 +33,7 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
 
     @Override
     public void onClick(View view) {
-        if (view.getId() != R.id.retailer_orders) {
+        if (view.getId() != R.id.customer_orders) {
             getToActivity(view.getId(), false);
         } else {
             getToActivity(view.getId(), true);

@@ -54,6 +54,9 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     SearchView searchView;
     VendorInventoryService vendorInventoryService;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    ProductListResponse productList;
+    APIStockListResponse apiStockListResponse;
     public MyProductsListFragment() {
         // Required empty public constructor
     }
@@ -93,10 +96,10 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                 updateList(products);
             }
         });*/
-        inventoryViewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
+        /*inventoryViewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
         inventoryViewModel.getProductList().observe(requireActivity(), data-> {
             updateList(new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values()));
-        });
+        });*/
         vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
         getProductList();
         return inflater.inflate(R.layout.fragment_inventory_product_list, container, false);
@@ -109,10 +112,10 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
             @Override
             public void onResponse(Call<APIStockListResponse> call, Response<APIStockListResponse> response) {
                 if(response.isSuccessful()) {
-                    APIStockListResponse data = response.body();
-                    assert data != null;
-                    inventoryViewModel.setApiStocks(data.getArrayList());
-                    ArrayList<APIStockResponse> apiStocks = inventoryViewModel.getApiStocks().getValue();
+                    APIStockListResponse apiStockListResponse = response.body();
+                    assert apiStockListResponse != null;
+                    // inventoryViewModel.setApiStocks(data.getArrayList());
+                    ArrayList<APIStockResponse> apiStocks = apiStockListResponse.getArrayList();
                     assert apiStocks != null;
                     for (APIStockResponse apiStockResponse : apiStocks) {
                         popup.getMenu().add(apiStockResponse.getStockName());
@@ -169,7 +172,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
             popup.show(); // showing popup menu
         });
         productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        updateList(new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values()));
+        // updateList(productList.getProductResponses());
         setSearchView(view);
     }
 
@@ -179,19 +182,20 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
             @Override
             public void onResponse(Call<ProductListResponse> call, Response<ProductListResponse> response) {
                 if(response.isSuccessful()) {
-                    ProductListResponse data = response.body();
-                    assert data != null;
-                    if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        if(data.getProductResponses().size()<=0) {
+                    productList = response.body();
+                    assert productList != null;
+                    if (productList.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                        if(productList.getProductResponses().size()<=0) {
                             mListener.addProductToInventory();
                         } else {
-                            for (ProductResponse productResponse : data.getProductResponses()) {
+
+                            /*for (ProductResponse productResponse : data.getProductResponses()) {
                                 inventoryViewModel.setProductList(productResponse);
-                            }
-                            updateList(new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values()));
+                            }*/
+                            updateList(productList.getProductResponses());
                         }
                     } else {
-                        showDialog("", data.getMsg());
+                        showDialog("", productList.getMsg());
                     }
                 } else {
                     showDialog("", response.message());
@@ -251,7 +255,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                             assert data != null;
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 ProductResponse response1 = data.getProductResponse();
-                                inventoryViewModel.setSelectedProduct(response1.getProductID());
+                                // inventoryViewModel.setSelectedProduct(response1.getProductID());
                                 mListener.showProductPreview(response1, true);
                             }
 
