@@ -32,7 +32,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
         super.onCreate(savedInstanceState);
         // inventoryViewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
         getStockList();
-        addFragment(MyProductsListFragment.newInstance("", ""), "MyProductsListFragment", false);
+        addFragment(MyProductsListFragment.newInstance("", ""), MyProductsListFragment.class.getName(), false);
         /*
             if (inventoryViewModel.getIsProductView().getValue().equals(InventoryViewModel.PRODUCT)) {
                 addFragment(MyProductsListFragment.newInstance("", ""), "MyProductsListFragment", false);
@@ -46,37 +46,37 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void showMyCategories() {
-        addFragment(MyCategoryListFragment.newInstance("",""), "MyCategoryFragment", true);
+        addFragment(MyCategoryListFragment.newInstance("",""), MyCategoryListFragment.class.getName(), true);
     }
 
     @Override
     public void showMySubCategories() {
-        replaceFragment(MySubCategoriesListFragment.newInstance("",""), "MySubCategoriesFragment",true);
+        replaceFragment(MySubCategoriesListFragment.newInstance("",""), MySubCategoriesListFragment.class.getName(),true);
     }
 
     @Override
     public void showMyProducts() {
-        replaceFragment(MyProductsListFragment.newInstance("",""), "MyProductsListFragment",true);
+        replaceFragment(MyProductsListFragment.newInstance("",""), MyProductsListFragment.class.getName(),true);
     }
 
     @Override
     public void showProductPreview(ProductResponse product, boolean isEdit) {
-        replaceFragment(ShowProductPreviewFragment.newInstance(product,isEdit, apiStockListResponse), "ShowProductPreviewFragment",true);
+        replaceFragment(ShowProductPreviewFragment.newInstance(product,isEdit, apiStockListResponse), ShowProductPreviewFragment.class.getName(),true);
     }
 
     @Override
     public void updateProduct(ProductResponse product, boolean isEdit) {
-        replaceFragment(AddProductToInventory.newInstance(product,isEdit, this.apiStockListResponse), "UploadProductFragment",true);
+        replaceFragment(AddProductToInventory.newInstance(product,isEdit, this.apiStockListResponse), AddProductToInventory.class.getName(),true);
     }
 
     @Override
     public void addProductToInventory() {
-        replaceFragment(SelectProductFromInventory.newInstance(apiStockListResponse,""), "AddProductToInventory",true);
+        replaceFragment(SelectProductFromInventory.newInstance(apiStockListResponse,""), SelectProductFromInventory.class.getName(),true);
     }
 
     @Override
     public void requestToCreateProduct() {
-        replaceFragment(AddProductToAPI.newInstance("",""), "AddProductInAPI",true);
+        replaceFragment(AddProductToAPI.newInstance("",""), AddProductToAPI.class.getName(),true);
     }
 
     @Override
