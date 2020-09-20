@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
+import com.rmart.baseclass.CallBackInterface;
 import com.rmart.inventory.adapters.ImageUploadAdapter;
 import com.rmart.inventory.models.Product;
 import com.rmart.profile.model.MyProfile;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class AddProductToAPI extends BaseInventoryFragment implements View.OnClickListener {
@@ -51,7 +53,7 @@ public class AddProductToAPI extends BaseInventoryFragment implements View.OnCli
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle(getString(R.string.add_new_product));
+        Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.add_new_product));
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,12 +73,12 @@ public class AddProductToAPI extends BaseInventoryFragment implements View.OnCli
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.save).setOnClickListener(this);
-        ArrayList<String> imagePath = new ArrayList<>();
+        List<Object> imagePath = new ArrayList<>();
         imagePath.add("1");
         imagePath.add("2");
         imagePath.add("1");
         imagePath.add("1");
-        ImageUploadAdapter imageUploadAdapter = new ImageUploadAdapter(imagePath, this);
+        ImageUploadAdapter imageUploadAdapter = new ImageUploadAdapter(imagePath, callBackListener);
         RecyclerView recyclerView = view.findViewById(R.id.product_image);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.setAdapter(imageUploadAdapter);
@@ -84,11 +86,15 @@ public class AddProductToAPI extends BaseInventoryFragment implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.save) {
+        if (view.getId() == R.id.save) {
             showDialog(String.format(getString(R.string.hello), MyProfile.getInstance().getFirstName()), getString(R.string.request_new_product_msg), (dialogInterface, i) -> {
-                Objects.requireNonNull(getActivity()).onBackPressed();
+                Objects.requireNonNull(requireActivity()).onBackPressed();
             });
             // mListener.requestNewProduct(this, REQUEST_FILTERED_DATA_ID);
         }
     }
+
+    private CallBackInterface callBackListener = pObject -> {
+
+    };
 }

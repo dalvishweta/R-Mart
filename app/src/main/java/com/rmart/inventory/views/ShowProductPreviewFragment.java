@@ -24,6 +24,8 @@ import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.services.VendorInventoryService;
 
+import org.jetbrains.annotations.NotNull;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,13 +34,12 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     private static final String ARG_PRODUCT = "product";
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM1 = "param1";
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private ProductResponse product;
     private boolean isEdit;
-    ImageAdapter imageAdapter;
-    ViewPager viewPager;
-    APIStockListResponse apiStockListResponse;
-    AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryInDays;
+    private ViewPager viewPager;
+    //private APIStockListResponse apiStockListResponse;
+    private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryInDays;
     public ShowProductPreviewFragment() {
         // Required empty public constructor
     }
@@ -58,7 +59,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             product = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
-            apiStockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
+            //apiStockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
             isEdit = getArguments().getBoolean(ARG_PARAM2);
         }
         /*product = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
@@ -92,44 +93,42 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         AppCompatButton delete = view.findViewById(R.id.delete);
         AppCompatButton edit = view.findViewById(R.id.edit);
         if(isEdit) {
-            edit.setOnClickListener(view1 -> {
-                mListener.updateProduct(product, true);
-            });
+            edit.setOnClickListener(view1 -> mListener.updateProduct(product, true));
             delete.setOnClickListener(view1 -> {
                 progressDialog.show();
                 VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
                 vendorInventoryService.deleteProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<BaseResponse>() {
                     @Override
-                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
                         BaseResponse data = response.body();
-                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                            // ProductResponse object = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
-                            // Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).remove(object);
-                            requireActivity().onBackPressed();
+                        if(data != null) {
+                            if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                showDialog("", data.getMsg(), (dialogInterface, i) -> requireActivity().onBackPressed());
+                            } else {
+                                showDialog(getString(R.string.no_information_available));
+                            }
                         } else {
-                            showDialog("", data.getMsg(), (dialogInterface, i) -> requireActivity().onBackPressed());
+                            showDialog(getString(R.string.no_information_available));
                         }
                         progressDialog.dismiss();
                     }
 
                     @Override
-                    public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
                         showDialog("", t.getMessage());
                         progressDialog.dismiss();
                     }
                 });
-
             });
         } else {
             delete.setVisibility(View.GONE);
             edit.setText(getString(R.string.save));
         }
 
-        updateUi();
-
+        updateUI();
     }
 
-    private void updateUi() {
+    private void updateUI() {
         ImageAdapter imageAdapter = new ImageAdapter(requireContext());
         viewPager.setAdapter(imageAdapter);
         tvProductName.setText(product.getName());
