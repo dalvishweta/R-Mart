@@ -6,10 +6,10 @@ import android.view.View;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
+import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
-import com.rmart.customer.models.CustomerProductDetailsModel;
 
 public class CustomerHomeActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
 
@@ -18,7 +18,8 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_authenticatin);
 
-        replaceFragment(VendorShopsListFragment.getInstance(), VendorShopsListFragment.class.getName(),false);
+        showCartIcon();
+        addFragment(VendorShopsListFragment.getInstance(), VendorShopsListFragment.class.getName(),false);
     }
 
     @Override
@@ -37,31 +38,52 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
 
     @Override
     public void gotoVendorProductDetails(CustomerProductsShopDetailsModel customerProductsModel) {
+        showCartIcon();
         addFragment(VendorProductDetailsFragment.getInstance(customerProductsModel),VendorProductDetailsFragment.class.getName(),true);
     }
 
     @Override
     public void gotoProductDescDetails(CustomerProductDetailsModel vendorProductDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
+        showCartIcon();
         addFragment(ProductCartDetailsFragment.getInstance(vendorProductDetails, vendorShopDetails), ProductCartDetailsFragment.class.getName(), true);
     }
 
     @Override
-    public void gotoPaymentScreen() {
-        addFragment(MakePaymentFragment.getInstance("", ""), MakePaymentFragment.class.getName(), true);
-    }
-
-    @Override
     public void gotoShoppingCartScreen() {
+        hideCartIcon();
         addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
     }
 
     @Override
     public void gotoSelectedShopDetails(ShoppingCartResponseDetails shoppingCartResponseDetails) {
+        hideCartIcon();
         addFragment(ConfirmOrderFragment.getInstance(shoppingCartResponseDetails), ConfirmOrderFragment.class.getName(), true);
     }
 
     @Override
     public void gotoVendorSameProductListScreen(ProductBaseModel productCategoryDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
+        showCartIcon();
         addFragment(VendorSameProductsListScreen.getInstance(productCategoryDetails, vendorShopDetails), VendorSameProductsListScreen.class.getName(), true);
+    }
+
+    @Override
+    public void gotoConfirmedOrderStatusScreen() {
+
+    }
+
+    @Override
+    public void gotoPaymentOptionsScreen(CustomerProductsShopDetailsModel vendorShopDetails) {
+        hideCartIcon();
+        addFragment(PaymentOptionsFragment.getInstance(vendorShopDetails), PaymentOptionsFragment.class.getName(), true);
+    }
+
+    @Override
+    public void showBadge(boolean b) {
+
+    }
+
+    @Override
+    public void updateBadgeCount() {
+
     }
 }

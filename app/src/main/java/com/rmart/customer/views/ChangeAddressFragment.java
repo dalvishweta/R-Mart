@@ -49,7 +49,12 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     @Override
     public void onResume() {
         super.onResume();
+        updateToolBar();
+    }
+
+    public void updateToolBar() {
         requireActivity().setTitle(getString(R.string.change_address));
+        ((CustomerHomeActivity)(requireActivity())).showCartIcon();
     }
 
     @Override

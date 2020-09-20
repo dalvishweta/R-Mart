@@ -1,5 +1,6 @@
 package com.rmart.customer.views;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +19,17 @@ import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.customer.OnCustomerHomeInteractionListener;
+import com.rmart.customer.OnCustomerWishListInteractionListener;
 import com.rmart.customer.adapters.ConfirmOrdersAdapter;
+import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.ContentModel;
+import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductInCartDetailsModel;
 import com.rmart.customer.models.ProductInCartResponse;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
-import com.rmart.customer.models.VendorProductShopDataResponse;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.services.UpdateProductQuantityServices;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -48,7 +53,7 @@ import retrofit2.Response;
  */
 public class ConfirmOrderFragment extends BaseFragment {
 
-    private ShoppingCartResponseDetails vendorShopDetails;
+    private ShoppingCartResponseDetails vendorShoppingCartDetails;
 
     private RecyclerView productsListField;
     private TextView tvShopNameField;
@@ -57,6 +62,8 @@ public class ConfirmOrderFragment extends BaseFragment {
     private ConfirmOrdersAdapter confirmOrdersAdapter;
     private ProductInCartDetailsModel selectedProductInCartDetails;
     private AppCompatButton btnProceedToBuyField;
+    private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
+    private CustomerProductsShopDetailsModel vendorShopDetails;
 
     public ConfirmOrderFragment() {
         // Required empty public constructor
@@ -75,7 +82,15 @@ public class ConfirmOrderFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle extras = getArguments();
         if (extras != null) {
-            vendorShopDetails = (ShoppingCartResponseDetails) extras.getSerializable("VendorShopDetails");
+            vendorShoppingCartDetails = (ShoppingCartResponseDetails) extras.getSerializable("VendorShopDetails");
+        }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof CustomerHomeActivity) {
+            onCustomerHomeInteractionListener = (OnCustomerHomeInteractionListener) context;
         }
     }
 
@@ -100,6 +115,22 @@ public class ConfirmOrderFragment extends BaseFragment {
 
         productInCartDetailsList = new ArrayList<>();
         btnProceedToBuyField = view.findViewById(R.id.btn_proceed_to_buy_field);
+        btnProceedToBuyField.setOnClickListener(v -> proceedToBuySelected());
+    }
+
+    private void proceedToBuySelected() {
+        onCustomerHomeInteractionListener.gotoPaymentOptionsScreen(vendorShopDetails);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateToolBar();
+    }
+
+    public void updateToolBar() {
+        Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.shopping_cart));
+        ((CustomerHomeActivity)(requireActivity())).hideCartIcon();
     }
 
     @Override
@@ -107,11 +138,13 @@ public class ConfirmOrderFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         loadUIComponents(view);
 
+        updateShopDetailsUI();
+
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<ProductInCartResponse> call = customerProductsService.getVendorShowCartList(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID());
+            Call<ProductInCartResponse> call = customerProductsService.getVendorShowCartList(clientID, vendorShoppingCartDetails.getVendorId(), MyProfile.getInstance().getUserID());
             call.enqueue(new Callback<ProductInCartResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<ProductInCartResponse> call, @NotNull Response<ProductInCartResponse> response) {
@@ -121,11 +154,8 @@ public class ConfirmOrderFragment extends BaseFragment {
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
                                 ProductInCartResponse.ProductInCartDetailsDataModel productInCartDetailsDataModel = body.getProductInCartDetailsDataModel();
+                                vendorShopDetails = body.getProductInCartDetailsDataModel().getVendorShopDetails();
                                 if (productInCartDetailsDataModel != null) {
-                                    VendorProductShopDataResponse shopDetails = productInCartDetailsDataModel.getShopDetails();
-                                    if (shopDetails != null) {
-                                        updateShopDetailsUI(shopDetails);
-                                    }
                                     productInCartDetailsList.addAll(productInCartDetailsDataModel.getProductInCartDetailsList());
                                 }
                                 setAdapter();
@@ -151,9 +181,9 @@ public class ConfirmOrderFragment extends BaseFragment {
         }
     }
 
-    private void updateShopDetailsUI(VendorProductShopDataResponse shopDetails) {
-        tvShopNameField.setText(shopDetails.getShopName());
-        tvContactNoField.setText(shopDetails.getShopMobileNo());
+    private void updateShopDetailsUI() {
+        tvShopNameField.setText(vendorShoppingCartDetails.getShopName());
+        tvContactNoField.setText(vendorShoppingCartDetails.getMobileNumber());
     }
 
     private void setAdapter() {
@@ -190,7 +220,7 @@ public class ConfirmOrderFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<BaseResponse> call = customerProductsService.moveToWishList(clientID, 1, selectedProductInCartDetails.getCartId(),
+            Call<BaseResponse> call = customerProductsService.moveToWishList(clientID, selectedProductInCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),
                     selectedProductInCartDetails.getProductId());
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
@@ -199,11 +229,7 @@ public class ConfirmOrderFragment extends BaseFragment {
                     if (response.isSuccessful()) {
                         BaseResponse body = response.body();
                         if (body != null) {
-                            if (body.getStatus().equalsIgnoreCase("success")) {
-                                showSuccessDialog(body.getMsg());
-                            } else {
-                                showDialog(body.getMsg());
-                            }
+                            showDialog(body.getMsg());
                         } else {
                             showDialog(getString(R.string.no_information_available));
                         }
@@ -286,6 +312,7 @@ public class ConfirmOrderFragment extends BaseFragment {
             if (index > -1) {
                 productInCartDetailsList.set(index, selectedProductInCartDetails);
                 confirmOrdersAdapter.notifyItemChanged(index);
+                UpdateProductQuantityServices.enqueueWork(requireActivity(), selectedProductInCartDetails);
             }
         }
     }
@@ -299,7 +326,27 @@ public class ConfirmOrderFragment extends BaseFragment {
             if (index > -1) {
                 productInCartDetailsList.set(index, selectedProductInCartDetails);
                 confirmOrdersAdapter.notifyItemChanged(index);
+                UpdateProductQuantityServices.enqueueWork(requireActivity(), selectedProductInCartDetails);
             }
         }
+    }
+
+    private void addOrDeleteQuantity() {
+        progressDialog.show();
+        CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+        String clientID = "2";
+        Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, selectedProductInCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),
+                selectedProductInCartDetails.getProductUnitId(), selectedProductInCartDetails.getTotalProductCartQty());
+        call.enqueue(new Callback<AddToCartResponseDetails>() {
+            @Override
+            public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
+                progressDialog.dismiss();
+            }
+        });
     }
 }

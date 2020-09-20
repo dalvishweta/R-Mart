@@ -10,21 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
-import com.rmart.customer.models.WishListResponseDetails;
+import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 
 import java.util.List;
 
 /**
  * Created by Satya Seshu on 18/09/20.
  */
-public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ViewHolder> {
+public class ShopWiseWishListAdapter extends RecyclerView.Adapter<ShopWiseWishListAdapter.ViewHolder> {
 
-    private List<WishListResponseDetails> listData;
+    private List<ShopWiseWishListResponseDetails> listData;
     private LayoutInflater layoutInflater;
     private String productsText;
     private String productText;
 
-    public WishListAdapter(Context context, List<WishListResponseDetails> listData) {
+    public ShopWiseWishListAdapter(Context context, List<ShopWiseWishListResponseDetails> listData) {
         this.listData = listData;
         layoutInflater = LayoutInflater.from(context);
         productsText = context.getString(R.string.products);
@@ -40,7 +40,7 @@ public class WishListAdapter extends RecyclerView.Adapter<WishListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        WishListResponseDetails dataObject = listData.get(position);
+        ShopWiseWishListResponseDetails dataObject = listData.get(position);
         holder.tvShopNameField.setText(dataObject.getShopName());
         holder.tvContactNoField.setText(dataObject.getMobileNumber());
         int count = dataObject.getWishListCount();

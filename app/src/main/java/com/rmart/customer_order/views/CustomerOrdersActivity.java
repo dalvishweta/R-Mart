@@ -39,4 +39,14 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
             getToActivity(view.getId(), true);
         }
     }
+
+    @Override
+    public void showBadge(boolean b) {
+
+    }
+
+    @Override
+    public void updateBadgeCount() {
+
+    }
 }

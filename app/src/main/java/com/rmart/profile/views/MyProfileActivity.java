@@ -40,9 +40,9 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
         new ViewModelProvider(this).get(AddressViewModel.class);
 
         if (MyProfile.getInstance().getPrimaryAddressId() == null || isAddNewAddress) {
-            addFragment(EditAddressFragment.newInstance(isAddNewAddress, null), "EditAddressFragment", false);
+            replaceFragment(EditAddressFragment.newInstance(isAddNewAddress, null), EditAddressFragment.class.getName(), false);
         } else {
-            addFragment(ViewMyProfileFragment.newInstance(), "ViewMyProfileFragment", false);
+            replaceFragment(ViewMyProfileFragment.newInstance(), ViewMyProfileFragment.class.getName(), false);
         }
 
         // MyProfileViewModel myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
@@ -68,22 +68,22 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
 
     @Override
     public void gotoEditProfile() {
-        addFragment(EditMyProfileFragment.newInstance(false), "EditMyProfileFragment", true);
+        replaceFragment(EditMyProfileFragment.newInstance(false), EditMyProfileFragment.class.getName(), false);
     }
 
     @Override
     public void gotoEditAddress(AddressResponse address) {
-        addFragment(EditAddressFragment.newInstance(false, address), "EditAddressFragment", true);
+        replaceFragment(EditAddressFragment.newInstance(false, address), EditAddressFragment.class.getName(), false);
     }
 
     @Override
     public void gotoViewProfile() {
-        addFragment(ViewMyProfileFragment.newInstance(), "ViewProfile", true);
+        replaceFragment(ViewMyProfileFragment.newInstance(), ViewMyProfileFragment.class.getName(), false);
     }
 
     @Override
     public void gotoMapView() {
-        addFragment(MapsFragment.newInstance(true, "profile"), "MapsFragment", true);
+        replaceFragment(MapsFragment.newInstance(true, MapsFragment.class.getName()), "MapsFragment", true);
     }
 
     @Override
@@ -103,6 +103,16 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
 
     @Override
     public void showHamburgerIcon() {
+
+    }
+
+    @Override
+    public void showCartIcon() {
+        
+    }
+
+    @Override
+    public void hideCartIcon() {
 
     }
 }

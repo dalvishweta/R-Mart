@@ -44,7 +44,7 @@
     <string name="total_categories">%1$d Categories</string>
     <string name="category_list">My Category list</string>
     <string name="sub_category_list">My sub category list</string>
-    <string name="my_product_list">My product list</string>
+    <string name="my_product_list">My Products list</string>
     <string name="total_products">%1$d Products</string>
     <string name="total_sub_categories">6 Sub Categories</string>
     <string name="product_name">Aashirvaad Atta</string>
@@ -217,8 +217,8 @@
     <string name="aadhar_number_error">Please Enter Valid Aadhar Number</string>
     <string name="aadhar_front_image_required">Please Upload Aadhar Front Image</string>
     <string name="aadhar_back_image_required">Please Upload Aadhar Back Image</string>
-    <string name="kyc_no">KYC No</string>
-    <string name="kyc_image_required">Please Upload KYC Image</string>
+    <string name="pancard_no">Pancard No</string>
+    <string name="pancard_image_required">Please Upload PanCard Image</string>
     <string name="enter_your_kyc_number">Enter your KYC Number</string>
     <string name="my_wish_list">My Wish List</string>
     <string name="change_address">Change Address</string>
@@ -229,4 +229,6 @@
     <string name="vendor_name">Vendor Name</string>
     <string name="remove">Remove</string>
     <string name="cart">Cart</string>
+    <string name="make_payment">Make Payment</string>
+    <string name="shops_list">Shops List</string>
 </resources>

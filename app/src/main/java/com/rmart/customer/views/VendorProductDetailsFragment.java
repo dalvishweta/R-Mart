@@ -112,6 +112,17 @@ public class VendorProductDetailsFragment extends BaseFragment {
         getVendorDetails();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateToolBar();
+    }
+
+    public void updateToolBar() {
+        requireActivity().setTitle(productsShopDetailsModel.getShopName());
+        ((CustomerHomeActivity)(requireActivity())).showCartIcon();
+    }
+
     private void loadUIComponents(View view) {
         RecyclerView productsListField = view.findViewById(R.id.products_list_field);
         productsListField.setHasFixedSize(false);

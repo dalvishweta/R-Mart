@@ -16,48 +16,93 @@ import java.util.List;
  */
 public class WishListResponseDetails implements Serializable {
 
-    @SerializedName("shop_name")
+    @SerializedName("wishlist_id")
     @Expose
-    private String shopName;
-    @SerializedName("mobile_number")
+    private Integer wishListId;
+    @SerializedName("product_name")
     @Expose
-    private String mobileNumber;
-    @SerializedName("wishlist_count")
+    private String productName;
+    @SerializedName("product_image")
     @Expose
-    private Integer wishListCount;
-    @SerializedName("vendor_id")
+    private String productImage;
+    @SerializedName("product_id")
     @Expose
-    private Integer vendorId;
+    private Integer productId;
+    @SerializedName("product_expiry_date")
+    @Expose
+    private String productExpiryDate;
+    @SerializedName("units")
+    @Expose
+    private List<CustomerProductsDetailsUnitModel> units = null;
 
-    public String getShopName() {
-        return shopName;
+    public Integer getWishListId() {
+        return wishListId;
     }
 
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
+    public void setWishListId(Integer wishListId) {
+        this.wishListId = wishListId;
     }
 
-    public String getMobileNumber() {
-        return mobileNumber;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public Integer getWishListCount() {
-        return wishListCount;
+    public String getProductImage() {
+        return productImage;
     }
 
-    public void setWishListCount(Integer wishListCount) {
-        this.wishListCount = wishListCount;
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 
-    public Integer getVendorId() {
-        return vendorId;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setVendorId(Integer vendorId) {
-        this.vendorId = vendorId;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
+    public String getProductExpiryDate() {
+        return productExpiryDate;
+    }
+
+    public void setProductExpiryDate(String productExpiryDate) {
+        this.productExpiryDate = productExpiryDate;
+    }
+
+    public List<CustomerProductsDetailsUnitModel> getUnits() {
+        return units;
+    }
+
+    public void setUnits(List<CustomerProductsDetailsUnitModel> units) {
+        this.units = units;
+    }
+
+    @NotNull
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("wishListId", wishListId).toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(wishListId).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof WishListResponseDetails)) {
+            return false;
+        }
+        WishListResponseDetails rhs = ((WishListResponseDetails) other);
+        return new EqualsBuilder().append(wishListId, rhs.wishListId).isEquals();
     }
 }

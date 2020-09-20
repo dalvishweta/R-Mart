@@ -95,6 +95,17 @@ public class VendorSameProductsListScreen extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        updateToolBar();
+    }
+
+    public void updateToolBar() {
+        requireActivity().setTitle(vendorShopDetails.getShopName());
+        ((CustomerHomeActivity)(requireActivity())).showCartIcon();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadUIComponents(view);

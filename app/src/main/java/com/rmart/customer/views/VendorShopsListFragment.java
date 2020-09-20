@@ -168,6 +168,17 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
         getShopsList();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateToolBar();
+    }
+
+    public void updateToolBar() {
+        requireActivity().setTitle(getString(R.string.shops_list));
+        ((CustomerHomeActivity)(requireActivity())).showCartIcon();
+    }
+
     private CallBackInterface callBackListener = pObject -> {
         if(pObject instanceof CustomerProductsShopDetailsModel) {
             onCustomerHomeInteractionListener.gotoVendorProductDetails((CustomerProductsShopDetailsModel) pObject);

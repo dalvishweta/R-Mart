@@ -138,4 +138,14 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
         });
     }
 
+
+    @Override
+    public void showBadge(boolean b) {
+
+    }
+
+    @Override
+    public void updateBadgeCount() {
+
+    }
 }

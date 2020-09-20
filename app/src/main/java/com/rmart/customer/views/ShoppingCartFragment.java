@@ -61,7 +61,7 @@ public class ShoppingCartFragment extends BaseFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof OnCustomerHomeInteractionListener) {
+        if (context instanceof OnCustomerHomeInteractionListener) {
             onCustomerHomeInteractionListener = (OnCustomerHomeInteractionListener) context;
         }
     }
@@ -69,7 +69,12 @@ public class ShoppingCartFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        updateToolBar();
+    }
+
+    public void updateToolBar() {
         Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.shopping_cart));
+        ((CustomerHomeActivity) (requireActivity())).hideCartIcon();
         getShopWiseCartList();
     }
 
@@ -112,7 +117,7 @@ public class ShoppingCartFragment extends BaseFragment {
             shopWiseCartList.clear();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<ShoppingCartResponse> call = customerProductsService.getShoppingCartList(clientID, 192, MyProfile.getInstance().getUserID());
+            Call<ShoppingCartResponse> call = customerProductsService.getShoppingCartList(clientID, MyProfile.getInstance().getUserID());
             call.enqueue(new Callback<ShoppingCartResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<ShoppingCartResponse> call, @NotNull Response<ShoppingCartResponse> response) {

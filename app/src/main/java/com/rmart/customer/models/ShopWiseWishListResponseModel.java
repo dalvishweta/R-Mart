@@ -13,18 +13,18 @@ public class ShopWiseWishListResponseModel extends BaseResponse {
 
     @SerializedName("data")
     @Expose
-    private ShopWiseWishListResponseModel.WishListResponseDataResponse wishListResponseDataResponse;
+    private ShopWiseWishListResponseModel.ShopWiseWishListDataResponse shopWiseWishListDataResponse;
 
-    public WishListResponseDataResponse getWishListResponseDataResponse() {
-        return wishListResponseDataResponse;
+    public ShopWiseWishListDataResponse getShopWiseWishListDataResponse() {
+        return shopWiseWishListDataResponse;
     }
 
-    public void setWishListResponseDataResponse(WishListResponseDataResponse wishListResponseDataResponse) {
-        this.wishListResponseDataResponse = wishListResponseDataResponse;
+    public void setShopWiseWishListDataResponse(ShopWiseWishListDataResponse shopWiseWishListDataResponse) {
+        this.shopWiseWishListDataResponse = shopWiseWishListDataResponse;
     }
 
-    public static class WishListResponseDataResponse {
-        @SerializedName("cart_data")
+    public static class ShopWiseWishListDataResponse {
+        @SerializedName("shop_wise_wishlist_data")
         @Expose
         private List<ShopWiseWishListResponseDetails> shopWiseWishListResponseDetailsList;
 

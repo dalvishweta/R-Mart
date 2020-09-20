@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerWishListInteractionListener;
-import com.rmart.customer.adapters.WishListAdapter;
-import com.rmart.customer.models.WishListResponseDetails;
-import com.rmart.customer.models.WishListResponseModel;
+import com.rmart.customer.adapters.ShopWiseWishListAdapter;
+import com.rmart.customer.models.ShopWiseWishListResponseDetails;
+import com.rmart.customer.models.ShopWiseWishListResponseModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RecyclerTouchListener;
@@ -40,8 +40,8 @@ import retrofit2.Response;
  */
 public class CustomerWishListFragment extends BaseFragment {
 
-    private RecyclerView wishListField;
-    private List<WishListResponseDetails> wishListCart;
+    private RecyclerView shopWiseWishListField;
+    private List<ShopWiseWishListResponseDetails> wishListCart;
     private OnCustomerWishListInteractionListener onCustomerWishListInteractionListener;
 
     public static CustomerWishListFragment getInstance() {
@@ -81,23 +81,21 @@ public class CustomerWishListFragment extends BaseFragment {
     }
 
     private void loadUIComponents(View view) {
-        wishListField = view.findViewById(R.id.wish_list_field);
-        wishListField.setHasFixedSize(false);
+        shopWiseWishListField = view.findViewById(R.id.wish_list_field);
+        shopWiseWishListField.setHasFixedSize(false);
 
         wishListCart = new ArrayList<>();
 
         DividerItemDecoration divider = new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(requireActivity(), R.drawable.recycler_decoration_divider_transparent)));
-        wishListField.addItemDecoration(divider);
+        shopWiseWishListField.addItemDecoration(divider);
 
-        view.findViewById(R.id.btn_proceed_to_buy_field).setOnClickListener(v -> proceedToBuySelected());
-
-        wishListField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), "", wishListField, new RecyclerTouchListener.ClickListener() {
+        shopWiseWishListField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), "", shopWiseWishListField, new RecyclerTouchListener.ClickListener() {
 
             @Override
             public void onClick(View view, int position) {
-                WishListResponseDetails selectedWishListDetails = wishListCart.get(position);
-                shopDetailsSelected(selectedWishListDetails.getVendorId());
+                ShopWiseWishListResponseDetails selectedWishListDetails = wishListCart.get(position);
+                shopDetailsSelected(selectedWishListDetails);
             }
 
             @Override
@@ -113,16 +111,16 @@ public class CustomerWishListFragment extends BaseFragment {
             wishListCart.clear();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<WishListResponseModel> call = customerProductsService.getShowWishListData(clientID, MyProfile.getInstance().getUserID());
-            call.enqueue(new Callback<WishListResponseModel>() {
+            Call<ShopWiseWishListResponseModel> call = customerProductsService.getShowShopWiseWishListData(clientID, MyProfile.getInstance().getUserID());
+            call.enqueue(new Callback<ShopWiseWishListResponseModel>() {
                 @Override
-                public void onResponse(@NotNull Call<WishListResponseModel> call, @NotNull Response<WishListResponseModel> response) {
+                public void onResponse(@NotNull Call<ShopWiseWishListResponseModel> call, @NotNull Response<ShopWiseWishListResponseModel> response) {
                     progressDialog.dismiss();
                     if (response.isSuccessful()) {
-                        WishListResponseModel body = response.body();
+                        ShopWiseWishListResponseModel body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                List<WishListResponseDetails> shopWiseCartList = body.getWishListResponseDataResponse().getWishListResponseDetails();
+                                List<ShopWiseWishListResponseDetails> shopWiseCartList = body.getShopWiseWishListDataResponse().getShopWiseWishListResponseDetailsList();
                                 if (shopWiseCartList != null && !shopWiseCartList.isEmpty()) {
                                     wishListCart.addAll(shopWiseCartList);
                                     setAdapter(body.getMsg());
@@ -141,7 +139,7 @@ public class CustomerWishListFragment extends BaseFragment {
                 }
 
                 @Override
-                public void onFailure(@NotNull Call<WishListResponseModel> call, @NotNull Throwable t) {
+                public void onFailure(@NotNull Call<ShopWiseWishListResponseModel> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
                     showCloseDialog(null, t.getMessage());
                 }
@@ -155,18 +153,14 @@ public class CustomerWishListFragment extends BaseFragment {
         showDialog(title, message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
-    private void shopDetailsSelected(int vendorId) {
-        onCustomerWishListInteractionListener.gotoWishListDetailsScreen(vendorId);
-    }
-
-    private void proceedToBuySelected() {
-
+    private void shopDetailsSelected(ShopWiseWishListResponseDetails shopWiseWishListResponseDetails) {
+        onCustomerWishListInteractionListener.gotoWishListDetailsScreen(shopWiseWishListResponseDetails);
     }
 
     private void setAdapter(String message) {
         if (!wishListCart.isEmpty()) {
-            WishListAdapter wishListAdapter = new WishListAdapter(requireActivity(), wishListCart);
-            wishListField.setAdapter(wishListAdapter);
+            ShopWiseWishListAdapter wishListAdapter = new ShopWiseWishListAdapter(requireActivity(), wishListCart);
+            shopWiseWishListField.setAdapter(wishListAdapter);
         } else {
             showCloseDialog(null, message);
         }

@@ -21,6 +21,8 @@ import com.rmart.baseclass.Constants;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
+import com.rmart.customer.models.WishListResponseDetails;
+import com.rmart.customer.models.WishListResponseModel;
 import com.rmart.utilits.HttpsTrustManager;
 
 import java.util.List;
@@ -30,12 +32,12 @@ import java.util.List;
  */
 public class CustomerWishListDetailsAdapter extends RecyclerView.Adapter<CustomerWishListDetailsAdapter.ViewHolder> {
 
-    private List<ShopWiseWishListResponseDetails> listData;
+    private List<WishListResponseDetails> listData;
     private ImageLoader imageLoader;
     private LayoutInflater layoutInflater;
     private CallBackInterface callBackListener;
 
-    public CustomerWishListDetailsAdapter(Context context, List<ShopWiseWishListResponseDetails> listData, CallBackInterface callBackListener) {
+    public CustomerWishListDetailsAdapter(Context context, List<WishListResponseDetails> listData, CallBackInterface callBackListener) {
         layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
         imageLoader = RMartApplication.getInstance().getImageLoader();
@@ -49,6 +51,10 @@ public class CustomerWishListDetailsAdapter extends RecyclerView.Adapter<Custome
         return new ViewHolder(itemView);
     }
 
+    public void updateItems(List<WishListResponseDetails> listData) {
+        this.listData = listData;
+    }
+
     @Override
     public int getItemCount() {
         return listData.size();
@@ -56,8 +62,7 @@ public class CustomerWishListDetailsAdapter extends RecyclerView.Adapter<Custome
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        ShopWiseWishListResponseDetails dataObject = listData.get(position);
+        WishListResponseDetails dataObject = listData.get(position);
         String productImageUrl = dataObject.getProductImage();
         if (!TextUtils.isEmpty(productImageUrl)) {
             HttpsTrustManager.allowAllSSL();
@@ -107,7 +112,7 @@ public class CustomerWishListDetailsAdapter extends RecyclerView.Adapter<Custome
 
             btnAddToCartField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
-                ShopWiseWishListResponseDetails selectedDetails = listData.get(tag);
+                WishListResponseDetails selectedDetails = listData.get(tag);
                 ContentModel contentModel = new ContentModel();
                 contentModel.setStatus(Constants.TAG_ADD_TO_CART);
                 contentModel.setValue(selectedDetails);
@@ -116,7 +121,7 @@ public class CustomerWishListDetailsAdapter extends RecyclerView.Adapter<Custome
 
             btnRemoveField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
-                ShopWiseWishListResponseDetails selectedDetails = listData.get(tag);
+                WishListResponseDetails selectedDetails = listData.get(tag);
                 ContentModel contentModel = new ContentModel();
                 contentModel.setStatus(Constants.TAG_REMOVE);
                 contentModel.setValue(selectedDetails);

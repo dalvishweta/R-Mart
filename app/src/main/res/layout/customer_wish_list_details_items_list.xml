@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/grey_rounded_borders_bg_three"
-    android:minHeight="200dp">
+    android:minHeight="170dp">
 
     <TextView
         android:id="@+id/tv_product_discount_field"
@@ -18,8 +18,8 @@
 
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/iv_product_image_field"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:contentDescription="@string/app_name"
@@ -27,14 +27,13 @@
 
     <TextView
         android:id="@+id/tv_product_name_field"
-        style="@style/text_style_small"
+        style="@style/text_style_medium_normal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/iv_product_image_field"
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:maxLines="2"
-        android:minHeight="40dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:textColor="@color/black" />
@@ -78,6 +77,7 @@
         android:layout_below="@id/price_details_layout"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/add_to_cart_gradient"
         android:text="@string/add_to_cart"
         android:textAllCaps="false"
@@ -97,5 +97,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:layout_below="@id/btn_delete_product_field" />
+        android:layout_below="@id/btn_remove_product_field" />
 </RelativeLayout>

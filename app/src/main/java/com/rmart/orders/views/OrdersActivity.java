@@ -73,4 +73,14 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
             getToActivity(view.getId(), true);
         }
     }
+
+    @Override
+    public void showBadge(boolean b) {
+
+    }
+
+    @Override
+    public void updateBadgeCount() {
+
+    }
 }

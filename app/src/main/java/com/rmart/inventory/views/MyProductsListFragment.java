@@ -27,6 +27,8 @@ import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.pojos.ShowProductResponse;
 import com.rmart.utilits.services.VendorInventoryService;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -42,7 +44,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     private String mParam1;
     private String mParam2;
     private RecyclerView productRecycleView;
-    ProductAdapter productAdapter;
+    private ProductAdapter productAdapter;
     private AppCompatTextView tvTotalCount;
     LinearLayout addProduct;
     PopupMenu popup;
@@ -51,7 +53,6 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     ProductListResponse productList;
-    APIStockListResponse apiStockListResponse;
     public MyProductsListFragment() {
         // Required empty public constructor
     }
@@ -142,12 +143,12 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         progressDialog.show();
         vendorInventoryService.getProductList("0", MyProfile.getInstance().getMobileNumber(), "1,2,3,4,5,6,7").enqueue(new Callback<ProductListResponse>() {
             @Override
-            public void onResponse(Call<ProductListResponse> call, Response<ProductListResponse> response) {
-                if(response.isSuccessful()) {
+            public void onResponse(@NotNull Call<ProductListResponse> call, @NotNull Response<ProductListResponse> response) {
+                if (response.isSuccessful()) {
                     productList = response.body();
                     assert productList != null;
                     if (productList.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        if(productList.getProductResponses().size()<=0) {
+                        if (productList.getProductResponses().size() <= 0) {
                             mListener.addProductToInventory();
                         } else {
 
@@ -169,9 +170,9 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
             }
 
             @Override
-            public void onFailure(Call<ProductListResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<ProductListResponse> call, @NotNull Throwable t) {
                 showDialog("", t.getMessage());
-                if(mSwipeRefreshLayout.isRefreshing()) {
+                if (mSwipeRefreshLayout.isRefreshing()) {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
                 progressDialog.dismiss();
@@ -211,16 +212,18 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                 ProductResponse product = (ProductResponse)view1.getTag();
                 vendorInventoryService.getProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<ShowProductResponse>() {
                     @Override
-                    public void onResponse(Call<ShowProductResponse> call, Response<ShowProductResponse> response) {
+                    public void onResponse(@NotNull Call<ShowProductResponse> call, @NotNull Response<ShowProductResponse> response) {
                         if (response.isSuccessful()) {
                             ShowProductResponse data = response.body();
-                            assert data != null;
-                            if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                ProductResponse response1 = data.getProductResponse();
-                                // inventoryViewModel.setSelectedProduct(response1.getProductID());
-                                mListener.showProductPreview(response1, true);
+                            if (data != null) {
+                                if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                    ProductResponse response1 = data.getProductResponse();
+                                    // inventoryViewModel.setSelectedProduct(response1.getProductID());
+                                    mListener.showProductPreview(response1, true);
+                                }
+                            } else {
+                                showDialog(getString(R.string.no_information_available));
                             }
-
                         } else {
                             showDialog("", "");
                         }
@@ -228,7 +231,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                     }
 
                     @Override
-                    public void onFailure(Call<ShowProductResponse> call, Throwable t) {
+                    public void onFailure(@NotNull Call<ShowProductResponse> call, @NotNull Throwable t) {
                         showDialog("", t.getMessage());
                         progressDialog.dismiss();
                     }

@@ -9,4 +9,6 @@ public class Constants {
     public static final String TAG_ADD_TO_CART = "add_to_cart";
     public static final String TAG_REMOVE = "remove";
     public static final String TAG_VIEW_ALL = "view_all";
+
+    public static final int JOB_INSTANT_MESSENGER = 1;
 }

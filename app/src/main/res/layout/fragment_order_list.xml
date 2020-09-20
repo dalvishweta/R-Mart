@@ -14,8 +14,8 @@
         android:gravity="center|start"
         android:fontFamily="@font/roboto_regular"
         android:textSize="16sp"
-        android:textColor="@color/black"
-        android:text="@string/total_orders" />
+        android:textColor="@color/black" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/order_list"
         android:layout_marginStart="16dp"
@@ -25,6 +25,6 @@
         android:layout_width="match_parent"
         tools:listitem="@layout/item_order_list"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>

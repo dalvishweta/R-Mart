@@ -1,6 +1,5 @@
 package com.rmart.inventory.adapters;
 
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -8,13 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.inventory.views.viewholders.ProductViewHolder;
@@ -24,21 +22,24 @@ import com.rmart.utilits.pojos.ProductResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>  implements Filterable {
+public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> implements Filterable {
 
-    View.OnClickListener onClickListener;
-    ArrayList<ProductResponse> productList;
+    private View.OnClickListener onClickListener;
+    private ArrayList<ProductResponse> productList;
     private List<ProductResponse> filteredListData;
     private MyFilter myFilter;
-    int columnCount;
+    private int columnCount;
+    private ImageLoader imageLoader;
 
     public ProductAdapter(ArrayList<ProductResponse> productList, View.OnClickListener onClickListener, int columnCount) {
-        this.onClickListener =onClickListener;
+        this.onClickListener = onClickListener;
         this.productList = productList;
         this.columnCount = columnCount;
         this.filteredListData = new ArrayList<>();
         this.filteredListData.addAll(productList);
+        imageLoader = RMartApplication.getInstance().getImageLoader();
     }
+
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -72,26 +73,28 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>  imp
             holder.tvOffer.setVisibility(View.GONE);
             try {
                 int discount = Integer.parseInt(product.getUnitObjects().get(0).getDiscount());
-                if (discount>0) {
+                if (discount > 0) {
                     holder.tvOffer.setVisibility(View.VISIBLE);
                 }
-
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            holder.availableUnits. setText(String.format(holder.itemView.getContext().getString(R.string.available_other_sizes), product.getUnitObjects().size()+""));
-            updateImage(product.getDisplayImage(), holder.itemImg);
-            holder.tvActual.setText(Html.fromHtml("<strike> " + product.getUnitObjects().get(0).getActualCost()+" </strike>"));
+            holder.availableUnits.setText(String.format(holder.itemView.getContext().getString(R.string.available_other_sizes), product.getUnitObjects().size() + ""));
+            //holder.tvActual.setText(Html.fromHtml("<strike> " + product.getUnitObjects().get(0).getActualCost()+" </strike>"));
+            holder.tvActual.setText(HtmlCompat.fromHtml("<strike> " + product.getUnitObjects().get(0).getActualCost() + " </strike>", HtmlCompat.FROM_HTML_MODE_LEGACY));
             holder.tvFinalCost.setText(product.getUnitObjects().get(0).getFinalCost());
             holder.tvUnitValue.setText(product.getUnitObjects().get(0).getUnit_number());
-            holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer), product.getUnitObjects().get(0).getDiscount()+"%"));
-            //updateImage();
-
+            holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer), product.getUnitObjects().get(0).getDiscount() + "%"));
         } else {
-            holder.availableUnits. setVisibility(View.GONE);
+            holder.availableUnits.setVisibility(View.GONE);
             holder.unitView.setVisibility(View.GONE);
             holder.tvOffer.setVisibility(View.GONE);
+        }
+        String imageUrl = product.getDisplayImage();
+        if (!TextUtils.isEmpty(imageUrl)) {
+            HttpsTrustManager.allowAllSSL();
+            imageLoader.get(imageUrl, ImageLoader.getImageListener(holder.itemImg, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
+            holder.itemImg.setImageUrl(imageUrl, RMartApplication.getInstance().getImageLoader());
         }
     }
 
@@ -130,13 +133,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder>  imp
         protected void publishResults(CharSequence constraint, FilterResults results) {
             filteredListData = (List<ProductResponse>) results.values;
             notifyDataSetChanged();
-        }
-    }
-    private void updateImage(String imageUrl, NetworkImageView imageView) {
-        if (!TextUtils.isEmpty(imageUrl)) {
-            HttpsTrustManager.allowAllSSL();
-            RMartApplication.getInstance().getImageLoader().get(imageUrl, ImageLoader.getImageListener(imageView, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
-            imageView.setImageUrl(imageUrl, RMartApplication.getInstance().getImageLoader());
         }
     }
 }

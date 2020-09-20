@@ -10,7 +10,6 @@
             android:layout_marginStart="8dp"
             android:id="@+id/category_count"
             android:layout_alignParentStart="true"
-            android:text="@string/total_products"
             android:fontFamily="@font/roboto_regular"
             android:textSize="@dimen/text_regular_size"
             android:layout_centerVertical="true"
@@ -26,13 +25,13 @@
             android:queryHint="Search Here"
             android:iconifiedByDefault="false"
             android:focusable="false"
-            android:layout_centerVertical="true"
-            />
+            android:layout_centerVertical="true" />
         <ImageView
             android:layout_marginEnd="8dp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:id="@+id/sort"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

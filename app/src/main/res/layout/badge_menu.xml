@@ -12,6 +12,7 @@
         android:layout_height="25dp"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
+        android:clickable="false"
         android:contentDescription="@string/app_name"
         android:src="@drawable/shopping_cart" />
 
@@ -26,6 +27,7 @@
         android:background="@drawable/theme_color_rounded_circle"
         android:gravity="center"
         android:minWidth="20dp"
+        android:clickable="false"
         android:minHeight="20dp"
         android:textColor="@color/white"
         tools:ignore="RelativeOverlap,SmallSp" />

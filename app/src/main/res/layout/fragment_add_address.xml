@@ -118,12 +118,12 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/tv_kyc_no_field"
+                    android:id="@+id/tv_pan_card_no_field"
                     style="@style/my_profile_tv"
                     android:drawableStart="@drawable/user"
-                    android:hint="@string/kyc_no"
-                    android:inputType="number"
-                    android:maxLength="12" />
+                    android:hint="@string/pancard_no"
+                    android:inputType="textCapSentences"
+                    android:maxLength="10" />
 
                 <androidx.cardview.widget.CardView
                     app:cardCornerRadius="8dp"
@@ -134,7 +134,7 @@
                     android:elevation="10dp">
 
                     <ImageView
-                        android:id="@+id/iv_kyc_no_image_field"
+                        android:id="@+id/iv_pan_card_no_image_field"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:contentDescription="@string/app_name"
@@ -147,6 +147,7 @@
                 android:id="@+id/street_address"
                 android:drawableStart="@drawable/user"
                 style="@style/my_profile_tv"
+                android:layout_marginTop="10dp"
                 android:inputType="text"/>
             <androidx.appcompat.widget.AppCompatEditText
                 android:hint="@string/city"

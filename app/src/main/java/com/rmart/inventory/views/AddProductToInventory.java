@@ -39,6 +39,8 @@ import com.rmart.utilits.pojos.ShowProductResponse;
 import com.rmart.utilits.services.APIService;
 import com.rmart.utilits.services.VendorInventoryService;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -126,16 +128,17 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         progressDialog.show();
         apiService.getAPIBrandList().enqueue(new Callback<APIBrandListResponse>() {
             @Override
-            public void onResponse(Call<APIBrandListResponse> call, Response<APIBrandListResponse> response) {
-                if(response.isSuccessful()) {
+            public void onResponse(@NotNull Call<APIBrandListResponse> call, @NotNull Response<APIBrandListResponse> response) {
+                if (response.isSuccessful()) {
                     APIBrandListResponse data = response.body();
-                    assert data != null;
-                    apiBrandResponses = data.getArrayList();
-                    for ( APIBrandResponse apiBrandResponse: apiBrandResponses) {
-                        availableBrands.add(apiBrandResponse.getBrandName());
+                    if (data != null) {
+                        apiBrandResponses = data.getArrayList();
+                        for (APIBrandResponse apiBrandResponse : apiBrandResponses) {
+                            availableBrands.add(apiBrandResponse.getBrandName());
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
                     }
-                    // customStringAdapter = new CustomStringAdapter(availableBrands, getActivity());
-                    //productBrand.setAdapter(customStringAdapter);
                 } else {
                     showDialog("", response.message());
                 }
@@ -143,7 +146,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             }
 
             @Override
-            public void onFailure(Call<APIBrandListResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<APIBrandListResponse> call, @NotNull Throwable t) {
                 showDialog("", t.getMessage());
                 progressDialog.dismiss();
             }
@@ -154,12 +157,14 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         progressDialog.show();
         apiService.getAPIUnitMeasureList().enqueue(new Callback<APIUnitMeasureListResponse>() {
             @Override
-            public void onResponse(Call<APIUnitMeasureListResponse> call, Response<APIUnitMeasureListResponse> response) {
-                if(response.isSuccessful()) {
+            public void onResponse(@NotNull Call<APIUnitMeasureListResponse> call, @NotNull Response<APIUnitMeasureListResponse> response) {
+                if (response.isSuccessful()) {
                     APIUnitMeasureListResponse data = response.body();
-                    assert data != null;
-                    unitMeasurements = data.getArrayList();
-
+                    if (data != null) {
+                        unitMeasurements = data.getArrayList();
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
+                    }
                 } else {
                     showDialog("", response.message());
                 }
@@ -167,7 +172,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             }
 
             @Override
-            public void onFailure(Call<APIUnitMeasureListResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<APIUnitMeasureListResponse> call, @NotNull Throwable t) {
                 showDialog("", t.getMessage());
                 progressDialog.dismiss();
             }

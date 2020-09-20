@@ -6,4 +6,8 @@ public interface BaseListener {
 
     void hideHamburgerIcon();
     void showHamburgerIcon();
+
+    void showCartIcon();
+
+    void hideCartIcon();
 }

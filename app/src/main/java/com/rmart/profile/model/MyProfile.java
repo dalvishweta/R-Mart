@@ -17,7 +17,7 @@ public class MyProfile {
     public static final String RETAILER = "Retailer";
     public static final String CUSTOMER = "Customer";
 
-    private String UserID;
+    private String userID;
     private String firstName;
     private String lastName;
     private String gender;
@@ -39,7 +39,7 @@ public class MyProfile {
 
     public static void setInstance(ProfileResponse profileResponse) {
         myProfile = new MyProfile();
-        myProfile.UserID = profileResponse.getUserID();
+        myProfile.userID = profileResponse.getUserID();
         myProfile.firstName = profileResponse.getFirstName();
         myProfile.lastName = profileResponse.getLastName();
         myProfile.gender = profileResponse.getGender();
@@ -50,17 +50,17 @@ public class MyProfile {
         myProfile.profileImage = profileResponse.getProfileImage();
         myProfile.roleID = profileResponse.getRoleID();
         myProfile.primaryAddressId = profileResponse.getPrimaryAddressId();
-        if(profileResponse.getAddressResponses().size()>0) {
+        if(profileResponse.getAddressResponses().size() > 0) {
             myProfile.setAddressResponses(profileResponse.getAddressResponses());
         }
 
     }
     public String getUserID() {
-        return UserID;
+        return userID;
     }
 
     public void setUserID(String userID) {
-        UserID = userID;
+        userID = userID;
     }
 
     public String getFirstName() {

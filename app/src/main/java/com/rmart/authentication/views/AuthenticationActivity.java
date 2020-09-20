@@ -45,6 +45,16 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     }
 
     @Override
+    public void showCartIcon() {
+
+    }
+
+    @Override
+    public void hideCartIcon() {
+
+    }
+
+    @Override
     public void goToHomeActivity() {
         Intent intent = new Intent(AuthenticationActivity.this, OrdersActivity.class);
         startActivity(intent);

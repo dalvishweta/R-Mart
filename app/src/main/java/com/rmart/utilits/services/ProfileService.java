@@ -13,20 +13,22 @@ public interface ProfileService {
     @FormUrlEncoded
     @POST(BuildConfig.ADD_ADDRESS)
     Call<AddressListResponse> addAddress(@Field("shop_name") String shopName,
-                                     @Field("pan_no") String panNO,
-                                     @Field("gstin_no") String gstIN,
-                                     @Field("store_number") String storeNumber,
-                                     @Field("address") String address,
-                                     @Field("city") String city,
-                                     @Field("state") String state,
-                                     @Field("pincode") String pinCode,
-                                     @Field("latitude") String latitude,
-                                     @Field("longitude") String longitude,
-                                     @Field("user_id") String userID,
-                                     @Field("role_id") String roleID,
-                                     @Field("delivery_radius") String deliveryRadius,
-                                     @Field("client_id") String client_id
-    );
+                                         @Field("pan_no") String panNO,
+                                         @Field("gstin_no") String gstIN,
+                                         @Field("store_number") String storeNumber,
+                                         @Field("address") String address,
+                                         @Field("city") String city,
+                                         @Field("state") String state,
+                                         @Field("pincode") String pinCode,
+                                         @Field("latitude") String latitude,
+                                         @Field("longitude") String longitude,
+                                         @Field("user_id") String userID,
+                                         @Field("role_id") String roleID,
+                                         @Field("delivery_radius") String deliveryRadius,
+                                         @Field("client_id") String client_id,
+                                         @Field("aadhar_front_image") String aadharFrontImage,
+                                         @Field("aadhar_back_image") String aadharBackImage,
+                                         @Field("pancard_image") String panCardImage);
 
     @FormUrlEncoded
     @POST(BuildConfig.UPDATE_ADDRESS)

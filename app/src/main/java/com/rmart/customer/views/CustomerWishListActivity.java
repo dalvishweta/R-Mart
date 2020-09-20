@@ -9,6 +9,7 @@ import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.CustomerWishListDetailsFragment;
 import com.rmart.customer.OnCustomerWishListInteractionListener;
+import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 
 /**
  * Created by Satya Seshu on 17/09/20.
@@ -52,7 +53,7 @@ public class CustomerWishListActivity extends BaseNavigationDrawerActivity imple
     }
 
     @Override
-    public void gotoWishListDetailsScreen(int vendorId) {
-        addFragment(CustomerWishListDetailsFragment.getInstance(vendorId), CustomerWishListDetailsFragment.class.getName(), true);
+    public void gotoWishListDetailsScreen(ShopWiseWishListResponseDetails shopWiseWishListResponseDetails) {
+        addFragment(CustomerWishListDetailsFragment.getInstance(shopWiseWishListResponseDetails), CustomerWishListDetailsFragment.class.getName(), true);
     }
 }

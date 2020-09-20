@@ -84,4 +84,14 @@ public class SplashScreen extends BaseActivity {
     public void showHamburgerIcon() {
 
     }
+
+    @Override
+    public void showCartIcon() {
+
+    }
+
+    @Override
+    public void hideCartIcon() {
+
+    }
 }

@@ -50,12 +50,12 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     LinearLayout mRetailerView;
     AddressViewModel addressViewModel;
     AddressResponse myAddress;
-    private AppCompatEditText tvAadharNoField, tvKycNoField;
-    private ImageView ivAadharFrontImageField, ivAadharBackImageField, ivKycImageField;
+    private AppCompatEditText tvAadharNoField, tvPanCardNoField;
+    private ImageView ivAadharFrontImageField, ivAadharBackImageField, ivPanCardImageField;
     private boolean aadharFrontSelected = false;
     private boolean aadharBackSelected = false;
-    private boolean kycSelected = false;
-    private Bitmap aadharFrontImageBitmap, aadharBackImageBitmap, kycImageBitmap;
+    private boolean panCardSelected = false;
+    private Bitmap aadharFrontImageBitmap, aadharBackImageBitmap, panCardImageBitmap;
     private boolean isAddNewAddress;
 
     public EditAddressFragment() {
@@ -106,14 +106,14 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         tvCity = view.findViewById(R.id.city);
         ivAadharFrontImageField = view.findViewById(R.id.iv_aadhar_front_image_field);
         ivAadharBackImageField = view.findViewById(R.id.iv_aadhar_back_image_field);
-        ivKycImageField = view.findViewById(R.id.iv_kyc_no_image_field);
+        ivPanCardImageField = view.findViewById(R.id.iv_pan_card_no_image_field);
         tvAadharNoField = view.findViewById(R.id.tv_aadhar_number_no_field);
-        tvKycNoField = view.findViewById(R.id.tv_kyc_no_field);
+        tvPanCardNoField = view.findViewById(R.id.tv_pan_card_no_field);
 
         view.findViewById(R.id.add_address).setOnClickListener(this);
         ivAadharFrontImageField.setOnClickListener(this);
         ivAadharBackImageField.setOnClickListener(this);
-        ivKycImageField.setOnClickListener(this);
+        ivPanCardImageField.setOnClickListener(this);
         updateUI();
     }
 
@@ -155,7 +155,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     private void resetImageFields() {
         aadharFrontSelected = false;
         aadharBackSelected = false;
-        kycSelected = false;
+        panCardSelected = false;
     }
 
     @Override
@@ -175,9 +175,9 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 aadharBackSelected = true;
                 capturePhotoSelected();
                 break;
-            case R.id.iv_kyc_no_image_field:
+            case R.id.iv_pan_card_no_image_field:
                 resetImageFields();
-                kycSelected = false;
+                panCardSelected = true;
                 capturePhotoSelected();
                 break;
             default:
@@ -206,9 +206,9 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                             } else if (aadharBackSelected) {
                                 aadharBackImageBitmap = BitmapFactory.decodeStream(imageStream);
                                 ivAadharBackImageField.setImageBitmap(aadharBackImageBitmap);
-                            } else if (kycSelected) {
-                                kycImageBitmap = BitmapFactory.decodeStream(imageStream);
-                                ivKycImageField.setImageBitmap(kycImageBitmap);
+                            } else if (panCardSelected) {
+                                panCardImageBitmap = BitmapFactory.decodeStream(imageStream);
+                                ivPanCardImageField.setImageBitmap(panCardImageBitmap);
                             }
                         }
                     } catch (Exception ex) {
@@ -256,13 +256,13 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 showDialog(getString(R.string.aadhar_back_image_required));
                 return;
             }
-            String kycNo = Objects.requireNonNull(tvKycNoField.getText()).toString().trim();
-            if (TextUtils.isEmpty(kycNo)) {
+            String panCardNo = Objects.requireNonNull(tvPanCardNoField.getText()).toString().trim();
+            if (TextUtils.isEmpty(panCardNo)) {
                 showDialog(getString(R.string.enter_your_kyc_number));
                 return;
             }
-            if (kycImageBitmap == null) {
-                showDialog(getString(R.string.kyc_image_required));
+            if (panCardImageBitmap == null) {
+                showDialog(getString(R.string.pancard_image_required));
                 return;
             }
         }
@@ -274,15 +274,18 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             profileService.addAddress(myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                     myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                     myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
-                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID).enqueue(new Callback<AddressListResponse>() {
+                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, getEncodedImage(aadharFrontImageBitmap),
+                    getEncodedImage(aadharBackImageBitmap), getEncodedImage(panCardImageBitmap)).enqueue(new Callback<AddressListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
                     if (response.isSuccessful()) {
                         AddressListResponse data = response.body();
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                MyProfile.getInstance().setAddressResponses(data.getResponse());
-                                Objects.requireNonNull(requireActivity()).onBackPressed();
+                                showDialog(data.getMsg(), pObject -> {
+                                    MyProfile.getInstance().setAddressResponses(data.getResponse());
+                                    Objects.requireNonNull(requireActivity()).onBackPressed();
+                                });
                             } else {
                                 myAddress = null;
                                 showDialog("", data.getMsg());

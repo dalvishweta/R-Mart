@@ -52,9 +52,10 @@ android {
         buildConfigField("String", "VENDOR_ADD_TO_CART", '"customer/VendorShop/addToCart"')
         buildConfigField("String", "VENDOR_REMOVE_FROM_CART", '"customer/VendorShop/deleteAddToCart"')
         buildConfigField("String", "VENDORS_SHOW_SHOP_WISE_CART", '"customer/VendorShop/showShopWiseCart"')
-        buildConfigField("String", "VENDORS_SHOW_SHOP_WISE_WISH_LIST_CART", '"customer/VendorShop/showWishlistData"')
-        buildConfigField("String", "VENDORS_SHOW_WISH_LIST_CART", '"customer/VendorShop/showShopWiseWishlist"')
-        //showShopWiseWishlist
+        buildConfigField("String", "VENDORS_SHOW_WISH_LIST_CART", '"customer/VendorShop/showWishlistData"')
+        buildConfigField("String", "VENDORS_SHOW_SHOP_WISE_WISH_LIST_CART", '"customer/VendorShop/showShopWiseWishlist"')
+        buildConfigField("String", "VENDORS_SAVE_PLACE_ORDER", '"customer/VendorShop/savePlaceOrder"')
+        //
 
         /*Vendor inventory services*/
 

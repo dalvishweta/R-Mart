@@ -20,9 +20,12 @@ import com.rmart.customer.adapters.CustomerWishListDetailsAdapter;
 import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
+import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
-import com.rmart.customer.models.ShopWiseWishListResponseModel;
+import com.rmart.customer.models.WishListResponseDetails;
+import com.rmart.customer.models.WishListResponseModel;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.BaseResponse;
@@ -32,8 +35,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
+import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,18 +48,21 @@ import retrofit2.Response;
  */
 public class CustomerWishListDetailsFragment extends BaseFragment {
 
-    private RecyclerView productsListField;
-    private TextView tvShopNameField;
     private TextView tvNoOfProductsField;
-    private List<ShopWiseWishListResponseDetails> wishListCart;
+    private List<WishListResponseDetails> wishListCart;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
-    private int vendorId;
+    private ShopWiseWishListResponseDetails vendorShopDetails;
     private CustomerWishListDetailsAdapter customerWishListDetailsAdapter;
+    private int totalWishListCount = 0;
+    private int currentPage = 0;
+    private boolean isLoading = false;
+    private boolean isLastPage = false;
+    private int PAGE_SIZE = 20;
 
-    public static CustomerWishListDetailsFragment getInstance(int vendorId) {
+    public static CustomerWishListDetailsFragment getInstance(ShopWiseWishListResponseDetails vendorShopDetails) {
         CustomerWishListDetailsFragment customerWishListDetailsFragment = new CustomerWishListDetailsFragment();
         Bundle extras = new Bundle();
-        extras.putInt("VendorId", vendorId);
+        extras.putSerializable("VendorShopDetails", vendorShopDetails);
         customerWishListDetailsFragment.setArguments(extras);
         return customerWishListDetailsFragment;
     }
@@ -64,7 +72,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle extras = getArguments();
         if (extras != null) {
-            vendorId = extras.getInt("VendorId");
+            vendorShopDetails = (ShopWiseWishListResponseDetails) extras.getSerializable("VendorShopDetails");
         }
     }
 
@@ -72,6 +80,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        LoggerInfo.printLog("Fragment", "CustomerWishListDetailsFragment");
         return inflater.inflate(R.layout.fragment_customer_wish_list_details, container, false);
     }
 
@@ -93,24 +102,77 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadUIComponents(view);
+    }
 
+    private void loadUIComponents(View view) {
+        RecyclerView productsListField = view.findViewById(R.id.products_list_field);
+        TextView tvShopNameField = view.findViewById(R.id.tv_shop_name_field);
+        tvNoOfProductsField = view.findViewById(R.id.tv_no_of_products_field);
+
+        tvShopNameField.setText(vendorShopDetails.getShopName());
+
+        productsListField.setHasFixedSize(false);
+
+        wishListCart = new ArrayList<>();
+
+        GridLayoutManager layoutManager = new GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false);
+        productsListField.setLayoutManager(layoutManager);
+
+        productsListField.setHasFixedSize(false);
+        productsListField.setItemAnimator(new SlideInDownAnimator());
+        productsListField.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+                if (!isLoading && !isLastPage) {
+                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                            && totalItemCount >= PAGE_SIZE) {
+                        loadMoreItems();
+                    }
+                }
+            }
+        });
+
+        customerWishListDetailsAdapter = new CustomerWishListDetailsAdapter(requireActivity(), wishListCart, callBackListener);
+        productsListField.setAdapter(customerWishListDetailsAdapter);
+
+        getWishListDetails();
+    }
+
+    private void loadMoreItems() {
+        isLoading = true;
+        currentPage += 1;
+        getWishListDetails();
+    }
+
+    private void getWishListDetails() {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<ShopWiseWishListResponseModel> call = customerProductsService.getShowShopWiseWishListData(clientID, vendorId, MyProfile.getInstance().getUserID());
-            call.enqueue(new Callback<ShopWiseWishListResponseModel>() {
+            Call<WishListResponseModel> call = customerProductsService.getShowWishListData(clientID, vendorShopDetails.getVendorId(), currentPage, MyProfile.getInstance().getUserID());
+            call.enqueue(new Callback<WishListResponseModel>() {
                 @Override
-                public void onResponse(@NotNull Call<ShopWiseWishListResponseModel> call, @NotNull Response<ShopWiseWishListResponseModel> response) {
+                public void onResponse(@NotNull Call<WishListResponseModel> call, @NotNull Response<WishListResponseModel> response) {
                     progressDialog.dismiss();
                     if (response.isSuccessful()) {
-                        ShopWiseWishListResponseModel body = response.body();
+                        WishListResponseModel body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                List<ShopWiseWishListResponseDetails> shopWiseCartList = body.getWishListResponseDataResponse().getShopWiseWishListResponseDetailsList();
-                                if (shopWiseCartList != null && !shopWiseCartList.isEmpty()) {
-                                    wishListCart.addAll(shopWiseCartList);
-                                    setAdapter();
+                                totalWishListCount = body.getWishListResponseDataResponse().getTotalWishlistCount();
+                                updateShopDetails();
+                                List<WishListResponseDetails> lWishListListDetails = body.getWishListResponseDataResponse().getWishListResponseDetails();
+                                if (lWishListListDetails != null && !lWishListListDetails.isEmpty()) {
+                                    updateAdapter(lWishListListDetails);
                                 } else {
                                     showDialog(body.getMsg());
                                 }
@@ -126,35 +188,29 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
                 }
 
                 @Override
-                public void onFailure(@NotNull Call<ShopWiseWishListResponseModel> call, @NotNull Throwable t) {
+                public void onFailure(@NotNull Call<WishListResponseModel> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
                     showDialog(t.getMessage());
                 }
             });
         } else {
-            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text), pObject -> {
-                requireActivity().getSupportFragmentManager().popBackStack();
-            });
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
     }
 
-    private void loadUIComponents(View view) {
-        productsListField = view.findViewById(R.id.products_list_field);
-        tvShopNameField = view.findViewById(R.id.tv_shop_name_field);
-        tvNoOfProductsField = view.findViewById(R.id.tv_no_of_products_field);
-
-        productsListField.setHasFixedSize(false);
-
-        wishListCart = new ArrayList<>();
-
-        GridLayoutManager manager = new GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false);
-        productsListField.setLayoutManager(manager);
+    private void updateShopDetails() {
+        String productsCount = String.format(Locale.getDefault(), "%d %s", totalWishListCount, (totalWishListCount == 1) ? getString(R.string.product) : getString(R.string.products));
+        tvNoOfProductsField.setText(productsCount);
     }
 
-    private void setAdapter() {
-        if (!wishListCart.isEmpty()) {
-            customerWishListDetailsAdapter = new CustomerWishListDetailsAdapter(requireActivity(), wishListCart, callBackListener);
-            productsListField.setAdapter(customerWishListDetailsAdapter);
+    private void updateAdapter(List<WishListResponseDetails> customerProductsList) {
+        wishListCart.addAll(customerProductsList);
+        customerWishListDetailsAdapter.updateItems(customerProductsList);
+        customerWishListDetailsAdapter.notifyDataSetChanged();
+        if (wishListCart.size() >= totalWishListCount) {
+            isLastPage = true;
+        } else {
+            isLoading = false;
         }
     }
 
@@ -163,13 +219,13 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
             ContentModel contentModel = (ContentModel) pObject;
             String status = contentModel.getStatus();
             if (status.equalsIgnoreCase(Constants.TAG_ADD_TO_CART)) {
-                ShopWiseWishListResponseDetails selectedItem = (ShopWiseWishListResponseDetails) contentModel.getValue();
+                WishListResponseDetails selectedItem = (WishListResponseDetails) contentModel.getValue();
                 List<CustomerProductsDetailsUnitModel> unitsList = selectedItem.getUnits();
                 if (unitsList != null && !unitsList.isEmpty()) {
                     addToCartSelected(unitsList.get(0));
                 }
             } else if (status.equalsIgnoreCase(Constants.TAG_REMOVE)) {
-                ShopWiseWishListResponseDetails selectedItem = (ShopWiseWishListResponseDetails) contentModel.getValue();
+                WishListResponseDetails selectedItem = (WishListResponseDetails) contentModel.getValue();
                 removeFromCartSelected(selectedItem);
             }
         }
@@ -180,7 +236,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorId, MyProfile.getInstance().getUserID(),
+            Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),
                     productUnitDetails.getProductUnitId(), productUnitDetails.getProductUnitQuantity());
             call.enqueue(new Callback<AddToCartResponseDetails>() {
                 @Override
@@ -220,7 +276,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
         }
     }
 
-    private void removeFromCartSelected(ShopWiseWishListResponseDetails shopWiseWishListResponseDetails) {
+    private void removeFromCartSelected(WishListResponseDetails shopWiseWishListResponseDetails) {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
@@ -259,7 +315,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
         }
     }
 
-    private void removeFromCart(ShopWiseWishListResponseDetails shopWiseWishListResponseDetails) {
+    private void removeFromCart(WishListResponseDetails shopWiseWishListResponseDetails) {
         int index = wishListCart.indexOf(shopWiseWishListResponseDetails);
         if (index > -1) {
             wishListCart.remove(index);
