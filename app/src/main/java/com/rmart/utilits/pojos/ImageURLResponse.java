@@ -12,6 +12,19 @@ public class ImageURLResponse extends BaseResponse {
     @Expose
     String imageShow;
 
+    @SerializedName("image")
+    @Expose
+    String imageURL;
+
+    @SerializedName("image_id")
+    @Expose
+    String imageID;
+
+    @SerializedName("isPrimary")
+    @Expose
+    boolean isPrimary;
+
+
     public String getDisplayImage() {
         return displayImage;
     }
@@ -26,5 +39,29 @@ public class ImageURLResponse extends BaseResponse {
 
     public void setImageShow(String imageShow) {
         this.imageShow = imageShow;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public String getImageID() {
+        return imageID;
+    }
+
+    public void setImageID(String imageID) {
+        this.imageID = imageID;
+    }
+
+    public boolean isPrimary() {
+        return isPrimary;
+    }
+
+    public void setPrimary(boolean primary) {
+        isPrimary = primary;
     }
 }

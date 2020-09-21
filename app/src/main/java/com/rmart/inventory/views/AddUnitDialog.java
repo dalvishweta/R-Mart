@@ -194,6 +194,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 String text = unitObject.getAvailableUnits().get(pos).getAttributesName();
                 unitObject.setUnitMeasure(text);
+                unitObject.setUnitID(unitObject.getAvailableUnits().get(pos).getId());
                 updateDisplayValue();
             }
 

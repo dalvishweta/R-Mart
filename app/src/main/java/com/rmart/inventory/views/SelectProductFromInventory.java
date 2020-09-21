@@ -168,7 +168,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                 progressDialog.dismiss();
             }
         });
-        apiService.getAPIProducts("0", "100").enqueue(new Callback<APIProductListResponse>() {
+       /* apiService.getAPIProducts("0", "100").enqueue(new Callback<APIProductListResponse>() {
             @Override
             public void onResponse(Call<APIProductListResponse> call, Response<APIProductListResponse> response) {
                 if(response.isSuccessful()) {
@@ -187,7 +187,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                 progressDialog.dismiss();
                 showDialog("", t.getMessage());
             }
-        });
+        });*/
     }
 
 }
