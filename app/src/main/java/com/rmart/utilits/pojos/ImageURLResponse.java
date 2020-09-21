@@ -24,6 +24,11 @@ public class ImageURLResponse extends BaseResponse {
     @Expose
     boolean isPrimary;
 
+    @SerializedName("image_rawdata")
+    @Expose
+    String imageRawData;
+
+
 
     public String getDisplayImage() {
         return displayImage;
@@ -63,5 +68,13 @@ public class ImageURLResponse extends BaseResponse {
 
     public void setPrimary(boolean primary) {
         isPrimary = primary;
+    }
+
+    public String getImageRawData() {
+        return imageRawData;
+    }
+
+    public void setImageRawData(String imageRawData) {
+        this.imageRawData = imageRawData;
     }
 }
