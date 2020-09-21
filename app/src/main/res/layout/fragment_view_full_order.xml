@@ -64,7 +64,6 @@
                         android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/date"
                         android:textSize="16sp"
-                        android:text="10 Aug 2020"
                         android:textColor="@color/black"
                         android:fontFamily="@font/roboto_regular"
                         android:layout_width="wrap_content"
@@ -86,7 +85,6 @@
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/date_value"
                         android:layout_toEndOf="@+id/order_id"
-                        android:text="45885745"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_width="wrap_content"
@@ -105,25 +103,20 @@
                     />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/vendor_name"
-                    style="@style/order_full_view_content"
-                    android:text="Vamshee Krishna"/>
+                    style="@style/order_full_view_content"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="Contact number"
                     style="@style/order_full_view_title"
                     />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/vendor_number"
-                    style="@style/order_full_view_content"
-                    android:text="7416226233"/>
+                    style="@style/order_full_view_content"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/order_full_view_title"
-                    android:text="Delivery Address"/>
+                    style="@style/order_full_view_title" />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/vendor_address"
                     style="@style/order_full_view_content"
-                    android:text="Vamshee Krishna, 18-1814, Sagar road, Hanuman pent, miryalguda, Nalgonda district, Telangana "
                     />
             </LinearLayout>
 
@@ -132,30 +125,25 @@
                 style="@style/order_full_view_row"
                 >
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="Customer Name"
                     style="@style/order_full_view_title"
                     />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/name"
                     style="@style/order_full_view_content"
-                    android:text="Vamshee Krishna"/>
+                    />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="Contact number"
                     style="@style/order_full_view_title"
                     />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/contact_number"
-                    style="@style/order_full_view_content"
-                    android:text="7416226233"/>
+                    style="@style/order_full_view_content"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/order_full_view_title"
-                    android:text="Delivery Address"/>
+                    style="@style/order_full_view_title"/>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/address"
                     style="@style/order_full_view_content"
-                    android:text="Vamshee Krishna, 18-1814, Sagar road, Hanuman pent, miryalguda, Nalgonda district, Telangana "
                     />
             </LinearLayout>
 
@@ -165,7 +153,6 @@
                 android:visibility="gone"
                 >
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="Delivery Boy Name"
                     style="@style/order_full_view_title"
                     />
                 <androidx.appcompat.widget.AppCompatTextView
@@ -181,10 +168,7 @@
                     android:id="@+id/delivery_boy_number"
                     style="@style/order_full_view_content"
                     android:text="7416226233"/>
-
             </LinearLayout>
-
-
             <LinearLayout
                 style="@style/order_full_view_row"
                 >
@@ -306,11 +290,4 @@
             android:text="@string/accept"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-    <!--    <LinearLayout-->
-<!--        android:orientation="vertical"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
-
-<!--    </LinearLayout>-->
-
 </RelativeLayout>

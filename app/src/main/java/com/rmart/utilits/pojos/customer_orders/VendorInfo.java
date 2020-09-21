@@ -26,7 +26,19 @@ public class VendorInfo {
 
     @SerializedName("address")
     @Expose
-    ArrayList<AddressResponse> responses;
+    String address;
+
+    @SerializedName("country")
+    @Expose
+    String country;
+
+    @SerializedName("city")
+    @Expose
+    String city;
+
+    @SerializedName("state")
+    @Expose
+    String state;
 
     public String getFirstName() {
         return firstName;
@@ -60,11 +72,51 @@ public class VendorInfo {
         this.mobileNumber = mobileNumber;
     }
 
-    public ArrayList<AddressResponse> getResponses() {
-        return responses;
+    public String getAddress() {
+        return address;
     }
 
-    public void setResponses(ArrayList<AddressResponse> responses) {
-        this.responses = responses;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+    public String getCompleteAddress() {
+        String data = "";
+        if(address != null) {
+            data += address;
+        }
+        if(city != null) {
+            data += ", "+city;
+        }
+        if(state != null) {
+            data += state;
+        }
+        if(country != null) {
+            data += country;
+        }
+        return data;
     }
 }

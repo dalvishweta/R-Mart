@@ -38,7 +38,8 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     private String mParam2;
     MyOrdersViewModel viewModel;
     AppCompatButton mLeftButton, mRightButton;
-    private AppCompatTextView tvStatus, tvFullName,dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType, contactNumber;
+    private AppCompatTextView tvStatus, tvFullName,dateValue, orderIdValue, tvAmount,
+            tvDeliveryCharges, tvTotalCharges, tvPaymentType, contactNumber, vendorAddress;
     private ProductListAdapter productAdapter;
     private CustomerOrderProductList orderProductList;
     private RecyclerView recyclerView;
@@ -110,12 +111,15 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvFullName = view.findViewById(R.id.name);
+        tvFullName = view.findViewById(R.id.vendor_name);
+        contactNumber = view.findViewById(R.id.vendor_number);
+        vendorAddress = view.findViewById(R.id.vendor_address);
         recyclerView = view.findViewById(R.id.product_list);
         mLeftButton = view.findViewById(R.id.left_button);
         mLeftButton.setOnClickListener(this);
         mRightButton = view.findViewById(R.id.right_button);
         mRightButton.setOnClickListener(this);
+
         //Customer Info
         tvStatus = view.findViewById(R.id.status);
         dateValue = view.findViewById(R.id.date_value);
@@ -124,7 +128,6 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
        // delivery boy info
         deliveryBoyInfo = view.findViewById(R.id.delivery_boy_info);
         deliveryBoyInfo.setVisibility(View.GONE);
-        contactNumber = view.findViewById(R.id.contact_number);
 
         //Payment info
         tvAmount = view.findViewById(R.id.amount);
@@ -132,26 +135,34 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         tvTotalCharges = view.findViewById(R.id.total_charges);
         tvPaymentType = view.findViewById(R.id.payment_type);
         view.findViewById(R.id.bottom).setVisibility(View.GONE);
-        setValuesToUI();
+        view.findViewById(R.id.custom_details_root).setVisibility(View.GONE);
+        view.findViewById(R.id.vendor_details_root).setVisibility(View.VISIBLE);
+        // setValuesToUI();
 
     }
     void setValuesToUI() {
-        orderIdValue.setText(mOrderObject.getOrderID());
-        dateValue.setText(mOrderObject.getOrderDate());
     }
 
     void updateUI() {
         Resources res = getResources();
-        String text = String.format(res.getString(R.string.status_order), mOrderObject.getOrderStatus());
+        String text = String.format(res.getString(R.string.status_order), orderProductList.getOrderInfo().getStatusName());
         tvStatus.setText(text);
+        orderIdValue.setText(mOrderObject.getOrderID());
+        dateValue.setText(mOrderObject.getOrderDate().split(" ")[0]);
+
         // setFooter();
+        // vendor
         tvFullName.setText(orderProductList.getVendorInfo().getFirstName()+" "+ orderProductList.getVendorInfo().getLastName());
+        contactNumber.setText(orderProductList.getVendorInfo().getMobileNumber());
+        vendorAddress.setText(orderProductList.getVendorInfo().getCompleteAddress());
+        // payment info
+
+        tvAmount.setText(orderProductList.getOrderInfo().getOrderAmount());
         tvDeliveryCharges.setText(orderProductList.getOrderInfo().getDeliveryCharges());
-        tvAmount.setText(orderProductList.getOrderInfo().getTotalAmt());
         tvTotalCharges.setText(orderProductList.getOrderInfo().getTotalAmt());
         tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
+
         productAdapter = new ProductListAdapter(orderProductList.getProduct(), this);
-        contactNumber.setText(orderProductList.getVendorInfo().getMobileNumber());
         recyclerView.setAdapter(productAdapter);
     }
 

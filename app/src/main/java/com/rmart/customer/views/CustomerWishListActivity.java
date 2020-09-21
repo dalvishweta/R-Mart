@@ -21,7 +21,7 @@ public class CustomerWishListActivity extends BaseNavigationDrawerActivity imple
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_container_layout);
 
-        addFragment(CustomerWishListFragment.getInstance(), CustomerWishListFragment.class.getName(), true);
+        addFragment(CustomerWishListFragment.getInstance(), CustomerWishListFragment.class.getName(), false);
     }
 
     @Override

@@ -99,4 +99,20 @@ public class CustomerInfo {
     public void setCustomerNumber(String customerNumber) {
         this.customerNumber = customerNumber;
     }
+    public String getCompleteAddress() {
+        String data = "";
+        if(address != null) {
+            data += address;
+        }
+        if(city != null) {
+            data += ", "+city;
+        }
+        if(state != null) {
+            data += state;
+        }
+        if(country != null) {
+            data += country;
+        }
+        return data;
+    }
 }

@@ -82,7 +82,7 @@ public class CustomerOrderListFragment extends BaseOrderFragment implements View
     private void getOrdersOfStatesFromServer() {
         progressDialog.show();
         CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
-        customerOrderService.getStateOfOrder(startIndex, "9000000000"/*MyProfile.getInstance().getMobileNumber()*/).enqueue(new Callback<OrdersByStatus>() {
+        customerOrderService.getStateOfOrder(startIndex, MyProfile.getInstance().getMobileNumber()).enqueue(new Callback<OrdersByStatus>() {
             @Override
             public void onResponse(Call<OrdersByStatus> call, Response<OrdersByStatus> response) {
                 if(response.isSuccessful()) {
