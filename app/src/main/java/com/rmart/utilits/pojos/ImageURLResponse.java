@@ -1,5 +1,7 @@
 package com.rmart.utilits.pojos;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -23,12 +25,11 @@ public class ImageURLResponse extends BaseResponse {
     @SerializedName("isPrimary")
     @Expose
     boolean isPrimary;
-
     @SerializedName("image_rawdata")
     @Expose
     String imageRawData;
 
-
+    private Bitmap productImageBitmap;
 
     public String getDisplayImage() {
         return displayImage;
@@ -76,5 +77,13 @@ public class ImageURLResponse extends BaseResponse {
 
     public void setImageRawData(String imageRawData) {
         this.imageRawData = imageRawData;
+    }
+
+    public Bitmap getProductImageBitmap() {
+        return productImageBitmap;
+    }
+
+    public void setProductImageBitmap(Bitmap productImageBitmap) {
+        this.productImageBitmap = productImageBitmap;
     }
 }

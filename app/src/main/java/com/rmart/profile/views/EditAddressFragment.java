@@ -83,6 +83,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        LoggerInfo.printLog("Fragment", "EditAddressFragment");
         addressViewModel = new ViewModelProvider(Objects.requireNonNull(requireActivity())).get(AddressViewModel.class);
         addressViewModel.setMyAddressMutableLiveData(new MyAddress());
         addressViewModel.getMyAddressMutableLiveData().observe(requireActivity(), myAddress -> {

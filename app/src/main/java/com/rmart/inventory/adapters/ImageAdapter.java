@@ -1,51 +1,59 @@
 package com.rmart.inventory.adapters;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
-import com.rmart.inventory.views.viewholders.CategoryViewHolder;
-import com.rmart.inventory.views.viewholders.ImageViewHolder;
+import com.rmart.RMartApplication;
+import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.pojos.ImageURLResponse;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class ImageAdapter extends PagerAdapter {
-    Context context;
-    private int[] GalImages = new int[] {
-            R.drawable.item_image,
-            R.drawable.item_image,
-            R.drawable.item_image
-    };
+    private LayoutInflater mLayoutInflater;
+    private List<ImageURLResponse> imagesList;
+    private ImageLoader imageLoader;
 
-    LayoutInflater mLayoutInflater;
-
-    public ImageAdapter(Context context){
-        this.context=context;
-        mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public ImageAdapter(Context context, List<ImageURLResponse> imagesList) {
+        this.imagesList = imagesList;
+        mLayoutInflater = LayoutInflater.from(context);
+        imageLoader = RMartApplication.getInstance().getImageLoader();
     }
+
     @Override
     public int getCount() {
-        return GalImages.length;
+        return imagesList.size();
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NotNull View view, @NotNull Object object) {
         return view == object;
     }
 
+    @NotNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NotNull ViewGroup container, int position) {
         View itemView = mLayoutInflater.inflate(R.layout.product_image, container, false);
 
-        ImageView imageView = itemView.findViewById(R.id.item_img);
-        imageView.setImageResource(GalImages[position]);
+        NetworkImageView ivProductImageField = itemView.findViewById(R.id.item_img);
+        //imageView.setImageResource(GalImages[position]);
+        ImageURLResponse imageUrlResponse = imagesList.get(position);
+        String imageUrl = imageUrlResponse.getDisplayImage();
+        if (!TextUtils.isEmpty(imageUrl)) {
+            HttpsTrustManager.allowAllSSL();
+            imageLoader.get(imageUrl, ImageLoader.getImageListener(ivProductImageField, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
+            ivProductImageField.setImageUrl(imageUrl, RMartApplication.getInstance().getImageLoader());
+        }
 
         container.addView(itemView);
 
@@ -53,7 +61,7 @@ public class ImageAdapter extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View)object);
+    public void destroyItem(ViewGroup container, int position, @NotNull Object object) {
+        container.removeView((View) object);
     }
 }

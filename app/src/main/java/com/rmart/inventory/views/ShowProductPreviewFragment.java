@@ -13,18 +13,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.rmart.R;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.pojos.ImageURLResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.services.VendorInventoryService;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +45,8 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     private ViewPager viewPager;
     //private APIStockListResponse apiStockListResponse;
     private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryInDays;
+    private TabLayout dotIndicatorLayoutField;
+
     public ShowProductPreviewFragment() {
         // Required empty public constructor
     }
@@ -72,6 +79,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        LoggerInfo.printLog("Fragment", "ShowProductPreviewFragment");
         return inflater.inflate(R.layout.fragment_inventory_product_preview, container, false);
     }
     @Override
@@ -89,10 +97,12 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         tvDeliveryInDays = view.findViewById(R.id.delivery);
         tvProductExpiry = view.findViewById(R.id.product_expiry);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        viewPager =  view.findViewById(R.id.view_pager);
+        viewPager = view.findViewById(R.id.view_pager);
         AppCompatButton delete = view.findViewById(R.id.delete);
         AppCompatButton edit = view.findViewById(R.id.edit);
-        if(isEdit) {
+        dotIndicatorLayoutField = view.findViewById(R.id.product_images_dot_indicator_field);
+
+        if (isEdit) {
             edit.setOnClickListener(view1 -> mListener.updateProduct(product, true));
             delete.setOnClickListener(view1 -> {
                 progressDialog.show();
@@ -129,8 +139,12 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     }
 
     private void updateUI() {
-        ImageAdapter imageAdapter = new ImageAdapter(requireContext());
+        List<ImageURLResponse> imagesList = product.getImages();
+        ImageAdapter imageAdapter = new ImageAdapter(requireContext(), imagesList);
         viewPager.setAdapter(imageAdapter);
+        dotIndicatorLayoutField.setVisibility(imagesList.size() == 1 ? View.GONE : View.VISIBLE);
+        dotIndicatorLayoutField.setupWithViewPager(viewPager);
+
         tvProductName.setText(product.getName());
         tvDeliveryInDays.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getDeliveryInDays()));
         ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(product.getUnitObjects(), view -> {

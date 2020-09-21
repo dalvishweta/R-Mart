@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.R;
 import com.rmart.inventory.adapters.ProductAdapter;
 import com.rmart.inventory.models.Product;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.APIProductListResponse;
@@ -86,6 +87,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         // products = new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values());
+        LoggerInfo.printLog("Fragment", "SelectProductFromInventory");
         return inflater.inflate(R.layout.fragment_add_product_to_inventory, container, false);
     }
 

@@ -41,6 +41,7 @@ import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.APIUnitMeasureListResponse;
 import com.rmart.utilits.pojos.APIUnitMeasureResponse;
 import com.rmart.utilits.pojos.AddProductToInventoryResponse;
+import com.rmart.utilits.pojos.ImageURLResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.pojos.ShowProductResponse;
 import com.rmart.utilits.services.APIService;
@@ -128,6 +129,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        LoggerInfo.printLog("Fragment", "AddProductToInventory");
 
         getUnitMeasuresFromAPI();
         getBrandFromAPI();
@@ -228,16 +231,24 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         AppCompatButton save = view.findViewById(R.id.save);
         if (isEdit) {
             save.setText(getString(R.string.update));
-            save.setOnClickListener(this);
         } else {
             save.setText(getString(R.string.save));
-            save.setOnClickListener(this);
         }
+        save.setOnClickListener(this);
         view.findViewById(R.id.add_unit).setOnClickListener(this);
 
         imagesList = new ArrayList<>();
-        if (imagesList.size() < 5) {
+        /*if (imagesList.size() < 5) {
             imagesList.add(ImageUploadAdapter.DEFAULT);
+        }*/
+
+        if (mClonedProduct != null) {
+            List<ImageURLResponse> clonedImagesList = mClonedProduct.getImages();
+            int difference = 5 - clonedImagesList.size();
+            imagesList.addAll(clonedImagesList);
+            for (int i = 0; i < difference; i++) {
+                imagesList.add(ImageUploadAdapter.DEFAULT);
+            }
         }
 
         imageUploadAdapter = new ImageUploadAdapter(imagesList, callBackListener);
@@ -278,7 +289,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             } */ else if (Objects.requireNonNull(productDescription.getText()).toString().length() <= 1) {
                 showDialog("", "Please enter valid product description");
                 return;
-            }  else if( Objects.requireNonNull(mClonedProduct).getUnitObjects().size()<1) {
+            } else if (Objects.requireNonNull(mClonedProduct).getUnitObjects().size() < 1) {
                 showDialog("", "Please add at least one unit");
                 return;
             }
@@ -287,6 +298,13 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             mClonedProduct.setRegionalName(productRegionalName.getText().toString());
             mClonedProduct.setDelivery_days(Objects.requireNonNull(deliveryDays.getText()).toString());
             mClonedProduct.setDescription(productDescription.getText().toString());
+            ArrayList<ImageURLResponse> lUpdateImagesList = new ArrayList<>();
+            for (Object lObject : imagesList) {
+                if (lObject instanceof ImageURLResponse) {
+                    lUpdateImagesList.add((ImageURLResponse) lObject);
+                }
+            }
+            mClonedProduct.setImages(lUpdateImagesList);
             progressDialog.show();
 
             if (isEdit) {
@@ -314,13 +332,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                             AddProductToInventoryResponse data = response.body();
                             if (data != null) {
                                 if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                    showDialog(mClonedProduct.getName() + getString(R.string.add_success_product), response.message(), (dialog, i) -> {
-                                        requireActivity().onBackPressed();
-                                    });
+                                    showDialog(mClonedProduct.getName() + " " + getString(R.string.add_success_product),
+                                            pObject -> requireActivity().onBackPressed());
                                 } else {
-                                    showDialog("", data.getMsg(), (dialog, index) -> {
-                                        requireActivity().onBackPressed();
-                                    });
+                                    showDialog("", data.getMsg(),
+                                            pObject -> requireActivity().onBackPressed());
                                 }
                             } else {
                                 showDialog(getString(R.string.no_information_available));
@@ -364,13 +380,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                             AddProductToInventoryResponse data = response.body();
                             if (data != null) {
                                 if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                    showDialog("", mClonedProduct.getName() + " " + getString(R.string.add_success_product), (dialog, i) -> {
-                                        requireActivity().onBackPressed();
-                                    });
+                                    showDialog("", mClonedProduct.getName() + " " + getString(R.string.add_success_product),
+                                            pObject -> requireActivity().onBackPressed());
                                 } else {
-                                    showDialog("", data.getMsg(), (dialog, index) -> {
-                                        requireActivity().onBackPressed();
-                                    });
+                                    showDialog("", data.getMsg(),
+                                            pObject -> requireActivity().onBackPressed());
                                 }
                             } else {
                                 showDialog(getString(R.string.no_information_available));
@@ -408,7 +422,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 mClonedProduct.getUnitObjects().remove(unitObject);
-                                updateList();
+                                //updateList();
                             } else {
                                 showDialog(data.getMsg());
                             }
@@ -481,8 +495,20 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     }
 
     private void updateImage(Bitmap bitmap) {
-        imagesList.set(selectedPosition, bitmap);
-        imageUploadAdapter.notifyItemChanged(selectedPosition);
+        Object lObject = imagesList.get(selectedPosition);
+        if (lObject instanceof String) {
+            ImageURLResponse imageUrlResponse = new ImageURLResponse();
+            imageUrlResponse.setProductImageBitmap(bitmap);
+            imageUrlResponse.setImageRawData(getEncodedImage(bitmap));
+            imagesList.set(selectedPosition, imageUrlResponse);
+            imageUploadAdapter.notifyItemChanged(selectedPosition);
+        } else if (lObject instanceof ImageURLResponse) {
+            ImageURLResponse imageUrlResponse = (ImageURLResponse) lObject;
+            imageUrlResponse.setProductImageBitmap(bitmap);
+            imageUrlResponse.setImageRawData(getEncodedImage(bitmap));
+            imagesList.set(selectedPosition, imageUrlResponse);
+            imageUploadAdapter.notifyItemChanged(selectedPosition);
+        }
     }
 
     private String getEncodedImage(Bitmap bitmap) {

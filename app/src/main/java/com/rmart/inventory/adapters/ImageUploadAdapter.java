@@ -17,6 +17,8 @@ import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.custom_views.CustomNetworkImageView;
+import com.rmart.utilits.pojos.ImageURLResponse;
 
 import java.util.List;
 
@@ -54,13 +56,22 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
                 if (imagePath.equalsIgnoreCase(DEFAULT)) {
                     holder.ivProductImageField.setBackgroundResource(R.drawable.add);
                 } else {
-                    HttpsTrustManager.allowAllSSL();
-                    imageLoader.get(imagePath, ImageLoader.getImageListener(holder.ivProductImageField, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
-                    holder.ivProductImageField.setImageUrl(imagePath, RMartApplication.getInstance().getImageLoader());
+                    updateImageUI(imagePath, holder.ivProductImageField);
                 }
             }
         } else if (lObject instanceof Bitmap) {
-            holder.ivProductImageField.setImageBitmap((Bitmap) lObject);
+            holder.ivProductImageField.setLocalImageBitmap((Bitmap) lObject);
+        } else if (lObject instanceof ImageURLResponse) {
+            ImageURLResponse imageUrlResponse = (ImageURLResponse) lObject;
+            Bitmap bitmap = imageUrlResponse.getProductImageBitmap();
+            if (bitmap != null) {
+                holder.ivProductImageField.setLocalImageBitmap(bitmap);
+            } else {
+                String imagePath = imageUrlResponse.getDisplayImage();
+                if (!TextUtils.isEmpty(imagePath)) {
+                    updateImageUI(imagePath, holder.ivProductImageField);
+                }
+            }
         }
 
         holder.ivProductImageField.setTag(position);
@@ -71,9 +82,17 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
         return imagesList.size();
     }
 
+    private void updateImageUI(String imageUrl, NetworkImageView ivProductImageField) {
+        if (!TextUtils.isEmpty(imageUrl)) {
+            HttpsTrustManager.allowAllSSL();
+            imageLoader.get(imageUrl, ImageLoader.getImageListener(ivProductImageField, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
+            ivProductImageField.setImageUrl(imageUrl, RMartApplication.getInstance().getImageLoader());
+        }
+    }
+
     public class ImageUploadViewHolder extends RecyclerView.ViewHolder {
 
-        public NetworkImageView ivProductImageField;
+        public CustomNetworkImageView ivProductImageField;
 
         public ImageUploadViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,6 +109,8 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
                         contentModel.setStatus(Constants.TAG_EDIT_PRODUCT_IMAGE);
                     }
                 } else if (lObject instanceof Bitmap) {
+                    contentModel.setStatus(Constants.TAG_EDIT_PRODUCT_IMAGE);
+                } else if (lObject instanceof ImageURLResponse) {
                     contentModel.setStatus(Constants.TAG_EDIT_PRODUCT_IMAGE);
                 }
                 contentModel.setValue(tag);

@@ -92,35 +92,35 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.change_password).setOnClickListener(this);
         findViewById(R.id.logout).setOnClickListener(this);
         findViewById(R.id.my_wish_list).setOnClickListener(this);
-        switch (MyProfile.getInstance().getRoleID()) {
-            case Utils.CUSTOMER_ID:
-                findViewById(R.id.retailer_orders).setVisibility(View.GONE);
-                findViewById(R.id.retailer_inventory).setVisibility(View.GONE);
-                findViewById(R.id.retailer_orders).setVisibility(View.GONE);
-                break;
-
-            case Utils.RETAILER_ID:
-                findViewById(R.id.customer_shopping).setVisibility(View.GONE);
-                findViewById(R.id.customer_orders).setVisibility(View.GONE);
-                findViewById(R.id.my_wish_list).setVisibility(View.GONE);
-                findViewById(R.id.my_wallet).setVisibility(View.GONE);
-                break;
-            case Utils.DELIVERY_ID:
-                findViewById(R.id.retailer_inventory).setVisibility(View.GONE);
-                findViewById(R.id.retailer_orders).setVisibility(View.GONE);
-                findViewById(R.id.customer_shopping).setVisibility(View.GONE);
-                findViewById(R.id.customer_orders).setVisibility(View.GONE);
-                findViewById(R.id.my_wallet).setVisibility(View.GONE);
-                break;
-        }
-
-
         ivProfileImageField = findViewById(R.id.iv_user_profile_image);
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
-            nameField = findViewById(R.id.name);
-            mobileField = findViewById(R.id.mobile);
-            emailIdField = findViewById(R.id.email_id_field);
+            String roleId = myProfile.getRoleID();
+            if(!TextUtils.isEmpty(roleId)) {
+                switch (roleId) {
+                    case Utils.CUSTOMER_ID:
+                        findViewById(R.id.retailer_orders).setVisibility(View.GONE);
+                        findViewById(R.id.retailer_inventory).setVisibility(View.GONE);
+                        findViewById(R.id.retailer_orders).setVisibility(View.GONE);
+                        break;
+
+                    case Utils.RETAILER_ID:
+                        findViewById(R.id.customer_shopping).setVisibility(View.GONE);
+                        findViewById(R.id.customer_orders).setVisibility(View.GONE);
+                        findViewById(R.id.my_wish_list).setVisibility(View.GONE);
+                        findViewById(R.id.my_wallet).setVisibility(View.GONE);
+                        break;
+                    case Utils.DELIVERY_ID:
+                        findViewById(R.id.retailer_inventory).setVisibility(View.GONE);
+                        findViewById(R.id.retailer_orders).setVisibility(View.GONE);
+                        findViewById(R.id.customer_shopping).setVisibility(View.GONE);
+                        findViewById(R.id.customer_orders).setVisibility(View.GONE);
+                        findViewById(R.id.my_wallet).setVisibility(View.GONE);
+                        break;
+                    default:
+                        break;
+                }
+            }
 
             String imageUrl = myProfile.getProfileImage();
             if (!TextUtils.isEmpty(imageUrl)) {
@@ -153,6 +153,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 }
             });
         }
+            nameField = findViewById(R.id.name);
+            mobileField = findViewById(R.id.mobile);
+            emailIdField = findViewById(R.id.email_id_field);
         TextView tvAppVersionField = findViewById(R.id.tv_version_field);
         try {
             String versionNo = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;

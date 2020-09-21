@@ -19,6 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.rmart.R;
 import com.rmart.inventory.adapters.ProductAdapter;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.APIStockListResponse;
@@ -96,6 +97,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         inventoryViewModel.getProductList().observe(requireActivity(), data-> {
             updateList(new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values()));
         });*/
+        LoggerInfo.printLog("Fragment", "MyProductsListFragment");
         vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
         getProductList();
         return inflater.inflate(R.layout.fragment_inventory_product_list, container, false);

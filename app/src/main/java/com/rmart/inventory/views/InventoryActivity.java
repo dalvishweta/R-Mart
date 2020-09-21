@@ -76,7 +76,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void requestToCreateProduct() {
-        replaceFragment(AddProductToAPI.newInstance("",""), AddProductToAPI.class.getName(),true);
+        replaceFragment(AddProductToAPI.newInstance(), AddProductToAPI.class.getName(),true);
     }
 
     @Override
