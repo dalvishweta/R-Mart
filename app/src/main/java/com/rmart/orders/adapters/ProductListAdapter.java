@@ -1,5 +1,6 @@
 package com.rmart.orders.adapters;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,8 +8,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.rmart.R;
+import com.rmart.RMartApplication;
 import com.rmart.inventory.views.viewholders.ProductItemViewHolder;
+import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.pojos.orders.Product;
 
 import java.util.ArrayList;
@@ -17,9 +21,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
 
     View.OnClickListener onClickListener;
     ArrayList<Product> productList;
+    private ImageLoader imageLoader;
     public ProductListAdapter(ArrayList<Product> orderList, View.OnClickListener onClickListener) {
         this.productList = orderList;
         this.onClickListener =onClickListener;
+        imageLoader = RMartApplication.getInstance().getImageLoader();
     }
     @NonNull
     @Override
@@ -38,6 +44,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
         holder.quantity.setText(productObject.getQuantity());
         String unitsDetails = String.format("%s %s", productObject.getUnit(), productObject.getUnitMeasure());
         holder.units.setText(unitsDetails);
+        String imageUrl = productObject.getDisplayImage();
+        if (!TextUtils.isEmpty(imageUrl)) {
+            HttpsTrustManager.allowAllSSL();
+            imageLoader.get(imageUrl, ImageLoader.getImageListener(holder.imageView,
+                    R.mipmap.ic_launcher, android.R.drawable
+                            .ic_dialog_alert));
+            holder.imageView.setImageUrl(imageUrl, RMartApplication.getInstance().getImageLoader());
+        }
     }
 
     @Override

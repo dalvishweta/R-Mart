@@ -6,6 +6,7 @@ import android.view.View;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer_order.OnCustomerOrdersInteractionListener;
+import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
 import com.rmart.utilits.pojos.orders.Order;
 
 
@@ -29,6 +30,11 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
     public void showOrderList(String string) {
         hideHamburgerIcon();
         replaceFragment(CustomerOrderListFragment.newInstance(string), "OrderListFragment", true);
+    }
+
+    @Override
+    public void goToReOrder(CustomerOrderProductList order) {
+        replaceFragment(CheckAvailableProducts.newInstance(order,""), CheckAvailableProducts.class.getName(), true);
     }
 
     @Override

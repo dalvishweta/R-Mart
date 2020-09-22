@@ -20,11 +20,13 @@ import com.rmart.customer_order.viewmodel.MyOrdersViewModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.UpdatedOrderStatus;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
 import com.rmart.utilits.pojos.orders.Order;
 import com.rmart.utilits.pojos.orders.Product;
 import com.rmart.utilits.services.CustomerOrderService;
+import com.rmart.utilits.services.OrderService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +49,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     private ProductListAdapter productAdapter;
     private CustomerOrderProductList orderProductList;
     private RecyclerView recyclerView;
-    private LinearLayout deliveryBoyInfo;
+    private LinearLayout deliveryBoyInfo, footer;
 
     public CustomerViewFullOrderFragment() {
         // Required empty public constructor
@@ -74,7 +76,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     @Override
     public void onResume() {
         super.onResume();
-        requireActivity().setTitle("Order details");
+        requireActivity().setTitle(getString(R.string.order_details));
         getServerData();
     }
 
@@ -121,6 +123,9 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         mRightButton = view.findViewById(R.id.right_button);
         mRightButton.setOnClickListener(this);
 
+        view.findViewById(R.id.right_button).setVisibility(View.GONE);
+
+        footer = view.findViewById(R.id.bottom);
         //Vendor Info
         vendorName = view.findViewById(R.id.vendor_name);
         vendorNumber = view.findViewById(R.id.vendor_number);
@@ -145,7 +150,6 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         tvDeliveryCharges = view.findViewById(R.id.delivery_charges);
         tvTotalCharges = view.findViewById(R.id.total_charges);
         tvPaymentType = view.findViewById(R.id.payment_type);
-        view.findViewById(R.id.bottom).setVisibility(View.GONE);
         view.findViewById(R.id.custom_details_root).setVisibility(View.GONE);
         view.findViewById(R.id.vendor_details_root).setVisibility(View.VISIBLE);
 
@@ -157,7 +161,21 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         tvStatus.setText(text);
         orderIdValue.setText( orderProductList.getOrderInfo().getOrderID());
         dateValue.setText(mOrderObject.getOrderDate().split(" ")[0]);
-
+        if(!(orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.OPEN_ORDER_STATUS) || orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.ACCEPTED_ORDER_STATUS))) {
+            footer.setVisibility(View.GONE);
+        } if((orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_ORDER_STATUS) ||
+                orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.REJECT_ORDER_STATUS) ||
+                orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.DELIVERED_ORDER_STATUS))) {
+            mLeftButton.setText(R.string.re_order);
+            mLeftButton.setBackgroundResource(R.color.colorPrimary);
+            footer.setVisibility(View.VISIBLE);
+            mLeftButton.setVisibility(View.VISIBLE);
+        } else {
+            footer.setVisibility(View.VISIBLE);
+            mLeftButton.setVisibility(View.VISIBLE);
+            mLeftButton.setText(R.string.canceled_orders);
+            mLeftButton.setBackgroundResource(R.color.gray);
+        }
         // setFooter();
         // vendor
         text = orderProductList.getVendorInfo().getFirstName()+" "+ orderProductList.getVendorInfo().getLastName();
@@ -190,54 +208,54 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
 
     @Override
     public void onClick(View view) {
-        // viewModel.deleteOrder(mOrderObject, getResources());
-        String text  = ((AppCompatButton) view).getText().toString();
+        /*;
         if(text.contains(getResources().getString(R.string.accept))) {
-            // mOrderObject.setOrderType(getResources().getString(R.string.accepted));
             updateOrderStatus(Utils.ACCEPTED_ORDER_STATUS);
         } else if(text.contains(getResources().getString(R.string.packed))) {
             updateOrderStatus(Utils.PACKED_ORDER_STATUS);
         } else if(text.contains(getResources().getString(R.string.shipped))) {
             updateOrderStatus(Utils.SHIPPED_ORDER_STATUS);
         } else if(text.contains(getResources().getString(R.string.delivered))) {
-            // mListener.goToProcessToDelivery(mOrderObject);
             updateOrderStatus(Utils.DELIVERED_ORDER_STATUS);
-            /**/
         } else if(text.contains(getResources().getString(R.string.returned))) {
-            updateOrderStatus(Utils.REJECT_ORDER_STATUS);
+
         } else if(text.contains(getResources().getString(R.string.cancel))) {
             updateOrderStatus(Utils.CANCEL_ORDER_STATUS);
+        }*/
+        String text  = ((AppCompatButton) view).getText().toString();
+        if (text.equalsIgnoreCase(getString(R.string.re_order))) {
+            mListener.goToReOrder(orderProductList);
+        } else {
+            updateOrderStatus();
+            updateUI();
         }
-        updateUI();
-        // Objects.requireNonNull(getActivity()).onBackPressed();
     }
 
-    private void updateOrderStatus(String newOrderStatus) {
-        /*progressDialog.show();
+    private void updateOrderStatus() {
+        progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID() ,newOrderStatus).enqueue(new Callback<UpdatedOrderStatus>() {
+        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID() , Utils.REJECT_ORDER_STATUS).enqueue(new Callback<UpdatedOrderStatus>() {
             @Override
             public void onResponse(Call<UpdatedOrderStatus> call, Response<UpdatedOrderStatus> response) {
                 if(response.isSuccessful()) {
                     UpdatedOrderStatus data = response.body();
                     assert data != null;
                     if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        progressDialog.dismiss();
                         showDialog(data.getStatus(), data.getMsg(), ((dialogInterface, i) -> {
                             requireActivity().onBackPressed();
                         }));
                     } else {
-                        progressDialog.dismiss();
                         showDialog(data.getMsg());
                     }
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<UpdatedOrderStatus> call, Throwable t) {
                 progressDialog.dismiss();
             }
-        });*/
+        });
     }
 
     /*void updateToCancel() {

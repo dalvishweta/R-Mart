@@ -3,7 +3,9 @@ package com.rmart.utilits.pojos.customer_orders;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CustomerInfo {
+import java.io.Serializable;
+
+public class CustomerInfo implements Serializable {
     @SerializedName("first_name")
     @Expose
     String firstName;

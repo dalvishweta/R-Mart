@@ -28,4 +28,11 @@ public interface CustomerOrderService {
     Call<OrderProductListResponse> updateOrderStatus(@Field("order_id")String orderID,
                                                      @Field("user_id") String id,
                                                      @Field("status") String newOrderStatus);
+
+    @POST(BuildConfig.CUSTOMER_REORDER_PRODUCTS)
+    @FormUrlEncoded
+    Call<CustomerOrderProductResponse> getUpdatedProductDetails(@Field("order_id")String orderID,
+                                                     @Field("customer_mobile") String mobileNumber,
+                                                     @Field("verdor_userId") String vendorID);
+
 }

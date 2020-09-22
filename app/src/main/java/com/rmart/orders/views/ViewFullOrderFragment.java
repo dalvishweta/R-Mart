@@ -20,6 +20,7 @@ import com.rmart.orders.viewmodel.MyOrdersViewModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.UpdatedOrderStatus;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
 import com.rmart.utilits.pojos.orders.Order;
@@ -43,7 +44,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private ProductListAdapter productAdapter;
     private CustomerOrderProductList orderProductList;
     private RecyclerView recyclerView;
-    private LinearLayout deliveryBoyInfo;
+    private LinearLayout deliveryBoyInfo, footerView;
 
     public ViewFullOrderFragment() {
         // Required empty public constructor
@@ -143,7 +144,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         tvDeliveryCharges = view.findViewById(R.id.delivery_charges);
         tvTotalCharges = view.findViewById(R.id.total_charges);
         tvPaymentType = view.findViewById(R.id.payment_type);
-
+        footerView = view.findViewById(R.id.bottom);
         setValuesToUI();
 
     }
@@ -159,7 +160,6 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         orderIdValue.setText( orderProductList.getOrderInfo().getOrderID());
         dateValue.setText(mOrderObject.getOrderDate().split(" ")[0]);
 
-        // setFooter();
         // vendor
         /*text = orderProductList.getVendorInfo().getFirstName()+" "+ orderProductList.getVendorInfo().getLastName();
         vendorName.setText(text);
@@ -178,7 +178,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         tvDeliveryCharges.setText(text);
         tvTotalCharges.setText(orderProductList.getOrderInfo().getTotalAmt());
         tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
-
+        setFooter();
         productAdapter = new ProductListAdapter(orderProductList.getProduct(), this);
         recyclerView.setAdapter(productAdapter);
     }
@@ -198,6 +198,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         } else if(mOrderObject.getOrderStatusID().contains(Utils.CANCEL_ORDER_STATUS)) {
             isCanceledOrder();
         }
+        footerView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -225,7 +226,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     }
 
     private void updateOrderStatus(String newOrderStatus) {
-        /*progressDialog.show();
+        progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
         orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID() ,newOrderStatus).enqueue(new Callback<UpdatedOrderStatus>() {
             @Override
@@ -234,22 +235,21 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
                     UpdatedOrderStatus data = response.body();
                     assert data != null;
                     if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        progressDialog.dismiss();
                         showDialog(data.getStatus(), data.getMsg(), ((dialogInterface, i) -> {
                             requireActivity().onBackPressed();
                         }));
                     } else {
-                        progressDialog.dismiss();
                         showDialog(data.getMsg());
                     }
                 }
+                progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(Call<UpdatedOrderStatus> call, Throwable t) {
                 progressDialog.dismiss();
             }
-        });*/
+        });
     }
 
     /*void updateToCancel() {

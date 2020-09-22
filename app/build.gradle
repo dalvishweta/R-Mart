@@ -80,6 +80,8 @@ android {
         /*Customer order services*/
         buildConfigField("String", 'CUSTOMER_VIEW_ORDER_BY_ID', '"customer/order/viewOrderById"')
         buildConfigField("String", 'CUSTOMER_VIEW_ALL_ORDERS', '"customer/order/ordersList"')
+        buildConfigField("String",'CUSTOMER_REORDER_PRODUCTS','"customer/order/inventoryByOrderId"')
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {

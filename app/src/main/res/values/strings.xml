@@ -77,7 +77,7 @@
     <string name="active">Out of stock</string>
     <string name="open_orders">Open Orders</string>
     <string name="packed_orders">Packed Orders</string>
-    <string name="canceled_orders">Canceled Orders</string>
+    <string name="canceled_orders">Cancel Order</string>
     <string name="all_orders">All Orders</string>
     <string name="total_orders">Total you have %1$s %2$s</string>
     <string name="order_id">Order ID</string>
@@ -238,4 +238,7 @@
     <string name="delivery_boy_name">Delivery Boy Name</string>
     <string name="total_amount_colon">Total Amount:</string>
     <string name="COD">COD</string>
+    <string name="re_order">Order Again</string>
+    <string name="order_details">Order details</string>
+    <string name="check_available_products">Check available products</string>
 </resources>

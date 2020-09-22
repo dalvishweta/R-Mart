@@ -4,9 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rmart.utilits.pojos.AddressResponse;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class VendorInfo {
+public class VendorInfo implements Serializable {
 
     @SerializedName("first_name")
     @Expose

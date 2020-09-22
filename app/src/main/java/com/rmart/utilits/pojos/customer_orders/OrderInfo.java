@@ -3,7 +3,9 @@ package com.rmart.utilits.pojos.customer_orders;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class OrderInfo {
+import java.io.Serializable;
+
+public class OrderInfo implements Serializable {
 
     @SerializedName("status")
     @Expose
