@@ -36,7 +36,8 @@ public class Product implements Serializable {
 
     @SerializedName("display_image")
     @Expose
-    private String displayImage = "http://it.rokad.in/uploads/product_image/default_product.png";
+    private String displayImage;
+
     public String getProductName() {
         return productName;
     }

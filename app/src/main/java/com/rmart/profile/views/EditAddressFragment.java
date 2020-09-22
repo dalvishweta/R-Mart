@@ -56,7 +56,6 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     private boolean aadharBackSelected = false;
     private boolean panCardSelected = false;
     private Bitmap aadharFrontImageBitmap, aadharBackImageBitmap, panCardImageBitmap;
-    private boolean isAddNewAddress;
 
     public EditAddressFragment() {
         // Required empty public constructor
@@ -76,7 +75,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             myAddress = (AddressResponse) getArguments().getSerializable(ARG_PARAM2);
-            isAddNewAddress = getArguments().getBoolean(ARG_PARAM1);
+            //isAddNewAddress = getArguments().getBoolean(ARG_PARAM1);
         }
     }
 

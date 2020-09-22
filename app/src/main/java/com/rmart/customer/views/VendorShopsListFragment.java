@@ -49,7 +49,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
 
     private AppCompatEditText etProductsSearchField;
     private int currentPage = 0;
-    private List<CustomerProductsShopDetailsModel> productsList;
+    private List<CustomerProductsShopDetailsModel> shopsList;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int PAGE_SIZE = 20;
@@ -57,12 +57,10 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     private String searchShopName = "";
     private VendorShopsListAdapter vendorShopsListAdapter;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
+    private MyProfile myProfile;
 
     public static VendorShopsListFragment getInstance() {
-        VendorShopsListFragment vendorListViewFragment = new VendorShopsListFragment();
-        Bundle extras = new Bundle();
-        vendorListViewFragment.setArguments(extras);
-        return vendorListViewFragment;
+        return new VendorShopsListFragment();
     }
 
     @Nullable
@@ -89,6 +87,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     }
 
     private void loadUIComponents(View view) {
+
+        myProfile = MyProfile.getInstance();
 
         RecyclerView productsListField = view.findViewById(R.id.products_list_field);
         AppCompatTextView tvAddressField = view.findViewById(R.id.tv_address_field);
@@ -139,13 +139,13 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             }
         });
 
-        productsList = new ArrayList<>();
+        shopsList = new ArrayList<>();
 
         DividerItemDecoration divider = new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(requireActivity(), R.drawable.recycler_decoration_divider)));
         productsListField.addItemDecoration(divider);
 
-        vendorShopsListAdapter = new VendorShopsListAdapter(requireActivity(), productsList, callBackListener);
+        vendorShopsListAdapter = new VendorShopsListAdapter(requireActivity(), shopsList, callBackListener);
         productsListField.setAdapter(vendorShopsListAdapter);
 
         view.findViewById(R.id.btn_change_address_field).setOnClickListener(v -> {
@@ -175,14 +175,29 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     }
 
     public void updateToolBar() {
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            int cartCount = myProfile.getCartCount().getValue();
+            if (cartCount > 0) {
+                ((CustomerHomeActivity) (requireActivity())).showCartIcon();
+            } else {
+                ((CustomerHomeActivity) (requireActivity())).hideCartIcon();
+            }
+        }
         requireActivity().setTitle(getString(R.string.shops_list));
-        ((CustomerHomeActivity)(requireActivity())).showCartIcon();
+    }
+
+    public void updateShopWishListStatus(CustomerProductsShopDetailsModel vendorShopDetails) {
+        int index = shopsList.indexOf(vendorShopDetails);
+        if (index > -1) {
+            vendorShopsListAdapter.notifyItemChanged(index);
+        }
     }
 
     private CallBackInterface callBackListener = pObject -> {
-        if(pObject instanceof CustomerProductsShopDetailsModel) {
+        if (pObject instanceof CustomerProductsShopDetailsModel) {
             onCustomerHomeInteractionListener.gotoVendorProductDetails((CustomerProductsShopDetailsModel) pObject);
-        } else if(pObject instanceof Integer) {
+        } else if (pObject instanceof Integer) {
 
         }
     };
@@ -212,11 +227,11 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     }
 
     private void getShopsList() {
-        if (Utils.isNetworkConnected(requireActivity())) {
+        if (Utils.isNetworkConnected(requireActivity()) && myProfile != null) {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, MyProfile.getInstance().getUserID()).enqueue(new Callback<CustomerProductsResponse>() {
+            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, myProfile.getUserID()).enqueue(new Callback<CustomerProductsResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<CustomerProductsResponse> call, @NotNull Response<CustomerProductsResponse> response) {
                     progressDialog.dismiss();
@@ -241,13 +256,101 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     }
 
     private void updateAdapter(List<CustomerProductsShopDetailsModel> customerProductsList) {
-        productsList.addAll(customerProductsList);
+        shopsList.addAll(customerProductsList);
         vendorShopsListAdapter.updateItems(customerProductsList);
         vendorShopsListAdapter.notifyDataSetChanged();
-        if (productsList.size() >= totalShopsCount) {
+        if (shopsList.size() >= totalShopsCount) {
             isLastPage = true;
         } else {
             isLoading = false;
         }
     }
+
+    /*private void deleteShopFromWishList() {
+        if (Utils.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            String clientID = "2";
+            Call<BaseResponse> call = customerProductsService.deleteShopToWishList(clientID, productsShopDetailsModel.getShopWishListId());
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        BaseResponse body = response.body();
+                        if (body != null) {
+                            if (body.getStatus().equalsIgnoreCase("success")) {
+                                showDialog(body.getMsg(), pObject -> {
+                                    isWishListShop = !isWishListShop;
+                                    ivFavouriteImageField.setImageResource(R.drawable.heart);
+                                    productsShopDetailsModel.setShopWishListId(-1);
+                                    productsShopDetailsModel.setShopWishListStatus(0);
+                                    onCustomerHomeInteractionListener.updateShopWishListStatus(productsShopDetailsModel);
+                                });
+                            } else {
+                                showDialog(body.getMsg());
+                            }
+                        } else {
+                            showDialog(getString(R.string.no_information_available));
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                    showDialog(t.getMessage());
+                }
+            });
+        } else {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+        }
+    }
+
+    private void addShopFromWishList() {
+        if (Utils.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            String clientID = "2";
+            Call<AddShopToWishListResponse> call = customerProductsService.addShopToWishList(clientID, productsShopDetailsModel.getVendorId(),
+                    productsShopDetailsModel.getShopId(), MyProfile.getInstance().getUserID());
+            call.enqueue(new Callback<AddShopToWishListResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<AddShopToWishListResponse> call, @NotNull Response<AddShopToWishListResponse> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        AddShopToWishListResponse body = response.body();
+                        if (body != null) {
+                            if (body.getStatus().equalsIgnoreCase("success")) {
+                                showDialog(body.getMsg(), pObject -> {
+                                    isWishListShop = !isWishListShop;
+                                    ivFavouriteImageField.setImageResource(R.drawable.ic_checked);
+                                    int shopWishId = body.getShopToWishListDataResponse().getShopWishListId();
+                                    productsShopDetailsModel.setShopWishListId(shopWishId);
+                                    productsShopDetailsModel.setShopWishListStatus(1);
+                                    onCustomerHomeInteractionListener.updateShopWishListStatus(productsShopDetailsModel);
+                                });
+                            } else {
+                                showDialog(body.getMsg());
+                            }
+                        } else {
+                            showDialog(getString(R.string.no_information_available));
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<AddShopToWishListResponse> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                    showDialog(t.getMessage());
+                }
+            });
+        } else {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+        }
+    }*/
 }

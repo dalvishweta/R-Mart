@@ -20,8 +20,8 @@ import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
-import com.rmart.customer.OnCustomerWishListInteractionListener;
 import com.rmart.customer.adapters.ConfirmOrdersAdapter;
+import com.rmart.customer.models.AddProductToWishListResponse;
 import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
@@ -48,10 +48,10 @@ import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ConfirmOrderFragment#getInstance} factory method to
+ * Use the {@link ShoppingCartDetailsFragment#getInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConfirmOrderFragment extends BaseFragment {
+public class ShoppingCartDetailsFragment extends BaseFragment {
 
     private ShoppingCartResponseDetails vendorShoppingCartDetails;
 
@@ -65,12 +65,12 @@ public class ConfirmOrderFragment extends BaseFragment {
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private CustomerProductsShopDetailsModel vendorShopDetails;
 
-    public ConfirmOrderFragment() {
+    public ShoppingCartDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static ConfirmOrderFragment getInstance(ShoppingCartResponseDetails vendorShopDetails) {
-        ConfirmOrderFragment fragment = new ConfirmOrderFragment();
+    public static ShoppingCartDetailsFragment getInstance(ShoppingCartResponseDetails vendorShopDetails) {
+        ShoppingCartDetailsFragment fragment = new ShoppingCartDetailsFragment();
         Bundle extras = new Bundle();
         extras.putSerializable("VendorShopDetails", vendorShopDetails);
         fragment.setArguments(extras);
@@ -98,8 +98,8 @@ public class ConfirmOrderFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        LoggerInfo.printLog("Fragment", "ConfirmOrderFragment");
-        return inflater.inflate(R.layout.fragment_confirm_order, container, false);
+        LoggerInfo.printLog("Fragment", "ShoppingCartDetailsFragment");
+        return inflater.inflate(R.layout.fragment_shopping_cart_details, container, false);
     }
 
     private void loadUIComponents(View view) {
@@ -119,7 +119,7 @@ public class ConfirmOrderFragment extends BaseFragment {
     }
 
     private void proceedToBuySelected() {
-        onCustomerHomeInteractionListener.gotoPaymentOptionsScreen(vendorShopDetails);
+        onCustomerHomeInteractionListener.gotoCompleteOrderDetailsScreen(vendorShopDetails);
     }
 
     @Override
@@ -220,11 +220,11 @@ public class ConfirmOrderFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<BaseResponse> call = customerProductsService.moveToWishList(clientID, selectedProductInCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),
+            Call<AddProductToWishListResponse> call = customerProductsService.moveToWishList(clientID, selectedProductInCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),
                     selectedProductInCartDetails.getProductId());
-            call.enqueue(new Callback<BaseResponse>() {
+            call.enqueue(new Callback<AddProductToWishListResponse>() {
                 @Override
-                public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
+                public void onResponse(@NotNull Call<AddProductToWishListResponse> call, @NotNull Response<AddProductToWishListResponse> response) {
                     progressDialog.dismiss();
                     if (response.isSuccessful()) {
                         BaseResponse body = response.body();
@@ -239,7 +239,7 @@ public class ConfirmOrderFragment extends BaseFragment {
                 }
 
                 @Override
-                public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
+                public void onFailure(@NotNull Call<AddProductToWishListResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
                     showDialog(t.getMessage());
                 }

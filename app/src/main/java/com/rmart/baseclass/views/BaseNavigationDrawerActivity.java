@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,11 +26,11 @@ import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.customer.views.ChangeAddressFragment;
-import com.rmart.customer.views.ConfirmOrderFragment;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer.views.CustomerWishListActivity;
 import com.rmart.customer.views.PaymentOptionsFragment;
 import com.rmart.customer.views.ProductCartDetailsFragment;
+import com.rmart.customer.views.ShoppingCartDetailsFragment;
 import com.rmart.customer.views.ShoppingCartFragment;
 import com.rmart.customer.views.VendorProductDetailsFragment;
 import com.rmart.customer.views.VendorSameProductsListScreen;
@@ -59,7 +58,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     private AppCompatTextView mobileField;
     private AppCompatTextView emailIdField;
     private TextView tvCartCountField;
-    private RelativeLayout badgeCountLayoutField;
     private MenuItem menuItem;
 
     @Override
@@ -169,35 +167,34 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.badge_menu_drawer, menu);
-
         menuItem = menu.findItem(R.id.badge_menu);
-        if (MyProfile.getInstance().getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
-
-            View actionView = menuItem.getActionView();
-            tvCartCountField = actionView.findViewById(R.id.tv_cart_count_field);
-
-
-            badgeCountLayoutField = actionView.findViewById(R.id.cart_count_layout_field);
-            //MyProfile myProfile = ;
-            if (MyProfile.getInstance() != null) {
-                int cartCount = MyProfile.getInstance().getCartCount().getValue();
-                if (cartCount > 0) {
-                    tvCartCountField.setText(String.valueOf(cartCount));
-                } else {
-                    menuItem.setVisible(false);
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            if (myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
+                View actionView = menuItem.getActionView();
+                tvCartCountField = actionView.findViewById(R.id.tv_cart_count_field);
+                if (MyProfile.getInstance() != null) {
+                    int cartCount = myProfile.getCartCount().getValue();
+                    if (cartCount > 0) {
+                        Fragment currentFragment = getActiveFragment();
+                        if (currentFragment instanceof ShoppingCartFragment) {
+                            hideCartIcon();
+                        } else {
+                            showCartIcon();
+                        }
+                        tvCartCountField.setVisibility(View.VISIBLE);
+                        tvCartCountField.setText(String.valueOf(cartCount));
+                    } else {
+                        tvCartCountField.setVisibility(View.GONE);
+                        menuItem.setVisible(false);
+                    }
                 }
+                //actionView.setOnClickListener(v -> cartSelected());
+                // showBadge(true);
+                actionView.setOnClickListener(v -> cartSelected());
+            } else {
+                menuItem.setVisible(false);
             }
-            actionView.setOnClickListener(v -> cartSelected());
-            // showBadge(true);
-            actionView.setOnClickListener(v -> {
-                int cartCount = MyProfile.getInstance().getCartCount().getValue();
-                if (cartCount > 0) {
-                    Intent intent = new Intent(BaseNavigationDrawerActivity.this, CustomerHomeActivity.class);
-                    intent.putExtra("IS_SHOW_CART", true);
-                    startActivity(intent);
-                } });
-        } else {
-            menuItem.setVisible(false);
         }
         return true;
     }
@@ -319,12 +316,17 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                         ((ProductCartDetailsFragment) currentFragment).updateToolBar();
                     } else if (currentFragment instanceof ShoppingCartFragment) {
                         ((ShoppingCartFragment) currentFragment).updateToolBar();
-                    } else if (currentFragment instanceof ConfirmOrderFragment) {
-                        ((ConfirmOrderFragment) currentFragment).updateToolBar();
+                    } else if (currentFragment instanceof ShoppingCartDetailsFragment) {
+                        ((ShoppingCartDetailsFragment) currentFragment).updateToolBar();
                     } else if (currentFragment instanceof VendorSameProductsListScreen) {
                         ((VendorSameProductsListScreen) currentFragment).updateToolBar();
                     } else if (currentFragment instanceof PaymentOptionsFragment) {
                         ((PaymentOptionsFragment) currentFragment).updateToolBar();
+                    }
+                } else {
+                    Fragment fragment = getSupportFragmentManager().findFragmentByTag(VendorShopsListFragment.class.getName());
+                    if (fragment != null) {
+                        ((VendorShopsListFragment) fragment).updateToolBar();
                     }
                 }
             }

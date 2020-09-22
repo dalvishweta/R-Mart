@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/item_order_list_bg">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/item_order_list_bg"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/vendor_details_root"
+                style="@style/order_full_view_row"
+                android:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/order_full_view_title"
+                    android:text="@string/vendor_name" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/vendor_name"
+                    style="@style/order_full_view_content" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/order_full_view_title"
+                    android:text="@string/contact_number" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/vendor_number"
+                    style="@style/order_full_view_content" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/order_full_view_title"
+                    android:text="@string/delivery_address" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/vendor_address"
+                    style="@style/order_full_view_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/custom_details_root"
+                style="@style/order_full_view_row">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/order_full_view_title"
+                    android:text="@string/customer_name" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/customer_name"
+                    style="@style/order_full_view_content" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/order_full_view_title"
+                    android:text="@string/contact_number" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/customer_number"
+                    style="@style/order_full_view_content" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/order_full_view_title"
+                    android:text="@string/delivery_address" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/customer_address"
+                    style="@style/order_full_view_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/delivery_boy_info"
+                style="@style/order_full_view_row"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/order_full_view_title"
+                    android:text="@string/delivery_boy_name" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delivery_boy_name"
+                    style="@style/order_full_view_content" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/order_full_view_title"
+                    android:text="@string/delivery_boy_number" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delivery_boy_number"
+                    style="@style/order_full_view_content" />
+            </LinearLayout>
+
+
+            <LinearLayout style="@style/order_full_view_row">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/order_full_view_title"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/payment_info" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:minHeight="40dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/order_full_view_payment"
+                        android:text="@string/order_amount" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/amount"
+                        style="@style/order_full_view_payment" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:minHeight="40dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/order_full_view_payment"
+                        android:text="@string/delivery_charges" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/delivery_charges"
+                        style="@style/order_full_view_payment" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:minHeight="40dp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/order_full_view_payment"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/total_amount_colon" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/total_charges"
+                        style="@style/order_full_view_payment"
+                        android:fontFamily="@font/roboto_bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/order_full_view_payment"
+                        android:text="@string/mode_of_payment" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/payment_type"
+                        style="@style/order_full_view_payment"
+                        android:text="@string/COD" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--             end-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/order_full_view_title"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/white"
+                    android:text="@string/products_ordered" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/product_list_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_order_product_item" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_proceed_to_buy_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/add_to_cart_background_bg"
+            android:text="@string/proceed_to_buy"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+</RelativeLayout>

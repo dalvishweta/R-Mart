@@ -71,8 +71,7 @@ public class VendorProductDetailsAdapter extends RecyclerView.Adapter<VendorProd
             holder.productsTypesListField.addOnItemTouchListener(new RecyclerTouchListener(context, position, holder.productsTypesListField, new RecyclerTouchListener.ClickListener() {
                 @Override
                 public void onClick(View view, int position) {
-                    int tag = (int) view.getTag();
-                    callBackListener.callBackReceived(productsList.get(tag));
+                    callBackListener.callBackReceived(productsList.get(position));
                 }
 
                 @Override

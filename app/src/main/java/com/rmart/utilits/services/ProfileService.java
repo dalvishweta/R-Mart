@@ -46,7 +46,7 @@ public interface ProfileService {
                                             @Field("role_id") String roleID,
                                             @Field("delivery_radius") String deliveryRadius,
                                             @Field("client_id") String client_id,
-                                            @Field("id") String id
+                                            @Field("id") int id
 
     );
 

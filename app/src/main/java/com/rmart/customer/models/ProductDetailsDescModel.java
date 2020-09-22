@@ -3,6 +3,11 @@ package com.rmart.customer.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,6 +19,12 @@ public class ProductDetailsDescModel implements Serializable {
     @SerializedName("product_name")
     @Expose
     private String productName;
+    @SerializedName("parent_category_id")
+    @Expose
+    private Integer parentCategoryId;
+    @SerializedName("parent_category_name")
+    @Expose
+    private String parentCategoryName;
     @SerializedName("product_id")
     @Expose
     private Integer productId;
@@ -41,6 +52,9 @@ public class ProductDetailsDescModel implements Serializable {
     @SerializedName("is_wishlist")
     @Expose
     private Boolean isWishList;
+    @SerializedName("wishlist_id")
+    @Expose
+    private String wishListId;
 
     public String getProductName() {
         return productName;
@@ -114,12 +128,58 @@ public class ProductDetailsDescModel implements Serializable {
         this.units = units;
     }
 
-    public Boolean getIsWishList() {
+    public Boolean getWishList() {
         return isWishList;
     }
 
-    public void setIsWishList(Boolean isWishList) {
-        this.isWishList = isWishList;
+    public void setWishList(Boolean wishList) {
+        isWishList = wishList;
     }
 
+    public String getWishListId() {
+        return wishListId;
+    }
+
+    public void setWishListId(String wishListId) {
+        this.wishListId = wishListId;
+    }
+
+    public Integer getParentCategoryId() {
+        return parentCategoryId;
+    }
+
+    public void setParentCategoryId(Integer parentCategoryId) {
+        this.parentCategoryId = parentCategoryId;
+    }
+
+    public String getParentCategoryName() {
+        return parentCategoryName;
+    }
+
+    public void setParentCategoryName(String parentCategoryName) {
+        this.parentCategoryName = parentCategoryName;
+    }
+
+    @NotNull
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("productId", productId).toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(productId).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof ProductDetailsDescModel)) {
+            return false;
+        }
+        ProductDetailsDescModel rhs = ((ProductDetailsDescModel) other);
+        return new EqualsBuilder().append(productId, rhs.productId).isEquals();
+    }
 }

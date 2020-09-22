@@ -19,6 +19,7 @@ import com.rmart.customer.adapters.ShoppingCartAdapter;
 import com.rmart.customer.models.ShoppingCartResponse;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RecyclerTouchListener;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -55,6 +56,7 @@ public class ShoppingCartFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        LoggerInfo.printLog("Fragment", "ShoppingCartFragment");
         return inflater.inflate(R.layout.fragment_shopping_cart, container, false);
     }
 
@@ -69,9 +71,7 @@ public class ShoppingCartFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        requireActivity().setTitle(getString(R.string.shopping_cart));
         updateToolBar();
-        ((CustomerHomeActivity)requireActivity()).hideCartIcon();
     }
 
     public void updateToolBar() {
@@ -158,7 +158,7 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
     private void shopDetailsSelected() {
-        onCustomerHomeInteractionListener.gotoSelectedShopDetails(selectedShoppingCartDetails);
+        onCustomerHomeInteractionListener.gotoShoppingCartDetails(selectedShoppingCartDetails);
     }
 
     private void proceedToBuySelected() {

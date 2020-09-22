@@ -1,7 +1,10 @@
 package com.rmart.utilits.services;
 
 import com.rmart.BuildConfig;
+import com.rmart.customer.models.AddProductToWishListResponse;
+import com.rmart.customer.models.AddShopToWishListResponse;
 import com.rmart.customer.models.AddToCartResponseDetails;
+import com.rmart.customer.models.CustomerOrderedResponseModel;
 import com.rmart.customer.models.CustomerProductsResponse;
 import com.rmart.customer.models.ProductDetailsDescResponse;
 import com.rmart.customer.models.ProductInCartResponse;
@@ -65,7 +68,7 @@ public interface CustomerProductsService {
 
     @POST(BuildConfig.VENDOR_MOVE_TO_WISH_LIST)
     @FormUrlEncoded
-    Call<BaseResponse> moveToWishList(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
+    Call<AddProductToWishListResponse> moveToWishList(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
                                                       @Field("product_id") int productId);
 
     @POST(BuildConfig.VENDORS_SHOW_SHOP_WISE_CART)
@@ -95,5 +98,22 @@ public interface CustomerProductsService {
     Call<ProductOrderedResponseModel> savePlaceToOrder(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("user_address_id") String userAddressId,
                                                        @Field("customer_id") String customerId, @Field("shop_id") int shop_id, @Field("mode_of_payment_id") int modeOfPaymentId);
 
+    @POST(BuildConfig.ADD_SHOP_TO_WISH_LIST)
+    @FormUrlEncoded
+    Call<AddShopToWishListResponse> addShopToWishList(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("shop_id") int shop_id,
+                                                      @Field("customer_id") String customerId);
 
+    @POST(BuildConfig.DELETE_SHOP_TO_WISH_LIST)
+    @FormUrlEncoded
+    Call<BaseResponse> deleteShopFromWishList(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("shop_id") int shop_id,
+                                              @Field("customer_id") String customerId);
+
+    @POST(BuildConfig.DELETE_PRODUCT_WISH_LIST)
+    @FormUrlEncoded
+    Call<BaseResponse> deleteProductFromWishList(@Field("client_id") String clientId, @Field("wishlist_id") String wishListId);
+
+    @POST(BuildConfig.SHOW_CART_ORDER_DETAILS)
+    @FormUrlEncoded
+    Call<CustomerOrderedResponseModel> showCartOrderDetails(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("shop_id") int shop_id,
+                                                            @Field("user_address_id") String user_address_id, @Field("customer_id") String customerId);
 }

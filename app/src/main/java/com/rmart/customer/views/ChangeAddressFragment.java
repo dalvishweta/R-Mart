@@ -17,6 +17,7 @@ import com.rmart.customer.adapters.ChangeAddressAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
 import com.rmart.utilits.LoggerInfo;
+import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.AddressResponse;
 
 import java.util.ArrayList;
@@ -81,6 +82,16 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
         if (myProfile != null) {
             addressList = myProfile.getAddressResponses();
             if (addressList != null && !addressList.isEmpty()) {
+                String primaryAddress = myProfile.getPrimaryAddressId();
+                int primaryAddressValue = Utils.getIntegerValueFromString(primaryAddress);
+                for (int i = 0; i < addressList.size(); i++) {
+                    AddressResponse addressResponse = addressList.get(i);
+                    if (addressResponse.getId() == primaryAddressValue) {
+                        addressResponse.setPrimaryAddress(true);
+                        addressList.set(i, addressResponse);
+                        return;
+                    }
+                }
                 changeAddressAdapter = new ChangeAddressAdapter(requireActivity(), addressList, callBackListener);
                 addressListField.setAdapter(changeAddressAdapter);
             }

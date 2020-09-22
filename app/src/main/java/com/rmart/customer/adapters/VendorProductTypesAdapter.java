@@ -46,7 +46,6 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CustomerProductDetailsModel dataObject = productTypesList.get(position);
-
         String productImageUrl = dataObject.getProductImage();
         if (!TextUtils.isEmpty(productImageUrl)) {
             HttpsTrustManager.allowAllSSL();

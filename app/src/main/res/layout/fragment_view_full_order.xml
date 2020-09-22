@@ -35,18 +35,21 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:padding="16dp"
-                android:weightSum="5"
-                >
+                android:weightSum="5">
+
                 <ImageView
                     android:src="@drawable/bag"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/app_name" />
+
                 <RelativeLayout
                     android:padding="4dp"
                     android:layout_width="0dp"
                     android:layout_weight="3"
                     android:layout_height="wrap_content">
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/date"
                         android:layout_alignParentStart="true"
@@ -64,7 +67,6 @@
                         android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/date"
                         android:textSize="16sp"
-                        android:text="10 Aug 2020"
                         android:textColor="@color/black"
                         android:fontFamily="@font/roboto_regular"
                         android:layout_width="wrap_content"
@@ -86,7 +88,6 @@
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/date_value"
                         android:layout_toEndOf="@+id/order_id"
-                        android:text="45885745"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_width="wrap_content"
@@ -94,161 +95,155 @@
                         android:layout_height="wrap_content"/>
                 </RelativeLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/vendor_details_root"
                 android:visibility="visible"
-                style="@style/order_full_view_row"
-                >
+                style="@style/order_full_view_row">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/vendor_name"
-                    style="@style/order_full_view_title"
-                    />
+                    style="@style/order_full_view_title" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/vendor_name"
-                    style="@style/order_full_view_content"
-                    android:text="Vamshee Krishna"/>
+                    style="@style/order_full_view_content" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="Contact number"
                     style="@style/order_full_view_title"
-                    />
+                    android:text="@string/contact_number" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/vendor_number"
-                    style="@style/order_full_view_content"
-                    android:text="7416226233"/>
+                    style="@style/order_full_view_content" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/order_full_view_title"
-                    android:text="Delivery Address"/>
+                    android:text="@string/delivery_address" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/vendor_address"
-                    style="@style/order_full_view_content"
-                    android:text="@string/sample_address"
-                    />
+                    style="@style/order_full_view_content" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/custom_details_root"
-                style="@style/order_full_view_row"
-                >
+                style="@style/order_full_view_row">
+
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="Customer Name"
                     style="@style/order_full_view_title"
-                    />
+                    android:text="@string/customer_name" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/customer_name"
-                    style="@style/order_full_view_content"
-                    android:text="Vamshee Krishna"/>
+                    style="@style/order_full_view_content" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="Contact number"
                     style="@style/order_full_view_title"
-                    />
+                    android:text="@string/contact_number" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/customer_number"
-                    style="@style/order_full_view_content"
-                    android:text="7416226233"/>
+                    style="@style/order_full_view_content" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/order_full_view_title"
-                    android:text="Delivery Address"/>
+                    android:text="@string/delivery_address" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/customer_address"
-                    style="@style/order_full_view_content"
-                    android:text="Vamshee Krishna, 18-1814, Sagar road, Hanuman pent, miryalguda, Nalgonda district, Telangana "
-                    />
+                    style="@style/order_full_view_content" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/delivery_boy_info"
                 style="@style/order_full_view_row"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
+
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="Delivery Boy Name"
                     style="@style/order_full_view_title"
-                    />
+                    android:text="@string/delivery_boy_name" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/delivery_boy_name"
-                    style="@style/order_full_view_content"
-                    android:text="Ravi"/>
+                    style="@style/order_full_view_content" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="Delivery Boy number"
                     style="@style/order_full_view_title"
-                    />
+                    android:text="@string/delivery_boy_number" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/delivery_boy_number"
-                    style="@style/order_full_view_content"
-                    android:text="7416226233"/>
-
+                    style="@style/order_full_view_content" />
             </LinearLayout>
 
 
-            <LinearLayout
-                style="@style/order_full_view_row"
-                >
+            <LinearLayout style="@style/order_full_view_row">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/payment_info"
                     style="@style/order_full_view_title"
-                    android:layout_marginBottom="8dp"
-                    />
+                    android:layout_marginBottom="8dp" />
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_weight="2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:text="@string/order_amount"
-                        style="@style/order_full_view_payment"
-                        />
+                        style="@style/order_full_view_payment" />
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/amount"
-                        style="@style/order_full_view_payment"
-                        android:text="940"/>
+                        style="@style/order_full_view_payment" />
                 </LinearLayout>
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_weight="2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:text="@string/delivery_charges"
-                        style="@style/order_full_view_payment"
-                        />
+                        style="@style/order_full_view_payment" />
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/delivery_charges"
                         style="@style/order_full_view_payment"/>
                 </LinearLayout>
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_weight="2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:text="Total Amount:"
-                        style="@style/order_full_view_payment"
                         android:fontFamily="@font/roboto_bold"
-                        />
+                        style="@style/order_full_view_payment"
+                        android:text="@string/total_amount_colon" />
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/total_charges"
                         style="@style/order_full_view_payment"
-                        android:fontFamily="@font/roboto_bold"
-                        android:text="1000"/>
+                        android:fontFamily="@font/roboto_bold" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_weight="2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:text="@string/mode_of_payment"
-                        style="@style/order_full_view_payment"
-                        />
+                        style="@style/order_full_view_payment" />
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/payment_type"
                         style="@style/order_full_view_payment"
-                        android:text="COD"/>
+                        android:text="@string/COD" />
                 </LinearLayout>
             </LinearLayout>
 <!--             end-->

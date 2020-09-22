@@ -23,7 +23,11 @@ import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
 import com.rmart.utilits.pojos.orders.Order;
+import com.rmart.utilits.pojos.orders.Product;
 import com.rmart.utilits.services.CustomerOrderService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -175,8 +179,13 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         tvTotalCharges.setText(orderProductList.getOrderInfo().getTotalAmt());
         tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
 
-        productAdapter = new ProductListAdapter(orderProductList.getProduct(), this);
-        recyclerView.setAdapter(productAdapter);
+        List<Product> orderedProductsList = orderProductList.getProduct();
+        if (orderedProductsList != null && !orderedProductsList.isEmpty()) {
+            List<Object> lUpdatedProductsList = new ArrayList<>(orderedProductsList);
+            productAdapter = new ProductListAdapter(requireActivity(), lUpdatedProductsList);
+            productAdapter.setOnClickListener(this);
+            recyclerView.setAdapter(productAdapter);
+        }
     }
 
     @Override

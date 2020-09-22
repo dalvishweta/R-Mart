@@ -3,6 +3,11 @@ package com.rmart.customer.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 /**
@@ -42,7 +47,10 @@ public class CustomerProductsShopDetailsModel implements Serializable {
     private Integer clientId;
     @SerializedName("shop_wishlist_status")
     @Expose
-    private Integer shopWishListStatus;
+    private Integer shopWishListStatus = 0;
+    @SerializedName("shop_wishlist_id")
+    @Expose
+    private Integer shopWishListId = -1;
 
     public String getShopMobileNo() {
         return shopMobileNo;
@@ -131,4 +139,36 @@ public class CustomerProductsShopDetailsModel implements Serializable {
     public void setShopWishListStatus(Integer shopWishListStatus) {
         this.shopWishListStatus = shopWishListStatus;
     }
+
+    public Integer getShopWishListId() {
+        return shopWishListId;
+    }
+
+    public void setShopWishListId(Integer shopWishListId) {
+        this.shopWishListId = shopWishListId;
+    }
+
+    @NotNull
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("shopId", shopId).toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(shopId).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof CustomerProductsShopDetailsModel)) {
+            return false;
+        }
+        CustomerProductsShopDetailsModel rhs = ((CustomerProductsShopDetailsModel) other);
+        return new EqualsBuilder().append(shopId, rhs.shopId).isEquals();
+    }
+
 }

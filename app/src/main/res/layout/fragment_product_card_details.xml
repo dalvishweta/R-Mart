@@ -65,38 +65,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/iv_favourite_image_field"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/heart_black" />
-
-            <TextView
-                android:id="@+id/tv_product_discount_field"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:gravity="center"
-                android:textColor="@color/green" />
-
             <RelativeLayout
                 android:id="@+id/product_details_layout_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.android.volley.toolbox.NetworkImageView
-                    android:id="@+id/iv_product_image_field"
-                    android:layout_width="125dp"
-                    android:layout_height="175dp"
-                    android:layout_centerHorizontal="true"
+                <ImageView
+                    android:id="@+id/iv_favourite_image_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/heart_black" />
+
+                <TextView
+                    android:id="@+id/tv_product_discount_field"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:gravity="center"
+                    android:textColor="@color/green" />
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="130dp"
+                    android:layout_height="175dp"
+                    android:layout_centerHorizontal="true" />
 
                 <ImageView
                     android:id="@+id/iv_left_arrow_field"
@@ -118,7 +117,6 @@
                     android:contentDescription="@string/app_name"
                     android:src="@drawable/right_arrow" />
             </RelativeLayout>
-
             <TextView
                 android:id="@+id/tv_product_name_field"
                 style="@style/text_style_medium_bold"
@@ -254,6 +252,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="-20dp"
+                    android:visibility="gone"
                     android:background="@drawable/grey_filled_rounded_borders_bg"
                     android:orientation="horizontal">
 
@@ -265,8 +264,7 @@
                         android:layout_marginStart="10dp"
                         android:gravity="center_vertical"
                         android:text="@string/view_more"
-                        android:textAllCaps="false"
-                        android:visibility="gone" />
+                        android:textAllCaps="false" />
 
                     <ImageView
                         android:id="@+id/iv_view_more_image_field"

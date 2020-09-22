@@ -14,7 +14,7 @@ public class AddressResponse extends BaseResponse implements Serializable {
 
     @SerializedName("id")
     @Expose
-    String id;
+    Integer id;
 
     @SerializedName("shop_name")
     @Expose
@@ -120,11 +120,13 @@ public class AddressResponse extends BaseResponse implements Serializable {
     @Expose
     String clientID;
 
-    public String getId() {
+    private boolean isPrimaryAddress = false;
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -334,6 +336,14 @@ public class AddressResponse extends BaseResponse implements Serializable {
 
     public void setClientID(String clientID) {
         this.clientID = clientID;
+    }
+
+    public boolean isPrimaryAddress() {
+        return isPrimaryAddress;
+    }
+
+    public void setPrimaryAddress(boolean primaryAddress) {
+        isPrimaryAddress = primaryAddress;
     }
 
     @NotNull

@@ -31,7 +31,7 @@ public class MyProfile {
     private String primaryAddressId;
     private ArrayList<AddressResponse> addressResponses;
     private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
-    private MutableLiveData<Integer> cartCount = new MutableLiveData<>();
+    private MutableLiveData<Integer> cartCount = new MutableLiveData<>(0);
 
     public static MyProfile getInstance() {
         return myProfile;

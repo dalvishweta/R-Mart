@@ -72,7 +72,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     public static final String UNIT_VALUE = "unit_value";
 
     private ProductResponse mClonedProduct;
-    private ProductResponse mProduct;
     private boolean isEdit;
 
     ArrayList<APIUnitMeasureResponse> unitMeasurements = new ArrayList<>();
@@ -84,7 +83,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     // Spinner productBrand;
     AppCompatEditText productRegionalName, deliveryDays, productDescription;
     AppCompatTextView expiry;
-    private RecyclerView unitsRecyclerView, imagesRecyclerView;
+    private RecyclerView unitsRecyclerView;
     APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
     private ArrayList<String> availableBrands = new ArrayList<>();
     private APIStockListResponse stockListResponse = null;
@@ -109,12 +108,12 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mProduct = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
-            stockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
+            ProductResponse mProduct = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
+            //stockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
 
             if(null == mProduct) {
                 mClonedProduct = new ProductResponse();
-                mProduct = new ProductResponse();
+                //mProduct = new ProductResponse();
             } else {
                 try {
                     mClonedProduct = new ProductResponse(mProduct);
@@ -133,12 +132,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         LoggerInfo.printLog("Fragment", "AddProductToInventory");
 
         getUnitMeasuresFromAPI();
-        getBrandFromAPI();
-//        availableUnits1.add("1 KG");
-//        availableUnits1.add("2 KG");
-//        availableUnits1.add("5 KG");
-//        availableUnits1.add("10 KG");
-//        availableUnits1.add("25 KG");
+        //getBrandFromAPI();
         return inflater.inflate(R.layout.fragment_edit_product, container, false);
     }
 
@@ -223,7 +217,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         expiry.setOnClickListener(this);
         deliveryDays = view.findViewById(R.id.delivery_days);
         unitsRecyclerView = view.findViewById(R.id.unit_base);
-        imagesRecyclerView = view.findViewById(R.id.product_image);
+        RecyclerView imagesRecyclerView = view.findViewById(R.id.product_image);
 
         unitsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         imagesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
@@ -238,10 +232,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         view.findViewById(R.id.add_unit).setOnClickListener(this);
 
         imagesList = new ArrayList<>();
-        /*if (imagesList.size() < 5) {
-            imagesList.add(ImageUploadAdapter.DEFAULT);
-        }*/
-
         if (mClonedProduct != null) {
             List<ImageURLResponse> clonedImagesList = mClonedProduct.getImages();
             int difference = 5 - clonedImagesList.size();

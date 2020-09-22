@@ -10,21 +10,24 @@ import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
+import com.rmart.utilits.LoggerInfo;
 
 public class CustomerHomeActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
+
+    private VendorShopsListFragment vendorShopsListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_authenticatin);
         Bundle data = getIntent().getExtras();
-        showCartIcon();
-        boolean showCartView = false;
-        if(data != null) {
-            addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), false);
+        vendorShopsListFragment = VendorShopsListFragment.getInstance();
+        /*if (data != null) {
+            addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
         } else {
-            addFragment(VendorShopsListFragment.getInstance(), VendorShopsListFragment.class.getName(), false);
-        }
+            addFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), true);
+        }*/
+        replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);
     }
 
     @Override
@@ -44,7 +47,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     @Override
     public void gotoVendorProductDetails(CustomerProductsShopDetailsModel customerProductsModel) {
         showCartIcon();
-        addFragment(VendorProductDetailsFragment.getInstance(customerProductsModel),VendorProductDetailsFragment.class.getName(),true);
+        addFragment(VendorProductDetailsFragment.getInstance(customerProductsModel), VendorProductDetailsFragment.class.getName(), true);
     }
 
     @Override
@@ -60,9 +63,9 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     }
 
     @Override
-    public void gotoSelectedShopDetails(ShoppingCartResponseDetails shoppingCartResponseDetails) {
+    public void gotoShoppingCartDetails(ShoppingCartResponseDetails shoppingCartResponseDetails) {
         hideCartIcon();
-        addFragment(ConfirmOrderFragment.getInstance(shoppingCartResponseDetails), ConfirmOrderFragment.class.getName(), true);
+        addFragment(ShoppingCartDetailsFragment.getInstance(shoppingCartResponseDetails), ShoppingCartDetailsFragment.class.getName(), true);
     }
 
     @Override
@@ -74,6 +77,21 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     @Override
     public void gotoConfirmedOrderStatusScreen() {
 
+    }
+
+    @Override
+    public void updateShopWishListStatus(CustomerProductsShopDetailsModel vendorShopDetails) {
+        vendorShopsListFragment.updateShopWishListStatus(vendorShopDetails);
+    }
+
+    @Override
+    public void gotoCompleteOrderDetailsScreen(CustomerProductsShopDetailsModel vendorShopDetails) {
+        hideCartIcon();
+        try {
+            addFragment(CustomerOrderDetailsFragment.getInstance(vendorShopDetails), PaymentOptionsFragment.class.getName(), true);
+        } catch (Exception ex) {
+            LoggerInfo.printLog("CustomerOrderDetailsFragment exception", ex.getMessage());
+        }
     }
 
     @Override

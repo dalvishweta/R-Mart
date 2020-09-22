@@ -3,7 +3,6 @@ package com.rmart.customer.views;
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,25 +17,26 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.viewpager.widget.ViewPager;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
-import com.rmart.RMartApplication;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.CustomSpinnerAdapter;
+import com.rmart.customer.models.AddProductToWishListResponse;
 import com.rmart.customer.models.AddToCartResponseDetails;
+import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductDetailsDescModel;
 import com.rmart.customer.models.ProductDetailsDescResponse;
-import com.rmart.customer.models.CustomerProductDetailsModel;
+import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.profile.model.MyProfile;
-import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.pojos.ImageURLResponse;
 import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -59,9 +59,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
     private ImageView ivFavouriteImageField;
     private TextView tvProductDiscountField;
-    private NetworkImageView ivProductImageField;
-    private ImageView ivLeftArrowImageField;
-    private ImageView ivRightArrowImageField;
     private TextView tvProductNameField;
     private TextView tvSellingPriceField;
     private TextView tvTotalPriceField;
@@ -76,6 +73,11 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private int productImagePosition = 1;
     private CustomerProductsDetailsUnitModel productUnitDetails;
     private Spinner quantitySpinnerField;
+    private boolean isWishListProduct = false;
+    //private NetworkImageView ivProductImageField;
+    private ImageView ivLeftArrowImageField;
+    private ImageView ivRightArrowImageField;
+    private ViewPager productsImagePagerField;
 
     private List<String> productsImagesList;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
@@ -178,7 +180,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private void loadUIComponents(View view) {
         ivFavouriteImageField = view.findViewById(R.id.iv_favourite_image_field);
         tvProductDiscountField = view.findViewById(R.id.tv_product_discount_field);
-        ivProductImageField = view.findViewById(R.id.iv_product_image_field);
+        productsImagePagerField = view.findViewById(R.id.view_pager);
         ivLeftArrowImageField = view.findViewById(R.id.iv_left_arrow_field);
         ivRightArrowImageField = view.findViewById(R.id.iv_right_arrow_field);
         tvProductNameField = view.findViewById(R.id.tv_product_name_field);
@@ -221,7 +223,10 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
         btnBuyNowField.setOnClickListener(v -> buyNowSelected());
 
-        ivFavouriteImageField.setOnClickListener(v -> favouriteSelected());
+        ivFavouriteImageField.setOnClickListener(v -> {
+            if (isWishListProduct) deleteProductFromWishList();
+            else addProductToWishList();
+        });
 
         updateQuantityDetails();
     }
@@ -243,14 +248,15 @@ public class ProductCartDetailsFragment extends BaseFragment {
     }
 
     private void updateImagesList() {
-        String productImageUrl = productsImagesList.get(productImagePosition - 1);
+        /*String productImageUrl = productsImagesList.get(productImagePosition - 1);
         if (!TextUtils.isEmpty(productImageUrl)) {
             HttpsTrustManager.allowAllSSL();
             RMartApplication.getInstance().getImageLoader().get(productImageUrl, ImageLoader.getImageListener(ivProductImageField,
                     R.mipmap.ic_launcher, android.R.drawable
                             .ic_dialog_alert));
             ivProductImageField.setImageUrl(productImageUrl, RMartApplication.getInstance().getImageLoader());
-        }
+        }*/
+
     }
 
     private void viewMoreSelected() {
@@ -280,7 +286,14 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private void updateUI() {
         productsImagesList = productDetailsDescModel.getProductImage();
         if (productsImagesList != null && !productsImagesList.isEmpty()) {
-            updateImagesList();
+            List<ImageURLResponse> lUpdatedImagesList = new ArrayList<>();
+            for (String imageUrl : productsImagesList) {
+                ImageURLResponse imageURLResponse = new ImageURLResponse();
+                imageURLResponse.setDisplayImage(imageUrl);
+                lUpdatedImagesList.add(imageURLResponse);
+            }
+            ImageAdapter imageAdapter = new ImageAdapter(requireActivity(), lUpdatedImagesList);
+            productsImagePagerField.setAdapter(imageAdapter);
         } else {
             ivLeftArrowImageField.setVisibility(View.GONE);
             ivRightArrowImageField.setVisibility(View.GONE);
@@ -292,6 +305,24 @@ public class ProductCartDetailsFragment extends BaseFragment {
             ArrayList<Object> updatedUnitsList = new ArrayList<>(unitsList);
             CustomSpinnerAdapter unitsAdapter = new CustomSpinnerAdapter(requireActivity(), updatedUnitsList);
             quantitySpinnerField.setAdapter(unitsAdapter);
+
+            quantitySpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                    Object lObject = updatedUnitsList.get(position);
+                    if (lObject instanceof CustomerProductsDetailsUnitModel) {
+                        CustomerProductsDetailsUnitModel lUnitsModel = (CustomerProductsDetailsUnitModel) lObject;
+                        int productDiscount = lUnitsModel.getProductDiscount();
+                        String productDiscountDetails = productDiscount + "% \n Off";
+                        tvProductDiscountField.setText(productDiscountDetails);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
         }
         tvProductDescField.setText(productDetailsDescModel.getProductDetails());
         tvProductDescField.post(() -> {
@@ -317,6 +348,9 @@ public class ProductCartDetailsFragment extends BaseFragment {
             }
         });
         tvProductDescField.setText(productDetailsDescModel.getProductDetails());
+        isWishListProduct = productDetailsDescModel.getWishList();
+
+        ivFavouriteImageField.setImageResource(isWishListProduct ? R.drawable.heart_active : R.drawable.heart_black);
     }
 
     private void updateUnitPriceDetails() {
@@ -383,7 +417,89 @@ public class ProductCartDetailsFragment extends BaseFragment {
         onCustomerHomeInteractionListener.gotoShoppingCartScreen();
     }
 
-    private void favouriteSelected() {
+    private void deleteProductFromWishList() {
+        if (Utils.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            String clientID = "2";
+            Call<BaseResponse> call = customerProductsService.deleteProductFromWishList(clientID, productDetailsDescModel.getWishListId());
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        BaseResponse body = response.body();
+                        if (body != null) {
+                            if (body.getStatus().equalsIgnoreCase("success")) {
+                                showDialog(body.getMsg(), pObject -> {
+                                    isWishListProduct = !isWishListProduct;
+                                    ivFavouriteImageField.setImageResource(R.drawable.heart_black);
+                                    productDetailsDescModel.setWishList(false);
+                                });
+                            } else {
+                                showDialog(body.getMsg());
+                            }
+                        } else {
+                            showDialog(getString(R.string.no_information_available));
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
+                    }
+                }
 
+                @Override
+                public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                    showDialog(t.getMessage());
+                }
+            });
+        } else {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+        }
+    }
+
+    private void addProductToWishList() {
+        if (Utils.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            String clientID = "2";
+            Call<AddProductToWishListResponse> call = customerProductsService.moveToWishList(clientID, vendorShopDetails.getVendorId(),
+                    MyProfile.getInstance().getUserID(), productDetailsDescModel.getProductId());
+            call.enqueue(new Callback<AddProductToWishListResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<AddProductToWishListResponse> call, @NotNull Response<AddProductToWishListResponse> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        AddProductToWishListResponse body = response.body();
+                        if (body != null) {
+                            if (body.getStatus().equalsIgnoreCase("success")) {
+                                showDialog(body.getMsg(), pObject -> {
+                                    isWishListProduct = !isWishListProduct;
+                                    ivFavouriteImageField.setImageResource(R.drawable.heart_active);
+                                    String productWishListId = body.getAddProductToWishListDataResponse().getProductWishListId();
+                                    productDetailsDescModel.setWishListId(productWishListId);
+                                    productDetailsDescModel.setWishList(true);
+                                    onCustomerHomeInteractionListener.updateShopWishListStatus(vendorShopDetails);
+                                });
+                            } else {
+                                showDialog(body.getMsg());
+                            }
+                        } else {
+                            showDialog(getString(R.string.no_information_available));
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<AddProductToWishListResponse> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                    showDialog(t.getMessage());
+                }
+            });
+        } else {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+        }
     }
 }

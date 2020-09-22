@@ -55,6 +55,10 @@ android {
         buildConfigField("String", "VENDORS_SHOW_WISH_LIST_CART", '"customer/VendorShop/showWishlistData"')
         buildConfigField("String", "VENDORS_SHOW_SHOP_WISE_WISH_LIST_CART", '"customer/VendorShop/showShopWiseWishlist"')
         buildConfigField("String", "VENDORS_SAVE_PLACE_ORDER", '"customer/VendorShop/savePlaceOrder"')
+        buildConfigField("String", "ADD_SHOP_TO_WISH_LIST", '"customer/VendorShop/addShopToWishlist"')
+        buildConfigField("String", "DELETE_SHOP_TO_WISH_LIST", '"customer/VendorShop/deleteShopWishlist"')
+        buildConfigField("String", "DELETE_PRODUCT_WISH_LIST", '"customer/VendorShop/deleteWishlist"')
+        buildConfigField("String", "SHOW_CART_ORDER_DETAILS", '"customer/VendorShop/showCartOrderDetails"')
         //
 
         /*Vendor inventory services*/
