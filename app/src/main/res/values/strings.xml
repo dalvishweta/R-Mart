@@ -211,7 +211,6 @@
     <string name="added_to_cart">Added to Cart</string>
     <string name="shopping">Shopping</string>
     <string name="status">Status</string>
-    <string name="shopping_cart">Shopping Cart</string>
     <string name="aadhar_number">Aadhar No</string>
     <string name="enter_your_aadhar_number">Enter your Aadhar Number</string>
     <string name="aadhar_number_error">Please Enter Valid Aadhar Number</string>
@@ -232,4 +231,5 @@
     <string name="make_payment">Make Payment</string>
     <string name="shops_list">Shops List</string>
     <string name="sample_address">Vamshee Krishna, 18-1814, Sagar road, Hanuman pent, miryalguda, Nalgonda district, Telangana</string>
+    <string name="shopping_cart">Shopping Cart</string>
 </resources>

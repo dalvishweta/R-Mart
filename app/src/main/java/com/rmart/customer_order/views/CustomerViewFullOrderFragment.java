@@ -38,8 +38,8 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     private String mParam2;
     MyOrdersViewModel viewModel;
     AppCompatButton mLeftButton, mRightButton;
-    private AppCompatTextView tvStatus, tvFullName,dateValue, orderIdValue, tvAmount,
-            tvDeliveryCharges, tvTotalCharges, tvPaymentType, contactNumber, vendorAddress;
+    private AppCompatTextView tvStatus, dateValue, vendorName, vendorNumber, vendorAddress, orderIdValue, tvAmount,
+            tvDeliveryCharges, tvTotalCharges, tvPaymentType, customerName, customerNumber, customerAddress;
     private ProductListAdapter productAdapter;
     private CustomerOrderProductList orderProductList;
     private RecyclerView recyclerView;
@@ -111,16 +111,23 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvFullName = view.findViewById(R.id.vendor_name);
-        contactNumber = view.findViewById(R.id.vendor_number);
-        vendorAddress = view.findViewById(R.id.vendor_address);
         recyclerView = view.findViewById(R.id.product_list);
         mLeftButton = view.findViewById(R.id.left_button);
         mLeftButton.setOnClickListener(this);
         mRightButton = view.findViewById(R.id.right_button);
         mRightButton.setOnClickListener(this);
 
-        //Customer Info
+        //Vendor Info
+        vendorName = view.findViewById(R.id.vendor_name);
+        vendorNumber = view.findViewById(R.id.vendor_number);
+        vendorAddress = view.findViewById(R.id.vendor_address);
+
+        // Customer Info
+        customerName = view.findViewById(R.id.customer_name);
+        customerNumber = view.findViewById(R.id.customer_number);
+        customerAddress = view.findViewById(R.id.customer_address);
+
+        //order Info
         tvStatus = view.findViewById(R.id.status);
         dateValue = view.findViewById(R.id.date_value);
         orderIdValue = view.findViewById(R.id.order_id_value);
@@ -137,28 +144,27 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         view.findViewById(R.id.bottom).setVisibility(View.GONE);
         view.findViewById(R.id.custom_details_root).setVisibility(View.GONE);
         view.findViewById(R.id.vendor_details_root).setVisibility(View.VISIBLE);
-        // setValuesToUI();
 
-    }
-    void setValuesToUI() {
     }
 
     void updateUI() {
         Resources res = getResources();
         String text = String.format(res.getString(R.string.status_order), orderProductList.getOrderInfo().getStatusName());
         tvStatus.setText(text);
-        orderIdValue.setText(mOrderObject.getOrderID());
+        orderIdValue.setText( orderProductList.getOrderInfo().getOrderID());
         dateValue.setText(mOrderObject.getOrderDate().split(" ")[0]);
 
         // setFooter();
         // vendor
-        tvFullName.setText(orderProductList.getVendorInfo().getFirstName()+" "+ orderProductList.getVendorInfo().getLastName());
-        contactNumber.setText(orderProductList.getVendorInfo().getMobileNumber());
+        text = orderProductList.getVendorInfo().getFirstName()+" "+ orderProductList.getVendorInfo().getLastName();
+        vendorName.setText(text);
+        vendorNumber.setText(orderProductList.getVendorInfo().getMobileNumber());
         vendorAddress.setText(orderProductList.getVendorInfo().getCompleteAddress());
-        // payment info
 
+        // payment info
         tvAmount.setText(orderProductList.getOrderInfo().getOrderAmount());
-        tvDeliveryCharges.setText(orderProductList.getOrderInfo().getDeliveryCharges());
+        text = orderProductList.getOrderInfo().getOrderCharges();
+        tvDeliveryCharges.setText(text);
         tvTotalCharges.setText(orderProductList.getOrderInfo().getTotalAmt());
         tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
 

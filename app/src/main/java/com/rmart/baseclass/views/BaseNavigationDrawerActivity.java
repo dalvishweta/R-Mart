@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -61,6 +60,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     private AppCompatTextView emailIdField;
     private TextView tvCartCountField;
     private RelativeLayout badgeCountLayoutField;
+    private MenuItem menuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,7 +153,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 }
             });
         }
-            nameField = findViewById(R.id.name);
+            nameField = findViewById(R.id.customer_name);
             mobileField = findViewById(R.id.mobile);
             emailIdField = findViewById(R.id.email_id_field);
         TextView tvAppVersionField = findViewById(R.id.tv_version_field);
@@ -170,26 +170,32 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.badge_menu_drawer, menu);
 
-        final MenuItem menuItem = menu.findItem(R.id.badge_menu);
+        menuItem = menu.findItem(R.id.badge_menu);
         if (MyProfile.getInstance().getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
 
             View actionView = menuItem.getActionView();
             tvCartCountField = actionView.findViewById(R.id.tv_cart_count_field);
 
-            MyProfile myProfile = MyProfile.getInstance();
-            if (myProfile != null) {
-                Integer cartCount = myProfile.getCartCount().getValue();
-                tvCartCountField.setText(String.valueOf(cartCount));
-            }
-
-        badgeCountLayoutField = actionView.findViewById(R.id.cart_count_layout_field);
-        actionView.setOnClickListener(v -> cartSelected());
 
             badgeCountLayoutField = actionView.findViewById(R.id.cart_count_layout_field);
-            showBadge(true);
+            //MyProfile myProfile = ;
+            if (MyProfile.getInstance() != null) {
+                int cartCount = MyProfile.getInstance().getCartCount().getValue();
+                if (cartCount > 0) {
+                    tvCartCountField.setText(String.valueOf(cartCount));
+                } else {
+                    menuItem.setVisible(false);
+                }
+            }
+            actionView.setOnClickListener(v -> cartSelected());
+            // showBadge(true);
             actionView.setOnClickListener(v -> {
-                Toast.makeText(getApplicationContext(), "Action View", Toast.LENGTH_SHORT).show();
-            });
+                int cartCount = MyProfile.getInstance().getCartCount().getValue();
+                if (cartCount > 0) {
+                    Intent intent = new Intent(BaseNavigationDrawerActivity.this, CustomerHomeActivity.class);
+                    intent.putExtra("IS_SHOW_CART", true);
+                    startActivity(intent);
+                } });
         } else {
             menuItem.setVisible(false);
         }
@@ -354,15 +360,15 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
     @Override
     public void showCartIcon() {
-        if (badgeCountLayoutField != null) {
-            badgeCountLayoutField.setVisibility(View.VISIBLE);
+        if (menuItem != null) {
+            menuItem.setVisible(true);
         }
     }
 
     @Override
     public void hideCartIcon() {
-        if (badgeCountLayoutField != null) {
-            badgeCountLayoutField.setVisibility(View.GONE);
+        if (menuItem != null) {
+            menuItem.setVisible(false);
         }
     }
 

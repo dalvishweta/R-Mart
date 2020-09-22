@@ -4,7 +4,8 @@
     android:id="@+id/cart_count_layout_field"
     android:layout_width="80dp"
     android:layout_height="wrap_content"
-    android:minHeight="40dp">
+    android:minHeight="40dp"
+    android:visibility="gone">
 
     <ImageView
         android:id="@+id/iv_cart_image_field"

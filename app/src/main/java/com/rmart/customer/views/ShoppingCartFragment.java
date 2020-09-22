@@ -69,7 +69,9 @@ public class ShoppingCartFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        requireActivity().setTitle(getString(R.string.shopping_cart));
         updateToolBar();
+        ((CustomerHomeActivity)requireActivity()).hideCartIcon();
     }
 
     public void updateToolBar() {
@@ -127,7 +129,8 @@ public class ShoppingCartFragment extends BaseFragment {
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
                                 List<ShoppingCartResponseDetails> lShopWiseCartList = body.getShoppingCartResponse().getShopWiseCartDataList();
-                                if (lShopWiseCartList != null && !lShopWiseCartList.isEmpty()) {
+                                MyProfile.getInstance().getCartCount().setValue(lShopWiseCartList.size());
+                                if (!lShopWiseCartList.isEmpty()) {
                                     shopWiseCartList.addAll(lShopWiseCartList);
                                     setAdapter();
                                 } else {

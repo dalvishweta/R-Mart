@@ -20,10 +20,9 @@ import com.rmart.orders.viewmodel.MyOrdersViewModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.UpdatedOrderStatus;
+import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
+import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
 import com.rmart.utilits.pojos.orders.Order;
-import com.rmart.utilits.pojos.orders.OrderProductList;
-import com.rmart.utilits.pojos.orders.OrderProductListResponse;
 import com.rmart.utilits.services.OrderService;
 
 import retrofit2.Call;
@@ -39,10 +38,10 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private String mParam2;
     MyOrdersViewModel viewModel;
     AppCompatButton mLeftButton, mRightButton;
-    private AppCompatTextView tvStatus, tvFullName,dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType,
-            deliveryBoyName, deliveryBoyNumber;
+    private AppCompatTextView tvStatus, customerName,dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType,
+            deliveryBoyName, deliveryBoyNumber, contactNumber, vendorAddress;
     private ProductListAdapter productAdapter;
-    private OrderProductList orderProductList;
+    private CustomerOrderProductList orderProductList;
     private RecyclerView recyclerView;
     private LinearLayout deliveryBoyInfo;
 
@@ -78,14 +77,14 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private void getServerData() {
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.getOrderProductList("0", MyProfile.getInstance().getUserID(), mOrderObject.getOrderID()).enqueue(new Callback<OrderProductListResponse>() {
+        orderService.getOrderProductList("0", MyProfile.getInstance().getUserID(), mOrderObject.getOrderID()).enqueue(new Callback<CustomerOrderProductResponse>() {
             @Override
-            public void onResponse(Call<OrderProductListResponse> call, Response<OrderProductListResponse> response) {
+            public void onResponse(Call<CustomerOrderProductResponse> call, Response<CustomerOrderProductResponse> response) {
                 if(response.isSuccessful()) {
-                    OrderProductListResponse data = response.body();
+                    CustomerOrderProductResponse data = response.body();
                     assert data != null;
                     if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        orderProductList  = data.getOrderStates();
+                        orderProductList  = data.getProductList();
                         updateUI();
                     } else {
                         showDialog(data.getMsg());
@@ -95,7 +94,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
             }
 
             @Override
-            public void onFailure(Call<OrderProductListResponse> call, Throwable t) {
+            public void onFailure(Call<CustomerOrderProductResponse> call, Throwable t) {
                 progressDialog.dismiss();
             }
         });
@@ -112,16 +111,19 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvFullName = view.findViewById(R.id.name);
         recyclerView = view.findViewById(R.id.product_list);
         mLeftButton = view.findViewById(R.id.left_button);
         mLeftButton.setOnClickListener(this);
         mRightButton = view.findViewById(R.id.right_button);
         mRightButton.setOnClickListener(this);
+
         //Customer Info
+        customerName = view.findViewById(R.id.customer_name);
         tvStatus = view.findViewById(R.id.status);
         dateValue = view.findViewById(R.id.date_value);
         orderIdValue = view.findViewById(R.id.order_id_value);
+
+        // Vendor info
 
        // delivery boy info
         deliveryBoyInfo = view.findViewById(R.id.delivery_boy_info);
@@ -145,15 +147,26 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
     void updateUI() {
         Resources res = getResources();
-        String text = String.format(res.getString(R.string.status_order), mOrderObject.getOrderStatus());
+        String text = String.format(res.getString(R.string.status_order), orderProductList.getOrderInfo().getStatusName());
         tvStatus.setText(text);
-        setFooter();
-        tvFullName.setText(orderProductList.getFirstName()+" "+ orderProductList.getLastName());
-        tvDeliveryCharges.setText(orderProductList.getDeliveryCharges());
-        tvAmount.setText(orderProductList.getTotal_amt());
-        tvTotalCharges.setText(orderProductList.getTotal_amt());
-        tvPaymentType.setText(orderProductList.getMode_of_payment());
-        productAdapter = new ProductListAdapter(orderProductList.getProducts(), this);
+        orderIdValue.setText( orderProductList.getOrderInfo().getOrderID());
+        dateValue.setText(mOrderObject.getOrderDate().split(" ")[0]);
+
+        // setFooter();
+        // vendor
+        text = orderProductList.getVendorInfo().getFirstName()+" "+ orderProductList.getVendorInfo().getLastName();
+        customerName.setText(text);
+        contactNumber.setText(orderProductList.getVendorInfo().getMobileNumber());
+        vendorAddress.setText(orderProductList.getVendorInfo().getCompleteAddress());
+
+        // payment info
+        tvAmount.setText(orderProductList.getOrderInfo().getOrderAmount());
+        text = orderProductList.getOrderInfo().getOrderCharges();
+        tvDeliveryCharges.setText(text);
+        tvTotalCharges.setText(orderProductList.getOrderInfo().getTotalAmt());
+        tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
+
+        productAdapter = new ProductListAdapter(orderProductList.getProduct(), this);
         recyclerView.setAdapter(productAdapter);
     }
     private void setFooter() {

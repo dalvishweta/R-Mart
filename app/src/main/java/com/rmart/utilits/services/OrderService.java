@@ -2,6 +2,7 @@ package com.rmart.utilits.services;
 
 import com.rmart.BuildConfig;
 import com.rmart.utilits.pojos.UpdatedOrderStatus;
+import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
 import com.rmart.utilits.pojos.orders.OrderProductListResponse;
 import com.rmart.utilits.pojos.orders.OrderStateListResponse;
 import com.rmart.utilits.pojos.orders.OrdersByStatus;
@@ -24,9 +25,9 @@ public interface OrderService {
 
     @POST(BuildConfig.VENDOR_ORDER_PRODUCTS)
     @FormUrlEncoded
-    Call<OrderProductListResponse> getOrderProductList(@Field("start_index") String startIndex,
-                                                       @Field("user_id") String userID,
-                                                       @Field("order_id") String orderID);
+    Call<CustomerOrderProductResponse> getOrderProductList(@Field("start_index") String startIndex,
+                                                           @Field("user_id") String userID,
+                                                           @Field("order_id") String orderID);
 
     @POST(BuildConfig.VENDOR_UPDATE_ORDER)
     @FormUrlEncoded

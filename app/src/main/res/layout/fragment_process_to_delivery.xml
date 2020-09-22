@@ -21,7 +21,7 @@
                     style="@style/order_full_view_title"
                     />
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/name"
+                    android:id="@+id/customer_name"
                     style="@style/order_full_view_content"
                     android:text="Vamshee Krishna"/>
 
@@ -30,7 +30,7 @@
                     style="@style/order_full_view_title"
                     />
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/contact_number"
+                    android:id="@+id/customer_number"
                     style="@style/order_full_view_content"
                     android:text="7416226233"/>
 
@@ -38,7 +38,7 @@
                     style="@style/order_full_view_title"
                     android:text="Delivery Address"/>
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/address"
+                    android:id="@+id/customer_address"
                     style="@style/order_full_view_content"
                     android:text="Vamshee Krishna, 18-1814, Sagar road, Hanuman pent, miryalguda, Nalgonda district, Telangana "
                     />

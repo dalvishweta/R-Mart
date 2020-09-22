@@ -15,7 +15,7 @@ public class AddressViewHolder extends RecyclerView.ViewHolder {
     public AddressViewHolder(@NonNull View itemView) {
         super(itemView);
         primary = itemView.findViewById(R.id.is_primary);
-        address = itemView.findViewById(R.id.address);
+        address = itemView.findViewById(R.id.customer_address);
         edit = itemView.findViewById(R.id.edit);
     }
 }

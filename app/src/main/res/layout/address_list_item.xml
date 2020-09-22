@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/address"
+            android:id="@+id/customer_address"
             android:layout_below="@+id/is_primary"
             android:layout_width="wrap_content"
             android:textColor="@color/black"

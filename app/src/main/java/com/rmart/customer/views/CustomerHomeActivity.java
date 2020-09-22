@@ -17,9 +17,14 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_authenticatin);
-
+        Bundle data = getIntent().getExtras();
         showCartIcon();
-        addFragment(VendorShopsListFragment.getInstance(), VendorShopsListFragment.class.getName(),false);
+        boolean showCartView = false;
+        if(data != null) {
+            addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), false);
+        } else {
+            addFragment(VendorShopsListFragment.getInstance(), VendorShopsListFragment.class.getName(), false);
+        }
     }
 
     @Override
