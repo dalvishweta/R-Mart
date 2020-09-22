@@ -168,6 +168,13 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         tvTotalCharges.setText(orderProductList.getOrderInfo().getTotalAmt());
         tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
 
+        // payment info
+        tvAmount.setText(orderProductList.getOrderInfo().getOrderAmount());
+        text = orderProductList.getOrderInfo().getOrderCharges();
+        tvDeliveryCharges.setText(text);
+        tvTotalCharges.setText(orderProductList.getOrderInfo().getTotalAmt());
+        tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
+
         productAdapter = new ProductListAdapter(orderProductList.getProduct(), this);
         recyclerView.setAdapter(productAdapter);
     }

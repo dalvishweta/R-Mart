@@ -38,8 +38,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private String mParam2;
     MyOrdersViewModel viewModel;
     AppCompatButton mLeftButton, mRightButton;
-    private AppCompatTextView tvStatus, customerName,dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType,
-            deliveryBoyName, deliveryBoyNumber, contactNumber, vendorAddress;
+    private AppCompatTextView tvStatus, customerName, customerAddress, customerNumber, dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType,
+            deliveryBoyName, deliveryBoyNumber, contactNumber, vendorName, vendorAddress, vendorNumber;
     private ProductListAdapter productAdapter;
     private CustomerOrderProductList orderProductList;
     private RecyclerView recyclerView;
@@ -117,13 +117,20 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         mRightButton = view.findViewById(R.id.right_button);
         mRightButton.setOnClickListener(this);
 
-        //Customer Info
+        // Customer Info
         customerName = view.findViewById(R.id.customer_name);
+        customerNumber = view.findViewById(R.id.customer_number);
+        customerAddress = view.findViewById(R.id.customer_address);
+
+        // Vendor Info
+        view.findViewById(R.id.vendor_details_root).setVisibility(View.GONE);
+        vendorName = view.findViewById(R.id.vendor_name);
+        vendorNumber = view.findViewById(R.id.vendor_number);
+        vendorAddress = view.findViewById(R.id.vendor_address);
+
         tvStatus = view.findViewById(R.id.status);
         dateValue = view.findViewById(R.id.date_value);
         orderIdValue = view.findViewById(R.id.order_id_value);
-
-        // Vendor info
 
        // delivery boy info
         deliveryBoyInfo = view.findViewById(R.id.delivery_boy_info);
@@ -154,10 +161,16 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
         // setFooter();
         // vendor
-        text = orderProductList.getVendorInfo().getFirstName()+" "+ orderProductList.getVendorInfo().getLastName();
+        /*text = orderProductList.getVendorInfo().getFirstName()+" "+ orderProductList.getVendorInfo().getLastName();
+        vendorName.setText(text);
+        vendorNumber.setText(orderProductList.getVendorInfo().getMobileNumber());
+        vendorAddress.setText(orderProductList.getVendorInfo().getCompleteAddress());*/
+
+        // Customer info
+        text = orderProductList.getCustomerInfo().getFirstName()+" "+ orderProductList.getCustomerInfo().getLastName();
         customerName.setText(text);
-        contactNumber.setText(orderProductList.getVendorInfo().getMobileNumber());
-        vendorAddress.setText(orderProductList.getVendorInfo().getCompleteAddress());
+        customerNumber.setText(orderProductList.getCustomerInfo().getCustomerNumber());
+        customerAddress.setText(orderProductList.getCustomerInfo().getCompleteAddress());
 
         // payment info
         tvAmount.setText(orderProductList.getOrderInfo().getOrderAmount());
