@@ -45,17 +45,15 @@ public class ChangeAddressAdapter extends RecyclerView.Adapter<ChangeAddressAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         AddressResponse addressResponse = listData.get(position);
-        holder.tvAddressField.setText(new StringBuilder().append(addressResponse.getAddress()).append(addressResponse.getCity()).
-                append(addressResponse.getState()).append(addressResponse.getPinCode()));
+        holder.tvAddressField.setText(new StringBuilder().append(addressResponse.getAddress()).append(", ").append(addressResponse.getCity()).append(", ").
+                append(addressResponse.getState()).append(", ").append(addressResponse.getPinCode()));
 
         holder.ivAddressCheckableField.setImageResource(addressResponse.isPrimaryAddress() ? R.drawable.ic_checked : R.drawable.ic_un_checked);
         holder.ivAddressCheckableField.setTag(position);
         holder.ivAddressCheckableField.setOnClickListener(v -> {
             int tag = (int) v.getTag();
             AddressResponse selectedAddress = listData.get(tag);
-            if (selectedAddress.getIsActive() == 0) {
-                callBackListener.callBackReceived(selectedAddress);
-            }
+            callBackListener.callBackReceived(selectedAddress);
         });
     }
 

@@ -101,8 +101,8 @@ public class RetrofitClientInstance {
                         .sslSocketFactory(sslSocketFactory, (X509TrustManager)trustAllCerts[0])
                         .addInterceptor(basicAuth)
                         .addInterceptor(logging)
-                        .connectTimeout(60, TimeUnit.SECONDS)
-                        .readTimeout(60, TimeUnit.SECONDS)
+                        .connectTimeout(120, TimeUnit.SECONDS)
+                        .readTimeout(120, TimeUnit.SECONDS)
                         .build();
 
                 Gson gs = new GsonBuilder().setLenient().create();

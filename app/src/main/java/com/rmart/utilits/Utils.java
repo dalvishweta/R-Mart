@@ -1,6 +1,7 @@
 package com.rmart.utilits;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -146,5 +148,11 @@ public class Utils {
         canvas.drawBitmap(sbmp, rect, rect, paint);
 
         return output;
+    }
+
+    public static void openDialPad(Context context, String number) {
+        Uri uri = Uri.parse("tel:" + number);
+        Intent intent = new Intent(Intent.ACTION_DIAL, uri);
+        context.startActivity(intent);
     }
 }

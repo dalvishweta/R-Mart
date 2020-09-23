@@ -41,7 +41,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
 
     @Override
     public void gotoChangeAddress() {
-        addFragment(ChangeAddressFragment.getInstance(),ChangeAddressFragment.class.getName(),true);
+        replaceFragment(ChangeAddressFragment.getInstance(),ChangeAddressFragment.class.getName(),true);
     }
 
     @Override

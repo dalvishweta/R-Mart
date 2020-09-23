@@ -55,6 +55,10 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         return listData.size();
     }
 
+    public void updateItems(List<ShoppingCartResponseDetails> shopWiseCartList) {
+        this.listData = shopWiseCartList;
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvShopNameField;

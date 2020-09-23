@@ -11,6 +11,9 @@ public class Constants {
     public static final String TAG_VIEW_ALL = "view_all";
     public static final String TAG_EDIT_PRODUCT_IMAGE = "edit_product_image";
     public static final String TAG_UPLOAD_NEW_PRODUCT_IMAGE = "upload_new_product_image";
+    public static final String TAG_CALL = "call";
+    public static final String TAG_MESSAGE = "message";
+    public static final String TAG_SHOP_FAVOURITE = "shop_favourite";
 
     public static final int JOB_INSTANT_MESSENGER = 1;
 

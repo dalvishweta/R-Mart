@@ -2,6 +2,7 @@ package com.rmart.utilits.services;
 
 import com.rmart.BuildConfig;
 import com.rmart.utilits.pojos.AddressListResponse;
+import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.LoginResponse;
 
 import retrofit2.Call;
@@ -26,9 +27,7 @@ public interface ProfileService {
                                          @Field("role_id") String roleID,
                                          @Field("delivery_radius") String deliveryRadius,
                                          @Field("client_id") String client_id,
-                                         @Field("aadhar_front_image") String aadharFrontImage,
-                                         @Field("aadhar_back_image") String aadharBackImage,
-                                         @Field("pancard_image") String panCardImage);
+                                         @Field("aadhaar_card_no") String aadharNo);
 
     @FormUrlEncoded
     @POST(BuildConfig.UPDATE_ADDRESS)
@@ -46,9 +45,10 @@ public interface ProfileService {
                                             @Field("role_id") String roleID,
                                             @Field("delivery_radius") String deliveryRadius,
                                             @Field("client_id") String client_id,
-                                            @Field("id") int id
+                                            @Field("id") int id,
+                                            @Field("aadhaar_card_no") String aadharNo);
 
-    );
+
 
     @FormUrlEncoded
     @POST(BuildConfig.UPDATE_PROFILE)
@@ -60,4 +60,9 @@ public interface ProfileService {
                                        @Field("email") String email,
                                        @Field("primary_add_id") String primary_add_id,
                                        @Field("image") String profileImage);
+
+    @POST(BuildConfig.SHOW_CART_ORDER_DETAILS)
+    @FormUrlEncoded
+    Call<BaseResponse> uploadPhotoImage(@Field("client_id") String clientId, @Field("customer_id") String customerId, @Field("image_type") String imageType,
+                                        @Field("image") String profileImage);
 }

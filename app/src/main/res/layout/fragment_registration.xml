@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/smartphone"
-                android:hint="@string/hint_mobile_number"
+                android:hint="@string/mobile_number"
                 android:inputType="textNoSuggestions|number"
                 android:maxLength="10"
                 app:error_trxt="@string/error_mobile_number"
@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/mail"
-                android:hint="@string/hint_mail"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 app:error_trxt="@string/error_mail"
                 />

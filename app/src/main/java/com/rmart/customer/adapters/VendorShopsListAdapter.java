@@ -18,7 +18,9 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
+import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.views.ProgressBarCircular;
+import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.utilits.HttpsTrustManager;
 
@@ -61,12 +63,12 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CustomerProductsShopDetailsModel customerProductsModel = productList.get(position);
-        holder.tvShopNameField.setText(customerProductsModel.getShopName());
-        holder.tvPhoneNoField.setText(customerProductsModel.getShopMobileNo());
-        holder.tvViewAddressField.setText(customerProductsModel.getShopAddress());
+        CustomerProductsShopDetailsModel shopDetails = productList.get(position);
+        holder.tvShopNameField.setText(shopDetails.getShopName());
+        holder.tvPhoneNoField.setText(shopDetails.getShopMobileNo());
+        holder.tvViewAddressField.setText(shopDetails.getShopAddress());
 
-        String shopImageUrl = customerProductsModel.getShopImage();
+        String shopImageUrl = shopDetails.getShopImage();
         if(!TextUtils.isEmpty(shopImageUrl)) {
             HttpsTrustManager.allowAllSSL();
             imageLoader.get(shopImageUrl, ImageLoader.getImageListener(holder.ivShopImageField,
@@ -75,9 +77,13 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
             holder.ivShopImageField.setImageUrl(shopImageUrl, imageLoader);
         }
 
+        boolean isWishListShop = shopDetails.getShopWishListStatus() == 1;
+        holder.ivFavouriteImageField.setImageResource(isWishListShop ? R.drawable.heart_active : R.drawable.heart);
+
         holder.ivShopImageField.setTag(position);
         holder.ivMessageField.setTag(position);
         holder.ivCallIconField.setTag(position);
+        holder.ivFavouriteImageField.setTag(position);
     }
 
     @Override
@@ -99,7 +105,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
         TextView tvShopNameField;
         TextView tvPhoneNoField;
         TextView tvViewAddressField;
-        ImageView ivFavouriteField;
+        ImageView ivFavouriteImageField;
         ImageView ivCallIconField;
         ImageView ivMessageField;
         ProgressBarCircular progressBarCircular;
@@ -110,20 +116,39 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
             tvShopNameField = itemView.findViewById(R.id.tv_shop_name_field);
             tvPhoneNoField = itemView.findViewById(R.id.tv_phone_no_field);
             tvViewAddressField = itemView.findViewById(R.id.tv_view_address_field);
-            ivFavouriteField = itemView.findViewById(R.id.iv_favourite_image);
+            ivFavouriteImageField = itemView.findViewById(R.id.iv_favourite_image);
             ivCallIconField = itemView.findViewById(R.id.iv_call_field);
             ivMessageField = itemView.findViewById(R.id.iv_message_field);
 
             progressBarCircular = itemView.findViewById(R.id.profile_circular_field);
-            /*itemView.setOnClickListener(v -> {
-                int tag = (int) itemView.getTag();
-                CustomerProductsModel selectedDetails = filteredListData.get(tag);
-                callBackListener.callBackReceived(selectedDetails);
-            });*/
             ivShopImageField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
                 CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);
                 callBackListener.callBackReceived(selectedDetails);
+            });
+            ivCallIconField.setOnClickListener(v -> {
+                int tag = (int) v.getTag();
+                CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);
+                ContentModel contentModel = new ContentModel();
+                contentModel.setStatus(Constants.TAG_CALL);
+                contentModel.setValue(selectedDetails.getShopMobileNo());
+                callBackListener.callBackReceived(contentModel);
+            });
+            ivMessageField.setOnClickListener(v -> {
+                int tag = (int) v.getTag();
+                CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);
+                ContentModel contentModel = new ContentModel();
+                contentModel.setStatus(Constants.TAG_MESSAGE);
+                contentModel.setValue(selectedDetails);
+                callBackListener.callBackReceived(contentModel);
+            });
+            ivFavouriteImageField.setOnClickListener(v -> {
+                int tag = (int) v.getTag();
+                CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);
+                ContentModel contentModel = new ContentModel();
+                contentModel.setStatus(Constants.TAG_SHOP_FAVOURITE);
+                contentModel.setValue(selectedDetails);
+                callBackListener.callBackReceived(contentModel);
             });
         }
     }

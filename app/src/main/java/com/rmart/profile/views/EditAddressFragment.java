@@ -2,7 +2,6 @@ package com.rmart.profile.views;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -23,6 +22,7 @@ import com.rmart.R;
 import com.rmart.profile.model.MyAddress;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.viewmodels.AddressViewModel;
+import com.rmart.services.UpdateProfileImageServices;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -34,7 +34,6 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -50,12 +49,15 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     LinearLayout mRetailerView;
     AddressViewModel addressViewModel;
     AddressResponse myAddress;
-    private AppCompatEditText tvAadharNoField, tvPanCardNoField;
+    private AppCompatEditText tvAadharNoField;
     private ImageView ivAadharFrontImageField, ivAadharBackImageField, ivPanCardImageField;
     private boolean aadharFrontSelected = false;
     private boolean aadharBackSelected = false;
     private boolean panCardSelected = false;
-    private Bitmap aadharFrontImageBitmap, aadharBackImageBitmap, panCardImageBitmap;
+    private String aadharFrontImageUrl;
+    private String aadharBackImageUrl;
+    private String panCardImageUrl;
+    private boolean isAddNewAddress;
 
     public EditAddressFragment() {
         // Required empty public constructor
@@ -75,7 +77,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             myAddress = (AddressResponse) getArguments().getSerializable(ARG_PARAM2);
-            //isAddNewAddress = getArguments().getBoolean(ARG_PARAM1);
+            isAddNewAddress = getArguments().getBoolean(ARG_PARAM1);
         }
     }
 
@@ -108,7 +110,6 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         ivAadharBackImageField = view.findViewById(R.id.iv_aadhar_back_image_field);
         ivPanCardImageField = view.findViewById(R.id.iv_pan_card_no_image_field);
         tvAadharNoField = view.findViewById(R.id.tv_aadhar_number_no_field);
-        tvPanCardNoField = view.findViewById(R.id.tv_pan_card_no_field);
 
         view.findViewById(R.id.add_address).setOnClickListener(this);
         ivAadharFrontImageField.setOnClickListener(this);
@@ -199,17 +200,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                     try {
                         Uri profileImageUri = result.getUri();
                         if (profileImageUri != null) {
-                            InputStream imageStream = requireActivity().getContentResolver().openInputStream(profileImageUri);
-                            if (aadharFrontSelected) {
-                                aadharFrontImageBitmap = BitmapFactory.decodeStream(imageStream);
-                                ivAadharFrontImageField.setImageBitmap(aadharFrontImageBitmap);
-                            } else if (aadharBackSelected) {
-                                aadharBackImageBitmap = BitmapFactory.decodeStream(imageStream);
-                                ivAadharBackImageField.setImageBitmap(aadharBackImageBitmap);
-                            } else if (panCardSelected) {
-                                panCardImageBitmap = BitmapFactory.decodeStream(imageStream);
-                                ivPanCardImageField.setImageBitmap(panCardImageBitmap);
-                            }
+                            showConfirmDialog(profileImageUri);
                         }
                     } catch (Exception ex) {
                         showDialog("", ex.getMessage());
@@ -221,6 +212,24 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 }
             }
         }
+    }
+
+    private void showConfirmDialog(Uri profileImageUri) {
+        showConfirmationDialog(getString(R.string.image_saving_confirmation_alert), pObject -> {
+            if (aadharFrontSelected) {
+                aadharFrontImageUrl = profileImageUri.toString();
+                UpdateProfileImageServices.enqueueWork(requireActivity(), "aadhar_front", aadharFrontImageUrl);
+                ivAadharFrontImageField.setImageURI(profileImageUri);
+            } else if (aadharBackSelected) {
+                aadharBackImageUrl = profileImageUri.toString();
+                UpdateProfileImageServices.enqueueWork(requireActivity(), "aadhar_back", aadharBackImageUrl);
+                ivAadharBackImageField.setImageURI(profileImageUri);
+            } else if (panCardSelected) {
+                panCardImageUrl = profileImageUri.toString();
+                UpdateProfileImageServices.enqueueWork(requireActivity(), "pancard_image", panCardImageUrl);
+                ivPanCardImageField.setImageURI(profileImageUri);
+            }
+        });
     }
 
     private String getEncodedImage(Bitmap bitmap) {
@@ -238,8 +247,9 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     }
 
     private void addAddressSelected() {
+        String aadharNo = "";
         if (mRetailerView.getVisibility() == View.VISIBLE) {
-            String aadharNo = Objects.requireNonNull(tvAadharNoField.getText()).toString().trim();
+            aadharNo = Objects.requireNonNull(tvAadharNoField.getText()).toString().trim();
             if (TextUtils.isEmpty(aadharNo)) {
                 showDialog(getString(R.string.enter_your_aadhar_number));
                 return;
@@ -248,20 +258,20 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 showDialog(getString(R.string.aadhar_number_error));
                 return;
             }
-            if (aadharFrontImageBitmap == null) {
+            if (TextUtils.isEmpty(aadharFrontImageUrl)) {
                 showDialog(getString(R.string.aadhar_front_image_required));
                 return;
             }
-            if (aadharBackImageBitmap == null) {
+            if (TextUtils.isEmpty(aadharBackImageUrl)) {
                 showDialog(getString(R.string.aadhar_back_image_required));
                 return;
             }
-            String panCardNo = Objects.requireNonNull(tvPanCardNoField.getText()).toString().trim();
+            String panCardNo = Objects.requireNonNull(tvPANNumber.getText()).toString().trim();
             if (TextUtils.isEmpty(panCardNo)) {
-                showDialog(getString(R.string.enter_your_kyc_number));
+                showDialog(getString(R.string.enter_your_pan_number));
                 return;
             }
-            if (panCardImageBitmap == null) {
+            if (TextUtils.isEmpty(panCardImageUrl)) {
                 showDialog(getString(R.string.pancard_image_required));
                 return;
             }
@@ -274,8 +284,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             profileService.addAddress(myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                     myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                     myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
-                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, getEncodedImage(aadharFrontImageBitmap),
-                    getEncodedImage(aadharBackImageBitmap), getEncodedImage(panCardImageBitmap)).enqueue(new Callback<AddressListResponse>() {
+                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, aadharNo).enqueue(new Callback<AddressListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
                     if (response.isSuccessful()) {
@@ -309,15 +318,17 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             profileService.updateAddress(myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                     myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                     myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
-                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId()).enqueue(new Callback<AddressListResponse>() {
+                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), aadharNo).enqueue(new Callback<AddressListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
                     if (response.isSuccessful()) {
                         AddressListResponse data = response.body();
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                MyProfile.getInstance().setAddressResponses(data.getResponse());
-                                Objects.requireNonNull(requireActivity()).onBackPressed();
+                                showDialog(data.getMsg(), pObject -> {
+                                    MyProfile.getInstance().setAddressResponses(data.getResponse());
+                                    Objects.requireNonNull(requireActivity()).onBackPressed();
+                                });
                             } else {
                                 showDialog("", data.getMsg());
                             }

@@ -40,10 +40,10 @@ import retrofit2.Response;
  */
 public class ShoppingCartFragment extends BaseFragment {
 
-    private RecyclerView shoppingCartListField;
     private List<ShoppingCartResponseDetails> shopWiseCartList;
     private ShoppingCartResponseDetails selectedShoppingCartDetails;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
+    private ShoppingCartAdapter shoppingCartAdapter;
 
     public static ShoppingCartFragment getInstance() {
         ShoppingCartFragment shoppingCartFragment = new ShoppingCartFragment();
@@ -87,7 +87,7 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
     private void loadUIComponents(View view) {
-        shoppingCartListField = view.findViewById(R.id.shopping_cart_list_field);
+        RecyclerView shoppingCartListField = view.findViewById(R.id.shopping_cart_list_field);
         shoppingCartListField.setHasFixedSize(false);
 
         shopWiseCartList = new ArrayList<>();
@@ -111,12 +111,21 @@ public class ShoppingCartFragment extends BaseFragment {
 
             }
         }));
+
+        shoppingCartAdapter = new ShoppingCartAdapter(requireActivity(), shopWiseCartList);
+        shoppingCartListField.setAdapter(shoppingCartAdapter);
+    }
+
+    private void resetCart() {
+        shopWiseCartList.clear();
+        shoppingCartAdapter.updateItems(shopWiseCartList);
+        shoppingCartAdapter.notifyDataSetChanged();
     }
 
     private void getShopWiseCartList() {
+        resetCart();
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
-            shopWiseCartList.clear();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<ShoppingCartResponse> call = customerProductsService.getShoppingCartList(clientID, MyProfile.getInstance().getUserID());
@@ -167,8 +176,8 @@ public class ShoppingCartFragment extends BaseFragment {
 
     private void setAdapter() {
         if(!shopWiseCartList.isEmpty()) {
-            ShoppingCartAdapter shoppingCartAdapter = new ShoppingCartAdapter(requireActivity(), shopWiseCartList);
-            shoppingCartListField.setAdapter(shoppingCartAdapter);
+            shoppingCartAdapter.updateItems(shopWiseCartList);
+            shoppingCartAdapter.notifyDataSetChanged();
         }
     }
 }

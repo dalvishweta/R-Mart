@@ -31,6 +31,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
 
     private ChangeAddressAdapter changeAddressAdapter;
     private ArrayList<AddressResponse> addressList;
+    private RecyclerView addressListField;
 
     public static ChangeAddressFragment getInstance() {
         ChangeAddressFragment changeAddressFragment = new ChangeAddressFragment();
@@ -51,33 +52,10 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     public void onResume() {
         super.onResume();
         updateToolBar();
+        getAddressesList();
     }
 
-    public void updateToolBar() {
-        requireActivity().setTitle(getString(R.string.change_address));
-        ((CustomerHomeActivity)(requireActivity())).showCartIcon();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        loadUIComponents(view);
-    }
-
-    private void loadUIComponents(View view) {
-        RecyclerView addressListField = view.findViewById(R.id.addresses_list_field);
-        AppCompatButton btnAddNewAddressField = view.findViewById(R.id.btn_add_new_address);
-        btnAddNewAddressField.setOnClickListener(v -> {
-            addNewAddressSelected();
-        });
-        AppCompatButton btnSelectThisAddress = view.findViewById(R.id.btn_select_this_address);
-        btnSelectThisAddress.setOnClickListener(v -> {
-            selectThisAddressSelected();
-        });
-        addressListField.setHasFixedSize(false);
-        addressListField.setItemAnimator(new SlideInDownAnimator());
-
-
+    private void getAddressesList() {
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
             addressList = myProfile.getAddressResponses();
@@ -89,7 +67,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
                     if (addressResponse.getId() == primaryAddressValue) {
                         addressResponse.setPrimaryAddress(true);
                         addressList.set(i, addressResponse);
-                        return;
+                        break;
                     }
                 }
                 changeAddressAdapter = new ChangeAddressAdapter(requireActivity(), addressList, callBackListener);
@@ -98,13 +76,34 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
         }
     }
 
+    public void updateToolBar() {
+        requireActivity().setTitle(getString(R.string.change_address));
+        ((CustomerHomeActivity) (requireActivity())).showCartIcon();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        loadUIComponents(view);
+    }
+
+    private void loadUIComponents(View view) {
+        addressListField = view.findViewById(R.id.addresses_list_field);
+        AppCompatButton btnAddNewAddressField = view.findViewById(R.id.btn_add_new_address);
+        btnAddNewAddressField.setOnClickListener(v -> addNewAddressSelected());
+        AppCompatButton btnSelectThisAddress = view.findViewById(R.id.btn_select_this_address);
+        btnSelectThisAddress.setOnClickListener(v -> selectThisAddressSelected());
+        addressListField.setHasFixedSize(false);
+        addressListField.setItemAnimator(new SlideInDownAnimator());
+    }
+
     private CallBackInterface callBackListener = pObject -> {
         if (pObject instanceof AddressResponse) {
-            AddressResponse addressResponse = (AddressResponse) pObject;
             resetAddressList();
+            AddressResponse addressResponse = (AddressResponse) pObject;
             int index = addressList.indexOf(addressResponse);
             if (index > -1) {
-                addressResponse.setIsActive(1);
+                addressResponse.setPrimaryAddress(true);
                 addressList.set(index, addressResponse);
                 changeAddressAdapter.notifyItemChanged(index);
             }
@@ -114,11 +113,10 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     private void resetAddressList() {
         for (int i = 0; i < addressList.size(); i++) {
             AddressResponse addressResponse = addressList.get(i);
-            addressResponse.setIsActive(0);
+            addressResponse.setPrimaryAddress(false);
             addressList.set(i, addressResponse);
             changeAddressAdapter.notifyItemChanged(i);
         }
-
     }
 
     private void selectThisAddressSelected() {

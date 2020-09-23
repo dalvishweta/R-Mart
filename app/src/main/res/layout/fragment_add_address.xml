@@ -37,20 +37,9 @@
                     android:inputType="text" />
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:hint="@string/enter_your_pan_number"
-                    android:id="@+id/pan_number"
-                    style="@style/my_profile_tv"
-                    android:digits="1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"
-                    android:inputType="textCapSentences"
-                    android:maxLength="10"
-                    android:drawableStart="@drawable/user"
-                    android:textAllCaps="true" />
-
-                <androidx.appcompat.widget.AppCompatEditText
                     android:hint="@string/enter_your_gst_number"
                     android:id="@+id/gst_number"
                     android:drawableStart="@drawable/user"
-                    android:digits="1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"
                     android:inputType="text"
                     style="@style/my_profile_tv"
                     android:maxLength="16"
@@ -120,11 +109,12 @@
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/tv_pan_card_no_field"
+                    android:hint="@string/enter_your_pan_number"
+                    android:id="@+id/pan_number"
                     style="@style/my_profile_tv"
                     android:drawableStart="@drawable/user"
-                    android:hint="@string/pancard_no"
                     android:inputType="textCapSentences"
+                    android:textAllCaps="true"
                     android:maxLength="10" />
 
                 <androidx.cardview.widget.CardView

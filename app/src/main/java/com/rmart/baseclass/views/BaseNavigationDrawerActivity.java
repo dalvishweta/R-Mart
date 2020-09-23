@@ -147,6 +147,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
             myProfile.getCartCount().observe(this, count -> {
                 if (tvCartCountField != null) {
+                    if(count == 1) {
+                        tvCartCountField.setVisibility(View.VISIBLE);
+                    }
                     tvCartCountField.setText(String.valueOf(count));
                 }
             });

@@ -74,7 +74,6 @@ public class BaseFragment extends Fragment {
                 title = requireActivity().getString(R.string.message);
             }
             builder.setTitle(title);
-            builder.setCancelable(false);
             builder.setMessage(msg);
             builder.setNegativeButton(requireActivity().getString(R.string.close), null);
             AlertDialog alertDialog = builder.create();
@@ -95,7 +94,6 @@ public class BaseFragment extends Fragment {
                     R.style.AlertDialog
             );
             builder.setTitle(requireActivity().getString(R.string.message));
-            builder.setCancelable(false);
             builder.setMessage(msg);
             builder.setNegativeButton(requireActivity().getString(R.string.close), null);
             AlertDialog alertDialog = builder.create();
@@ -120,7 +118,6 @@ public class BaseFragment extends Fragment {
                 title = requireActivity().getString(R.string.message);
             }
             builder.setTitle(title);
-            builder.setCancelable(false);
             builder.setMessage(msg);
             builder.setNegativeButton(requireActivity().getString(R.string.close), null);
             AlertDialog alertDialog = builder.create();
@@ -137,7 +134,6 @@ public class BaseFragment extends Fragment {
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
             builder.setTitle(title);
-            builder.setCancelable(false);
             builder.setMessage(msg);
             builder.setNegativeButton("close", callBackInterface);
             AlertDialog alertDialog = builder.create();
@@ -154,7 +150,6 @@ public class BaseFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
             if(TextUtils.isEmpty(title)) builder.setTitle(getString(R.string.message));
             else builder.setTitle(title);
-            builder.setCancelable(false);
             builder.setMessage(msg);
             builder.setNegativeButton("close", (dialogInterface, i) -> callBackInterface.callBackReceived(Constants.TAG_SUCCESS));
             AlertDialog alertDialog = builder.create();
@@ -170,9 +165,24 @@ public class BaseFragment extends Fragment {
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
             builder.setTitle(getString(R.string.message));
-            builder.setCancelable(false);
             builder.setMessage(msg);
             builder.setNegativeButton("close", (dialogInterface, i) -> callBackInterface.callBackReceived(Constants.TAG_SUCCESS));
+            AlertDialog alertDialog = builder.create();
+            if (!requireActivity().isFinishing()) {
+                alertDialog.show();
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void showConfirmationDialog(String msg, CallBackInterface callBackInterface) {
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
+            builder.setTitle(getString(R.string.message));
+            builder.setMessage(msg);
+            builder.setNegativeButton("close", null);
+            builder.setPositiveButton("Ok", (dialogInterface, i) -> callBackInterface.callBackReceived(Constants.TAG_SUCCESS));
             AlertDialog alertDialog = builder.create();
             if (!requireActivity().isFinishing()) {
                 alertDialog.show();

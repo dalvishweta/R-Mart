@@ -165,7 +165,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
         productsListField.setAdapter(vendorProductDetailsAdapter);
 
         isWishListShop = productsShopDetailsModel.getShopWishListStatus() == 1;
-        ivFavouriteImageField.setImageResource(isWishListShop ? R.drawable.ic_checked : R.drawable.heart_active);
+        ivFavouriteImageField.setImageResource(isWishListShop ? R.drawable.heart_active : R.drawable.heart_black);
 
         ivFavouriteImageField.setOnClickListener(v -> {
             if (isWishListShop) deleteShopFromWishList();
@@ -328,7 +328,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
                             if (body.getStatus().equalsIgnoreCase("success")) {
                                 showDialog(body.getMsg(), pObject -> {
                                     isWishListShop = !isWishListShop;
-                                    ivFavouriteImageField.setImageResource(R.drawable.heart);
+                                    ivFavouriteImageField.setImageResource(R.drawable.heart_black);
                                     productsShopDetailsModel.setShopWishListId(-1);
                                     productsShopDetailsModel.setShopWishListStatus(0);
                                     onCustomerHomeInteractionListener.updateShopWishListStatus(productsShopDetailsModel);
