@@ -17,15 +17,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.rmart.BuildConfig;
 import com.rmart.R;
+import com.rmart.RMartApplication;
 import com.rmart.profile.model.MyAddress;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.viewmodels.AddressViewModel;
 import com.rmart.services.UpdateProfileImageServices;
+import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.custom_views.CustomNetworkImageView;
 import com.rmart.utilits.pojos.AddressListResponse;
 import com.rmart.utilits.pojos.AddressResponse;
 import com.rmart.utilits.services.ProfileService;
@@ -50,7 +54,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     AddressViewModel addressViewModel;
     AddressResponse myAddress;
     private AppCompatEditText tvAadharNoField;
-    private ImageView ivAadharFrontImageField, ivAadharBackImageField, ivPanCardImageField;
+    private CustomNetworkImageView ivAadharFrontImageField, ivAadharBackImageField, ivPanCardImageField;
     private boolean aadharFrontSelected = false;
     private boolean aadharBackSelected = false;
     private boolean panCardSelected = false;
@@ -137,6 +141,34 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             tvPinCode.setText(myAddress.getPinCode());
             tvDeliveryRadius.setText(myAddress.getDeliveryRadius());
             tvCity.setText(myAddress.getCity());
+            tvAadharNoField.setText(myAddress.getAadhaarCardNo());
+
+            ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
+
+            String aadharFrontImageUrl = myAddress.getAadharFrontImage();
+            if (!TextUtils.isEmpty(aadharFrontImageUrl)) {
+                HttpsTrustManager.allowAllSSL();
+                imageLoader.get(aadharFrontImageUrl, ImageLoader.getImageListener(ivAadharFrontImageField,
+                        R.drawable.ic_aadhar_front, android.R.drawable
+                                .ic_dialog_alert));
+                ivAadharFrontImageField.setImageUrl(aadharFrontImageUrl, RMartApplication.getInstance().getImageLoader());
+            }
+            String aadharBackImageUrl = myAddress.getAadharFrontImage();
+            if (!TextUtils.isEmpty(aadharBackImageUrl)) {
+                HttpsTrustManager.allowAllSSL();
+                imageLoader.get(aadharBackImageUrl, ImageLoader.getImageListener(ivAadharBackImageField,
+                        R.drawable.ic_aadhar_front, android.R.drawable
+                                .ic_dialog_alert));
+                ivAadharBackImageField.setImageUrl(aadharBackImageUrl, RMartApplication.getInstance().getImageLoader());
+            }
+            String pancardImageUrl = myAddress.getAadharFrontImage();
+            if (!TextUtils.isEmpty(pancardImageUrl)) {
+                HttpsTrustManager.allowAllSSL();
+                imageLoader.get(pancardImageUrl, ImageLoader.getImageListener(ivAadharFrontImageField,
+                        R.drawable.ic_aadhar_front, android.R.drawable
+                                .ic_dialog_alert));
+                ivPanCardImageField.setImageUrl(pancardImageUrl, RMartApplication.getInstance().getImageLoader());
+            }
         } else {
             Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.update_address));
         }
@@ -217,17 +249,17 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     private void showConfirmDialog(Uri profileImageUri) {
         showConfirmationDialog(getString(R.string.image_saving_confirmation_alert), pObject -> {
             if (aadharFrontSelected) {
-                aadharFrontImageUrl = profileImageUri.toString();
-                UpdateProfileImageServices.enqueueWork(requireActivity(), "aadhar_front", aadharFrontImageUrl);
-                ivAadharFrontImageField.setImageURI(profileImageUri);
+                aadharFrontImageUrl = profileImageUri.getPath();
+                UpdateProfileImageServices.enqueueWork(requireActivity(), "aadhar_front_image", aadharFrontImageUrl);
+                ivAadharFrontImageField.setLocalImageUri(profileImageUri);
             } else if (aadharBackSelected) {
-                aadharBackImageUrl = profileImageUri.toString();
-                UpdateProfileImageServices.enqueueWork(requireActivity(), "aadhar_back", aadharBackImageUrl);
-                ivAadharBackImageField.setImageURI(profileImageUri);
+                aadharBackImageUrl = profileImageUri.getPath();
+                UpdateProfileImageServices.enqueueWork(requireActivity(), "aadhar_back_image", aadharBackImageUrl);
+                ivAadharBackImageField.setLocalImageUri(profileImageUri);
             } else if (panCardSelected) {
-                panCardImageUrl = profileImageUri.toString();
+                panCardImageUrl = profileImageUri.getPath();
                 UpdateProfileImageServices.enqueueWork(requireActivity(), "pancard_image", panCardImageUrl);
-                ivPanCardImageField.setImageURI(profileImageUri);
+                ivPanCardImageField.setLocalImageUri(profileImageUri);
             }
         });
     }

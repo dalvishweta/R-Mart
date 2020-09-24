@@ -254,16 +254,17 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<BaseResponse> call = customerProductsService.deleteProductDetails(clientID, selectedProductInCartDetails.getCartId());
-            call.enqueue(new Callback<BaseResponse>() {
+            Call<ProductInCartResponse> call = customerProductsService.deleteProductDetails(clientID, selectedProductInCartDetails.getCartId());
+            call.enqueue(new Callback<ProductInCartResponse>() {
                 @Override
-                public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
+                public void onResponse(@NotNull Call<ProductInCartResponse> call, @NotNull Response<ProductInCartResponse> response) {
                     progressDialog.dismiss();
                     if (response.isSuccessful()) {
-                        BaseResponse body = response.body();
+                        ProductInCartResponse body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                showSuccessDialog(body.getMsg());
+                                int totalCartInCount = body.getProductInCartDetailsDataModel().getTotalCartCount();
+                                showSuccessDialog(totalCartInCount, body.getMsg());
                             } else {
                                 showDialog(body.getMsg());
                             }
@@ -276,7 +277,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
                 }
 
                 @Override
-                public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
+                public void onFailure(@NotNull Call<ProductInCartResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
                     showDialog(t.getMessage());
                 }
@@ -286,21 +287,26 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
         }
     }
 
-    private void showSuccessDialog(String message) {
+    private void showSuccessDialog(int totalCartInCount, String message) {
         showDialog(message, pObject -> {
+            MyProfile.getInstance().setCartCount(totalCartInCount);
             int index = productInCartDetailsList.indexOf(selectedProductInCartDetails);
             if (index > -1) {
                 productInCartDetailsList.remove(index);
                 confirmOrdersAdapter.notifyItemRemoved(index);
                 if (productInCartDetailsList.size() == 0) {
-                    requireActivity().getSupportFragmentManager().popBackStack();
+                    popBackFromStack();
                 }
             }
         });
     }
 
     private void showCloseDialog(String title, String message) {
-        showDialog(title, message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+        showDialog(title, message, pObject -> popBackFromStack());
+    }
+
+    private void popBackFromStack() {
+        requireActivity().onBackPressed();
     }
 
     private void deleteQuantityCountSelected() {
@@ -329,24 +335,5 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
                 UpdateProductQuantityServices.enqueueWork(requireActivity(), selectedProductInCartDetails);
             }
         }
-    }
-
-    private void addOrDeleteQuantity() {
-        progressDialog.show();
-        CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
-        String clientID = "2";
-        Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, selectedProductInCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                selectedProductInCartDetails.getProductUnitId(), selectedProductInCartDetails.getTotalProductCartQty());
-        call.enqueue(new Callback<AddToCartResponseDetails>() {
-            @Override
-            public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
-                progressDialog.dismiss();
-            }
-        });
     }
 }

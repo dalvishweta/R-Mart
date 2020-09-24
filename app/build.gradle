@@ -59,6 +59,7 @@ android {
         buildConfigField("String", "DELETE_SHOP_TO_WISH_LIST", '"customer/VendorShop/deleteShopWishlist"')
         buildConfigField("String", "DELETE_PRODUCT_WISH_LIST", '"customer/VendorShop/deleteWishlist"')
         buildConfigField("String", "SHOW_CART_ORDER_DETAILS", '"customer/VendorShop/showCartOrderDetails"')
+        buildConfigField("String", "UPDATE_KYC_IMAGE_DETAILS", '"customer/VendorShop/onChangeKYCImages"')
         //
 
         /*Vendor inventory services*/

@@ -80,11 +80,11 @@
                         android:layout_margin="5dp"
                         android:elevation="10dp">
 
-                        <ImageView
+                        <com.rmart.utilits.custom_views.CustomNetworkImageView
                             android:id="@+id/iv_aadhar_front_image_field"
                             android:layout_width="120dp"
                             android:layout_height="80dp"
-                            android:src="@drawable/ic_aadhar_front"
+                            android:background="@drawable/ic_aadhar_front"
                             android:contentDescription="@string/app_name"
                             android:scaleType="fitXY" />
 
@@ -97,11 +97,11 @@
                         android:layout_margin="5dp"
                         android:elevation="10dp">
 
-                        <ImageView
+                        <com.rmart.utilits.custom_views.CustomNetworkImageView
                             android:id="@+id/iv_aadhar_back_image_field"
                             android:layout_width="120dp"
                             android:layout_height="80dp"
-                            android:src="@drawable/ic_aadhar_back"
+                            android:background="@drawable/ic_aadhar_back"
                             android:contentDescription="@string/app_name"
                             android:scaleType="fitXY" />
 
@@ -125,11 +125,11 @@
                     android:layout_marginTop="10dp"
                     android:elevation="10dp">
 
-                    <ImageView
+                    <com.rmart.utilits.custom_views.CustomNetworkImageView
                         android:id="@+id/iv_pan_card_no_image_field"
                         android:layout_width="120dp"
                         android:layout_height="80dp"
-                        android:src="@drawable/ic_pan"
+                        android:background="@drawable/ic_pan"
                         android:contentDescription="@string/app_name"
                         android:scaleType="fitXY" />
                 </androidx.cardview.widget.CardView>

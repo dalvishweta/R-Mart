@@ -2,6 +2,7 @@ package com.rmart.utilits.custom_views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.AttributeSet;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -14,6 +15,8 @@ public class CustomNetworkImageView extends NetworkImageView {
 
     private Bitmap mLocalBitmap;
 
+    private Uri uri;
+
     private boolean mShowLocal;
 
     public void setLocalImageBitmap(Bitmap bitmap) {
@@ -21,6 +24,14 @@ public class CustomNetworkImageView extends NetworkImageView {
             mShowLocal = true;
         }
         this.mLocalBitmap = bitmap;
+        requestLayout();
+    }
+
+    public void setLocalImageUri(Uri uri) {
+        if (uri != null) {
+            mShowLocal = true;
+        }
+        this.uri = uri;
         requestLayout();
     }
 
@@ -47,7 +58,12 @@ public class CustomNetworkImageView extends NetworkImageView {
 
         super.onLayout(changed, left, top, right, bottom);
         if (mShowLocal) {
-            setImageBitmap(mLocalBitmap);
+            if (mLocalBitmap != null) {
+                setImageBitmap(mLocalBitmap);
+            }
+            if (uri != null) {
+                setImageURI(uri);
+            }
         }
     }
 }

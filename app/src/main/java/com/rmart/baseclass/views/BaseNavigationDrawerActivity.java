@@ -147,9 +147,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
             myProfile.getCartCount().observe(this, count -> {
                 if (tvCartCountField != null) {
-                    if(count == 1) {
-                        tvCartCountField.setVisibility(View.VISIBLE);
-                    }
+                    tvCartCountField.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
                     tvCartCountField.setText(String.valueOf(count));
                 }
             });
@@ -261,22 +259,25 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
             }
             toolbar.setNavigationOnClickListener(view -> {
-                int count = getSupportFragmentManager().getBackStackEntryCount();
-                if (count == 0) {
-                    drawerLayout.openDrawer(GravityCompat.START);
-                } else {
-                    onBackPressed();
-                }
+                navigateBackStack();
             });
         } else {
-            if(getSupportActionBar() != null) {
+            if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
             actionBarDrawerToggle.syncState();
             setTitle(getResources().getString(R.string.app_name));
+        }
+    }
+
+    private void navigateBackStack() {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if (count == 0) {
+            drawerLayout.openDrawer(GravityCompat.START);
+        } else {
+            onBackPressed();
         }
     }
 

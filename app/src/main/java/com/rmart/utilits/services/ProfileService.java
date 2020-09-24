@@ -61,7 +61,7 @@ public interface ProfileService {
                                        @Field("primary_add_id") String primary_add_id,
                                        @Field("image") String profileImage);
 
-    @POST(BuildConfig.SHOW_CART_ORDER_DETAILS)
+    @POST(BuildConfig.UPDATE_KYC_IMAGE_DETAILS)
     @FormUrlEncoded
     Call<BaseResponse> uploadPhotoImage(@Field("client_id") String clientId, @Field("customer_id") String customerId, @Field("image_type") String imageType,
                                         @Field("image") String profileImage);

@@ -139,7 +139,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
                 CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);
                 ContentModel contentModel = new ContentModel();
                 contentModel.setStatus(Constants.TAG_MESSAGE);
-                contentModel.setValue(selectedDetails);
+                contentModel.setValue(selectedDetails.getShopMobileNo());
                 callBackListener.callBackReceived(contentModel);
             });
             ivFavouriteImageField.setOnClickListener(v -> {

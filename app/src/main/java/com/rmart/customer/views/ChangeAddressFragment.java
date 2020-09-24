@@ -121,7 +121,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
 
     private void selectThisAddressSelected() {
         MyProfile.getInstance().setAddressResponses(addressList);
-        requireActivity().getSupportFragmentManager().popBackStack();
+        requireActivity().onBackPressed();
     }
 
     private void addNewAddressSelected() {

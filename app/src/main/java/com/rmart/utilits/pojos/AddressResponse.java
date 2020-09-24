@@ -120,6 +120,18 @@ public class AddressResponse extends BaseResponse implements Serializable {
     @Expose
     String clientID;
 
+    @SerializedName("aadhar_front_image")
+    @Expose
+    String aadharFrontImage;
+
+    @SerializedName("pancard_image")
+    @Expose
+    String panCardImage;
+
+    @SerializedName("aadhar_back_image")
+    @Expose
+    String aadharBackImage;
+
     private boolean isPrimaryAddress = false;
 
     public Integer getId() {
@@ -346,6 +358,30 @@ public class AddressResponse extends BaseResponse implements Serializable {
         isPrimaryAddress = primaryAddress;
     }
 
+    public String getAadharFrontImage() {
+        return aadharFrontImage;
+    }
+
+    public void setAadharFrontImage(String aadharFrontImage) {
+        this.aadharFrontImage = aadharFrontImage;
+    }
+
+    public String getPanCardImage() {
+        return panCardImage;
+    }
+
+    public void setPanCardImage(String panCardImage) {
+        this.panCardImage = panCardImage;
+    }
+
+    public String getAadharBackImage() {
+        return aadharBackImage;
+    }
+
+    public void setAadharBackImage(String aadharBackImage) {
+        this.aadharBackImage = aadharBackImage;
+    }
+
     @NotNull
     @Override
     public String toString() {
@@ -368,5 +404,4 @@ public class AddressResponse extends BaseResponse implements Serializable {
         AddressResponse rhs = ((AddressResponse) other);
         return new EqualsBuilder().append(id, rhs.id).isEquals();
     }
-
 }

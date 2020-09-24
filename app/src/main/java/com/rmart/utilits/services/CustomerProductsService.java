@@ -64,7 +64,7 @@ public interface CustomerProductsService {
 
     @POST(BuildConfig.VENDOR_DELETE_ADD_TO_CART)
     @FormUrlEncoded
-    Call<BaseResponse> deleteProductDetails(@Field("client_id") String clientId, @Field("cart_id") int cartId);
+    Call<ProductInCartResponse> deleteProductDetails(@Field("client_id") String clientId, @Field("cart_id") int cartId);
 
     @POST(BuildConfig.VENDOR_MOVE_TO_WISH_LIST)
     @FormUrlEncoded
