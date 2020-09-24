@@ -168,6 +168,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
             @Override
             public void onFailure(Call<APIProductListResponse> call, Throwable t) {
                 progressDialog.dismiss();
+                showDialog("", t.getMessage());
             }
         });
        /* apiService.getAPIProducts("0", "100").enqueue(new Callback<APIProductListResponse>() {

@@ -109,8 +109,8 @@ android {
             buildConfigField("String", "ROLE_ID", '"5"')
             buildConfigField("String", "LOGIN_USERNAME", '"8686378737"')
             buildConfigField("String", "LOGIN_PASSWORD", '"12345"')
-//            buildConfigField("boolean", "IS_DELIVERY", "false")
-//            buildConfigField("boolean", "IS_RETAILER", "false")
+            buildConfigField("boolean", "IS_DELIVERY", "false")
+            buildConfigField("boolean", "IS_RETAILER", "false")
         }
         retailer {
             dimension "rokard_mart"
@@ -125,8 +125,8 @@ android {
             applicationIdSuffix ".delivery"
             versionNameSuffix "-delivery"
             buildConfigField("String", "ROLE_ID", '"6"')
-            //buildConfigField("String", "LOGIN_USERNAME", '"8686378737"')
-            //buildConfigField("String", "LOGIN_PASSWORD", '"12345"')
+            buildConfigField("String", "LOGIN_USERNAME", '"8686378737"')
+            buildConfigField("String", "LOGIN_PASSWORD", '"12345"')
         }
     }
 

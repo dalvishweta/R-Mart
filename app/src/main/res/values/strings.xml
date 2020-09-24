@@ -244,4 +244,5 @@
     <string name="image_saving_confirmation_alert">Do you wants to save the Image?</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="email">Email Id</string>
+    <string name="preference_file_key" />
 </resources>

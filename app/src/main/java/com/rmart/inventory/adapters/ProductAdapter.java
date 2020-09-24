@@ -91,6 +91,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
             holder.tvOffer.setVisibility(View.GONE);
         }
         String imageUrl = product.getDisplayImage();
+        if (TextUtils.isEmpty(imageUrl)) {
+            imageUrl = product.getProductImage();
+        }
         if (!TextUtils.isEmpty(imageUrl)) {
             HttpsTrustManager.allowAllSSL();
             imageLoader.get(imageUrl, ImageLoader.getImageListener(holder.itemImg, R.mipmap.ic_launcher, android.R.drawable.ic_dialog_alert));
