@@ -33,6 +33,6 @@ public interface CustomerOrderService {
     @FormUrlEncoded
     Call<CustomerOrderProductResponse> getUpdatedProductDetails(@Field("order_id")String orderID,
                                                      @Field("customer_mobile") String mobileNumber,
-                                                     @Field("verdor_userId") String vendorID);
+                                                     @Field("vendor_mobile") String vendorNumber);
 
 }

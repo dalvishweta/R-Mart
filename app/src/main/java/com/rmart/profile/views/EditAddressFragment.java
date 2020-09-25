@@ -49,6 +49,9 @@ import static android.app.Activity.RESULT_OK;
 public class EditAddressFragment extends BaseMyProfileFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final String AADHAR_FRONT_IMAGE = "aadhar_front_image";
+    public static final String AADHAR_BACK_IMAGE = "aadhar_back_image";
+    public static final String PANCARD_IMAGE = "pancard_image";
     private AppCompatEditText tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress, tvCity, tvShopNO, tvDeliveryRadius, tvPinCode, tvState;
     LinearLayout mRetailerView;
     AddressViewModel addressViewModel;
@@ -250,15 +253,15 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         showConfirmationDialog(getString(R.string.image_saving_confirmation_alert), pObject -> {
             if (aadharFrontSelected) {
                 aadharFrontImageUrl = profileImageUri.getPath();
-                UpdateProfileImageServices.enqueueWork(requireActivity(), "aadhar_front_image", aadharFrontImageUrl);
+                UpdateProfileImageServices.enqueueWork(requireActivity(), AADHAR_FRONT_IMAGE, aadharFrontImageUrl);
                 ivAadharFrontImageField.setLocalImageUri(profileImageUri);
             } else if (aadharBackSelected) {
                 aadharBackImageUrl = profileImageUri.getPath();
-                UpdateProfileImageServices.enqueueWork(requireActivity(), "aadhar_back_image", aadharBackImageUrl);
+                UpdateProfileImageServices.enqueueWork(requireActivity(), AADHAR_BACK_IMAGE, aadharBackImageUrl);
                 ivAadharBackImageField.setLocalImageUri(profileImageUri);
             } else if (panCardSelected) {
                 panCardImageUrl = profileImageUri.getPath();
-                UpdateProfileImageServices.enqueueWork(requireActivity(), "pancard_image", panCardImageUrl);
+                UpdateProfileImageServices.enqueueWork(requireActivity(), PANCARD_IMAGE, panCardImageUrl);
                 ivPanCardImageField.setLocalImageUri(profileImageUri);
             }
         });

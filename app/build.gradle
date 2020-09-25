@@ -59,7 +59,7 @@ android {
         buildConfigField("String", "DELETE_SHOP_TO_WISH_LIST", '"customer/VendorShop/deleteShopWishlist"')
         buildConfigField("String", "DELETE_PRODUCT_WISH_LIST", '"customer/VendorShop/deleteWishlist"')
         buildConfigField("String", "SHOW_CART_ORDER_DETAILS", '"customer/VendorShop/showCartOrderDetails"')
-        buildConfigField("String", "UPDATE_KYC_IMAGE_DETAILS", '"customer/VendorShop/onChangeKYCImages"')
+        buildConfigField("String", "UPDATE_KYC_IMAGE_DETAILS", '"updateprofile/onChangeKYCImages"')
         //
 
         /*Vendor inventory services*/
@@ -76,12 +76,11 @@ android {
         buildConfigField("String", 'VENDOR_ORDER_BY_STATUS', '"vendor/order/ordersByStatus"')
         buildConfigField("String", 'VENDOR_ORDER_PRODUCTS', '"vendor/order/viewOrderById"')
         buildConfigField("String", 'VENDOR_UPDATE_ORDER', '"vendor/order/updateOrder"')
-        // update profile
-        buildConfigField("String", 'UPDATE_PROFILE_IMAGE', '"updateprofile"')
+
         /*Customer order services*/
         buildConfigField("String", 'CUSTOMER_VIEW_ORDER_BY_ID', '"customer/order/viewOrderById"')
         buildConfigField("String", 'CUSTOMER_VIEW_ALL_ORDERS', '"customer/order/ordersList"')
-        buildConfigField("String",'CUSTOMER_REORDER_PRODUCTS','"customer/order/inventoryByOrderId"')
+        buildConfigField("String",'CUSTOMER_REORDER_PRODUCTS','"customer/order/checkOrder"')
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

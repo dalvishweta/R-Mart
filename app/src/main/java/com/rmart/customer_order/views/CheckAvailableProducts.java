@@ -77,12 +77,12 @@ public class CheckAvailableProducts extends BaseFragment implements View.OnClick
     public void onResume() {
         super.onResume();
         requireActivity().setTitle(getString(R.string.check_available_products));
-        // getServerData();
+        getServerData();
     }
     private void getServerData() {
         progressDialog.show();
         CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
-        customerOrderService.getUpdatedProductDetails("135", "9000000000", "257"/*order.getOrderInfo().getOrderID(), MyProfile.getInstance().getMobileNumber(), order.getVendorInfo().getMobileNumber()*/).enqueue(new Callback<CustomerOrderProductResponse>() {
+        customerOrderService.getUpdatedProductDetails(/*"135", "9000000000", "257"*/ order.getOrderInfo().getOrderID(), MyProfile.getInstance().getMobileNumber(), order.getVendorInfo().getMobileNumber()).enqueue(new Callback<CustomerOrderProductResponse>() {
             @Override
             public void onResponse(Call<CustomerOrderProductResponse> call, Response<CustomerOrderProductResponse> response) {
                 if(response.isSuccessful()) {
@@ -108,17 +108,23 @@ public class CheckAvailableProducts extends BaseFragment implements View.OnClick
         Resources res = getResources();
         // setFooter();
         // vendor
-        String text = order.getVendorInfo().getFirstName()+" "+ order.getVendorInfo().getLastName();
+        String text = order.getCustomerInfo().getFirstName()+" "+ order.getCustomerInfo().getLastName();
+        customerName.setText(text);
+        customerNumber.setText(order.getCustomerInfo().getCustomerNumber());
+        customerAddress.setText(order.getCustomerInfo().getCompleteAddress());
+
+        // vendor
+        // String text = order.getVendorInfo().getFirstName()+" "+ order.getVendorInfo().getLastName();
         vendorName.setText(text);
         vendorNumber.setText(order.getVendorInfo().getMobileNumber());
         vendorAddress.setText(order.getVendorInfo().getCompleteAddress());
 
         // payment info
-        /*tvAmount.setText(order.getOrderInfo().getOrderAmount());
+        tvAmount.setText(order.getOrderInfo().getOrderAmount());
         text = order.getOrderInfo().getOrderCharges();
         tvDeliveryCharges.setText(text);
         tvTotalCharges.setText(order.getOrderInfo().getTotalAmt());
-        tvPaymentType.setText(order.getOrderInfo().getModeOfPayment());*/
+        tvPaymentType.setText(order.getOrderInfo().getModeOfPayment());
 
         List<Product> orderedProductsList = order.getProduct();
         if (orderedProductsList != null && !orderedProductsList.isEmpty()) {

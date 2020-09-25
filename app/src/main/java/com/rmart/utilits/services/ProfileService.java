@@ -63,6 +63,8 @@ public interface ProfileService {
 
     @POST(BuildConfig.UPDATE_KYC_IMAGE_DETAILS)
     @FormUrlEncoded
-    Call<BaseResponse> uploadPhotoImage(@Field("client_id") String clientId, @Field("customer_id") String customerId, @Field("image_type") String imageType,
-                                        @Field("image") String profileImage);
+    Call<BaseResponse> uploadPhotoImage(@Field("client_id") String clientId,
+                                        @Field("user_id") String customerId,
+                                        @Field("image_type") String imageType,
+                                        @Field("image_data") String imageData);
 }
