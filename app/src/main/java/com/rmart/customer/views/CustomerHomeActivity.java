@@ -47,31 +47,31 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     @Override
     public void gotoVendorProductDetails(CustomerProductsShopDetailsModel customerProductsModel) {
         showCartIcon();
-        addFragment(VendorProductDetailsFragment.getInstance(customerProductsModel), VendorProductDetailsFragment.class.getName(), true);
+        replaceFragment(VendorProductDetailsFragment.getInstance(customerProductsModel), VendorProductDetailsFragment.class.getName(), true);
     }
 
     @Override
     public void gotoProductDescDetails(CustomerProductDetailsModel vendorProductDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
         showCartIcon();
-        addFragment(ProductCartDetailsFragment.getInstance(vendorProductDetails, vendorShopDetails), ProductCartDetailsFragment.class.getName(), true);
+        replaceFragment(ProductCartDetailsFragment.getInstance(vendorProductDetails, vendorShopDetails), ProductCartDetailsFragment.class.getName(), true);
     }
 
     @Override
     public void gotoShoppingCartScreen() {
         hideCartIcon();
-        addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
+        replaceFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
     }
 
     @Override
     public void gotoShoppingCartDetails(ShoppingCartResponseDetails shoppingCartResponseDetails) {
         hideCartIcon();
-        addFragment(ShoppingCartDetailsFragment.getInstance(shoppingCartResponseDetails), ShoppingCartDetailsFragment.class.getName(), true);
+        replaceFragment(ShoppingCartDetailsFragment.getInstance(shoppingCartResponseDetails), ShoppingCartDetailsFragment.class.getName(), true);
     }
 
     @Override
     public void gotoVendorSameProductListScreen(ProductBaseModel productCategoryDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
         showCartIcon();
-        addFragment(VendorSameProductsListScreen.getInstance(productCategoryDetails, vendorShopDetails), VendorSameProductsListScreen.class.getName(), true);
+        replaceFragment(VendorSameProductsListScreen.getInstance(productCategoryDetails, vendorShopDetails), VendorSameProductsListScreen.class.getName(), true);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     public void gotoCompleteOrderDetailsScreen(CustomerProductsShopDetailsModel vendorShopDetails) {
         hideCartIcon();
         try {
-            addFragment(CustomerOrderDetailsFragment.getInstance(vendorShopDetails), PaymentOptionsFragment.class.getName(), true);
+            replaceFragment(CustomerOrderDetailsFragment.getInstance(vendorShopDetails), PaymentOptionsFragment.class.getName(), true);
         } catch (Exception ex) {
             LoggerInfo.printLog("CustomerOrderDetailsFragment exception", ex.getMessage());
         }
@@ -97,7 +97,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     @Override
     public void gotoPaymentOptionsScreen(CustomerProductsShopDetailsModel vendorShopDetails) {
         hideCartIcon();
-        addFragment(PaymentOptionsFragment.getInstance(vendorShopDetails), PaymentOptionsFragment.class.getName(), true);
+        replaceFragment(PaymentOptionsFragment.getInstance(vendorShopDetails), PaymentOptionsFragment.class.getName(), true);
     }
 
     @Override

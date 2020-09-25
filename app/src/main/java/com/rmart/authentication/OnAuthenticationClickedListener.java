@@ -6,7 +6,8 @@ public interface OnAuthenticationClickedListener {
     void goToRegistration();
     void validateOTP(String mobileNumber);
     void changePassword(String otp, String mobileNumber);
-    void goToProfileActivity();
+
+    void goToProfileActivity(boolean isAddressAdded);
 
     void validateMailOTP();
 

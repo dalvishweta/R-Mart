@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     tools:context="com.rmart.inventory.views.AddProductToInventory">
@@ -81,24 +80,125 @@
             android:background="#D1DDFF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:text="@string/upload_product_images"
                 android:layout_marginTop="16dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/product_image"
-                android:layout_margin="16dp"
-                android:layout_gravity="center"
-                tools:listitem="@layout/update_image"
-                android:layout_marginTop="8dp"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="3"
-                tools:itemCount="5"
+                android:layout_height="wrap_content" />
+
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:background="@color/white"
+                        android:gravity="center">
+
+                        <com.rmart.utilits.custom_views.CustomNetworkImageView
+                            android:id="@+id/iv_product_image_one_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/add"
+                            android:contentDescription="@string/app_name"
+                            android:scaleType="fitXY" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:background="@color/white"
+                        android:gravity="center">
+
+                        <com.rmart.utilits.custom_views.CustomNetworkImageView
+                            android:id="@+id/iv_product_image_two_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/add"
+                            android:contentDescription="@string/app_name"
+                            android:scaleType="fitXY" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:background="@color/white"
+                        android:gravity="center">
+
+                        <com.rmart.utilits.custom_views.CustomNetworkImageView
+                            android:id="@+id/iv_product_image_three_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/add"
+                            android:contentDescription="@string/app_name"
+                            android:scaleType="fitXY" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:background="@color/white"
+                        android:gravity="center">
+
+                        <com.rmart.utilits.custom_views.CustomNetworkImageView
+                            android:id="@+id/iv_product_image_four_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/add"
+                            android:contentDescription="@string/app_name"
+                            android:scaleType="fitXY" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:background="@color/white"
+                        android:gravity="center">
+
+                        <com.rmart.utilits.custom_views.CustomNetworkImageView
+                            android:id="@+id/iv_product_image_five_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/add"
+                            android:contentDescription="@string/app_name"
+                            android:scaleType="fitXY" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
         </LinearLayout>
         <LinearLayout
             android:padding="8dp"

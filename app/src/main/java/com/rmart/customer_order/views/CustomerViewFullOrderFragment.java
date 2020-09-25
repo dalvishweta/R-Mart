@@ -7,13 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.rmart.R;
 import com.rmart.customer_order.adapters.ProductListAdapter;
 import com.rmart.customer_order.viewmodel.MyOrdersViewModel;
@@ -31,6 +24,12 @@ import com.rmart.utilits.services.OrderService;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,6 +72,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -86,11 +86,11 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         customerOrderService.viewOrderById(mOrderObject.getOrderID(), MyProfile.getInstance().getMobileNumber()).enqueue(new Callback<CustomerOrderProductResponse>() {
             @Override
             public void onResponse(Call<CustomerOrderProductResponse> call, Response<CustomerOrderProductResponse> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     CustomerOrderProductResponse data = response.body();
                     assert data != null;
                     if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        orderProductList  = data.getProductList();
+                        orderProductList = data.getProductList();
                         updateUI();
                     } else {
                         showDialog(data.getMsg());
@@ -118,12 +118,12 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.product_list);
-        mLeftButton = view.findViewById(R.id.left_button);
+        mLeftButton = view.findViewById(R.id.cancel_order);
         mLeftButton.setOnClickListener(this);
-        mRightButton = view.findViewById(R.id.right_button);
+        mRightButton = view.findViewById(R.id.accept_order);
         mRightButton.setOnClickListener(this);
 
-        view.findViewById(R.id.right_button).setVisibility(View.GONE);
+        view.findViewById(R.id.accept_order).setVisibility(View.GONE);
 
         footer = view.findViewById(R.id.bottom);
         //Vendor Info
@@ -141,7 +141,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         dateValue = view.findViewById(R.id.date_value);
         orderIdValue = view.findViewById(R.id.order_id_value);
 
-       // delivery boy info
+        // delivery boy info
         deliveryBoyInfo = view.findViewById(R.id.delivery_boy_info);
         deliveryBoyInfo.setVisibility(View.GONE);
 
@@ -150,26 +150,26 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         tvDeliveryCharges = view.findViewById(R.id.delivery_charges);
         tvTotalCharges = view.findViewById(R.id.total_charges);
         tvPaymentType = view.findViewById(R.id.payment_type);
-        view.findViewById(R.id.custom_details_root).setVisibility(View.GONE);
+        view.findViewById(R.id.custom_details_root).setVisibility(View.VISIBLE);
         view.findViewById(R.id.vendor_details_root).setVisibility(View.VISIBLE);
-
     }
 
     void updateUI() {
         Resources res = getResources();
         String text = String.format(res.getString(R.string.status_order), orderProductList.getOrderInfo().getStatusName());
         tvStatus.setText(text);
-        orderIdValue.setText( orderProductList.getOrderInfo().getOrderID());
+        orderIdValue.setText(orderProductList.getOrderInfo().getOrderID());
         dateValue.setText(mOrderObject.getOrderDate().split(" ")[0]);
-        if(!(orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.OPEN_ORDER_STATUS) || orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.ACCEPTED_ORDER_STATUS))) {
+        if (!(orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.OPEN_ORDER_STATUS) || orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.ACCEPTED_ORDER_STATUS))) {
             footer.setVisibility(View.GONE);
-        } if((orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_ORDER_STATUS) ||
+        }
+        if ((orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_ORDER_STATUS) ||
                 orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.REJECT_ORDER_STATUS) ||
                 orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.DELIVERED_ORDER_STATUS))) {
             mLeftButton.setText(R.string.re_order);
+            mLeftButton.setVisibility(View.GONE);
             mLeftButton.setBackgroundResource(R.color.colorPrimary);
             footer.setVisibility(View.VISIBLE);
-            mLeftButton.setVisibility(View.VISIBLE);
         } else {
             footer.setVisibility(View.VISIBLE);
             mLeftButton.setVisibility(View.VISIBLE);
@@ -178,10 +178,15 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         }
         // setFooter();
         // vendor
-        text = orderProductList.getVendorInfo().getFirstName()+" "+ orderProductList.getVendorInfo().getLastName();
+        text = orderProductList.getVendorInfo().getFirstName() + " " + orderProductList.getVendorInfo().getLastName();
         vendorName.setText(text);
         vendorNumber.setText(orderProductList.getVendorInfo().getMobileNumber());
         vendorAddress.setText(orderProductList.getVendorInfo().getCompleteAddress());
+
+        String customerNameDetails = orderProductList.getCustomerInfo().getFirstName() + " " + orderProductList.getCustomerInfo().getLastName();
+        customerName.setText(customerNameDetails);
+        customerAddress.setText(orderProductList.getCustomerInfo().getCompleteAddress());
+        customerNumber.setText(orderProductList.getCustomerInfo().getCustomerNumber());
 
         // payment info
         tvAmount.setText(orderProductList.getOrderInfo().getOrderAmount());
@@ -222,7 +227,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         } else if(text.contains(getResources().getString(R.string.cancel))) {
             updateOrderStatus(Utils.CANCEL_ORDER_STATUS);
         }*/
-        String text  = ((AppCompatButton) view).getText().toString();
+        String text = ((AppCompatButton) view).getText().toString();
         if (text.equalsIgnoreCase(getString(R.string.re_order))) {
             mListener.goToReOrder(orderProductList);
         } else {
@@ -234,13 +239,13 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     private void updateOrderStatus() {
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID() , Utils.REJECT_ORDER_STATUS).enqueue(new Callback<UpdatedOrderStatus>() {
+        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), Utils.REJECT_ORDER_STATUS).enqueue(new Callback<UpdatedOrderStatus>() {
             @Override
             public void onResponse(Call<UpdatedOrderStatus> call, Response<UpdatedOrderStatus> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     UpdatedOrderStatus data = response.body();
                     assert data != null;
-                    if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                    if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                         showDialog(data.getStatus(), data.getMsg(), ((dialogInterface, i) -> {
                             requireActivity().onBackPressed();
                         }));
@@ -289,26 +294,31 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         mRightButton.setBackgroundResource(R.drawable.btn_bg_accepted);
         mRightButton.setText(R.string.accept);
     }
+
     void isCanceledOrder() {
         mLeftButton.setVisibility(View.GONE);
         mRightButton.setVisibility(View.GONE);
     }
+
     void isAcceptedOrder() {
         mRightButton.setBackgroundResource(R.drawable.btn_bg_shipped);
         mRightButton.setText(R.string.shipped);
         mLeftButton.setBackgroundResource(R.drawable.btn_bg_packed);
         mLeftButton.setText(R.string.packed);
     }
+
     void isPackedOrder() {
         mLeftButton.setBackgroundResource(R.drawable.btn_bg_shipped);
         mLeftButton.setText(R.string.shipped);
         mRightButton.setVisibility(View.GONE);
     }
+
     void isShippedOrder() {
         mLeftButton.setBackgroundResource(R.drawable.btn_bg_delivered);
         mLeftButton.setText(R.string.delivered);
         mRightButton.setVisibility(View.GONE);
     }
+
     void isDeliveredOrder() {
         mLeftButton.setVisibility(View.GONE);
         mRightButton.setVisibility(View.GONE);
@@ -316,6 +326,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         /*deliveryBoyNumber.setText(mOrderObject.getDeliveryBoyNumber());
         deliveryBoyName.setText(mOrderObject.getDeliveryBoyName());*/
     }
+
     void isReturnedOrder() {
         mLeftButton.setVisibility(View.GONE);
         mRightButton.setVisibility(View.GONE);

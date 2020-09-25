@@ -1,22 +1,13 @@
 package com.rmart.orders.views;
 
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.rmart.R;
 import com.rmart.orders.adapters.OrdersHomeAdapter;
-import com.rmart.orders.adapters.OrdersListAdapter;
 import com.rmart.orders.viewmodel.MyOrdersViewModel;
-import com.rmart.orders.models.SelectedOrderGroup;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -26,8 +17,11 @@ import com.rmart.utilits.services.OrderService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -89,9 +83,9 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try {
-            ((AppCompatTextView)view.findViewById(R.id.shop_name)).setText(String.format(getString(R.string.shop_name), MyProfile.getInstance().getAddressResponses().get(0).getShopName()));
+            ((AppCompatTextView) view.findViewById(R.id.shop_name)).setText(String.format(getString(R.string.shop_name), MyProfile.getInstance().getAddressResponses().get(0).getShopName()));
             view.findViewById(R.id.accepted_orders).setOnClickListener(this);
-            openOrderCount = ((AppCompatTextView)view.findViewById(R.id.open_order_count));
+            openOrderCount = view.findViewById(R.id.open_order_count);
             recyclerView = view.findViewById(R.id.other_order_names);
             /*myOrdersViewModel.getOrderGroupList().observe(requireActivity(), orderGroups -> {
                 if(orderGroups != null) {
@@ -105,18 +99,19 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
 
 
     }
+
     void getOrderStatusFromServer() {
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
         orderService.getOrderHome(MyProfile.getInstance().getUserID()).enqueue(new Callback<OrderStateListResponse>() {
             @Override
             public void onResponse(Call<OrderStateListResponse> call, Response<OrderStateListResponse> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     OrderStateListResponse data = response.body();
                     assert data != null;
-                    if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                    if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                         orderStatus = data.getOrderStates();
-                        for (int i = 0; i< orderStatus.size(); i++) {
+                        for (int i = 0; i < orderStatus.size(); i++) {
                             orderStatus.get(i).updateBackgroundColor();
                             mapOrderStatus.put(orderStatus.get(i).getStatus(), i);
                         }
@@ -144,7 +139,7 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
         StateOfOrders data = orderStatus.get(position);
         openOrderCount.setText(data.getCount());
         ArrayList<StateOfOrders> list = (ArrayList<StateOfOrders>) orderStatus.clone();
-        int index=mapOrderStatus.get(OPEN_ORDER_STATUS);
+        int index = mapOrderStatus.get(OPEN_ORDER_STATUS);
         list.remove(index);
         recyclerView.setAdapter(new OrdersHomeAdapter(list, this));
 

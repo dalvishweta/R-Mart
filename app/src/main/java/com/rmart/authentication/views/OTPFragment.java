@@ -1,10 +1,6 @@
 package com.rmart.authentication.views;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -19,6 +15,10 @@ import com.rmart.utilits.pojos.ResendOTPResponse;
 import com.rmart.utilits.pojos.ValidateOTP;
 import com.rmart.utilits.services.AuthenticationService;
 
+import org.jetbrains.annotations.NotNull;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,19 +69,19 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
         view.findViewById(R.id.resend).setOnClickListener(view1 -> {
             resendOTP();
         });
-        ((TextView)view.findViewById(R.id.otp_mobile_sent)).setText(String.format(getString(R.string.verification_code_mobile_hint),mMobileNumber));
+        ((TextView) view.findViewById(R.id.otp_mobile_sent)).setText(String.format(getString(R.string.verification_code_mobile_hint), mMobileNumber));
     }
 
     private void resendOTP() {
         AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
         authenticationService.resendOTP(mMobileNumber).enqueue(new Callback<ResendOTPResponse>() {
             @Override
-            public void onResponse(Call<ResendOTPResponse> call, Response<ResendOTPResponse> response) {
-                if(response.isSuccessful()) {
+            public void onResponse(@NotNull Call<ResendOTPResponse> call, @NotNull Response<ResendOTPResponse> response) {
+                if (response.isSuccessful()) {
                     ResendOTPResponse date = response.body();
                     assert date != null;
-                    if(date.getStatus().equals("Success")) {
-                        showDialog("", date.getMsg()+" OTP: "+date.getOtp());
+                    if (date.getStatus().equals("Success")) {
+                        showDialog("", date.getMsg() + " OTP: " + date.getOtp());
                     } else {
                         showDialog("", date.getMsg());
                     }
@@ -105,16 +105,16 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if(s.toString().length() >= INT_OTP_LENGTH) {
+        if (s.toString().length() >= INT_OTP_LENGTH) {
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
             authenticationService.validateOTP(mMobileNumber, s.toString()).enqueue(new Callback<ValidateOTP>() {
                 @Override
                 public void onResponse(Call<ValidateOTP> call, Response<ValidateOTP> response) {
-                    if(response.isSuccessful()) {
+                    if (response.isSuccessful()) {
                         ValidateOTP date = response.body();
                         assert date != null;
-                        if(date.getStatus().equalsIgnoreCase("Success")) {
+                        if (date.getStatus().equalsIgnoreCase("Success")) {
                             showDialog("", "Your account is activated please login.", (dialog, i) -> {
                                 mListener.goToHomePage();
                             });

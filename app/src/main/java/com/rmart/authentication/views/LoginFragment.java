@@ -8,10 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatEditText;
-
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
@@ -27,6 +23,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -111,7 +110,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                         MyProfile.setInstance(profileResponse);
                                         MyProfile.getInstance().setCartCount(profileResponse.getTotalCartCount());
                                         if (MyProfile.getInstance().getPrimaryAddressId() == null) {
-                                            mListener.goToProfileActivity();
+                                            mListener.goToProfileActivity(true);
                                         } else {
                                             switch (data.getLoginData().getRoleID()) {
                                                 case Utils.CUSTOMER_ID:

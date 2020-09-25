@@ -3,9 +3,9 @@ package com.rmart.utilits.pojos;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rmart.inventory.models.UnitObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ProductResponse extends BaseResponse implements Serializable {
 
@@ -16,6 +16,7 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @SerializedName("product_lib_id")
     @Expose
     String productLibID;
+
     @SerializedName("product_image")
     @Expose
     String productImage;
@@ -93,7 +94,7 @@ public class ProductResponse extends BaseResponse implements Serializable {
         description = product.description;
         categoryID = product.categoryID;
         // brandID = product.brandID;
-        subCategory = product.subCategory;;
+        subCategory = product.subCategory;
         brand = product.brand;
         brandID = product.brandID;
         brandName = product.brandName;

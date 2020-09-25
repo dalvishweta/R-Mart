@@ -7,11 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
@@ -20,7 +15,6 @@ import com.rmart.customer.adapters.CustomerWishListDetailsAdapter;
 import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
-import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.WishListResponseDetails;
 import com.rmart.customer.models.WishListResponseModel;
@@ -38,6 +32,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -87,7 +85,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof OnCustomerHomeInteractionListener) {
+        if (context instanceof OnCustomerHomeInteractionListener) {
             onCustomerHomeInteractionListener = (OnCustomerHomeInteractionListener) context;
         }
     }
@@ -182,7 +180,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
                         } else {
                             showDialog(getString(R.string.no_information_available));
                         }
-                    }  else {
+                    } else {
                         showDialog(getString(R.string.no_information_available));
                     }
                 }
@@ -281,7 +279,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<BaseResponse> call = customerProductsService.removeFromCart(clientID, shopWiseWishListResponseDetails.getWishListId());
+            Call<BaseResponse> call = customerProductsService.deleteProductFromWishList(clientID, shopWiseWishListResponseDetails.getWishListId());
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
@@ -315,11 +313,14 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
         }
     }
 
-    private void removeFromCart(WishListResponseDetails shopWiseWishListResponseDetails) {
-        int index = wishListCart.indexOf(shopWiseWishListResponseDetails);
+    private void removeFromCart(WishListResponseDetails wishListResponseDetails) {
+        int index = wishListCart.indexOf(wishListResponseDetails);
         if (index > -1) {
             wishListCart.remove(index);
             customerWishListDetailsAdapter.notifyItemRemoved(index);
+        }
+        if (wishListCart.size() == 0) {
+            requireActivity().getSupportFragmentManager().popBackStackImmediate();
         }
     }
 }

@@ -5,6 +5,11 @@ import com.google.gson.annotations.SerializedName;
 import com.rmart.utilits.pojos.APIStockResponse;
 import com.rmart.utilits.pojos.APIUnitMeasureResponse;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -200,11 +205,35 @@ public class UnitObject implements Serializable {
     public String getStockName() {
         return stockName;
     }
+
     public String getStockName(String id) {
         return Objects.requireNonNull(apiStockMap.get(id)).getStockName();
     }
+
     public void setStockName(String stockName) {
         this.stockName = stockName;
     }
 
+    @NotNull
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("unitID", unitID).toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(unitID).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof UnitObject)) {
+            return false;
+        }
+        UnitObject rhs = ((UnitObject) other);
+        return new EqualsBuilder().append(unitID, rhs.unitID).isEquals();
+    }
 }

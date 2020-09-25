@@ -5,16 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import com.google.android.material.tabs.TabLayout;
 import com.rmart.R;
+import com.rmart.baseclass.CallBackInterface;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.profile.model.MyProfile;
@@ -31,6 +24,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -138,6 +138,10 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         updateUI();
     }
 
+    private CallBackInterface callBackInterface = pObject -> {
+
+    };
+
     private void updateUI() {
         List<ImageURLResponse> imagesList = product.getImages();
         ImageAdapter imageAdapter = new ImageAdapter(requireContext(), imagesList);
@@ -147,8 +151,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
 
         tvProductName.setText(product.getName());
         tvDeliveryInDays.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getDeliveryInDays()));
-        ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(product.getUnitObjects(), view -> {
-        }, false);
+        ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(product.getUnitObjects(), callBackInterface, false);
         recyclerView.setAdapter(unitBaseAdapter);
 
         tvProductDescription.setText(product.getDescription());

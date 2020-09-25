@@ -5,9 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -15,8 +12,12 @@ import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.RegistrationResponse;
 import com.rmart.utilits.services.AuthenticationService;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,6 +31,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     private String mParam2;
 
     CustomEditTextWithErrorText tvFullName, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
+
     public RegistrationFragment() {
         // Required empty public constructor
     }
@@ -94,23 +96,23 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         password= "1234";
         conformPassword = "1234";*/
 
-        if(firstName.length()<=2) {
+        if (firstName.length() <= 2) {
             showDialog("", getString(R.string.error_full_name));
-        } else if(lastName.length()<=2) {
+        } else if (lastName.length() <= 2) {
             showDialog("", getString(R.string.error_last_name));
-        } else if(mobileNumber.length()<=2) {
+        } else if (mobileNumber.length() <= 2) {
             showDialog("", getString(R.string.required_mobile_number));
-        } else if(!Utils.isValidMobile(mobileNumber)) {
+        } else if (!Utils.isValidMobile(mobileNumber)) {
             showDialog("", getString(R.string.error_mobile_number));
-        } else if(email.length()<=2) {
+        } else if (email.length() <= 2) {
             showDialog("", getString(R.string.required_mail));
-        } else if(!Utils.isValidEmail(email)) {
+        } else if (!Utils.isValidEmail(email)) {
             showDialog("", getString(R.string.error_mail));
-        } else if(password.length()<=2) {
+        } else if (password.length() <= 2) {
             showDialog("", getString(R.string.error_empty_password));
-        } else if(conformPassword.length()<=2) {
+        } else if (conformPassword.length() <= 2) {
             showDialog("", getString(R.string.error_empty_confirm_password));
-        } else if(!conformPassword.equals(password)) {
+        } else if (!conformPassword.equals(password)) {
             showDialog("", getString(R.string.mismatch_confirm_password));
         } else {
             progressDialog.show();
@@ -118,16 +120,19 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             authenticationService.registration(firstName, lastName, mobileNumber, email, password, getString(R.string.role_id), Utils.CLIENT_ID).enqueue(
                     new Callback<RegistrationResponse>() {
                         @Override
-                        public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
-                            if(response.isSuccessful()) {
-                                RegistrationResponse date = response.body();
-                                assert date != null;
-                                if(date.getStatus().equals("Success")) {
-                                    showDialog("", date.getMsg()+" OTP: "+date.getOtp(),(click, i)-> {
-                                        mListener.validateOTP(mobileNumber);
-                                    });
+                        public void onResponse(@NotNull Call<RegistrationResponse> call, @NotNull Response<RegistrationResponse> response) {
+                            if (response.isSuccessful()) {
+                                RegistrationResponse data = response.body();
+                                if (data != null) {
+                                    if (data.getStatus().equals("Success")) {
+                                        showDialog("", data.getMsg() + " OTP: " + data.getOtp(), (click, i) -> {
+                                            mListener.validateOTP(mobileNumber);
+                                        });
+                                    } else {
+                                        showDialog("", data.getMsg());
+                                    }
                                 } else {
-                                    showDialog("", date.getMsg());
+                                    showDialog(getString(R.string.no_information_available));
                                 }
                             } else {
                                 showDialog("", response.message());
@@ -136,7 +141,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
                         }
 
                         @Override
-                        public void onFailure(Call<RegistrationResponse> call, Throwable t) {
+                        public void onFailure(@NotNull Call<RegistrationResponse> call, @NotNull Throwable t) {
                             showDialog("", t.getMessage());
                             progressDialog.dismiss();
                         }

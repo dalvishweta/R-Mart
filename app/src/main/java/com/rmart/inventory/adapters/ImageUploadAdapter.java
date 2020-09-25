@@ -1,13 +1,11 @@
 package com.rmart.inventory.adapters;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -21,6 +19,9 @@ import com.rmart.utilits.custom_views.CustomNetworkImageView;
 import com.rmart.utilits.pojos.ImageURLResponse;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.ImageUploadViewHolder> {
 
@@ -63,7 +64,7 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
             holder.ivProductImageField.setLocalImageBitmap((Bitmap) lObject);
         } else if (lObject instanceof ImageURLResponse) {
             ImageURLResponse imageUrlResponse = (ImageURLResponse) lObject;
-            Bitmap bitmap = imageUrlResponse.getProductImageBitmap();
+            /*Bitmap bitmap = imageUrlResponse.getProductImageBitmap();
             if (bitmap != null) {
                 holder.ivProductImageField.setLocalImageBitmap(bitmap);
             } else {
@@ -71,7 +72,17 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
                 if (!TextUtils.isEmpty(imagePath)) {
                     updateImageUI(imagePath, holder.ivProductImageField);
                 }
+            }*/
+            Uri imageUri = imageUrlResponse.getImageUri();
+            if (imageUri != null) {
+                holder.ivProductImageField.setLocalImageUri(imageUri);
+            } else {
+                String imagePath = imageUrlResponse.getImageURL();
+                if (!TextUtils.isEmpty(imagePath)) {
+                    updateImageUI(imagePath, holder.ivProductImageField);
+                }
             }
+
         }
 
         holder.ivProductImageField.setTag(position);

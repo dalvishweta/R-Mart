@@ -10,14 +10,15 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 
+import com.rmart.R;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 
-import com.rmart.R;
-
 
 public class CustomEditTextWithErrorText extends LinearLayout {
+
     private AppCompatEditText appCompatEditText;
     private AppCompatTextView errorTextView;
 
@@ -69,6 +70,7 @@ public class CustomEditTextWithErrorText extends LinearLayout {
                     case R.styleable.CustomEditTextWithErrorText_android_hint:
                         String text  = a.getString(attr);
                         appCompatEditText.setHint(text);
+                        appCompatEditText.setText("");
                         break;
                     case R.styleable.CustomEditTextWithErrorText_android_maxLength:
                         int value =a.getInteger(attr, 10);

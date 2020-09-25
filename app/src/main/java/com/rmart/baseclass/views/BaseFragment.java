@@ -6,16 +6,16 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.rmart.R;
+import com.rmart.baseclass.CallBackInterface;
+import com.rmart.baseclass.Constants;
+import com.rmart.utilits.Utils;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
-import com.rmart.R;
-import com.rmart.baseclass.CallBackInterface;
-import com.rmart.baseclass.Constants;
-import com.rmart.utilits.Utils;
 
 
 public class BaseFragment extends Fragment {
@@ -75,6 +75,7 @@ public class BaseFragment extends Fragment {
             }
             builder.setTitle(title);
             builder.setMessage(msg);
+            builder.setCancelable(false);
             builder.setNegativeButton(requireActivity().getString(R.string.close), null);
             AlertDialog alertDialog = builder.create();
             alertDialog.setOnShowListener(arg0 -> alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(requireActivity(), R.color.button_bg)));
@@ -95,6 +96,7 @@ public class BaseFragment extends Fragment {
             );
             builder.setTitle(requireActivity().getString(R.string.message));
             builder.setMessage(msg);
+            builder.setCancelable(false);
             builder.setNegativeButton(requireActivity().getString(R.string.close), null);
             AlertDialog alertDialog = builder.create();
             alertDialog.setOnShowListener(arg0 -> alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(requireActivity(), R.color.button_bg)));
@@ -119,6 +121,7 @@ public class BaseFragment extends Fragment {
             }
             builder.setTitle(title);
             builder.setMessage(msg);
+            builder.setCancelable(false);
             builder.setNegativeButton(requireActivity().getString(R.string.close), null);
             AlertDialog alertDialog = builder.create();
             alertDialog.setOnShowListener(arg0 -> alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(requireActivity(), R.color.button_bg)));
@@ -135,6 +138,7 @@ public class BaseFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
             builder.setTitle(title);
             builder.setMessage(msg);
+            builder.setCancelable(false);
             builder.setNegativeButton("close", callBackInterface);
             AlertDialog alertDialog = builder.create();
             if (!requireActivity().isFinishing()) {
@@ -151,6 +155,7 @@ public class BaseFragment extends Fragment {
             if(TextUtils.isEmpty(title)) builder.setTitle(getString(R.string.message));
             else builder.setTitle(title);
             builder.setMessage(msg);
+            builder.setCancelable(false);
             builder.setNegativeButton("close", (dialogInterface, i) -> callBackInterface.callBackReceived(Constants.TAG_SUCCESS));
             AlertDialog alertDialog = builder.create();
             if (!requireActivity().isFinishing()) {
@@ -166,6 +171,7 @@ public class BaseFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
             builder.setTitle(getString(R.string.message));
             builder.setMessage(msg);
+            builder.setCancelable(false);
             builder.setNegativeButton("close", (dialogInterface, i) -> callBackInterface.callBackReceived(Constants.TAG_SUCCESS));
             AlertDialog alertDialog = builder.create();
             if (!requireActivity().isFinishing()) {
@@ -181,6 +187,7 @@ public class BaseFragment extends Fragment {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
             builder.setTitle(getString(R.string.message));
             builder.setMessage(msg);
+            builder.setCancelable(false);
             builder.setNegativeButton("close", null);
             builder.setPositiveButton("Ok", (dialogInterface, i) -> callBackInterface.callBackReceived(Constants.TAG_SUCCESS));
             AlertDialog alertDialog = builder.create();

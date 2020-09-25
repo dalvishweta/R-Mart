@@ -81,9 +81,10 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     }
 
     @Override
-    public void goToProfileActivity() {
+    public void goToProfileActivity(boolean isAddressAdded) {
         Intent intent = new Intent(AuthenticationActivity.this, MyProfileActivity.class);
         intent.putExtra("is_edit", true);
+        intent.putExtra("IsNewAddress", isAddressAdded);
         startActivity(intent);
     }
 

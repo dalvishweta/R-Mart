@@ -10,31 +10,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.google.android.material.navigation.NavigationView;
 import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.authentication.views.AuthenticationActivity;
-import com.rmart.customer.views.ChangeAddressFragment;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer.views.CustomerWishListActivity;
-import com.rmart.customer.views.PaymentOptionsFragment;
-import com.rmart.customer.views.ProductCartDetailsFragment;
-import com.rmart.customer.views.ShoppingCartDetailsFragment;
 import com.rmart.customer.views.ShoppingCartFragment;
-import com.rmart.customer.views.VendorProductDetailsFragment;
-import com.rmart.customer.views.VendorSameProductsListScreen;
-import com.rmart.customer.views.VendorShopsListFragment;
 import com.rmart.customer_order.views.CustomerOrdersActivity;
 import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.orders.views.OrdersActivity;
@@ -45,6 +29,14 @@ import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.Utils;
 
 import org.jetbrains.annotations.NotNull;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -305,7 +297,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 this.finish();
             } else {
                 getSupportFragmentManager().popBackStackImmediate();
-                int index = getSupportFragmentManager().getBackStackEntryCount() - 1;
+                /*int index = getSupportFragmentManager().getBackStackEntryCount() - 1;
                 if (index >= 0) {
                     FragmentManager.BackStackEntry backEntry = getSupportFragmentManager().getBackStackEntryAt(index);
                     String tag = backEntry.getName();
@@ -332,7 +324,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     if (fragment != null) {
                         ((VendorShopsListFragment) fragment).updateToolBar();
                     }
-                }
+                }*/
             }
         }
     }

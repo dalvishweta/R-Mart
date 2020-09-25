@@ -9,18 +9,14 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.RMartApplication;
+import com.rmart.customer.views.CustomerHomeActivity;
+import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyAddress;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.viewmodels.AddressViewModel;
@@ -40,6 +36,10 @@ import org.jetbrains.annotations.NotNull;
 import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.lifecycle.ViewModelProvider;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -133,7 +133,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     }
 
     private void updateUI() {
-        if(null != myAddress) {
+        if (null != myAddress) {
             Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.add_address));
             tvShopName.setText(myAddress.getShopName());
             tvPANNumber.setText(myAddress.getPan_no());
@@ -326,8 +326,11 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                         AddressListResponse data = response.body();
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                showDialog(data.getMsg(), pObject -> {
+                                showDialog(getString(R.string.address_is_added), pObject -> {
                                     MyProfile.getInstance().setAddressResponses(data.getResponse());
+                                    if (isAddNewAddress) {
+                                        gotoCustomerHomeScreen();
+                                    }
                                     Objects.requireNonNull(requireActivity()).onBackPressed();
                                 });
                             } else {
@@ -380,6 +383,20 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                     progressDialog.dismiss();
                 }
             });
+        }
+    }
+
+    private void gotoCustomerHomeScreen() {
+        MyProfile myProfile = MyProfile.getInstance();
+        Intent intent;
+        if (myProfile != null) {
+            String roleId = myProfile.getRoleID();
+            if (roleId.equals(Utils.CUSTOMER_ID)) {
+                intent = new Intent(requireActivity(), CustomerHomeActivity.class);
+            } else {
+                intent = new Intent(requireActivity(), OrdersActivity.class);
+            }
+            startActivity(intent);
         }
     }
 

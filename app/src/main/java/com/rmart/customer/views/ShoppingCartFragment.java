@@ -6,18 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.ShoppingCartAdapter;
 import com.rmart.customer.models.ShoppingCartResponse;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
+import com.rmart.customer_order.views.CustomerOrdersActivity;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RecyclerTouchListener;
@@ -31,6 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,7 +76,11 @@ public class ShoppingCartFragment extends BaseFragment {
 
     public void updateToolBar() {
         Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.shopping_cart));
-        ((CustomerHomeActivity) (requireActivity())).hideCartIcon();
+        if (requireActivity() instanceof CustomerHomeActivity) {
+            ((CustomerHomeActivity) (requireActivity())).hideCartIcon();
+        } else if (requireActivity() instanceof CustomerOrdersActivity) {
+            ((CustomerOrdersActivity) (requireActivity())).hideCartIcon();
+        }
         getShopWiseCartList();
     }
 

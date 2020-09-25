@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.rmart.R;
-import com.rmart.baseclass.views.BaseActivity;
-import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.CustomerWishListDetailsFragment;
 import com.rmart.customer.OnCustomerWishListInteractionListener;
@@ -19,9 +17,9 @@ public class CustomerWishListActivity extends BaseNavigationDrawerActivity imple
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.base_container_layout);
+        //setContentView(R.layout.base_container_layout);
 
-        addFragment(CustomerWishListFragment.getInstance(), CustomerWishListFragment.class.getName(), false);
+        replaceFragment(CustomerWishListFragment.getInstance(), CustomerWishListActivity.class.getName(), false);
     }
 
     @Override
@@ -54,6 +52,6 @@ public class CustomerWishListActivity extends BaseNavigationDrawerActivity imple
 
     @Override
     public void gotoWishListDetailsScreen(ShopWiseWishListResponseDetails shopWiseWishListResponseDetails) {
-        addFragment(CustomerWishListDetailsFragment.getInstance(shopWiseWishListResponseDetails), CustomerWishListDetailsFragment.class.getName(), true);
+        replaceFragment(CustomerWishListDetailsFragment.getInstance(shopWiseWishListResponseDetails), CustomerWishListDetailsFragment.class.getName(), true);
     }
 }

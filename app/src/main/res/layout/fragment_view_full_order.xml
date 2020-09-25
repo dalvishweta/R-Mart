@@ -1,110 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/item_order_list_bg">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/bottom"
+    <LinearLayout
+        android:id="@+id/bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancel_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/product_delete"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/canceled_orders"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_regular_size" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/accept_order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/product_edit"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/accept"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_regular_size" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom"
+        android:layout_alignParentTop="true">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/item_order_list_bg">
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/status"
-                android:padding="8dp"
-                android:gravity="end"
-                android:fontFamily="@font/roboto_regular"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:text="@string/status_order"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            android:background="@drawable/item_order_list_bg"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/order_status"
-                android:layout_marginBottom="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/item_order_list_bg"
                 android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/item_order_list_bg"
                 android:gravity="center"
                 android:padding="16dp"
                 android:weightSum="5">
 
                 <ImageView
-                    android:src="@drawable/bag"
                     android:layout_width="0dp"
-                    android:layout_weight="2"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/app_name" />
+                    android:layout_weight="2"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/bag" />
 
                 <RelativeLayout
-                    android:padding="4dp"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:layout_height="wrap_content">
+                    android:padding="4dp">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:text="@string/data"
-                        android:textSize="16sp"
                         android:fontFamily="@font/roboto_regular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:text="@string/data"
+                        android:textSize="16sp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:gravity="end"
                         android:id="@+id/date_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentTop="true"
                         android:layout_toEndOf="@+id/date"
-                        android:textSize="16sp"
-                        android:textColor="@color/black"
                         android:fontFamily="@font/roboto_regular"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:gravity="end"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/order_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_below="@+id/date_value"
-                        android:text="@string/order_id"
-                        android:textSize="16sp"
-                        android:layout_width="wrap_content"
                         android:fontFamily="@font/roboto_regular"
-                        android:layout_height="wrap_content"/>
+                        android:text="@string/order_id"
+                        android:textSize="16sp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:gravity="end"
                         android:id="@+id/order_id_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_below="@+id/date_value"
                         android:layout_toEndOf="@+id/order_id"
-                        android:textColor="@color/black"
-                        android:textSize="16sp"
-                        android:layout_width="wrap_content"
                         android:fontFamily="@font/roboto_regular"
-                        android:layout_height="wrap_content"/>
+                        android:gravity="end"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
                 </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/vendor_details_root"
-                android:visibility="visible"
-                style="@style/order_full_view_row">
+                style="@style/order_full_view_row"
+                android:visibility="visible">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/vendor_name"
-                    style="@style/order_full_view_title" />
+                    style="@style/order_full_view_title"
+                    android:text="@string/vendor_name" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/vendor_name"
@@ -120,7 +144,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/order_full_view_title"
-                    android:text="@string/delivery_address" />
+                    android:text="@string/vendor_address" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/vendor_address"
@@ -178,51 +202,47 @@
                     style="@style/order_full_view_content" />
             </LinearLayout>
 
-
             <LinearLayout style="@style/order_full_view_row">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/payment_info"
-                    style="@style/order_full_view_title"
-                    android:layout_marginBottom="8dp" />
-
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_weight="2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:text="@string/order_amount"
-                        style="@style/order_full_view_payment" />
+                        style="@style/order_full_view_payment"
+                        android:text="@string/order_amount" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/amount"
                         style="@style/order_full_view_payment" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_weight="2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:text="@string/delivery_charges"
-                        style="@style/order_full_view_payment" />
+                        style="@style/order_full_view_payment"
+                        android:text="@string/delivery_charges" />
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/delivery_charges"
-                        style="@style/order_full_view_payment"/>
+                        style="@style/order_full_view_payment" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_weight="2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:fontFamily="@font/roboto_bold"
                         style="@style/order_full_view_payment"
+                        android:fontFamily="@font/roboto_bold"
                         android:text="@string/total_amount_colon" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -232,81 +252,66 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_weight="2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:text="@string/mode_of_payment"
-                        style="@style/order_full_view_payment" />
+                        style="@style/order_full_view_payment"
+                        android:text="@string/mode_of_payment" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/payment_type"
                         style="@style/order_full_view_payment"
                         android:text="@string/COD" />
                 </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/order_full_view_title"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/payment_info" />
             </LinearLayout>
-<!--             end-->
+
+
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@color/white"
-                android:padding="8dp"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:padding="8dp">
+
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/products_ordered"
                     style="@style/order_full_view_title"
-                    android:background="@color/white"
                     android:layout_marginBottom="8dp"
-                    />
+                    android:background="@color/white"
+                    android:text="@string/products_ordered" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/product_list"
-                    tools:listitem="@layout/item_order_product_item"
-                    tools:itemCount="10"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
+            <!--             end-->
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="end"
+                android:padding="8dp"
+                android:text="@string/status_order"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    <LinearLayout
-        android:id="@+id/bottom"
-        android:visibility="gone"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/left_button"
-            android:background="@drawable/product_delete"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:textColor="@color/white"
-            android:fontFamily="@font/roboto_regular"
-            android:textSize="@dimen/text_regular_size"
-            android:text="@string/canceled_orders"
-            android:layout_margin="8dp"
-            android:layout_height="wrap_content"/>
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/right_button"
-            android:background="@drawable/product_edit"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:textColor="@color/white"
-            android:fontFamily="@font/roboto_regular"
-            android:textSize="@dimen/text_regular_size"
-            android:text="@string/accept"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
     <!--    <LinearLayout-->
-<!--        android:orientation="vertical"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content">-->
+    <!--        android:orientation="vertical"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content">-->
 
-<!--    </LinearLayout>-->
+    <!--    </LinearLayout>-->
 
 </RelativeLayout>

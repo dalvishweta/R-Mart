@@ -11,11 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
@@ -30,7 +25,6 @@ import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
-import com.rmart.customer.models.ProductDetailsDescModel;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.customer.models.VendorProductShopDataResponse;
 import com.rmart.profile.model.MyProfile;
@@ -49,6 +43,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -112,8 +110,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadUIComponents(view);
-
-        getVendorDetails();
     }
 
     @Override
@@ -124,7 +120,8 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
     public void updateToolBar() {
         requireActivity().setTitle(productsShopDetailsModel.getShopName());
-        ((CustomerHomeActivity)(requireActivity())).showCartIcon();
+        ((CustomerHomeActivity) (requireActivity())).showCartIcon();
+        getVendorDetails();
     }
 
     private void loadUIComponents(View view) {

@@ -7,14 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
@@ -22,7 +14,6 @@ import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.ConfirmOrdersAdapter;
 import com.rmart.customer.models.AddProductToWishListResponse;
-import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductInCartDetailsModel;
@@ -42,6 +33,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,6 +62,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
     private AppCompatButton btnProceedToBuyField;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private CustomerProductsShopDetailsModel vendorShopDetails;
+    private int totalProductsInCart = -1;
 
     public ShoppingCartDetailsFragment() {
         // Required empty public constructor
@@ -119,7 +118,11 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
     }
 
     private void proceedToBuySelected() {
-        onCustomerHomeInteractionListener.gotoCompleteOrderDetailsScreen(vendorShopDetails);
+        if (totalProductsInCart != 0) {
+            onCustomerHomeInteractionListener.gotoCompleteOrderDetailsScreen(vendorShopDetails);
+        } else {
+            showDialog(getString(R.string.no_items_in_cart));
+        }
     }
 
     @Override
@@ -130,7 +133,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
 
     public void updateToolBar() {
         Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.shopping_cart));
-        ((CustomerHomeActivity)(requireActivity())).hideCartIcon();
+        ((CustomerHomeActivity) (requireActivity())).hideCartIcon();
     }
 
     @Override
@@ -313,6 +316,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
         int count = selectedProductInCartDetails.getTotalProductCartQty();
         if (count > 0) {
             count--;
+            totalProductsInCart = count;
             selectedProductInCartDetails.setTotalProductCartQty(count);
             int index = productInCartDetailsList.indexOf(selectedProductInCartDetails);
             if (index > -1) {
@@ -327,6 +331,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
         int count = selectedProductInCartDetails.getTotalProductCartQty();
         if (count <= 50) {
             count++;
+            totalProductsInCart = count;
             selectedProductInCartDetails.setTotalProductCartQty(count);
             int index = productInCartDetailsList.indexOf(selectedProductInCartDetails);
             if (index > -1) {

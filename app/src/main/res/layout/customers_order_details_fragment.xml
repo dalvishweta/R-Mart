@@ -41,7 +41,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/order_full_view_title"
-                    android:text="@string/delivery_address" />
+                    android:text="@string/vendor_address" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/vendor_address"

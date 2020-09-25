@@ -10,15 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -35,6 +26,7 @@ import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.custom_views.CustomDatePicker;
+import com.rmart.utilits.custom_views.CustomNetworkImageView;
 import com.rmart.utilits.pojos.APIBrandListResponse;
 import com.rmart.utilits.pojos.APIBrandResponse;
 import com.rmart.utilits.pojos.APIStockListResponse;
@@ -56,6 +48,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,7 +75,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
 
     ArrayList<APIUnitMeasureResponse> unitMeasurements = new ArrayList<>();
     ArrayList<APIBrandResponse> apiBrandResponses = new ArrayList<>();
-    private ImageUploadAdapter imageUploadAdapter;
 
     public AppCompatTextView chooseCategory, chooseSubCategory, chooseProduct, productBrand;
     // CustomStringAdapter customStringAdapter;
@@ -88,7 +86,13 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     private ArrayList<String> availableBrands = new ArrayList<>();
     private APIStockListResponse stockListResponse = null;
     private List<Object> imagesList;
-    private int selectedPosition = -1;
+    private int selectedImagePosition = -1;
+    private CustomNetworkImageView ivProductImageOneField;
+    private CustomNetworkImageView ivProductImageTwoField;
+    private CustomNetworkImageView ivProductImageThreeField;
+    private CustomNetworkImageView ivProductImageFourField;
+    private CustomNetworkImageView ivProductImageFiveField;
+    private ProductUnitAdapter unitBaseAdapter;
 
     public AddProductToInventory() {
         // Required empty public constructor
@@ -104,26 +108,22 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            ProductResponse mProduct = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
-            //stockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
-
-            if(null == mProduct) {
-                mClonedProduct = new ProductResponse();
-                //mProduct = new ProductResponse();
-            } else {
-                try {
-                    mClonedProduct = new ProductResponse(mProduct);
-                } catch (Exception e) {
-                    showDialog("", e.getMessage());
-                }
+    private CallBackInterface callBackListener = pObject -> {
+        if (pObject instanceof ContentModel) {
+            ContentModel contentModel = (ContentModel) pObject;
+            String status = contentModel.getStatus();
+            Object value = contentModel.getValue();
+            if (status.equalsIgnoreCase(Constants.TAG_UPLOAD_NEW_PRODUCT_IMAGE)) {
+                //selectedPosition = (int) value;
+                photoUploadSelected();
+            } else if (status.equalsIgnoreCase(Constants.TAG_EDIT_PRODUCT_IMAGE)) {
+                //selectedPosition = (int) value;
+                photoUploadSelected();
+            } else if (status.equalsIgnoreCase(Constants.TAG_DELETE)) {
+                deleteUnits((UnitObject) value);
             }
-            isEdit = getArguments().getBoolean(ARG_PARAM2);
         }
-    }
+    };
 
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -192,6 +192,42 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            ProductResponse mProduct = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
+            //stockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
+
+            if (null == mProduct) {
+                mClonedProduct = new ProductResponse();
+                //mProduct = new ProductResponse();
+            } else {
+                try {
+                    mClonedProduct = new ProductResponse(mProduct);
+                } catch (Exception e) {
+                    showDialog("", e.getMessage());
+                }
+            }
+            isEdit = getArguments().getBoolean(ARG_PARAM2);
+        }
+    }
+
+    private void updateUI() {
+        // chooseCategory.setText(mClonedProduct.getCategory());
+        if (null != mClonedProduct) {
+            chooseSubCategory.setText(mClonedProduct.getSubCategory());
+            chooseProduct.setText(mClonedProduct.getName());
+            // productBrand.setText(mClonedProduct.getBrand());
+            productRegionalName.setText(mClonedProduct.getRegionalName());
+            productDescription.setText(mClonedProduct.getDescription());
+            expiry.setText(mClonedProduct.getExpiry_date());
+            deliveryDays.setText(mClonedProduct.getDelivery_days());
+            productBrand.setText(mClonedProduct.getBrandName());
+            updateList();
+        }
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         chooseCategory = view.findViewById(R.id.choose_category);
@@ -217,10 +253,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         expiry.setOnClickListener(this);
         deliveryDays = view.findViewById(R.id.delivery_days);
         unitsRecyclerView = view.findViewById(R.id.unit_base);
-        RecyclerView imagesRecyclerView = view.findViewById(R.id.product_image);
 
         unitsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        imagesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         // addUnit = view.findViewById(R.id.add_unit);
         AppCompatButton save = view.findViewById(R.id.save);
         if (isEdit) {
@@ -241,214 +275,256 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             }
         }
 
-        imageUploadAdapter = new ImageUploadAdapter(imagesList, callBackListener);
-        imagesRecyclerView.setAdapter(imageUploadAdapter);
+        //imageUploadAdapter = new ImageUploadAdapter(imagesList, callBackListener);
+        //imagesRecyclerView.setAdapter(imageUploadAdapter);
+        ivProductImageOneField = view.findViewById(R.id.iv_product_image_one_field);
+        ivProductImageTwoField = view.findViewById(R.id.iv_product_image_two_field);
+        ivProductImageThreeField = view.findViewById(R.id.iv_product_image_three_field);
+        ivProductImageFourField = view.findViewById(R.id.iv_product_image_four_field);
+        ivProductImageFiveField = view.findViewById(R.id.iv_product_image_five_field);
+
+        ivProductImageOneField.setOnClickListener(this);
+        ivProductImageTwoField.setOnClickListener(this);
+        ivProductImageThreeField.setOnClickListener(this);
+        ivProductImageFourField.setOnClickListener(this);
+        ivProductImageFiveField.setOnClickListener(this);
 
         updateUI();
     }
 
-    private void updateUI() {
-        // chooseCategory.setText(mClonedProduct.getCategory());
-        if (null != mClonedProduct) {
-            chooseSubCategory.setText(mClonedProduct.getSubCategory());
-            chooseProduct.setText(mClonedProduct.getName());
-            // productBrand.setText(mClonedProduct.getBrand());
-            productRegionalName.setText(mClonedProduct.getRegionalName());
-            productDescription.setText(mClonedProduct.getDescription());
-            expiry.setText(mClonedProduct.getExpiry_date());
-            deliveryDays.setText(mClonedProduct.getDelivery_days());
-            productBrand.setText(mClonedProduct.getBrandName());
-            updateList();
+    @Override
+    public void onClick(View view) {
+        int id = view.getId();
+        switch (id) {
+            case R.id.add_unit:
+                mListener.addUnit(new UnitObject(unitMeasurements), this, INT_ADD_UNIT);
+                break;
+            case R.id.save:
+                saveSelected();
+                break;
+            case R.id.expiry:
+                new CustomDatePicker((AppCompatTextView) view, getActivity(), Utils.YYYY_MM_DD);
+                break;
+            case R.id.iv_product_image_one_field:
+                selectedImagePosition = 0;
+                captureImageSelected();
+                break;
+            case R.id.iv_product_image_two_field:
+                selectedImagePosition = 1;
+                captureImageSelected();
+                break;
+            case R.id.iv_product_image_three_field:
+                selectedImagePosition = 2;
+                captureImageSelected();
+                break;
+            case R.id.iv_product_image_four_field:
+                selectedImagePosition = 3;
+                captureImageSelected();
+                break;
+            case R.id.iv_product_image_five_field:
+                selectedImagePosition = 4;
+                captureImageSelected();
+                break;
+            default:
+                break;
         }
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.add_unit) {
-            mListener.addUnit(new UnitObject(unitMeasurements), this, INT_ADD_UNIT);
-        } else if (view.getId() == R.id.save) {
-            if (Objects.requireNonNull(expiry.getText()).toString().length() <= 2) {
-                showDialog("", "Please enter valid expiry date.");
-                return;
-            } else if (Objects.requireNonNull(productRegionalName.getText()).toString().length() <= 1) {
-                showDialog("", "Please enter valid Regional name.");
-                return;
-            } /*else if( Objects.requireNonNull(deliveryDays.getText()).toString().length()<=0) {
+    private void captureImageSelected() {
+        CropImage.activity()
+                .start(requireActivity(), this);
+    }
+
+    private void saveSelected() {
+        if (Objects.requireNonNull(expiry.getText()).toString().length() <= 2) {
+            showDialog("", "Please enter valid expiry date.");
+            return;
+        } else if (Objects.requireNonNull(productRegionalName.getText()).toString().length() <= 1) {
+            showDialog("", "Please enter valid Regional name.");
+            return;
+        } /*else if( Objects.requireNonNull(deliveryDays.getText()).toString().length()<=0) {
                 showDialog("", "Please enter valid days to delivery.");
                 return;
             } */ else if (Objects.requireNonNull(productDescription.getText()).toString().length() <= 1) {
-                showDialog("", "Please enter valid product description");
-                return;
-            } else if (Objects.requireNonNull(mClonedProduct).getUnitObjects().size() < 1) {
-                showDialog("", "Please add at least one unit");
-                return;
-            }
+            showDialog("", "Please enter valid product description");
+            return;
+        } else if (Objects.requireNonNull(mClonedProduct).getUnitObjects().size() < 1) {
+            showDialog("", "Please add at least one unit");
+            return;
+        }
 
-            mClonedProduct.setExpiry_date(expiry.getText().toString());
-            mClonedProduct.setRegionalName(productRegionalName.getText().toString());
-            mClonedProduct.setDelivery_days(Objects.requireNonNull(deliveryDays.getText()).toString());
-            mClonedProduct.setDescription(productDescription.getText().toString());
-            ArrayList<ImageURLResponse> lUpdateImagesList = new ArrayList<>();
-            for (Object lObject : imagesList) {
-                if (lObject instanceof ImageURLResponse) {
-                    lUpdateImagesList.add((ImageURLResponse) lObject);
+        mClonedProduct.setExpiry_date(expiry.getText().toString());
+        mClonedProduct.setRegionalName(productRegionalName.getText().toString());
+        mClonedProduct.setDelivery_days(Objects.requireNonNull(deliveryDays.getText()).toString());
+        mClonedProduct.setDescription(productDescription.getText().toString());
+        ArrayList<ImageURLResponse> lUpdateImagesList = new ArrayList<>();
+        for (Object lObject : imagesList) {
+            if (lObject instanceof ImageURLResponse) {
+                Bitmap bitmap = null;
+                try {
+                    ImageURLResponse imageURLResponse = (ImageURLResponse) lObject;
+                    Uri imageUri = imageURLResponse.getImageUri();
+                    if (imageUri != null) {
+                        InputStream imageStream = requireActivity().getContentResolver().openInputStream(imageUri);
+                        bitmap = BitmapFactory.decodeStream(imageStream);
+                        imageURLResponse.setImageRawData(getEncodedImage(bitmap));
+                        lUpdateImagesList.add(imageURLResponse);
+                    }
+                } catch (Exception ex) {
+                    LoggerInfo.printLog("image error", "exception " + ex.getMessage());
+                } finally {
+                    if (bitmap != null) {
+                        bitmap.recycle();
+                    }
                 }
             }
-            mClonedProduct.setImages(lUpdateImagesList);
-            progressDialog.show();
+        }
+        mClonedProduct.setImages(lUpdateImagesList);
+        progressDialog.show();
 
-            if (isEdit) {
+        if (isEdit) {
                 /*Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).remove(mProduct.getProductID());
                 Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).put(mClonedProduct.getProductID(), mClonedProduct);
                 Integer index = inventoryViewModel.getSelectedProduct().getValue();
                 inventoryViewModel.getSelectedProduct().setValue(index);*/
-                Gson gson = new GsonBuilder().create();
-                JsonElement jsonElement = gson.toJsonTree(mClonedProduct);
-                JsonObject jsonObject = (JsonObject) jsonElement;
+            Gson gson = new GsonBuilder().create();
+            JsonElement jsonElement = gson.toJsonTree(mClonedProduct);
+            JsonObject jsonObject = (JsonObject) jsonElement;
 
-                jsonObject.addProperty("stock_id","5");
-                jsonObject.addProperty("quantity", "2");
-                jsonObject.addProperty("brand", 2);
-                jsonObject.addProperty("expiry_date",mClonedProduct.getExpiry_date());
+            jsonObject.addProperty("stock_id", "5");
+            jsonObject.addProperty("quantity", "2");
+            jsonObject.addProperty("brand", 2);
+            jsonObject.addProperty("expiry_date", mClonedProduct.getExpiry_date());
 
-                jsonObject.addProperty("delivery_days","3");
-                jsonObject.addProperty("client_id", "2");
-                jsonObject.addProperty("user_id", MyProfile.getInstance().getUserID());
-                jsonObject.addProperty("product_video_link", "https://www.youtube.com/watch?v=pWjfA4hBNe8&ab_channel=CricketCloud");
-                RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class).editProductToInventory(jsonObject).enqueue(new Callback<AddProductToInventoryResponse>() {
-                    @Override
-                    public void onResponse(@NotNull Call<AddProductToInventoryResponse> call, @NotNull Response<AddProductToInventoryResponse> response) {
-                        if (response.isSuccessful()) {
-                            AddProductToInventoryResponse data = response.body();
-                            if (data != null) {
-                                if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                    showDialog(mClonedProduct.getName() + " " + getString(R.string.add_success_product),
-                                            pObject -> requireActivity().onBackPressed());
-                                } else {
-                                    showDialog("", data.getMsg(),
-                                            pObject -> requireActivity().onBackPressed());
-                                }
-                            } else {
-                                showDialog(getString(R.string.no_information_available));
-                            }
-                        } else {
-                            showDialog("", response.message());
-                        }
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call<AddProductToInventoryResponse> call, @NotNull Throwable t) {
-                        showDialog("", t.getMessage());
-                        progressDialog.dismiss();
-                    }
-                });
-            } else {
-
-                VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
-                // Gson gson = new Gson();
-                Gson gson = new GsonBuilder().create();
-                JsonElement jsonElement = gson.toJsonTree(mClonedProduct);
-                JsonObject jsonObject = (JsonObject) jsonElement;
-
-                jsonObject.addProperty("stock_id","5");
-                jsonObject.addProperty("quantity", "2");
-                jsonObject.addProperty("brand", 2);
-                jsonObject.addProperty("expiry_date",mClonedProduct.getExpiry_date());
-
-                jsonObject.addProperty("delivery_days","3");
-                jsonObject.addProperty("client_id", "2");
-                jsonObject.addProperty("user_id", MyProfile.getInstance().getUserID());
-                jsonObject.addProperty("product_video_link", "https://www.youtube.com/watch?v=pWjfA4hBNe8&ab_channel=CricketCloud");
-
-                // JsonObject product = gson.toJson(mClonedProduct);
-                // JsonObject jsonObject = new JsonObject();
-                vendorInventoryService.addProductToInventory(jsonObject).enqueue(new Callback<AddProductToInventoryResponse>() {
-                    @Override
-                    public void onResponse(@NotNull Call<AddProductToInventoryResponse> call, @NotNull Response<AddProductToInventoryResponse> response) {
-                        if (response.isSuccessful()) {
-                            AddProductToInventoryResponse data = response.body();
-                            if (data != null) {
-                                if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                    showDialog("", mClonedProduct.getName() + " " + getString(R.string.add_success_product),
-                                            pObject -> requireActivity().onBackPressed());
-                                } else {
-                                    showDialog("", data.getMsg(),
-                                            pObject -> requireActivity().onBackPressed());
-                                }
-                            } else {
-                                showDialog(getString(R.string.no_information_available));
-                            }
-                        } else {
-                            showDialog("", response.message());
-                        }
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call<AddProductToInventoryResponse> call, @NotNull Throwable t) {
-                        showDialog("", t.getMessage());
-                        progressDialog.dismiss();
-                    }
-                });
-
-            }
-        } else if (view.getId() == R.id.expiry) {
-            new CustomDatePicker((AppCompatTextView)view, getActivity(), Utils.YYYY_MM_DD);
-        }
-    }
-
-    private void updateList() {
-        ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(mClonedProduct.getUnitObjects(), view -> {
-
-            progressDialog.show();
-            UnitObject unitObject = (UnitObject) view.getTag();
-            VendorInventoryService inventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
-            inventoryService.deleteProductUnit(MyProfile.getInstance().getUserID(), unitObject.getUnitID()).enqueue(new Callback<ShowProductResponse>() {
+            jsonObject.addProperty("delivery_days", "3");
+            jsonObject.addProperty("client_id", "2");
+            jsonObject.addProperty("user_id", MyProfile.getInstance().getUserID());
+            jsonObject.addProperty("product_video_link", "https://www.youtube.com/watch?v=pWjfA4hBNe8&ab_channel=CricketCloud");
+            RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class).editProductToInventory(jsonObject).enqueue(new Callback<AddProductToInventoryResponse>() {
                 @Override
-                public void onResponse(@NotNull Call<ShowProductResponse> call, @NotNull Response<ShowProductResponse> response) {
+                public void onResponse(@NotNull Call<AddProductToInventoryResponse> call, @NotNull Response<AddProductToInventoryResponse> response) {
                     if (response.isSuccessful()) {
-                        ShowProductResponse data = response.body();
+                        AddProductToInventoryResponse data = response.body();
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                mClonedProduct.getUnitObjects().remove(unitObject);
-                                //updateList();
+                                showDialog(mClonedProduct.getName() + " " + getString(R.string.add_success_product),
+                                        pObject -> requireActivity().onBackPressed());
                             } else {
-                                showDialog(data.getMsg());
+                                showDialog("", data.getMsg(),
+                                        pObject -> requireActivity().onBackPressed());
                             }
                         } else {
                             showDialog(getString(R.string.no_information_available));
                         }
                     } else {
-                        showDialog(response.message());
+                        showDialog("", response.message());
                     }
                     progressDialog.dismiss();
                 }
 
                 @Override
-                public void onFailure(@NotNull Call<ShowProductResponse> call, @NotNull Throwable t) {
-                    showDialog(t.getMessage());
+                public void onFailure(@NotNull Call<AddProductToInventoryResponse> call, @NotNull Throwable t) {
+                    showDialog("", t.getMessage());
                     progressDialog.dismiss();
                 }
             });
-        }, true);
+        } else {
+
+            VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
+            // Gson gson = new Gson();
+            Gson gson = new GsonBuilder().create();
+            JsonElement jsonElement = gson.toJsonTree(mClonedProduct);
+            JsonObject jsonObject = (JsonObject) jsonElement;
+
+            jsonObject.addProperty("stock_id", "5");
+            jsonObject.addProperty("quantity", "2");
+            jsonObject.addProperty("brand", 2);
+            jsonObject.addProperty("expiry_date", mClonedProduct.getExpiry_date());
+
+            jsonObject.addProperty("delivery_days", "3");
+            jsonObject.addProperty("client_id", "2");
+            jsonObject.addProperty("user_id", MyProfile.getInstance().getUserID());
+            jsonObject.addProperty("product_video_link", "https://www.youtube.com/watch?v=pWjfA4hBNe8&ab_channel=CricketCloud");
+
+            // JsonObject product = gson.toJson(mClonedProduct);
+            // JsonObject jsonObject = new JsonObject();
+            vendorInventoryService.addProductToInventory(jsonObject).enqueue(new Callback<AddProductToInventoryResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<AddProductToInventoryResponse> call, @NotNull Response<AddProductToInventoryResponse> response) {
+                    if (response.isSuccessful()) {
+                        AddProductToInventoryResponse data = response.body();
+                        if (data != null) {
+                            if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                showDialog("", mClonedProduct.getName() + " " + getString(R.string.add_success_product),
+                                        pObject -> requireActivity().onBackPressed());
+                            } else {
+                                showDialog("", data.getMsg(),
+                                        pObject -> requireActivity().onBackPressed());
+                            }
+                        } else {
+                            showDialog(getString(R.string.no_information_available));
+                        }
+                    } else {
+                        showDialog("", response.message());
+                    }
+                    progressDialog.dismiss();
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<AddProductToInventoryResponse> call, @NotNull Throwable t) {
+                    showDialog("", t.getMessage());
+                    progressDialog.dismiss();
+                }
+            });
+
+        }
+    }
+
+    private void updateList() {
+        unitBaseAdapter = new ProductUnitAdapter(mClonedProduct.getUnitObjects(), callBackListener, true);
         unitsRecyclerView.setAdapter(unitBaseAdapter);
     }
 
-    private CallBackInterface callBackListener = pObject -> {
-        if (pObject instanceof ContentModel) {
-            ContentModel contentModel = (ContentModel) pObject;
-            String status = contentModel.getStatus();
-            Object value = contentModel.getValue();
-            if (status.equalsIgnoreCase(Constants.TAG_UPLOAD_NEW_PRODUCT_IMAGE)) {
-                selectedPosition = (int) value;
-                photoUploadSelected();
-            } else if (status.equalsIgnoreCase(Constants.TAG_EDIT_PRODUCT_IMAGE)) {
-                selectedPosition = (int) value;
-                photoUploadSelected();
-            }
+    private void updateUnitsUI(UnitObject unitObject) {
+        ArrayList<UnitObject> unitsList = mClonedProduct.getUnitObjects();
+        int index = unitsList.indexOf(unitObject);
+        if (index > -1) {
+            unitsList.remove(index);
+            unitBaseAdapter.notifyItemRemoved(index);
+            mClonedProduct.setUnitObjects(unitsList);
         }
-    };
+    }
+
+    private void deleteUnits(UnitObject unitObject) {
+        progressDialog.show();
+        VendorInventoryService inventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
+        inventoryService.deleteProductUnit(MyProfile.getInstance().getUserID(), unitObject.getUnitID()).enqueue(new Callback<ShowProductResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<ShowProductResponse> call, @NotNull Response<ShowProductResponse> response) {
+                if (response.isSuccessful()) {
+                    ShowProductResponse data = response.body();
+                    if (data != null) {
+                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            updateUnitsUI(unitObject);
+                        } else {
+                            showDialog(data.getMsg());
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
+                    }
+                } else {
+                    showDialog(response.message());
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ShowProductResponse> call, @NotNull Throwable t) {
+                showDialog(t.getMessage());
+                progressDialog.dismiss();
+            }
+        });
+    }
 
     private void photoUploadSelected() {
         CropImage.activity()
@@ -464,9 +540,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 try {
                     Uri profileImageUri = result.getUri();
                     if (profileImageUri != null) {
-                        InputStream imageStream = requireActivity().getContentResolver().openInputStream(profileImageUri);
-                        Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
-                        updateImage(bitmap);
+                        updateImage(profileImageUri);
                     }
                 } catch (Exception ex) {
                     showDialog("", ex.getMessage());
@@ -484,20 +558,39 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         }
     }
 
-    private void updateImage(Bitmap bitmap) {
-        Object lObject = imagesList.get(selectedPosition);
+    private void updateImage(Uri imageUri) {
+        Object lObject = imagesList.get(selectedImagePosition);
         if (lObject instanceof String) {
             ImageURLResponse imageUrlResponse = new ImageURLResponse();
-            imageUrlResponse.setProductImageBitmap(bitmap);
-            imageUrlResponse.setImageRawData(getEncodedImage(bitmap));
-            imagesList.set(selectedPosition, imageUrlResponse);
-            imageUploadAdapter.notifyItemChanged(selectedPosition);
+            //imageUrlResponse.setImageRawData(getEncodedImage(bitmap));
+            imagesList.set(selectedImagePosition, imageUrlResponse);
         } else if (lObject instanceof ImageURLResponse) {
             ImageURLResponse imageUrlResponse = (ImageURLResponse) lObject;
-            imageUrlResponse.setProductImageBitmap(bitmap);
-            imageUrlResponse.setImageRawData(getEncodedImage(bitmap));
-            imagesList.set(selectedPosition, imageUrlResponse);
-            imageUploadAdapter.notifyItemChanged(selectedPosition);
+            //imageUrlResponse.setImageRawData(getEncodedImage(bitmap));
+            imagesList.set(selectedImagePosition, imageUrlResponse);
+        }
+        displayImagesUI(imageUri);
+    }
+
+    private void displayImagesUI(Uri imageUri) {
+        switch (selectedImagePosition) {
+            case 0:
+                ivProductImageOneField.setLocalImageUri(imageUri);
+                break;
+            case 1:
+                ivProductImageTwoField.setLocalImageUri(imageUri);
+                break;
+            case 2:
+                ivProductImageThreeField.setLocalImageUri(imageUri);
+                break;
+            case 3:
+                ivProductImageFourField.setLocalImageUri(imageUri);
+                break;
+            case 4:
+                ivProductImageFiveField.setLocalImageUri(imageUri);
+                break;
+            default:
+                break;
         }
     }
 

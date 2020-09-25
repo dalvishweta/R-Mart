@@ -18,7 +18,7 @@ public class WishListResponseDetails implements Serializable {
 
     @SerializedName("wishlist_id")
     @Expose
-    private Integer wishListId;
+    private String wishListId;
     @SerializedName("product_name")
     @Expose
     private String productName;
@@ -35,11 +35,11 @@ public class WishListResponseDetails implements Serializable {
     @Expose
     private List<CustomerProductsDetailsUnitModel> units = null;
 
-    public Integer getWishListId() {
+    public String getWishListId() {
         return wishListId;
     }
 
-    public void setWishListId(Integer wishListId) {
+    public void setWishListId(String wishListId) {
         this.wishListId = wishListId;
     }
 
