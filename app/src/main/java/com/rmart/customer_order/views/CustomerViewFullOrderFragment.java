@@ -213,20 +213,21 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
 
     @Override
     public void onClick(View view) {
-        /*;
-        if(text.contains(getResources().getString(R.string.accept))) {
-            updateOrderStatus(Utils.ACCEPTED_ORDER_STATUS);
-        } else if(text.contains(getResources().getString(R.string.packed))) {
-            updateOrderStatus(Utils.PACKED_ORDER_STATUS);
-        } else if(text.contains(getResources().getString(R.string.shipped))) {
-            updateOrderStatus(Utils.SHIPPED_ORDER_STATUS);
-        } else if(text.contains(getResources().getString(R.string.delivered))) {
-            updateOrderStatus(Utils.DELIVERED_ORDER_STATUS);
-        } else if(text.contains(getResources().getString(R.string.returned))) {
+        /*
+            if(text.contains(getResources().getString(R.string.accept))) {
+                updateOrderStatus(Utils.ACCEPTED_ORDER_STATUS);
+            } else if(text.contains(getResources().getString(R.string.packed))) {
+                updateOrderStatus(Utils.PACKED_ORDER_STATUS);
+            } else if(text.contains(getResources().getString(R.string.shipped))) {
+                updateOrderStatus(Utils.SHIPPED_ORDER_STATUS);
+            } else if(text.contains(getResources().getString(R.string.delivered))) {
+                updateOrderStatus(Utils.DELIVERED_ORDER_STATUS);
+            } else if(text.contains(getResources().getString(R.string.returned))) {
 
-        } else if(text.contains(getResources().getString(R.string.cancel))) {
-            updateOrderStatus(Utils.CANCEL_ORDER_STATUS);
-        }*/
+            } else if(text.contains(getResources().getString(R.string.cancel))) {
+                updateOrderStatus(Utils.CANCEL_ORDER_STATUS);
+            }
+        */
         String text = ((AppCompatButton) view).getText().toString();
         if (text.equalsIgnoreCase(getString(R.string.re_order))) {
             mListener.goToReOrder(orderProductList);

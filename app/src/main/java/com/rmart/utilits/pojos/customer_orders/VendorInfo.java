@@ -113,10 +113,10 @@ public class VendorInfo implements Serializable {
             data += ", "+city;
         }
         if(state != null) {
-            data += state;
+            data += ", "+state;
         }
         if(country != null) {
-            data += country;
+            data += ", "+country;
         }
         return data;
     }
