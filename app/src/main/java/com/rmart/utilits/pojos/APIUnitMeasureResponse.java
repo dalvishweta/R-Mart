@@ -17,6 +17,10 @@ public class APIUnitMeasureResponse extends BaseResponse {
     @Expose
     String attributesDesc;
 
+    @SerializedName("short_name")
+    @Expose
+    String shortName;
+
     public String getId() {
         return id;
     }
@@ -39,5 +43,13 @@ public class APIUnitMeasureResponse extends BaseResponse {
 
     public void setAttributesDesc(String attributesDesc) {
         this.attributesDesc = attributesDesc;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 }

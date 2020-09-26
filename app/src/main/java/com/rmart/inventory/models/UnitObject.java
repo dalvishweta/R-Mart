@@ -48,6 +48,10 @@ public class UnitObject implements Serializable {
     @Expose
     String unit_number;
 
+    @SerializedName("short_name")
+    @Expose
+    String shortName;
+
     @SerializedName("stock_name")
     @Expose
     String stockName;
@@ -72,6 +76,14 @@ public class UnitObject implements Serializable {
         actualCost = "";
         discount = "";
         isActive = false;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public String getUnitID() {
@@ -202,9 +214,9 @@ public class UnitObject implements Serializable {
         this.availableUnits = availableUnits;
     }
 
-    public String getStockName() {
+    /*public String getStockName() {
         return stockName;
-    }
+    }*/
 
     public String getStockName(String id) {
         return Objects.requireNonNull(apiStockMap.get(id)).getStockName();

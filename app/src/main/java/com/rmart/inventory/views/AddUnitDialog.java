@@ -194,9 +194,11 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                String text = unitObject.getAvailableUnits().get(pos).getAttributesName();
+                APIUnitMeasureResponse measureResponse = unitObject.getAvailableUnits().get(pos);
+                String text = measureResponse.getAttributesName();
                 unitObject.setUnitMeasure(text);
                 unitObject.setUnitID(unitObject.getAvailableUnits().get(pos).getId());
+                unitObject.setShortName(unitObject.getAvailableUnits().get(pos).getShortName());
                 updateDisplayValue();
             }
 
@@ -213,7 +215,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String temp = charSequence.toString() + " " + unitObject.getUnitMeasure();
+                String temp = charSequence.toString() + " " + unitObject.getShortName();
                 if(null == temp || temp.contains("null")) {
                     temp = "";
                 }
@@ -249,7 +251,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
     private void updateDisplayValue() {
         unitObject.setUnit_number(Objects.requireNonNull(valueOfUnit.getText()).toString());
-        unitObject.setDisplayUnitValue(unitObject.getUnit_number() + " " + unitObject.getUnitMeasure());
+        unitObject.setDisplayUnitValue(unitObject.getUnit_number() + " " + unitObject.getShortName());
         displayUnit.setText(unitObject.getDisplayUnitValue());
     }
 
