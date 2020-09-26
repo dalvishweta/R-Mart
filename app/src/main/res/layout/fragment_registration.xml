@@ -37,12 +37,12 @@
                     android:src="@drawable/user" />
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/full_name"
+                    android:id="@+id/first_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:background="@android:color/transparent"
-                    android:hint="@string/full_name"
+                    android:hint="@string/first_name"
                     android:inputType="textCapSentences"
                     android:maxLines="1"
                     android:minHeight="50dp"

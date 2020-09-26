@@ -6,6 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
@@ -21,10 +26,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -148,6 +149,7 @@ public class PaymentOptionsFragment extends BaseFragment {
                                 if (body.getStatus().equalsIgnoreCase("success")) {
                                     ProductOrderedResponseDetails productOrderedResponseDetails = body.getProductOrderedResponseDetails();
                                     showSuccessDialog(productOrderedResponseDetails.getOrderedMessage());
+                                    MyProfile.getInstance().setCartCount(productOrderedResponseDetails.getTotalCartCount());
                                 } else {
                                     showDialog(body.getMsg());
                                 }
@@ -173,7 +175,6 @@ public class PaymentOptionsFragment extends BaseFragment {
 
     private void showSuccessDialog(String orderedMessage) {
         showDialog(orderedMessage, pObject -> {
-            MyProfile.getInstance().setCartCount(0);
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             String name = fragmentManager.getBackStackEntryAt(0).getName();
             fragmentManager.popBackStackImmediate(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);

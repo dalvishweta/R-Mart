@@ -30,7 +30,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     private String mParam1;
     private String mParam2;
 
-    AppCompatEditText tvFullName, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
+    AppCompatEditText tvFirstName, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
 
     public RegistrationFragment() {
         // Required empty public constructor
@@ -65,7 +65,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         view.findViewById(R.id.register).setOnClickListener(this);
-        tvFullName = view.findViewById(R.id.full_name);
+        tvFirstName = view.findViewById(R.id.first_name);
         tvLastName = view.findViewById(R.id.lase_name);
         tVMobileNumber = view.findViewById(R.id.mobile_number);
         tvEmail = view.findViewById(R.id.email);
@@ -82,7 +82,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
 
     private void validateRegistration() {
         String firstName, lastName, mobileNumber, email, password, conformPassword;
-        firstName = Objects.requireNonNull(tvFullName.getText()).toString().trim();
+        firstName = Objects.requireNonNull(tvFirstName.getText()).toString().trim();
         lastName = Objects.requireNonNull(tvLastName.getText()).toString().trim();
         mobileNumber = Objects.requireNonNull(tVMobileNumber.getText()).toString().trim();
         email = Objects.requireNonNull(tvEmail.getText()).toString().trim();
@@ -152,7 +152,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     }
 
     private void resetFields() {
-        tvFullName.setText("");
+        tvFirstName.setText("");
         tvLastName.setText("");
         tVMobileNumber.setText("");
         tvEmail.setText("");

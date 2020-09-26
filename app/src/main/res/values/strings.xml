@@ -249,4 +249,5 @@
     <string name="address_is_added">Address is added</string>
     <string name="no_items_in_cart">No Items In Cart</string>
     <string name="vendor_address">Vendor Address</string>
+    <string name="first_name">First Name</string>
 </resources>

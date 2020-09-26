@@ -88,6 +88,13 @@
                             android:contentDescription="@string/app_name"
                             android:scaleType="fitXY" />
 
+                        <com.rmart.baseclass.views.ProgressBarCircular
+                            android:id="@+id/aadhar_front_progess_bar"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:visibility="gone" />
+
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
@@ -104,6 +111,13 @@
                             android:background="@drawable/ic_aadhar_back"
                             android:contentDescription="@string/app_name"
                             android:scaleType="fitXY" />
+
+                        <com.rmart.baseclass.views.ProgressBarCircular
+                            android:id="@+id/aadhar_back_progess_bar"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"
+                            android:visibility="gone" />
 
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
@@ -132,6 +146,13 @@
                         android:background="@drawable/ic_pan"
                         android:contentDescription="@string/app_name"
                         android:scaleType="fitXY" />
+
+                    <com.rmart.baseclass.views.ProgressBarCircular
+                        android:id="@+id/pan_progess_bar"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
