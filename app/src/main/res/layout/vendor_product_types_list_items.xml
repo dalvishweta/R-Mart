@@ -1,42 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="180dp"
-    android:layout_height="200dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="200dp"
+    android:minWidth="180dp"
     android:background="@drawable/grey_rounded_borders_bg_three">
-
-    <TextView
-        android:id="@+id/tv_product_discount_field"
-        style="@style/text_style_small"
-        android:layout_width="30dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/green_rounded_border_bg"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/white" />
-
-    <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/iv_product_image_field"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:contentDescription="@string/app_name"
-        android:scaleType="fitXY" />
-
-    <TextView
-        android:id="@+id/tv_product_name_field"
-        style="@style/text_style_small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:maxLines="2"
-        android:paddingStart="10dp"
-        android:minHeight="40dp"
-        android:paddingEnd="10dp"
-        android:layout_below="@id/iv_product_image_field"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/black" />
 
     <LinearLayout
         android:id="@+id/price_details_layout"
@@ -44,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_product_name_field"
         android:gravity="center"
+        android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
         <TextView
@@ -70,4 +39,39 @@
             android:textColor="@color/gray" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_product_name_field"
+        style="@style/text_style_medium_normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:maxLines="2"
+        android:paddingStart="10dp"
+        android:minHeight="40dp"
+        android:paddingEnd="10dp"
+        android:layout_below="@id/iv_product_image_field"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/tv_product_discount_field"
+        style="@style/text_style_small"
+        android:layout_width="30dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/green_rounded_border_bg"
+        android:gravity="center"
+        android:textColor="@color/white" />
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/iv_product_image_field"
+        android:layout_width="wrap_content"
+        android:minWidth="60dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY" />
 </RelativeLayout>

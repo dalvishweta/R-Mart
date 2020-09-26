@@ -9,21 +9,21 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.models.ContentModel;
-import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.CustomerProductDetailsModel;
+import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.utilits.RecyclerTouchListener;
 import com.rmart.utilits.custom_views.SpacesItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Satya Seshu on 10/09/20.
@@ -132,8 +132,7 @@ public class VendorProductDetailsAdapter extends RecyclerView.Adapter<VendorProd
             btnViewAllField = itemView.findViewById(R.id.btn_view_all_field);
             productsTypesListField = itemView.findViewById(R.id.products_types_list_field);
             productsTypesListField.setHasFixedSize(false);
-            LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
-            productsTypesListField.setLayoutManager(layoutManager);
+            productsTypesListField.setLayoutManager(new GridLayoutManager(context, 2));
             productsTypesListField.addItemDecoration(new SpacesItemDecoration(20));
 
             btnViewAllField.setOnClickListener(v -> {

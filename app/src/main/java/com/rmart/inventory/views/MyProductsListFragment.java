@@ -7,22 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.rmart.R;
 import com.rmart.inventory.adapters.ProductAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.ProductListResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.pojos.ShowProductResponse;
@@ -32,6 +22,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -136,7 +134,9 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
 
             popup.show(); // showing popup menu
         });
-        productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        //productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        GridLayoutManager layoutManager = new GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false);
+        productRecycleView.setLayoutManager(layoutManager);
         // updateList(productList.getProductResponses());
         setSearchView(view);
     }
