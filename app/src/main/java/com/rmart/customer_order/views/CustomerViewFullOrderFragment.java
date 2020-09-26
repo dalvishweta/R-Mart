@@ -160,21 +160,23 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         tvStatus.setText(text);
         orderIdValue.setText(orderProductList.getOrderInfo().getOrderID());
         dateValue.setText(mOrderObject.getOrderDate().split(" ")[0]);
-        if (!(orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.OPEN_ORDER_STATUS) || orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.ACCEPTED_ORDER_STATUS))) {
-            footer.setVisibility(View.GONE);
-        }
-        if ((orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_ORDER_STATUS) ||
-                orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.REJECT_ORDER_STATUS) ||
-                orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.DELIVERED_ORDER_STATUS))) {
-            mLeftButton.setText(R.string.re_order);
-            mLeftButton.setVisibility(View.GONE);
-            mLeftButton.setBackgroundResource(R.color.colorPrimary);
-            footer.setVisibility(View.VISIBLE);
-        } else {
+        if (orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.OPEN_ORDER_STATUS) ||
+                orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.ACCEPTED_ORDER_STATUS) ||
+                orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.PACKED_ORDER_STATUS)) {
+            // footer.setVisibility(View.GONE);
             footer.setVisibility(View.VISIBLE);
             mLeftButton.setVisibility(View.VISIBLE);
             mLeftButton.setText(R.string.canceled_orders);
             mLeftButton.setBackgroundResource(R.color.gray);
+        } else if ((orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_BY_RETAILER) ||
+                orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_BY_CUSTOMER) ||
+                orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.DELIVERED_ORDER_STATUS))) {
+            footer.setVisibility(View.VISIBLE);
+            mLeftButton.setText(R.string.re_order);
+            mLeftButton.setVisibility(View.VISIBLE);
+            mLeftButton.setBackgroundResource(R.color.colorPrimary);
+        } else {
+            footer.setVisibility(View.GONE);
         }
         // setFooter();
         // vendor
@@ -239,7 +241,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     private void updateOrderStatus() {
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), Utils.REJECT_ORDER_STATUS).enqueue(new Callback<UpdatedOrderStatus>() {
+        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), Utils.CANCEL_BY_CUSTOMER, "").enqueue(new Callback<UpdatedOrderStatus>() {
             @Override
             public void onResponse(Call<UpdatedOrderStatus> call, Response<UpdatedOrderStatus> response) {
                 if (response.isSuccessful()) {

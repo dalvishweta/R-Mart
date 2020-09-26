@@ -33,5 +33,6 @@ public interface OrderService {
     @FormUrlEncoded
     Call<UpdatedOrderStatus> updateOrderStatus(@Field("order_id")String orderID,
                                                @Field("user_id") String id,
-                                               @Field("status") String newOrderStatus);
+                                               @Field("status") String newOrderStatus,
+                                               @Field("status_comment") String statusComment);
 }

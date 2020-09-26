@@ -3,15 +3,13 @@ package com.rmart.utilits.pojos.orders;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rmart.R;
-import com.rmart.orders.models.SelectedOrderGroup;
 import com.rmart.utilits.Utils;
 
 import java.io.Serializable;
 
-import static com.rmart.utilits.Utils.CANCEL_ORDER_STATUS;
+import static com.rmart.utilits.Utils.CANCEL_BY_RETAILER;
 import static com.rmart.utilits.Utils.DELIVERED_ORDER_STATUS;
-import static com.rmart.utilits.Utils.OPEN_ORDER_STATUS;
-import static com.rmart.utilits.Utils.REJECT_ORDER_STATUS;
+import static com.rmart.utilits.Utils.CANCEL_BY_CUSTOMER;
 import static com.rmart.utilits.Utils.SHIPPED_ORDER_STATUS;
 
 public class StateOfOrders implements Serializable {
@@ -91,11 +89,11 @@ public class StateOfOrders implements Serializable {
                 bgTop = R.drawable.item_delivered_top_bg;
                 bgBottom = R.drawable.item_delivered_bottom_bg;
                 break;
-            case REJECT_ORDER_STATUS:
+            case CANCEL_BY_CUSTOMER:
                 bgTop = R.drawable.item_returned_top_bg;
                 bgBottom = R.drawable.item_returned_bottom_bg;
                 break;
-            case CANCEL_ORDER_STATUS:
+            case CANCEL_BY_RETAILER:
                 bgTop = R.drawable.item_canceled_top_bg;
                 bgBottom = R.drawable.item_canceled_bottom_bg;
                 break;

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.rmart.R;
@@ -192,9 +193,9 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
             isShippedOrder();
         } else if(mOrderObject.getOrderStatusID().contains(Utils.DELIVERED_ORDER_STATUS)) {
             isDeliveredOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.REJECT_ORDER_STATUS)) {
+        } else if(mOrderObject.getOrderStatusID().contains(Utils.CANCEL_BY_CUSTOMER)) {
             isReturnedOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.CANCEL_ORDER_STATUS)) {
+        } else if(mOrderObject.getOrderStatusID().contains(Utils.CANCEL_BY_RETAILER)) {
             isCanceledOrder();
         }
         footerView.setVisibility(View.VISIBLE);
@@ -203,23 +204,25 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.cancel_order) {
-            updateOrderStatus(Utils.CANCEL_ORDER_STATUS);
+        /*if (id == R.id.cancel_order) {
+            String text = ((Button)view).getText().toString();
+
+        } else {*/
+        String text = ((AppCompatButton)view).getText().toString();
+        if (text.contains(getResources().getString(R.string.accept))) {
+            // mOrderObject.setOrderType(getResources().getString(R.string.accepted));
+            updateOrderStatus(Utils.ACCEPTED_ORDER_STATUS);
+        } else if (text.contains(getResources().getString(R.string.packed))) {
+            updateOrderStatus(Utils.PACKED_ORDER_STATUS);
+        } else if (text.contains(getResources().getString(R.string.shipped))) {
+            updateOrderStatus(Utils.SHIPPED_ORDER_STATUS);
+        } else if (text.contains(getResources().getString(R.string.delivered))) {
+            // mListener.goToProcessToDelivery(mOrderObject);
+            updateOrderStatus(Utils.DELIVERED_ORDER_STATUS);
+        } else if (text.contains(getResources().getString(R.string.returned))) {
+            updateOrderStatus(Utils.CANCEL_BY_CUSTOMER);
         } else {
-            String text = mAcceptOrderBtn.getText().toString();
-            if (text.contains(getResources().getString(R.string.accept))) {
-                // mOrderObject.setOrderType(getResources().getString(R.string.accepted));
-                updateOrderStatus(Utils.ACCEPTED_ORDER_STATUS);
-            } else if (text.contains(getResources().getString(R.string.packed))) {
-                updateOrderStatus(Utils.PACKED_ORDER_STATUS);
-            } else if (text.contains(getResources().getString(R.string.shipped))) {
-                updateOrderStatus(Utils.SHIPPED_ORDER_STATUS);
-            } else if (text.contains(getResources().getString(R.string.delivered))) {
-                // mListener.goToProcessToDelivery(mOrderObject);
-                updateOrderStatus(Utils.DELIVERED_ORDER_STATUS);
-            } else if (text.contains(getResources().getString(R.string.returned))) {
-                updateOrderStatus(Utils.REJECT_ORDER_STATUS);
-            }
+            updateOrderStatus(Utils.CANCEL_BY_RETAILER);
         }
         updateUI();
     }
@@ -227,7 +230,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private void updateOrderStatus(String newOrderStatus) {
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID() ,newOrderStatus).enqueue(new Callback<UpdatedOrderStatus>() {
+        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID() ,newOrderStatus, "").enqueue(new Callback<UpdatedOrderStatus>() {
             @Override
             public void onResponse(Call<UpdatedOrderStatus> call, Response<UpdatedOrderStatus> response) {
                 if(response.isSuccessful()) {
@@ -300,6 +303,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     void isShippedOrder() {
         mCancelOrderBtn.setBackgroundResource(R.drawable.btn_bg_delivered);
         mCancelOrderBtn.setText(R.string.delivered);
+        deliveryBoyInfo.setVisibility(View.VISIBLE);
         mAcceptOrderBtn.setVisibility(View.GONE);
     }
     void isDeliveredOrder() {

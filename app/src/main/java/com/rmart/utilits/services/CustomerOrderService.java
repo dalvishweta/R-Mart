@@ -32,7 +32,8 @@ public interface CustomerOrderService {
     @POST(BuildConfig.CUSTOMER_REORDER_PRODUCTS)
     @FormUrlEncoded
     Call<CustomerOrderProductResponse> getUpdatedProductDetails(@Field("order_id")String orderID,
-                                                     @Field("customer_mobile") String mobileNumber,
+                                                     @Field("customer_user_id") String userID,
+                                                     @Field("customer_mobile") String customerMobile,
                                                      @Field("vendor_mobile") String vendorNumber);
 
 }

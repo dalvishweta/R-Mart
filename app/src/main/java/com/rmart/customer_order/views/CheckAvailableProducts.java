@@ -82,7 +82,7 @@ public class CheckAvailableProducts extends BaseFragment implements View.OnClick
     private void getServerData() {
         progressDialog.show();
         CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
-        customerOrderService.getUpdatedProductDetails(/*"135", "9000000000", "257"*/ order.getOrderInfo().getOrderID(), MyProfile.getInstance().getMobileNumber(), order.getVendorInfo().getMobileNumber()).enqueue(new Callback<CustomerOrderProductResponse>() {
+        customerOrderService.getUpdatedProductDetails(/*"135", "9000000000", "257"*/ order.getOrderInfo().getOrderID(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getMobileNumber(), order.getVendorInfo().getMobileNumber()).enqueue(new Callback<CustomerOrderProductResponse>() {
             @Override
             public void onResponse(Call<CustomerOrderProductResponse> call, Response<CustomerOrderProductResponse> response) {
                 if(response.isSuccessful()) {
@@ -120,11 +120,11 @@ public class CheckAvailableProducts extends BaseFragment implements View.OnClick
         vendorAddress.setText(order.getVendorInfo().getCompleteAddress());
 
         // payment info
-        tvAmount.setText(order.getOrderInfo().getOrderAmount());
+        /*tvAmount.setText(order.getOrderInfo().getOrderAmount());
         text = order.getOrderInfo().getOrderCharges();
         tvDeliveryCharges.setText(text);
         tvTotalCharges.setText(order.getOrderInfo().getTotalAmt());
-        tvPaymentType.setText(order.getOrderInfo().getModeOfPayment());
+        tvPaymentType.setText(order.getOrderInfo().getModeOfPayment());*/
 
         List<Product> orderedProductsList = order.getProduct();
         if (orderedProductsList != null && !orderedProductsList.isEmpty()) {

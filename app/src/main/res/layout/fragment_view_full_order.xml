@@ -191,19 +191,25 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/delivery_boy_name"
-                    style="@style/order_full_view_content" />
+                    style="@style/order_full_view_content"
+                    android:text="Dhirendra"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/order_full_view_title"
-                    android:text="@string/delivery_boy_number" />
+                    android:text="@string/delivery_boy_number"
+                    />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/delivery_boy_number"
+                    android:text="9977885646"
                     style="@style/order_full_view_content" />
             </LinearLayout>
 
             <LinearLayout style="@style/order_full_view_row">
-
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/order_full_view_title"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/payment_info" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -266,11 +272,6 @@
                         style="@style/order_full_view_payment"
                         android:text="@string/COD" />
                 </LinearLayout>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/order_full_view_title"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/payment_info" />
             </LinearLayout>
 
 

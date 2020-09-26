@@ -42,12 +42,12 @@ public class Utils {
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
 
     public static final String OPEN_ORDER_STATUS = "INI";
-    public static final String CANCEL_ORDER_STATUS = "CN";
+    public static final String CANCEL_BY_RETAILER = "CN";
     public static final String ACCEPTED_ORDER_STATUS = "CF";
-    public static final String SHIPPED_ORDER_STATUS = "SPD";
     public static final String PACKED_ORDER_STATUS = "PKD";
+    public static final String SHIPPED_ORDER_STATUS = "SPD";
     public static final String DELIVERED_ORDER_STATUS = "DL";
-    public static final String REJECT_ORDER_STATUS = "REJ";
+    public static final String CANCEL_BY_CUSTOMER = "REJ";
 
 
     public static final String CLIENT_ID = "2";
