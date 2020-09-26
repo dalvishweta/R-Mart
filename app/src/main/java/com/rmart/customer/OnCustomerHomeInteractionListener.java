@@ -3,6 +3,7 @@ package com.rmart.customer;
 import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
+import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
 
 public interface OnCustomerHomeInteractionListener {
@@ -26,4 +27,6 @@ public interface OnCustomerHomeInteractionListener {
     void updateShopWishListStatus(CustomerProductsShopDetailsModel vendorShopDetails);
 
     void gotoCompleteOrderDetailsScreen(CustomerProductsShopDetailsModel vendorShopDetails);
+
+    void gotoWishListDetailsScreen(ShopWiseWishListResponseDetails shopWiseWishListResponseDetails);
 }

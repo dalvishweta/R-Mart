@@ -163,26 +163,27 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
                                 }
                                 setAdapter();
                             } else {
-                                showDialog(body.getMsg());
+                                showCloseDialog(body.getMsg());
                             }
                         } else {
-                            showDialog(getString(R.string.no_information_available));
+                            showCloseDialog(getString(R.string.no_information_available));
                         }
                     } else {
-                        showDialog(getString(R.string.no_information_available));
+                        showCloseDialog(getString(R.string.no_information_available));
                     }
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<ProductInCartResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
-                    showDialog(t.getMessage());
+                    showCloseDialog(t.getMessage());
                 }
             });
         } else {
-            showCloseDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
         }
     }
+
 
     private void updateShopDetailsUI() {
         tvShopNameField.setText(vendorShoppingCartDetails.getShopName());
@@ -195,7 +196,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
             confirmOrdersAdapter = new ConfirmOrdersAdapter(requireActivity(), productInCartDetailsList, callBackListener);
             productsListField.setAdapter(confirmOrdersAdapter);
         } else {
-            showCloseDialog(getString(R.string.message), getString(R.string.no_information_available));
+            showCloseDialog(getString(R.string.no_information_available));
         }
     }
 
@@ -304,8 +305,8 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
         });
     }
 
-    private void showCloseDialog(String title, String message) {
-        showDialog(title, message, pObject -> popBackFromStack());
+    private void showCloseDialog(String message) {
+        showDialog(message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
     private void popBackFromStack() {

@@ -17,7 +17,7 @@ import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.customer.views.CustomerHomeActivity;
-import com.rmart.customer.views.CustomerWishListActivity;
+import com.rmart.customer.views.CustomerWishListFragment;
 import com.rmart.customer.views.ShoppingCartFragment;
 import com.rmart.customer_order.views.CustomerOrdersActivity;
 import com.rmart.inventory.views.InventoryActivity;
@@ -237,8 +237,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     break;
                 case R.id.my_wish_list:
                     showCartIcon();
-                    intent = new Intent(this, CustomerWishListActivity.class);
-                    startActivity(intent);
+                    /*intent = new Intent(this, CustomerWishListActivity.class);
+                    startActivity(intent);*/
+                    gotoWisListScreen();
                     break;
                 default:
                     break;
@@ -247,8 +248,12 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         drawerLayout.closeDrawer(navigationView);
     }
 
+    private void gotoWisListScreen() {
+        replaceFragment(CustomerWishListFragment.getInstance(), CustomerWishListFragment.class.getName(), true);
+    }
+
     private void checkBackStack() {
-        if(getSupportFragmentManager().getBackStackEntryCount() > 0) {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }

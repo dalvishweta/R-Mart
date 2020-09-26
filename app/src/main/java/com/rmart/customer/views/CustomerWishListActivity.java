@@ -5,21 +5,18 @@ import android.view.View;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
-import com.rmart.customer.CustomerWishListDetailsFragment;
-import com.rmart.customer.OnCustomerWishListInteractionListener;
-import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 
 /**
  * Created by Satya Seshu on 17/09/20.
  */
-public class CustomerWishListActivity extends BaseNavigationDrawerActivity implements OnCustomerWishListInteractionListener {
+public class CustomerWishListActivity extends BaseNavigationDrawerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.base_container_layout);
 
-        replaceFragment(CustomerWishListFragment.getInstance(), CustomerWishListActivity.class.getName(), false);
+        replaceFragment(CustomerWishListFragment.getInstance(), CustomerWishListFragment.class.getName(), false);
     }
 
     @Override
@@ -48,10 +45,5 @@ public class CustomerWishListActivity extends BaseNavigationDrawerActivity imple
     @Override
     public void showHamburgerIcon() {
 
-    }
-
-    @Override
-    public void gotoWishListDetailsScreen(ShopWiseWishListResponseDetails shopWiseWishListResponseDetails) {
-        replaceFragment(CustomerWishListDetailsFragment.getInstance(shopWiseWishListResponseDetails), CustomerWishListDetailsFragment.class.getName(), true);
     }
 }

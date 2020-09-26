@@ -6,15 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.customer.OnCustomerWishListInteractionListener;
+import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.ShopWiseWishListAdapter;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.ShopWiseWishListResponseModel;
@@ -31,6 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +41,7 @@ public class CustomerWishListFragment extends BaseFragment {
 
     private RecyclerView shopWiseWishListField;
     private List<ShopWiseWishListResponseDetails> wishListCart;
-    private OnCustomerWishListInteractionListener onCustomerWishListInteractionListener;
+    private OnCustomerHomeInteractionListener onCustomerWishListInteractionListener;
 
     public static CustomerWishListFragment getInstance() {
         CustomerWishListFragment customerWishListFragment = new CustomerWishListFragment();
@@ -62,8 +61,8 @@ public class CustomerWishListFragment extends BaseFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof OnCustomerWishListInteractionListener) {
-            onCustomerWishListInteractionListener = (OnCustomerWishListInteractionListener) context;
+        if (context instanceof OnCustomerHomeInteractionListener) {
+            onCustomerWishListInteractionListener = (OnCustomerHomeInteractionListener) context;
         }
     }
 

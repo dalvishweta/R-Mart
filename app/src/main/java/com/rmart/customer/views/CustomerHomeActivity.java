@@ -5,10 +5,12 @@ import android.view.View;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
+import com.rmart.customer.CustomerWishListDetailsFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
+import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
 import com.rmart.utilits.LoggerInfo;
 
@@ -92,6 +94,11 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
         } catch (Exception ex) {
             LoggerInfo.printLog("CustomerOrderDetailsFragment exception", ex.getMessage());
         }
+    }
+
+    @Override
+    public void gotoWishListDetailsScreen(ShopWiseWishListResponseDetails shopWiseWishListResponseDetails) {
+        replaceFragment(CustomerWishListDetailsFragment.getInstance(shopWiseWishListResponseDetails), CustomerWishListDetailsFragment.class.getName(), true);
     }
 
     @Override

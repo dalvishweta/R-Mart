@@ -6,14 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
@@ -27,7 +19,6 @@ import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
 import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -111,25 +109,29 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
                             if (body.getStatus().equalsIgnoreCase("success")) {
                                 updateUI(body.getCustomerOrderedDataResponseModel());
                             } else {
-                                showDialog(body.getMsg());
+                                showCloseDialog(body.getMsg());
                             }
                         } else {
-                            showDialog(getString(R.string.no_information_available));
+                            showCloseDialog(getString(R.string.no_information_available));
                         }
                     } else {
-                        showDialog(getString(R.string.no_information_available));
+                        showCloseDialog(getString(R.string.no_information_available));
                     }
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<CustomerOrderedResponseModel> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
-                    showDialog(t.getMessage());
+                    showCloseDialog(t.getMessage());
                 }
             });
         } else {
-            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
         }
+    }
+
+    private void showCloseDialog(String message) {
+        showDialog(message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
     private void loadUIComponents(View view) {

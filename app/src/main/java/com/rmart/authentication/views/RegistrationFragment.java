@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.rmart.R;
-import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.RegistrationResponse;
@@ -18,6 +17,7 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,7 +30,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     private String mParam1;
     private String mParam2;
 
-    CustomEditTextWithErrorText tvFullName, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
+    AppCompatEditText tvFullName, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
 
     public RegistrationFragment() {
         // Required empty public constructor
@@ -82,12 +82,12 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
 
     private void validateRegistration() {
         String firstName, lastName, mobileNumber, email, password, conformPassword;
-        firstName = Objects.requireNonNull(tvFullName.getAppCompatEditText().getText()).toString();
-        lastName = Objects.requireNonNull(tvLastName.getAppCompatEditText().getText()).toString();
-        mobileNumber = Objects.requireNonNull(tVMobileNumber.getAppCompatEditText().getText()).toString();
-        email = Objects.requireNonNull(tvEmail.getAppCompatEditText().getText()).toString();
-        password = Objects.requireNonNull(tvPassword.getAppCompatEditText().getText()).toString();
-        conformPassword = Objects.requireNonNull(tvConformPassword.getAppCompatEditText().getText()).toString();
+        firstName = Objects.requireNonNull(tvFullName.getText()).toString().trim();
+        lastName = Objects.requireNonNull(tvLastName.getText()).toString().trim();
+        mobileNumber = Objects.requireNonNull(tVMobileNumber.getText()).toString().trim();
+        email = Objects.requireNonNull(tvEmail.getText()).toString().trim();
+        password = Objects.requireNonNull(tvPassword.getText()).toString().trim();
+        conformPassword = Objects.requireNonNull(tvConformPassword.getText()).toString().trim();
 
         /*firstName = "ffff";
         lastName = "lllll";
@@ -126,6 +126,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
                                 if (data != null) {
                                     if (data.getStatus().equals("Success")) {
                                         showDialog("", data.getMsg() + " OTP: " + data.getOtp(), (click, i) -> {
+                                            resetFields();
                                             mListener.validateOTP(mobileNumber);
                                         });
                                     } else {
@@ -147,56 +148,15 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
                         }
                     }
             );
-           /* authenticationService.getREGISTRATION().enqueue(new Callback<List<BaseResponse>>() {
-                @Override
-                public void onResponse(Call<List<BaseResponse>> call, Response<List<BaseResponse>> response) {
-                    if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        showDialog("", response.body().toString());
-                        progressDialog.dismiss();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<BaseResponse>> call, Throwable t) {
-                    progressDialog.dismiss();
-                }
-            });*/
-
-            /*authenticationService.getProducts().enqueue(new Callback<List<ProductPojo>>() {
-                @Override
-                public void onResponse(Call<List<ProductPojo>> call, Response<List<ProductPojo>> response) {
-                    if (response.isSuccessful()) {
-                        assert response.body() != null;
-                        showDialog("", response.body().toString());
-                        progressDialog.dismiss();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List<ProductPojo>> call, Throwable t) {
-                    progressDialog.dismiss();
-                }
-
-            });*/
-
-            /*progressDialog.show();
-            authenticationService.validateOTP("111332333", "3519").enqueue(new Callback<ValidateOTP>() {
-                @Override
-                public void onResponse(Call<ValidateOTP> call, Response<ValidateOTP> response) {
-                    if (response.isSuccessful()) {
-                        showDialog("", response.body().getMsg());
-                        progressDialog.dismiss();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<ValidateOTP> call, Throwable t) {
-                    showDialog("", t.getMessage());
-                    progressDialog.dismiss();
-                }
-            });*/
         }
+    }
+
+    private void resetFields() {
+        tvFullName.setText("");
+        tvLastName.setText("");
+        tVMobileNumber.setText("");
+        tvEmail.setText("");
+        tvPassword.setText("");
+        tvConformPassword.setText("");
     }
 }

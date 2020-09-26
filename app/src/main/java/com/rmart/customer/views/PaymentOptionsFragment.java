@@ -1,20 +1,13 @@
 package com.rmart.customer.views;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductOrderedResponseDetails;
 import com.rmart.customer.models.ProductOrderedResponseModel;
@@ -28,6 +21,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,7 +42,6 @@ public class PaymentOptionsFragment extends BaseFragment {
     private ImageView ivInternetBankingImageField;
     private ImageView ivMyWalletImageField;
     private int selectedPaymentType = -1;
-    private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private CustomerProductsShopDetailsModel vendorShopDetails;
 
     public PaymentOptionsFragment() {
@@ -65,14 +61,6 @@ public class PaymentOptionsFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             vendorShopDetails = (CustomerProductsShopDetailsModel) getArguments().getSerializable(ARG_PARAM1);
-        }
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if(context instanceof OnCustomerHomeInteractionListener) {
-            onCustomerHomeInteractionListener = (OnCustomerHomeInteractionListener) context;
         }
     }
 
@@ -185,6 +173,7 @@ public class PaymentOptionsFragment extends BaseFragment {
 
     private void showSuccessDialog(String orderedMessage) {
         showDialog(orderedMessage, pObject -> {
+            MyProfile.getInstance().setCartCount(0);
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             String name = fragmentManager.getBackStackEntryAt(0).getName();
             fragmentManager.popBackStackImmediate(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);

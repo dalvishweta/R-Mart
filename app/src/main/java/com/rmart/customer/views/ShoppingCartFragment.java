@@ -12,7 +12,6 @@ import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.ShoppingCartAdapter;
 import com.rmart.customer.models.ShoppingCartResponse;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
-import com.rmart.customer_order.views.CustomerOrdersActivity;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RecyclerTouchListener;
@@ -78,8 +77,6 @@ public class ShoppingCartFragment extends BaseFragment {
         Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.shopping_cart));
         if (requireActivity() instanceof CustomerHomeActivity) {
             ((CustomerHomeActivity) (requireActivity())).hideCartIcon();
-        } else if (requireActivity() instanceof CustomerOrdersActivity) {
-            ((CustomerOrdersActivity) (requireActivity())).hideCartIcon();
         }
         getShopWiseCartList();
     }
@@ -147,27 +144,32 @@ public class ShoppingCartFragment extends BaseFragment {
                                     shopWiseCartList.addAll(lShopWiseCartList);
                                     setAdapter();
                                 } else {
-                                    showDialog(body.getMsg());
+                                    showCloseDialog(body.getMsg());
                                 }
                             } else {
-                                showDialog(body.getMsg());
+                                showCloseDialog(body.getMsg());
                             }
                         } else {
-                            showDialog(getString(R.string.no_information_available));
+                            showCloseDialog(getString(R.string.no_information_available));
                         }
-                    }  else {
-                        showDialog(getString(R.string.no_information_available));
+                    } else {
+                        showCloseDialog(getString(R.string.no_information_available));
                     }
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<ShoppingCartResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
+                    showCloseDialog(t.getMessage());
                 }
             });
         } else {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
+    }
+
+    private void showCloseDialog(String message) {
+        showDialog(message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
     private void shopDetailsSelected() {
@@ -179,7 +181,7 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
     private void setAdapter() {
-        if(!shopWiseCartList.isEmpty()) {
+        if (!shopWiseCartList.isEmpty()) {
             shoppingCartAdapter.updateItems(shopWiseCartList);
             shoppingCartAdapter.notifyDataSetChanged();
         }
