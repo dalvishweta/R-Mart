@@ -178,7 +178,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         tvTotalCharges.setText(orderProductList.getOrderInfo().getTotalAmt());
         tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
         setFooter();
-        productAdapter = new ProductListAdapter(orderProductList.getProduct(), this);
+        productAdapter = new ProductListAdapter(orderProductList.getProduct(), null);
         recyclerView.setAdapter(productAdapter);
     }
     private void setFooter() {

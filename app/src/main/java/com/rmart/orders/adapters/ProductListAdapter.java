@@ -32,7 +32,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
     public ProductItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View listItem= layoutInflater.inflate(R.layout.item_order_product_item, parent, false);
-        listItem.setOnClickListener(onClickListener);
+        if(null != onClickListener) {
+            listItem.setOnClickListener(onClickListener);
+        }
         return new ProductItemViewHolder(listItem) ;
     }
 

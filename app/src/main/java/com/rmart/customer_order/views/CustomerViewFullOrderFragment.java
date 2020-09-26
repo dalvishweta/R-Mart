@@ -206,7 +206,6 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         if (orderedProductsList != null && !orderedProductsList.isEmpty()) {
             List<Object> lUpdatedProductsList = new ArrayList<>(orderedProductsList);
             productAdapter = new ProductListAdapter(requireActivity(), lUpdatedProductsList);
-            productAdapter.setOnClickListener(this);
             recyclerView.setAdapter(productAdapter);
         }
     }
