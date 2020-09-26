@@ -8,5 +8,6 @@
     android:drawablePadding="16dp"
     android:padding="16dp"
     android:textColor="@color/black"
+    android:maxLines="1"
     android:fontFamily="@font/roboto_regular"
     android:layout_height="@dimen/field_height"/>

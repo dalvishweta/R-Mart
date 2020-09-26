@@ -10,11 +10,13 @@ import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
+import com.rmart.inventory.models.UnitObject;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.APIStockListResponse;
+import com.rmart.utilits.pojos.APIStockResponse;
 import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.ImageURLResponse;
 import com.rmart.utilits.pojos.ProductResponse;
@@ -22,7 +24,10 @@ import com.rmart.utilits.services.VendorInventoryService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,6 +51,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     //private APIStockListResponse apiStockListResponse;
     private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryInDays;
     private TabLayout dotIndicatorLayoutField;
+    private HashMap<String, APIStockResponse> stockList =  new HashMap<>();
 
     public ShowProductPreviewFragment() {
         // Required empty public constructor
@@ -66,7 +72,11 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             product = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
-            //apiStockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
+            APIStockListResponse apiStockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
+            stockList =  new HashMap<>();
+            for (APIStockResponse apiStockResponse: apiStockListResponse.getArrayList()) {
+                stockList.put(apiStockResponse.getStockID(), apiStockResponse);
+            }
             isEdit = getArguments().getBoolean(ARG_PARAM2);
         }
         /*product = Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).get(inventoryViewModel.getSelectedProduct().getValue());
@@ -150,6 +160,10 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         dotIndicatorLayoutField.setupWithViewPager(viewPager);
 
         tvProductName.setText(product.getName());
+
+        for (UnitObject unitObject: product.getUnitObjects()) {
+            unitObject.setStockName(Objects.requireNonNull(stockList.get(unitObject.getStockID())).getStockName());
+        }
         tvDeliveryInDays.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getDeliveryInDays()));
         ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(product.getUnitObjects(), callBackInterface, false);
         recyclerView.setAdapter(unitBaseAdapter);

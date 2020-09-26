@@ -65,6 +65,7 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
         } else {
             holder.tvIUnitState.setTextColor(holder.itemView.getContext().getColor(R.color.gray));
         }
+        holder.tvIUnitState.setText(unit.getStockName());
     }
 
     @Override

@@ -44,8 +44,8 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     UnitObject unitObject;
     private boolean mIsEdit;
     CustomStringAdapter customStringAdapter, productStatusAdapter;
-    AppCompatEditText discount, actualPrice, valueOfUnit, quantity, quantityValue;
-    AppCompatTextView finalPrice, displayUnit;
+    AppCompatEditText discount, actualPrice, valueOfUnit, quantity;
+    AppCompatTextView finalPrice, displayUnit, quantityValue;
     Spinner spinner, productStatusSpinner;
     // private InventoryViewModel inventoryViewModel;
     ArrayList<String> availableUnitsMeasurements = new ArrayList<>();
@@ -214,6 +214,9 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String temp = charSequence.toString() + " " + unitObject.getUnitMeasure();
+                if(null == temp || temp.contains("null")) {
+                    temp = "";
+                }
                 quantityValue.setText(temp);
             }
 

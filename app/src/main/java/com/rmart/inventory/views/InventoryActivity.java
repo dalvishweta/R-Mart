@@ -61,6 +61,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void showProductPreview(ProductResponse product, boolean isEdit) {
+
         replaceFragment(ShowProductPreviewFragment.newInstance(product,isEdit, apiStockListResponse), ShowProductPreviewFragment.class.getName(),true);
     }
 
