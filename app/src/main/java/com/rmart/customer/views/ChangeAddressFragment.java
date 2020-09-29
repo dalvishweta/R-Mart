@@ -30,8 +30,9 @@ import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 public class ChangeAddressFragment extends CustomerHomeFragment {
 
     private ChangeAddressAdapter changeAddressAdapter;
-    private ArrayList<AddressResponse> addressList;
+    private ArrayList<AddressResponse> addressList = new ArrayList<>();
     private RecyclerView addressListField;
+    private int previousSelectedIndex = -1;
 
     public static ChangeAddressFragment getInstance() {
         ChangeAddressFragment changeAddressFragment = new ChangeAddressFragment();
@@ -52,6 +53,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     public void onResume() {
         super.onResume();
         updateToolBar();
+        resetAddressList();
         getAddressesList();
     }
 
@@ -66,6 +68,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
                     AddressResponse addressResponse = addressList.get(i);
                     if (addressResponse.getId() == primaryAddressValue) {
                         addressResponse.setPrimaryAddress(true);
+                        previousSelectedIndex = i;
                         addressList.set(i, addressResponse);
                         break;
                     }
@@ -100,9 +103,11 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     private CallBackInterface callBackListener = pObject -> {
         if (pObject instanceof AddressResponse) {
             resetAddressList();
+            MyProfile.getInstance().setAddressResponses(addressList);
             AddressResponse addressResponse = (AddressResponse) pObject;
             int index = addressList.indexOf(addressResponse);
             if (index > -1) {
+                MyProfile.getInstance().setPrimaryAddressId(addressResponse.getId().toString());
                 addressResponse.setPrimaryAddress(true);
                 addressList.set(index, addressResponse);
                 changeAddressAdapter.notifyItemChanged(index);

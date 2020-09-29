@@ -250,4 +250,5 @@
     <string name="no_items_in_cart">No Items In Cart</string>
     <string name="vendor_address">Vendor Address</string>
     <string name="first_name">First Name</string>
+    <string name="currency">INR</string>
 </resources>

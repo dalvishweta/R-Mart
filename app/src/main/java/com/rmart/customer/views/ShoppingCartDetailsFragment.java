@@ -315,7 +315,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
 
     private void deleteQuantityCountSelected() {
         int count = selectedProductInCartDetails.getTotalProductCartQty();
-        if (count > 0) {
+        if (count > 1) {
             count--;
             totalProductsInCart = count;
             selectedProductInCartDetails.setTotalProductCartQty(count);
@@ -330,7 +330,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
 
     private void addMoreQuantityCountSelected() {
         int count = selectedProductInCartDetails.getTotalProductCartQty();
-        if (count <= 50) {
+        if (count <= 10) {
             count++;
             totalProductsInCart = count;
             selectedProductInCartDetails.setTotalProductCartQty(count);

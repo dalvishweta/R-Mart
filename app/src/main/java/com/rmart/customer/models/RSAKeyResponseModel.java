@@ -4,26 +4,24 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rmart.utilits.pojos.BaseResponse;
 
-import java.util.List;
-
 /**
- * Created by Satya Seshu on 19/09/20.
+ * Created by Satya Seshu on 27/09/20.
  */
-public class ProductOrderedResponseModel extends BaseResponse {
+public class RSAKeyResponseModel extends BaseResponse {
 
     @SerializedName("data")
     @Expose
-    private ProductOrderedResponseDetails productOrderedResponseDetails = null;
+    private RSAKeyDataResponseModel rsaKeyDataResponseModel;
 
-    public ProductOrderedResponseDetails getProductOrderedResponseDetails() {
-        return productOrderedResponseDetails;
+    public RSAKeyDataResponseModel getRsaKeyDataResponseModel() {
+        return rsaKeyDataResponseModel;
     }
 
-    public void setProductOrderedResponseDetails(ProductOrderedResponseDetails productOrderedResponseDetails) {
-        this.productOrderedResponseDetails = productOrderedResponseDetails;
+    public void setRsaKeyDataResponseModel(RSAKeyDataResponseModel rsaKeyDataResponseModel) {
+        this.rsaKeyDataResponseModel = rsaKeyDataResponseModel;
     }
 
-    public static class ProductOrderedResponseDetails {
+    public static class RSAKeyDataResponseModel {
 
         @SerializedName("ccavenue_data")
         @Expose
@@ -32,10 +30,6 @@ public class ProductOrderedResponseModel extends BaseResponse {
         @SerializedName("order_message")
         @Expose
         private String orderMessage;
-
-        @SerializedName("total_cart_count")
-        @Expose
-        private int totalCartCount = 0;
 
         public RSAKeyResponseDetails getRsaKeyResponseDetails() {
             return rsaKeyResponseDetails;
@@ -51,14 +45,6 @@ public class ProductOrderedResponseModel extends BaseResponse {
 
         public void setOrderMessage(String orderMessage) {
             this.orderMessage = orderMessage;
-        }
-
-        public int getTotalCartCount() {
-            return totalCartCount;
-        }
-
-        public void setTotalCartCount(int totalCartCount) {
-            this.totalCartCount = totalCartCount;
         }
     }
 }

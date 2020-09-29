@@ -130,7 +130,6 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         ivAadharFrontImageField.setOnClickListener(this);
         ivAadharBackImageField.setOnClickListener(this);
         ivPanCardImageField.setOnClickListener(this);
-        updateUI();
     }
 
     @Override
@@ -357,6 +356,9 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 showDialog(getString(R.string.address_is_added), pObject -> {
+                                    myAddress.setAadharBackImage(aadharFrontImageUrl);
+                                    myAddress.setAadharBackImage(aadharBackImageUrl);
+                                    myAddress.setPanCardImage(panCardImageUrl);
                                     MyProfile.getInstance().setAddressResponses(data.getResponse());
                                     if (isAddNewAddress) {
                                         gotoCustomerHomeScreen();
@@ -394,6 +396,9 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 showDialog(data.getMsg(), pObject -> {
+                                    myAddress.setAadharBackImage(aadharFrontImageUrl);
+                                    myAddress.setAadharBackImage(aadharBackImageUrl);
+                                    myAddress.setPanCardImage(panCardImageUrl);
                                     MyProfile.getInstance().setAddressResponses(data.getResponse());
                                     Objects.requireNonNull(requireActivity()).onBackPressed();
                                 });

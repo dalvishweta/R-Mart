@@ -160,7 +160,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             ArrayList<AddressResponse> addressList = myProfile.getAddressResponses();
             if (addressList != null && !addressList.isEmpty()) {
                 for (AddressResponse addressResponse : addressList) {
-                    if (addressResponse.getIsActive() == 1) {
+                    if(myProfile.getPrimaryAddressId().equalsIgnoreCase(addressResponse.getId().toString())) {
                         tvAddressField.setText(addressResponse.getAddress());
                         break;
                     }
