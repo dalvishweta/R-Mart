@@ -198,7 +198,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 String text = measureResponse.getAttributesName();
                 unitObject.setUnitMeasure(text);
                 unitObject.setUnitID(unitObject.getAvailableUnits().get(pos).getId());
-                unitObject.setShortName(unitObject.getAvailableUnits().get(pos).getShortName());
+                unitObject.setShortName(text);
                 updateDisplayValue();
             }
 

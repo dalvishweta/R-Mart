@@ -5,16 +5,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rmart.R;
+import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.models.ContentModel;
@@ -22,6 +25,7 @@ import com.rmart.inventory.adapters.ImageUploadAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -265,6 +269,14 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         save.setOnClickListener(this);
         view.findViewById(R.id.add_unit).setOnClickListener(this);
 
+        //imageUploadAdapter = new ImageUploadAdapter(imagesList, callBackListener);
+        //imagesRecyclerView.setAdapter(imageUploadAdapter);
+        ivProductImageOneField = view.findViewById(R.id.iv_product_image_one_field);
+        ivProductImageTwoField = view.findViewById(R.id.iv_product_image_two_field);
+        ivProductImageThreeField = view.findViewById(R.id.iv_product_image_three_field);
+        ivProductImageFourField = view.findViewById(R.id.iv_product_image_four_field);
+        ivProductImageFiveField = view.findViewById(R.id.iv_product_image_five_field);
+
         imagesList = new ArrayList<>();
         if (mClonedProduct != null) {
             List<ImageURLResponse> clonedImagesList = mClonedProduct.getImages();
@@ -274,14 +286,40 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 imagesList.add(ImageUploadAdapter.DEFAULT);
             }
         }
-
-        //imageUploadAdapter = new ImageUploadAdapter(imagesList, callBackListener);
-        //imagesRecyclerView.setAdapter(imageUploadAdapter);
-        ivProductImageOneField = view.findViewById(R.id.iv_product_image_one_field);
-        ivProductImageTwoField = view.findViewById(R.id.iv_product_image_two_field);
-        ivProductImageThreeField = view.findViewById(R.id.iv_product_image_three_field);
-        ivProductImageFourField = view.findViewById(R.id.iv_product_image_four_field);
-        ivProductImageFiveField = view.findViewById(R.id.iv_product_image_five_field);
+        for (int i=0; i<imagesList.size(); i++) {
+            Object object = imagesList.get(i);
+            if(object instanceof ImageURLResponse) {
+                ImageURLResponse imageURLResponse = (ImageURLResponse) object;
+                String shopImageUrl = shopDetails.getShopImage();
+                ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
+                switch (i) {
+                    case 0:
+                        ivProductImageOneField.setImageUrl(imageURLResponse.getImageURL(), );
+                        break;
+                    case 1:
+                        if(!TextUtils.isEmpty(shopImageUrl)) {
+                            HttpsTrustManager.allowAllSSL();
+                            imageLoader.get(shopImageUrl, ImageLoader.getImageListener(holder.ivShopImageField,
+                                    R.mipmap.ic_launcher, android.R.drawable
+                                            .ic_dialog_alert));
+                            holder.ivShopImageField.setImageUrl(shopImageUrl, imageLoader);
+                        }
+                        ivProductImageTwoField.setLocalImageUri(imageUri);
+                        break;
+                    case 2:
+                        ivProductImageThreeField.setLocalImageUri(imageUri);
+                        break;
+                    case 3:
+                        ivProductImageFourField.setLocalImageUri(imageUri);
+                        break;
+                    case 4:
+                        ivProductImageFiveField.setLocalImageUri(imageUri);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
 
         ivProductImageOneField.setOnClickListener(this);
         ivProductImageTwoField.setOnClickListener(this);
@@ -358,27 +396,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         mClonedProduct.setDelivery_days(Objects.requireNonNull(deliveryDays.getText()).toString());
         mClonedProduct.setDescription(productDescription.getText().toString());
         ArrayList<ImageURLResponse> lUpdateImagesList = new ArrayList<>();
-        for (Object lObject : imagesList) {
-            if (lObject instanceof ImageURLResponse) {
-                Bitmap bitmap = null;
-                try {
-                    ImageURLResponse imageURLResponse = (ImageURLResponse) lObject;
-                    Uri imageUri = imageURLResponse.getImageUri();
-                    if (imageUri != null) {
-                        InputStream imageStream = requireActivity().getContentResolver().openInputStream(imageUri);
-                        bitmap = BitmapFactory.decodeStream(imageStream);
-                        imageURLResponse.setImageRawData(getEncodedImage(bitmap));
-                        lUpdateImagesList.add(imageURLResponse);
-                    }
-                } catch (Exception ex) {
-                    LoggerInfo.printLog("image error", "exception " + ex.getMessage());
-                } finally {
-                    if (bitmap != null) {
-                        bitmap.recycle();
-                    }
-                }
-            }
-        }
+        setImageURL(lUpdateImagesList);
         mClonedProduct.setImages(lUpdateImagesList);
         progressDialog.show();
 
@@ -477,6 +495,30 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 }
             });
 
+        }
+    }
+
+    private void setImageURL(ArrayList<ImageURLResponse> lUpdateImagesList) {
+        for (Object lObject : imagesList) {
+            if (lObject instanceof ImageURLResponse) {
+                Bitmap bitmap = null;
+                try {
+                    ImageURLResponse imageURLResponse = (ImageURLResponse) lObject;
+                    Uri imageUri =  Uri.parse(imageURLResponse.getImageURL()); // imageURLResponse.getImageUri();
+                    if (imageUri != null) {
+                        InputStream imageStream = requireActivity().getContentResolver().openInputStream(imageUri);
+                        bitmap = BitmapFactory.decodeStream(imageStream);
+                        imageURLResponse.setImageRawData(getEncodedImage(bitmap));
+                        lUpdateImagesList.add(imageURLResponse);
+                    }
+                } catch (Exception ex) {
+                    LoggerInfo.printLog("image error", "exception " + ex.getMessage());
+                } finally {
+                    if (bitmap != null) {
+                        bitmap.recycle();
+                    }
+                }
+            }
         }
     }
 
