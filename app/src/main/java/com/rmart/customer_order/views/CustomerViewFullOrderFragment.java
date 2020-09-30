@@ -173,7 +173,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
                 orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.DELIVERED_ORDER_STATUS))) {
             footer.setVisibility(View.VISIBLE);
             mLeftButton.setText(R.string.re_order);
-            mLeftButton.setVisibility(View.VISIBLE);
+            mLeftButton.setVisibility(View.GONE);
             mLeftButton.setBackgroundResource(R.color.colorPrimary);
         } else {
             footer.setVisibility(View.GONE);
