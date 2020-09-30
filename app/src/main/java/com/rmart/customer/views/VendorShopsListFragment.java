@@ -159,10 +159,14 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
         if (myProfile != null) {
             ArrayList<AddressResponse> addressList = myProfile.getAddressResponses();
             if (addressList != null && !addressList.isEmpty()) {
-                for (AddressResponse addressResponse : addressList) {
-                    if(myProfile.getPrimaryAddressId().equalsIgnoreCase(addressResponse.getId().toString())) {
-                        tvAddressField.setText(addressResponse.getAddress());
-                        break;
+                if (addressList.size() == 1) {
+                    tvAddressField.setText(addressList.get(0).getAddress());
+                } else {
+                    for (AddressResponse addressResponse : addressList) {
+                        if (myProfile.getPrimaryAddressId().equalsIgnoreCase(addressResponse.getId().toString())) {
+                            tvAddressField.setText(addressResponse.getAddress());
+                            break;
+                        }
                     }
                 }
             }
@@ -206,7 +210,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             if (status.equalsIgnoreCase(Constants.TAG_CALL)) {
                 callSelected((String) contentModel.getValue());
             } else if (status.equalsIgnoreCase(Constants.TAG_MESSAGE)) {
-                messageSelected((String) contentModel.getValue());
+                messageSelected();
             } else if (status.equalsIgnoreCase(Constants.TAG_SHOP_FAVOURITE)) {
                 selectedShopDetails = (CustomerProductsShopDetailsModel) contentModel.getValue();
                 shopFavouriteSelected();
@@ -218,8 +222,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
         Utils.openDialPad(requireActivity(), shopMobileNo);
     }
 
-    private void messageSelected(String shopMobileNo) {
-        Utils.openDialPad(requireActivity(), shopMobileNo);
+    private void messageSelected() {
+        Utils.openGmailWindow(requireActivity());
     }
 
     private void shopFavouriteSelected() {

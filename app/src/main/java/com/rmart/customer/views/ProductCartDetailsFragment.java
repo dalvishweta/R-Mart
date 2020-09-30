@@ -30,6 +30,7 @@ import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductDetailsDescModel;
 import com.rmart.customer.models.ProductDetailsDescResponse;
+import com.rmart.customer.models.ShoppingCartResponseDetails;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
@@ -414,7 +415,11 @@ public class ProductCartDetailsFragment extends BaseFragment {
     }
 
     private void buyNowSelected() {
-        onCustomerHomeInteractionListener.gotoShoppingCartScreen();
+        ShoppingCartResponseDetails shoppingCartResponseDetails = new ShoppingCartResponseDetails();
+        shoppingCartResponseDetails.setVendorId(vendorShopDetails.getVendorId());
+        shoppingCartResponseDetails.setMobileNumber(vendorShopDetails.getShopMobileNo());
+        shoppingCartResponseDetails.setShopName(vendorShopDetails.getShopName());
+        onCustomerHomeInteractionListener.gotoShoppingCartDetails(shoppingCartResponseDetails);
     }
 
     private void deleteProductFromWishList() {

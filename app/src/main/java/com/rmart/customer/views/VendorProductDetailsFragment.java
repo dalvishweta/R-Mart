@@ -168,6 +168,21 @@ public class VendorProductDetailsFragment extends BaseFragment {
             if (isWishListShop) deleteShopFromWishList();
             else addShopFromWishList();
         });
+        view.findViewById(R.id.iv_call_field).setOnClickListener(v -> {
+            callSelected();
+        });
+
+        view.findViewById(R.id.iv_message_field).setOnClickListener(v -> {
+            messageSelected();
+        });
+    }
+
+    private void callSelected() {
+        Utils.openDialPad(requireActivity(), productsShopDetailsModel.getShopMobileNo());
+    }
+
+    private void messageSelected() {
+        Utils.openGmailWindow(requireActivity());
     }
 
     private CallBackInterface callBackListener = pObject -> {

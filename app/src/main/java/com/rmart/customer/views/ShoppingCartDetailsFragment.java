@@ -297,7 +297,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
             int index = productInCartDetailsList.indexOf(selectedProductInCartDetails);
             if (index > -1) {
                 productInCartDetailsList.remove(index);
-                confirmOrdersAdapter.notifyItemRemoved(index);
+                confirmOrdersAdapter.notifyDataSetChanged();
                 if (productInCartDetailsList.size() == 0) {
                     popBackFromStack();
                 }

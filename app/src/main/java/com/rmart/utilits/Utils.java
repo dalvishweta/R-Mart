@@ -2,6 +2,8 @@ package com.rmart.utilits;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,6 +20,7 @@ import android.util.Log;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -153,6 +156,20 @@ public class Utils {
     public static void openDialPad(Context context, String number) {
         Uri uri = Uri.parse("tel:" + number);
         Intent intent = new Intent(Intent.ACTION_DIAL, uri);
+        context.startActivity(intent);
+    }
+
+    public static void openGmailWindow(Context context) {
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        final PackageManager pm = context.getPackageManager();
+        final List<ResolveInfo> matches = pm.queryIntentActivities(intent, 0);
+        ResolveInfo best = null;
+        for (final ResolveInfo info : matches)
+            if (info.activityInfo.packageName.endsWith(".gm") ||
+                    info.activityInfo.name.toLowerCase().contains("gmail")) best = info;
+        if (best != null)
+            intent.setClassName(best.activityInfo.packageName, best.activityInfo.name);
         context.startActivity(intent);
     }
 }
