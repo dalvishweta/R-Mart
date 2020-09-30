@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,6 @@ import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -52,22 +50,24 @@ import static android.app.Activity.RESULT_OK;
 public class EditAddressFragment extends BaseMyProfileFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    public static final String AADHAR_FRONT_IMAGE = "aadhar_front_image";
-    public static final String AADHAR_BACK_IMAGE = "aadhar_back_image";
-    public static final String PANCARD_IMAGE = "pancard_image";
+    private static final String AADHAR_FRONT_IMAGE = "aadhar_front_image";
+    private static final String AADHAR_BACK_IMAGE = "aadhar_back_image";
+    private static final String PANCARD_IMAGE = "pancard_image";
+    private static final String SHOP_IMAGE = "shop_image";
     private AppCompatEditText tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress, tvCity, tvShopNO, tvDeliveryRadius, tvPinCode, tvState;
-    LinearLayout mRetailerView;
-    AddressViewModel addressViewModel;
-    AddressResponse myAddress;
+    private LinearLayout mRetailerView;
+    private AddressResponse myAddress;
     private AppCompatEditText tvAadharNoField;
-    private CustomNetworkImageView ivAadharFrontImageField, ivAadharBackImageField, ivPanCardImageField;
+    private CustomNetworkImageView ivAadharFrontImageField, ivAadharBackImageField, ivPanCardImageField, ivShopImageField;
     private String aadharFrontImageUrl;
     private String aadharBackImageUrl;
     private String panCardImageUrl;
+    private String shopImageUrl;
     private boolean isAddNewAddress;
     private ProgressBarCircular aadharFrontImageProgressBar;
     private ProgressBarCircular aadharBackImageProgressBar;
     private ProgressBarCircular pancardProgressBar;
+    private ProgressBarCircular shopImageProgressBar;
     private int selectedPhotoType = -1;
 
     public EditAddressFragment() {
@@ -96,7 +96,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         LoggerInfo.printLog("Fragment", "EditAddressFragment");
-        addressViewModel = new ViewModelProvider(Objects.requireNonNull(requireActivity())).get(AddressViewModel.class);
+        AddressViewModel addressViewModel = new ViewModelProvider(Objects.requireNonNull(requireActivity())).get(AddressViewModel.class);
         addressViewModel.setMyAddressMutableLiveData(new MyAddress());
         addressViewModel.getMyAddressMutableLiveData().observe(requireActivity(), myAddress -> {
 
@@ -121,15 +121,18 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         ivAadharBackImageField = view.findViewById(R.id.iv_aadhar_back_image_field);
         ivPanCardImageField = view.findViewById(R.id.iv_pan_card_no_image_field);
         tvAadharNoField = view.findViewById(R.id.tv_aadhar_number_no_field);
+        ivShopImageField = view.findViewById(R.id.iv_shop_image_field);
 
         aadharFrontImageProgressBar = view.findViewById(R.id.aadhar_front_progess_bar);
         aadharBackImageProgressBar = view.findViewById(R.id.aadhar_back_progess_bar);
         pancardProgressBar = view.findViewById(R.id.pan_progess_bar);
+        shopImageProgressBar = view.findViewById(R.id.shop_image_progess_bar);
 
         view.findViewById(R.id.add_address).setOnClickListener(this);
         ivAadharFrontImageField.setOnClickListener(this);
         ivAadharBackImageField.setOnClickListener(this);
         ivPanCardImageField.setOnClickListener(this);
+        ivShopImageField.setOnClickListener(this);
     }
 
     @Override
@@ -173,7 +176,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         aadharFrontImageProgressBar.setVisibility(View.GONE);
-                        ivAadharFrontImageField.setImageResource(android.R.drawable.ic_dialog_alert);
+                        ivAadharFrontImageField.setBackgroundResource(R.drawable.ic_aadhar_front);
                     }
                 });
                 ivAadharFrontImageField.setImageUrl(lAadharFrontImageUrl, RMartApplication.getInstance().getImageLoader());
@@ -196,7 +199,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         aadharBackImageProgressBar.setVisibility(View.GONE);
-                        ivAadharBackImageField.setImageResource(android.R.drawable.ic_dialog_alert);
+                        ivAadharBackImageField.setBackgroundResource(R.drawable.ic_aadhar_back);
                     }
                 });
                 ivAadharBackImageField.setImageUrl(lAadharBackImageUrl, RMartApplication.getInstance().getImageLoader());
@@ -219,10 +222,38 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         pancardProgressBar.setVisibility(View.GONE);
-                        ivPanCardImageField.setImageResource(android.R.drawable.ic_dialog_alert);
+                        ivPanCardImageField.setBackgroundResource(R.drawable.ic_pan);
                     }
                 });
+                /*imageLoader.get(lPancardImageUrl, ImageLoader.getImageListener(ivPanCardImageField,
+                        R.mipmap.ic_launcher, android.R.drawable
+                                .ic_dialog_alert));*/
+
                 ivPanCardImageField.setImageUrl(lPancardImageUrl, RMartApplication.getInstance().getImageLoader());
+
+            }
+            String lShopImageUrl = myAddress.getShopImage();
+            if (!TextUtils.isEmpty(lShopImageUrl)) {
+                HttpsTrustManager.allowAllSSL();
+                shopImageProgressBar.setVisibility(View.VISIBLE);
+                imageLoader.get(lShopImageUrl, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                        shopImageUrl = lShopImageUrl;
+                        shopImageProgressBar.setVisibility(View.GONE);
+                        Bitmap bitmap = response.getBitmap();
+                        if (bitmap != null) {
+                            ivShopImageField.setLocalImageBitmap(bitmap);
+                        }
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        shopImageProgressBar.setVisibility(View.GONE);
+                        ivShopImageField.setBackgroundResource(R.drawable.ic_shop);
+                    }
+                });
+                ivShopImageField.setImageUrl(lShopImageUrl, RMartApplication.getInstance().getImageLoader());
             }
         } else {
             Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.update_address));
@@ -257,6 +288,10 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 break;
             case R.id.iv_pan_card_no_image_field:
                 selectedPhotoType = 2;
+                capturePhotoSelected();
+                break;
+            case R.id.iv_shop_image_field:
+                selectedPhotoType = 3;
                 capturePhotoSelected();
                 break;
             default:
@@ -306,6 +341,10 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 panCardImageUrl = profileImageUri.getPath();
                 UpdateProfileImageServices.enqueueWork(requireActivity(), PANCARD_IMAGE, panCardImageUrl);
                 ivPanCardImageField.setLocalImageUri(profileImageUri);
+            } else if (selectedPhotoType == 3) {
+                shopImageUrl = profileImageUri.getPath();
+                UpdateProfileImageServices.enqueueWork(requireActivity(), SHOP_IMAGE, shopImageUrl);
+                ivShopImageField.setLocalImageUri(profileImageUri);
             }
         });
     }
@@ -320,6 +359,10 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             }
             if (aadharNo.length() != 12) {
                 showDialog(getString(R.string.aadhar_number_error));
+                return;
+            }
+            if (TextUtils.isEmpty(shopImageUrl)) {
+                showDialog(getString(R.string.shop_image_required));
                 return;
             }
             if (TextUtils.isEmpty(aadharFrontImageUrl)) {

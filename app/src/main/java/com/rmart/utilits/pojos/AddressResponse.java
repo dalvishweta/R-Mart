@@ -14,123 +14,127 @@ public class AddressResponse extends BaseResponse implements Serializable {
 
     @SerializedName("id")
     @Expose
-    Integer id;
+    private Integer id;
 
     @SerializedName("shop_name")
     @Expose
-    String shopName;
+    private String shopName;
 
     @SerializedName("shop_description")
     @Expose
-    String shopDescription;
+    private String shopDescription;
 
     @SerializedName("gstin_no")
     @Expose
-    String gstInNo;
+    private String gstInNo;
 
     @SerializedName("latitude")
     @Expose
-    String latitude;
+    private String latitude;
 
     @SerializedName("longitude")
     @Expose
-    String longitude;
+    private String longitude;
 
     @SerializedName("address")
     @Expose
-    String address;
+    private String address;
 
     @SerializedName("store_number")
     @Expose
-    String store_number;
+    private String store_number;
 
     @SerializedName("pan_no")
     @Expose
-    String pan_no;
+    private String pan_no;
 
     @SerializedName("aadhaar_card_no")
     @Expose
-    String aadhaarCardNo;
+    private String aadhaarCardNo;
 
     @SerializedName("fssai_no")
     @Expose
-    String fssaiNo;
+    private String fssaiNo;
 
     @SerializedName("pincode")
     @Expose
-    String pinCode;
+    private String pinCode;
 
     @SerializedName("city")
     @Expose
-    String city;
+    private String city;
 
     @SerializedName("state")
     @Expose
-    String state;
+    private String state;
 
     @SerializedName("delivery_charges")
     @Expose
-    String deliveryCharges;
+    private String deliveryCharges;
 
     @SerializedName("opening_time")
     @Expose
-    String openingTime;
+    private String openingTime;
 
     @SerializedName("closing_time")
     @Expose
-    String closingTime;
+    private String closingTime;
 
     @SerializedName("delivery_days_after_time")
     @Expose
-    String deliveryDaysAfterTime;
+    private String deliveryDaysAfterTime;
 
     @SerializedName("delivery_radius")
     @Expose
-    String deliveryRadius;
+    private String deliveryRadius;
 
     @SerializedName("minimum_order")
     @Expose
-    String minimumOrder;
+    private String minimumOrder;
 
     @SerializedName("created_date")
     @Expose
-    String createdDate;
+    private String createdDate;
 
     @SerializedName("created_by")
     @Expose
-    String createdBy;
+    private String createdBy;
 
     @SerializedName("updated_date")
     @Expose
-    String updatedDate;
+    private String updatedDate;
 
     @SerializedName("updated_by")
     @Expose
-    String updatedBY;
+    private String updatedBY;
 
     @SerializedName("is_active")
     @Expose
-    Integer isActive;
+    private Integer isActive;
 
     @SerializedName("delivery_days_before_time")
     @Expose
-    String deliveryDaysBeforeTime;
+    private String deliveryDaysBeforeTime;
 
     @SerializedName("client_id")
     @Expose
-    String clientID;
+    private String clientID;
 
     @SerializedName("aadhar_front_image")
     @Expose
-    String aadharFrontImage;
+    private String aadharFrontImage;
 
     @SerializedName("pancard_image")
     @Expose
-    String panCardImage;
+    private String panCardImage;
 
     @SerializedName("aadhar_back_image")
     @Expose
-    String aadharBackImage;
+    private String aadharBackImage;
+
+    @SerializedName("shop_image")
+    @Expose
+    private String shopImage;
 
     private boolean isPrimaryAddress = false;
 
@@ -380,6 +384,14 @@ public class AddressResponse extends BaseResponse implements Serializable {
 
     public void setAadharBackImage(String aadharBackImage) {
         this.aadharBackImage = aadharBackImage;
+    }
+
+    public String getShopImage() {
+        return shopImage;
+    }
+
+    public void setShopImage(String shopImage) {
+        this.shopImage = shopImage;
     }
 
     @NotNull

@@ -36,6 +36,40 @@
                     style="@style/my_profile_tv"
                     android:inputType="text" />
 
+                <TextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/shop_image"
+                    android:textColor="@color/black" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="120dp"
+                    android:layout_height="80dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="10dp"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="8dp">
+
+                    <com.rmart.utilits.custom_views.CustomNetworkImageView
+                        android:id="@+id/iv_shop_image_field"
+                        android:layout_width="120dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/ic_shop"
+                        android:contentDescription="@string/app_name"
+                        android:scaleType="fitXY" />
+
+                    <com.rmart.baseclass.views.ProgressBarCircular
+                        android:id="@+id/shop_image_progess_bar"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
+                </androidx.cardview.widget.CardView>
+
                 <androidx.appcompat.widget.AppCompatEditText
                     android:hint="@string/enter_your_gst_number"
                     android:id="@+id/gst_number"
@@ -44,6 +78,7 @@
                     style="@style/my_profile_tv"
                     android:maxLength="16"
                     android:textAllCaps="true" />
+
                 <androidx.appcompat.widget.AppCompatEditText
                     android:hint="@string/shop_no"
                     android:id="@+id/shop_no"

@@ -216,6 +216,7 @@
     <string name="enter_your_aadhar_number">Enter your Aadhar Number</string>
     <string name="aadhar_number_error">Please Enter Valid Aadhar Number</string>
     <string name="aadhar_front_image_required">Please Upload Aadhar Front Image</string>
+    <string name="shop_image_required">Please Upload Shop Image</string>
     <string name="aadhar_back_image_required">Please Upload Aadhar Back Image</string>
     <string name="pancard_no">Pancard No</string>
     <string name="pancard_image_required">Please Upload PanCard Image</string>
@@ -251,4 +252,5 @@
     <string name="vendor_address">Vendor Address</string>
     <string name="first_name">First Name</string>
     <string name="currency">INR</string>
+    <string name="shop_image">Shop Image</string>
 </resources>
