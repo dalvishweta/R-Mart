@@ -181,7 +181,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 });
                 ivAadharFrontImageField.setImageUrl(lAadharFrontImageUrl, RMartApplication.getInstance().getImageLoader());
             }
-            String lAadharBackImageUrl = myAddress.getAadharFrontImage();
+            String lAadharBackImageUrl = myAddress.getAadharBackImage();
             if (!TextUtils.isEmpty(lAadharBackImageUrl)) {
                 HttpsTrustManager.allowAllSSL();
                 aadharBackImageProgressBar.setVisibility(View.VISIBLE);
@@ -204,19 +204,20 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 });
                 ivAadharBackImageField.setImageUrl(lAadharBackImageUrl, RMartApplication.getInstance().getImageLoader());
             }
-            String lPancardImageUrl = myAddress.getAadharFrontImage();
+            String lPancardImageUrl = myAddress.getPanCardImage();
             if (!TextUtils.isEmpty(lPancardImageUrl)) {
                 HttpsTrustManager.allowAllSSL();
                 pancardProgressBar.setVisibility(View.VISIBLE);
+                ivPanCardImageField.setImageUrl(lPancardImageUrl, RMartApplication.getInstance().getImageLoader());
                 imageLoader.get(lPancardImageUrl, new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
                         panCardImageUrl = lPancardImageUrl;
-                        pancardProgressBar.setVisibility(View.GONE);
                         Bitmap bitmap = response.getBitmap();
                         if (bitmap != null) {
                             ivPanCardImageField.setLocalImageBitmap(bitmap);
                         }
+                        pancardProgressBar.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -228,9 +229,6 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 /*imageLoader.get(lPancardImageUrl, ImageLoader.getImageListener(ivPanCardImageField,
                         R.mipmap.ic_launcher, android.R.drawable
                                 .ic_dialog_alert));*/
-
-                ivPanCardImageField.setImageUrl(lPancardImageUrl, RMartApplication.getInstance().getImageLoader());
-
             }
             String lShopImageUrl = myAddress.getShopImage();
             if (!TextUtils.isEmpty(lShopImageUrl)) {
@@ -399,9 +397,10 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 showDialog(getString(R.string.address_is_added), pObject -> {
-                                    myAddress.setAadharBackImage(aadharFrontImageUrl);
-                                    myAddress.setAadharBackImage(aadharBackImageUrl);
-                                    myAddress.setPanCardImage(panCardImageUrl);
+                                    //myAddress.setAadharBackImage(aadharFrontImageUrl);
+                                    //myAddress.setAadharBackImage(aadharBackImageUrl);
+                                    //myAddress.setPanCardImage(panCardImageUrl);
+                                    //myAddress.setShopImage(shopImageUrl);
                                     MyProfile.getInstance().setAddressResponses(data.getResponse());
                                     if (isAddNewAddress) {
                                         gotoCustomerHomeScreen();
@@ -439,9 +438,6 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 showDialog(data.getMsg(), pObject -> {
-                                    myAddress.setAadharBackImage(aadharFrontImageUrl);
-                                    myAddress.setAadharBackImage(aadharBackImageUrl);
-                                    myAddress.setPanCardImage(panCardImageUrl);
                                     MyProfile.getInstance().setAddressResponses(data.getResponse());
                                     Objects.requireNonNull(requireActivity()).onBackPressed();
                                 });

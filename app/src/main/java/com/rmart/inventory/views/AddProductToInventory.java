@@ -11,6 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.toolbox.ImageLoader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -52,13 +60,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -286,37 +287,48 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 imagesList.add(ImageUploadAdapter.DEFAULT);
             }
         }
-        for (int i=0; i<imagesList.size(); i++) {
+        ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
+        HttpsTrustManager.allowAllSSL();
+        for (int i = 0; i < imagesList.size(); i++) {
             Object object = imagesList.get(i);
-            if(object instanceof ImageURLResponse) {
+            if (object instanceof ImageURLResponse) {
                 ImageURLResponse imageURLResponse = (ImageURLResponse) object;
-                String shopImageUrl = shopDetails.getShopImage();
-                ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
-                switch (i) {
-                    case 0:
-                        ivProductImageOneField.setImageUrl(imageURLResponse.getImageURL(), );
-                        break;
-                    case 1:
-                        if(!TextUtils.isEmpty(shopImageUrl)) {
-                            HttpsTrustManager.allowAllSSL();
-                            imageLoader.get(shopImageUrl, ImageLoader.getImageListener(holder.ivShopImageField,
+                String productUrl = imageURLResponse.getImageURL();
+                if (!TextUtils.isEmpty(productUrl)) {
+                    switch (i) {
+                        case 0:
+                            imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageOneField,
                                     R.mipmap.ic_launcher, android.R.drawable
                                             .ic_dialog_alert));
-                            holder.ivShopImageField.setImageUrl(shopImageUrl, imageLoader);
-                        }
-                        ivProductImageTwoField.setLocalImageUri(imageUri);
-                        break;
-                    case 2:
-                        ivProductImageThreeField.setLocalImageUri(imageUri);
-                        break;
-                    case 3:
-                        ivProductImageFourField.setLocalImageUri(imageUri);
-                        break;
-                    case 4:
-                        ivProductImageFiveField.setLocalImageUri(imageUri);
-                        break;
-                    default:
-                        break;
+                            ivProductImageOneField.setImageUrl(productUrl, imageLoader);
+                            break;
+                        case 1:
+                            imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageTwoField,
+                                    R.mipmap.ic_launcher, android.R.drawable
+                                            .ic_dialog_alert));
+                            ivProductImageTwoField.setImageUrl(productUrl, imageLoader);
+                            break;
+                        case 2:
+                            imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageThreeField,
+                                    R.mipmap.ic_launcher, android.R.drawable
+                                            .ic_dialog_alert));
+                            ivProductImageThreeField.setImageUrl(productUrl, imageLoader);
+                            break;
+                        case 3:
+                            imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageFourField,
+                                    R.mipmap.ic_launcher, android.R.drawable
+                                            .ic_dialog_alert));
+                            ivProductImageFourField.setImageUrl(productUrl, imageLoader);
+                            break;
+                        case 4:
+                            imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageFiveField,
+                                    R.mipmap.ic_launcher, android.R.drawable
+                                            .ic_dialog_alert));
+                            ivProductImageFiveField.setImageUrl(productUrl, imageLoader);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         }
