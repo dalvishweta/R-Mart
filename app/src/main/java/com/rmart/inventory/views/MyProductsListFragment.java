@@ -3,6 +3,7 @@ package com.rmart.inventory.views;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -97,7 +98,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         });*/
         LoggerInfo.printLog("Fragment", "MyProductsListFragment");
         vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
-        getProductList();
+        getProductList("1,2,3,4,5,6,7");
         return inflater.inflate(R.layout.fragment_inventory_product_list, container, false);
     }
 
@@ -110,16 +111,39 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_items);
         // Your code to make your refresh action
         // CallYourRefreshingMethod();
-        mSwipeRefreshLayout.setOnRefreshListener(this::getProductList);
+        mSwipeRefreshLayout.setOnRefreshListener(() -> getProductList("1,2,3,4,5,6,7"));
         addProduct.setOnClickListener(this);
         popup = new PopupMenu(requireActivity(), view.findViewById(R.id.sort));
+        popup.getMenu().add(Menu.NONE, 3, 3, "Out Of Stock");
+        popup.getMenu().add(Menu.NONE, 5, 5, "Available");
+        popup.getMenu().add(Menu.NONE, 6, 5, "Unavailable");
+        popup.getMenu().add(Menu.NONE, 7, 7, "All Products");
+        popup.setOnMenuItemClickListener(item -> {
+            int i = item.getItemId();
+            switch (i) {
+                case 3:
+                    getProductList("3");
+                    break;
+                case 5:
+                    getProductList("5");
+                    break;
+                case 6:
+                    getProductList("6");
+                    break;
+                case 7:
+                    getProductList("1,2,3,4,5,6,7");
+                    break;
+            }
+            return true;
+        });
+
         // Inflating the Popup using xml file
         // popup.getMenuInflater().inflate(R.menu.inventory_view_products, popup.getMenu());
         view.findViewById(R.id.sort).setOnClickListener(param -> {
 
             // registering popup with OnMenuItemClickListener
-            popup.setOnMenuItemClickListener(item -> {
-               /* if(item.getItemId() == R.id.sort_category) {
+            /*popup.setOnMenuItemClickListener(item -> {
+               *//* if(item.getItemId() == R.id.sort_category) {
                     inventoryViewModel.setIsProductView(InventoryViewModel.CATEGORY);
                     mListener.goToHome();
                 } else if(item.getItemId() == R.id.sort_sub_category) {
@@ -128,11 +152,16 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                 } else if(item.getItemId() == R.id.sort_product) {
                     inventoryViewModel.setIsProductView(InventoryViewModel.PRODUCT);
                     mListener.goToHome();
-                }*/
+                }*//*
                 return true;
             });
 
-            popup.show(); // showing popup menu
+            popup.show(); */
+            // showing popup menu
+
+
+            popup.show();
+
         });
         //productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         GridLayoutManager layoutManager = new GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false);
@@ -141,9 +170,9 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         setSearchView(view);
     }
 
-    private void getProductList() {
+    private void getProductList(String stockType) {
         progressDialog.show();
-        vendorInventoryService.getProductList("0", MyProfile.getInstance().getMobileNumber(), "1,2,3,4,5,6,7").enqueue(new Callback<ProductListResponse>() {
+        vendorInventoryService.getProductList("0", MyProfile.getInstance().getMobileNumber(), stockType).enqueue(new Callback<ProductListResponse>() {
             @Override
             public void onResponse(@NotNull Call<ProductListResponse> call, @NotNull Response<ProductListResponse> response) {
                 if (response.isSuccessful()) {
@@ -151,7 +180,8 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                     assert productList != null;
                     if (productList.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                         if (productList.getProductResponses().size() <= 0) {
-                            mListener.addProductToInventory();
+                            // mListener.addProductToInventory();
+                            showDialog(getString(R.string.sorry),getString(R.string.no_products_error));
                         } else {
 
                             /*for (ProductResponse productResponse : data.getProductResponses()) {

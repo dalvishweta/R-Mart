@@ -253,4 +253,6 @@
     <string name="first_name">First Name</string>
     <string name="currency">INR</string>
     <string name="shop_image">Shop Image</string>
+    <string name="no_products_error">No products found in your inventory.</string>
+    <string name="sorry">Sorry</string>
 </resources>

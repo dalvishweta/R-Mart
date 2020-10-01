@@ -103,6 +103,8 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
         view.findViewById(R.id.sort).setOnClickListener(param -> {
             mListener.applyFilter(this, REQUEST_FILTERED_DATA_ID);
         });
+        view.findViewById(R.id.sort).setVisibility(View.GONE);
+        addProduct.setVisibility(View.GONE);
         updateProductList();
     }
 
