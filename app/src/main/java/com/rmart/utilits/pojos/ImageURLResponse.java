@@ -27,6 +27,7 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
     @SerializedName("isPrimary")
     @Expose
     int isPrimary;
+
     @SerializedName("image_rawdata")
     @Expose
     String imageRawData;

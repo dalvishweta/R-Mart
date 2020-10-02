@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.authentication.views.AuthenticationActivity;
@@ -22,6 +25,12 @@ public class SplashScreen extends BaseActivity {
         new Handler().postDelayed(() -> {
             /*Intent intent = new Intent(SplashScreen.this, AuthenticationActivity.class);
             startActivity(intent);*/
+            FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
+                String token = instanceIdResult.getToken();
+                Log.i("FCM Token", "FCM Token: "+token);
+            });
+
             SharedPreferences sharedPref;
             if(BuildConfig.FLAVOR.equalsIgnoreCase(Utils.CUSTOMER)) {
                 sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);

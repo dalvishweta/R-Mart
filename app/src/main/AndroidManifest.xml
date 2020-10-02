@@ -83,7 +83,13 @@
             android:name=".services.UpdateProfileImageServices"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-
+        <service
+            android:name=".fcm.MyFirebaseMessagingService"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

@@ -13,6 +13,11 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @Expose
     String productID;
 
+
+    @SerializedName("images")
+    @Expose
+    ArrayList<ImageURLResponse> imageDataObject = new ArrayList<>();
+
     @SerializedName("product_lib_id")
     @Expose
     String productLibID;
@@ -32,10 +37,6 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @SerializedName("category_id")
     @Expose
     String categoryID;
-
-/*    @SerializedName("brand")
-    @Expose
-    String brandID;*/
 
     @SerializedName("product_regional_name")
     @Expose
@@ -60,10 +61,6 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @SerializedName("units")
     @Expose
     ArrayList<UnitObject> unitObjects = new ArrayList<>();
-
-    @SerializedName("images")
-    @Expose
-    ArrayList<ImageURLResponse> images = new ArrayList<>();
 
     @SerializedName("brand")
     @Expose
@@ -103,8 +100,8 @@ public class ProductResponse extends BaseResponse implements Serializable {
         expiry_date = product.expiry_date;
         delivery_days = product.delivery_days;
         productLibID = product.productLibID;
-        images = new ArrayList<>();
-        images.addAll(product.getImages());
+        imageDataObject = new ArrayList<>();
+        imageDataObject.addAll(product.getImageDataObject());
         unitObjects = new ArrayList<>();
         unitObjects.addAll(product.getUnitObjects());
     }
@@ -205,12 +202,12 @@ public class ProductResponse extends BaseResponse implements Serializable {
         this.delivery_days = delivery_days;
     }
 
-    public ArrayList<ImageURLResponse> getImages() {
-        return images;
+    public ArrayList<ImageURLResponse> getImageDataObject() {
+        return imageDataObject;
     }
 
-    public void setImages(ArrayList<ImageURLResponse> images) {
-        this.images = images;
+    public void setImageDataObject(ArrayList<ImageURLResponse> imageDataObject) {
+        this.imageDataObject = imageDataObject;
     }
 
     public ArrayList<UnitObject> getUnitObjects() {

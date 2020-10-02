@@ -90,7 +90,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
     private ArrayList<String> availableBrands = new ArrayList<>();
     private APIStockListResponse stockListResponse = null;
-    private List<Object> imagesList;
+    private ArrayList<ImageURLResponse> images;
     private int selectedImagePosition = -1;
     private CustomNetworkImageView ivProductImageOneField;
     private CustomNetworkImageView ivProductImageTwoField;
@@ -278,19 +278,19 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         ivProductImageFourField = view.findViewById(R.id.iv_product_image_four_field);
         ivProductImageFiveField = view.findViewById(R.id.iv_product_image_five_field);
 
-        imagesList = new ArrayList<>();
+        images = new ArrayList<>();
         if (mClonedProduct != null) {
-            List<ImageURLResponse> clonedImagesList = mClonedProduct.getImages();
+            List<ImageURLResponse> clonedImagesList = mClonedProduct.getImageDataObject();
             int difference = 5 - clonedImagesList.size();
-            imagesList.addAll(clonedImagesList);
-            for (int i = 0; i < difference; i++) {
-                imagesList.add(ImageUploadAdapter.DEFAULT);
-            }
+            images.addAll(clonedImagesList);
+            /*for (int i = 0; i < difference; i++) {
+                images.add(ImageUploadAdapter.DEFAULT);
+            }*/
         }
         ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
         HttpsTrustManager.allowAllSSL();
-        for (int i = 0; i < imagesList.size(); i++) {
-            Object object = imagesList.get(i);
+        for (int i = 0; i < images.size(); i++) {
+            Object object = images.get(i);
             if (object instanceof ImageURLResponse) {
                 ImageURLResponse imageURLResponse = (ImageURLResponse) object;
                 String productUrl = imageURLResponse.getImageURL();
@@ -409,7 +409,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         mClonedProduct.setDescription(productDescription.getText().toString());
         ArrayList<ImageURLResponse> lUpdateImagesList = new ArrayList<>();
         setImageURL(lUpdateImagesList);
-        mClonedProduct.setImages(lUpdateImagesList);
+        mClonedProduct.setImageDataObject(lUpdateImagesList);
         progressDialog.show();
 
         if (isEdit) {
@@ -463,15 +463,14 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
             // Gson gson = new Gson();
             Gson gson = new GsonBuilder().create();
+            mClonedProduct.setImageDataObject(images);
             JsonElement jsonElement = gson.toJsonTree(mClonedProduct);
             JsonObject jsonObject = (JsonObject) jsonElement;
-
             jsonObject.addProperty("stock_id", "5");
             jsonObject.addProperty("quantity", "2");
             jsonObject.addProperty("brand", 2);
             jsonObject.addProperty("expiry_date", mClonedProduct.getExpiry_date());
-
-            jsonObject.addProperty("delivery_days", "3");
+            jsonObject.addProperty("delivery_days", MyProfile.getInstance().getDeliveryInDays());
             jsonObject.addProperty("client_id", "2");
             jsonObject.addProperty("user_id", MyProfile.getInstance().getUserID());
             jsonObject.addProperty("product_video_link", "https://www.youtube.com/watch?v=pWjfA4hBNe8&ab_channel=CricketCloud");
@@ -511,7 +510,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     }
 
     private void setImageURL(ArrayList<ImageURLResponse> lUpdateImagesList) {
-        for (Object lObject : imagesList) {
+        for (Object lObject : images) {
             if (lObject instanceof ImageURLResponse) {
                 Bitmap bitmap = null;
                 try {
@@ -613,15 +612,15 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     }
 
     private void updateImage(Uri imageUri) {
-        Object lObject = imagesList.get(selectedImagePosition);
+        Object lObject = images.get(selectedImagePosition);
         if (lObject instanceof String) {
             ImageURLResponse imageUrlResponse = new ImageURLResponse();
             //imageUrlResponse.setImageRawData(getEncodedImage(bitmap));
-            imagesList.set(selectedImagePosition, imageUrlResponse);
+            images.set(selectedImagePosition, imageUrlResponse);
         } else if (lObject instanceof ImageURLResponse) {
             ImageURLResponse imageUrlResponse = (ImageURLResponse) lObject;
             //imageUrlResponse.setImageRawData(getEncodedImage(bitmap));
-            imagesList.set(selectedImagePosition, imageUrlResponse);
+            images.set(selectedImagePosition, imageUrlResponse);
         }
         displayImagesUI(imageUri);
     }

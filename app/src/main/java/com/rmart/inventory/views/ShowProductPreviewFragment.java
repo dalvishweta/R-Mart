@@ -24,7 +24,6 @@ import com.rmart.utilits.services.VendorInventoryService;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -153,7 +152,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     };
 
     private void updateUI() {
-        List<ImageURLResponse> imagesList = product.getImages();
+        List<ImageURLResponse> imagesList = product.getImageDataObject();
         ImageAdapter imageAdapter = new ImageAdapter(requireContext(), imagesList);
         viewPager.setAdapter(imageAdapter);
         dotIndicatorLayoutField.setVisibility(imagesList.size() == 1 ? View.GONE : View.VISIBLE);

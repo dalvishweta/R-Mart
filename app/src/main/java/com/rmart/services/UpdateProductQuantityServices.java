@@ -50,7 +50,7 @@ public class UpdateProductQuantityServices extends JobIntentService {
         call.enqueue(new Callback<AddToCartResponseDetails>() {
             @Override
             public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
-
+            
             }
 
             @Override
