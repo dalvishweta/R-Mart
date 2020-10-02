@@ -22,8 +22,9 @@ import java.util.Objects;
 
 public class ViewMyProfileFragment extends BaseMyProfileFragment implements View.OnClickListener {
 
-    private AppCompatTextView tvEditProfile, tvEditAddress;
-    private AppCompatTextView tvFirstName, tvLastName, tvMobileNumber, tvEmail, tvGender, addNewAddress;
+    private AppCompatTextView tvEditProfile, tvEditAddress, addNewAddress;
+    private AppCompatTextView tvFirstName, tvLastName, tvMobileNumber, tvEmail, tvGender, deliveryCharge,
+            tvOpeningTIme, tvClosingTIme, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
     private AppCompatTextView tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress,tvCity, tvShopNO, tvDeliveryRadius, tvState, tvPINCode;
     RecyclerView recyclerView;
     AddressAdapter addressAdapter;
@@ -104,6 +105,12 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
         tvState = view.findViewById(R.id.state);
         tvCity = view.findViewById(R.id.city);
         tvPINCode = view.findViewById(R.id.pin_code);
+        deliveryCharge = view.findViewById(R.id.delivery_charges);
+        tvOpeningTIme = view.findViewById(R.id.open_time);
+        tvClosingTIme = view.findViewById(R.id.close_time);
+        tvDeliveryDaysAfterTime = view.findViewById(R.id.delivery_days_after_time);
+        tvDeliveryDaysBeforeTime = view.findViewById(R.id.delivery_days_before_time);
+
         setRetailerAddressData();
     }
 
@@ -118,6 +125,12 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
         tvCity.setText(address.getCity());
         tvState.setText(address.getState());
         tvPINCode.setText(address.getPinCode());
+
+        deliveryCharge.setText(address.getDeliveryCharges());
+        tvOpeningTIme.setText(address.getOpeningTime());
+        tvClosingTIme.setText(address.getClosingTime());
+        tvDeliveryDaysAfterTime.setText(address.getDeliveryDaysAfterTime());
+        tvDeliveryDaysBeforeTime.setText(address.getDeliveryDaysBeforeTime());
     }
 
     private void updateUI(MyProfile myProfile) {

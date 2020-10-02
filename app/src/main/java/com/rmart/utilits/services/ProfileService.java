@@ -27,7 +27,12 @@ public interface ProfileService {
                                          @Field("role_id") String roleID,
                                          @Field("delivery_radius") String deliveryRadius,
                                          @Field("client_id") String client_id,
-                                         @Field("aadhaar_card_no") String aadharNo);
+                                         @Field("aadhaar_card_no") String aadharNo,
+                                         @Field("delivery_charges") String deliveryCharges,
+                                         @Field("opening_time") String openingTime,
+                                         @Field("closing_time") String closingTime,
+                                         @Field("delivery_days_after_time") String deliveryDaysAfterTime,
+                                         @Field("delivery_days_before_time") String deliveryDaysBeforeTime);
 
     @FormUrlEncoded
     @POST(BuildConfig.UPDATE_ADDRESS)
@@ -46,7 +51,12 @@ public interface ProfileService {
                                             @Field("delivery_radius") String deliveryRadius,
                                             @Field("client_id") String client_id,
                                             @Field("id") int id,
-                                            @Field("aadhaar_card_no") String aadharNo);
+                                            @Field("aadhaar_card_no") String aadharNo,
+                                            @Field("delivery_charges") String deliveryCharges,
+                                            @Field("opening_time") String openingTime,
+                                            @Field("closing_time") String closingTime,
+                                            @Field("delivery_days_after_time") String deliveryDaysAfterTime,
+                                            @Field("delivery_days_before_time") String deliveryDaysBeforeTime);
 
 
 

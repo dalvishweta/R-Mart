@@ -87,6 +87,7 @@
     <string name="payment_info">Payment Info</string>
     <string name="mode_of_payment">Mode of Payment:</string>
     <string name="delivery_charges">Delivery Charges:</string>
+    <string name="delivery_charge">Delivery Charges</string>
     <string name="order_amount">Order Amount:</string>
     <string name="quantity">Quantity:</string>
     <string name="quantity_id">Quantity</string>
@@ -220,6 +221,14 @@
     <string name="aadhar_back_image_required">Please Upload Aadhar Back Image</string>
     <string name="pancard_no">Pancard No</string>
     <string name="pancard_image_required">Please Upload PanCard Image</string>
+
+    <string name="opening_time_required">Opening time is required.</string>
+    <string name="closing_time_required">Closing time is required.</string>
+
+    <string name="delivery_days_after_time_required">Delivery days after time is required.</string>
+    <string name="delivery_days_before_time_required">Delivery days before time is required.</string>
+
+    <string name="delivery_charges_required">Delivery charges required.</string>
     <string name="enter_your_kyc_number">Enter your KYC Number</string>
     <string name="my_wish_list">My Wish List</string>
     <string name="change_address">Change Address</string>
@@ -255,4 +264,8 @@
     <string name="shop_image">Shop Image</string>
     <string name="no_products_error">No products found in your inventory.</string>
     <string name="sorry">Sorry</string>
+    <string name="opening_time">Opening Time</string>
+    <string name="closing_time">Closing Time</string>
+    <string name="delivery_days_before_time">Delivery in days before closing</string>
+    <string name="delivery_days_after_time">Delivery in days after closing</string>
 </resources>

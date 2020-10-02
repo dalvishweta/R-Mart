@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.VolleyError;
@@ -32,6 +33,7 @@ import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.custom_views.CustomNetworkImageView;
+import com.rmart.utilits.custom_views.CustomTimePicker;
 import com.rmart.utilits.pojos.AddressListResponse;
 import com.rmart.utilits.pojos.AddressResponse;
 import com.rmart.utilits.services.ProfileService;
@@ -57,7 +59,8 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     private AppCompatEditText tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress, tvCity, tvShopNO, tvDeliveryRadius, tvPinCode, tvState;
     private LinearLayout mRetailerView;
     private AddressResponse myAddress;
-    private AppCompatEditText tvAadharNoField;
+    private AppCompatEditText tvAadharNoField, etvDeliveryCharges, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
+    private AppCompatTextView tvClosingTIme, tvOpeningTIme;
     private CustomNetworkImageView ivAadharFrontImageField, ivAadharBackImageField, ivPanCardImageField, ivShopImageField;
     private String aadharFrontImageUrl;
     private String aadharBackImageUrl;
@@ -122,17 +125,28 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         ivPanCardImageField = view.findViewById(R.id.iv_pan_card_no_image_field);
         tvAadharNoField = view.findViewById(R.id.tv_aadhar_number_no_field);
         ivShopImageField = view.findViewById(R.id.iv_shop_image_field);
-
         aadharFrontImageProgressBar = view.findViewById(R.id.aadhar_front_progess_bar);
         aadharBackImageProgressBar = view.findViewById(R.id.aadhar_back_progess_bar);
         pancardProgressBar = view.findViewById(R.id.pan_progess_bar);
         shopImageProgressBar = view.findViewById(R.id.shop_image_progess_bar);
+
+        etvDeliveryCharges = view.findViewById(R.id.delivery_charges);
+
+        tvOpeningTIme = view.findViewById(R.id.open_time);
+        tvClosingTIme = view.findViewById(R.id.close_time);
+
+        tvDeliveryDaysAfterTime = view.findViewById(R.id.delivery_days_after_time);
+        tvDeliveryDaysBeforeTime = view.findViewById(R.id.delivery_days_before_time);
 
         view.findViewById(R.id.add_address).setOnClickListener(this);
         ivAadharFrontImageField.setOnClickListener(this);
         ivAadharBackImageField.setOnClickListener(this);
         ivPanCardImageField.setOnClickListener(this);
         ivShopImageField.setOnClickListener(this);
+
+        tvOpeningTIme.setOnClickListener(this);
+        tvClosingTIme.setOnClickListener(this);
+
     }
 
     @Override
@@ -155,6 +169,12 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             tvDeliveryRadius.setText(myAddress.getDeliveryRadius());
             tvCity.setText(myAddress.getCity());
             tvAadharNoField.setText(myAddress.getAadhaarCardNo());
+
+            etvDeliveryCharges.setText(myAddress.getDeliveryCharges());
+            tvOpeningTIme.setText(myAddress.getOpeningTime());
+            tvClosingTIme.setText(myAddress.getClosingTime());
+            tvDeliveryDaysAfterTime.setText(myAddress.getDeliveryDaysAfterTime());
+            tvDeliveryDaysBeforeTime.setText(myAddress.getDeliveryDaysBeforeTime());
 
             ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
 
@@ -292,6 +312,10 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 selectedPhotoType = 3;
                 capturePhotoSelected();
                 break;
+            case R.id.open_time:
+            case R.id.close_time:
+                new CustomTimePicker((AppCompatTextView) view, getActivity());
+                break;
             default:
                 break;
         }
@@ -350,6 +374,37 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     private void addAddressSelected() {
         String aadharNo = "";
         if (mRetailerView.getVisibility() == View.VISIBLE) {
+
+            String deliveryCharges = Objects.requireNonNull(etvDeliveryCharges.getText()).toString().trim();
+            if (TextUtils.isEmpty(deliveryCharges)) {
+                showDialog(getString(R.string.delivery_charges_required));
+                return;
+            }
+
+            String openingTime = Objects.requireNonNull(tvOpeningTIme.getText()).toString().trim();
+            if (TextUtils.isEmpty(openingTime)) {
+                showDialog(getString(R.string.opening_time_required));
+                return;
+            }
+
+            String closingTime = Objects.requireNonNull(tvClosingTIme.getText()).toString().trim();
+            if (TextUtils.isEmpty(closingTime)) {
+                showDialog(getString(R.string.closing_time_required));
+                return;
+            }
+
+            String deliveryDaysAfterTime = Objects.requireNonNull(tvDeliveryDaysAfterTime.getText()).toString().trim();
+            if (TextUtils.isEmpty(deliveryDaysAfterTime)) {
+                showDialog(getString(R.string.delivery_days_after_time));
+                return;
+            }
+
+            String deliveryDaysBeforeTime = Objects.requireNonNull(tvDeliveryDaysBeforeTime.getText()).toString().trim();
+            if (TextUtils.isEmpty(deliveryDaysBeforeTime)) {
+                showDialog(getString(R.string.delivery_days_before_time));
+                return;
+            }
+
             aadharNo = Objects.requireNonNull(tvAadharNoField.getText()).toString().trim();
             if (TextUtils.isEmpty(aadharNo)) {
                 showDialog(getString(R.string.enter_your_aadhar_number));
@@ -389,7 +444,8 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             profileService.addAddress(myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                     myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                     myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
-                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, aadharNo).enqueue(new Callback<AddressListResponse>() {
+                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, aadharNo, myAddress.getDeliveryCharges(),
+                    myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime()).enqueue(new Callback<AddressListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
                     if (response.isSuccessful()) {
@@ -430,7 +486,8 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             profileService.updateAddress(myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                     myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                     myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
-                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), aadharNo).enqueue(new Callback<AddressListResponse>() {
+                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), aadharNo, myAddress.getDeliveryCharges(),
+                    myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime()).enqueue(new Callback<AddressListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
                     if (response.isSuccessful()) {
@@ -489,5 +546,14 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         myAddress.setState(Objects.requireNonNull(tvState.getText()).toString());
         myAddress.setDeliveryRadius(Objects.requireNonNull(tvDeliveryRadius.getText()).toString());
         myAddress.setPinCode(Objects.requireNonNull(tvPinCode.getText()).toString());
+
+        myAddress.setDeliveryCharges(Objects.requireNonNull(etvDeliveryCharges.getText()).toString());
+
+        myAddress.setOpeningTime(Objects.requireNonNull(tvOpeningTIme.getText()).toString());
+        myAddress.setClosingTime(Objects.requireNonNull(tvClosingTIme.getText()).toString());
+
+        myAddress.setDeliveryDaysAfterTime(Objects.requireNonNull(tvDeliveryDaysAfterTime.getText()).toString());
+        myAddress.setDeliveryDaysBeforeTime(Objects.requireNonNull(tvDeliveryDaysBeforeTime.getText()).toString());
+
     }
 }
