@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="reasons_list">
+        <item>Item Created by Mistake</item>
+        <item>Item(s) Would Not Arrive on Time</item>
+        <item>Found Cheaper SomeWhere Else</item>
+        <item>Need to Change Shipping Address</item>
+        <item>Need to Change Payment Method</item>
+        <item>Other</item>
+    </string-array>
+</resources>

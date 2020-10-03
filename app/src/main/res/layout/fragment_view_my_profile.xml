@@ -226,12 +226,21 @@
                         android:background="@color/colorPrimary"
                         android:layout_width="match_parent"
                         android:drawableEnd="@drawable/add" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/address_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <fragment
+                android:id="@+id/map_view"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_margin="20dp" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.AddressResponse;
 
@@ -54,6 +55,7 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         // myProfileViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(MyProfileViewModel.class);
+        LoggerInfo.printLog("Fragment", "ViewMyProfileFragment");
         return inflater.inflate(R.layout.fragment_view_my_profile, container, false);
     }
 

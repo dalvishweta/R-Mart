@@ -20,6 +20,11 @@ public class CustomerWishListActivity extends BaseNavigationDrawerActivity {
     }
 
     @Override
+    public void onPermissionsGranted(Integer requestCode) {
+
+    }
+
+    @Override
     public void onClick(View view) {
         if (view.getId() != R.id.retailer_orders) {
             getToActivity(view.getId(), false);

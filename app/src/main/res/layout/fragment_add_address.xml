@@ -277,6 +277,13 @@
                 style="@style/my_profile_tv"
                 android:maxLength="9"
                 android:inputType="number" />
+
+            <LinearLayout
+                android:id="@+id/map_layout_field"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_margin="20dp"
+                android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
 

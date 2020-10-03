@@ -1,5 +1,7 @@
 package com.rmart.customer.models;
 
+import android.content.Intent;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -31,6 +33,8 @@ public class ShoppingCartResponseDetails implements Serializable {
     @SerializedName("cart_price")
     @Expose
     private Integer cartPrice;
+
+    private Integer productId = -1;
 
     public String getShopName() {
         return shopName;
@@ -86,5 +90,13 @@ public class ShoppingCartResponseDetails implements Serializable {
 
     public void setCartPrice(Integer cartPrice) {
         this.cartPrice = cartPrice;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 }

@@ -7,6 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
@@ -33,13 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +64,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private CustomerProductsShopDetailsModel vendorShopDetails;
     private int totalProductsInCart = -1;
+    private int productId = -1;
 
     public ShoppingCartDetailsFragment() {
         // Required empty public constructor
@@ -82,6 +84,9 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
         Bundle extras = getArguments();
         if (extras != null) {
             vendorShoppingCartDetails = (ShoppingCartResponseDetails) extras.getSerializable("VendorShopDetails");
+            if(vendorShoppingCartDetails != null) {
+                productId = vendorShoppingCartDetails.getProductId();
+            }
         }
     }
 
@@ -147,6 +152,9 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
+            if(productId != -1) {
+
+            }
             Call<ProductInCartResponse> call = customerProductsService.getVendorShowCartList(clientID, vendorShoppingCartDetails.getVendorId(), MyProfile.getInstance().getUserID());
             call.enqueue(new Callback<ProductInCartResponse>() {
                 @Override

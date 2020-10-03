@@ -49,6 +49,11 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
     }
 
     @Override
+    public void onPermissionsGranted(Integer requestCode) {
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();

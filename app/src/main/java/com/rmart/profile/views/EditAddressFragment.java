@@ -62,7 +62,6 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     private static final String SHOP_IMAGE = "shop_image";
     private AppCompatEditText tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress, tvCity, tvShopNO, tvDeliveryRadius, tvPinCode, tvState;
     private LinearLayout mRetailerView;
-    private FrameLayout mMapView;
     private AddressResponse myAddress;
     private AppCompatEditText tvAadharNoField, etvDeliveryCharges, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
     private AppCompatTextView tvClosingTIme, tvOpeningTIme;
@@ -143,11 +142,10 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         tvDeliveryDaysAfterTime = view.findViewById(R.id.delivery_days_after_time);
         tvDeliveryDaysBeforeTime = view.findViewById(R.id.delivery_days_before_time);
 
-        /*mMapView = view.findViewById(R.id.map_view);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.map_view, MapsFragment.newInstance(false, ""), MapsFragment.class.getName());
-        fragmentTransaction.commit();*/
+        fragmentTransaction.add(R.id.map_layout_field   , MapsFragment.newInstance(false, ""), MapsFragment.class.getName());
+        fragmentTransaction.commit();
 
         view.findViewById(R.id.add_address).setOnClickListener(this);
         ivAadharFrontImageField.setOnClickListener(this);

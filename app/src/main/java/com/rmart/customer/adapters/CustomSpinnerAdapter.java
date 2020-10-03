@@ -73,6 +73,8 @@ public class CustomSpinnerAdapter extends BaseAdapter {
             CustomerProductsDetailsUnitModel unitDetails = (CustomerProductsDetailsUnitModel) dataObject;
             String unitMeasureDetails = String.format("%s %s", unitDetails.getUnitNumber(), unitDetails.getShortUnitMeasure());
             holder.tvTextField.setText(unitMeasureDetails);
+        } else if (dataObject instanceof String) {
+            holder.tvTextField.setText((String) dataObject);
         }
         return convertView;
     }

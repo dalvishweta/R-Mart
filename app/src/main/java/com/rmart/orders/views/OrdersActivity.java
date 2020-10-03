@@ -35,6 +35,11 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
     }
 
     @Override
+    public void onPermissionsGranted(Integer requestCode) {
+
+    }
+
+    @Override
     public void goToHome() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);

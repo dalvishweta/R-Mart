@@ -267,5 +267,17 @@
     <string name="closing_time">Closing Time</string>
     <string name="delivery_days_before_time">Delivery in days before closing</string>
     <string name="delivery_days_after_time">Delivery in days after closing</string>
+    <string name="no_product_details_found">No Product Details Found</string>
+    <string name="map_view">Map View</string>
+    <string name="list_view">List View</string>
+    <string name="runtime_permissions_txt">Please enable permissions from app settings.</string>
+    <string name="dialog_ok">Ok</string>
     <string name="status">Status</string>
+    <string name="select_reason_for_cancelling">Select Reason For Cancelling</string>
+    <string name="submit">Submit</string>
+    <string name="select_reason">Select Reason</string>
+    <string name="colon">:</string>
+    <string name="logout_confirmation_message">Are you sure wants to Logout?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 </resources>

@@ -17,4 +17,7 @@ public class Constants {
 
     public static final int JOB_INSTANT_MESSENGER = 1;
 
+    public static String CACHE_CUSTOMER_DETAILS = "cache_customer_details";
+    public static String CACHE_RETAILER_DETAILS = "cache_retailer_details";
+    public static String CACHE_DELIVERY_DETAILS = "cache_delivery_details";
 }

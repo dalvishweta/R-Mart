@@ -1,23 +1,44 @@
 package com.rmart.customer.views;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Task;
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
@@ -27,6 +48,7 @@ import com.rmart.customer.models.AddShopToWishListResponse;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsResponse;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.mapview.MyLocation;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -63,6 +85,13 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private MyProfile myProfile;
     private CustomerProductsShopDetailsModel selectedShopDetails;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private Location currentLocation;
+    private SupportMapFragment mapFragment;
+    private double latitude = 0.0;
+    private double longitude = 0.0;
+    private LocationManager locationManager;
+    private GoogleMap googleMap;
 
     public static VendorShopsListFragment getInstance() {
         return new VendorShopsListFragment();
@@ -73,6 +102,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         LoggerInfo.printLog("Fragment", "VendorShopsListFragment");
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         return inflater.inflate(R.layout.fragment_vendor_list_view, container, false);
     }
 
@@ -95,7 +126,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
 
         myProfile = MyProfile.getInstance();
 
-        RecyclerView productsListField = view.findViewById(R.id.products_list_field);
+        RecyclerView vendorShopsListField = view.findViewById(R.id.products_list_field);
         AppCompatTextView tvAddressField = view.findViewById(R.id.tv_address_field);
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
         ImageView ivSearchField = view.findViewById(R.id.iv_search_field);
@@ -119,10 +150,10 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity());
-        productsListField.setLayoutManager(layoutManager);
-        productsListField.setHasFixedSize(false);
-        productsListField.setItemAnimator(new SlideInDownAnimator());
-        productsListField.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        vendorShopsListField.setLayoutManager(layoutManager);
+        vendorShopsListField.setHasFixedSize(false);
+        vendorShopsListField.setItemAnimator(new SlideInDownAnimator());
+        vendorShopsListField.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -148,10 +179,10 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
 
         DividerItemDecoration divider = new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(requireActivity(), R.drawable.recycler_decoration_divider)));
-        productsListField.addItemDecoration(divider);
+        vendorShopsListField.addItemDecoration(divider);
 
         vendorShopsListAdapter = new VendorShopsListAdapter(requireActivity(), shopsList, callBackListener);
-        productsListField.setAdapter(vendorShopsListAdapter);
+        vendorShopsListField.setAdapter(vendorShopsListAdapter);
 
         view.findViewById(R.id.btn_change_address_field).setOnClickListener(v -> changeAddressSelected());
 
@@ -172,8 +203,124 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             }
         }
 
+
+        mapFragment =
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(callback);
+            fetchLocation();
+        }
+
+        AppCompatRadioButton listViewRadio = view.findViewById(R.id.list_view_radio_button);
+        listViewRadio.setChecked(true);
+        RadioGroup mapViewOrListViewRadioGroup = view.findViewById(R.id.map_view_or_list_view_radio_group);
+
+        RelativeLayout mapLayout = view.findViewById(R.id.map_layout_field);
+
+        mapViewOrListViewRadioGroup.setOnCheckedChangeListener((radioGroup, radioButtonID) -> {
+            AppCompatRadioButton selectedRadioButton = radioGroup.findViewById(radioButtonID);
+            String selectedText = selectedRadioButton.getText().toString();
+            if (selectedText.equalsIgnoreCase(getString(R.string.map_view))) {
+                mapLayout.setVisibility(View.VISIBLE);
+                vendorShopsListField.setVisibility(View.GONE);
+            } else {
+                mapLayout.setVisibility(View.GONE);
+                vendorShopsListField.setVisibility(View.VISIBLE);
+            }
+        });
+
         getShopsList();
     }
+
+    private void fetchLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            return;
+        }
+
+        Task<Location> task = fusedLocationProviderClient.getLastLocation();
+        task.addOnSuccessListener(location -> {
+            if (location != null) {
+                currentLocation = location;
+                latitude = currentLocation.getLatitude();
+                longitude = currentLocation.getLongitude();
+                // Toast.makeText(getContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+                //SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
+                if (mapFragment != null) {
+                    mapFragment.getMapAsync(callback);
+                }
+            } else {
+                locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
+                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    onGPS();
+                } else {
+                    getLocation();
+                }
+            }
+        });
+    }
+
+    private void onGPS() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", (dialog, which) -> startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))).setNegativeButton("No", (dialog, which) -> dialog.cancel());
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+        } else {
+            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (locationGPS != null) {
+                currentLocation = locationGPS;
+                latitude = locationGPS.getLatitude();
+                longitude = locationGPS.getLongitude();
+                updateMap();
+            } else {
+                MyLocation myLocation = new MyLocation(requireActivity());
+                myLocation.getLocation(locationResult);
+            }
+        }
+    }
+
+    public MyLocation.LocationResult locationResult = new MyLocation.LocationResult() {
+
+        @Override
+        public void gotLocation(Location location) {
+            if (location != null) {
+                currentLocation = location;
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                updateMap();
+            }
+        }
+    };
+
+    private void updateMap() {
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(callback);
+        }
+    }
+
+    private OnMapReadyCallback callback = new OnMapReadyCallback() {
+
+        @Override
+        public void onMapReady(GoogleMap map) {
+            googleMap = map;
+            if (currentLocation != null) {
+                LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
+                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                googleMap.addMarker(markerOptions);
+            }
+        }
+    };
 
     @Override
     public void onResume() {
@@ -378,14 +525,29 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
         }
     }
 
-    private void updateAdapter(List<CustomerProductsShopDetailsModel> customerProductsList) {
-        shopsList.addAll(customerProductsList);
-        vendorShopsListAdapter.updateItems(customerProductsList);
+    private void updateAdapter(List<CustomerProductsShopDetailsModel> customerShopsList) {
+        shopsList.addAll(customerShopsList);
+        vendorShopsListAdapter.updateItems(customerShopsList);
         vendorShopsListAdapter.notifyDataSetChanged();
         if (shopsList.size() >= totalShopsCount) {
             isLastPage = true;
         } else {
             isLoading = false;
         }
+
+        /*for(CustomerProductsShopDetailsModel shopDetailsModel : customerShopsList) {
+            createMarker(shopDetailsModel.getLatitude(), shopDetailsModel.getLongitude(), shopDetailsModel.getShopName(), shopDetailsModel.getShopAddress());
+        }*/
+    }
+
+
+    private void createMarker(double latitude, double longitude, String title, String snippet) {
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .anchor(0.5f, 0.5f)
+                .title(title)
+                .snippet(snippet)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
     }
 }

@@ -8,9 +8,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.rmart.R;
 import com.rmart.baseclass.BaseListener;
+import com.rmart.utilits.RuntimePermissionsActivity;
 
 
-public abstract class BaseActivity extends AppCompatActivity implements BaseListener {
+public abstract class BaseActivity extends RuntimePermissionsActivity implements BaseListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

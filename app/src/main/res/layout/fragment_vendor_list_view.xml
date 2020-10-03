@@ -46,16 +46,71 @@
             android:textSize="16sp" />
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/products_list_field"
+    <RelativeLayout
+        android:id="@+id/map_or_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/changeAddressLayout"
-        android:layout_below="@id/searchLayout"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:layout_below="@id/searchLayout">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/products_list_field"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <RelativeLayout
+            android:id="@+id/map_layout_field"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+    <RadioGroup
+        android:id="@+id/map_view_or_list_view_radio_group"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/map_or_list_view"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_segmented_left"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/map_view"
+            android:textColor="@drawable/txt_segmented" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/list_view_radio_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_segmented_right"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/list_view"
+            android:textColor="@drawable/txt_segmented" />
+    </RadioGroup>
 
     <RelativeLayout
         android:id="@+id/changeAddressLayout"

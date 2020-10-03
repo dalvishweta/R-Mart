@@ -45,6 +45,11 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     }
 
     @Override
+    public void onPermissionsGranted(Integer requestCode) {
+
+    }
+
+    @Override
     public void showMyCategories() {
         addFragment(MyCategoryListFragment.newInstance("",""), MyCategoryListFragment.class.getName(), true);
     }

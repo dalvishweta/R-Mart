@@ -33,6 +33,11 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     }
 
     @Override
+    public void onPermissionsGranted(Integer requestCode) {
+
+    }
+
+    @Override
     public void onClick(View view) {
         if (view.getId() != R.id.customer_shopping) {
             getToActivity(view.getId(), false);

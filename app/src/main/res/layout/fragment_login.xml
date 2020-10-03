@@ -17,27 +17,71 @@
         <TextView
             style="@style/AuthenticationHeader"
             android:text="@string/login"/>
-        <com.rmart.baseclass.views.CustomEditTextWithErrorText
-            android:id="@+id/mobile_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/smartphone"
-            android:hint="@string/hint_mobile_number"
-            android:inputType="number"
-            android:maxLength="10"
-            app:error_trxt="@string/error_mobile_number"
-            />
-        <com.rmart.baseclass.views.CustomEditTextWithErrorText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_password"
-            android:hint="@string/hint_password"
-            android:inputType="numberPassword"
-            android:maxLength="5"
-            app:error_trxt="@string/error_empty_password"
-            />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_corners_edit_text_bg"
+            android:minHeight="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/user" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/mobile_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/mobile_number"
+                android:inputType="numberDecimal"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:minHeight="50dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textSize="18sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_corners_edit_text_bg"
+            android:minHeight="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/user" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:background="@android:color/transparent"
+                android:hint="@string/hint_password"
+                android:inputType="numberPassword"
+                android:maxLength="5"
+                android:maxLines="1"
+                android:minHeight="50dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textSize="18sp" />
+        </LinearLayout>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/login"
             android:layout_marginTop="64dp"

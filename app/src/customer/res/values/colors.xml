@@ -7,4 +7,7 @@
     <color name="product_edit_color">#4A148C</color>
     <color name="green">#0AC811</color>
     <color name="sky_blue">#0099FF</color>
+
+    <color name="radio_button_selected_color">@color/change_text_color</color>
+    <color name="radio_button_unselected_color">@color/grey_color_three</color>
 </resources>

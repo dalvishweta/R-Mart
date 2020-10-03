@@ -4,9 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -17,15 +15,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.app.NotificationCompat;
+
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.rmart.BuildConfig;
 import com.rmart.R;
+import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.fcm.MyFirebaseMessagingService;
-import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.RokadMartCache;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.LoginResponse;
 import com.rmart.utilits.pojos.ProfileResponse;
@@ -36,18 +40,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.core.app.NotificationCompat;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.app.Notification.EXTRA_NOTIFICATION_ID;
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 
 public class LoginFragment extends LoginBaseFragment implements View.OnClickListener {
@@ -81,8 +76,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        etMobileNumber = ((CustomEditTextWithErrorText)view.findViewById(R.id.mobile_number)).getAppCompatEditText();
-        etPassword = ((CustomEditTextWithErrorText)view.findViewById(R.id.password)).getAppCompatEditText();
+        etMobileNumber = view.findViewById(R.id.mobile_number);
+        etPassword = view.findViewById(R.id.password);
         view.findViewById(R.id.login).setOnClickListener(this);
         view.findViewById(R.id.register).setOnClickListener(this);
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
@@ -164,6 +159,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                         } else {
                                             switch (data.getLoginData().getRoleID()) {
                                                 case Utils.CUSTOMER_ID:
+                                                    RokadMartCache.putData(Constants.CACHE_CUSTOMER_DETAILS, requireActivity(), data.getLoginData());
                                                     mListener.goToCustomerHomeActivity();
                                                     SharedPreferences sharedPref = Objects.requireNonNull(requireActivity()).getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                                                     SharedPreferences.Editor editor = sharedPref.edit();
@@ -171,9 +167,11 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                                     editor.apply();
                                                     break;
                                                 case Utils.RETAILER_ID:
+                                                    RokadMartCache.putData(Constants.CACHE_RETAILER_DETAILS, requireActivity(), data.getLoginData());
                                                     mListener.goToHomeActivity();
                                                     break;
                                                 case Utils.DELIVERY_ID:
+                                                    RokadMartCache.putData(Constants.CACHE_DELIVERY_DETAILS, requireActivity(), data.getLoginData());
                                                     break;
                                             }
                                         }
@@ -196,6 +194,11 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                             }
                         } else {
                             showDialog(getString(R.string.no_information_available));
+                        }
+                    } else {
+                        String errorMessage = response.message();
+                        if (!TextUtils.isEmpty(errorMessage)) {
+                            showDialog(errorMessage);
                         }
                     }
                     progressDialog.dismiss();

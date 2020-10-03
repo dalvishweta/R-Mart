@@ -18,6 +18,11 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
         addFragment(CustomerOrderListFragment.newInstance( ""), "OrderHomeFragment", false);
     }
 
+    @Override
+    public void onPermissionsGranted(Integer requestCode) {
+
+    }
+
 
     @Override
     public void goToViewFullOrder(Order orderObject) {

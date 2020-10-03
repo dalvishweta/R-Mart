@@ -31,6 +31,7 @@ import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductDetailsDescModel;
 import com.rmart.customer.models.ProductDetailsDescResponse;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
+import com.rmart.customer_order.views.SelectOrderStatusView;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
@@ -82,6 +83,9 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
     private List<String> productsImagesList;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
+
+    private int productId = -1;
+    private boolean isAddToCartSelected = false;
 
     static ProductCartDetailsFragment getInstance(CustomerProductDetailsModel vendorProductDataDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
         ProductCartDetailsFragment productCartDetailsFragment = new ProductCartDetailsFragment();
@@ -154,23 +158,23 @@ public class ProductCartDetailsFragment extends BaseFragment {
                                 if (productDetailsDescModel != null) {
                                     updateUI();
                                 } else {
-                                    showDialog(getString(R.string.no_information_available));
+                                    showCloseDialog(getString(R.string.no_information_available));
                                 }
                             } else {
-                                showDialog(body.getMsg());
+                                showCloseDialog(body.getMsg());
                             }
                         } else {
-                            showDialog(getString(R.string.no_information_available));
+                            showCloseDialog(getString(R.string.no_information_available));
                         }
                     } else {
-                        showDialog(getString(R.string.no_information_available));
+                        showCloseDialog(getString(R.string.no_information_available));
                     }
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<ProductDetailsDescResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
-                    showDialog(t.getMessage());
+                    showCloseDialog(t.getMessage());
                 }
             });
         } else {
@@ -202,7 +206,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
         // imageLoader = RMartApplication.getInstance().getImageLoader();
 
         btnMinusField.setOnClickListener(v -> {
-            if (noOfQuantity > 0) {
+            if (noOfQuantity > 1) {
                 noOfQuantity--;
                 updateQuantityDetails();
             }
@@ -285,37 +289,44 @@ public class ProductCartDetailsFragment extends BaseFragment {
     }
 
     private void updateUI() {
-        productsImagesList = productDetailsDescModel.getProductImage();
-        if (productsImagesList != null && !productsImagesList.isEmpty()) {
-            List<ImageURLResponse> lUpdatedImagesList = new ArrayList<>();
-            for (String imageUrl : productsImagesList) {
-                ImageURLResponse imageURLResponse = new ImageURLResponse();
-                imageURLResponse.setDisplayImage(imageUrl);
-                lUpdatedImagesList.add(imageURLResponse);
+        if (productDetailsDescModel != null) {
+            productsImagesList = productDetailsDescModel.getProductImage();
+            if (productsImagesList != null && !productsImagesList.isEmpty()) {
+                List<ImageURLResponse> lUpdatedImagesList = new ArrayList<>();
+                for (String imageUrl : productsImagesList) {
+                    ImageURLResponse imageURLResponse = new ImageURLResponse();
+                    imageURLResponse.setDisplayImage(imageUrl);
+                    lUpdatedImagesList.add(imageURLResponse);
+                }
+                ImageAdapter imageAdapter = new ImageAdapter(requireActivity(), lUpdatedImagesList);
+                productsImagePagerField.setAdapter(imageAdapter);
+            } else {
+                ivLeftArrowImageField.setVisibility(View.GONE);
+                ivRightArrowImageField.setVisibility(View.GONE);
             }
-            ImageAdapter imageAdapter = new ImageAdapter(requireActivity(), lUpdatedImagesList);
-            productsImagePagerField.setAdapter(imageAdapter);
-        } else {
-            ivLeftArrowImageField.setVisibility(View.GONE);
-            ivRightArrowImageField.setVisibility(View.GONE);
-        }
-        tvProductNameField.setText(productDetailsDescModel.getProductName());
+            tvProductNameField.setText(productDetailsDescModel.getProductName());
 
-        List<CustomerProductsDetailsUnitModel> unitsList = productDetailsDescModel.getUnits();
-        if (unitsList != null && !unitsList.isEmpty()) {
-            ArrayList<Object> updatedUnitsList = new ArrayList<>(unitsList);
-            CustomSpinnerAdapter unitsAdapter = new CustomSpinnerAdapter(requireActivity(), updatedUnitsList);
-            quantitySpinnerField.setAdapter(unitsAdapter);
+            List<CustomerProductsDetailsUnitModel> unitsList = productDetailsDescModel.getUnits();
+            if (unitsList != null && !unitsList.isEmpty()) {
+                ArrayList<Object> updatedUnitsList = new ArrayList<>(unitsList);
+                CustomSpinnerAdapter unitsAdapter = new CustomSpinnerAdapter(requireActivity(), updatedUnitsList);
+                quantitySpinnerField.setAdapter(unitsAdapter);
+            }
+            tvProductDescField.setText(productDetailsDescModel.getProductDetails());
+            tvProductDescField.post(() -> {
+                int lineCount = tvProductDescField.getLineCount();
+                viewMoreLayoutField.setVisibility(lineCount >= 5 ? View.VISIBLE : View.GONE);
+            });
+
+            ivRightArrowImageField.setVisibility(productImagePosition == productsImagesList.size() ? View.GONE : View.VISIBLE);
 
             quantitySpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                    Object lObject = updatedUnitsList.get(position);
-                    if (lObject instanceof CustomerProductsDetailsUnitModel) {
-                        CustomerProductsDetailsUnitModel lUnitsModel = (CustomerProductsDetailsUnitModel) lObject;
-                        int productDiscount = lUnitsModel.getProductDiscount();
-                        String productDiscountDetails = productDiscount + "% \n Off";
-                        tvProductDiscountField.setText(productDiscountDetails);
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    Object lSelectedItem = quantitySpinnerField.getSelectedItem();
+                    if (lSelectedItem instanceof CustomerProductsDetailsUnitModel) {
+                        productUnitDetails = (CustomerProductsDetailsUnitModel) lSelectedItem;
+                        updateUnitPriceDetails();
                     }
                 }
 
@@ -324,34 +335,13 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
                 }
             });
+            tvProductDescField.setText(productDetailsDescModel.getProductDetails());
+            isWishListProduct = productDetailsDescModel.getWishList();
+
+            ivFavouriteImageField.setImageResource(isWishListProduct ? R.drawable.heart_active : R.drawable.heart_black);
+        } else {
+            showCloseDialog(getString(R.string.no_product_details_found));
         }
-        tvProductDescField.setText(productDetailsDescModel.getProductDetails());
-        tvProductDescField.post(() -> {
-            int lineCount = tvProductDescField.getLineCount();
-            viewMoreLayoutField.setVisibility(lineCount >= 5 ? View.VISIBLE : View.GONE);
-        });
-
-        ivRightArrowImageField.setVisibility(productImagePosition == productsImagesList.size() ? View.GONE : View.VISIBLE);
-
-        quantitySpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Object lSelectedItem = quantitySpinnerField.getSelectedItem();
-                if(lSelectedItem instanceof CustomerProductsDetailsUnitModel) {
-                    productUnitDetails = (CustomerProductsDetailsUnitModel) lSelectedItem;
-                    updateUnitPriceDetails();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        tvProductDescField.setText(productDetailsDescModel.getProductDetails());
-        isWishListProduct = productDetailsDescModel.getWishList();
-
-        ivFavouriteImageField.setImageResource(isWishListProduct ? R.drawable.heart_active : R.drawable.heart_black);
     }
 
     private void updateUnitPriceDetails() {
@@ -363,10 +353,16 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
         String quantityDetails = String.format("%s %s", productUnitDetails.getUnitNumber(), productUnitDetails.getShortUnitMeasure());
         tvQuantityField.setText(quantityDetails);
+        noOfQuantity = productUnitDetails.getProductUnitQuantity();
+        tvNoOfQuantityField.setText(String.valueOf(noOfQuantity));
     }
 
     private void showCloseDialog(String title, String message) {
         showDialog(title, message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+    }
+
+    private void showCloseDialog(String message) {
+        showDialog(message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
     }
 
     private void addToCartSelected() {
@@ -384,6 +380,8 @@ public class ProductCartDetailsFragment extends BaseFragment {
                         AddToCartResponseDetails body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
+                                productId = -1;
+                                isAddToCartSelected = true;
                                 AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = body.getAddToCartDataResponse();
                                 if (addToCartDataResponse != null) {
                                     Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
@@ -419,6 +417,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
         shoppingCartResponseDetails.setVendorId(vendorShopDetails.getVendorId());
         shoppingCartResponseDetails.setMobileNumber(vendorShopDetails.getShopMobileNo());
         shoppingCartResponseDetails.setShopName(vendorShopDetails.getShopName());
+        shoppingCartResponseDetails.setProductId(!isAddToCartSelected ? productDetailsDescModel.getProductId() : -1);
         onCustomerHomeInteractionListener.gotoShoppingCartDetails(shoppingCartResponseDetails);
     }
 

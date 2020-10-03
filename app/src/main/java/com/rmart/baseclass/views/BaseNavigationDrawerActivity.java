@@ -10,12 +10,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.google.android.material.navigation.NavigationView;
 import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.authentication.views.AuthenticationActivity;
+import com.rmart.baseclass.Constants;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer.views.CustomerWishListFragment;
 import com.rmart.customer.views.ShoppingCartFragment;
@@ -26,17 +36,10 @@ import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
 import com.rmart.utilits.CommonUtils;
 import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.RokadMartCache;
 import com.rmart.utilits.Utils;
 
 import org.jetbrains.annotations.NotNull;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -213,11 +216,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     startActivity(intent);
                     break;
                 case R.id.logout:
-                    hideCartIcon();
-                    Intent in = new Intent(this, AuthenticationActivity.class);
-                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
-                    startActivity(in);
-                    finish();
+                    showLogoutConfirmation();
                     // Toast.makeText(getBaseContext(), "logout", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.update_profile:
@@ -246,6 +245,43 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             }
         }
         drawerLayout.closeDrawer(navigationView);
+    }
+
+    private void showLogoutConfirmation() {
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialog);
+            builder.setTitle(getString(R.string.message));
+            builder.setMessage(getString(R.string.logout_confirmation_message));
+            builder.setCancelable(false);
+            builder.setNegativeButton(getString(R.string.no), (dialogInterface, i) -> dialogInterface.dismiss());
+            builder.setPositiveButton(getString(R.string.yes), (dialogInterface, i) -> {
+                logoutConfirmed();
+                dialogInterface.dismiss();
+            });
+            AlertDialog alertDialog = builder.create();
+            if (!isFinishing()) {
+                alertDialog.show();
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void logoutConfirmed() {
+        hideCartIcon();
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
+            RokadMartCache.putData(Constants.CACHE_CUSTOMER_DETAILS, this, null);
+        } else if (myProfile.getRoleID().equalsIgnoreCase(Utils.RETAILER_ID)) {
+            RokadMartCache.putData(Constants.CACHE_RETAILER_DETAILS, this, null);
+        } else if (myProfile.getRoleID().equalsIgnoreCase(Utils.DELIVERY_ID)) {
+            RokadMartCache.putData(Constants.CACHE_DELIVERY_DETAILS, this, null);
+        }
+        Intent in = new Intent(this, AuthenticationActivity.class);
+        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(in);
+
+        finish();
     }
 
     private void gotoWisListScreen() {
