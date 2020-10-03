@@ -34,13 +34,13 @@ public class OrdersListAdapter extends RecyclerView.Adapter<OrdersListItemViewHo
     public void onBindViewHolder(@NonNull OrdersListItemViewHolder holder, int position) {
         Order orderObject = orderList.get(position);
         if (orderObject.getStatusDisplay().length() <= 0) {
-            holder.status.setVisibility(View.GONE);
+            // holder.status.setVisibility(View.GONE);
             holder.statusDisplayName.setVisibility(View.GONE);
         } else {
-            holder.status.setVisibility(View.VISIBLE);
+            // holder.status.setVisibility(View.VISIBLE);
             holder.statusDisplayName.setVisibility(View.VISIBLE);
-            holder.status.setText(orderObject.getStatus());
-            holder.statusDisplayName.setText(orderObject.getStatusDisplay());
+            // holder.status.setText(orderObject.getStatusDisplay());
+            holder.statusDisplayName.setText(orderObject.getStatus());
         }
         holder.orderCount.setText(orderObject.getProductCount());
         holder.orderID.setText(orderObject.getOrderID());

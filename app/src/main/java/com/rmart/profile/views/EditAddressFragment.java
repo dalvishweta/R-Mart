@@ -143,11 +143,11 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         tvDeliveryDaysAfterTime = view.findViewById(R.id.delivery_days_after_time);
         tvDeliveryDaysBeforeTime = view.findViewById(R.id.delivery_days_before_time);
 
-        mMapView = view.findViewById(R.id.map_view);
+        /*mMapView = view.findViewById(R.id.map_view);
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.map_view, MapsFragment.newInstance(false, ""), MapsFragment.class.getName());
-        fragmentTransaction.commit();
+        fragmentTransaction.commit();*/
 
         view.findViewById(R.id.add_address).setOnClickListener(this);
         ivAadharFrontImageField.setOnClickListener(this);

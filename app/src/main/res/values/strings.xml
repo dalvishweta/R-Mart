@@ -212,7 +212,6 @@
     <string name="remove_from_cart">Remove From Cart</string>
     <string name="added_to_cart">Added to Cart</string>
     <string name="shopping">Shopping</string>
-    <string name="status">Status</string>
     <string name="aadhar_number">Aadhar No</string>
     <string name="enter_your_aadhar_number">Enter your Aadhar Number</string>
     <string name="aadhar_number_error">Please Enter Valid Aadhar Number</string>
@@ -268,4 +267,5 @@
     <string name="closing_time">Closing Time</string>
     <string name="delivery_days_before_time">Delivery in days before closing</string>
     <string name="delivery_days_after_time">Delivery in days after closing</string>
+    <string name="status">Status</string>
 </resources>

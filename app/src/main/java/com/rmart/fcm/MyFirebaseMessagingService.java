@@ -49,13 +49,33 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         try {
             //getting the json data
             JSONObject data = json.getJSONObject("data");
-
+            String rollID = "", title = "", message = "", imageUrl = "", userID = "";
             //parsing json data
-            String title = data.getString("title");
-            String message = data.getString("message");
-            String rollID = data.getString("role_id");
-            String userID = data.getString("user_id");
-            String imageUrl = data.getString("image");
+            try {
+                title = data.getString("title");
+            } catch (Exception e) {
+
+            }
+            try {
+                message = data.getString("message");
+            } catch (Exception e) {
+
+            }
+            try {
+                rollID = data.getString("role_id");
+            } catch (Exception e) {
+
+            }
+            try {
+                userID = data.getString("user_id");
+            } catch (Exception e) {
+
+            }
+            try {
+                imageUrl = data.getString("image");
+            } catch (Exception e) {
+
+            }
 
             //creating MyNotificationManager object
             MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());

@@ -20,6 +20,10 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
     @Expose
     String imageURL;
 
+    @SerializedName("image_name")
+    @Expose
+    String imageName;
+
     @SerializedName("image_id")
     @Expose
     String imageID;
@@ -88,5 +92,13 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
 
     public void setImageUri(Uri imageUri) {
         this.imageUri = imageUri;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }
