@@ -7,7 +7,9 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.rmart.baseclass.views.SplashScreen;
 import com.rmart.orders.views.OrdersActivity;
+import com.rmart.utilits.Utils;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -50,7 +52,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         try {
             //getting the json data
             JSONObject data = json.getJSONObject("data");
-            String rollID = "", title = "", message = "", imageUrl = "", userID = "";
+            String rollID = "", title = "", message = "", imageUrl = "", userID = "", orderID = "", mobileNO ="";
             //parsing json data
             try {
                 title = data.getString("title");
@@ -77,13 +79,35 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             } catch (Exception e) {
 
             }
+            try {
+                orderID = data.getString("order_id");
+            } catch (Exception e) {
 
+            }
+
+            try {
+                mobileNO = data.getString("mobile_no");
+            } catch (Exception e) {
+
+            }
             //creating MyNotificationManager object
             MyNotificationManager mNotificationManager = new MyNotificationManager(getApplicationContext());
 
             //creating an intent for the notification
-            Intent intent = new Intent(getApplicationContext(), OrdersActivity.class);
-            mNotificationManager.notificationDialog(rollID, title, message, imageUrl, intent);
+            Intent intent;
+            if (rollID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
+                intent = new Intent(getApplicationContext(), SplashScreen.class);
+            } else {
+                intent = new Intent(getApplicationContext(), SplashScreen.class);
+            }
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            intent.putExtra("user_id", userID);
+            intent.putExtra("order_id", orderID);
+            intent.putExtra("role_id", rollID);
+            intent.putExtra("mobile_no", mobileNO);
+
+            mNotificationManager.notificationDialog(rollID, title, message, imageUrl, orderID, intent);
             //if there is no image
             /*if(imageUrl.equals("null")){
                 //displaying small notification

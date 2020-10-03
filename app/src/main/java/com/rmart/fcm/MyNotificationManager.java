@@ -32,44 +32,7 @@ public class MyNotificationManager {
         this.mCtx = mCtx;
     }
 
-    //the method will show a big notification with an image
-    //parameters are title for message title, message for message text, url of the big image and an intent that will open
-    //when you will tap on the notification
-    public void showBigNotification(String title, String message, String url, Intent intent) {
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        mCtx,
-                        ID_BIG_NOTIFICATION,
-                        intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
-        bigPictureStyle.setBigContentTitle(title);
-        bigPictureStyle.setSummaryText(Html.fromHtml(message).toString());
-        bigPictureStyle.bigPicture(getBitmapFromURL(url));
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx, "M_CH_ID");
-        Notification notification;
-        notification = mBuilder.setSmallIcon(R.mipmap.ic_launcher).setTicker(title).setWhen(0)
-                .setAutoCancel(true)
-                .setContentIntent(resultPendingIntent)
-                .setContentTitle(title)
-                .setStyle(bigPictureStyle)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(mCtx.getResources(), R.mipmap.ic_launcher))
-                .setContentText(message)
-                .build();
-
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-        NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(ID_BIG_NOTIFICATION, notification);
-    }
-
-    //the method will show a small notification
-    //parameters are title for message title, message for message text and an intent that will open
-    //when you will tap on the notification
-    public void showSmallNotification(String title, String message, Intent intent) {
+    public void notificationDialog(String rollID, String title, String message, String imageURL, String orderID, Intent intent) {
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         mCtx,
@@ -78,41 +41,18 @@ public class MyNotificationManager {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
 
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx);
-        Notification notification;
-        notification = mBuilder.setSmallIcon(R.mipmap.ic_launcher).setTicker(title).setWhen(0)
-                .setAutoCancel(true)
-                .setContentIntent(resultPendingIntent)
-                .setContentTitle(title)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(mCtx.getResources(), R.mipmap.ic_launcher))
-                .setContentText(message)
-                .build();
-
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
         NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(ID_SMALL_NOTIFICATION, notification);
-    }
-    public void notificationDialog(String rollID, String title, String message, String imageURL, Intent intent) {
-        PendingIntent resultPendingIntent =
-                PendingIntent.getActivity(
-                        mCtx,
-                        ID_SMALL_NOTIFICATION,
-                        intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-
-        NotificationManager notificationManager = (NotificationManager)       mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
         // String NOTIFICATION_CHANNEL_ID = rollID;
         NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
         bigPictureStyle.setBigContentTitle(title);
-        bigPictureStyle.setSummaryText(Html.fromHtml(message).toString());
-        bigPictureStyle.bigPicture(getBitmapFromURL(imageURL));
+        bigPictureStyle.setSummaryText(message);
+        if (null != imageURL && imageURL.length() > 10) {
+            bigPictureStyle.bigPicture(getBitmapFromURL(imageURL));
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(rollID, rollID, NotificationManager.IMPORTANCE_MAX);
+            @SuppressLint("WrongConstant")
+            NotificationChannel notificationChannel = new NotificationChannel(rollID, rollID, NotificationManager.IMPORTANCE_MAX);
             // Configure the notification channel.
             notificationChannel.setDescription("R-Mart description");
             notificationChannel.enableLights(true);
@@ -134,7 +74,8 @@ public class MyNotificationManager {
                 .setStyle(bigPictureStyle)
                 .setContentIntent(resultPendingIntent)
                 .setContentInfo("Information");
-        notificationManager.notify(1, notificationBuilder.build());
+        int id = Integer.parseInt(orderID);
+        notificationManager.notify(id, notificationBuilder.build());
     }
     //The method will return Bitmap from an image URL
     private Bitmap getBitmapFromURL(String strURL) {

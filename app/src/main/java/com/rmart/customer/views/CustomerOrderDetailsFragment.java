@@ -46,7 +46,7 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
     private CustomerProductsShopDetailsModel vendorShoppingCartDetails;
     private AppCompatButton btnProceedToBuyField;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
-    private AppCompatTextView tvAmount;
+    private AppCompatTextView tvAmount, tvExpectedDateDelivery;
     private AppCompatTextView tvDeliveryCharges;
     private AppCompatTextView tvTotalCharges;
     private AppCompatTextView tvCustomerName;
@@ -156,6 +156,7 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
 
         //Payment info
         tvAmount = view.findViewById(R.id.amount);
+        tvExpectedDateDelivery = view.findViewById(R.id.expected_date_of_delivery);
         tvDeliveryCharges = view.findViewById(R.id.delivery_charges);
         tvTotalCharges = view.findViewById(R.id.total_charges);
 
@@ -183,6 +184,7 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
         CustomerOrderPaymentInfoDetails customerOrderPaymentInfoDetails = customerOrderedDataResponse.getCustomerOrderPaymentInfoDetails();
         if (customerOrderPaymentInfoDetails != null) {
             tvAmount.setText(String.valueOf(customerOrderPaymentInfoDetails.getOrderAmount()));
+            tvExpectedDateDelivery.setText(String.valueOf(customerOrderPaymentInfoDetails.getExpectedDateOfDelivery()));
             tvDeliveryCharges.setText(String.valueOf(customerOrderPaymentInfoDetails.getDeliveryCharges()));
             tvTotalCharges.setText(String.valueOf(customerOrderPaymentInfoDetails.getTotalAmount()));
         }

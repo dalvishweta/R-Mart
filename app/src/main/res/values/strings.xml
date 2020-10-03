@@ -280,4 +280,5 @@
     <string name="logout_confirmation_message">Are you sure wants to Logout?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="expected_date_of_delivery">Expected date of delivery</string>
 </resources>

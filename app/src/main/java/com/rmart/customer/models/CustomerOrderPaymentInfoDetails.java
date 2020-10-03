@@ -19,9 +19,14 @@ public class CustomerOrderPaymentInfoDetails implements Serializable {
     @SerializedName("expected_date_of_delivery")
     @Expose
     private String expectedDateOfDelivery;
+
     @SerializedName("total_amount")
     @Expose
     private Integer totalAmount;
+
+    /*@SerializedName("expected_date_of_delivery")
+    @Expose
+    private Integer expectedDateDelivery;*/
 
     public Integer getOrderAmount() {
         return orderAmount;
@@ -54,4 +59,12 @@ public class CustomerOrderPaymentInfoDetails implements Serializable {
     public void setTotalAmount(Integer totalAmount) {
         this.totalAmount = totalAmount;
     }
+
+    /*public Integer getExpectedDateDelivery() {
+        return expectedDateDelivery;
+    }
+
+    public void setExpectedDateDelivery(Integer expectedDateDelivery) {
+        this.expectedDateDelivery = expectedDateDelivery;
+    }*/
 }
