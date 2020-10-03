@@ -54,12 +54,8 @@ public class BaseFragment extends Fragment {
             }
         }*/
         if(!Utils.isNetworkConnected(requireActivity())) {
-            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text), new CallBackInterface() {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text), pObject -> {
 
-                @Override
-                public void callBackReceived(Object pObject) {
-
-                }
             });
         }
     }

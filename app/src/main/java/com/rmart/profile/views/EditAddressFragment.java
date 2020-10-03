@@ -8,12 +8,15 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.VolleyError;
@@ -23,6 +26,7 @@ import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.baseclass.views.ProgressBarCircular;
 import com.rmart.customer.views.CustomerHomeActivity;
+import com.rmart.mapview.MapsFragment;
 import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyAddress;
 import com.rmart.profile.model.MyProfile;
@@ -58,6 +62,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     private static final String SHOP_IMAGE = "shop_image";
     private AppCompatEditText tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress, tvCity, tvShopNO, tvDeliveryRadius, tvPinCode, tvState;
     private LinearLayout mRetailerView;
+    private FrameLayout mMapView;
     private AddressResponse myAddress;
     private AppCompatEditText tvAadharNoField, etvDeliveryCharges, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
     private AppCompatTextView tvClosingTIme, tvOpeningTIme;
@@ -137,6 +142,12 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
 
         tvDeliveryDaysAfterTime = view.findViewById(R.id.delivery_days_after_time);
         tvDeliveryDaysBeforeTime = view.findViewById(R.id.delivery_days_before_time);
+
+        mMapView = view.findViewById(R.id.map_view);
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.map_view, MapsFragment.newInstance(false, ""), MapsFragment.class.getName());
+        fragmentTransaction.commit();
 
         view.findViewById(R.id.add_address).setOnClickListener(this);
         ivAadharFrontImageField.setOnClickListener(this);

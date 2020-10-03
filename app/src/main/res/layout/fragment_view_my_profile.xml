@@ -226,7 +226,6 @@
                         android:background="@color/colorPrimary"
                         android:layout_width="match_parent"
                         android:drawableEnd="@drawable/add" />
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/address_list"
                         android:layout_width="match_parent"
