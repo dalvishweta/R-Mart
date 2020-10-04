@@ -191,10 +191,15 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             ArrayList<AddressResponse> addressList = myProfile.getAddressResponses();
             if (addressList != null && !addressList.isEmpty()) {
                 if (addressList.size() == 1) {
-                    tvAddressField.setText(addressList.get(0).getAddress());
+                    AddressResponse addressResponse = addressList.get(0);
+                    latitude = addressResponse.getLatitude();
+                    longitude = addressResponse.getLongitude();
+                    tvAddressField.setText(addressResponse.getAddress());
                 } else {
                     for (AddressResponse addressResponse : addressList) {
                         if (myProfile.getPrimaryAddressId().equalsIgnoreCase(addressResponse.getId().toString())) {
+                            latitude = addressResponse.getLatitude();
+                            longitude = addressResponse.getLongitude();
                             tvAddressField.setText(addressResponse.getAddress());
                             break;
                         }
@@ -501,7 +506,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, myProfile.getUserID()).enqueue(new Callback<CustomerProductsResponse>() {
+            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, myProfile.getUserID(), latitude, longitude).enqueue(new Callback<CustomerProductsResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<CustomerProductsResponse> call, @NotNull Response<CustomerProductsResponse> response) {
                     progressDialog.dismiss();
@@ -560,7 +565,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
 
     private void showCloseDialog(String message) {
         showDialog(message, pObject -> {
-            requireActivity().onBackPressed();
+            //requireActivity().onBackPressed();
         });
     }
 }

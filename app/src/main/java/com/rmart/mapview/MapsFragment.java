@@ -72,6 +72,10 @@ public class MapsFragment extends BaseFragment {
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 googleMap.addMarker(markerOptions);
+                if(callBackListener != null) {
+                    callBackListener.callBackReceived(currentLocation);
+                }
+
                 if(isEditable) {
                     editMyLocation(googleMap);
                 }
@@ -161,6 +165,10 @@ public class MapsFragment extends BaseFragment {
             }
             if(currentLocation == null) {
                 fetchLocation();
+            } else  {
+                if(currentLocation.getLatitude() == 0.0 && currentLocation.getLongitude() == 0.0) {
+                    fetchLocation();
+                }
             }
             mapFragment.getMapAsync(callback);
         }
@@ -252,7 +260,9 @@ public class MapsFragment extends BaseFragment {
             mapFragment.getMapAsync(callback);
         }
         try {
-            callBackListener.callBackReceived(currentLocation);
+            if(callBackListener != null) {
+                callBackListener.callBackReceived(currentLocation);
+            }
             Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
             Objects.requireNonNull(addressViewModel.getMyAddressMutableLiveData().getValue()).setLatitude(Double.toString(currentLocation.getLatitude()));
             Objects.requireNonNull(addressViewModel.getMyAddressMutableLiveData().getValue()).setLongitude(Double.toString(currentLocation.getLongitude()));
