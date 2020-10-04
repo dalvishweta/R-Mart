@@ -19,7 +19,8 @@ import com.rmart.utilits.pojos.orders.Order;
 import com.rmart.utilits.pojos.orders.OrdersByStatus;
 import com.rmart.utilits.pojos.orders.StateOfOrders;
 import com.rmart.utilits.services.CustomerOrderService;
-import com.rmart.utilits.services.OrderService;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -34,8 +35,6 @@ public class CustomerOrderListFragment extends BaseOrderFragment implements View
 
     // SelectedOrderGroup mSelectedOrderGroup;
     // private MyOrdersViewModel myOrdersViewModel;
-    private OrdersListAdapter ordersListAdapter;
-
     private AppCompatTextView tvTotalOrder;
     private RecyclerView orderList;
     StateOfOrders stateOfOrders;
@@ -47,21 +46,8 @@ public class CustomerOrderListFragment extends BaseOrderFragment implements View
         // Required empty public constructor
     }
 
-    public static CustomerOrderListFragment newInstance(String param2) {
-        CustomerOrderListFragment fragment = new CustomerOrderListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            // stateOfOrders = (StateOfOrders) getArguments().getSerializable(ARG_PARAM2);
-        }
-
+    public static CustomerOrderListFragment newInstance() {
+        return new CustomerOrderListFragment();
     }
 
     @Override
@@ -73,7 +59,6 @@ public class CustomerOrderListFragment extends BaseOrderFragment implements View
     @Override
     public void onResume() {
         super.onResume();
-        // Objects.requireNonNull(getActivity()).setTitle(mSelectedOrderGroup.getOrderType());
         startIndex = "0";
         getOrdersOfStatesFromServer();
         requireActivity().setTitle(R.string.my_orders);
@@ -84,41 +69,42 @@ public class CustomerOrderListFragment extends BaseOrderFragment implements View
         CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
         customerOrderService.getStateOfOrder(startIndex, MyProfile.getInstance().getMobileNumber()).enqueue(new Callback<OrdersByStatus>() {
             @Override
-            public void onResponse(Call<OrdersByStatus> call, Response<OrdersByStatus> response) {
-                if(response.isSuccessful()) {
+            public void onResponse(@NotNull Call<OrdersByStatus> call, @NotNull Response<OrdersByStatus> response) {
+                if (response.isSuccessful()) {
                     data = response.body();
-                    orders = data.getOrders();
-                    if(orders.size() > 0) {
-                        assert data != null;
-                        if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                            startIndex = data.getEndIndex();
-                            updateUI();
+                    if (data != null) {
+                        orders = data.getOrders();
+                        if (orders.size() > 0) {
+                            assert data != null;
+                            if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                startIndex = data.getEndIndex();
+                                updateUI();
+                            } else {
+                                showCloseDialog(data.getMsg());
+                            }
                         } else {
-                            showDialog(data.getMsg());
+                            showCloseDialog(data.getMsg());
                         }
                     } else {
-                        showDialog("",data.getMsg(), (dialog, i) -> {
-                            requireActivity().onBackPressed();
-                        });
+                        showCloseDialog(getString(R.string.no_information_available));
                     }
-
                 } else {
-                    showDialog(response.message());
+                    showCloseDialog(response.message());
                 }
                 progressDialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<OrdersByStatus> call, Throwable t) {
-                showDialog(t.getMessage());
+            public void onFailure(@NotNull Call<OrdersByStatus> call, @NotNull Throwable t) {
+                showCloseDialog(t.getMessage());
                 progressDialog.dismiss();
             }
         });
     }
 
     private void updateUI() {
-        ordersListAdapter = new OrdersListAdapter(orders, this);
-        String count  = data.getOrdersCount();
+        OrdersListAdapter ordersListAdapter = new OrdersListAdapter(orders, this);
+        String count = data.getOrdersCount();
         if (null == count || count.length()<=0) {
             count = "0";
         }
@@ -141,7 +127,13 @@ public class CustomerOrderListFragment extends BaseOrderFragment implements View
     public void onDetach() {
         super.onDetach();
         // myOrdersViewModel = null;
-        mListener =null;
+        mListener = null;
+    }
+
+    private void showCloseDialog(String message) {
+        showDialog(message, pObject -> {
+            requireActivity().onBackPressed();
+        });
     }
 
     @Override

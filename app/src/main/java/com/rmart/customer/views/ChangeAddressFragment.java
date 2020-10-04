@@ -32,7 +32,6 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     private ChangeAddressAdapter changeAddressAdapter;
     private ArrayList<AddressResponse> addressList = new ArrayList<>();
     private RecyclerView addressListField;
-    private int previousSelectedIndex = -1;
 
     public static ChangeAddressFragment getInstance() {
         ChangeAddressFragment changeAddressFragment = new ChangeAddressFragment();
@@ -68,7 +67,6 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
                     AddressResponse addressResponse = addressList.get(i);
                     if (addressResponse.getId() == primaryAddressValue) {
                         addressResponse.setPrimaryAddress(true);
-                        previousSelectedIndex = i;
                         addressList.set(i, addressResponse);
                         break;
                     }

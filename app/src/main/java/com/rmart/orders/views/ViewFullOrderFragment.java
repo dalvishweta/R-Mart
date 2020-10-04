@@ -5,8 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.orders.adapters.ProductListAdapter;
@@ -20,12 +26,8 @@ import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
 import com.rmart.utilits.pojos.orders.Order;
 import com.rmart.utilits.services.OrderService;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
+import org.jetbrains.annotations.NotNull;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,12 +38,9 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private static final String ARG_PARAM2 = "param2";
 
     private Order mOrderObject;
-    private String mParam2;
-    MyOrdersViewModel viewModel;
-    AppCompatButton mCancelOrderBtn, mAcceptOrderBtn;
+    private AppCompatButton mCancelOrderBtn, mAcceptOrderBtn;
     private AppCompatTextView tvStatus, customerName, customerAddress, customerNumber, dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType,
             deliveryBoyName, deliveryBoyNumber, contactNumber, vendorName, vendorAddress, vendorNumber;
-    private ProductListAdapter productAdapter;
     private CustomerOrderProductList orderProductList;
     private RecyclerView recyclerView;
     private LinearLayout deliveryBoyInfo, footerView;
@@ -65,7 +64,6 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mOrderObject = (Order) getArguments().getSerializable(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
     @Override
@@ -80,23 +78,27 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
         orderService.getOrderProductList("0", MyProfile.getInstance().getUserID(), mOrderObject.getOrderID()).enqueue(new Callback<CustomerOrderProductResponse>() {
             @Override
-            public void onResponse(Call<CustomerOrderProductResponse> call, Response<CustomerOrderProductResponse> response) {
-                if(response.isSuccessful()) {
+            public void onResponse(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Response<CustomerOrderProductResponse> response) {
+                if (response.isSuccessful()) {
                     CustomerOrderProductResponse data = response.body();
-                    assert data != null;
-                    if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        orderProductList  = data.getProductList();
-                        updateUI();
+                    if (data != null) {
+                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            orderProductList = data.getProductList();
+                            updateUI();
+                        } else {
+                            showDialog(data.getMsg());
+                        }
                     } else {
-                        showDialog(data.getMsg());
+                        showDialog(getString(R.string.no_information_available));
                     }
                 }
                 progressDialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<CustomerOrderProductResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Throwable t) {
                 progressDialog.dismiss();
+                showDialog(t.getMessage());
             }
         });
     }
@@ -104,7 +106,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(requireActivity()).get(MyOrdersViewModel.class);
+        //MyOrdersViewModel viewModel = new ViewModelProvider(requireActivity()).get(MyOrdersViewModel.class);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_view_full_order, container, false);
     }
@@ -179,7 +181,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         tvTotalCharges.setText(orderProductList.getOrderInfo().getTotalAmt());
         tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
         setFooter();
-        productAdapter = new ProductListAdapter(orderProductList.getProduct(), null);
+        ProductListAdapter productAdapter = new ProductListAdapter(orderProductList.getProduct(), null);
         recyclerView.setAdapter(productAdapter);
     }
     private void setFooter() {
@@ -203,14 +205,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
     @Override
     public void onClick(View view) {
-        int id = view.getId();
-        /*if (id == R.id.cancel_order) {
-            String text = ((Button)view).getText().toString();
-
-        } else {*/
         String text = ((AppCompatButton)view).getText().toString();
         if (text.contains(getResources().getString(R.string.accept))) {
-            // mOrderObject.setOrderType(getResources().getString(R.string.accepted));
             updateOrderStatus(Utils.ACCEPTED_ORDER_STATUS);
         } else if (text.contains(getResources().getString(R.string.packed))) {
             updateOrderStatus(Utils.PACKED_ORDER_STATUS);
@@ -232,24 +228,28 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
         orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID() ,newOrderStatus, "").enqueue(new Callback<UpdatedOrderStatus>() {
             @Override
-            public void onResponse(Call<UpdatedOrderStatus> call, Response<UpdatedOrderStatus> response) {
-                if(response.isSuccessful()) {
+            public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
+                if (response.isSuccessful()) {
                     UpdatedOrderStatus data = response.body();
-                    assert data != null;
-                    if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        showDialog(data.getStatus(), data.getMsg(), ((dialogInterface, i) -> {
-                            requireActivity().onBackPressed();
-                        }));
+                    if (data != null) {
+                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            showDialog(data.getStatus(), data.getMsg(), ((dialogInterface, i) -> requireActivity().onBackPressed()));
+                        } else {
+                            showDialog(data.getMsg());
+                        }
                     } else {
-                        showDialog(data.getMsg());
+                        showDialog(getString(R.string.no_information_available));
                     }
+                } else {
+                    showDialog(response.message());
                 }
                 progressDialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<UpdatedOrderStatus> call, Throwable t) {
+            public void onFailure(@NotNull Call<UpdatedOrderStatus> call, @NotNull Throwable t) {
                 progressDialog.dismiss();
+                showDialog(t.getMessage());
             }
         });
     }

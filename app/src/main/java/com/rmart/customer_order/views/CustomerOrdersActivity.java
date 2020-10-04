@@ -15,7 +15,16 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addFragment(CustomerOrderListFragment.newInstance( ""), "OrderHomeFragment", false);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String orderID = extras.getString("OrderId");
+            Order lOrderDetails = new Order();
+            lOrderDetails.setOrderID(orderID);
+            replaceFragment(CustomerViewFullOrderFragment.newInstance(lOrderDetails, ""), CustomerViewFullOrderFragment.class.getName(), true);
+        } else {
+            addFragment(CustomerOrderListFragment.newInstance(), CustomerOrderListFragment.class.getName(), false);
+        }
+
     }
 
     @Override
@@ -27,14 +36,14 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
     @Override
     public void goToViewFullOrder(Order orderObject) {
         hideHamburgerIcon();
-        replaceFragment(CustomerViewFullOrderFragment.newInstance(orderObject, ""), "ViewFullOrderFragment", true);
+        replaceFragment(CustomerViewFullOrderFragment.newInstance(orderObject, ""), CustomerViewFullOrderFragment.class.getName(), true);
     }
 
 
     @Override
     public void showOrderList(String string) {
         hideHamburgerIcon();
-        replaceFragment(CustomerOrderListFragment.newInstance(string), "OrderListFragment", true);
+        replaceFragment(CustomerOrderListFragment.newInstance(), CustomerOrderListFragment.class.getName(), true);
     }
 
     @Override

@@ -512,14 +512,21 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                                 totalShopsCount = data.getCustomerShopsList().getShopTotalCount();
                                 List<CustomerProductsShopDetailsModel> customerProductsList = data.getCustomerShopsList().getCustomerShopsList();
                                 updateAdapter(customerProductsList);
+                            } else {
+                                showCloseDialog(data.getMsg());
                             }
+                        } else {
+                            showCloseDialog(getString(R.string.no_products_error));
                         }
+                    } else {
+                        showCloseDialog(response.message());
                     }
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<CustomerProductsResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
+                    showCloseDialog(t.getMessage());
                 }
             });
         }
@@ -549,5 +556,11 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                 .title(title)
                 .snippet(snippet)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+    }
+
+    private void showCloseDialog(String message) {
+        showDialog(message, pObject -> {
+            requireActivity().onBackPressed();
+        });
     }
 }

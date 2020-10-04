@@ -3,12 +3,14 @@ package com.rmart.fcm;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.rmart.baseclass.views.SplashScreen;
+import com.rmart.customer.views.CustomerHomeActivity;
+import com.rmart.customer_order.views.CustomerOrdersActivity;
 import com.rmart.orders.views.OrdersActivity;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.Utils;
 
 import org.jetbrains.annotations.NotNull;
@@ -17,11 +19,10 @@ import org.json.JSONObject;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "MyFirebaseMsgService";
     @Override
     public void onNewToken(@NotNull String s) {
         super.onNewToken(s);
-        Log.e("newToken", s);
+        LoggerInfo.printLog("newToken", s);
         getSharedPreferences("_", MODE_PRIVATE).edit().putString("fb", s).apply();
     }
 
@@ -29,12 +30,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NotNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         if (remoteMessage.getData().size() > 0) {
-            Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
+            LoggerInfo.printLog("Data Payload: ", remoteMessage.getData().toString());
             try {
                 JSONObject json = new JSONObject(remoteMessage.getData().toString());
                 sendPushNotification(json);
             } catch (Exception e) {
-                Log.e(TAG, "Exception: " + e.getMessage());
+                LoggerInfo.errorLog("Exception: ", e.getMessage());
             }
         }
     }
@@ -48,7 +49,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     //firebase cloud messaging
     private void sendPushNotification(JSONObject json) {
         //optionally we can display the json into log
-        Log.e(TAG, "Notification JSON " + json.toString());
+        LoggerInfo.printLog("Notification JSON ", json.toString());
         try {
             //getting the json data
             JSONObject data = json.getJSONObject("data");
@@ -96,9 +97,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             //creating an intent for the notification
             Intent intent;
             if (rollID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
-                intent = new Intent(getApplicationContext(), SplashScreen.class);
+                intent = new Intent(getApplicationContext(), CustomerOrdersActivity.class);
             } else {
-                intent = new Intent(getApplicationContext(), SplashScreen.class);
+                intent = new Intent(getApplicationContext(), OrdersActivity.class);
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -118,10 +119,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 mNotificationManager.showBigNotification(title, message, imageUrl, intent);
             }*/
         } catch (JSONException e) {
-            Log.e(TAG, "Json Exception: " + e.getMessage());
+            LoggerInfo.errorLog("Json Exception: ", e.getMessage());
         } catch (Exception e) {
-            Log.e(TAG, "Exception: " + e.getMessage());
+            LoggerInfo.errorLog("Exception: ", e.getMessage());
         }
     }
-
 }

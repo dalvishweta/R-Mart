@@ -26,7 +26,16 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
                 stateOfOrders.setStatus(Utils.SHIPPED_ORDER_STATUS);
                 addFragment(OrderListFragment.newInstance(stateOfOrders), "OrderListFragment", false);
             } else if (MyProfile.getInstance().getRoleID().equals(Utils.RETAILER_ID)) {
-                addFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", false);
+                Bundle extras = getIntent().getExtras();
+                if (extras != null) {
+                    hideHamburgerIcon();
+                    String orderID = extras.getString("OrderId");
+                    Order lOrderDetails = new Order();
+                    lOrderDetails.setOrderID(orderID);
+                    replaceFragment(ViewFullOrderFragment.newInstance(lOrderDetails, ""), "ViewFullOrderFragment", true);
+                } else {
+                    addFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", false);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

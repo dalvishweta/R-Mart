@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.rmart.R;
+import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.profile.model.LocationPoints;
 import com.rmart.profile.model.MyProfile;
@@ -53,12 +54,19 @@ public class MapsFragment extends BaseFragment {
     GoogleMap googleMap;
     private boolean isEditable;
     private Location currentLocation;
-    String isFrom;
+    private String isFrom;
+    private CallBackInterface callBackListener;
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
             if (currentLocation != null) {
+                if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                googleMap.setMyLocationEnabled(true);
                 LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
                 MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -95,6 +103,15 @@ public class MapsFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    public void setCallBackListener(CallBackInterface callBackListener) {
+        this.callBackListener = callBackListener;
+    }
+
+    public void setLocation(Location location) {
+        currentLocation = location;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,12 +158,12 @@ public class MapsFragment extends BaseFragment {
                 } else {
                     fetchLocation();
                 }*/
+            }
+            if(currentLocation == null) {
                 fetchLocation();
             }
             mapFragment.getMapAsync(callback);
         }
-
-
     }
 
     private void fetchLocation() {
@@ -198,8 +215,6 @@ public class MapsFragment extends BaseFragment {
             Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (locationGPS != null) {
                 currentLocation = locationGPS;
-                // latitude = locationGPS.getLatitude();
-                // longitude = locationGPS.getLongitude();
                 updateMap();
             } else {
                 MyLocation myLocation = new MyLocation(requireActivity());
@@ -227,8 +242,6 @@ public class MapsFragment extends BaseFragment {
         public void gotLocation(Location location) {
             if (location != null) {
                 currentLocation = location;
-                Log.d("locationGPS", "location longitude"+location.getLongitude());
-                Log.d("locationGPS", "location latitude"+location.getLatitude());
                 updateMap();
             }
         }
@@ -239,11 +252,11 @@ public class MapsFragment extends BaseFragment {
             mapFragment.getMapAsync(callback);
         }
         try {
+            callBackListener.callBackReceived(currentLocation);
             Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
             Objects.requireNonNull(addressViewModel.getMyAddressMutableLiveData().getValue()).setLatitude(Double.toString(currentLocation.getLatitude()));
             Objects.requireNonNull(addressViewModel.getMyAddressMutableLiveData().getValue()).setLongitude(Double.toString(currentLocation.getLongitude()));
             List<Address> addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 2);
-            Log.d("Address", addresses.get(0).toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

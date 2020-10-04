@@ -2,13 +2,13 @@ package com.rmart.profile.views;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -76,6 +76,9 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     private ProgressBarCircular pancardProgressBar;
     private ProgressBarCircular shopImageProgressBar;
     private int selectedPhotoType = -1;
+    private double latitude;
+    private double longitude;
+    private MapsFragment mapsFragment;
 
     public EditAddressFragment() {
         // Required empty public constructor
@@ -144,7 +147,15 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.map_layout_field   , MapsFragment.newInstance(false, ""), MapsFragment.class.getName());
+        mapsFragment = MapsFragment.newInstance(false, "");
+        mapsFragment.setCallBackListener(pObject -> {
+            if(pObject instanceof Location) {
+                Location selectedLocation = (Location) pObject;
+                latitude = selectedLocation.getLatitude();
+                longitude = selectedLocation.getLongitude();
+            }
+        });
+        fragmentTransaction.add(R.id.map_layout_field, mapsFragment, MapsFragment.class.getName());
         fragmentTransaction.commit();
 
         view.findViewById(R.id.add_address).setOnClickListener(this);
@@ -166,7 +177,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     }
 
     private void updateUI() {
-        if (null != myAddress) {
+        if (myAddress.getId() != -1) {
             Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.add_address));
             tvShopName.setText(myAddress.getShopName());
             tvPANNumber.setText(myAddress.getPan_no());
@@ -186,6 +197,11 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             tvDeliveryDaysBeforeTime.setText(myAddress.getDeliveryDaysBeforeTime());
 
             ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
+
+            Location location = new Location("");
+            location.setLatitude(myAddress.getLatitude());
+            location.setLongitude(myAddress.getLongitude());
+            mapsFragment.setLocation(location);
 
             String lAadharFrontImageUrl = myAddress.getAadharFrontImage();
             if (!TextUtils.isEmpty(lAadharFrontImageUrl)) {
@@ -287,7 +303,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         }
         if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
             mRetailerView.setVisibility(View.VISIBLE);
-            if (null != myAddress) {
+            if (myAddress.getId() != -1) {
                 tvStreetAddress.setText(myAddress.getAddress());
             }
         } else if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
@@ -447,7 +463,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         }
 
         progressDialog.show();
-        if (myAddress == null) {
+        if (myAddress.getId() == -1) {
             getAddressData();
             ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
             profileService.addAddress(myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
@@ -541,11 +557,8 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     }
 
     private void getAddressData() {
-        if (myAddress == null) {
-            myAddress = new AddressResponse();// addressViewModel.getMyAddressMutableLiveData().getValue();
-        }
-        myAddress.setLongitude("120203030");
-        myAddress.setLatitude("120203030");
+        myAddress.setLongitude(longitude);
+        myAddress.setLatitude(latitude);
         myAddress.setShopName(Objects.requireNonNull(tvShopName.getText()).toString());
         myAddress.setPan_no(Objects.requireNonNull(tvPANNumber.getText()).toString());
         myAddress.setGstInNo(Objects.requireNonNull(tvGSTNumber.getText()).toString());

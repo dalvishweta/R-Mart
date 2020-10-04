@@ -10,6 +10,7 @@ import com.rmart.R;
 import com.rmart.baseclass.views.BaseActivity;
 import com.rmart.mapview.MapsFragment;
 import com.rmart.profile.OnMyProfileClickedListener;
+import com.rmart.profile.model.MyAddress;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.viewmodels.AddressViewModel;
 import com.rmart.utilits.pojos.AddressResponse;
@@ -40,7 +41,9 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
         new ViewModelProvider(this).get(AddressViewModel.class);
 
         if (MyProfile.getInstance().getPrimaryAddressId() == null || isAddNewAddress) {
-            replaceFragment(EditAddressFragment.newInstance(isAddNewAddress, null), EditAddressFragment.class.getName(), false);
+            AddressResponse addressResponse = new AddressResponse();
+            addressResponse.setId(-1);
+            replaceFragment(EditAddressFragment.newInstance(isAddNewAddress, addressResponse), EditAddressFragment.class.getName(), false);
         } else {
             replaceFragment(ViewMyProfileFragment.newInstance(), ViewMyProfileFragment.class.getName(), false);
         }
@@ -73,12 +76,12 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
 
     @Override
     public void gotoEditProfile() {
-        replaceFragment(EditMyProfileFragment.newInstance(false), EditMyProfileFragment.class.getName(), false);
+        replaceFragment(EditMyProfileFragment.newInstance(false), EditMyProfileFragment.class.getName(), true);
     }
 
     @Override
     public void gotoEditAddress(AddressResponse address) {
-        replaceFragment(EditAddressFragment.newInstance(false, address), EditAddressFragment.class.getName(), false);
+        replaceFragment(EditAddressFragment.newInstance(false, address), EditAddressFragment.class.getName(), true);
     }
 
     @Override
@@ -88,7 +91,7 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
 
     @Override
     public void gotoMapView() {
-        replaceFragment(MapsFragment.newInstance(true, MapsFragment.class.getName()), "MapsFragment", true);
+        replaceFragment(MapsFragment.newInstance(true, ""), MapsFragment.class.getName(), false);
     }
 
     @Override

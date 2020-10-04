@@ -30,11 +30,11 @@ public class AddressResponse extends BaseResponse implements Serializable {
 
     @SerializedName("latitude")
     @Expose
-    private String latitude;
+    private double latitude;
 
     @SerializedName("longitude")
     @Expose
-    private String longitude;
+    private double longitude;
 
     @SerializedName("address")
     @Expose
@@ -170,19 +170,19 @@ public class AddressResponse extends BaseResponse implements Serializable {
         this.gstInNo = gstInNo;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 

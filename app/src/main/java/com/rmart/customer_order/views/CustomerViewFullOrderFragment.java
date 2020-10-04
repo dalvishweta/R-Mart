@@ -43,7 +43,6 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     private static final String ARG_PARAM2 = "param2";
 
     private Order mOrderObject;
-    private String mParam2;
     MyOrdersViewModel viewModel;
     AppCompatButton mLeftButton, mRightButton;
     private AppCompatTextView tvStatus, dateValue, vendorName, vendorNumber, vendorAddress, orderIdValue, tvAmount,
@@ -71,7 +70,6 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mOrderObject = (Order) getArguments().getSerializable(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -87,15 +85,18 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
         customerOrderService.viewOrderById(mOrderObject.getOrderID(), MyProfile.getInstance().getMobileNumber()).enqueue(new Callback<CustomerOrderProductResponse>() {
             @Override
-            public void onResponse(Call<CustomerOrderProductResponse> call, Response<CustomerOrderProductResponse> response) {
+            public void onResponse(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Response<CustomerOrderProductResponse> response) {
                 if (response.isSuccessful()) {
                     CustomerOrderProductResponse data = response.body();
-                    assert data != null;
-                    if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        orderProductList = data.getProductList();
-                        updateUI();
+                    if (data != null) {
+                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            orderProductList = data.getProductList();
+                            updateUI();
+                        } else {
+                            showDialog(data.getMsg());
+                        }
                     } else {
-                        showDialog(data.getMsg());
+                        showDialog(getString(R.string.no_information_available));
                     }
                 }
                 progressDialog.dismiss();
@@ -104,6 +105,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
             @Override
             public void onFailure(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Throwable t) {
                 progressDialog.dismiss();
+                showDialog(t.getMessage());
             }
         });
     }
