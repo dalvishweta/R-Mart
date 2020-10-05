@@ -162,8 +162,9 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add_new_address:
-                
-                mListener.gotoEditAddress(null);
+                AddressResponse addressResponse = new AddressResponse();
+                addressResponse.setId(-1);
+                mListener.gotoEditAddress(addressResponse);
                 break;
             case R.id.edit_retailer:
                 mListener.gotoEditAddress(MyProfile.getInstance().getAddressResponses().get(0));
