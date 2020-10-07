@@ -158,7 +158,6 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/order_full_view_title"
                     android:text="@string/customer_name" />
-
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/customer_name"
                     style="@style/order_full_view_content" />
@@ -183,12 +182,15 @@
             <LinearLayout
                 android:id="@+id/delivery_boy_info"
                 style="@style/order_full_view_row"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/order_full_view_title"
                     android:text="@string/delivery_boy_name" />
-
+                <Spinner
+                    android:id="@+id/delivery_boy_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/delivery_boy_name"
                     style="@style/order_full_view_content"

@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,11 +17,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
+import com.rmart.customer.adapters.CustomSpinnerAdapter;
 import com.rmart.orders.adapters.ProductListAdapter;
 import com.rmart.orders.viewmodel.MyOrdersViewModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.DeliveryBoyList;
+import com.rmart.utilits.pojos.ProfileResponse;
 import com.rmart.utilits.pojos.UpdatedOrderStatus;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
@@ -27,6 +32,10 @@ import com.rmart.utilits.pojos.orders.Order;
 import com.rmart.utilits.services.OrderService;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,6 +53,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private CustomerOrderProductList orderProductList;
     private RecyclerView recyclerView;
     private LinearLayout deliveryBoyInfo, footerView;
+    private ProfileResponse selectedReason;
+    private CustomSpinnerAdapter reasonAdapter;
 
     public ViewFullOrderFragment() {
         // Required empty public constructor
@@ -138,9 +149,49 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
        // delivery boy info
         deliveryBoyInfo = view.findViewById(R.id.delivery_boy_info);
         deliveryBoyInfo.setVisibility(View.GONE);
-        deliveryBoyName = view.findViewById(R.id.delivery_boy_name);
+        view.findViewById(R.id.delivery_boy_name).setVisibility(View.GONE);
         deliveryBoyNumber = view.findViewById(R.id.delivery_boy_number);
 
+        Spinner selectSpinnerField = view.findViewById(R.id.delivery_boy_spinner);
+        ArrayList <Object>reasonsList = new ArrayList();
+
+        selectSpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedReason = (ProfileResponse) reasonsList.get(i);
+                deliveryBoyNumber.setText(selectedReason.getMobileNumber());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        progressDialog.show();
+        OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
+        orderService.getDeliveryBoyList("8655333400","1"/*MyProfile.getInstance().getMobileNumber(), MyProfile.getInstance().getUserID()*/).enqueue(new Callback<DeliveryBoyList>() {
+            @Override
+            public void onResponse(Call<DeliveryBoyList> call, Response<DeliveryBoyList> response) {
+                if (response.isSuccessful()) {
+                    DeliveryBoyList data = response.body();
+                    reasonsList.clear();
+                    ArrayList<ProfileResponse> deliveryBoyList = data.getDeliveryBoys();
+                    if (deliveryBoyList.size() >0) {
+                        reasonsList.addAll(deliveryBoyList);
+                        reasonAdapter = new CustomSpinnerAdapter(requireActivity(), reasonsList);
+                        selectSpinnerField.setAdapter(reasonAdapter);
+                    }
+                } else {
+
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<DeliveryBoyList> call, Throwable t) {
+                progressDialog.dismiss();
+            }
+        });
         //Payment info
         tvAmount = view.findViewById(R.id.amount);
         tvDeliveryCharges = view.findViewById(R.id.delivery_charges);
@@ -213,7 +264,6 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         } else if (text.contains(getResources().getString(R.string.shipped))) {
             updateOrderStatus(Utils.SHIPPED_ORDER_STATUS);
         } else if (text.contains(getResources().getString(R.string.delivered))) {
-            // mListener.goToProcessToDelivery(mOrderObject);
             updateOrderStatus(Utils.DELIVERED_ORDER_STATUS);
         } else if (text.contains(getResources().getString(R.string.returned))) {
             updateOrderStatus(Utils.CANCEL_BY_CUSTOMER);
@@ -301,10 +351,11 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         mAcceptOrderBtn.setVisibility(View.GONE);
     }
     void isShippedOrder() {
-        mCancelOrderBtn.setBackgroundResource(R.drawable.btn_bg_delivered);
-        mCancelOrderBtn.setText(R.string.delivered);
+        mAcceptOrderBtn.setBackgroundResource(R.drawable.btn_bg_delivered);
+        mAcceptOrderBtn.setText(R.string.delivered);
+        mCancelOrderBtn.setBackgroundResource(R.drawable.btn_bg_canceled);
+        mCancelOrderBtn.setText(R.string.cancel);
         deliveryBoyInfo.setVisibility(View.VISIBLE);
-        mAcceptOrderBtn.setVisibility(View.GONE);
     }
     void isDeliveredOrder() {
         mCancelOrderBtn.setVisibility(View.GONE);

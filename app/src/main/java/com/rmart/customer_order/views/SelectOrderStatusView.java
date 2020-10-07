@@ -59,7 +59,6 @@ public class SelectOrderStatusView extends DialogFragment {
         reasonsList.add(0, getString(R.string.select_reason));
         CustomSpinnerAdapter reasonAdapter = new CustomSpinnerAdapter(requireActivity(), reasonsList);
         selectSpinnerField.setAdapter(reasonAdapter);
-
         selectSpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

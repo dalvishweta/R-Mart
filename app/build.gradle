@@ -81,7 +81,7 @@ android {
         buildConfigField("String", 'CUSTOMER_VIEW_ORDER_BY_ID', '"customer/order/viewOrderById"')
         buildConfigField("String", 'CUSTOMER_VIEW_ALL_ORDERS', '"customer/order/ordersList"')
         buildConfigField("String", 'CUSTOMER_REORDER_PRODUCTS', '"customer/order/checkOrder"')
-
+        buildConfigField("String", "DELERY_BOY_LIST",'"Deliveryboys"')
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {

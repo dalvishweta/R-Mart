@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 
 import com.rmart.R;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
+import com.rmart.utilits.pojos.ProfileResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,8 @@ public class CustomSpinnerAdapter extends BaseAdapter {
             holder.tvTextField.setText(unitMeasureDetails);
         } else if (dataObject instanceof String) {
             holder.tvTextField.setText((String) dataObject);
+        } else if (dataObject instanceof ProfileResponse) {
+            holder.tvTextField.setText((String) ((ProfileResponse) dataObject).getFirstName()+" "+(String) ((ProfileResponse) dataObject).getLastName());
         }
         return convertView;
     }

@@ -209,8 +209,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             } else {
                 try {
                     mClonedProduct = new ProductResponse(mProduct);
-                    for (ImageURLResponse imageURLResponse:
-                         mClonedProduct.getImageDataObject()) {
+                    for (ImageURLResponse imageURLResponse: mClonedProduct.getImageDataObject()) {
+                        if (null != imageURLResponse.getDisplayImage() && imageURLResponse.getDisplayImage().length()>10)
                         imageURLResponse.setImageURL(imageURLResponse.getDisplayImage());
                     }
                 } catch (Exception e) {

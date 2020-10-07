@@ -99,7 +99,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (rollID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
                 intent = new Intent(getApplicationContext(), CustomerOrdersActivity.class);
             } else {
-                intent = new Intent(getApplicationContext(), OrdersActivity.class);
+                intent = new Intent(getApplicationContext(), SplashScreen.class);
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 

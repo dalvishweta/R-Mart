@@ -1,6 +1,7 @@
 package com.rmart.utilits.services;
 
 import com.rmart.BuildConfig;
+import com.rmart.utilits.pojos.DeliveryBoyList;
 import com.rmart.utilits.pojos.UpdatedOrderStatus;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
 import com.rmart.utilits.pojos.orders.OrderStateListResponse;
@@ -33,4 +34,8 @@ public interface OrderService {
                                                @Field("user_id") String id,
                                                @Field("status") String newOrderStatus,
                                                @Field("status_comment") String statusComment);
+    @POST(BuildConfig.DELERY_BOY_LIST)
+    @FormUrlEncoded
+    Call<DeliveryBoyList> getDeliveryBoyList(@Field("mobile_number")String mobileNumber,
+                                             @Field("id") String id);
 }
