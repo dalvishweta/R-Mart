@@ -39,8 +39,8 @@ public class OrdersListAdapter extends RecyclerView.Adapter<OrdersListItemViewHo
         } else {
             // holder.status.setVisibility(View.VISIBLE);
             holder.statusDisplayName.setVisibility(View.VISIBLE);
-            // holder.status.setText(orderObject.getStatusDisplay());
-            holder.statusDisplayName.setText(orderObject.getStatus());
+            holder.statusDisplayName.setText(orderObject.getStatusDisplay());
+            // holder.statusDisplayName.setText(orderObject.getStatus());
         }
         holder.orderCount.setText(orderObject.getProductCount());
         holder.orderID.setText(orderObject.getOrderID());

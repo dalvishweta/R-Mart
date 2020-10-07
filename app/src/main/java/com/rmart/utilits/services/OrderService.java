@@ -3,10 +3,8 @@ package com.rmart.utilits.services;
 import com.rmart.BuildConfig;
 import com.rmart.utilits.pojos.UpdatedOrderStatus;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
-import com.rmart.utilits.pojos.orders.OrderProductListResponse;
 import com.rmart.utilits.pojos.orders.OrderStateListResponse;
 import com.rmart.utilits.pojos.orders.OrdersByStatus;
-
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

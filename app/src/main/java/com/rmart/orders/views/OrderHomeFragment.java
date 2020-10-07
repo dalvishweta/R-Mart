@@ -124,7 +124,6 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
                 }
                 progressDialog.dismiss();
             }
-
             @Override
             public void onFailure(Call<OrderStateListResponse> call, Throwable t) {
                 showDialog(t.getMessage());
@@ -134,7 +133,6 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
     }
 
     private void updateUI() {
-
         int position = mapOrderStatus.get(OPEN_ORDER_STATUS);
         StateOfOrders data = orderStatus.get(position);
         openOrderCount.setText(data.getCount());
@@ -142,7 +140,6 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
         int index = mapOrderStatus.get(OPEN_ORDER_STATUS);
         list.remove(index);
         recyclerView.setAdapter(new OrdersHomeAdapter(list, this));
-
         /*ordersListAdapter = new OrdersListAdapter(orderStatus, this);
         orderList.setAdapter(ordersListAdapter);*/
 

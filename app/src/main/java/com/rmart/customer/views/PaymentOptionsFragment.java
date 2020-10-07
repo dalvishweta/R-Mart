@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
@@ -31,6 +33,7 @@ import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.ccavenue.AvenuesParams;
+import com.rmart.utilits.ccavenue.CCAvenueResponse;
 import com.rmart.utilits.ccavenue.RSAUtility;
 import com.rmart.utilits.ccavenue.ServiceUtility;
 import com.rmart.utilits.services.CustomerProductsService;
@@ -108,7 +111,10 @@ public class PaymentOptionsFragment extends BaseFragment {
         view.findViewById(R.id.cash_on_delivery_layout_field).setOnClickListener(v -> cashOnDeliverySelected());
         view.findViewById(R.id.internet_banking_layout_field).setOnClickListener(v -> internetBankingSelected());
         view.findViewById(R.id.my_wallet_layout_field).setOnClickListener(v -> myWalletSelected());
-        view.findViewById(R.id.btn_proceed_field).setOnClickListener(v -> proceedSelected());
+        view.findViewById(R.id.btn_proceed_field).setOnClickListener(v -> {
+            proceedSelected();
+        }
+        );
     }
 
     @Override
@@ -275,19 +281,20 @@ public class PaymentOptionsFragment extends BaseFragment {
     }
 
     class MyJavaScriptInterface {
+        private JsonObject jsonObject;
+
         @JavascriptInterface
         public void processHTML(String html) {
-            // jsonObject = new JsonParser().parse(html).getAsJsonObject();
+            Log.d("JsonObject", "html data: " + html);
+            jsonObject = new JsonParser().parse(html).getAsJsonObject();
             Gson g = new Gson();
-            /*ccAvenueResponse = g.fromJson(html, CCAvenueResponse.class);
-            Log.d("JsonObject", "html: " + html);
-            if (ccAvenueResponse.getStatus().equalsIgnoreCase("success")) {
-                Log.d("JsonObject", "html: " + html);
-                mListener.gotoTicketStatus(passengerDetails, ccAvenueResponse);
+            CCAvenueResponse ccAvenueResponse = g.fromJson(html, CCAvenueResponse.class);
+            if (ccAvenueResponse.getOrder_status().equalsIgnoreCase("success")) {
+                showSuccessDialog(ccAvenueResponse.getOrder_message());
             }else{
-                showDialog(getString(R.string.message), "Transaction Failed", pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+                showDialog(getString(R.string.message), ccAvenueResponse.getOrder_message(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
 
-            }*/
+            }
         }
 
         @JavascriptInterface

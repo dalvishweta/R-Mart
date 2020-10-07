@@ -31,9 +31,6 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
     private static final String ARG_ORDER_OBJECT = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // SelectedOrderGroup mSelectedOrderGroup;
-    // private MyOrdersViewModel myOrdersViewModel;
-    private OrdersListAdapter ordersListAdapter;
     private AppCompatTextView tvTotalOrder;
     private RecyclerView orderList;
     StateOfOrders stateOfOrders;
@@ -110,7 +107,9 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
     }
 
     private void updateUI() {
-        ordersListAdapter = new OrdersListAdapter(orders, this);
+        // SelectedOrderGroup mSelectedOrderGroup;
+        // private MyOrdersViewModel myOrdersViewModel;
+        OrdersListAdapter ordersListAdapter = new OrdersListAdapter(orders, this);
         String count  = data.getOrdersCount();
         if (null == count || count.length()<=0) {
             count = "0";

@@ -26,6 +26,8 @@ public class OrdersListAdapter extends RecyclerView.Adapter<OrdersListItemViewHo
     public OrdersListItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View listItem= layoutInflater.inflate(R.layout.item_order_list, parent, false);
+        listItem.findViewById(R.id.status_value).setVisibility(View.GONE);
+        listItem.findViewById(R.id.status).setVisibility(View.GONE);
         listItem.setOnClickListener(onClickListener);
         return new OrdersListItemViewHolder(listItem) ;
     }

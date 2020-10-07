@@ -199,8 +199,7 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
     }
 
     private void profileSelected() {
-        CropImage.activity()
-                .start(Objects.requireNonNull(requireActivity()), this);
+        CropImage.activity().start(Objects.requireNonNull(requireActivity()), this);
     }
 
     @Override
