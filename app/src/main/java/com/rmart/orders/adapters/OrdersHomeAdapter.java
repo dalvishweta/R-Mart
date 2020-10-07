@@ -37,7 +37,6 @@ public class OrdersHomeAdapter extends RecyclerView.Adapter<OrdersHomeViewHolder
         holder.itemView.setTag(selectedOrderGroup);
         holder.orderCount.setText(selectedOrderGroup.getCount());
         holder.orderTitle.setText(selectedOrderGroup.getStatusName());
-
         holder.orderCount.setBackgroundResource(selectedOrderGroup.getBgTop());
         holder.orderTitle.setBackgroundResource(selectedOrderGroup.getBgBottom());
     }

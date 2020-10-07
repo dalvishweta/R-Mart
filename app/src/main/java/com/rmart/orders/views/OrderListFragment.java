@@ -123,22 +123,6 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
         super.onViewCreated(view, savedInstanceState);
         tvTotalOrder = view.findViewById(R.id.total_order);
         orderList = view.findViewById(R.id.order_list);
-
-       /* myOrdersViewModel.getSelectedOrderGroup().observe(Objects.requireNonNull(getActivity()), selectedOrderGroup -> {
-            try {
-                mSelectedOrderGroup = selectedOrderGroup;
-                ordersListAdapter = new OrdersListAdapter(mSelectedOrderGroup.getOrderObjects(), this);
-                tvTotalOrder.setText(String.format(getResources().getString(R.string.total_orders), mSelectedOrderGroup.getOrderObjects().size(),  mSelectedOrderGroup.getOrderType()));
-                orderList.setAdapter(ordersListAdapter);
-            } catch (Exception e) {
-
-            }
-
-        });*/
-        // tvTotalOrder.setText(String.format(getResources().getString(R.string.total_orders), mSelectedOrderGroup.getOrderObjects().size(),  mSelectedOrderGroup.getOrderType()));
-
-        /*ordersListAdapter = new OrdersListAdapter(mSelectedOrderGroup.getOrderObjects(), this);
-        orderList.setAdapter(ordersListAdapter);*/
     }
 
     @Override

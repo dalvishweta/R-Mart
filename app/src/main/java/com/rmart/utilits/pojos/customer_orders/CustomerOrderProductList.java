@@ -21,6 +21,10 @@ public class CustomerOrderProductList implements Serializable {
     @Expose
     VendorInfo vendorInfo;
 
+    @SerializedName("deliveryBoyInfo")
+    @Expose
+    VendorInfo deliveryBoyInfo;
+
     @SerializedName("products")
     @Expose
     ArrayList<Product> product;
@@ -55,5 +59,13 @@ public class CustomerOrderProductList implements Serializable {
 
     public void setProduct(ArrayList<Product> product) {
         this.product = product;
+    }
+
+    public VendorInfo getDeliveryBoyInfo() {
+        return deliveryBoyInfo;
+    }
+
+    public void setDeliveryBoyInfo(VendorInfo deliveryBoyInfo) {
+        this.deliveryBoyInfo = deliveryBoyInfo;
     }
 }

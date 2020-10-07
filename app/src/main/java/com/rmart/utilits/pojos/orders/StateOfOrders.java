@@ -92,10 +92,12 @@ public class StateOfOrders implements Serializable {
             case CANCEL_BY_CUSTOMER:
                 bgTop = R.drawable.item_returned_top_bg;
                 bgBottom = R.drawable.item_returned_bottom_bg;
+                statusName = "CANCELED ORDERS";
                 break;
             case CANCEL_BY_RETAILER:
                 bgTop = R.drawable.item_canceled_top_bg;
                 bgBottom = R.drawable.item_canceled_bottom_bg;
+                statusName = "CANCEL BY ME";
                 break;
         }
     }

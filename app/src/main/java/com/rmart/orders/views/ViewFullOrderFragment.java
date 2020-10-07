@@ -55,7 +55,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private LinearLayout deliveryBoyInfo, footerView;
     private ProfileResponse selectedReason;
     private CustomSpinnerAdapter reasonAdapter;
-
+    private Spinner deliveryBoySpinner;
+    ArrayList <Object>reasonsList = new ArrayList();
     public ViewFullOrderFragment() {
         // Required empty public constructor
     }
@@ -149,13 +150,11 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
        // delivery boy info
         deliveryBoyInfo = view.findViewById(R.id.delivery_boy_info);
         deliveryBoyInfo.setVisibility(View.GONE);
-        view.findViewById(R.id.delivery_boy_name).setVisibility(View.GONE);
+        deliveryBoyName = view.findViewById(R.id.delivery_boy_name);
+        deliveryBoyName.setVisibility(View.GONE);
         deliveryBoyNumber = view.findViewById(R.id.delivery_boy_number);
-
-        Spinner selectSpinnerField = view.findViewById(R.id.delivery_boy_spinner);
-        ArrayList <Object>reasonsList = new ArrayList();
-
-        selectSpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        deliveryBoySpinner = view.findViewById(R.id.delivery_boy_spinner);
+        deliveryBoySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedReason = (ProfileResponse) reasonsList.get(i);
@@ -167,31 +166,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
             }
         });
-        progressDialog.show();
-        OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.getDeliveryBoyList("8655333400","1"/*MyProfile.getInstance().getMobileNumber(), MyProfile.getInstance().getUserID()*/).enqueue(new Callback<DeliveryBoyList>() {
-            @Override
-            public void onResponse(Call<DeliveryBoyList> call, Response<DeliveryBoyList> response) {
-                if (response.isSuccessful()) {
-                    DeliveryBoyList data = response.body();
-                    reasonsList.clear();
-                    ArrayList<ProfileResponse> deliveryBoyList = data.getDeliveryBoys();
-                    if (deliveryBoyList.size() >0) {
-                        reasonsList.addAll(deliveryBoyList);
-                        reasonAdapter = new CustomSpinnerAdapter(requireActivity(), reasonsList);
-                        selectSpinnerField.setAdapter(reasonAdapter);
-                    }
-                } else {
 
-                }
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<DeliveryBoyList> call, Throwable t) {
-                progressDialog.dismiss();
-            }
-        });
         //Payment info
         tvAmount = view.findViewById(R.id.amount);
         tvDeliveryCharges = view.findViewById(R.id.delivery_charges);
@@ -356,13 +331,43 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         mCancelOrderBtn.setBackgroundResource(R.drawable.btn_bg_canceled);
         mCancelOrderBtn.setText(R.string.cancel);
         deliveryBoyInfo.setVisibility(View.VISIBLE);
+
+        progressDialog.show();
+        OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
+        orderService.getDeliveryBoyList("8655333400","1"/*MyProfile.getInstance().getMobileNumber(), MyProfile.getInstance().getUserID()*/).enqueue(new Callback<DeliveryBoyList>() {
+            @Override
+            public void onResponse(Call<DeliveryBoyList> call, Response<DeliveryBoyList> response) {
+                if (response.isSuccessful()) {
+                    DeliveryBoyList data = response.body();
+                    reasonsList.clear();
+                    ArrayList<ProfileResponse> deliveryBoyList = data.getDeliveryBoys();
+                    if (deliveryBoyList.size() >0) {
+                        reasonsList.addAll(deliveryBoyList);
+                        reasonAdapter = new CustomSpinnerAdapter(requireActivity(), reasonsList);
+                        deliveryBoySpinner.setAdapter(reasonAdapter);
+                    }
+                } else {
+
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<DeliveryBoyList> call, Throwable t) {
+                progressDialog.dismiss();
+            }
+        });
+
     }
     void isDeliveredOrder() {
         mCancelOrderBtn.setVisibility(View.GONE);
         mAcceptOrderBtn.setVisibility(View.GONE);
         deliveryBoyInfo.setVisibility(View.VISIBLE);
-        /*deliveryBoyNumber.setText(mOrderObject.getDeliveryBoyNumber());
-        deliveryBoyName.setText(mOrderObject.getDeliveryBoyName());*/
+        deliveryBoyName.setVisibility(View.VISIBLE);
+        deliveryBoyNumber.setVisibility(View.VISIBLE);
+        deliveryBoySpinner.setVisibility(View.GONE);
+        deliveryBoyNumber.setText(orderProductList.getDeliveryBoyInfo().getNumber());
+        deliveryBoyName.setText(orderProductList.getDeliveryBoyInfo().getFirstName()+" "+orderProductList.getDeliveryBoyInfo().getLastName());
     }
     void isReturnedOrder() {
         mCancelOrderBtn.setVisibility(View.GONE);

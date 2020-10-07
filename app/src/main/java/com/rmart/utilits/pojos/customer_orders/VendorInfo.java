@@ -25,6 +25,10 @@ public class VendorInfo implements Serializable {
     @Expose
     String mobileNumber;
 
+    @SerializedName("number")
+    @Expose
+    String number;
+
     @SerializedName("address")
     @Expose
     String address;
@@ -119,5 +123,13 @@ public class VendorInfo implements Serializable {
             data += ", "+country;
         }
         return data;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 }
