@@ -425,7 +425,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         deliveryBoyName.setVisibility(View.VISIBLE);
         deliveryBoyNumber.setVisibility(View.VISIBLE);
         deliveryBoySpinner.setVisibility(View.GONE);
-        deliveryBoyNumber.setText(orderProductList.getDeliveryBoyInfo().getNumber());
+        deliveryBoyNumber.setText(orderProductList.getDeliveryBoyInfo().getMobileNumber());
         String deliveryBoyDetails = String.format("%s %s", orderProductList.getDeliveryBoyInfo().getFirstName(), orderProductList.getDeliveryBoyInfo().getLastName());
         deliveryBoyName.setText(deliveryBoyDetails);
     }
