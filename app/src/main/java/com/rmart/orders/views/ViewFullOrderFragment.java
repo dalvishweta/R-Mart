@@ -2,24 +2,25 @@ package com.rmart.orders.views;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.customer.adapters.CustomSpinnerAdapter;
+import com.rmart.customer_order.views.SelectOrderStatusView;
 import com.rmart.orders.adapters.ProductListAdapter;
-import com.rmart.orders.viewmodel.MyOrdersViewModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -34,8 +35,6 @@ import com.rmart.utilits.services.OrderService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,14 +48,16 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private Order mOrderObject;
     private AppCompatButton mCancelOrderBtn, mAcceptOrderBtn;
     private AppCompatTextView tvStatus, customerName, customerAddress, customerNumber, dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType,
-            deliveryBoyName, deliveryBoyNumber, contactNumber, vendorName, vendorAddress, vendorNumber;
+            deliveryBoyName, deliveryBoyNumber;
     private CustomerOrderProductList orderProductList;
     private RecyclerView recyclerView;
     private LinearLayout deliveryBoyInfo, footerView;
     private ProfileResponse selectedReason;
     private CustomSpinnerAdapter reasonAdapter;
     private Spinner deliveryBoySpinner;
-    ArrayList <Object>reasonsList = new ArrayList();
+    ArrayList<Object> reasonsList = new ArrayList<>();
+    private TextView tvStatusComments;
+
     public ViewFullOrderFragment() {
         // Required empty public constructor
     }
@@ -131,6 +132,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         mCancelOrderBtn.setOnClickListener(this);
         mAcceptOrderBtn = view.findViewById(R.id.accept_order);
         mAcceptOrderBtn.setOnClickListener(this);
+        tvStatusComments = view.findViewById(R.id.status_comments);
 
         // Customer Info
         customerName = view.findViewById(R.id.customer_name);
@@ -139,9 +141,9 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
         // Vendor Info
         view.findViewById(R.id.vendor_details_root).setVisibility(View.GONE);
-        vendorName = view.findViewById(R.id.vendor_name);
+       /* vendorName = view.findViewById(R.id.vendor_name);
         vendorNumber = view.findViewById(R.id.vendor_number);
-        vendorAddress = view.findViewById(R.id.vendor_address);
+        vendorAddress = view.findViewById(R.id.vendor_address);*/
 
         tvStatus = view.findViewById(R.id.status);
         dateValue = view.findViewById(R.id.date_value);
@@ -185,7 +187,13 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         Resources res = getResources();
         String text = String.format(res.getString(R.string.status_order), orderProductList.getOrderInfo().getStatusName());
         tvStatus.setText(text);
-        orderIdValue.setText( orderProductList.getOrderInfo().getOrderID());
+        String statusCommentsReason = orderProductList.getOrderInfo().getStatusComments();
+        if(TextUtils.isEmpty(statusCommentsReason)) {
+            tvStatusComments.setVisibility(View.GONE);
+        }
+        String statusComments = String.format("%s : %s", getString(R.string.comments), statusCommentsReason);
+        tvStatusComments.setText(statusComments);
+        orderIdValue.setText(orderProductList.getOrderInfo().getOrderID());
         dateValue.setText(mOrderObject.getOrderDate().split(" ")[0]);
 
         // vendor
@@ -233,25 +241,38 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     public void onClick(View view) {
         String text = ((AppCompatButton)view).getText().toString();
         if (text.contains(getResources().getString(R.string.accept))) {
-            updateOrderStatus(Utils.ACCEPTED_ORDER_STATUS);
+            updateOrderStatus(Utils.ACCEPTED_ORDER_STATUS, "");
+            updateUI();
         } else if (text.contains(getResources().getString(R.string.packed))) {
-            updateOrderStatus(Utils.PACKED_ORDER_STATUS);
+            updateOrderStatus(Utils.PACKED_ORDER_STATUS, "");
+            updateUI();
         } else if (text.contains(getResources().getString(R.string.shipped))) {
-            updateOrderStatus(Utils.SHIPPED_ORDER_STATUS);
+            updateOrderStatus(Utils.SHIPPED_ORDER_STATUS, "");
+            updateUI();
         } else if (text.contains(getResources().getString(R.string.delivered))) {
-            updateOrderStatus(Utils.DELIVERED_ORDER_STATUS);
+            updateOrderStatus(Utils.DELIVERED_ORDER_STATUS, "");
+            updateUI();
         } else if (text.contains(getResources().getString(R.string.returned))) {
-            updateOrderStatus(Utils.CANCEL_BY_CUSTOMER);
+            updateOrderStatus(Utils.CANCEL_BY_CUSTOMER, "");
+            updateUI();
         } else {
-            updateOrderStatus(Utils.CANCEL_BY_RETAILER);
+            SelectOrderStatusView selectOrderStatus = SelectOrderStatusView.getInstance();
+            selectOrderStatus.setCallBackListener(pObject -> {
+                if (pObject instanceof String) {
+                    String reason = (String) pObject;
+                    updateOrderStatus(Utils.CANCEL_BY_RETAILER, reason);
+                }
+            });
+            if (!requireActivity().isFinishing()) {
+                selectOrderStatus.show(requireActivity().getSupportFragmentManager(), SelectOrderStatusView.class.getName());
+            }
         }
-        updateUI();
     }
 
-    private void updateOrderStatus(String newOrderStatus) {
+    private void updateOrderStatus(String newOrderStatus, String reason) {
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID() ,newOrderStatus, "").enqueue(new Callback<UpdatedOrderStatus>() {
+        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newOrderStatus, reason).enqueue(new Callback<UpdatedOrderStatus>() {
             @Override
             public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
                 if (response.isSuccessful()) {
@@ -303,29 +324,33 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         //Objects.requireNonNull(viewModel.getReturnedOrders().getValue()).getOrderObjects().add(mOrderObject);
     }*/
 
-    void isOpenOrder() {
+    private void isOpenOrder() {
         mCancelOrderBtn.setBackgroundResource(R.drawable.btn_bg_canceled);
         mCancelOrderBtn.setText(R.string.cancel);
 
         mAcceptOrderBtn.setBackgroundResource(R.drawable.btn_bg_accepted);
         mAcceptOrderBtn.setText(R.string.accept);
     }
-    void isCanceledOrder() {
+
+    private void isCanceledOrder() {
         mCancelOrderBtn.setVisibility(View.GONE);
         mAcceptOrderBtn.setVisibility(View.GONE);
     }
-    void isAcceptedOrder() {
+
+    private void isAcceptedOrder() {
         mAcceptOrderBtn.setBackgroundResource(R.drawable.btn_bg_shipped);
         mAcceptOrderBtn.setText(R.string.shipped);
         mCancelOrderBtn.setBackgroundResource(R.drawable.btn_bg_packed);
         mCancelOrderBtn.setText(R.string.packed);
     }
-    void isPackedOrder() {
+
+    private void isPackedOrder() {
         mCancelOrderBtn.setBackgroundResource(R.drawable.btn_bg_shipped);
         mCancelOrderBtn.setText(R.string.shipped);
         mAcceptOrderBtn.setVisibility(View.GONE);
     }
-    void isShippedOrder() {
+
+    private void isShippedOrder() {
         mAcceptOrderBtn.setBackgroundResource(R.drawable.btn_bg_delivered);
         mAcceptOrderBtn.setText(R.string.delivered);
         mCancelOrderBtn.setBackgroundResource(R.drawable.btn_bg_canceled);
@@ -334,26 +359,24 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.getDeliveryBoyList("8655333400","1"/*MyProfile.getInstance().getMobileNumber(), MyProfile.getInstance().getUserID()*/).enqueue(new Callback<DeliveryBoyList>() {
+        orderService.getDeliveryBoyList("8655333400", "1"/*MyProfile.getInstance().getMobileNumber(), MyProfile.getInstance().getUserID()*/).enqueue(new Callback<DeliveryBoyList>() {
             @Override
-            public void onResponse(Call<DeliveryBoyList> call, Response<DeliveryBoyList> response) {
+            public void onResponse(@NotNull Call<DeliveryBoyList> call, @NotNull Response<DeliveryBoyList> response) {
                 if (response.isSuccessful()) {
                     DeliveryBoyList data = response.body();
                     reasonsList.clear();
                     ArrayList<ProfileResponse> deliveryBoyList = data.getDeliveryBoys();
-                    if (deliveryBoyList.size() >0) {
+                    if (deliveryBoyList.size() > 0) {
                         reasonsList.addAll(deliveryBoyList);
                         reasonAdapter = new CustomSpinnerAdapter(requireActivity(), reasonsList);
                         deliveryBoySpinner.setAdapter(reasonAdapter);
                     }
-                } else {
-
                 }
                 progressDialog.dismiss();
             }
 
             @Override
-            public void onFailure(Call<DeliveryBoyList> call, Throwable t) {
+            public void onFailure(@NotNull Call<DeliveryBoyList> call, @NotNull Throwable t) {
                 progressDialog.dismiss();
             }
         });
@@ -367,7 +390,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         deliveryBoyNumber.setVisibility(View.VISIBLE);
         deliveryBoySpinner.setVisibility(View.GONE);
         deliveryBoyNumber.setText(orderProductList.getDeliveryBoyInfo().getNumber());
-        deliveryBoyName.setText(orderProductList.getDeliveryBoyInfo().getFirstName()+" "+orderProductList.getDeliveryBoyInfo().getLastName());
+        String deliveryBoyDetails = String.format("%s %s", orderProductList.getDeliveryBoyInfo().getFirstName(), orderProductList.getDeliveryBoyInfo().getLastName());
+        deliveryBoyName.setText(deliveryBoyDetails);
     }
     void isReturnedOrder() {
         mCancelOrderBtn.setVisibility(View.GONE);

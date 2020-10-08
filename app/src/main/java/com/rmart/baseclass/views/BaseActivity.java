@@ -1,5 +1,6 @@
 package com.rmart.baseclass.views;
 
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.FragmentManager;
@@ -12,9 +13,12 @@ import com.rmart.utilits.RuntimePermissionsActivity;
 
 public abstract class BaseActivity extends RuntimePermissionsActivity implements BaseListener {
 
+    public Dialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        progressDialog = CustomLoadingDialog.getInstance(this);
     }
 
     protected void replaceFragment(BaseFragment baseFragment, String fragment_id, boolean isAddToBackStack) {

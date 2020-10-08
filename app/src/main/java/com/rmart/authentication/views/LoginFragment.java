@@ -25,9 +25,11 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.Constants;
+import com.rmart.baseclass.LoginDetailsModel;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.fcm.MyFirebaseMessagingService;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.RokadMartCache;
 import com.rmart.utilits.Utils;
@@ -84,7 +86,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(requireActivity(), instanceIdResult -> {
             mDeviceKey = instanceIdResult.getToken();
-            Log.i("FCM Token", "FCM Token: "+mDeviceKey);
+            LoggerInfo.printLog("FCM Token", mDeviceKey);
         });
 
         etMobileNumber.setText(BuildConfig.LOGIN_USERNAME);
@@ -151,6 +153,9 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                             if (data.getStatus().equalsIgnoreCase("success")) {
                                 if (data.getLoginData().getRoleID().equalsIgnoreCase(getString(R.string.role_id))) {
                                     try {
+                                        LoginDetailsModel loginDetailsModel = new LoginDetailsModel();
+                                        loginDetailsModel.setMobileNumber(mMobileNumber);
+                                        loginDetailsModel.setPassword(mPassword);
                                         ProfileResponse profileResponse = data.getLoginData();
                                         MyProfile.setInstance(profileResponse);
                                         MyProfile.getInstance().setCartCount(profileResponse.getTotalCartCount());
@@ -159,7 +164,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                         } else {
                                             switch (data.getLoginData().getRoleID()) {
                                                 case Utils.CUSTOMER_ID:
-                                                    RokadMartCache.putData(Constants.CACHE_CUSTOMER_DETAILS, requireActivity(), data.getLoginData());
+                                                    RokadMartCache.putData(Constants.CACHE_CUSTOMER_DETAILS, requireActivity(), loginDetailsModel);
                                                     mListener.goToCustomerHomeActivity();
                                                     SharedPreferences sharedPref = Objects.requireNonNull(requireActivity()).getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                                                     SharedPreferences.Editor editor = sharedPref.edit();
@@ -167,11 +172,11 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                                     editor.apply();
                                                     break;
                                                 case Utils.RETAILER_ID:
-                                                    RokadMartCache.putData(Constants.CACHE_RETAILER_DETAILS, requireActivity(), data.getLoginData());
+                                                    RokadMartCache.putData(Constants.CACHE_RETAILER_DETAILS, requireActivity(), loginDetailsModel);
                                                     mListener.goToHomeActivity();
                                                     break;
                                                 case Utils.DELIVERY_ID:
-                                                    RokadMartCache.putData(Constants.CACHE_DELIVERY_DETAILS, requireActivity(), data.getLoginData());
+                                                    RokadMartCache.putData(Constants.CACHE_DELIVERY_DETAILS, requireActivity(), loginDetailsModel);
                                                     break;
                                             }
                                         }

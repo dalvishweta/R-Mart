@@ -21,8 +21,10 @@ import com.rmart.baseclass.Constants;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.ProductInCartDetailsModel;
 import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.Utils;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Satya Seshu on 12/09/20.
@@ -52,15 +54,20 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ProductInCartDetailsModel dataObject = listData.get(position);
         holder.tvProductNameField.setText(dataObject.getProductName());
-        holder.tvNoOfQuantityField.setText(String.valueOf(dataObject.getTotalProductCartQty()));
         String productImageUrl = dataObject.getProductImage();
 
-        String quantityDetails = String.format("%s %s", dataObject.getUnitNumber(), dataObject.getShortUnitMeasure());
+        int totalProductCartQuantity = dataObject.getTotalProductCartQty();
+        holder.tvNoOfQuantityField.setText(String.valueOf(totalProductCartQuantity));
+
+        int totalUnitNumbers = totalProductCartQuantity * dataObject.getUnitNumber();
+        String quantityDetails = String.format(Locale.getDefault(), "%d %s", totalUnitNumbers, dataObject.getShortUnitMeasure());
         holder.tvQuantityDetailsField.setText(quantityDetails);
-        String sellingPrice = String.format("Rs.%s", dataObject.getTotalSellingPrice());
+        double totalSellingPrice = totalProductCartQuantity * dataObject.getPerProductSellingPrice();
+        String sellingPrice = String.format("Rs. %s", totalSellingPrice);
         holder.tvSellingPriceField.setText(sellingPrice);
 
-        holder.tvTotalPriceField.setText(dataObject.getTotalUnitPrice());
+        Double totalUnitPrice = totalProductCartQuantity * dataObject.getPerProductUnitPrice();
+        holder.tvTotalPriceField.setText(Utils.roundOffDoubleValue(totalUnitPrice));
         holder.tvTotalPriceField.setPaintFlags(holder.tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         if (!TextUtils.isEmpty(productImageUrl)) {

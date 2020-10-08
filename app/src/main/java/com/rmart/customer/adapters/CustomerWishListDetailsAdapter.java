@@ -24,6 +24,7 @@ import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.WishListResponseDetails;
 import com.rmart.customer.models.WishListResponseModel;
 import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.Utils;
 
 import java.util.List;
 
@@ -80,7 +81,7 @@ public class CustomerWishListDetailsAdapter extends RecyclerView.Adapter<Custome
             String sellingPrice = String.format("Rs.%s", unitModelDetails.getSellingPrice());
             holder.tvSellingPriceField.setText(sellingPrice);
 
-            holder.tvTotalPriceField.setText(unitModelDetails.getUnitPrice());
+            holder.tvTotalPriceField.setText(Utils.roundOffDoubleValue(unitModelDetails.getUnitPrice()));
             holder.tvTotalPriceField.setPaintFlags(holder.tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
         holder.tvProductDiscountField.setText("");

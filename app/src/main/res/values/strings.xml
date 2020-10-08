@@ -281,4 +281,5 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="expected_date_of_delivery">Expected date of delivery</string>
+    <string name="comments">Comments</string>
 </resources>

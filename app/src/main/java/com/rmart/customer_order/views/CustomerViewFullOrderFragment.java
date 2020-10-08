@@ -2,10 +2,12 @@ package com.rmart.customer_order.views;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,6 +52,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     private CustomerOrderProductList orderProductList;
     private RecyclerView recyclerView;
     private LinearLayout deliveryBoyInfo, footer;
+    private TextView tvStatusComments;
 
     public CustomerViewFullOrderFragment() {
         // Required empty public constructor
@@ -127,6 +130,8 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         mRightButton = view.findViewById(R.id.accept_order);
         mRightButton.setOnClickListener(this);
 
+        tvStatusComments = view.findViewById(R.id.status_comments);
+
         view.findViewById(R.id.accept_order).setVisibility(View.GONE);
 
         footer = view.findViewById(R.id.bottom);
@@ -162,6 +167,14 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         Resources res = getResources();
         String text = String.format(res.getString(R.string.status_order), orderProductList.getOrderInfo().getStatusName());
         tvStatus.setText(text);
+
+        String statusCommentsReason = orderProductList.getOrderInfo().getStatusComments();
+        if(TextUtils.isEmpty(statusCommentsReason)) {
+            tvStatusComments.setVisibility(View.GONE);
+        }
+        String statusComments = String.format("%s : %s", getString(R.string.comments), statusCommentsReason);
+        tvStatusComments.setText(statusComments);
+
         orderIdValue.setText(orderProductList.getOrderInfo().getOrderID());
         dateValue.setText(mOrderObject.getOrderDate().split(" ")[0]);
         if (orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.OPEN_ORDER_STATUS) ||

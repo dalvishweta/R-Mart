@@ -46,6 +46,9 @@ public class OrderInfo implements Serializable {
     @SerializedName("total_amount")
     @Expose
     String totalAmt;
+    @SerializedName("status_comment")
+    @Expose
+    String statusComments;
 
     public String getStatus() {
         return status;
@@ -125,5 +128,13 @@ public class OrderInfo implements Serializable {
 
     public void setOrderCharges(String orderCharges) {
         this.orderCharges = orderCharges;
+    }
+
+    public String getStatusComments() {
+        return statusComments;
+    }
+
+    public void setStatusComments(String statusComments) {
+        this.statusComments = statusComments;
     }
 }

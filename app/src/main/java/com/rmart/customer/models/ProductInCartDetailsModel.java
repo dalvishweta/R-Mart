@@ -26,7 +26,7 @@ public class ProductInCartDetailsModel implements Serializable {
     private Integer productUnitId;
     @SerializedName("unit_number")
     @Expose
-    private String unitNumber;
+    private Integer unitNumber;
     @SerializedName("total_product_cart_qty")
     @Expose
     private Integer totalProductCartQty;
@@ -38,10 +38,10 @@ public class ProductInCartDetailsModel implements Serializable {
     private String shortUnitMeasure;
     @SerializedName("total_unit_price")
     @Expose
-    private String totalUnitPrice;
+    private Double totalUnitPrice;
     @SerializedName("total_selling_price")
     @Expose
-    private String totalSellingPrice;
+    private Double totalSellingPrice;
     @SerializedName("product_name")
     @Expose
     private String productName;
@@ -58,6 +58,14 @@ public class ProductInCartDetailsModel implements Serializable {
     @SerializedName("product_unit_quantity")
     @Expose
     private Integer productUnitQuantity;
+
+    @SerializedName("per_product_unit_price")
+    @Expose
+    private Double perProductUnitPrice;
+
+    @SerializedName("per_product_selling_price")
+    @Expose
+    private Double perProductSellingPrice;
 
     public Integer getCartId() {
         return cartId;
@@ -83,11 +91,11 @@ public class ProductInCartDetailsModel implements Serializable {
         this.productUnitId = productUnitId;
     }
 
-    public String getUnitNumber() {
+    public Integer getUnitNumber() {
         return unitNumber;
     }
 
-    public void setUnitNumber(String unitNumber) {
+    public void setUnitNumber(Integer unitNumber) {
         this.unitNumber = unitNumber;
     }
 
@@ -115,19 +123,19 @@ public class ProductInCartDetailsModel implements Serializable {
         this.shortUnitMeasure = shortUnitMeasure;
     }
 
-    public String getTotalUnitPrice() {
+    public Double getTotalUnitPrice() {
         return totalUnitPrice;
     }
 
-    public void setTotalUnitPrice(String totalUnitPrice) {
+    public void setTotalUnitPrice(Double totalUnitPrice) {
         this.totalUnitPrice = totalUnitPrice;
     }
 
-    public String getTotalSellingPrice() {
+    public Double getTotalSellingPrice() {
         return totalSellingPrice;
     }
 
-    public void setTotalSellingPrice(String totalSellingPrice) {
+    public void setTotalSellingPrice(Double totalSellingPrice) {
         this.totalSellingPrice = totalSellingPrice;
     }
 
@@ -169,6 +177,22 @@ public class ProductInCartDetailsModel implements Serializable {
 
     public void setProductUnitQuantity(Integer productUnitQuantity) {
         this.productUnitQuantity = productUnitQuantity;
+    }
+
+    public Double getPerProductUnitPrice() {
+        return perProductUnitPrice;
+    }
+
+    public void setPerProductUnitPrice(Double perProductUnitPrice) {
+        this.perProductUnitPrice = perProductUnitPrice;
+    }
+
+    public Double getPerProductSellingPrice() {
+        return perProductSellingPrice;
+    }
+
+    public void setPerProductSellingPrice(Double perProductSellingPrice) {
+        this.perProductSellingPrice = perProductSellingPrice;
     }
 
     @NotNull

@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
-
     <LinearLayout
         android:id="@+id/buttons_layout_field"
         android:layout_width="match_parent"
@@ -28,7 +27,7 @@
             android:textColor="@color/white" />
 
         <LinearLayout
-            android:id="@+id/btn_buy_now_field"
+            android:id="@+id/btn_move_to_wish_list_field"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -49,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="@string/buy_now"
+                android:text="@string/move_to_wish_list"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
         </LinearLayout>
@@ -85,37 +84,33 @@
                     android:layout_width="40dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:gravity="center"
                     android:textColor="@color/green" />
 
-                <androidx.viewpager.widget.ViewPager
-                    android:id="@+id/view_pager"
-                    android:layout_width="130dp"
-                    android:layout_height="175dp"
-                    android:layout_centerHorizontal="true" />
+                <RelativeLayout
+                    android:id="@+id/view_pager_base"
+                    android:layout_width="175dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_height="200dp"
+                    android:layout_alignParentTop="true">
 
-                <ImageView
-                    android:id="@+id/iv_left_arrow_field"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="40dp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/left_arrow"
-                    android:visibility="gone" />
+                    <com.rmart.baseclass.views.AutoScrollViewPager
+                        android:id="@+id/view_pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
-                <ImageView
-                    android:id="@+id/iv_right_arrow_field"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="40dp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/right_arrow" />
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/product_images_dot_indicator_field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@android:color/transparent"
+                        android:minHeight="40dp"
+                        app:tabBackground="@drawable/product_images_indicator_selector"
+                        app:tabGravity="center" />
+                </RelativeLayout>
             </RelativeLayout>
             <TextView
                 android:id="@+id/tv_product_name_field"

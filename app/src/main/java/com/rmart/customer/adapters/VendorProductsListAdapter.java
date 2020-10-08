@@ -26,6 +26,7 @@ import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.Utils;
 import com.rmart.utilits.custom_views.SpacesItemDecoration;
 
 import java.util.ArrayList;
@@ -85,7 +86,7 @@ public class VendorProductsListAdapter extends RecyclerView.Adapter<VendorProduc
             String sellingPrice = String.format("Rs.%s", unitModelDetails.getSellingPrice());
             holder.tvSellingPriceField.setText(sellingPrice);
 
-            holder.tvTotalPriceField.setText(unitModelDetails.getUnitPrice());
+            holder.tvTotalPriceField.setText(Utils.roundOffDoubleValue(unitModelDetails.getUnitPrice()));
             holder.tvTotalPriceField.setPaintFlags(holder.tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
             int productDiscount = unitModelDetails.getProductDiscount();

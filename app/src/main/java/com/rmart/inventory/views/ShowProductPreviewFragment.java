@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabLayout;
 import com.rmart.R;
+import com.rmart.baseclass.views.AutoScrollViewPager;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
@@ -34,7 +35,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,7 +47,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     private RecyclerView recyclerView;
     private ProductResponse product;
     private boolean isEdit;
-    private ViewPager viewPager;
+    private AutoScrollViewPager viewPager;
     //private APIStockListResponse apiStockListResponse;
     private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryInDays;
     private TabLayout dotIndicatorLayoutField;
@@ -110,6 +111,11 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         AppCompatButton delete = view.findViewById(R.id.delete);
         AppCompatButton edit = view.findViewById(R.id.edit);
         dotIndicatorLayoutField = view.findViewById(R.id.product_images_dot_indicator_field);
+
+        viewPager.startAutoScroll();
+        viewPager.setInterval(1000);
+        viewPager.setCycle(true);
+        viewPager.setStopScrollWhenTouch(true);
 
         if (isEdit) {
             edit.setOnClickListener(view1 -> mListener.updateProduct(product, true));

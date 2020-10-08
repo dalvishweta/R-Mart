@@ -18,13 +18,13 @@ public class CustomerProductsDetailsUnitModel implements Serializable {
     private Integer productId;
     @SerializedName("unit_price")
     @Expose
-    private String unitPrice;
+    private Double unitPrice;
     @SerializedName("unit_number")
     @Expose
-    private String unitNumber;
+    private Integer unitNumber;
     @SerializedName("selling_price")
     @Expose
-    private String sellingPrice;
+    private Double sellingPrice;
     @SerializedName("unit_measure")
     @Expose
     private String unitMeasure;
@@ -37,6 +37,10 @@ public class CustomerProductsDetailsUnitModel implements Serializable {
     @SerializedName("product_discount")
     @Expose
     private Integer productDiscount;
+
+    @SerializedName("total_product_cart_qty")
+    @Expose
+    private Integer totalProductCartQty = 1;
 
     public Integer getProductUnitId() {
         return productUnitId;
@@ -54,27 +58,27 @@ public class CustomerProductsDetailsUnitModel implements Serializable {
         this.productId = productId;
     }
 
-    public String getUnitPrice() {
+    public Double getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(String unitPrice) {
+    public void setUnitPrice(Double unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    public String getUnitNumber() {
+    public Integer getUnitNumber() {
         return unitNumber;
     }
 
-    public void setUnitNumber(String unitNumber) {
+    public void setUnitNumber(Integer unitNumber) {
         this.unitNumber = unitNumber;
     }
 
-    public String getSellingPrice() {
+    public Double getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(String sellingPrice) {
+    public void setSellingPrice(Double sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 
@@ -108,5 +112,13 @@ public class CustomerProductsDetailsUnitModel implements Serializable {
 
     public void setProductDiscount(Integer productDiscount) {
         this.productDiscount = productDiscount;
+    }
+
+    public Integer getTotalProductCartQty() {
+        return totalProductCartQty;
+    }
+
+    public void setTotalProductCartQty(Integer totalProductCartQty) {
+        this.totalProductCartQty = totalProductCartQty;
     }
 }

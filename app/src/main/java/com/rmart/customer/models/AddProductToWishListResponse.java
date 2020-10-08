@@ -22,7 +22,7 @@ public class AddProductToWishListResponse extends BaseResponse {
     }
 
     public static class AddProductToWishListDataResponse {
-        @SerializedName("product_wishlist_id")
+        @SerializedName("wishlist_id")
         @Expose
         private String productWishListId;
 

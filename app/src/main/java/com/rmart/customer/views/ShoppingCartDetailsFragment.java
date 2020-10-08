@@ -147,14 +147,15 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
         loadUIComponents(view);
 
         updateShopDetailsUI();
+        productInCartDetailsList.clear();
 
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            if(productId != -1) {
+            /*if(productId != -1) {
 
-            }
+            }*/
             Call<ProductInCartResponse> call = customerProductsService.getVendorShowCartList(clientID, vendorShoppingCartDetails.getVendorId(), MyProfile.getInstance().getUserID());
             call.enqueue(new Callback<ProductInCartResponse>() {
                 @Override
@@ -284,7 +285,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
                             showDialog(getString(R.string.no_information_available));
                         }
                     } else {
-                        showDialog(getString(R.string.no_information_available));
+                        showDialog(response.message());
                     }
                 }
 

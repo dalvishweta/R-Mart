@@ -40,7 +40,6 @@ import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -293,7 +292,6 @@ public class PaymentOptionsFragment extends BaseFragment {
                 showSuccessDialog(ccAvenueResponse.getOrder_message());
             }else{
                 showDialog(getString(R.string.message), ccAvenueResponse.getOrder_message(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
-
             }
         }
 
@@ -306,9 +304,11 @@ public class PaymentOptionsFragment extends BaseFragment {
 
     private void showSuccessDialog(String orderedMessage) {
         showDialog(orderedMessage, pObject -> {
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            String name = fragmentManager.getBackStackEntryAt(0).getName();
-            fragmentManager.popBackStackImmediate(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            requireActivity().runOnUiThread(() -> {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                String name = fragmentManager.getBackStackEntryAt(0).getName();
+                fragmentManager.popBackStackImmediate(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            });
         });
     }
 }

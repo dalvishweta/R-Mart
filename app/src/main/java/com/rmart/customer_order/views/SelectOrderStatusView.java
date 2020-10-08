@@ -13,9 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.customer.adapters.CustomSpinnerAdapter;
+import com.rmart.utilits.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,8 +56,12 @@ public class SelectOrderStatusView extends DialogFragment {
 
     private void loadUIComponents(View view) {
         Spinner selectSpinnerField = view.findViewById(R.id.select_reason_spinner_field);
-        String[] listItems = getResources().getStringArray(R.array.reasons_list);
-        List<Object> reasonsList = new ArrayList<>(Arrays.asList(listItems));
+        List<Object> reasonsList = new ArrayList<>();
+        if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.CUSTOMER)) {
+            reasonsList.addAll(Arrays.asList(getResources().getStringArray(R.array.customer_reasons_list)));
+        } else {
+            reasonsList.addAll(Arrays.asList(getResources().getStringArray(R.array.vendor_reasons_list)));
+        }
         reasonsList.add(0, getString(R.string.select_reason));
         CustomSpinnerAdapter reasonAdapter = new CustomSpinnerAdapter(requireActivity(), reasonsList);
         selectSpinnerField.setAdapter(reasonAdapter);

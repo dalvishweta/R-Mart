@@ -16,15 +16,9 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.text.DecimalFormat;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -171,5 +165,10 @@ public class Utils {
         if (best != null)
             intent.setClassName(best.activityInfo.packageName, best.activityInfo.name);
         context.startActivity(intent);
+    }
+
+    public static String roundOffDoubleValue(Double value) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        return df.format(value);
     }
 }
