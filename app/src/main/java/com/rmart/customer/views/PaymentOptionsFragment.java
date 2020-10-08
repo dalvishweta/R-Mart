@@ -1,8 +1,9 @@
 package com.rmart.customer.views;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
@@ -204,6 +203,7 @@ public class PaymentOptionsFragment extends BaseFragment {
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         webview.getSettings().setJavaScriptEnabled(true);
         webview.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT"); // javaScriptInterface
@@ -228,6 +228,12 @@ public class PaymentOptionsFragment extends BaseFragment {
                 if (null != progressDialog && progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                progressDialog.show();
             }
         });
         loadWebView();
@@ -280,18 +286,16 @@ public class PaymentOptionsFragment extends BaseFragment {
     }
 
     class MyJavaScriptInterface {
-        private JsonObject jsonObject;
 
         @JavascriptInterface
         public void processHTML(String html) {
-            Log.d("JsonObject", "html data: " + html);
-            jsonObject = new JsonParser().parse(html).getAsJsonObject();
-            Gson g = new Gson();
-            CCAvenueResponse ccAvenueResponse = g.fromJson(html, CCAvenueResponse.class);
-            if (ccAvenueResponse.getOrder_status().equalsIgnoreCase("success")) {
-                showSuccessDialog(ccAvenueResponse.getOrder_message());
-            }else{
-                showDialog(getString(R.string.message), ccAvenueResponse.getOrder_message(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+            LoggerInfo.printLog("payment response", html);
+            CCAvenueResponse ccAvenueResponse = new Gson().fromJson(html, CCAvenueResponse.class);
+            if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
+                MyProfile.getInstance().setCartCount(ccAvenueResponse.getTotalCartCount());
+                showSuccessDialog(ccAvenueResponse.getOrderMessage());
+            } else {
+                showDialog(getString(R.string.message), ccAvenueResponse.getOrderMessage(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
             }
         }
 
@@ -303,12 +307,11 @@ public class PaymentOptionsFragment extends BaseFragment {
     }
 
     private void showSuccessDialog(String orderedMessage) {
-        showDialog(orderedMessage, pObject -> {
-            requireActivity().runOnUiThread(() -> {
-                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                String name = fragmentManager.getBackStackEntryAt(0).getName();
-                fragmentManager.popBackStackImmediate(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            });
-        });
+        showDialog(orderedMessage, pObject -> requireActivity().runOnUiThread(() -> {
+
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            String name = fragmentManager.getBackStackEntryAt(0).getName();
+            fragmentManager.popBackStackImmediate(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }));
     }
 }
