@@ -19,6 +19,7 @@
     <string name="error_last_name">Please enter last name minimum of 3 characters</string>
     <string name="register_left">Don\'t have an account?</string>
     <string name="register_right">Register</string>
+    <string name="proceed_to_pay">proceed to pay</string>
     <string name="forgot_password">Forgot password</string>
     <string name="full_name">Full Name</string>
     <string name="last_name">Last Name</string>
@@ -282,4 +283,6 @@
     <string name="yes">Yes</string>
     <string name="expected_date_of_delivery">Expected date of delivery</string>
     <string name="comments">Comments</string>
+    <string name="payment_text">On boarding and Registration Fee is 2000, GST is 360 \n Total amount 2360.</string>
+    <string name="title_payment">Payment</string>
 </resources>

@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.Task;
 import com.rmart.R;
 import com.rmart.authentication.OnAuthenticationClickedListener;
 import com.rmart.baseclass.views.BaseActivity;
+import com.rmart.customer.models.RSAKeyResponseDetails;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.mapview.MyLocation;
 import com.rmart.orders.views.OrdersActivity;
@@ -240,6 +241,11 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
         in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
         startActivity(in);
         finish();
+    }
+
+    @Override
+    public void proceedToPayment(RSAKeyResponseDetails mobileNumber) {
+        replaceFragment(PaymentFragment.newInstance(mobileNumber, ""), PaymentFragment.class.getName(), true);
     }
 
 

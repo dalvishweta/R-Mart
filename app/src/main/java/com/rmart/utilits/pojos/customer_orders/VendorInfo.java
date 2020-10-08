@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public class VendorInfo implements Serializable {
 
+    @SerializedName("id")
+    @Expose
+    String userID;
+
     @SerializedName("first_name")
     @Expose
     String firstName;
@@ -131,5 +135,13 @@ public class VendorInfo implements Serializable {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

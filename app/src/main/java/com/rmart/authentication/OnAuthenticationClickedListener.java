@@ -1,5 +1,7 @@
 package com.rmart.authentication;
 
+import com.rmart.customer.models.RSAKeyResponseDetails;
+
 public interface OnAuthenticationClickedListener {
     void goToHomeActivity();
     void goToForgotPassword();
@@ -14,4 +16,7 @@ public interface OnAuthenticationClickedListener {
     void goToHomePage();
 
     void goToCustomerHomeActivity();
+
+    void proceedToPayment(RSAKeyResponseDetails mobileNumber);
 }
+

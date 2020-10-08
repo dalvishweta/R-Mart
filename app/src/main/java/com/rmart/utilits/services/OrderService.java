@@ -34,6 +34,14 @@ public interface OrderService {
                                                @Field("user_id") String id,
                                                @Field("status") String newOrderStatus,
                                                @Field("status_comment") String statusComment);
+
+    @POST(BuildConfig.VENDOR_UPDATE_ORDER)
+    @FormUrlEncoded
+    Call<UpdatedOrderStatus> updateOrderStatus(@Field("order_id")String orderID,
+                                               @Field("user_id") String id,
+                                               @Field("status") String newOrderStatus,
+                                               @Field("status_comment") String statusComment,
+                                               @Field("order_assign_to") String orderAssignTO);
     @POST(BuildConfig.DELERY_BOY_LIST)
     @FormUrlEncoded
     Call<DeliveryBoyList> getDeliveryBoyList(@Field("mobile_number")String mobileNumber,

@@ -57,12 +57,13 @@ public class SplashScreen extends BaseActivity {
                 getLoginDetails((LoginDetailsModel) lObject);
             }
         } else if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.RETAILER)) {
-            Object lObject = RokadMartCache.getData(Constants.CACHE_RETAILER_DETAILS, this);
+            /*Object lObject = RokadMartCache.getData(Constants.CACHE_RETAILER_DETAILS, this);
             if (lObject == null) {
                 setDelayHandler();
             } else {
-                getLoginDetails((LoginDetailsModel) lObject);
-            }
+                getLoginDetails((ProfileResponse) lObject);
+            }*/
+            setDelayHandler();
         } else if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.DELIVERY)) {
             Object lObject = RokadMartCache.getData(Constants.CACHE_DELIVERY_DETAILS, this);
             if (lObject == null) {

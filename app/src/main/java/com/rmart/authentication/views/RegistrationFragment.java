@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -64,13 +66,21 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        view.findViewById(R.id.register).setOnClickListener(this);
+        Button register = view.findViewById(R.id.register);
+        register.setOnClickListener(this);
         tvFirstName = view.findViewById(R.id.first_name);
         tvLastName = view.findViewById(R.id.lase_name);
         tVMobileNumber = view.findViewById(R.id.mobile_number);
         tvEmail = view.findViewById(R.id.email);
         tvPassword = view.findViewById(R.id.password);
         tvConformPassword = view.findViewById(R.id.confirm_password);
+        if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
+            view.findViewById(R.id.payment_text).setVisibility(View.VISIBLE);
+            register.setText(R.string.proceed_to_pay);
+        } else {
+            view.findViewById(R.id.payment_text).setVisibility(View.GONE);
+            register.setText(R.string.register_right);
+        }
     }
 
     @Override
@@ -125,10 +135,18 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
                                 RegistrationResponse data = response.body();
                                 if (data != null) {
                                     if (data.getStatus().equals("Success")) {
-                                        showDialog("", data.getMsg() + " OTP: " + data.getOtp(), (click, i) -> {
-                                            resetFields();
-                                            mListener.validateOTP(mobileNumber);
-                                        });
+
+                                        String otpMsg = data.getMsg() + " OTP: " + data.getOtp();
+                                        resetFields();
+                                        if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
+                                            data.getRsaKeyResponseDetails().setOTPMsg(otpMsg);
+                                            mListener.proceedToPayment(data.getRsaKeyResponseDetails());
+                                        } else {
+                                            showDialog("", otpMsg, (click, i) -> {
+                                                mListener.validateOTP(mobileNumber);
+                                            });
+                                        }
+
                                     } else {
                                         showDialog("", data.getMsg());
                                     }

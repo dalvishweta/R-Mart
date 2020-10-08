@@ -47,11 +47,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PaymentOptionsFragment#getInstance} factory method to
- * create an instance of this fragment.
- */
 public class PaymentOptionsFragment extends BaseFragment {
 
     private static final String ARG_PARAM1 = "param1";
@@ -281,7 +276,6 @@ public class PaymentOptionsFragment extends BaseFragment {
 
     class MyJavaScriptInterface {
         private JsonObject jsonObject;
-
         @JavascriptInterface
         public void processHTML(String html) {
             Log.d("JsonObject", "html data: " + html);

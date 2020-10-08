@@ -49,13 +49,14 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private AppCompatButton mCancelOrderBtn, mAcceptOrderBtn;
     private AppCompatTextView tvStatus, customerName, customerAddress, customerNumber, dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType,
             deliveryBoyName, deliveryBoyNumber;
-    private CustomerOrderProductList orderProductList;
+    private CustomerOrderProductList orderProductList = new CustomerOrderProductList();
     private RecyclerView recyclerView;
     private LinearLayout deliveryBoyInfo, footerView;
-    private ProfileResponse selectedReason;
-    private CustomSpinnerAdapter reasonAdapter;
+    private ProfileResponse selectedDeliveryBoy;
+    private CustomSpinnerAdapter deliveryBoyAdapter;
     private Spinner deliveryBoySpinner;
     ArrayList<Object> reasonsList = new ArrayList<>();
+    ArrayList<Object> deliveryBoyList = new ArrayList<>();
     private TextView tvStatusComments;
 
     public ViewFullOrderFragment() {
@@ -159,8 +160,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         deliveryBoySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedReason = (ProfileResponse) reasonsList.get(i);
-                deliveryBoyNumber.setText(selectedReason.getMobileNumber());
+                selectedDeliveryBoy = (ProfileResponse) deliveryBoyList.get(i);
+                deliveryBoyNumber.setText(selectedDeliveryBoy.getMobileNumber());
             }
 
             @Override
@@ -270,34 +271,69 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     }
 
     private void updateOrderStatus(String newOrderStatus, String reason) {
-        progressDialog.show();
-        OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newOrderStatus, reason).enqueue(new Callback<UpdatedOrderStatus>() {
-            @Override
-            public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
-                if (response.isSuccessful()) {
-                    UpdatedOrderStatus data = response.body();
-                    if (data != null) {
-                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                            showDialog(data.getStatus(), data.getMsg(), ((dialogInterface, i) -> requireActivity().onBackPressed()));
+        if (newOrderStatus.equalsIgnoreCase(Utils.DELIVERED_ORDER_STATUS)) {
+            if (null != selectedDeliveryBoy.getUserID()) {
+                progressDialog.show();
+                OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
+                orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newOrderStatus, reason, selectedDeliveryBoy.getUserID()).enqueue(new Callback<UpdatedOrderStatus>() {
+                    @Override
+                    public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
+                        if (response.isSuccessful()) {
+                            UpdatedOrderStatus data = response.body();
+                            if (data != null) {
+                                if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                    showDialog(data.getStatus(), data.getMsg(), ((dialogInterface, i) -> requireActivity().onBackPressed()));
+                                } else {
+                                    showDialog(data.getMsg());
+                                }
+                            } else {
+                                showDialog(getString(R.string.no_information_available));
+                            }
                         } else {
-                            showDialog(data.getMsg());
+                            showDialog(response.message());
+                        }
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<UpdatedOrderStatus> call, @NotNull Throwable t) {
+                        progressDialog.dismiss();
+                        showDialog(t.getMessage());
+                    }
+                });
+            } else {
+                showDialog("Please select the delivery boy.");
+            }
+        } else {
+            progressDialog.show();
+            OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
+            orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newOrderStatus, reason).enqueue(new Callback<UpdatedOrderStatus>() {
+                @Override
+                public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
+                    if (response.isSuccessful()) {
+                        UpdatedOrderStatus data = response.body();
+                        if (data != null) {
+                            if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                showDialog(data.getStatus(), data.getMsg(), ((dialogInterface, i) -> requireActivity().onBackPressed()));
+                            } else {
+                                showDialog(data.getMsg());
+                            }
+                        } else {
+                            showDialog(getString(R.string.no_information_available));
                         }
                     } else {
-                        showDialog(getString(R.string.no_information_available));
+                        showDialog(response.message());
                     }
-                } else {
-                    showDialog(response.message());
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<UpdatedOrderStatus> call, @NotNull Throwable t) {
-                progressDialog.dismiss();
-                showDialog(t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(@NotNull Call<UpdatedOrderStatus> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                    showDialog(t.getMessage());
+                }
+            });
+        }
     }
 
     /*void updateToCancel() {
@@ -359,17 +395,17 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.getDeliveryBoyList("8655333400", "1"/*MyProfile.getInstance().getMobileNumber(), MyProfile.getInstance().getUserID()*/).enqueue(new Callback<DeliveryBoyList>() {
+        orderService.getDeliveryBoyList(MyProfile.getInstance().getMobileNumber(), MyProfile.getInstance().getUserID()).enqueue(new Callback<DeliveryBoyList>() {
             @Override
             public void onResponse(@NotNull Call<DeliveryBoyList> call, @NotNull Response<DeliveryBoyList> response) {
                 if (response.isSuccessful()) {
                     DeliveryBoyList data = response.body();
-                    reasonsList.clear();
-                    ArrayList<ProfileResponse> deliveryBoyList = data.getDeliveryBoys();
-                    if (deliveryBoyList.size() > 0) {
-                        reasonsList.addAll(deliveryBoyList);
-                        reasonAdapter = new CustomSpinnerAdapter(requireActivity(), reasonsList);
-                        deliveryBoySpinner.setAdapter(reasonAdapter);
+                    deliveryBoyList.clear();
+                    ArrayList<ProfileResponse> _deliveryBoyList = data.getDeliveryBoys();
+                    if (_deliveryBoyList.size() > 0) {
+                        deliveryBoyList.addAll(_deliveryBoyList);
+                        deliveryBoyAdapter = new CustomSpinnerAdapter(requireActivity(), deliveryBoyList);
+                        deliveryBoySpinner.setAdapter(deliveryBoyAdapter);
                     }
                 }
                 progressDialog.dismiss();

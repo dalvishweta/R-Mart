@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class RSAKeyResponseDetails implements Serializable {
 
+    private String userMobileNumber;
     @SerializedName("billing_name")
     @Expose
     private String billingName;
@@ -67,6 +68,7 @@ public class RSAKeyResponseDetails implements Serializable {
     @SerializedName("access_code")
     @Expose
     private String accessCode;
+    private String otpMsg;
 
     public String getBillingName() {
         return billingName;
@@ -218,5 +220,20 @@ public class RSAKeyResponseDetails implements Serializable {
 
     public void setAccessCode(String accessCode) {
         this.accessCode = accessCode;
+    }
+
+    public String getUserMobileNumber() {
+        return userMobileNumber;
+    }
+
+    public void setUserMobileNumber(String userMobileNumber) {
+        this.userMobileNumber = userMobileNumber;
+    }
+
+    public void setOTPMsg(String msg) {
+        otpMsg = msg;
+    }
+    public String getOTPMsg() {
+        return otpMsg;
     }
 }
