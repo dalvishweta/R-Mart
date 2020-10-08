@@ -203,8 +203,14 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     }
 
     @Override
-    public void validateOTP(String mobileNumber) {
-        replaceFragment(OTPFragment.newInstance(mobileNumber, ""), "OTPFragment", true);
+    public void validateOTP(String mobileNumber, boolean closePreviousScreen) {
+        if(closePreviousScreen) {
+            // onBackPressed();
+            replaceFragment(OTPFragment.newInstance(mobileNumber, ""), OTPFragment.class.getName(), true);
+        } else {
+            replaceFragment(OTPFragment.newInstance(mobileNumber, ""), OTPFragment.class.getName(), false);
+        }
+
     }
 
     @Override

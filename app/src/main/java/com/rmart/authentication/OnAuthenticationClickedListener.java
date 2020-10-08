@@ -6,7 +6,7 @@ public interface OnAuthenticationClickedListener {
     void goToHomeActivity();
     void goToForgotPassword();
     void goToRegistration();
-    void validateOTP(String mobileNumber);
+    void validateOTP(String mobileNumber, boolean closePreviousScreen);
     void changePassword(String otp, String mobileNumber);
 
     void goToProfileActivity(boolean isAddressAdded);

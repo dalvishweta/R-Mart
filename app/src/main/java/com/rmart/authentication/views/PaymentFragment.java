@@ -6,8 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +25,6 @@ import com.rmart.R;
 import com.rmart.authentication.OnAuthenticationClickedListener;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.models.RSAKeyResponseDetails;
-import com.rmart.customer.views.PaymentOptionsFragment;
-import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.ccavenue.AvenuesParams;
 import com.rmart.utilits.ccavenue.CCAvenueResponse;
 import com.rmart.utilits.ccavenue.RSAUtility;
@@ -176,11 +172,10 @@ public class PaymentFragment extends BaseFragment {
             jsonObject = new JsonParser().parse(html).getAsJsonObject();
             Gson g = new Gson();
             CCAvenueResponse ccAvenueResponse = g.fromJson(html, CCAvenueResponse.class);
-            if (ccAvenueResponse.getOrder_status().equalsIgnoreCase("success")) {
-                requireActivity().onBackPressed();
-                showSuccessDialog(ccAvenueResponse.getOrder_message() + " " +rsaKeyResponseDetails.getOTPMsg());
+            if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
+                showSuccessDialog(ccAvenueResponse.getOrderMessage() + " " +rsaKeyResponseDetails.getOTPMsg());
             }else{
-                showDialog(getString(R.string.message), ccAvenueResponse.getOrder_message(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+                showDialog(getString(R.string.message), ccAvenueResponse.getOrderMessage(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
 
             }
         }
@@ -193,7 +188,7 @@ public class PaymentFragment extends BaseFragment {
     }
     private void showSuccessDialog(String orderedMessage) {
         showDialog(orderedMessage, pObject -> {
-            authenticationClickedListener.validateOTP(rsaKeyResponseDetails.getUserMobileNumber());
+            authenticationClickedListener.validateOTP(rsaKeyResponseDetails.getUserMobileNumber(), true);
 /*            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             String name = fragmentManager.getBackStackEntryAt(0).getName();
             fragmentManager.popBackStackImmediate(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);*/

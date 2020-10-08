@@ -140,10 +140,12 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
                                         resetFields();
                                         if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
                                             data.getRsaKeyResponseDetails().setOTPMsg(otpMsg);
+
+                                            data.getRsaKeyResponseDetails().setUserMobileNumber(mobileNumber);
                                             mListener.proceedToPayment(data.getRsaKeyResponseDetails());
                                         } else {
                                             showDialog("", otpMsg, (click, i) -> {
-                                                mListener.validateOTP(mobileNumber);
+                                                mListener.validateOTP(mobileNumber, false);
                                             });
                                         }
 

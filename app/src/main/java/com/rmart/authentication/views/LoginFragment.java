@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,6 @@ import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.LoginDetailsModel;
-import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.fcm.MyFirebaseMessagingService;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
@@ -194,6 +192,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                         resendOTP();
                                     } else if (data.getMsg().contains("mail_verify")) {
                                         mListener.validateMailOTP();
+                                    } else if (data.getMsg().contains("pay")) {
+                                        mListener.proceedToPayment(data.getPaymentData());
                                     }
                                 });
                             }
@@ -231,7 +231,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                         ResendOTPResponse data = response.body();
                         if (data != null) {
                             if (data.getStatus().equals("Success")) {
-                                showDialog("", data.getMsg() + " OTP: " + data.getOtp(), ((dialogInterface, i) -> mListener.validateOTP(mMobileNumber)));
+                                showDialog("", data.getMsg() + " OTP: " + data.getOtp(), ((dialogInterface, i) -> mListener.validateOTP(mMobileNumber, false)));
                             } else {
                                 showDialog("", data.getMsg());
                             }

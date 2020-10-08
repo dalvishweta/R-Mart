@@ -282,10 +282,10 @@ public class PaymentOptionsFragment extends BaseFragment {
             jsonObject = new JsonParser().parse(html).getAsJsonObject();
             Gson g = new Gson();
             CCAvenueResponse ccAvenueResponse = g.fromJson(html, CCAvenueResponse.class);
-            if (ccAvenueResponse.getOrder_status().equalsIgnoreCase("success")) {
-                showSuccessDialog(ccAvenueResponse.getOrder_message());
+            if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
+                showSuccessDialog(ccAvenueResponse.getOrderMessage());
             }else{
-                showDialog(getString(R.string.message), ccAvenueResponse.getOrder_message(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+                showDialog(getString(R.string.message), ccAvenueResponse.getOrderMessage(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
             }
         }
 
