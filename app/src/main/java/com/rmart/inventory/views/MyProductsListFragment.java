@@ -40,11 +40,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final int PRODUCT_LIST_TYPE = 1;
 
-    private String mParam1;
-    private String mParam2;
-    private RecyclerView productRecycleView;
     private ProductAdapter productAdapter;
     private AppCompatTextView tvTotalCount;
     LinearLayout addProduct;
@@ -79,10 +75,6 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,19 +91,24 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         });*/
         LoggerInfo.printLog("Fragment", "MyProductsListFragment");
         vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
-        getProductList("1,2,3,4,5,6,7");
         return inflater.inflate(R.layout.fragment_inventory_product_list, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        productRecycleView = view.findViewById(R.id.product_list);
+        RecyclerView productRecycleView = view.findViewById(R.id.product_list);
         addProduct = view.findViewById(R.id.add_product);
         tvTotalCount = view.findViewById(R.id.category_count);
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_items);
-        // Your code to make your refresh action
-        // CallYourRefreshingMethod();
+
+        GridLayoutManager layoutManager = new GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false);
+        productRecycleView.setLayoutManager(layoutManager);
+        productAdapter = new ProductAdapter(requireActivity(), productsList, onClickListener, 2);
+        productRecycleView.setAdapter(productAdapter);
+
+        getProductList("1,2,3,4,5,6,7");
+
         mSwipeRefreshLayout.setOnRefreshListener(() -> getProductList("1,2,3,4,5,6,7"));
         addProduct.setOnClickListener(this);
         popup = new PopupMenu(requireActivity(), view.findViewById(R.id.sort));
@@ -141,36 +138,8 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         // Inflating the Popup using xml file
         // popup.getMenuInflater().inflate(R.menu.inventory_view_products, popup.getMenu());
         view.findViewById(R.id.sort).setOnClickListener(param -> {
-
-            // registering popup with OnMenuItemClickListener
-            /*popup.setOnMenuItemClickListener(item -> {
-               *//* if(item.getItemId() == R.id.sort_category) {
-                    inventoryViewModel.setIsProductView(InventoryViewModel.CATEGORY);
-                    mListener.goToHome();
-                } else if(item.getItemId() == R.id.sort_sub_category) {
-                    inventoryViewModel.setIsProductView(InventoryViewModel.SUB_CATEGORY);
-                    mListener.goToHome();
-                } else if(item.getItemId() == R.id.sort_product) {
-                    inventoryViewModel.setIsProductView(InventoryViewModel.PRODUCT);
-                    mListener.goToHome();
-                }*//*
-                return true;
-            });
-
-            popup.show(); */
-            // showing popup menu
-
-
             popup.show();
-
         });
-        //productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        GridLayoutManager layoutManager = new GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false);
-        productRecycleView.setLayoutManager(layoutManager);
-        // updateList(productList.getProductResponses());
-
-        productAdapter = new ProductAdapter(productsList, onClickListener, 2);
-        productRecycleView.setAdapter(productAdapter);
 
         setSearchView(view);
     }
@@ -253,10 +222,9 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    if (query.length() <= 0) {
+                    if (query.length() == 0) {
                         searchView.clearFocus();
                         return true;
-
                     }
                     return false;
                 }

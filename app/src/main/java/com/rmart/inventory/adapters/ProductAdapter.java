@@ -1,5 +1,6 @@
 package com.rmart.inventory.adapters;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -30,26 +31,28 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
     private MyFilter myFilter;
     private int columnCount;
     private ImageLoader imageLoader;
+    private LayoutInflater layoutInflater;
 
-    public ProductAdapter(ArrayList<ProductResponse> productList, View.OnClickListener onClickListener, int columnCount) {
+    public ProductAdapter(Context context, ArrayList<ProductResponse> productList, View.OnClickListener onClickListener, int columnCount) {
         this.onClickListener = onClickListener;
         this.productList = productList;
         this.columnCount = columnCount;
         this.filteredListData = new ArrayList<>();
         this.filteredListData.addAll(productList);
         imageLoader = RMartApplication.getInstance().getImageLoader();
+        layoutInflater = LayoutInflater.from(context);
     }
 
     public void updateItems(ArrayList<ProductResponse> productList) {
         this.productList = productList;
+        filteredListData.clear();
+        filteredListData.addAll(productList);
     }
 
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View listItem;
-        listItem= layoutInflater.inflate(R.layout.grid_product_layout, parent, false);
+        View listItem= layoutInflater.inflate(R.layout.grid_product_layout, parent, false);
         listItem.setOnClickListener(onClickListener);
         ProductViewHolder productViewHolder = new ProductViewHolder(listItem);
         if(columnCount == 3) {

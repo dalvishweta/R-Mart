@@ -111,8 +111,8 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
     private void updateList() {
         try {
             tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), products.size()));
-            productAdapter = new ProductAdapter(products, view1 -> {
-                ProductResponse product = (ProductResponse) view1.getTag();
+            productAdapter = new ProductAdapter(requireActivity(), products, view -> {
+                ProductResponse product = (ProductResponse) view.getTag();
                 mListener.updateProduct(product, false);
             }, 3);
             productRecycleView.setAdapter(productAdapter);
