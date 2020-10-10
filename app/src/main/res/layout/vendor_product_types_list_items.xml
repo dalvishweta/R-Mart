@@ -54,6 +54,24 @@
         android:layout_centerHorizontal="true"
         android:textColor="@color/black" />
 
+    <!--<com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/iv_product_image_field"
+        android:layout_width="100dp"
+        android:minWidth="60dp"
+        android:layout_height="120dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY" />-->
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:paddingTop="8dp"
+        android:id="@+id/iv_product_image_field"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/item_image"
+        android:layout_height="120dp"
+        android:scaleType="centerInside"
+        android:layout_width="match_parent" />
     <TextView
         android:id="@+id/tv_product_discount_field"
         style="@style/text_style_small"
@@ -64,14 +82,4 @@
         android:background="@drawable/green_rounded_border_bg"
         android:gravity="center"
         android:textColor="@color/white" />
-
-    <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/iv_product_image_field"
-        android:layout_width="100dp"
-        android:minWidth="60dp"
-        android:layout_height="120dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:contentDescription="@string/app_name"
-        android:scaleType="fitXY" />
 </RelativeLayout>
