@@ -1,8 +1,8 @@
 package com.rmart.inventory;
 
+import com.rmart.inventory.models.APIUnitMeasures;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.inventory.views.BaseInventoryFragment;
-import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 
 public interface OnInventoryClickedListener {
@@ -14,7 +14,7 @@ public interface OnInventoryClickedListener {
     void updateProduct(ProductResponse product, boolean isEdit);
     void addProductToInventory();
     void requestToCreateProduct();
-    void addUnit(UnitObject unitValue, BaseInventoryFragment fragment, int requestID);
+    void addUnit(UnitObject unitValue, APIUnitMeasures unitMeasurements, BaseInventoryFragment fragment, int requestID);
     void goToHome();
     void requestNewProduct(BaseInventoryFragment fragment, int requestID);
     void applyFilter(BaseInventoryFragment fragment, int requestFilteredDataId);

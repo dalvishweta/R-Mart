@@ -244,26 +244,26 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     public void onClick(View view) {
         String text = ((AppCompatButton)view).getText().toString();
         if (text.contains(getResources().getString(R.string.accept))) {
-            updateOrderStatus(Utils.ACCEPTED_ORDER_STATUS, "");
+            updateOrderStatus(getResources().getString(R.string.accepted), Utils.ACCEPTED_ORDER_STATUS, "");
             updateUI();
         } else if (text.contains(getResources().getString(R.string.packed))) {
-            updateOrderStatus(Utils.PACKED_ORDER_STATUS, "");
+            updateOrderStatus(getResources().getString(R.string.packed), Utils.PACKED_ORDER_STATUS, "");
             updateUI();
         } else if (text.contains(getResources().getString(R.string.shipped))) {
-            updateOrderStatus(Utils.SHIPPED_ORDER_STATUS, "");
+            updateOrderStatus(getResources().getString(R.string.shipped), Utils.SHIPPED_ORDER_STATUS, "");
             updateUI();
         } else if (text.contains(getResources().getString(R.string.delivered))) {
-            updateOrderStatus(Utils.DELIVERED_ORDER_STATUS, "");
+            updateOrderStatus(getResources().getString(R.string.delivered), Utils.DELIVERED_ORDER_STATUS, "");
             updateUI();
         } else if (text.contains(getResources().getString(R.string.returned))) {
-            updateOrderStatus(Utils.CANCEL_BY_CUSTOMER, "");
+            updateOrderStatus(getResources().getString(R.string.canceled), Utils.CANCEL_BY_CUSTOMER, "");
             updateUI();
         } else {
             SelectOrderStatusView selectOrderStatus = SelectOrderStatusView.getInstance();
             selectOrderStatus.setCallBackListener(pObject -> {
                 if (pObject instanceof String) {
                     String reason = (String) pObject;
-                    updateOrderStatus(Utils.CANCEL_BY_RETAILER, reason);
+                    updateOrderStatus(getResources().getString(R.string.canceled), Utils.CANCEL_BY_RETAILER, reason);
                 }
             });
             if (!requireActivity().isFinishing()) {
@@ -272,19 +272,20 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         }
     }
 
-    private void updateOrderStatus(String newOrderStatus, String reason) {
-        if (newOrderStatus.equalsIgnoreCase(Utils.DELIVERED_ORDER_STATUS)) {
+    private void updateOrderStatus(String newStatus, String newStatusID, String reason) {
+        if (newStatusID.equalsIgnoreCase(Utils.DELIVERED_ORDER_STATUS)) {
             if (null != selectedDeliveryBoy.getUserID()) {
                 progressDialog.show();
                 OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-                orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newOrderStatus, reason, selectedDeliveryBoy.getUserID()).enqueue(new Callback<UpdatedOrderStatus>() {
+                orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newStatusID, reason, selectedDeliveryBoy.getUserID()).enqueue(new Callback<UpdatedOrderStatus>() {
                     @Override
                     public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
                         if (response.isSuccessful()) {
                             UpdatedOrderStatus data = response.body();
                             if (data != null) {
                                 if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                    showDialog(data.getStatus(), data.getMsg(), ((dialogInterface, i) -> requireActivity().onBackPressed()));
+                                    String text = String.format( getString(R.string.status_update),newStatus);
+                                    showDialog(data.getStatus(), text, ((dialogInterface, i) -> requireActivity().onBackPressed()));
                                 } else {
                                     showDialog(data.getMsg());
                                 }
@@ -309,14 +310,15 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         } else {
             progressDialog.show();
             OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-            orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newOrderStatus, reason).enqueue(new Callback<UpdatedOrderStatus>() {
+            orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newStatusID, reason).enqueue(new Callback<UpdatedOrderStatus>() {
                 @Override
                 public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
                     if (response.isSuccessful()) {
                         UpdatedOrderStatus data = response.body();
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                showDialog(data.getStatus(), data.getMsg(), ((dialogInterface, i) -> requireActivity().onBackPressed()));
+                                String text = String.format( getString(R.string.status_update),newStatus);
+                                showDialog(data.getStatus(), text, ((dialogInterface, i) -> requireActivity().onBackPressed()));
                             } else {
                                 showDialog(data.getMsg());
                             }

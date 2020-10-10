@@ -1,6 +1,7 @@
 package com.rmart.inventory.views;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,27 +12,42 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.rmart.R;
 import com.rmart.baseclass.InputFilterMinMax;
+import com.rmart.baseclass.views.CustomLoadingDialog;
 import com.rmart.inventory.adapters.CustomStringAdapter;
+import com.rmart.inventory.models.APIUnitMeasures;
 import com.rmart.inventory.models.UnitObject;
+import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.APIStockResponse;
 import com.rmart.utilits.pojos.APIUnitMeasureResponse;
+import com.rmart.utilits.pojos.ShowProductResponse;
+import com.rmart.utilits.services.VendorInventoryService;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.rmart.inventory.views.AddProductToInventory.UNIT_VALUE;
 
@@ -41,8 +57,8 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM3 = "param3";
+    private static final String ARG_PARAM4 = "param4";
 
-    ArrayList<String> availableUnits;
     UnitObject unitObject;
     private boolean mIsEdit;
     CustomStringAdapter customStringAdapter, productStatusAdapter;
@@ -54,18 +70,19 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     ArrayList<String> productStatus = new ArrayList<>();
     ArrayList<APIStockResponse> apiStockResponses = new ArrayList<>();
     APIStockListResponse apiStockListResponse;
-
+    APIUnitMeasures unitMeasurements;
     //SwitchCompat isActive;
     public AddUnitDialog() {
         // Required empty public constructor
     }
 
-    public static AddUnitDialog newInstance(UnitObject unitObject, boolean isEdit, APIStockListResponse stockListResponse) {
+    public static AddUnitDialog newInstance(UnitObject unitObject, boolean isEdit, APIStockListResponse stockListResponse, APIUnitMeasures unitMeasurements) {
         // APIStockListResponse apiStockListResponse = stockListResponse;
         AddUnitDialog fragment = new AddUnitDialog();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, unitObject);
         args.putSerializable(ARG_PARAM3, stockListResponse);
+        args.putSerializable(ARG_PARAM4, unitMeasurements);
         args.putBoolean(ARG_PARAM2, isEdit);
         fragment.setArguments(args);
         return fragment;
@@ -77,6 +94,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         if (getArguments() != null) {
             unitObject = (UnitObject) getArguments().getSerializable(ARG_PARAM1);
             apiStockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM3);
+            unitMeasurements = (APIUnitMeasures) getArguments().getSerializable(ARG_PARAM4);
             assert apiStockListResponse != null;
             apiStockResponses = apiStockListResponse.getArrayList();
             mIsEdit = getArguments().getBoolean(ARG_PARAM2);
@@ -103,6 +121,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         discount = view.findViewById(R.id.discount);
+        view.findViewById(R.id.close).setOnClickListener(this);
         actualPrice = view.findViewById(R.id.price);
         finalPrice = view.findViewById(R.id.final_price);
         displayUnit = view.findViewById(R.id.display_unit);
@@ -192,10 +211,10 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         unitsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                APIUnitMeasureResponse measureResponse = unitObject.getAvailableUnits().get(pos);
+                APIUnitMeasureResponse measureResponse = unitMeasurements.getUnitMeasurements().get(pos);
                 String text = measureResponse.getAttributesName();
                 unitObject.setUnitMeasure(text);
-                unitObject.setUnitID(unitObject.getAvailableUnits().get(pos).getId());
+                unitObject.setUnitID(unitMeasurements.getUnitMeasurements().get(pos).getId());
                 unitObject.setShortName(text);
                 updateDisplayValue();
                 updateQuantityDetails();
@@ -223,7 +242,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             }
         });
         //isActive = view.findViewById(R.id.switchButton);
-        for (APIUnitMeasureResponse unitMeasureResponse : unitObject.getAvailableUnits()) {
+        for (APIUnitMeasureResponse unitMeasureResponse : unitMeasurements.getUnitMeasurements()) {
             availableUnitsMeasurements.add(unitMeasureResponse.getAttributesName());
         }
         customStringAdapter = new CustomStringAdapter(availableUnitsMeasurements, this.getContext());
@@ -244,12 +263,22 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         } else {
             finalPrice.setText(unitObject.getFinalCost());
         }*/
+        if (null != unitObject.getProductUnitID() && unitObject.getProductUnitID().length() > 0) {
+            ((Button)view.findViewById(R.id.cancel)).setText(R.string.delete);
+            ((Button)view.findViewById(R.id.save)).setText(R.string.update);
+            unitsSpinner.setSelection(availableUnitsMeasurements.indexOf(unitObject.getDisplayUnitValue()));
+            valueOfUnit.setText(unitObject.getUnitNumber());
+            productStatusSpinner.setSelection(productStatus.indexOf(unitObject.getStockName()));
+        } else {
+            view.findViewById(R.id.cancel).setVisibility(View.GONE);
+        }
     }
 
     private void updateDisplayValue() {
         unitObject.setUnit_number(Objects.requireNonNull(valueOfUnit.getText()).toString());
-        unitObject.setDisplayUnitValue(unitObject.getUnitNumber() + " " + unitObject.getShortName());
+        unitObject.setDisplayUnitValue(unitObject.getShortName()); // unitObject.getUnitNumber() + " " +
         displayUnit.setText(unitObject.getDisplayUnitValue());
+
     }
 
     private void updateQuantityDetails() {
@@ -340,7 +369,61 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 dismiss();
             }
         } else if (view.getId() == R.id.cancel) {
+            deleteUnits();
+        } else if (view.getId() == R.id.close){
             this.dismiss();
+        }
+    }
+    private void deleteUnits() {
+        Dialog progressDialog = CustomLoadingDialog.getInstance(getActivity());
+        progressDialog.show();
+        VendorInventoryService inventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
+        inventoryService.deleteProductUnit(MyProfile.getInstance().getUserID(), unitObject.getProductUnitID()).enqueue(new Callback<ShowProductResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<ShowProductResponse> call, @NotNull Response<ShowProductResponse> response) {
+                if (response.isSuccessful()) {
+                    ShowProductResponse data = response.body();
+                    if (data != null) {
+                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            showDialog(data.getMsg());
+                            AddUnitDialog.this.dismiss();
+                        } else {
+                            showDialog(data.getMsg());
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
+                    }
+                } else {
+                    showDialog(response.message());
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ShowProductResponse> call, @NotNull Throwable t) {
+                showDialog(t.getMessage());
+                progressDialog.dismiss();
+            }
+        });
+    }
+    protected void showDialog(String msg) {
+        try {
+            AlertDialog.Builder builder = new
+                    AlertDialog.Builder(
+                    requireActivity(),
+                    R.style.AlertDialog
+            );
+            builder.setTitle(requireActivity().getString(R.string.message));
+            builder.setMessage(msg);
+            builder.setCancelable(false);
+            builder.setNegativeButton(requireActivity().getString(R.string.close), null);
+            AlertDialog alertDialog = builder.create();
+            alertDialog.setOnShowListener(arg0 -> alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(requireActivity(), R.color.button_bg)));
+            if (!requireActivity().isFinishing()) {
+                alertDialog.show();
+            }
+        } catch (Exception e) {
+            // LoggerInfo.errorLog("show dialog exception", e.getMessage());
         }
     }
 }

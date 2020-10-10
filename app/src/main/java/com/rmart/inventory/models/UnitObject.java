@@ -3,7 +3,6 @@ package com.rmart.inventory.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rmart.utilits.pojos.APIStockResponse;
-import com.rmart.utilits.pojos.APIUnitMeasureResponse;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -11,7 +10,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -20,9 +18,17 @@ public class UnitObject implements Serializable {
     @Expose
     String displayUnitValue;
 
+    @SerializedName("product_unit_id")
+    @Expose
+    String productUnitID;
+
     @SerializedName("unit_id")
     @Expose
     String unitID;
+
+    @SerializedName("stock_name")
+    @Expose
+    String stockName;
 
     @SerializedName("selling_price")
     @Expose
@@ -52,10 +58,6 @@ public class UnitObject implements Serializable {
     @Expose
     String shortName;
 
-    @SerializedName("stock_name")
-    @Expose
-    String stockName;
-
     boolean isActive;
     String productStatus;
     int minDiscount;
@@ -63,20 +65,18 @@ public class UnitObject implements Serializable {
     int id;
     String unitType;
     String unitMeasure;
-    ArrayList<APIUnitMeasureResponse> availableUnits;
     HashMap<String, APIStockResponse> apiStockMap;
 
-    public UnitObject(ArrayList<APIUnitMeasureResponse> availableUnits1) {
-        this.availableUnits = availableUnits1;
-        this.apiStockMap = apiStockMap;
-        id = 101;
-        unitType = "";
-        unit_number = "";
-        finalCost = "";
-        actualCost = "";
-        discount = "";
-        isActive = false;
+    public UnitObject() {
     }
+
+    /*public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }*/
 
     public String getShortName() {
         return shortName;
@@ -86,12 +86,12 @@ public class UnitObject implements Serializable {
         this.shortName = shortName;
     }
 
-    public String getUnitID() {
-        return unitID;
+    public String getProductUnitID() {
+        return productUnitID;
     }
 
-    public void setUnitID(String unitID) {
-        this.unitID = unitID;
+    public void setProductUnitID(String productUnitID) {
+        this.productUnitID = productUnitID;
     }
 
     public String getQuantity() {
@@ -134,13 +134,13 @@ public class UnitObject implements Serializable {
         this.productStatus = productStatus;
     }
 
-    public int getId() {
+    /*public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
+    }*/
 
     public String getUnitType() {
         return unitType;
@@ -206,20 +206,24 @@ public class UnitObject implements Serializable {
         this.maxDiscount = maxDiscount;
     }
 
-    public ArrayList<APIUnitMeasureResponse> getAvailableUnits() {
-        return availableUnits;
-    }
+    /*
+        public ArrayList<APIUnitMeasureResponse> getAvailableUnits() {
+            return availableUnits;
+        }
 
-    public void setAvailableUnits(ArrayList<APIUnitMeasureResponse> availableUnits) {
-        this.availableUnits = availableUnits;
-    }
+        public void setAvailableUnits(ArrayList<APIUnitMeasureResponse> availableUnits) {
+            this.availableUnits = availableUnits;
+        }
+    */
 
-    /*public String getStockName() {
-        return stockName;
-    }*/
+    /*
+        public String getStockName() {
+            return stockName;
+        }
+    */
 
-    public String getStockName(String id) {
-        return Objects.requireNonNull(apiStockMap.get(id)).getStockName();
+    public String getStockName() {
+        return this.stockName;
     }
 
     public void setStockName(String stockName) {
@@ -229,12 +233,12 @@ public class UnitObject implements Serializable {
     @NotNull
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("unitID", unitID).toString();
+        return new ToStringBuilder(this).append("unitID", productUnitID).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(unitID).toHashCode();
+        return new HashCodeBuilder().append(productUnitID).toHashCode();
     }
 
     @Override
@@ -246,6 +250,14 @@ public class UnitObject implements Serializable {
             return false;
         }
         UnitObject rhs = ((UnitObject) other);
-        return new EqualsBuilder().append(unitID, rhs.unitID).isEquals();
+        return new EqualsBuilder().append(productUnitID, rhs.productUnitID).isEquals();
+    }
+
+    public String getUnitID() {
+        return unitID;
+    }
+
+    public void setUnitID(String unitID) {
+        this.unitID = unitID;
     }
 }

@@ -21,6 +21,7 @@ import com.rmart.utilits.pojos.APIStockResponse;
 import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.ImageURLResponse;
 import com.rmart.utilits.pojos.ProductResponse;
+import com.rmart.utilits.pojos.ShowProductResponse;
 import com.rmart.utilits.services.VendorInventoryService;
 
 import org.jetbrains.annotations.NotNull;
@@ -96,6 +97,34 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     public void onResume() {
         super.onResume();
         requireActivity().setTitle(getString(R.string.product_details));
+        progressDialog.show();
+        VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
+        vendorInventoryService.getProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<ShowProductResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<ShowProductResponse> call, @NotNull Response<ShowProductResponse> response) {
+                if (response.isSuccessful()) {
+                    ShowProductResponse data = response.body();
+                    if (data != null) {
+                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            product = data.getProductResponse();
+                            updateUI();
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
+                    }
+                } else {
+                    showDialog("", "");
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ShowProductResponse> call, @NotNull Throwable t) {
+                showDialog("", t.getMessage());
+                progressDialog.dismiss();
+            }
+        });
+
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -108,7 +137,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         tvProductExpiry = view.findViewById(R.id.product_expiry);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         viewPager = view.findViewById(R.id.view_pager);
-        AppCompatButton delete = view.findViewById(R.id.delete);
+        AppCompatButton delete = view.findViewById(R.id.unit_delete);
         AppCompatButton edit = view.findViewById(R.id.edit);
         dotIndicatorLayoutField = view.findViewById(R.id.product_images_dot_indicator_field);
 
@@ -150,7 +179,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
             edit.setText(getString(R.string.save));
         }
 
-        updateUI();
+        // updateUI();
     }
 
     private CallBackInterface callBackInterface = pObject -> {

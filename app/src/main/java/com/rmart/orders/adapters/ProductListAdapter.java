@@ -43,7 +43,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
         Product productObject = productList.get(position);
         holder.price.setText(productObject.getPrice());
         holder.productName.setText(productObject.getProductName());
-        holder.quantity.setText(productObject.getQuantity());
+        holder.quantity.setText(productObject.getQuantity()+"");
         String unitsDetails = String.format("%s %s", productObject.getUnit(), productObject.getUnitMeasure());
         holder.units.setText(unitsDetails);
         String imageUrl = productObject.getDisplayImage();

@@ -145,33 +145,8 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     }
 
     private View.OnClickListener onClickListener = view -> {
-        progressDialog.show();
         ProductResponse product = (ProductResponse) view.getTag();
-        vendorInventoryService.getProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<ShowProductResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<ShowProductResponse> call, @NotNull Response<ShowProductResponse> response) {
-                if (response.isSuccessful()) {
-                    ShowProductResponse data = response.body();
-                    if (data != null) {
-                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                            ProductResponse response1 = data.getProductResponse();
-                            mListener.showProductPreview(response1, true);
-                        }
-                    } else {
-                        showDialog(getString(R.string.no_information_available));
-                    }
-                } else {
-                    showDialog("", "");
-                }
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<ShowProductResponse> call, @NotNull Throwable t) {
-                showDialog("", t.getMessage());
-                progressDialog.dismiss();
-            }
-        });
+        mListener.showProductPreview(product, true);
     };
 
     private void getProductList(String stockType) {

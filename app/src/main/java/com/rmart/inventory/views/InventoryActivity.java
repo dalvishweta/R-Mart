@@ -4,19 +4,17 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
+
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.inventory.OnInventoryClickedListener;
+import com.rmart.inventory.models.APIUnitMeasures;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.inventory.viewmodel.InventoryViewModel;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.pojos.APIStockListResponse;
-import com.rmart.utilits.pojos.APIStockResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.services.APIService;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -91,9 +89,9 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     }
 
     @Override
-    public void addUnit(UnitObject unitValue, BaseInventoryFragment fragment, int requestID) {
+    public void addUnit(UnitObject unitValue, APIUnitMeasures unitMeasurements, BaseInventoryFragment fragment, int requestID) {
         FragmentManager fm = getSupportFragmentManager();
-        AddUnitDialog addUnitDialog = AddUnitDialog.newInstance(unitValue,false, apiStockListResponse);
+        AddUnitDialog addUnitDialog = AddUnitDialog.newInstance(unitValue,false, apiStockListResponse, unitMeasurements);
         addUnitDialog.setCancelable(false);
         addUnitDialog.setTargetFragment(fragment, requestID);
         addUnitDialog.show(fm, "AddUnitDialog");

@@ -48,9 +48,9 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
     public void onBindViewHolder(@NonNull ProductUnitViewHolder holder, int position) {
         UnitObject unit = productUnitList.get(position);
         holder.delete.setTag(unit);
-        String html = "<strike>" + unit.getActualCost() + "</strike>";
+        String html = "<strike>" + unit.getActualCost()+" RS" + "</strike>";
         holder.tvActual.setText(Html.fromHtml(html));
-        holder.tvFinalCost.setText(unit.getFinalCost());
+        holder.tvFinalCost.setText(unit.getFinalCost()+" RS");
         holder.tvUnitValue.setText(unit.getUnitNumber()+unit.getDisplayUnitValue());
         holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer_single_line), unit.getDiscount() + "%"));
         /*
@@ -59,13 +59,14 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
 
             }
         */
+        holder.tvIUnitState.setText(unit.getStockName());
         holder.delete.setTag(position);
+        // holder.edit.setTag(position);
         if (unit.getStockID().equalsIgnoreCase("5")) {
             holder.tvIUnitState.setTextColor(holder.itemView.getContext().getColor(R.color.colorPrimary));
         } else {
             holder.tvIUnitState.setTextColor(holder.itemView.getContext().getColor(R.color.gray));
         }
-        holder.tvIUnitState.setText(unit.getShortName());
     }
 
     @Override
@@ -75,7 +76,7 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
 
     public class ProductUnitViewHolder extends RecyclerView.ViewHolder {
         public AppCompatTextView tvIUnitState, tvUnitValue, tvFinalCost, tvActual, tvOffer;
-        public AppCompatImageButton delete;
+        public AppCompatImageButton delete; // , edit;
 
         public ProductUnitViewHolder(View listItem) {
             super(listItem);
@@ -84,7 +85,8 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
             tvActual = listItem.findViewById(R.id.sub_title_3);
             tvOffer = listItem.findViewById(R.id.offer);
             tvIUnitState = listItem.findViewById(R.id.unit_status);
-            delete = listItem.findViewById(R.id.delete);
+            delete = listItem.findViewById(R.id.unit_delete);
+            // edit = listItem.findViewById(R.id.edit);
             delete.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
                 ContentModel contentModel = new ContentModel();

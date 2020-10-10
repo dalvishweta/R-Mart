@@ -13,7 +13,7 @@
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/delete"
+            android:id="@+id/unit_delete"
             android:layout_width="0dp"
             android:text="@string/delete"
             android:background="@drawable/product_delete"

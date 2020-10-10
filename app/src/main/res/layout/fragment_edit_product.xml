@@ -240,6 +240,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/unit_base"
                 tools:listitem="@layout/product_unit_base"
+                tools:itemCount="4"
                 android:layout_below="@+id/add_unit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
