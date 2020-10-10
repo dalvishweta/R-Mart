@@ -59,7 +59,7 @@ public class UnitObject implements Serializable {
     String shortName;
 
     boolean isActive;
-    String productStatus;
+    //String productStatus;
     int minDiscount;
     int maxDiscount;
     int id;
@@ -126,6 +126,7 @@ public class UnitObject implements Serializable {
         this.displayUnitValue = displayUnitValue;
     }
 
+    /*
     public String getProductStatus() {
         return productStatus;
     }
@@ -134,7 +135,7 @@ public class UnitObject implements Serializable {
         this.productStatus = productStatus;
     }
 
-    /*public int getId() {
+    public int getId() {
         return id;
     }
 

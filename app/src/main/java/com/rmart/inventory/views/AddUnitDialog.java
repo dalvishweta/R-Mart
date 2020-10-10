@@ -200,7 +200,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 String text = productStatus.get(pos);
-                unitObject.setProductStatus(text);
+                unitObject.setStockName(text);
             }
 
             @Override
@@ -348,8 +348,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         if (view.getId() == R.id.save) {
 
             for (APIStockResponse apiStockResponse : apiStockResponses) {
-                if (unitObject.getProductStatus().equalsIgnoreCase(apiStockResponse.getStockName())) {
-                    unitObject.setStockID(apiStockResponse.getStockID());
+                if (unitObject.getStockName().equalsIgnoreCase(apiStockResponse.getStockName())) {
                     unitObject.setStockID(apiStockResponse.getStockID());
                 }
             }

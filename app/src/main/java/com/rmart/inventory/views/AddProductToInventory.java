@@ -129,11 +129,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 //selectedPosition = (int) value;
                 photoUploadSelected();
             } else if (status.equalsIgnoreCase(Constants.TAG_DELETE)) {
-                mListener.addUnit((UnitObject) value,new APIUnitMeasures(unitMeasurements), this, INT_ADD_UNIT);
+                mListener.addUnit((UnitObject) value,new APIUnitMeasures(unitMeasurements), this, INT_UPDATE_UNIT);
                 // deleteUnits((UnitObject) value);
-            } else if (status.equalsIgnoreCase(Constants.TAG_EDIT_UNIT)) {
-                mListener.addUnit((UnitObject) value,new APIUnitMeasures(unitMeasurements), this, INT_ADD_UNIT);
-            }
+            }/* else if (status.equalsIgnoreCase(Constants.TAG_EDIT_UNIT)) {
+                mListener.addUnit((UnitObject) value,new APIUnitMeasures(unitMeasurements), this, INT_UPDATE_UNIT);
+            }*/
         }
     };
 
@@ -414,20 +414,17 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         }catch(ParseException ex){
             // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
         }
-        if (Objects.requireNonNull(expiry.getText()).toString().length() <= 2 || previousTime > presentTime) {
-            showDialog("", getString(R.string.erroe_expiry_date));
-            return;
-        } else if (Objects.requireNonNull(productRegionalName.getText()).toString().length() <= 1) {
+        if (Objects.requireNonNull(productRegionalName.getText()).toString().length() <= 1) {
             showDialog("", getString(R.string.erroe_regional_name));
             return;
-        } /*else if( Objects.requireNonNull(deliveryDays.getText()).toString().length()<=0) {
-                showDialog("", "Please enter valid days to delivery.");
-                return;
-            } */ else if (Objects.requireNonNull(productDescription.getText()).toString().length() <= 1) {
-            showDialog("", "Please enter valid product description");
+        } else if (Objects.requireNonNull(productDescription.getText()).toString().length() <= 1) {
+            showDialog("", getString(R.string.error_product_description));
             return;
         } else if (Objects.requireNonNull(mClonedProduct).getUnitObjects().size() < 1) {
-            showDialog("", "Please add at least one unit");
+            showDialog("", getString(R.string.unit_required));
+            return;
+        } else if (Objects.requireNonNull(expiry.getText()).toString().length() <= 2 || previousTime > presentTime) {
+            showDialog("", getString(R.string.erroe_expiry_date));
             return;
         }
 
@@ -581,6 +578,15 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 if (bundle != null) {
                     UnitObject unitData = (UnitObject) bundle.getSerializable(UNIT_VALUE);
                     mClonedProduct.getUnitObjects().add(unitData);
+                    updateList();
+                }
+            }
+        } else if (requestCode == INT_UPDATE_UNIT) {
+            if (data != null) {
+                Bundle bundle = data.getExtras();
+                if (bundle != null) {
+                    // UnitObject unitData = (UnitObject) bundle.getSerializable(UNIT_VALUE);
+                    // mClonedProduct.getUnitObjects().add(unitData);
                     updateList();
                 }
             }

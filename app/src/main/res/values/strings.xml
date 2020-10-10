@@ -297,4 +297,6 @@
     <string name="erroe_expiry_date">Please enter valid expiry date.</string>
     <string name="erroe_regional_name">Please enter valid regional name.</string>
     <string name="status_update">Order status successfully changed to %1$s</string>
+    <string name="error_product_description">Please enter valid product description</string>
+    <string name="unit_required">Please add at least one unit</string>
 </resources>
