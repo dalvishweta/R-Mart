@@ -173,7 +173,7 @@ public class PaymentFragment extends BaseFragment {
             Gson g = new Gson();
             CCAvenueResponse ccAvenueResponse = g.fromJson(html, CCAvenueResponse.class);
             if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
-                showSuccessDialog(ccAvenueResponse.getOrderMessage() + " " +rsaKeyResponseDetails.getOTPMsg());
+                showSuccessDialog(ccAvenueResponse.getOrderMessage());
             }else{
                 showDialog(getString(R.string.message), ccAvenueResponse.getOrderMessage(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
 
@@ -189,6 +189,7 @@ public class PaymentFragment extends BaseFragment {
     private void showSuccessDialog(String orderedMessage) {
         showDialog(orderedMessage, pObject -> {
             authenticationClickedListener.validateOTP(rsaKeyResponseDetails.getUserMobileNumber(), true);
+            requireActivity().onBackPressed();
 /*            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             String name = fragmentManager.getBackStackEntryAt(0).getName();
             fragmentManager.popBackStackImmediate(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);*/

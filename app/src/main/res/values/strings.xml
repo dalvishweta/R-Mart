@@ -229,6 +229,9 @@
     <string name="delivery_days_before_time_required">Delivery days before time is required.</string>
 
     <string name="delivery_charges_required">Delivery charges required.</string>
+    <string name="shop_name_required">Shop Name Required</string>
+    <string name="gst_number_required">GST Number Required</string>
+
     <string name="enter_your_kyc_number">Enter your KYC Number</string>
     <string name="my_wish_list">My Wish List</string>
     <string name="change_address">Change Address</string>
@@ -286,4 +289,8 @@
     <string name="payment_text">On boarding and Registration Fee is 2000, GST is 360 \n Total amount 2360.</string>
     <string name="title_payment">Payment</string>
     <string name="remove_from_wish_list">Remove WishList</string>
+    <string name="shop_no_required">Shop number required</string>
+    <string name="delivery_radius_required">Delivery Radius required</string>
+    <string name="street_address_required">Street address required</string>
+    <string name="city_required">City required</string>
 </resources>

@@ -400,6 +400,36 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         String aadharNo = "";
         if (mRetailerView.getVisibility() == View.VISIBLE) {
 
+            String shopName = Objects.requireNonNull(tvShopName.getText()).toString().trim();
+            if (TextUtils.isEmpty(shopName)) {
+                showDialog(getString(R.string.shop_name_required));
+                return;
+            }
+
+            if (TextUtils.isEmpty(shopImageUrl)) {
+                showDialog(getString(R.string.shop_image_required));
+                return;
+            }
+
+            String shopNO = Objects.requireNonNull(tvShopNO.getText()).toString().trim();
+            if (TextUtils.isEmpty(shopNO)) {
+                showDialog(getString(R.string.shop_no_required));
+                return;
+            }
+
+
+            String gstNumber = Objects.requireNonNull(tvGSTNumber.getText()).toString().trim();
+            if (TextUtils.isEmpty(gstNumber)) {
+                showDialog(getString(R.string.gst_number_required));
+                return;
+            }
+
+            String deliveryRadius = Objects.requireNonNull(tvDeliveryRadius.getText()).toString().trim();
+            if (TextUtils.isEmpty(deliveryRadius)) {
+                showDialog(getString(R.string.delivery_radius_required));
+                return;
+            }
+
             String deliveryCharges = Objects.requireNonNull(etvDeliveryCharges.getText()).toString().trim();
             if (TextUtils.isEmpty(deliveryCharges)) {
                 showDialog(getString(R.string.delivery_charges_required));
@@ -418,15 +448,16 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 return;
             }
 
-            String deliveryDaysAfterTime = Objects.requireNonNull(tvDeliveryDaysAfterTime.getText()).toString().trim();
-            if (TextUtils.isEmpty(deliveryDaysAfterTime)) {
-                showDialog(getString(R.string.delivery_days_after_time));
-                return;
-            }
-
             String deliveryDaysBeforeTime = Objects.requireNonNull(tvDeliveryDaysBeforeTime.getText()).toString().trim();
             if (TextUtils.isEmpty(deliveryDaysBeforeTime)) {
                 showDialog(getString(R.string.delivery_days_before_time));
+                return;
+            }
+
+
+            String deliveryDaysAfterTime = Objects.requireNonNull(tvDeliveryDaysAfterTime.getText()).toString().trim();
+            if (TextUtils.isEmpty(deliveryDaysAfterTime)) {
+                showDialog(getString(R.string.delivery_days_after_time));
                 return;
             }
 
@@ -439,10 +470,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 showDialog(getString(R.string.aadhar_number_error));
                 return;
             }
-            if (TextUtils.isEmpty(shopImageUrl)) {
-                showDialog(getString(R.string.shop_image_required));
-                return;
-            }
+
             if (TextUtils.isEmpty(aadharFrontImageUrl)) {
                 showDialog(getString(R.string.aadhar_front_image_required));
                 return;
@@ -460,6 +488,19 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 showDialog(getString(R.string.pancard_image_required));
                 return;
             }
+
+            String streetAddress = Objects.requireNonNull(tvStreetAddress.getText()).toString().trim();
+            if (TextUtils.isEmpty(streetAddress)) {
+                showDialog(getString(R.string.street_address_required));
+                return;
+            }
+
+            String city = Objects.requireNonNull(tvCity.getText()).toString().trim();
+            if (TextUtils.isEmpty(city)) {
+                showDialog(getString(R.string.city_required));
+                return;
+            }
+
         }
 
         progressDialog.show();
