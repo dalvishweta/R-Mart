@@ -169,15 +169,40 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         productRecycleView.setLayoutManager(layoutManager);
         // updateList(productList.getProductResponses());
 
-        productAdapter = new ProductAdapter(productsList, onClickListener, 3);
+        productAdapter = new ProductAdapter(productsList, onClickListener, 2);
+        productRecycleView.setAdapter(productAdapter);
+
         setSearchView(view);
     }
 
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
+    private View.OnClickListener onClickListener = view -> {
+        progressDialog.show();
+        ProductResponse product = (ProductResponse) view.getTag();
+        vendorInventoryService.getProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<ShowProductResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<ShowProductResponse> call, @NotNull Response<ShowProductResponse> response) {
+                if (response.isSuccessful()) {
+                    ShowProductResponse data = response.body();
+                    if (data != null) {
+                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            ProductResponse response1 = data.getProductResponse();
+                            mListener.showProductPreview(response1, true);
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
+                    }
+                } else {
+                    showDialog("", "");
+                }
+                progressDialog.dismiss();
+            }
 
-        }
+            @Override
+            public void onFailure(@NotNull Call<ShowProductResponse> call, @NotNull Throwable t) {
+                showDialog("", t.getMessage());
+                progressDialog.dismiss();
+            }
+        });
     };
 
     private void getProductList(String stockType) {
@@ -190,13 +215,8 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                     ProductListResponse productsListResponse = response.body();
                     if (productsListResponse.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                         if (productsListResponse.getProductResponses().size() <= 0) {
-                            // mListener.addProductToInventory();
                             showDialog(getString(R.string.sorry), getString(R.string.no_products_error));
                         } else {
-
-                            /*for (ProductResponse productResponse : data.getProductResponses()) {
-                                inventoryViewModel.setProductList(productResponse);
-                            }*/
                             productsList = productsListResponse.getProductResponses();
                             updateList();
                         }
@@ -253,39 +273,8 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     private void updateList() {
         try {
             tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), productsList.size()));
-            progressDialog.show();
-            productAdapter = new ProductAdapter(productsList, view1 -> {
-                ProductResponse product = (ProductResponse) view1.getTag();
-                vendorInventoryService.getProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<ShowProductResponse>() {
-                    @Override
-                    public void onResponse(@NotNull Call<ShowProductResponse> call, @NotNull Response<ShowProductResponse> response) {
-                        if (response.isSuccessful()) {
-                            ShowProductResponse data = response.body();
-                            if (data != null) {
-                                if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                    ProductResponse response1 = data.getProductResponse();
-                                    // inventoryViewModel.setSelectedProduct(response1.getProductID());
-                                    mListener.showProductPreview(response1, true);
-                                }
-                            } else {
-                                showDialog(getString(R.string.no_information_available));
-                            }
-                        } else {
-                            showDialog("", "");
-                        }
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull Call<ShowProductResponse> call, @NotNull Throwable t) {
-                        showDialog("", t.getMessage());
-                        progressDialog.dismiss();
-                    }
-                });
-                // int index = products.indexOf(product);
-
-            }, 2);
-            productRecycleView.setAdapter(productAdapter);
+            productAdapter.updateItems(productsList);
+            productAdapter.notifyDataSetChanged();
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
         }
