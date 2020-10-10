@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -32,7 +33,9 @@ import com.google.android.gms.tasks.Task;
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.profile.OnMyProfileClickedListener;
 import com.rmart.profile.viewmodels.AddressViewModel;
+import com.rmart.profile.views.EditAddressFragment;
 
 import java.util.List;
 import java.util.Locale;
@@ -53,23 +56,10 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     private Location currentLocation;
     private String isFrom;
     private CallBackInterface callBackListener;
+    private OnMyProfileClickedListener profileClickedListener;
 
     private AddressViewModel addressViewModel;
     // private MyProfile myProfile;
-
-    private void editMyLocation(GoogleMap googleMap) {
-        this.googleMap = googleMap;
-        this.googleMap.setOnMapClickListener(point -> {
-            MarkerOptions marker = new MarkerOptions().position(new LatLng(point.latitude, point.longitude)).title("New Marker");
-            googleMap.clear();
-            googleMap.addMarker(marker);
-            currentLocation = new Location("");
-            currentLocation.setLatitude(point.latitude);
-            currentLocation.setLongitude(point.longitude);
-            System.out.println(point.latitude+"---"+ point.longitude);
-            // updateLocationPoints();
-        });
-    }
 
     public static MapsFragment newInstance(boolean isEditable, String isFrom) {
         MapsFragment fragment = new MapsFragment();
@@ -92,7 +82,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     private void updateMapLocation() {
         googleMap.clear();
         try {
-
             LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
             MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -115,6 +104,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        profileClickedListener = (OnMyProfileClickedListener) context;
     }
 
     @Nullable
@@ -262,33 +252,33 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
 
     @Override
     public void onMapClick(LatLng latLng) {
+        MarkerOptions marker = new MarkerOptions().position(new LatLng(latLng.latitude, latLng.longitude)).title("New Marker");
         googleMap.clear();
-        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-        googleMap.addMarker(markerOptions);
+        googleMap.addMarker(marker);
+        currentLocation = new Location("");
+        currentLocation.setLatitude(latLng.latitude);
+        currentLocation.setLongitude(latLng.longitude);
+        profileClickedListener.getMapGeoCoordinates(latLng);
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(GoogleMap map) {
         if (currentLocation != null) {
             if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
+            this.googleMap = map;
             googleMap.setMyLocationEnabled(true);
+            googleMap.setOnMapClickListener(this);
+
             LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
             MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             googleMap.addMarker(markerOptions);
-            if (callBackListener != null) {
-                callBackListener.callBackReceived(currentLocation);
-            }
-
-            if (isEditable) {
-                editMyLocation(googleMap);
-            }
         }
     }
 }

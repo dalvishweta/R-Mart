@@ -26,6 +26,7 @@ import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.UpdatedOrderStatus;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
+import com.rmart.utilits.pojos.customer_orders.VendorInfo;
 import com.rmart.utilits.pojos.orders.Order;
 import com.rmart.utilits.pojos.orders.Product;
 import com.rmart.utilits.services.CustomerOrderService;
@@ -54,6 +55,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     private RecyclerView recyclerView;
     private LinearLayout deliveryBoyInfo, footer;
     private TextView tvStatusComments;
+    private LinearLayout vendorDetailsLayout;
 
     public CustomerViewFullOrderFragment() {
         // Required empty public constructor
@@ -162,7 +164,8 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         tvTotalCharges = view.findViewById(R.id.total_charges);
         tvPaymentType = view.findViewById(R.id.payment_type);
         view.findViewById(R.id.custom_details_root).setVisibility(View.VISIBLE);
-        view.findViewById(R.id.vendor_details_root).setVisibility(View.VISIBLE);
+        vendorDetailsLayout = view.findViewById(R.id.vendor_details_root);
+        vendorDetailsLayout.setVisibility(View.VISIBLE);
     }
 
     void updateUI() {
@@ -198,10 +201,16 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         }
         // setFooter();
         // vendor
-        text = orderProductList.getVendorInfo().getFirstName() + " " + orderProductList.getVendorInfo().getLastName();
-        vendorName.setText(text);
-        vendorNumber.setText(orderProductList.getVendorInfo().getMobileNumber());
-        vendorAddress.setText(orderProductList.getVendorInfo().getCompleteAddress());
+        VendorInfo vendorDetails = orderProductList.getVendorInfo();
+        if (vendorDetails != null) {
+            text = vendorDetails.getFirstName() + " " + vendorDetails.getLastName();
+            vendorName.setText(text);
+            vendorNumber.setText(vendorDetails.getMobileNumber());
+            vendorAddress.setText(vendorDetails.getCompleteAddress());
+        } else {
+            vendorDetailsLayout.setVisibility(View.GONE);
+        }
+
 
         String customerNameDetails = orderProductList.getCustomerInfo().getFirstName() + " " + orderProductList.getCustomerInfo().getLastName();
         customerName.setText(customerNameDetails);

@@ -5,6 +5,7 @@
     android:background="@color/white"
     android:layout_height="match_parent">
     <ScrollView
+        android:id="@+id/scroll_view"
         android:layout_alignParentTop="true"
         android:layout_above="@+id/add_address"
         android:layout_width="match_parent"

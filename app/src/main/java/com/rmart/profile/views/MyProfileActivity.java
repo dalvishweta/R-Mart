@@ -6,6 +6,7 @@ import android.view.MenuItem;
 import androidx.appcompat.app.ActionBar;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseActivity;
 import com.rmart.mapview.MapsFragment;
@@ -19,6 +20,7 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
 
     private boolean isAddNewAddress = false;
     private boolean isFromLogin = false;
+    private EditAddressFragment editAddressFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,8 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
         if (MyProfile.getInstance().getPrimaryAddressId() == null || isAddNewAddress) {
             AddressResponse addressResponse = new AddressResponse();
             addressResponse.setId(-1);
-            replaceFragment(EditAddressFragment.newInstance(isAddNewAddress, addressResponse), EditAddressFragment.class.getName(), false);
+            editAddressFragment = EditAddressFragment.newInstance(isAddNewAddress, addressResponse);
+            replaceFragment(editAddressFragment, EditAddressFragment.class.getName(), false);
         } else {
             replaceFragment(ViewMyProfileFragment.newInstance(), ViewMyProfileFragment.class.getName(), false);
         }
@@ -81,7 +84,8 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
 
     @Override
     public void gotoEditAddress(AddressResponse address) {
-        replaceFragment(EditAddressFragment.newInstance(false, address), EditAddressFragment.class.getName(), true);
+        editAddressFragment = EditAddressFragment.newInstance(false, address);
+        replaceFragment(editAddressFragment, EditAddressFragment.class.getName(), true);
     }
 
     @Override
@@ -92,6 +96,11 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
     @Override
     public void gotoMapView() {
         replaceFragment(MapsFragment.newInstance(true, ""), MapsFragment.class.getName(), false);
+    }
+
+    @Override
+    public void getMapGeoCoordinates(LatLng latLng) {
+        editAddressFragment.updateLocationDetails(latLng);
     }
 
     @Override

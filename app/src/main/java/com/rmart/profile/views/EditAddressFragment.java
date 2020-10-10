@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.google.android.gms.maps.model.LatLng;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.RMartApplication;
@@ -147,7 +148,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        mapsFragment = MapsFragment.newInstance(true, "");
+        mapsFragment = MapsFragment.newInstance(false, "");
         mapsFragment.setCallBackListener(pObject -> {
             if(pObject instanceof Location) {
                 Location selectedLocation = (Location) pObject;
@@ -615,5 +616,10 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         myAddress.setDeliveryDaysAfterTime(Objects.requireNonNull(tvDeliveryDaysAfterTime.getText()).toString());
         myAddress.setDeliveryDaysBeforeTime(Objects.requireNonNull(tvDeliveryDaysBeforeTime.getText()).toString());
 
+    }
+
+    public void updateLocationDetails(LatLng latLng) {
+        latitude = latLng.latitude;
+        longitude = latLng.longitude;
     }
 }

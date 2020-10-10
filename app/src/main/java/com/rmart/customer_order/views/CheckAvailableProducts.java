@@ -140,6 +140,7 @@ public class CheckAvailableProducts extends BaseFragment {
             recyclerView.setAdapter(productAdapter);
         }
 
+        orderAgainProductsList = new ArrayList<>();
         for (Product productOrder : orderedProductsList) {
             if(productOrder.getAvailableQuantity() != 0) {
                 OrderAgainProductModel product = new OrderAgainProductModel();
