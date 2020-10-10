@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -15,13 +16,13 @@ import com.rmart.RMartApplication;
 import com.rmart.customer.models.CustomerOrderProductOrderedDetails;
 import com.rmart.inventory.views.viewholders.ProductItemViewHolder;
 import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.orders.Product;
 
 import java.util.List;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHolder> {
 
-    private View.OnClickListener onClickListener;
     private List<Object> productList;
     private LayoutInflater layoutInflater;
     private ImageLoader imageLoader;
@@ -33,16 +34,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
     }
 
     public void setOnClickListener(View.OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
+        //this.onClickListener = onClickListener;
     }
 
     @NonNull
     @Override
     public ProductItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View listItem = layoutInflater.inflate(R.layout.item_order_product_item, parent, false);
-        /*if (onClickListener != null) {
-            listItem.setOnClickListener(onClickListener);
-        }*/
         return new ProductItemViewHolder(listItem);
     }
 
@@ -51,9 +49,23 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
         Object dataObject = productList.get(position);
         if (dataObject instanceof Product) {
             Product productObject = (Product) dataObject;
+            int availableQuantity = productObject.getAvailableQuantity();
+            if (availableQuantity == 0) {
+                Utils.disableViews(holder.price);
+                Utils.disableViews(holder.productName);
+                Utils.disableViews(holder.quantity);
+                Utils.disableViews(holder.units);
+                Utils.disableViews(holder.imageView);
+            } else {
+                Utils.enableViews(holder.price);
+                Utils.enableViews(holder.productName);
+                Utils.enableViews(holder.quantity);
+                Utils.enableViews(holder.units);
+                Utils.enableViews(holder.imageView);
+            }
             holder.price.setText(productObject.getPrice());
             holder.productName.setText(productObject.getProductName());
-            holder.quantity.setText(productObject.getQuantity());
+            holder.quantity.setText(String.valueOf(productObject.getQuantity()));
             String unitsDetails = String.format("%s %s", productObject.getUnit(), productObject.getUnitMeasure());
             holder.units.setText(unitsDetails);
             String imageUrl = productObject.getDisplayImage();

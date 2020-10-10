@@ -182,36 +182,39 @@
             <LinearLayout
                 android:id="@+id/delivery_boy_info"
                 style="@style/order_full_view_row"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/order_full_view_title"
                     android:text="@string/delivery_boy_name" />
+
                 <Spinner
                     android:id="@+id/delivery_boy_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/delivery_boy_name"
-                    style="@style/order_full_view_content"
-                    android:text="Dhirendra"/>
+                    style="@style/order_full_view_content" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/order_full_view_title"
-                    android:text="@string/delivery_boy_number"
-                    />
+                    android:text="@string/delivery_boy_number" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/delivery_boy_number"
-                    android:text="9977885646"
                     style="@style/order_full_view_content" />
             </LinearLayout>
 
-            <LinearLayout style="@style/order_full_view_row">
+            <LinearLayout
+                android:id="@+id/payment_info_layout_field"
+                style="@style/order_full_view_row">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/order_full_view_title"
                     android:layout_marginBottom="8dp"
                     android:text="@string/payment_info" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -326,6 +329,18 @@
                 android:padding="8dp"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_add_to_cart_field"
+                style="@style/text_style_medium_normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/buy_now_background_bg"
+                android:text="@string/add_to_cart"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:visibility="gone" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
     <!--    <LinearLayout-->

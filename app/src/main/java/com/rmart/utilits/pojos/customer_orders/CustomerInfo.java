@@ -37,6 +37,9 @@ public class CustomerInfo implements Serializable {
     @SerializedName("customer_number")
     @Expose
     String customerNumber;
+    @SerializedName("mobile_number")
+    @Expose
+    String mobileNumber;
 
     public String getFirstName() {
         return firstName;
@@ -101,6 +104,15 @@ public class CustomerInfo implements Serializable {
     public void setCustomerNumber(String customerNumber) {
         this.customerNumber = customerNumber;
     }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+    }
+
     public String getCompleteAddress() {
         String data = "";
         if(address != null) {

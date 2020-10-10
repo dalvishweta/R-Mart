@@ -8,6 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.rmart.R;
 import com.rmart.inventory.adapters.ProductAdapter;
 import com.rmart.profile.model.MyProfile;
@@ -23,14 +32,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,8 +52,8 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     SearchView searchView;
     VendorInventoryService vendorInventoryService;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private ArrayList<ProductResponse> productsList = new ArrayList<>();
 
-    ProductListResponse productList;
     public MyProductsListFragment() {
         // Required empty public constructor
     }
@@ -167,60 +168,72 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         GridLayoutManager layoutManager = new GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false);
         productRecycleView.setLayoutManager(layoutManager);
         // updateList(productList.getProductResponses());
+
+        productAdapter = new ProductAdapter(productsList, onClickListener, 3);
         setSearchView(view);
     }
 
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+
+        }
+    };
+
     private void getProductList(String stockType) {
         progressDialog.show();
+        resetProductsList();
         vendorInventoryService.getProductList("0", MyProfile.getInstance().getMobileNumber(), stockType).enqueue(new Callback<ProductListResponse>() {
             @Override
             public void onResponse(@NotNull Call<ProductListResponse> call, @NotNull Response<ProductListResponse> response) {
                 if (response.isSuccessful()) {
-                    productList = response.body();
-                    assert productList != null;
-                    if (productList.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        if (productList.getProductResponses().size() <= 0) {
+                    ProductListResponse productsListResponse = response.body();
+                    if (productsListResponse.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                        if (productsListResponse.getProductResponses().size() <= 0) {
                             // mListener.addProductToInventory();
-                            showDialog(getString(R.string.sorry),getString(R.string.no_products_error));
+                            showDialog(getString(R.string.sorry), getString(R.string.no_products_error));
                         } else {
 
                             /*for (ProductResponse productResponse : data.getProductResponses()) {
                                 inventoryViewModel.setProductList(productResponse);
                             }*/
-                            updateList(productList.getProductResponses());
+                            productsList = productsListResponse.getProductResponses();
+                            updateList();
                         }
                     } else {
-                        showDialog("", productList.getMsg());
+                        showDialog("", productsListResponse.getMsg());
                     }
                 } else {
                     showDialog("", response.message());
                 }
-                if(mSwipeRefreshLayout.isRefreshing()) {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
+                mSwipeRefreshLayout.setRefreshing(false);
                 progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(@NotNull Call<ProductListResponse> call, @NotNull Throwable t) {
                 showDialog("", t.getMessage());
-                if (mSwipeRefreshLayout.isRefreshing()) {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
+                mSwipeRefreshLayout.setRefreshing(false);
                 progressDialog.dismiss();
             }
         });
     }
 
+    private void resetProductsList() {
+        productsList.clear();
+        productAdapter.updateItems(productsList);
+        productAdapter.notifyDataSetChanged();
+    }
+
     protected void setSearchView(@NonNull View view) {
-        if(null != productAdapter) {
+        if (null != productAdapter) {
             searchView = view.findViewById(R.id.searchView);
             searchView.setFocusable(false);
             searchView.setIconified(false);
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
-                    if(query.length()<=0) {
+                    if (query.length() <= 0) {
                         searchView.clearFocus();
                         return true;
 
@@ -236,12 +249,13 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
             });
         }
     }
-    private void updateList(ArrayList<ProductResponse> products) {
+
+    private void updateList() {
         try {
-            tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), products.size()));
+            tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), productsList.size()));
             progressDialog.show();
-            productAdapter = new ProductAdapter(products, view1 -> {
-                ProductResponse product = (ProductResponse)view1.getTag();
+            productAdapter = new ProductAdapter(productsList, view1 -> {
+                ProductResponse product = (ProductResponse) view1.getTag();
                 vendorInventoryService.getProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<ShowProductResponse>() {
                     @Override
                     public void onResponse(@NotNull Call<ShowProductResponse> call, @NotNull Response<ShowProductResponse> response) {

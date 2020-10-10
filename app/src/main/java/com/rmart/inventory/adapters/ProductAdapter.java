@@ -40,6 +40,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
         imageLoader = RMartApplication.getInstance().getImageLoader();
     }
 
+    public void updateItems(ArrayList<ProductResponse> productList) {
+        this.productList = productList;
+    }
+
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

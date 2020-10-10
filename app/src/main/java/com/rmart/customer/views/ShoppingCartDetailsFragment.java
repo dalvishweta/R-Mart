@@ -339,7 +339,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
 
     private void addMoreQuantityCountSelected() {
         int count = selectedProductInCartDetails.getTotalProductCartQty();
-        if (count <= selectedProductInCartDetails.getProductUnitQuantity()) {
+        if (count < selectedProductInCartDetails.getProductUnitQuantity()) {
             count++;
             totalProductsInCart = count;
             selectedProductInCartDetails.setTotalProductCartQty(count);

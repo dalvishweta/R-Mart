@@ -53,14 +53,20 @@
         android:layout_above="@id/changeAddressLayout"
         android:layout_below="@id/searchLayout">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/products_list_field"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh_layout_field"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_marginEnd="10dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/products_list_field"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <RelativeLayout
             android:id="@+id/map_layout_field"

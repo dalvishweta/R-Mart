@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,22 +15,24 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.rmart.R;
-import com.rmart.baseclass.InputFilterMinMax;
-import com.rmart.inventory.adapters.CustomStringAdapter;
-import com.rmart.inventory.models.UnitObject;
-import com.rmart.utilits.pojos.APIStockListResponse;
-import com.rmart.utilits.pojos.APIStockResponse;
-import com.rmart.utilits.pojos.APIUnitMeasureResponse;
-
-import java.util.ArrayList;
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
+
+import com.rmart.R;
+import com.rmart.baseclass.InputFilterMinMax;
+import com.rmart.inventory.adapters.CustomStringAdapter;
+import com.rmart.inventory.models.UnitObject;
+import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.APIStockListResponse;
+import com.rmart.utilits.pojos.APIStockResponse;
+import com.rmart.utilits.pojos.APIUnitMeasureResponse;
+
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Objects;
 
 import static com.rmart.inventory.views.AddProductToInventory.UNIT_VALUE;
 
@@ -46,7 +49,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     CustomStringAdapter customStringAdapter, productStatusAdapter;
     AppCompatEditText discount, actualPrice, valueOfUnit, quantity;
     AppCompatTextView finalPrice, displayUnit, quantityValue;
-    Spinner spinner, productStatusSpinner;
+    Spinner unitsSpinner, productStatusSpinner;
     // private InventoryViewModel inventoryViewModel;
     ArrayList<String> availableUnitsMeasurements = new ArrayList<>();
     ArrayList<String> productStatus = new ArrayList<>();
@@ -118,13 +121,14 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 unitObject.setActualCost(charSequence.toString());
                 String _discount = Objects.requireNonNull(discount.getText()).toString();
                 if ((charSequence.toString().length() > 0)) {
-                    int _price = Integer.parseInt(charSequence.toString());
+                    double _price = Utils.getDoubleValueFromString(charSequence.toString());
                     if (_discount.length() > 0) {
                         int __discount = Integer.parseInt(_discount);
                         calculateFinalCost(_price, __discount);
-                    } else {
-                        calculateFinalCost(_price, 0);
                     }
+                    /*else {
+                        calculateFinalCost(_price, 0);
+                    }*/
                 }
             }
 
@@ -144,7 +148,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 String price = Objects.requireNonNull(actualPrice.getText()).toString();
                 unitObject.setDiscount(charSequence.toString());
                 if ((charSequence.toString().length() > 0) && (price.length() > 0)) {
-                    int _price = Integer.parseInt(price);
+                    double _price = Utils.getDoubleValueFromString(price);
                     int _discount = Integer.parseInt(charSequence.toString());
                     calculateFinalCost(_price, _discount);
                 }
@@ -165,6 +169,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 updateDisplayValue();
+                updateQuantityDetails();
             }
 
             @Override
@@ -172,12 +177,11 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
             }
         });
-        spinner = view.findViewById(R.id.unit);
+        unitsSpinner = view.findViewById(R.id.unit_spinner);
         productStatusSpinner = view.findViewById(R.id.product_status);
         quantity = view.findViewById(R.id.quantity);
 
         quantityValue = view.findViewById(R.id.quantity_value);
-
 
         productStatusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -191,7 +195,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
             }
         });
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        unitsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
                 APIUnitMeasureResponse measureResponse = unitObject.getAvailableUnits().get(pos);
@@ -200,6 +204,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 unitObject.setUnitID(unitObject.getAvailableUnits().get(pos).getId());
                 unitObject.setShortName(text);
                 updateDisplayValue();
+                updateQuantityDetails();
             }
 
             @Override
@@ -215,11 +220,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String temp = charSequence.toString() + " " + unitObject.getShortName();
-                if(null == temp || temp.contains("null")) {
-                    temp = "";
-                }
-                quantityValue.setText(temp);
+               updateQuantityDetails();
             }
 
             @Override
@@ -238,7 +239,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         productStatusAdapter = new CustomStringAdapter(productStatus, this.getContext());
         productStatusSpinner.setAdapter(productStatusAdapter);
 
-        spinner.setAdapter(customStringAdapter);
+        unitsSpinner.setAdapter(customStringAdapter);
         actualPrice.setText(unitObject.getActualCost());
         discount.setText(unitObject.getDiscount());
         quantity.setText(unitObject.getQuantity());
@@ -255,11 +256,21 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         displayUnit.setText(unitObject.getDisplayUnitValue());
     }
 
-    private void calculateFinalCost(int _price, int _discount) {
+    private void updateQuantityDetails() {
+        int valueOfUnitValue = Utils.getIntegerValueFromString(valueOfUnit.getText().toString().trim());
+        int quantityValueInt = Utils.getIntegerValueFromString(quantity.getText().toString().trim());
+        int totalQuantityDetails = quantityValueInt * valueOfUnitValue;
+        if(totalQuantityDetails != 0) {
+            String temp = String.format(Locale.getDefault(), "%d %s", totalQuantityDetails, unitObject.getShortName());
+            quantityValue.setText(temp);
+        }
+    }
+
+    private void calculateFinalCost(double _price, int _discount) {
         float data = ((float) _discount / 100);
-        float _finalPrice = _price - (_price * data);
-        if (_finalPrice > 0) {
-            unitObject.setFinalCost(String.valueOf((int) _finalPrice));
+        double discountedPrice = _price - (_price * data);
+        if (discountedPrice > 0) {
+            unitObject.setFinalCost(String.valueOf(Utils.roundOffDoubleValue(discountedPrice)));
             String __finalPrice = String.format(getString(R.string.after_discount), unitObject.getFinalCost());
             finalPrice.setText(__finalPrice);
         } else {

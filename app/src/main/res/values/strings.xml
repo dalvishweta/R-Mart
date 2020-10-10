@@ -285,4 +285,5 @@
     <string name="comments">Comments</string>
     <string name="payment_text">On boarding and Registration Fee is 2000, GST is 360 \n Total amount 2360.</string>
     <string name="title_payment">Payment</string>
+    <string name="remove_from_wish_list">Remove WishList</string>
 </resources>

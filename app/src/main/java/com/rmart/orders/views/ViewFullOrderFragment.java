@@ -22,6 +22,7 @@ import com.rmart.customer.adapters.CustomSpinnerAdapter;
 import com.rmart.customer_order.views.SelectOrderStatusView;
 import com.rmart.orders.adapters.ProductListAdapter;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.DeliveryBoyList;
@@ -122,6 +123,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
                              Bundle savedInstanceState) {
         //MyOrdersViewModel viewModel = new ViewModelProvider(requireActivity()).get(MyOrdersViewModel.class);
         // Inflate the layout for this fragment
+        LoggerInfo.printLog("Fragment", "ViewFullOrderFragment");
         return inflater.inflate(R.layout.fragment_view_full_order, container, false);
     }
 

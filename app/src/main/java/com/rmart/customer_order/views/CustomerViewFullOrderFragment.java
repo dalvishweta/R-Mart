@@ -20,6 +20,7 @@ import com.rmart.R;
 import com.rmart.customer_order.adapters.ProductListAdapter;
 import com.rmart.customer_order.viewmodel.MyOrdersViewModel;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.UpdatedOrderStatus;
@@ -118,6 +119,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
                              Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(requireActivity()).get(MyOrdersViewModel.class);
         // Inflate the layout for this fragment
+        LoggerInfo.printLog("Fragment", "CustomerViewFullOrderFragment");
         return inflater.inflate(R.layout.fragment_view_full_order, container, false);
     }
 
@@ -190,7 +192,6 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
                 orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.DELIVERED_ORDER_STATUS))) {
             footer.setVisibility(View.VISIBLE);
             mLeftButton.setText(R.string.re_order);
-            mLeftButton.setVisibility(View.GONE);
             mLeftButton.setBackgroundResource(R.color.colorPrimary);
         } else {
             footer.setVisibility(View.GONE);

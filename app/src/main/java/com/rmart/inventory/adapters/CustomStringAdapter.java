@@ -39,7 +39,7 @@ public class CustomStringAdapter extends BaseAdapter {
     @SuppressLint("ViewHolder")
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.unit_item_row, null);//set layout for displaying items
+        view = inflter.inflate(R.layout.unit_item_row, viewGroup, false);//set layout for displaying items
         view.findViewById(R.id.text);//get id for image view
         ((AppCompatTextView)view).setText(units.get(i));
         // icon.setImageResource(flags[i]);//set image of the item’s

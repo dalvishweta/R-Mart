@@ -6,9 +6,14 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class Product implements Serializable {
+
     @SerializedName("quantity")
     @Expose
-    private String quantity;
+    private Integer quantity;
+
+    @SerializedName("unit_id")
+    @Expose
+    private Integer unitId;
 
     @SerializedName("price")
     @Expose
@@ -38,6 +43,10 @@ public class Product implements Serializable {
     @Expose
     private String displayImage;
 
+    @SerializedName("available_quantity")
+    @Expose
+    private Integer availableQuantity;
+
     public String getProductName() {
         return productName;
     }
@@ -46,11 +55,11 @@ public class Product implements Serializable {
         this.productName = productName;
     }
 
-    public String getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
@@ -100,5 +109,21 @@ public class Product implements Serializable {
 
     public void setDisplayImage(String displayImage) {
         this.displayImage = displayImage;
+    }
+
+    public Integer getAvailableQuantity() {
+        return availableQuantity;
+    }
+
+    public void setAvailableQuantity(Integer availableQuantity) {
+        this.availableQuantity = availableQuantity;
+    }
+
+    public Integer getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(Integer unitId) {
+        this.unitId = unitId;
     }
 }

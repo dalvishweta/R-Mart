@@ -28,6 +28,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -92,6 +93,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     private double longitude = 0.0;
     private LocationManager locationManager;
     private GoogleMap googleMap;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public static VendorShopsListFragment getInstance() {
         return new VendorShopsListFragment();
@@ -130,6 +132,15 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
         AppCompatTextView tvAddressField = view.findViewById(R.id.tv_address_field);
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
         ImageView ivSearchField = view.findViewById(R.id.iv_search_field);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_field);
+        swipeRefreshLayout.setRefreshing(false);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            currentPage = 0;
+            shopsList.clear();
+            getShopsList();
+        });
+
         etProductsSearchField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -510,6 +521,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                 @Override
                 public void onResponse(@NotNull Call<CustomerProductsResponse> call, @NotNull Response<CustomerProductsResponse> response) {
                     progressDialog.dismiss();
+                    swipeRefreshLayout.setRefreshing(false);
                     if (response.isSuccessful()) {
                         CustomerProductsResponse data = response.body();
                         if (data != null) {
@@ -531,6 +543,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                 @Override
                 public void onFailure(@NotNull Call<CustomerProductsResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
+                    swipeRefreshLayout.setRefreshing(false);
                     showCloseDialog(t.getMessage());
                 }
             });

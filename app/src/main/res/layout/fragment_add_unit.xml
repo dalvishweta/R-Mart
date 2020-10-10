@@ -13,27 +13,19 @@ android:padding="16dp">
         android:text="@string/unit_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <!--<androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/unit"
-        android:drawableStart="@drawable/user"
-        android:hint="@string/units"
-        style="@style/upload_product_item_field"/>-->
-    <!--<Spinner
-        android:id="@+id/unit"
-        style="@style/upload_product_item_field"/>-->
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <Spinner
-            android:id="@+id/unit"
+            android:id="@+id/unit_spinner"
             android:layout_height="wrap_content"
             android:minHeight="50dp"
             style="@style/upload_product_item_field"
             android:layout_marginEnd="0dp"
-            android:paddingEnd="0dp"
             android:background="@drawable/curve_left_bg"
             android:layout_width="0dp"
             android:layout_weight="1.30"/>
@@ -64,8 +56,9 @@ android:padding="16dp">
         android:id="@+id/price"
         android:drawableStart="@drawable/user"
         android:hint="@string/price"
+        android:inputType="numberDecimal"
         style="@style/upload_product_item_field"
-        android:inputType="number"/>
+        android:maxLength="8" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/discount"

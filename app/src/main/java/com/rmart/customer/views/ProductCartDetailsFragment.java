@@ -81,6 +81,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private TabLayout dotIndicatorLayoutField;
+    private TextView tvWishListField;
 
     private int productId = -1;
     private boolean isAddToCartSelected = false;
@@ -197,6 +198,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
         quantitySpinnerField = view.findViewById(R.id.quantity_spinner_field);
         tvViewMoreField = view.findViewById(R.id.tv_view_more_field);
         ivViewMoreImageField = view.findViewById(R.id.iv_view_more_image_field);
+        tvWishListField = view.findViewById(R.id.tv_wish_list_field);
 
         productsImagePagerField.startAutoScroll();
         productsImagePagerField.setInterval(1000);
@@ -252,6 +254,11 @@ public class ProductCartDetailsFragment extends BaseFragment {
         dotIndicatorLayoutField = view.findViewById(R.id.product_images_dot_indicator_field);
 
         updateQuantityDetails();
+    }
+
+    private void updateAddToWishListButton() {
+        if (isWishListProduct) tvWishListField.setText(getString(R.string.remove_from_wish_list));
+        else tvWishListField.setText(getString(R.string.move_to_wish_list));
     }
 
     private void viewMoreSelected() {
@@ -316,6 +323,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
             isWishListProduct = productDetailsDescModel.getWishList();
 
             ivFavouriteImageField.setImageResource(isWishListProduct ? R.drawable.heart_active : R.drawable.heart_black);
+            updateAddToWishListButton();
         } else {
             showCloseDialog(getString(R.string.no_product_details_found));
         }
@@ -421,6 +429,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
                                     isWishListProduct = !isWishListProduct;
                                     ivFavouriteImageField.setImageResource(R.drawable.heart_black);
                                     productDetailsDescModel.setWishList(false);
+                                    updateAddToWishListButton();
                                 });
                             } else {
                                 showDialog(body.getMsg());
@@ -466,6 +475,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
                                     productDetailsDescModel.setWishListId(productWishListId);
                                     productDetailsDescModel.setWishList(true);
                                     onCustomerHomeInteractionListener.updateShopWishListStatus(vendorShopDetails);
+                                    updateAddToWishListButton();
                                 });
                             } else {
                                 showDialog(body.getMsg());

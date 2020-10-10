@@ -16,6 +16,7 @@ import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.view.View;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -170,5 +171,15 @@ public class Utils {
     public static String roundOffDoubleValue(Double value) {
         DecimalFormat df = new DecimalFormat("0.00");
         return df.format(value);
+    }
+
+    public static void enableViews(View pView) {
+        pView.setAlpha(1.0f);
+        pView.setEnabled(true);
+    }
+
+    public static void disableViews(View pView) {
+        pView.setAlpha(0.5f);
+        pView.setEnabled(false);
     }
 }
