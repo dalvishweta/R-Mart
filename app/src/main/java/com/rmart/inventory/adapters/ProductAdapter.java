@@ -90,7 +90,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
             //holder.tvActual.setText(Html.fromHtml("<strike> " + product.getUnitObjects().get(0).getActualCost()+" </strike>"));
             holder.tvActual.setText(HtmlCompat.fromHtml("<strike> " + product.getUnitObjects().get(0).getActualCost() + " </strike>", HtmlCompat.FROM_HTML_MODE_LEGACY));
             holder.tvFinalCost.setText(product.getUnitObjects().get(0).getFinalCost());
-            holder.tvUnitValue.setText(product.getUnitObjects().get(0).getUnit_number());
+            holder.tvUnitValue.setText(product.getUnitObjects().get(0).getUnitNumber());
             holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer), product.getUnitObjects().get(0).getDiscount() + "%"));
         } else {
             holder.availableUnits.setVisibility(View.GONE);

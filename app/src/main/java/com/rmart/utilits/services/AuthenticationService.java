@@ -64,7 +64,8 @@ public interface AuthenticationService {
 
     @POST(BuildConfig.RESEND_OTP)
     @FormUrlEncoded
-    Call<ResendOTPResponse> resendOTP(@Field("mobile") String mobile);
+    Call<ResendOTPResponse> resendOTP(@Field("mobile") String mobile,
+                                      @Field("client_id") String client_id);
 
     @POST(BuildConfig.PROFILE_UPDATE)
     @FormUrlEncoded
@@ -82,7 +83,8 @@ public interface AuthenticationService {
 
     @POST(BuildConfig.RESEND_OTP)
     @FormUrlEncoded
-    Call<ResendOTPResponse> resendMailOTP(@Field("email") String email);
+    Call<ResendOTPResponse> resendMailOTP(@Field("email") String email,
+                                          @Field("client_id") String client_id);
 
     @POST(BuildConfig.VALIDATE_OTP)
     @FormUrlEncoded

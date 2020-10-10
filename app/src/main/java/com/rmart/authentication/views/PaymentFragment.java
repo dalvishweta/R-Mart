@@ -187,6 +187,7 @@ public class PaymentFragment extends BaseFragment {
         }
     }
     private void showSuccessDialog(String orderedMessage) {
+        orderedMessage = orderedMessage.replace("<p>", "\n").replace("</p>", "");
         showDialog(orderedMessage, pObject -> {
             authenticationClickedListener.validateOTP(rsaKeyResponseDetails.getUserMobileNumber(), true);
             requireActivity().onBackPressed();

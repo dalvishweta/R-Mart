@@ -51,7 +51,7 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
         String html = "<strike>" + unit.getActualCost() + "</strike>";
         holder.tvActual.setText(Html.fromHtml(html));
         holder.tvFinalCost.setText(unit.getFinalCost());
-        holder.tvUnitValue.setText(unit.getDisplayUnitValue());
+        holder.tvUnitValue.setText(unit.getUnitNumber()+unit.getDisplayUnitValue());
         holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer_single_line), unit.getDiscount() + "%"));
         /*
             holder.tvIUnitState.setText(unit.getProductStatus());

@@ -172,7 +172,6 @@ public class Utils {
         DecimalFormat df = new DecimalFormat("0.00");
         return df.format(value);
     }
-
     public static void enableViews(View pView) {
         pView.setAlpha(1.0f);
         pView.setEnabled(true);

@@ -150,7 +150,7 @@ public class UnitObject implements Serializable {
         this.unitType = unitType;
     }
 
-    public String getUnit_number() {
+    public String getUnitNumber() {
         return unit_number;
     }
 

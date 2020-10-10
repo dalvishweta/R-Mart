@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.ResendOTPResponse;
 import com.rmart.utilits.pojos.ValidateOTP;
 import com.rmart.utilits.services.AuthenticationService;
@@ -74,7 +75,7 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
 
     private void resendOTP() {
         AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-        authenticationService.resendOTP(mMobileNumber).enqueue(new Callback<ResendOTPResponse>() {
+        authenticationService.resendOTP(mMobileNumber, Utils.CLIENT_ID).enqueue(new Callback<ResendOTPResponse>() {
             @Override
             public void onResponse(@NotNull Call<ResendOTPResponse> call, @NotNull Response<ResendOTPResponse> response) {
                 if (response.isSuccessful()) {

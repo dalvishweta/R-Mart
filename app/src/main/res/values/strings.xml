@@ -293,4 +293,5 @@
     <string name="delivery_radius_required">Delivery Radius required</string>
     <string name="street_address_required">Street address required</string>
     <string name="city_required">City required</string>
+    <string name="error_quantity_value">Quantity value required.</string>
 </resources>

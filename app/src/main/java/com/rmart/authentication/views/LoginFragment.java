@@ -111,31 +111,6 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
             mListener.goToRegistration();
         }
     }
-    private void notificationDialog() {
-        NotificationManager notificationManager = (NotificationManager)       requireActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-        String NOTIFICATION_CHANNEL_ID = "tutorialspoint_01";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "My Notifications", NotificationManager.IMPORTANCE_MAX);
-            // Configure the notification channel.
-            notificationChannel.setDescription("Sample Channel description");
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
-            notificationChannel.enableVibration(true);
-            notificationManager.createNotificationChannel(notificationChannel);
-        }
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(requireActivity(), NOTIFICATION_CHANNEL_ID);
-        notificationBuilder.setAutoCancel(true)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setTicker("Tutorialspoint")
-                .setPriority(Notification.PRIORITY_MAX)
-                .setContentTitle("sample notification")
-                .setContentText("This is sample notification")
-                .setContentInfo("Information");
-        notificationManager.notify(1, notificationBuilder.build());
-    }
 
     private void checkCredentials() {
         if (Utils.isNetworkConnected(requireActivity())) {
@@ -224,7 +199,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-            authenticationService.resendOTP(mMobileNumber).enqueue(new Callback<ResendOTPResponse>() {
+            authenticationService.resendOTP(mMobileNumber, Utils.CLIENT_ID).enqueue(new Callback<ResendOTPResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<ResendOTPResponse> call, @NotNull Response<ResendOTPResponse> response) {
                     if (response.isSuccessful()) {

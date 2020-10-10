@@ -10,7 +10,7 @@ public class LoginResponse extends BaseResponse {
     @Expose
     ProfileResponse loginData;
 
-    @SerializedName("payment_data")
+    @SerializedName("ccavenue_data")
     @Expose
     RSAKeyResponseDetails paymentData;
 
