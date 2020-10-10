@@ -1,4 +1,4 @@
-package com.rmart.customer;
+package com.rmart.customer.views;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.CustomerWishListDetailsAdapter;
 import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.ContentModel;
@@ -48,7 +49,6 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
 
     private TextView tvNoOfProductsField;
     private List<WishListResponseDetails> wishListCart;
-    private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private ShopWiseWishListResponseDetails vendorShopDetails;
     private CustomerWishListDetailsAdapter customerWishListDetailsAdapter;
     private int totalWishListCount = 0;
@@ -80,14 +80,6 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         LoggerInfo.printLog("Fragment", "CustomerWishListDetailsFragment");
         return inflater.inflate(R.layout.fragment_customer_wish_list_details, container, false);
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof OnCustomerHomeInteractionListener) {
-            onCustomerHomeInteractionListener = (OnCustomerHomeInteractionListener) context;
-        }
     }
 
     @Override
@@ -235,7 +227,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                    productUnitDetails.getProductUnitId(), productUnitDetails.getProductUnitQuantity());
+                    productUnitDetails.getProductUnitId(), productUnitDetails.getProductUnitQuantity(), "add");
             call.enqueue(new Callback<AddToCartResponseDetails>() {
                 @Override
                 public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {

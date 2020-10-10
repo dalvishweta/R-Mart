@@ -361,7 +361,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                    productUnitDetails.getProductUnitId(), noOfQuantity);
+                    productUnitDetails.getProductUnitId(), noOfQuantity, "");
             call.enqueue(new Callback<AddToCartResponseDetails>() {
                 @Override
                 public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {

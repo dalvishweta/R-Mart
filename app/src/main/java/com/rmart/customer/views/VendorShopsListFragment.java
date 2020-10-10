@@ -72,7 +72,7 @@ import retrofit2.Response;
 /**
  * Created by Satya Seshu on 07/09/20.
  */
-public class VendorShopsListFragment extends CustomerHomeFragment {
+public class VendorShopsListFragment extends CustomerHomeFragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private AppCompatEditText etProductsSearchField;
     private int currentPage = 0;
@@ -112,7 +112,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(context instanceof OnCustomerHomeInteractionListener) {
+        if (context instanceof OnCustomerHomeInteractionListener) {
             onCustomerHomeInteractionListener = (OnCustomerHomeInteractionListener) context;
         }
     }
@@ -223,7 +223,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
         mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
-            mapFragment.getMapAsync(callback);
+            mapFragment.getMapAsync(this);
             fetchLocation();
         }
 
@@ -265,7 +265,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                 // Toast.makeText(getContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
                 //SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
                 if (mapFragment != null) {
-                    mapFragment.getMapAsync(callback);
+                    mapFragment.getMapAsync(this);
                 }
             } else {
                 locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -319,24 +319,9 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
 
     private void updateMap() {
         if (mapFragment != null) {
-            mapFragment.getMapAsync(callback);
+            mapFragment.getMapAsync(this);
         }
     }
-
-    private OnMapReadyCallback callback = new OnMapReadyCallback() {
-
-        @Override
-        public void onMapReady(GoogleMap map) {
-            googleMap = map;
-            if (currentLocation != null) {
-                LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
-                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                googleMap.addMarker(markerOptions);
-            }
-        }
-    };
 
     @Override
     public void onResume() {
@@ -373,7 +358,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             if (status.equalsIgnoreCase(Constants.TAG_CALL)) {
                 callSelected((String) contentModel.getValue());
             } else if (status.equalsIgnoreCase(Constants.TAG_MESSAGE)) {
-                messageSelected();
+                messageSelected((String) contentModel.getValue());
             } else if (status.equalsIgnoreCase(Constants.TAG_SHOP_FAVOURITE)) {
                 selectedShopDetails = (CustomerProductsShopDetailsModel) contentModel.getValue();
                 shopFavouriteSelected();
@@ -385,8 +370,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
         Utils.openDialPad(requireActivity(), shopMobileNo);
     }
 
-    private void messageSelected() {
-        Utils.openGmailWindow(requireActivity());
+    private void messageSelected(String emailId) {
+        Utils.openGmailWindow(requireActivity(), emailId);
     }
 
     private void shopFavouriteSelected() {
@@ -580,5 +565,24 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
         showDialog(message, pObject -> {
             //requireActivity().onBackPressed();
         });
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        System.out.println(latLng.latitude + "---" + latLng.longitude);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        googleMap = map;
+        if (currentLocation != null) {
+            googleMap.setOnMapClickListener(this);
+            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            googleMap.addMarker(markerOptions);
+
+        }
     }
 }

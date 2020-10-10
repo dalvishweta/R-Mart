@@ -10,7 +10,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,15 +32,13 @@ import com.google.android.gms.tasks.Task;
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.profile.model.LocationPoints;
-import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.viewmodels.AddressViewModel;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class MapsFragment extends BaseFragment {
+public class MapsFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     private static final String ARG_PARAM1 = "ARG_PARAM1";
     private static final String ARG_PARAM2 = "ARG_PARAM2";
@@ -57,31 +54,6 @@ public class MapsFragment extends BaseFragment {
     private String isFrom;
     private CallBackInterface callBackListener;
 
-    private OnMapReadyCallback callback = new OnMapReadyCallback() {
-
-        @Override
-        public void onMapReady(GoogleMap googleMap) {
-            if (currentLocation != null) {
-                if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }
-                googleMap.setMyLocationEnabled(true);
-                LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-                MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
-                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                googleMap.addMarker(markerOptions);
-                if(callBackListener != null) {
-                    callBackListener.callBackReceived(currentLocation);
-                }
-
-                if(isEditable) {
-                    editMyLocation(googleMap);
-                }
-            }
-        }
-    };
     private AddressViewModel addressViewModel;
     // private MyProfile myProfile;
 
@@ -114,6 +86,21 @@ public class MapsFragment extends BaseFragment {
 
     public void setLocation(Location location) {
         currentLocation = location;
+        //updateMapLocation();
+    }
+
+    private void updateMapLocation() {
+        googleMap.clear();
+        try {
+
+            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            googleMap.addMarker(markerOptions);
+        } catch (Exception ex) {
+
+        }
     }
 
     @Override
@@ -124,6 +111,7 @@ public class MapsFragment extends BaseFragment {
             isFrom = getArguments().getString(ARG_PARAM2);
         }
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -170,7 +158,7 @@ public class MapsFragment extends BaseFragment {
                     fetchLocation();
                 }
             }
-            mapFragment.getMapAsync(callback);
+            mapFragment.getMapAsync(this);
         }
     }
 
@@ -191,7 +179,7 @@ public class MapsFragment extends BaseFragment {
                 // Toast.makeText(getContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
                 //SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
                 if (mapFragment != null) {
-                    mapFragment.getMapAsync(callback);
+                    mapFragment.getMapAsync(this);
                 }
             } else {
                 locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -257,7 +245,7 @@ public class MapsFragment extends BaseFragment {
 
     private void updateMap() {
         if (mapFragment != null) {
-            mapFragment.getMapAsync(callback);
+            mapFragment.getMapAsync(this);
         }
         try {
             if(callBackListener != null) {
@@ -269,6 +257,38 @@ public class MapsFragment extends BaseFragment {
             List<Address> addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 2);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        googleMap.clear();
+        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
+        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        googleMap.addMarker(markerOptions);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        if (currentLocation != null) {
+            if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            googleMap.setMyLocationEnabled(true);
+            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            googleMap.addMarker(markerOptions);
+            if (callBackListener != null) {
+                callBackListener.callBackReceived(currentLocation);
+            }
+
+            if (isEditable) {
+                editMyLocation(googleMap);
+            }
         }
     }
 }

@@ -63,8 +63,6 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
     private AppCompatButton btnProceedToBuyField;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private CustomerProductsShopDetailsModel vendorShopDetails;
-    private int totalProductsInCart = -1;
-    private int productId = -1;
 
     public ShoppingCartDetailsFragment() {
         // Required empty public constructor
@@ -85,7 +83,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
         if (extras != null) {
             vendorShoppingCartDetails = (ShoppingCartResponseDetails) extras.getSerializable("VendorShopDetails");
             if(vendorShoppingCartDetails != null) {
-                productId = vendorShoppingCartDetails.getProductId();
+                //productId = vendorShoppingCartDetails.getProductId();
             }
         }
     }
@@ -123,11 +121,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
     }
 
     private void proceedToBuySelected() {
-        if (totalProductsInCart != 0) {
-            onCustomerHomeInteractionListener.gotoCompleteOrderDetailsScreen(vendorShopDetails);
-        } else {
-            showDialog(getString(R.string.no_items_in_cart));
-        }
+        onCustomerHomeInteractionListener.gotoCompleteOrderDetailsScreen(vendorShopDetails);
     }
 
     @Override
@@ -325,14 +319,13 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
     private void deleteQuantityCountSelected() {
         int count = selectedProductInCartDetails.getTotalProductCartQty();
         if (count > 1) {
-            count--;
-            totalProductsInCart = count;
-            selectedProductInCartDetails.setTotalProductCartQty(count);
             int index = productInCartDetailsList.indexOf(selectedProductInCartDetails);
             if (index > -1) {
+                UpdateProductQuantityServices.enqueueWork(requireActivity(), selectedProductInCartDetails, "delete");
+                count--;
+                selectedProductInCartDetails.setTotalProductCartQty(count);
                 productInCartDetailsList.set(index, selectedProductInCartDetails);
                 confirmOrdersAdapter.notifyItemChanged(index);
-                UpdateProductQuantityServices.enqueueWork(requireActivity(), selectedProductInCartDetails);
             }
         }
     }
@@ -340,14 +333,14 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
     private void addMoreQuantityCountSelected() {
         int count = selectedProductInCartDetails.getTotalProductCartQty();
         if (count < selectedProductInCartDetails.getProductUnitQuantity()) {
-            count++;
-            totalProductsInCart = count;
-            selectedProductInCartDetails.setTotalProductCartQty(count);
             int index = productInCartDetailsList.indexOf(selectedProductInCartDetails);
             if (index > -1) {
+                UpdateProductQuantityServices.enqueueWork(requireActivity(), selectedProductInCartDetails, "add");
+                count++;
+                selectedProductInCartDetails.setTotalProductCartQty(count);
                 productInCartDetailsList.set(index, selectedProductInCartDetails);
                 confirmOrdersAdapter.notifyItemChanged(index);
-                UpdateProductQuantityServices.enqueueWork(requireActivity(), selectedProductInCartDetails);
+
             }
         }
     }

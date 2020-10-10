@@ -79,12 +79,13 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
             @Override
             public void onResponse(@NotNull Call<ResendOTPResponse> call, @NotNull Response<ResendOTPResponse> response) {
                 if (response.isSuccessful()) {
-                    ResendOTPResponse date = response.body();
-                    assert date != null;
-                    if (date.getStatus().equals("Success")) {
-                        showDialog("", date.getMsg() + " OTP: " + date.getOtp());
-                    } else {
-                        showDialog("", date.getMsg());
+                    ResendOTPResponse data = response.body();
+                    if(data != null) {
+                        if (data.getStatus().equals("Success")) {
+                            showDialog("", data.getMsg() + " OTP: " + data.getOtp());
+                        } else {
+                            showDialog("", data.getMsg());
+                        }
                     }
                 } else {
                     showDialog("", response.message());
@@ -93,7 +94,7 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
             }
 
             @Override
-            public void onFailure(Call<ResendOTPResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<ResendOTPResponse> call, @NotNull Throwable t) {
 
             }
         });

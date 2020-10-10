@@ -324,7 +324,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     private void cartSelected() {
         BaseFragment baseFragment = getActiveFragment();
         if (!(baseFragment instanceof ShoppingCartFragment)) {
-            addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
+            replaceFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
         }
     }
 
@@ -338,34 +338,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 this.finish();
             } else {
                 getSupportFragmentManager().popBackStackImmediate();
-                /*int index = getSupportFragmentManager().getBackStackEntryCount() - 1;
-                if (index >= 0) {
-                    FragmentManager.BackStackEntry backEntry = getSupportFragmentManager().getBackStackEntryAt(index);
-                    String tag = backEntry.getName();
-                    Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(tag);
-                    if (currentFragment instanceof VendorShopsListFragment) {
-                        ((VendorShopsListFragment) currentFragment).updateToolBar();
-                    } else if (currentFragment instanceof ChangeAddressFragment) {
-                        ((ChangeAddressFragment) currentFragment).updateToolBar();
-                    } else if (currentFragment instanceof VendorProductDetailsFragment) {
-                        ((VendorProductDetailsFragment) currentFragment).updateToolBar();
-                    } else if (currentFragment instanceof ProductCartDetailsFragment) {
-                        ((ProductCartDetailsFragment) currentFragment).updateToolBar();
-                    } else if (currentFragment instanceof ShoppingCartFragment) {
-                        ((ShoppingCartFragment) currentFragment).updateToolBar();
-                    } else if (currentFragment instanceof ShoppingCartDetailsFragment) {
-                        ((ShoppingCartDetailsFragment) currentFragment).updateToolBar();
-                    } else if (currentFragment instanceof VendorSameProductsListScreen) {
-                        ((VendorSameProductsListScreen) currentFragment).updateToolBar();
-                    } else if (currentFragment instanceof PaymentOptionsFragment) {
-                        ((PaymentOptionsFragment) currentFragment).updateToolBar();
-                    }
-                } else {
-                    Fragment fragment = getSupportFragmentManager().findFragmentByTag(VendorShopsListFragment.class.getName());
-                    if (fragment != null) {
-                        ((VendorShopsListFragment) fragment).updateToolBar();
-                    }
-                }*/
             }
         }
     }

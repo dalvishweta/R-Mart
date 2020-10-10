@@ -5,7 +5,6 @@ import android.view.View;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
-import com.rmart.customer.CustomerWishListDetailsFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;

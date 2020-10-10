@@ -58,6 +58,9 @@ public class CustomerProductsShopDetailsModel implements Serializable {
     @SerializedName("longitude")
     @Expose
     private Double longitude;
+    @SerializedName("email_id")
+    @Expose
+    private String emailId;
 
     public String getShopMobileNo() {
         return shopMobileNo;
@@ -169,6 +172,14 @@ public class CustomerProductsShopDetailsModel implements Serializable {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 
     @NotNull

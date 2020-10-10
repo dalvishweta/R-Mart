@@ -13,7 +13,11 @@ import com.rmart.customer.models.ShopWiseWishListResponseModel;
 import com.rmart.customer.models.ShoppingCartResponse;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.customer.models.WishListResponseModel;
+import com.rmart.customer_order.models.OrderAgainProductModel;
 import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.pojos.orders.Product;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -78,7 +82,7 @@ public interface CustomerProductsService {
     @POST(BuildConfig.VENDOR_ADD_TO_CART)
     @FormUrlEncoded
     Call<AddToCartResponseDetails> addToCart(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
-                                             @Field("product_unit_id") int productUnitId, @Field("product_quantity") int productQuantity);
+                                             @Field("product_unit_id") int productUnitId, @Field("product_quantity") int productQuantity, @Field("event") String event);
 
     @POST(BuildConfig.VENDORS_SHOW_SHOP_WISE_WISH_LIST_CART)
     @FormUrlEncoded
@@ -116,4 +120,9 @@ public interface CustomerProductsService {
     @FormUrlEncoded
     Call<CustomerOrderedResponseModel> showCartOrderDetails(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("shop_id") int shop_id,
                                                             @Field("user_address_id") String user_address_id, @Field("customer_id") String customerId);
+
+    @POST(BuildConfig.VENDOR_ADD_TO_CART)
+    @FormUrlEncoded
+    Call<AddToCartResponseDetails> addToCart(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
+                                             @Field("product_arr") List<OrderAgainProductModel> productList);
 }

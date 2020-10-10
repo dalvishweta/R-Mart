@@ -15,6 +15,7 @@ import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer_order.adapters.ProductListAdapter;
+import com.rmart.customer_order.models.OrderAgainProductModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -45,6 +46,9 @@ public class CheckAvailableProducts extends BaseFragment {
             customerName, customerNumber, customerAddress;
     private RecyclerView recyclerView;
     private AppCompatButton btnAddToCartField;
+    private List<Product> orderedProductsList;
+    private List<OrderAgainProductModel> orderAgainProductsList;
+
     public CheckAvailableProducts() {
         // Required empty public constructor
     }
@@ -128,13 +132,24 @@ public class CheckAvailableProducts extends BaseFragment {
         tvDeliveryCharges.setText(text);
         tvTotalCharges.setText(order.getOrderInfo().getTotalAmt());
         tvPaymentType.setText(order.getOrderInfo().getModeOfPayment());*/
-        btnAddToCartField.setVisibility(View.VISIBLE);
 
-        List<Product> orderedProductsList = order.getProduct();
+        orderedProductsList = order.getProduct();
         if (orderedProductsList != null && !orderedProductsList.isEmpty()) {
             List<Object> lUpdatedProductsList = new ArrayList<>(orderedProductsList);
             ProductListAdapter productAdapter = new ProductListAdapter(requireActivity(), lUpdatedProductsList);
             recyclerView.setAdapter(productAdapter);
+        }
+
+        for (Product productOrder : orderedProductsList) {
+            if(productOrder.getAvailableQuantity() != 0) {
+                OrderAgainProductModel product = new OrderAgainProductModel();
+                product.setProductUnitId(productOrder.getProductUnitId());
+                product.setProductQuantity(productOrder.getAvailableQuantity());
+                orderAgainProductsList.add(product);
+            }
+        }
+        if(!orderAgainProductsList.isEmpty()) {
+            btnAddToCartField.setVisibility(View.VISIBLE);
         }
     }
 
@@ -169,45 +184,46 @@ public class CheckAvailableProducts extends BaseFragment {
 
     private void addToCartSelected() {
         if (Utils.isNetworkConnected(requireActivity())) {
-
-            /*progressDialog.show();
-            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
-            String clientID = "2";
-            Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                    productUnitDetails.getProductUnitId(), noOfQuantity);
-            call.enqueue(new Callback<AddToCartResponseDetails>() {
-                @Override
-                public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
-                    progressDialog.dismiss();
-                    if (response.isSuccessful()) {
-                        AddToCartResponseDetails body = response.body();
-                        if (body != null) {
-                            if (body.getStatus().equalsIgnoreCase("success")) {
-                                AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = body.getAddToCartDataResponse();
-                                if (addToCartDataResponse != null) {
-                                    Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
-                                    MyProfile.getInstance().setCartCount(totalCartCount);
-                                    showDialog(body.getMsg());
+            if (orderedProductsList != null && !orderedProductsList.isEmpty()) {
+                progressDialog.show();
+                CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+                String clientID = "2";
+                Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, order.getVendorInfo().getUserID(), MyProfile.getInstance().getUserID(),
+                        orderAgainProductsList);
+                call.enqueue(new Callback<AddToCartResponseDetails>() {
+                    @Override
+                    public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
+                        progressDialog.dismiss();
+                        if (response.isSuccessful()) {
+                            AddToCartResponseDetails body = response.body();
+                            if (body != null) {
+                                if (body.getStatus().equalsIgnoreCase("success")) {
+                                    AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = body.getAddToCartDataResponse();
+                                    if (addToCartDataResponse != null) {
+                                        Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
+                                        MyProfile.getInstance().setCartCount(totalCartCount);
+                                        showDialog(body.getMsg());
+                                    } else {
+                                        showDialog(getString(R.string.no_information_available));
+                                    }
                                 } else {
-                                    showDialog(getString(R.string.no_information_available));
+                                    showDialog(body.getMsg());
                                 }
                             } else {
-                                showDialog(body.getMsg());
+                                showDialog(getString(R.string.no_information_available));
                             }
                         } else {
                             showDialog(getString(R.string.no_information_available));
                         }
-                    } else {
-                        showDialog(getString(R.string.no_information_available));
                     }
-                }
 
-                @Override
-                public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
-                    progressDialog.dismiss();
-                    showDialog(t.getMessage());
-                }
-            });*/
+                    @Override
+                    public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
+                        progressDialog.dismiss();
+                        showDialog(t.getMessage());
+                    }
+                });
+            }
         } else {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }

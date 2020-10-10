@@ -49,20 +49,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
         Object dataObject = productList.get(position);
         if (dataObject instanceof Product) {
             Product productObject = (Product) dataObject;
-            int availableQuantity = productObject.getAvailableQuantity();
-            if (availableQuantity == 0) {
-                Utils.disableViews(holder.price);
-                Utils.disableViews(holder.productName);
-                Utils.disableViews(holder.quantity);
-                Utils.disableViews(holder.units);
-                Utils.disableViews(holder.imageView);
-            } else {
-                Utils.enableViews(holder.price);
-                Utils.enableViews(holder.productName);
-                Utils.enableViews(holder.quantity);
-                Utils.enableViews(holder.units);
-                Utils.enableViews(holder.imageView);
-            }
             holder.price.setText(productObject.getPrice());
             holder.productName.setText(productObject.getProductName());
             holder.quantity.setText(String.valueOf(productObject.getQuantity()));

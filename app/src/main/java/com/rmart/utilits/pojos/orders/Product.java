@@ -46,6 +46,13 @@ public class Product implements Serializable {
     @SerializedName("available_quantity")
     @Expose
     private Integer availableQuantity;
+    //product_unit_id
+    @SerializedName("product_unit_id")
+    @Expose
+    private Integer productUnitId;
+    @SerializedName("product_quantity")
+    @Expose
+    private Integer productQuantity;
 
     public String getProductName() {
         return productName;
@@ -125,5 +132,21 @@ public class Product implements Serializable {
 
     public void setUnitId(Integer unitId) {
         this.unitId = unitId;
+    }
+
+    public Integer getProductUnitId() {
+        return productUnitId;
+    }
+
+    public void setProductUnitId(Integer productUnitId) {
+        this.productUnitId = productUnitId;
+    }
+
+    public Integer getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(Integer productQuantity) {
+        this.productQuantity = productQuantity;
     }
 }

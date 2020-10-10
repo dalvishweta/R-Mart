@@ -182,7 +182,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
     }
 
     private void messageSelected() {
-        Utils.openGmailWindow(requireActivity());
+        Utils.openGmailWindow(requireActivity(), productsShopDetailsModel.getEmailId());
     }
 
     private CallBackInterface callBackListener = pObject -> {

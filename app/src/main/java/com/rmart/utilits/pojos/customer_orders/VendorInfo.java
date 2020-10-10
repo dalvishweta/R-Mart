@@ -11,7 +11,7 @@ public class VendorInfo implements Serializable {
 
     @SerializedName("id")
     @Expose
-    String userID;
+    Integer userID;
 
     @SerializedName("first_name")
     @Expose
@@ -137,11 +137,11 @@ public class VendorInfo implements Serializable {
         this.number = number;
     }
 
-    public String getUserID() {
+    public Integer getUserID() {
         return userID;
     }
 
-    public void setUserID(String userID) {
+    public void setUserID(Integer userID) {
         this.userID = userID;
     }
 }

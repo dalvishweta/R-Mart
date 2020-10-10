@@ -2,8 +2,6 @@ package com.rmart.utilits;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -19,7 +17,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import java.text.DecimalFormat;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -154,24 +151,19 @@ public class Utils {
         context.startActivity(intent);
     }
 
-    public static void openGmailWindow(Context context) {
-        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        final PackageManager pm = context.getPackageManager();
-        final List<ResolveInfo> matches = pm.queryIntentActivities(intent, 0);
-        ResolveInfo best = null;
-        for (final ResolveInfo info : matches)
-            if (info.activityInfo.packageName.endsWith(".gm") ||
-                    info.activityInfo.name.toLowerCase().contains("gmail")) best = info;
-        if (best != null)
-            intent.setClassName(best.activityInfo.packageName, best.activityInfo.name);
-        context.startActivity(intent);
+    public static void openGmailWindow(Context context, String emailId) {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        emailIntent.setData(Uri.parse("mailto:" + emailId));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Enquiry");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+        context.startActivity(emailIntent);
     }
 
     public static String roundOffDoubleValue(Double value) {
         DecimalFormat df = new DecimalFormat("0.00");
         return df.format(value);
     }
+
     public static void enableViews(View pView) {
         pView.setAlpha(1.0f);
         pView.setEnabled(true);

@@ -11,6 +11,7 @@ import com.rmart.baseclass.Constants;
 import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.ProductInCartDetailsModel;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.services.CustomerProductsService;
 
@@ -26,10 +27,12 @@ import retrofit2.Response;
 public class UpdateProductQuantityServices extends JobIntentService {
 
     private ProductInCartDetailsModel productInCartDetails;
+    private String event;
 
-    public static void enqueueWork(Context context, ProductInCartDetailsModel productInCartDetails) {
+    public static void enqueueWork(Context context, ProductInCartDetailsModel productInCartDetails, String event) {
         Intent intent = new Intent(context, UpdateProductQuantityServices.class);
         intent.putExtra("ProductCartDetails", productInCartDetails);
+        intent.putExtra("Event", event);
         enqueueWork(context, UpdateProductQuantityServices.class, Constants.JOB_INSTANT_MESSENGER, intent);
     }
 
@@ -38,6 +41,7 @@ public class UpdateProductQuantityServices extends JobIntentService {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             productInCartDetails = (ProductInCartDetailsModel) extras.getSerializable("ProductCartDetails");
+            event = extras.getString("Event");
         }
         updateProductQuantityDetails();
     }
@@ -46,11 +50,15 @@ public class UpdateProductQuantityServices extends JobIntentService {
         CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
         String clientID = "2";
         Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, productInCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                productInCartDetails.getProductUnitId(), productInCartDetails.getTotalProductCartQty());
+                productInCartDetails.getProductUnitId(), productInCartDetails.getTotalProductCartQty(), event);
         call.enqueue(new Callback<AddToCartResponseDetails>() {
             @Override
             public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
-            
+                try {
+                    LoggerInfo.printLog("addToCart response", response.body().getAddToCartDataResponse().getTotalCartCount());
+                } catch (Exception ex) {
+                    LoggerInfo.errorLog("addToCart response exception", ex.getMessage());
+                }
             }
 
             @Override

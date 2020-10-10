@@ -147,7 +147,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        mapsFragment = MapsFragment.newInstance(false, "");
+        mapsFragment = MapsFragment.newInstance(true, "");
         mapsFragment.setCallBackListener(pObject -> {
             if(pObject instanceof Location) {
                 Location selectedLocation = (Location) pObject;
@@ -519,10 +519,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 showDialog(getString(R.string.address_is_added), pObject -> {
-                                    //myAddress.setAadharBackImage(aadharFrontImageUrl);
-                                    //myAddress.setAadharBackImage(aadharBackImageUrl);
-                                    //myAddress.setPanCardImage(panCardImageUrl);
-                                    //myAddress.setShopImage(shopImageUrl);
+                                    MyProfile.getInstance().setPrimaryAddressId(data.getResponse().get(0).getId().toString());
                                     MyProfile.getInstance().setAddressResponses(data.getResponse());
                                     if (isAddNewAddress) {
                                         gotoCustomerHomeScreen();
