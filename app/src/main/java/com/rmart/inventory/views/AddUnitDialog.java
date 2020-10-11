@@ -339,7 +339,17 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 dismiss();
              }
         } else if (view.getId() == R.id.cancel) {
-            deleteUnits();
+            showDialog("Are you sure you want to delete this unit from your Inventory? ", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    deleteUnits();
+                    /*Intent intent = new Intent();
+                    intent.putExtra(UNIT_VALUE, unitObject);
+                    intent.putExtra("IS_DELETED", true);
+                    Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+                    dismiss();*/
+                }
+            }, true);
 
         } else if (view.getId() == R.id.close){
             this.dismiss();
@@ -356,28 +366,34 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                     ShowProductResponse data = response.body();
                     if (data != null) {
                         if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                            showDialog(data.getMsg());
+                            showDialog(data.getMsg(), (dialogInterface, i) -> {
+                                Intent intent = new Intent();
+                                intent.putExtra(UNIT_VALUE, unitObject);
+                                intent.putExtra("IS_DELETED", true);
+                                Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+                                dismiss();
+                            }, false);
                             AddUnitDialog.this.dismiss();
                         } else {
-                            showDialog(data.getMsg());
+                            showDialog(data.getMsg(), null, false);
                         }
                     } else {
-                        showDialog(getString(R.string.no_information_available));
+                        showDialog(getString(R.string.no_information_available), null, false);
                     }
                 } else {
-                    showDialog(response.message());
+                    showDialog(response.message(), null, false);
                 }
                 progressDialog.dismiss();
             }
 
             @Override
             public void onFailure(@NotNull Call<ShowProductResponse> call, @NotNull Throwable t) {
-                showDialog(t.getMessage());
+                showDialog(t.getMessage(), null, false);
                 progressDialog.dismiss();
             }
         });
     }
-    protected void showDialog(String msg) {
+    protected void showDialog(String msg, DialogInterface.OnClickListener onPositiveClick, boolean cancelable) {
         try {
             AlertDialog.Builder builder = new
                     AlertDialog.Builder(
@@ -387,16 +403,10 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             builder.setTitle(requireActivity().getString(R.string.message));
             builder.setMessage(msg);
             builder.setCancelable(false);
-            builder.setNegativeButton(requireActivity().getString(R.string.close), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent();
-                    intent.putExtra(UNIT_VALUE, unitObject);
-                    intent.putExtra("IS_DELETED", true);
-                    Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
-                    dismiss();
-                }
-            });
+            builder.setPositiveButton(requireActivity().getString(R.string.dialog_ok), onPositiveClick);
+            if(cancelable) {
+                builder.setNegativeButton(requireActivity().getString(R.string.cancel), null);
+            }
             AlertDialog alertDialog = builder.create();
             alertDialog.setOnShowListener(arg0 -> alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(requireActivity(), R.color.button_bg)));
             if (!requireActivity().isFinishing()) {
