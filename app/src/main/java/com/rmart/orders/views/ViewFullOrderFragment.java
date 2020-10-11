@@ -274,17 +274,55 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
     private void updateOrderStatus(String newStatus, String newStatusID, String reason) {
         if (newStatusID.equalsIgnoreCase(Utils.DELIVERED_ORDER_STATUS)) {
-            if (null != selectedDeliveryBoy.getUserID()) {
+            if (selectedDeliveryBoy != null && !TextUtils.isEmpty(selectedDeliveryBoy.getUserID())) {
+                if (Utils.isNetworkConnected(requireActivity())) {
+                    progressDialog.show();
+                    OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
+                    orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newStatusID, reason, selectedDeliveryBoy.getUserID()).enqueue(new Callback<UpdatedOrderStatus>() {
+                        @Override
+                        public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
+                            if (response.isSuccessful()) {
+                                UpdatedOrderStatus data = response.body();
+                                if (data != null) {
+                                    if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                        String text = String.format(getString(R.string.status_update), newStatus);
+                                        showDialog(data.getStatus(), text, ((dialogInterface, i) -> requireActivity().onBackPressed()));
+                                    } else {
+                                        showDialog(data.getMsg());
+                                    }
+                                } else {
+                                    showDialog(getString(R.string.no_information_available));
+                                }
+                            } else {
+                                showDialog(response.message());
+                            }
+                            progressDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onFailure(@NotNull Call<UpdatedOrderStatus> call, @NotNull Throwable t) {
+                            progressDialog.dismiss();
+                            showDialog(t.getMessage());
+                        }
+                    });
+                } else {
+                    showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                }
+            } else {
+                showDialog("Please select the delivery boy.");
+            }
+        } else {
+            if (Utils.isNetworkConnected(requireActivity())) {
                 progressDialog.show();
                 OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-                orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newStatusID, reason, selectedDeliveryBoy.getUserID()).enqueue(new Callback<UpdatedOrderStatus>() {
+                orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newStatusID, reason).enqueue(new Callback<UpdatedOrderStatus>() {
                     @Override
                     public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
                         if (response.isSuccessful()) {
                             UpdatedOrderStatus data = response.body();
                             if (data != null) {
                                 if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                    String text = String.format( getString(R.string.status_update),newStatus);
+                                    String text = String.format(getString(R.string.status_update), newStatus);
                                     showDialog(data.getStatus(), text, ((dialogInterface, i) -> requireActivity().onBackPressed()));
                                 } else {
                                     showDialog(data.getMsg());
@@ -305,38 +343,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
                     }
                 });
             } else {
-                showDialog("Please select the delivery boy.");
+                showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
             }
-        } else {
-            progressDialog.show();
-            OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-            orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newStatusID, reason).enqueue(new Callback<UpdatedOrderStatus>() {
-                @Override
-                public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
-                    if (response.isSuccessful()) {
-                        UpdatedOrderStatus data = response.body();
-                        if (data != null) {
-                            if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                String text = String.format( getString(R.string.status_update),newStatus);
-                                showDialog(data.getStatus(), text, ((dialogInterface, i) -> requireActivity().onBackPressed()));
-                            } else {
-                                showDialog(data.getMsg());
-                            }
-                        } else {
-                            showDialog(getString(R.string.no_information_available));
-                        }
-                    } else {
-                        showDialog(response.message());
-                    }
-                    progressDialog.dismiss();
-                }
-
-                @Override
-                public void onFailure(@NotNull Call<UpdatedOrderStatus> call, @NotNull Throwable t) {
-                    progressDialog.dismiss();
-                    showDialog(t.getMessage());
-                }
-            });
         }
     }
 
