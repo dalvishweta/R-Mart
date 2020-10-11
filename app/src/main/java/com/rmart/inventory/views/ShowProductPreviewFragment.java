@@ -195,9 +195,9 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
 
         tvProductName.setText(product.getName());
 
-        for (UnitObject unitObject: product.getUnitObjects()) {
-            unitObject.setStockName(Objects.requireNonNull(stockList.get(unitObject.getStockID())).getStockName());
-        }
+        /*for (UnitObject unitObject: product.getUnitObjects()) {
+            unitObject.setDisplayUnitValue(Objects.requireNonNull(stockList.get(unitObject.getStockID())).getStockName());
+        }*/
         tvDeliveryInDays.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getDeliveryInDays()));
         ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(product.getUnitObjects(), callBackInterface, false);
         recyclerView.setAdapter(unitBaseAdapter);

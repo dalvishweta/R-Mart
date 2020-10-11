@@ -182,7 +182,7 @@
     <string name="change">Change</string>
     <string name="uid">uid</string>
     <string name="aid">aid</string>
-    <string name="error_unit_amount">Please enter valid amount</string>
+    <string name="error_unit_amount">Please enter valid price</string>
     <string name="error_valid_quantity">Please enter valid Quantity</string>
     <string name="add_success_product"> is Successfully added in your inventory.</string>
 
@@ -300,4 +300,6 @@
     <string name="error_product_description">Please enter valid product description</string>
     <string name="unit_required">Please add at least one unit</string>
     <string name="date">Date</string>
+    <string name="error_unit_value">Please enter valid unit value.</string>
+    <string name="error_discount">Discount is required value from 0% to 99%</string>
 </resources>

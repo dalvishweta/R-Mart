@@ -47,6 +47,13 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProductUnitViewHolder holder, int position) {
         UnitObject unit = productUnitList.get(position);
+        if (unit.getDiscount().length()<=0 || unit.getDiscount().equalsIgnoreCase("0")) {
+            holder.tvActual.setVisibility(View.GONE);
+            holder.tvOffer.setVisibility(View.GONE);
+        } else {
+            holder.tvActual.setVisibility(View.VISIBLE);
+            holder.tvOffer.setVisibility(View.VISIBLE);
+        }
         holder.delete.setTag(unit);
         String html = "<strike>" + unit.getActualCost()+" RS" + "</strike>";
         holder.tvActual.setText(Html.fromHtml(html));

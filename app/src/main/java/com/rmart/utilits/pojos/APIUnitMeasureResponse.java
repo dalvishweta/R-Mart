@@ -17,9 +17,9 @@ public class APIUnitMeasureResponse extends BaseResponse {
     @Expose
     String attributesDesc;
 
-    @SerializedName("short_name")
+    /*@SerializedName("short_name")
     @Expose
-    String shortName;
+    String shortName;*/
 
     public String getId() {
         return id;
@@ -45,11 +45,11 @@ public class APIUnitMeasureResponse extends BaseResponse {
         this.attributesDesc = attributesDesc;
     }
 
-    public String getShortName() {
+   /* public String getShortName() {
         return shortName;
     }
 
     public void setShortName(String shortName) {
         this.shortName = shortName;
-    }
+    }*/
 }

@@ -129,7 +129,9 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 //selectedPosition = (int) value;
                 photoUploadSelected();
             } else if (status.equalsIgnoreCase(Constants.TAG_DELETE)) {
-                mListener.addUnit((UnitObject) value,new APIUnitMeasures(unitMeasurements), this, INT_UPDATE_UNIT);
+                UnitObject unitObject = (UnitObject) value;
+                UnitObject unitObject1 = new UnitObject(unitObject);
+                mListener.addUnit(unitObject1,new APIUnitMeasures(unitMeasurements), this, INT_UPDATE_UNIT);
                 // deleteUnits((UnitObject) value);
             }/* else if (status.equalsIgnoreCase(Constants.TAG_EDIT_UNIT)) {
                 mListener.addUnit((UnitObject) value,new APIUnitMeasures(unitMeasurements), this, INT_UPDATE_UNIT);
@@ -358,7 +360,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         int id = view.getId();
         switch (id) {
             case R.id.add_unit:
-                mListener.addUnit(new UnitObject(),new APIUnitMeasures(unitMeasurements), this, INT_ADD_UNIT);
+                mListener.addUnit(new UnitObject(), new APIUnitMeasures(unitMeasurements), this, INT_ADD_UNIT);
                 break;
             case R.id.save:
                 saveSelected();
@@ -432,9 +434,9 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         mClonedProduct.setRegionalName(productRegionalName.getText().toString());
         mClonedProduct.setDelivery_days(Objects.requireNonNull(deliveryDays.getText()).toString());
         mClonedProduct.setDescription(productDescription.getText().toString());
-        ArrayList<ImageURLResponse> lUpdateImagesList = new ArrayList<>();
-        setImageURL(lUpdateImagesList);
-        mClonedProduct.setImageDataObject(lUpdateImagesList);
+        ArrayList<ImageURLResponse> updateImagesList = new ArrayList<>();
+        setImageURL(updateImagesList);
+        mClonedProduct.setImageDataObject(updateImagesList);
         progressDialog.show();
 
         Gson gson = new GsonBuilder().create();
@@ -538,6 +540,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     }
 
     private void updateList() {
+
         unitBaseAdapter = new ProductUnitAdapter(mClonedProduct.getUnitObjects(), callBackListener, true);
         unitsRecyclerView.setAdapter(unitBaseAdapter);
     }
@@ -559,7 +562,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode != RESULT_OK) return;
+        if (resultCode != RESULT_OK)
+            return;
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (result != null) {
@@ -585,7 +589,47 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             if (data != null) {
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
-                    // UnitObject unitData = (UnitObject) bundle.getSerializable(UNIT_VALUE);
+
+                   if (bundle.getBoolean("IS_DELETED", false)) {
+                       UnitObject unitData = (UnitObject) bundle.getSerializable(UNIT_VALUE);
+                       assert unitData != null;
+                       if (unitData.getTimeStamp() != -1) {
+                           for (int i = 0; i < mClonedProduct.getUnitObjects().size(); i++) {
+                               if (mClonedProduct.getUnitObjects().get(i).getTimeStamp() == unitData.getTimeStamp()) {
+                                   mClonedProduct.getUnitObjects().remove(i);
+                                   break;
+                               }
+                           }
+                       } else {
+                           for (int i = 0; i < mClonedProduct.getUnitObjects().size(); i++) {
+                               if (mClonedProduct.getUnitObjects().get(i).getProductUnitID().equalsIgnoreCase(unitData.getProductUnitID())) {
+                                   mClonedProduct.getUnitObjects().remove(i);
+                                   break;
+                               }
+                           }
+                       }
+
+                   } else {
+                       UnitObject unitData = (UnitObject) bundle.getSerializable(UNIT_VALUE);
+                       assert unitData != null;
+                       if (unitData.getTimeStamp() != -1) {
+                           for (int i = 0; i < mClonedProduct.getUnitObjects().size(); i++) {
+                               if (mClonedProduct.getUnitObjects().get(i).getTimeStamp() == unitData.getTimeStamp()) {
+                                   mClonedProduct.getUnitObjects().remove(i);
+                                   mClonedProduct.getUnitObjects().add(i, unitData);
+                                   break;
+                               }
+                           }
+                       } else {
+                           for (int i = 0; i < mClonedProduct.getUnitObjects().size(); i++) {
+                               if (mClonedProduct.getUnitObjects().get(i).getProductUnitID().equalsIgnoreCase(unitData.getProductUnitID())) {
+                                   mClonedProduct.getUnitObjects().remove(i);
+                                   mClonedProduct.getUnitObjects().add(i, unitData);
+                                   break;
+                               }
+                           }
+                       }
+                   }
                     // mClonedProduct.getUnitObjects().add(unitData);
                     updateList();
                 }

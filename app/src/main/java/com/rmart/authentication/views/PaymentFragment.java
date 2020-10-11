@@ -190,7 +190,7 @@ public class PaymentFragment extends BaseFragment {
         orderedMessage = orderedMessage.replace("<p>", "\n").replace("</p>", "");
         showDialog(orderedMessage, pObject -> {
             authenticationClickedListener.validateOTP(rsaKeyResponseDetails.getUserMobileNumber(), true);
-            requireActivity().onBackPressed();
+            // requireActivity().onBackPressed();
 /*            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             String name = fragmentManager.getBackStackEntryAt(0).getName();
             fragmentManager.popBackStackImmediate(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);*/

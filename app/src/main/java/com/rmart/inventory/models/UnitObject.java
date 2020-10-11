@@ -2,7 +2,6 @@ package com.rmart.inventory.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.rmart.utilits.pojos.APIStockResponse;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -10,8 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.Calendar;
 
 public class UnitObject implements Serializable {
     @SerializedName("unit_name")
@@ -54,22 +52,37 @@ public class UnitObject implements Serializable {
     @Expose
     String unit_number;
 
-    @SerializedName("short_name")
+    /*@SerializedName("short_name")
     @Expose
-    String shortName;
+    String shortName;*/
 
-    boolean isActive;
-    //String productStatus;
+    boolean isActive = true;
     int minDiscount;
     int maxDiscount;
-    int id;
     String unitType;
     String unitMeasure;
-    HashMap<String, APIStockResponse> apiStockMap;
+    long timeStamp = -1;
 
     public UnitObject() {
     }
-
+    public UnitObject( UnitObject unitObject) {
+        this.displayUnitValue = unitObject.displayUnitValue;
+        this.productUnitID = unitObject.productUnitID;
+        this.unitID = unitObject.unitID;
+        this.stockName = unitObject.stockName;
+        this.finalCost  = unitObject.finalCost;
+        this.quantity  = unitObject.quantity;
+        this.actualCost  = unitObject.actualCost;
+        this.discount  = unitObject.discount;
+        this.stockID  = unitObject.stockID;
+        this.unit_number  = unitObject.unit_number;
+        // this.shortName  = unitObject.shortName;
+        this.isActive  = unitObject.isActive;
+        this.minDiscount  = unitObject.minDiscount;
+        this.maxDiscount  = unitObject.maxDiscount;
+        this.unitType  = unitObject.unitType;
+        this.unitMeasure  = unitObject.unitMeasure;
+    }
     /*public String getID() {
         return ID;
     }
@@ -78,6 +91,7 @@ public class UnitObject implements Serializable {
         this.ID = ID;
     }*/
 
+/*
     public String getShortName() {
         return shortName;
     }
@@ -85,6 +99,7 @@ public class UnitObject implements Serializable {
     public void setShortName(String shortName) {
         this.shortName = shortName;
     }
+*/
 
     public String getProductUnitID() {
         return productUnitID;
@@ -126,7 +141,14 @@ public class UnitObject implements Serializable {
         this.displayUnitValue = displayUnitValue;
     }
 
-    /*
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp() {
+        this.timeStamp = Calendar.getInstance().getTimeInMillis();
+    }
+/*
     public String getProductStatus() {
         return productStatus;
     }
