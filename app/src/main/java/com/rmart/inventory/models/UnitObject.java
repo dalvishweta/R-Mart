@@ -76,7 +76,7 @@ public class UnitObject implements Serializable {
         this.discount  = unitObject.discount;
         this.stockID  = unitObject.stockID;
         this.unit_number  = unitObject.unit_number;
-        // this.shortName  = unitObject.shortName;
+        this.timeStamp  = unitObject.timeStamp;
         this.isActive  = unitObject.isActive;
         this.minDiscount  = unitObject.minDiscount;
         this.maxDiscount  = unitObject.maxDiscount;

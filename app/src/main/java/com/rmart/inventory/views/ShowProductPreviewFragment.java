@@ -192,9 +192,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         viewPager.setAdapter(imageAdapter);
         dotIndicatorLayoutField.setVisibility(imagesList.size() == 1 ? View.GONE : View.VISIBLE);
         dotIndicatorLayoutField.setupWithViewPager(viewPager);
-
         tvProductName.setText(product.getName());
-
         /*for (UnitObject unitObject: product.getUnitObjects()) {
             unitObject.setDisplayUnitValue(Objects.requireNonNull(stockList.get(unitObject.getStockID())).getStockName());
         }*/
