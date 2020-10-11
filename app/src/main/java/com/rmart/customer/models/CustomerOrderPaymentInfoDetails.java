@@ -22,7 +22,7 @@ public class CustomerOrderPaymentInfoDetails implements Serializable {
 
     @SerializedName("total_amount")
     @Expose
-    private Integer totalAmount;
+    private double totalAmount;
 
     /*@SerializedName("expected_date_of_delivery")
     @Expose
@@ -52,11 +52,11 @@ public class CustomerOrderPaymentInfoDetails implements Serializable {
         this.expectedDateOfDelivery = expectedDateOfDelivery;
     }
 
-    public Integer getTotalAmount() {
+    public double getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Integer totalAmount) {
+    public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
 

@@ -13,12 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.customer_order.adapters.ProductListAdapter;
-import com.rmart.customer_order.viewmodel.MyOrdersViewModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -47,8 +45,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     private static final String ARG_PARAM2 = "param2";
 
     private Order mOrderObject;
-    MyOrdersViewModel viewModel;
-    AppCompatButton mLeftButton, mRightButton;
+    private AppCompatButton mLeftButton, mRightButton;
     private AppCompatTextView tvStatus, dateValue, vendorName, vendorNumber, vendorAddress, orderIdValue, tvAmount,
             tvDeliveryCharges, tvTotalCharges, tvPaymentType, customerName, customerNumber, customerAddress;
     private CustomerOrderProductList orderProductList;
@@ -87,39 +84,45 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     }
 
     private void getServerData() {
-        progressDialog.show();
-        CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
-        customerOrderService.viewOrderById(mOrderObject.getOrderID(), MyProfile.getInstance().getMobileNumber()).enqueue(new Callback<CustomerOrderProductResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Response<CustomerOrderProductResponse> response) {
-                if (response.isSuccessful()) {
-                    CustomerOrderProductResponse data = response.body();
-                    if (data != null) {
-                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                            orderProductList = data.getProductList();
-                            updateUI();
+        if(Utils.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
+            customerOrderService.viewOrderById(mOrderObject.getOrderID(), MyProfile.getInstance().getMobileNumber()).enqueue(new Callback<CustomerOrderProductResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Response<CustomerOrderProductResponse> response) {
+                    if (response.isSuccessful()) {
+                        CustomerOrderProductResponse data = response.body();
+                        if (data != null) {
+                            if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                orderProductList = data.getProductList();
+                                updateUI();
+                            } else {
+                                showCloseDialog(null, data.getMsg());
+                            }
                         } else {
-                            showDialog(data.getMsg());
+                            showCloseDialog(null, getString(R.string.no_information_available));
                         }
                     } else {
-                        showDialog(getString(R.string.no_information_available));
+                        showCloseDialog(null, response.message());
                     }
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Throwable t) {
-                progressDialog.dismiss();
-                showDialog(t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                    showCloseDialog(null, t.getMessage());
+                }
+            });
+        } else {
+            showCloseDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(requireActivity()).get(MyOrdersViewModel.class);
+        //MyOrdersViewModel viewModel = new ViewModelProvider(requireActivity()).get(MyOrdersViewModel.class);
         // Inflate the layout for this fragment
         LoggerInfo.printLog("Fragment", "CustomerViewFullOrderFragment");
         return inflater.inflate(R.layout.fragment_view_full_order, container, false);
@@ -368,5 +371,13 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     void isReturnedOrder() {
         mLeftButton.setVisibility(View.GONE);
         mRightButton.setVisibility(View.GONE);
+    }
+
+    private void showCloseDialog(String title, String message) {
+        if (!requireActivity().isFinishing()) {
+            showDialog(title, message, pObject -> {
+                requireActivity().getSupportFragmentManager().popBackStack();
+            });
+        }
     }
 }

@@ -59,18 +59,15 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     private static final String ARG_PARAM3 = "param3";
     private static final String ARG_PARAM4 = "param4";
 
-    UnitObject unitObject;
-    private boolean mIsEdit;
-    CustomStringAdapter customStringAdapter, productStatusAdapter;
-    AppCompatEditText discount, actualPrice, valueOfUnit, quantity;
-    AppCompatTextView finalPrice, displayUnit, quantityValue;
-    Spinner unitsSpinner, productStatusSpinner;
+    private UnitObject unitObject;
+    private AppCompatEditText discount, actualPrice, valueOfUnit, quantity;
+    private AppCompatTextView finalPrice, displayUnit, quantityValue;
     // private InventoryViewModel inventoryViewModel;
-    ArrayList<String> availableUnitsMeasurements = new ArrayList<>();
-    ArrayList<String> productStatus = new ArrayList<>();
-    ArrayList<APIStockResponse> apiStockResponses = new ArrayList<>();
-    APIStockListResponse apiStockListResponse;
-    APIUnitMeasures unitMeasurements;
+    private ArrayList<String> availableUnitsMeasurements = new ArrayList<>();
+    private ArrayList<String> productStatus = new ArrayList<>();
+    private ArrayList<APIStockResponse> apiStockResponses = new ArrayList<>();
+    private APIUnitMeasures unitMeasurements;
+
     //SwitchCompat isActive;
     public AddUnitDialog() {
         // Required empty public constructor
@@ -93,11 +90,12 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             unitObject = (UnitObject) getArguments().getSerializable(ARG_PARAM1);
-            apiStockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM3);
+            APIStockListResponse apiStockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM3);
             unitMeasurements = (APIUnitMeasures) getArguments().getSerializable(ARG_PARAM4);
-            assert apiStockListResponse != null;
-            apiStockResponses = apiStockListResponse.getArrayList();
-            mIsEdit = getArguments().getBoolean(ARG_PARAM2);
+            if (apiStockListResponse != null) {
+                apiStockResponses = apiStockListResponse.getArrayList();
+            }
+            //mIsEdit = getArguments().getBoolean(ARG_PARAM2);
         }
         // inventoryViewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
     }
@@ -190,8 +188,8 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
             }
         });
-        unitsSpinner = view.findViewById(R.id.unit_spinner);
-        productStatusSpinner = view.findViewById(R.id.product_status);
+        Spinner unitsSpinner = view.findViewById(R.id.unit_spinner);
+        Spinner productStatusSpinner = view.findViewById(R.id.product_status);
         quantity = view.findViewById(R.id.quantity);
 
         quantityValue = view.findViewById(R.id.quantity_value);
@@ -245,11 +243,11 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         for (APIUnitMeasureResponse unitMeasureResponse : unitMeasurements.getUnitMeasurements()) {
             availableUnitsMeasurements.add(unitMeasureResponse.getAttributesName());
         }
-        customStringAdapter = new CustomStringAdapter(availableUnitsMeasurements, this.getContext());
+        CustomStringAdapter customStringAdapter = new CustomStringAdapter(availableUnitsMeasurements, this.getContext());
         for (APIStockResponse apiStockResponse : apiStockResponses) {
             productStatus.add(apiStockResponse.getStockName());
         }
-        productStatusAdapter = new CustomStringAdapter(productStatus, this.getContext());
+        CustomStringAdapter productStatusAdapter = new CustomStringAdapter(productStatus, this.getContext());
         productStatusSpinner.setAdapter(productStatusAdapter);
 
         unitsSpinner.setAdapter(customStringAdapter);
@@ -295,7 +293,6 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
     private void calculateFinalCost(String _price, String _discount) {
         try {
-
             int price = Utils.getIntegerValueFromString(_price);
             int discount = Utils.getIntegerValueFromString(_discount);
 
@@ -317,31 +314,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         } catch (Exception e) {
 
         }
-
     }
-
-   /* private void calculateFinalCost(double _price, int _discount) {
-        try {
-            if (_discount != 0 &&  _price != 0) {
-                float data = ((float) _discount / 100);
-                double discountedPrice = _price - (_price * data);
-                if (discountedPrice > 0) {
-                    unitObject.setFinalCost(String.valueOf(Utils.roundOffDoubleValue(discountedPrice)));
-                    String __finalPrice = String.format(getString(R.string.after_discount), unitObject.getFinalCost());
-                    finalPrice.setText(__finalPrice);
-                } else {
-                    String __finalPrice = String.format(getString(R.string.after_discount), "");
-                    finalPrice.setText(__finalPrice);
-                }
-            } else {
-                String __finalPrice = String.format(getString(R.string.after_discount), Double.toString(_price));
-                finalPrice.setText(__finalPrice);
-            }
-        } catch (Exception e) {
-
-        }
-
-    }*/
 
     @Override
     public void onClick(View view) {

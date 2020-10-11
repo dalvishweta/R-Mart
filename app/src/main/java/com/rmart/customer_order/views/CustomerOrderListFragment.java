@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.R;
 import com.rmart.customer_order.adapters.OrdersListAdapter;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.orders.Order;
@@ -53,6 +54,7 @@ public class CustomerOrderListFragment extends BaseOrderFragment implements View
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        LoggerInfo.printLog("Fragment", "CustomerOrderListFragment");
         return inflater.inflate(R.layout.fragment_order_list, container, false);
     }
 

@@ -1,6 +1,7 @@
 package com.rmart.customer_order.views;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
+import com.rmart.utilits.pojos.customer_orders.VendorInfo;
 import com.rmart.utilits.pojos.orders.Product;
 import com.rmart.utilits.services.CustomerOrderService;
 import com.rmart.utilits.services.CustomerProductsService;
@@ -84,35 +86,57 @@ public class CheckAvailableProducts extends BaseFragment {
         requireActivity().setTitle(getString(R.string.check_available_products));
         getServerData();
     }
-    private void getServerData() {
-        progressDialog.show();
-        CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
-        customerOrderService.getUpdatedProductDetails(order.getOrderInfo().getOrderID(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getMobileNumber(), order.getVendorInfo().getMobileNumber()).enqueue(new Callback<CustomerOrderProductResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Response<CustomerOrderProductResponse> response) {
-                if (response.isSuccessful()) {
-                    CustomerOrderProductResponse data = response.body();
-                    if (data != null) {
-                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                            //order = data.getProductList();
-                            ArrayList<Product> productsList = data.getProductList().getProduct();
-                            order.setProduct(productsList);
-                            updateUI();
-                        } else {
-                            showDialog(data.getMsg());
-                        }
-                    }
-                }
-                progressDialog.dismiss();
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Throwable t) {
-                progressDialog.dismiss();
+    private void getServerData() {
+        if(Utils.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
+            MyProfile myProfile = MyProfile.getInstance();
+            if (myProfile != null) {
+                String userId = myProfile.getUserID();
+                String mobileNumber = myProfile.getMobileNumber();
+                VendorInfo vendorInfo = order.getVendorInfo();
+                if (vendorInfo != null && !TextUtils.isEmpty(vendorInfo.getMobileNumber())) {
+                    String vendorMobileNo = order.getVendorInfo().getMobileNumber();
+                    customerOrderService.getUpdatedProductDetails(order.getOrderInfo().getOrderID(), userId, mobileNumber, vendorMobileNo).enqueue(new Callback<CustomerOrderProductResponse>() {
+                        @Override
+                        public void onResponse(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Response<CustomerOrderProductResponse> response) {
+                            if (response.isSuccessful()) {
+                                CustomerOrderProductResponse data = response.body();
+                                if (data != null) {
+                                    if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                        ArrayList<Product> productsList = data.getProductList().getProduct();
+                                        order.setProduct(productsList);
+                                        updateUI();
+                                    } else {
+                                        showCloseDialog(null, data.getMsg());
+                                    }
+                                } else {
+                                    showCloseDialog(null, getString(R.string.no_information_available));
+                                }
+                            } else {
+                                showCloseDialog(null, response.message());
+                            }
+                            progressDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onFailure(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Throwable t) {
+                            progressDialog.dismiss();
+                            showCloseDialog(null, t.getMessage());
+                        }
+                    });
+                } else {
+                    progressDialog.dismiss();
+                    showCloseDialog(null, getString(R.string.no_product_details_found));
+                }
             }
-        });
+        } else {
+            showCloseDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+        }
     }
-    void updateUI() {
+
+    private void updateUI() {
 
         // vendor
         String text = order.getCustomerInfo().getFirstName() + " " + order.getCustomerInfo().getLastName();
@@ -189,7 +213,7 @@ public class CheckAvailableProducts extends BaseFragment {
                 progressDialog.show();
                 CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
                 String clientID = "2";
-                Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, order.getVendorInfo().getUserID(), MyProfile.getInstance().getUserID(),
+                Call<AddToCartResponseDetails> call = customerProductsService.addReOrderToCart(clientID, order.getVendorInfo().getUserID(), MyProfile.getInstance().getUserID(),
                         orderAgainProductsList);
                 call.enqueue(new Callback<AddToCartResponseDetails>() {
                     @Override
@@ -214,19 +238,27 @@ public class CheckAvailableProducts extends BaseFragment {
                                 showDialog(getString(R.string.no_information_available));
                             }
                         } else {
-                            showDialog(getString(R.string.no_information_available));
+                            showDialog(response.message());
                         }
                     }
 
                     @Override
                     public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
                         progressDialog.dismiss();
-                        showDialog(t.getMessage());
+                        showCloseDialog(null, t.getMessage());
                     }
                 });
             }
         } else {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+        }
+    }
+
+    private void showCloseDialog(String title, String message) {
+        if(!requireActivity().isFinishing()) {
+            showDialog(title, message, pObject -> {
+                requireActivity().getSupportFragmentManager().popBackStack();
+            });
         }
     }
 }

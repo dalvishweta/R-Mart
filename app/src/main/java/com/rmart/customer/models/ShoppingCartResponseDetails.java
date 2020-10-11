@@ -32,7 +32,7 @@ public class ShoppingCartResponseDetails implements Serializable {
     private String clientId;
     @SerializedName("cart_price")
     @Expose
-    private Integer cartPrice;
+    private double cartPrice;
 
     private Integer productId = -1;
 
@@ -84,11 +84,11 @@ public class ShoppingCartResponseDetails implements Serializable {
         this.clientId = clientId;
     }
 
-    public Integer getCartPrice() {
+    public double getCartPrice() {
         return cartPrice;
     }
 
-    public void setCartPrice(Integer cartPrice) {
+    public void setCartPrice(double cartPrice) {
         this.cartPrice = cartPrice;
     }
 

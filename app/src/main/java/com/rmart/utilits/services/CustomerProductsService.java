@@ -32,7 +32,7 @@ public interface CustomerProductsService {
     @POST(BuildConfig.CUSTOMER_SHOPS_LIST)
     @FormUrlEncoded
     Call<CustomerProductsResponse> getCustomerShopsList(@Field("client_id") String clientId, @Field("start_page") int currentPage, @Field("search_param") String searchShopName,
-                                                        @Field("customer_id")  String customerId, @Field("latitude") double latitude, @Field("longitude") double longitude);
+                                                        @Field("customer_id") String customerId, @Field("latitude") double latitude, @Field("longitude") double longitude);
 
 
     @POST(BuildConfig.VENDOR_PRODUCTS_LIST)
@@ -121,8 +121,9 @@ public interface CustomerProductsService {
     Call<CustomerOrderedResponseModel> showCartOrderDetails(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("shop_id") int shop_id,
                                                             @Field("user_address_id") String user_address_id, @Field("customer_id") String customerId);
 
-    @POST(BuildConfig.VENDOR_ADD_TO_CART)
+    @POST(BuildConfig.ADD_RE_ORDER_TO_CART)
     @FormUrlEncoded
-    Call<AddToCartResponseDetails> addToCart(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
-                                             @Field("product_arr") List<OrderAgainProductModel> productList);
+    Call<AddToCartResponseDetails> addReOrderToCart(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
+                                                    @Field("product_arr") List<OrderAgainProductModel> productList);
+
 }
