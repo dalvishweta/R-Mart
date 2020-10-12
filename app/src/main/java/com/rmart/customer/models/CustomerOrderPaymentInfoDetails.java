@@ -12,7 +12,7 @@ public class CustomerOrderPaymentInfoDetails implements Serializable {
 
     @SerializedName("order_amount")
     @Expose
-    private Integer orderAmount;
+    private double orderAmount;
     @SerializedName("delivery_charges")
     @Expose
     private Integer deliveryCharges;
@@ -28,11 +28,11 @@ public class CustomerOrderPaymentInfoDetails implements Serializable {
     @Expose
     private Integer expectedDateDelivery;*/
 
-    public Integer getOrderAmount() {
+    public double getOrderAmount() {
         return orderAmount;
     }
 
-    public void setOrderAmount(Integer orderAmount) {
+    public void setOrderAmount(double orderAmount) {
         this.orderAmount = orderAmount;
     }
 

@@ -21,6 +21,7 @@ import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
 import com.rmart.utilits.pojos.customer_orders.VendorInfo;
@@ -31,7 +32,9 @@ import com.rmart.utilits.services.CustomerProductsService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -159,6 +162,9 @@ public class CheckAvailableProducts extends BaseFragment {
 
         orderedProductsList = order.getProduct();
         if (orderedProductsList != null && !orderedProductsList.isEmpty()) {
+            Set<Product> set = new HashSet<>(orderedProductsList);
+            orderedProductsList.clear();
+            orderedProductsList.addAll(set);
             List<Object> lUpdatedProductsList = new ArrayList<>(orderedProductsList);
             ProductListAdapter productAdapter = new ProductListAdapter(requireActivity(), lUpdatedProductsList);
             recyclerView.setAdapter(productAdapter);

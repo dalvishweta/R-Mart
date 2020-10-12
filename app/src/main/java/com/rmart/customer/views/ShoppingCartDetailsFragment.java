@@ -340,7 +340,6 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
                 selectedProductInCartDetails.setTotalProductCartQty(count);
                 productInCartDetailsList.set(index, selectedProductInCartDetails);
                 confirmOrdersAdapter.notifyItemChanged(index);
-
             }
         }
     }

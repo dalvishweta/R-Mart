@@ -1,17 +1,20 @@
 package com.rmart.customer.views;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.CustomerWishListDetailsAdapter;
 import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.ContentModel;
@@ -33,10 +36,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -223,44 +222,50 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
 
     private void addToCartSelected(CustomerProductsDetailsUnitModel productUnitDetails) {
         if (Utils.isNetworkConnected(requireActivity())) {
-            progressDialog.show();
-            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
-            String clientID = "2";
-            Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                    productUnitDetails.getProductUnitId(), productUnitDetails.getProductUnitQuantity(), "add");
-            call.enqueue(new Callback<AddToCartResponseDetails>() {
-                @Override
-                public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
-                    progressDialog.dismiss();
-                    if (response.isSuccessful()) {
-                        AddToCartResponseDetails body = response.body();
-                        if (body != null) {
-                            if (body.getStatus().equalsIgnoreCase("success")) {
-                                AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = body.getAddToCartDataResponse();
-                                if (addToCartDataResponse != null) {
-                                    Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
-                                    MyProfile.getInstance().setCartCount(totalCartCount);
-                                    showDialog(body.getMsg());
+            int totalProductCartQty = productUnitDetails.getTotalProductCartQty();
+            int productUnitQuantity = productUnitDetails.getProductUnitQuantity();
+            if (totalProductCartQty < productUnitQuantity) {
+                progressDialog.show();
+                CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+                String clientID = "2";
+                Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),
+                        productUnitDetails.getProductUnitId(), productUnitDetails.getProductUnitQuantity(), "add");
+                call.enqueue(new Callback<AddToCartResponseDetails>() {
+                    @Override
+                    public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
+                        progressDialog.dismiss();
+                        if (response.isSuccessful()) {
+                            AddToCartResponseDetails body = response.body();
+                            if (body != null) {
+                                if (body.getStatus().equalsIgnoreCase("success")) {
+                                    AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = body.getAddToCartDataResponse();
+                                    if (addToCartDataResponse != null) {
+                                        Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
+                                        MyProfile.getInstance().setCartCount(totalCartCount);
+                                        showDialog(body.getMsg());
+                                    } else {
+                                        showDialog(getString(R.string.no_information_available));
+                                    }
                                 } else {
-                                    showDialog(getString(R.string.no_information_available));
+                                    showDialog(body.getMsg());
                                 }
                             } else {
-                                showDialog(body.getMsg());
+                                showDialog(getString(R.string.no_information_available));
                             }
                         } else {
                             showDialog(getString(R.string.no_information_available));
                         }
-                    } else {
-                        showDialog(getString(R.string.no_information_available));
                     }
-                }
 
-                @Override
-                public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
-                    progressDialog.dismiss();
-                    showDialog(t.getMessage());
-                }
-            });
+                    @Override
+                    public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
+                        progressDialog.dismiss();
+                        showDialog(t.getMessage());
+                    }
+                });
+            } else {
+                showDialog(getString(R.string.out_of_stock_error));
+            }
         } else {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
@@ -280,9 +285,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
                         BaseResponse body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                showDialog(body.getMsg(), pObject -> {
-                                    removeFromCart(shopWiseWishListResponseDetails);
-                                });
+                                showDialog(body.getMsg(), pObject -> removeFromCart(shopWiseWishListResponseDetails));
                             } else {
                                 showDialog(body.getMsg());
                             }

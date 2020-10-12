@@ -3,6 +3,11 @@ package com.rmart.utilits.pojos.orders;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 public class Product implements Serializable {
@@ -148,5 +153,28 @@ public class Product implements Serializable {
 
     public void setProductQuantity(Integer productQuantity) {
         this.productQuantity = productQuantity;
+    }
+
+    @NotNull
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("productID", productID).toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(productID).toHashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof Product)) {
+            return false;
+        }
+        Product rhs = ((Product) other);
+        return new EqualsBuilder().append(productID, rhs.productID).isEquals();
     }
 }

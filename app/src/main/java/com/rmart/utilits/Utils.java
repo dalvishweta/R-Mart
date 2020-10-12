@@ -1,5 +1,6 @@
 package com.rmart.utilits;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -172,5 +174,13 @@ public class Utils {
     public static void disableViews(View pView) {
         pView.setAlpha(0.5f);
         pView.setEnabled(false);
+    }
+
+    @SuppressLint("HardwareIds")
+    public static String getDeviceId(Context context) {
+        return Settings.Secure.getString(
+                context.getContentResolver(),
+                Settings.Secure.ANDROID_ID
+        );
     }
 }

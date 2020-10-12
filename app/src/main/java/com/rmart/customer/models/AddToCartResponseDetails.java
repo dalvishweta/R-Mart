@@ -22,6 +22,7 @@ public class AddToCartResponseDetails extends BaseResponse {
     }
 
     public static class AddToCartDataResponse {
+
         @SerializedName("total_cart_count")
         @Expose
         private Integer totalCartCount;

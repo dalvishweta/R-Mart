@@ -55,7 +55,12 @@ public class UpdateProductQuantityServices extends JobIntentService {
             @Override
             public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
                 try {
-                    LoggerInfo.printLog("addToCart response", response.body().getAddToCartDataResponse().getTotalCartCount());
+                    if(response.isSuccessful()) {
+                        AddToCartResponseDetails addToCartResponseDetails = response.body();
+                        AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = addToCartResponseDetails.getAddToCartDataResponse();
+                        int count = addToCartDataResponse.getTotalCartCount();
+                        LoggerInfo.printLog("addToCart response", count);
+                    }
                 } catch (Exception ex) {
                     LoggerInfo.errorLog("addToCart response exception", ex.getMessage());
                 }

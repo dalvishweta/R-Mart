@@ -63,7 +63,7 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
         String quantityDetails = String.format(Locale.getDefault(), "%d %s", totalUnitNumbers, dataObject.getShortUnitMeasure());
         holder.tvQuantityDetailsField.setText(quantityDetails);
         double totalSellingPrice = totalProductCartQuantity * dataObject.getPerProductSellingPrice();
-        String sellingPrice = String.format("Rs. %s", totalSellingPrice);
+        String sellingPrice = String.format("Rs. %s", Utils.roundOffDoubleValue(totalSellingPrice));
         holder.tvSellingPriceField.setText(sellingPrice);
 
         Double totalUnitPrice = totalProductCartQuantity * dataObject.getPerProductUnitPrice();

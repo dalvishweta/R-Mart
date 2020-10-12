@@ -78,7 +78,7 @@ public class CustomerWishListDetailsAdapter extends RecyclerView.Adapter<Custome
             CustomerProductsDetailsUnitModel unitModelDetails = unitsList.get(0);
             String quantityDetails = String.format("%s %s", unitModelDetails.getUnitNumber(), unitModelDetails.getShortUnitMeasure());
             holder.tvQuantityField.setText(quantityDetails);
-            String sellingPrice = String.format("Rs.%s", unitModelDetails.getSellingPrice());
+            String sellingPrice = String.format("Rs.%s", Utils.roundOffDoubleValue(unitModelDetails.getSellingPrice()));
             holder.tvSellingPriceField.setText(sellingPrice);
 
             holder.tvTotalPriceField.setText(Utils.roundOffDoubleValue(unitModelDetails.getUnitPrice()));

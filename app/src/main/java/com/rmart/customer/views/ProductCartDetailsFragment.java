@@ -331,7 +331,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
     private void updateUnitPriceDetails() {
         double sellingPriceValue = noOfQuantity * productUnitDetails.getSellingPrice();
-        String sellingPrice = String.format("Rs. %s", sellingPriceValue);
+        String sellingPrice = String.format("Rs. %s", Utils.roundOffDoubleValue(sellingPriceValue));
         tvSellingPriceField.setText(sellingPrice);
         Double totalPrice = noOfQuantity * productUnitDetails.getUnitPrice();
         tvTotalPriceField.setText(Utils.roundOffDoubleValue(totalPrice));

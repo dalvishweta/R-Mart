@@ -50,7 +50,6 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public String mMobileNumber;
-    String mDeviceKey = "deviceKey";
     private String mPassword;
     private AppCompatEditText etPassword, etMobileNumber;
     public LoginFragment() {
@@ -82,10 +81,10 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
         view.findViewById(R.id.register).setOnClickListener(this);
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(requireActivity(), instanceIdResult -> {
+        /*FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(requireActivity(), instanceIdResult -> {
             mDeviceKey = instanceIdResult.getToken();
             LoggerInfo.printLog("FCM Token", mDeviceKey);
-        });
+        });*/
 
         etMobileNumber.setText(BuildConfig.LOGIN_USERNAME);
         etPassword.setText(BuildConfig.LOGIN_PASSWORD);
@@ -117,7 +116,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
             // mPassword = "12345";
-            authenticationService.login(mDeviceKey, mMobileNumber, mPassword).enqueue(new Callback<LoginResponse>() {
+            authenticationService.login(Utils.getDeviceId(requireActivity()), mMobileNumber, mPassword).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
                     if (response.isSuccessful()) {
