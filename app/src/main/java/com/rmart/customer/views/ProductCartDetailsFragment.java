@@ -73,7 +73,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private boolean isViewMoreSelected = false;
     private TextView tvViewMoreField;
     private ImageView ivViewMoreImageField;
-    private int productImagePosition = 1;
     private CustomerProductsDetailsUnitModel productUnitDetails;
     private Spinner quantitySpinnerField;
     private boolean isWishListProduct = false;
@@ -81,7 +80,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private TabLayout dotIndicatorLayoutField;
-    private TextView tvWishListField;
+    private Button btnWishListField;
 
     private int productId = -1;
     private boolean isAddToCartSelected = false;
@@ -198,7 +197,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
         quantitySpinnerField = view.findViewById(R.id.quantity_spinner_field);
         tvViewMoreField = view.findViewById(R.id.tv_view_more_field);
         ivViewMoreImageField = view.findViewById(R.id.iv_view_more_image_field);
-        tvWishListField = view.findViewById(R.id.tv_wish_list_field);
+        btnWishListField = view.findViewById(R.id.btn_wish_list_field);
 
         productsImagePagerField.startAutoScroll();
         productsImagePagerField.setInterval(1000);
@@ -240,15 +239,12 @@ public class ProductCartDetailsFragment extends BaseFragment {
         viewMoreLayoutField.setOnClickListener(v -> viewMoreSelected());
 
         btnAddToCartField.setOnClickListener(v -> addToCartSelected());
-
-        view.findViewById(R.id.btn_move_to_wish_list_field).setOnClickListener(v -> {
-            if (isWishListProduct) deleteProductFromWishList();
-            else addProductToWishList();
+        btnWishListField.setOnClickListener(v -> {
+            wishSelected();
         });
 
         ivFavouriteImageField.setOnClickListener(v -> {
-            if (isWishListProduct) deleteProductFromWishList();
-            else addProductToWishList();
+            wishSelected();
         });
 
         dotIndicatorLayoutField = view.findViewById(R.id.product_images_dot_indicator_field);
@@ -256,9 +252,14 @@ public class ProductCartDetailsFragment extends BaseFragment {
         updateQuantityDetails();
     }
 
+    private void wishSelected() {
+        if (isWishListProduct) deleteProductFromWishList();
+        else addProductToWishList();
+    }
+
     private void updateAddToWishListButton() {
-        if (isWishListProduct) tvWishListField.setText(getString(R.string.remove_from_wish_list));
-        else tvWishListField.setText(getString(R.string.move_to_wish_list));
+        if (isWishListProduct) btnWishListField.setText(getString(R.string.remove_from_wish_list));
+        else btnWishListField.setText(getString(R.string.move_to_wish_list));
     }
 
     private void viewMoreSelected() {

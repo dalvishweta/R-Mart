@@ -5,13 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.tabs.TabLayout;
 import com.rmart.R;
-import com.rmart.baseclass.views.AutoScrollViewPager;
 import com.rmart.baseclass.CallBackInterface;
+import com.rmart.baseclass.views.AutoScrollViewPager;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
-import com.rmart.inventory.models.UnitObject;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -28,14 +34,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,7 +50,6 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     //private APIStockListResponse apiStockListResponse;
     private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryInDays;
     private TabLayout dotIndicatorLayoutField;
-    private HashMap<String, APIStockResponse> stockList =  new HashMap<>();
 
     public ShowProductPreviewFragment() {
         // Required empty public constructor
@@ -74,7 +71,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         if (getArguments() != null) {
             product = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
             APIStockListResponse apiStockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
-            stockList =  new HashMap<>();
+            HashMap<String, APIStockResponse> stockList =  new HashMap<>();
             for (APIStockResponse apiStockResponse: apiStockListResponse.getArrayList()) {
                 stockList.put(apiStockResponse.getStockID(), apiStockResponse);
             }

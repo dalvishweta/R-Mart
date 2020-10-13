@@ -8,34 +8,28 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:background="@drawable/product_unit_base_bg">
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/sub_title_1"
-        android:text="@string/product_unit"
-        style="@style/product_unit_value"
-        />
+        style="@style/product_unit_value" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/sub_title_2"
         style="@style/product_unit_cost"
-        android:layout_height="wrap_content"
-        android:text="Rs.98" />
+        android:layout_height="wrap_content" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/sub_title_3"
-        android:text="@string/strikeout"
         style="@style/product_unit_value"
         android:textColor="@color/discount"/>
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/offer"
-        android:text="20%"
         style="@style/product_unit_offer"/>
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/unit_status"
         style="@style/product_unit_in_active"/>
 
-    <!--<androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/edit"
-        android:layout_width="wrap_content"
-        android:layout_height="23dp"
-        android:background="@drawable/edit" />-->
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/unit_delete"
         android:background="@drawable/edit"

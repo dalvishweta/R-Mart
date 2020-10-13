@@ -212,13 +212,13 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         customerAddress.setText(orderProductList.getCustomerInfo().getCompleteAddress());
 
         // payment info
-        tvAmount.setText(orderProductList.getOrderInfo().getOrderAmount());
+        tvAmount.setText(Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getOrderAmount()));
         text = orderProductList.getOrderInfo().getOrderCharges();
         tvDeliveryCharges.setText(text);
-        tvTotalCharges.setText(orderProductList.getOrderInfo().getTotalAmt());
+        tvTotalCharges.setText(Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getTotalAmt()));
         tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
         setFooter();
-        ProductListAdapter productAdapter = new ProductListAdapter(orderProductList.getProduct(), null);
+        ProductListAdapter productAdapter = new ProductListAdapter(requireActivity(), orderProductList.getProduct(), null);
         recyclerView.setAdapter(productAdapter);
     }
     private void setFooter() {

@@ -10,14 +10,13 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
 
 public class ProductItemViewHolder extends RecyclerView.ViewHolder {
-    public AppCompatTextView productName, quantity, units, price;
+    public AppCompatTextView productName;
+    public AppCompatTextView tvProductPriceQuantityDetailsField;
     public NetworkImageView imageView;
     public ProductItemViewHolder(@NonNull View itemView) {
         super(itemView);
         productName = itemView.findViewById(R.id.product_name);
-        quantity = itemView.findViewById(R.id.quantity_value);
-        units = itemView.findViewById(R.id.unit_value);
-        price = itemView.findViewById(R.id.cost_value);
         imageView = itemView.findViewById(R.id.product_image);
+        tvProductPriceQuantityDetailsField = itemView.findViewById(R.id.tv_product_price_quantity_details_field);
     }
 }

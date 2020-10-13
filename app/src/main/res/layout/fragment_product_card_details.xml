@@ -26,33 +26,17 @@
             android:textAllCaps="false"
             android:textColor="@color/white" />
 
-        <LinearLayout
-            android:id="@+id/btn_move_to_wish_list_field"
+        <Button
+            android:id="@+id/btn_wish_list_field"
+            style="@style/text_style_medium_normal"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_weight="1"
             android:background="@drawable/add_to_cart_background_bg"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/shopping_cart" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_wish_list_field"
-                style="@style/text_style_medium_normal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="@string/move_to_wish_list"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-        </LinearLayout>
+            android:text="@string/move_to_wish_list"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <ScrollView

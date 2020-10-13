@@ -36,7 +36,7 @@ public class CustomerOrderProductOrderedDetails implements Serializable {
     private String totalUnitPrice;
     @SerializedName("total_selling_price")
     @Expose
-    private String totalSellingPrice;
+    private double totalSellingPrice;
     @SerializedName("product_name")
     @Expose
     private String productName;
@@ -114,11 +114,11 @@ public class CustomerOrderProductOrderedDetails implements Serializable {
         this.totalUnitPrice = totalUnitPrice;
     }
 
-    public String getTotalSellingPrice() {
+    public double getTotalSellingPrice() {
         return totalSellingPrice;
     }
 
-    public void setTotalSellingPrice(String totalSellingPrice) {
+    public void setTotalSellingPrice(double totalSellingPrice) {
         this.totalSellingPrice = totalSellingPrice;
     }
 

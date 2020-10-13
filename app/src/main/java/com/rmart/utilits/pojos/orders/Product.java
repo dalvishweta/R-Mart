@@ -22,7 +22,7 @@ public class Product implements Serializable {
 
     @SerializedName("price")
     @Expose
-    private String price;
+    private double price;
 
     @SerializedName("product_id")
     @Expose
@@ -75,11 +75,11 @@ public class Product implements Serializable {
         this.quantity = quantity;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

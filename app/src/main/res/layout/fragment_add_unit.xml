@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-tools:context="com.rmart.inventory.views.AddUnitDialog"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-android:padding="16dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.rmart.inventory.views.AddUnitDialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
     <ImageView
         android:layout_gravity="end"
         android:padding="8dp"
@@ -12,6 +12,7 @@ android:padding="16dp">
         android:fontFamily="@font/roboto_black"
         android:id="@+id/close"
         android:layout_width="40dp"
+        android:contentDescription="@string/app_name"
         android:layout_height="40dp"/>
     <androidx.appcompat.widget.AppCompatTextView
         android:textSize="20sp"
@@ -35,12 +36,12 @@ android:padding="16dp">
             android:layout_marginEnd="0dp"
             android:background="@drawable/curve_left_bg"
             android:layout_width="0dp"
-            android:layout_weight="1.30"/>
+            android:layout_weight="0.34"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/value_of_unit"
             android:layout_width="0dp"
-            android:layout_weight=".70"
+            android:layout_weight="0.33"
             android:layout_height="wrap_content"
             android:hint="@string/value_of_unit"
             android:minHeight="50dp"
@@ -51,7 +52,7 @@ android:padding="16dp">
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/display_unit"
             android:layout_width="0dp"
-            android:layout_weight="1.4"
+            android:layout_weight="0.33"
             android:layout_height="wrap_content"
             android:hint="@string/display_unit"
             android:minHeight="50dp"

@@ -1,13 +1,7 @@
 package com.rmart.customer.views;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -16,30 +10,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatRadioButton;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.Task;
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
@@ -49,7 +37,6 @@ import com.rmart.customer.models.AddShopToWishListResponse;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsResponse;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
-import com.rmart.mapview.MyLocation;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -72,7 +59,7 @@ import retrofit2.Response;
 /**
  * Created by Satya Seshu on 07/09/20.
  */
-public class VendorShopsListFragment extends CustomerHomeFragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
+public class VendorShopsListFragment extends CustomerHomeFragment implements OnMapReadyCallback {
 
     private AppCompatEditText etProductsSearchField;
     private int currentPage = 0;
@@ -86,14 +73,11 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private MyProfile myProfile;
     private CustomerProductsShopDetailsModel selectedShopDetails;
-    private FusedLocationProviderClient fusedLocationProviderClient;
-    private Location currentLocation;
     private SupportMapFragment mapFragment;
     private double latitude = 0.0;
     private double longitude = 0.0;
-    private LocationManager locationManager;
-    private GoogleMap googleMap;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private TextView tvAddressField;
 
     public static VendorShopsListFragment getInstance() {
         return new VendorShopsListFragment();
@@ -105,7 +89,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         super.onCreateView(inflater, container, savedInstanceState);
         LoggerInfo.printLog("Fragment", "VendorShopsListFragment");
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         return inflater.inflate(R.layout.fragment_vendor_list_view, container, false);
     }
 
@@ -129,7 +112,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         myProfile = MyProfile.getInstance();
 
         RecyclerView vendorShopsListField = view.findViewById(R.id.products_list_field);
-        AppCompatTextView tvAddressField = view.findViewById(R.id.tv_address_field);
+        tvAddressField = view.findViewById(R.id.tv_address_field);
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
         ImageView ivSearchField = view.findViewById(R.id.iv_search_field);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_field);
@@ -249,75 +232,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     }
 
     private void fetchLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-            return;
-        }
-
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(location -> {
-            if (location != null) {
-                currentLocation = location;
-                latitude = currentLocation.getLatitude();
-                longitude = currentLocation.getLongitude();
-                // Toast.makeText(getContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
-                //SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
-                if (mapFragment != null) {
-                    mapFragment.getMapAsync(this);
-                }
-            } else {
-                locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
-                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    onGPS();
-                } else {
-                    getLocation();
-                }
-            }
-        });
-    }
-
-    private void onGPS() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", (dialog, which) -> startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))).setNegativeButton("No", (dialog, which) -> dialog.cancel());
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-
-    private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
-        } else {
-            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (locationGPS != null) {
-                currentLocation = locationGPS;
-                latitude = locationGPS.getLatitude();
-                longitude = locationGPS.getLongitude();
-                updateMap();
-            } else {
-                MyLocation myLocation = new MyLocation(requireActivity());
-                myLocation.getLocation(locationResult);
-            }
-        }
-    }
-
-    public MyLocation.LocationResult locationResult = new MyLocation.LocationResult() {
-
-        @Override
-        public void gotLocation(Location location) {
-            if (location != null) {
-                currentLocation = location;
-                longitude = location.getLongitude();
-                latitude = location.getLatitude();
-                updateMap();
-            }
-        }
-    };
-
-    private void updateMap() {
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
@@ -544,21 +458,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         } else {
             isLoading = false;
         }
-
-        /*for(CustomerProductsShopDetailsModel shopDetailsModel : customerShopsList) {
-            createMarker(shopDetailsModel.getLatitude(), shopDetailsModel.getLongitude(), shopDetailsModel.getShopName(), shopDetailsModel.getShopAddress());
-        }*/
-    }
-
-
-    private void createMarker(double latitude, double longitude, String title, String snippet) {
-
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(latitude, longitude))
-                .anchor(0.5f, 0.5f)
-                .title(title)
-                .snippet(snippet)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
     }
 
     private void showCloseDialog(String message) {
@@ -568,21 +467,11 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     }
 
     @Override
-    public void onMapClick(LatLng latLng) {
-        System.out.println(latLng.latitude + "---" + latLng.longitude);
-    }
-
-    @Override
     public void onMapReady(GoogleMap map) {
-        googleMap = map;
-        if (currentLocation != null) {
-            googleMap.setOnMapClickListener(this);
-            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-            googleMap.addMarker(markerOptions);
-
-        }
+        LatLng latLng = new LatLng(latitude, longitude);
+        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        map.addMarker(markerOptions);
     }
 }

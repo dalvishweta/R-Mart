@@ -183,10 +183,10 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
 
         CustomerOrderPaymentInfoDetails customerOrderPaymentInfoDetails = customerOrderedDataResponse.getCustomerOrderPaymentInfoDetails();
         if (customerOrderPaymentInfoDetails != null) {
-            tvAmount.setText(String.valueOf(customerOrderPaymentInfoDetails.getOrderAmount()));
+            tvAmount.setText(Utils.roundOffDoubleValue(customerOrderPaymentInfoDetails.getOrderAmount()));
             tvExpectedDateDelivery.setText(String.valueOf(customerOrderPaymentInfoDetails.getExpectedDateOfDelivery()));
             tvDeliveryCharges.setText(String.valueOf(customerOrderPaymentInfoDetails.getDeliveryCharges()));
-            tvTotalCharges.setText(String.valueOf(customerOrderPaymentInfoDetails.getTotalAmount()));
+            tvTotalCharges.setText(Utils.roundOffDoubleValue(customerOrderPaymentInfoDetails.getTotalAmount()));
         }
 
         List<CustomerOrderProductOrderedDetails> productsOrderedList = customerOrderedDataResponse.getCustomerOrderProductDetailsList();

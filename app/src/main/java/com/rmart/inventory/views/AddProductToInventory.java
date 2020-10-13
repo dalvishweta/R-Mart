@@ -92,8 +92,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     AppCompatTextView expiry;
     private RecyclerView unitsRecyclerView;
     APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
-    private ArrayList<String> availableBrands = new ArrayList<>();
-    private APIStockListResponse stockListResponse = null;
     private ArrayList<ImageURLResponse> images;
     private int selectedImagePosition = -1;
     private CustomNetworkImageView ivProductImageOneField;
@@ -160,7 +158,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                     if (data != null) {
                         apiBrandResponses = data.getArrayList();
                         for (APIBrandResponse apiBrandResponse : apiBrandResponses) {
-                            availableBrands.add(apiBrandResponse.getBrandName());
+                            //availableBrands.add(apiBrandResponse.getBrandName());
                         }
                     } else {
                         showDialog(getString(R.string.no_information_available));
@@ -294,54 +292,47 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         images = new ArrayList<>();
         if (mClonedProduct != null) {
             List<ImageURLResponse> clonedImagesList = mClonedProduct.getImageDataObject();
-            int difference = 5 - clonedImagesList.size();
             images.addAll(clonedImagesList);
-            /*for (int i = 0; i < difference; i++) {
-                images.add(ImageUploadAdapter.DEFAULT);
-            }*/
         }
         ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
         HttpsTrustManager.allowAllSSL();
         for (int i = 0; i < images.size(); i++) {
-            Object object = images.get(i);
-            if (object instanceof ImageURLResponse) {
-                ImageURLResponse imageURLResponse = (ImageURLResponse) object;
-                String productUrl = imageURLResponse.getImageURL();
-                if (!TextUtils.isEmpty(productUrl)) {
-                    switch (i) {
-                        case 0:
-                            imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageOneField,
-                                    R.mipmap.ic_launcher, android.R.drawable
-                                            .ic_dialog_alert));
-                            ivProductImageOneField.setImageUrl(productUrl, imageLoader);
-                            break;
-                        case 1:
-                            imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageTwoField,
-                                    R.mipmap.ic_launcher, android.R.drawable
-                                            .ic_dialog_alert));
-                            ivProductImageTwoField.setImageUrl(productUrl, imageLoader);
-                            break;
-                        case 2:
-                            imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageThreeField,
-                                    R.mipmap.ic_launcher, android.R.drawable
-                                            .ic_dialog_alert));
-                            ivProductImageThreeField.setImageUrl(productUrl, imageLoader);
-                            break;
-                        case 3:
-                            imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageFourField,
-                                    R.mipmap.ic_launcher, android.R.drawable
-                                            .ic_dialog_alert));
-                            ivProductImageFourField.setImageUrl(productUrl, imageLoader);
-                            break;
-                        case 4:
-                            imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageFiveField,
-                                    R.mipmap.ic_launcher, android.R.drawable
-                                            .ic_dialog_alert));
-                            ivProductImageFiveField.setImageUrl(productUrl, imageLoader);
-                            break;
-                        default:
-                            break;
-                    }
+            ImageURLResponse imageURLResponse = images.get(i);
+            String productUrl = imageURLResponse.getImageURL();
+            if (!TextUtils.isEmpty(productUrl)) {
+                switch (i) {
+                    case 0:
+                        imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageOneField,
+                                R.mipmap.ic_launcher, android.R.drawable
+                                        .ic_dialog_alert));
+                        ivProductImageOneField.setImageUrl(productUrl, imageLoader);
+                        break;
+                    case 1:
+                        imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageTwoField,
+                                R.mipmap.ic_launcher, android.R.drawable
+                                        .ic_dialog_alert));
+                        ivProductImageTwoField.setImageUrl(productUrl, imageLoader);
+                        break;
+                    case 2:
+                        imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageThreeField,
+                                R.mipmap.ic_launcher, android.R.drawable
+                                        .ic_dialog_alert));
+                        ivProductImageThreeField.setImageUrl(productUrl, imageLoader);
+                        break;
+                    case 3:
+                        imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageFourField,
+                                R.mipmap.ic_launcher, android.R.drawable
+                                        .ic_dialog_alert));
+                        ivProductImageFourField.setImageUrl(productUrl, imageLoader);
+                        break;
+                    case 4:
+                        imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageFiveField,
+                                R.mipmap.ic_launcher, android.R.drawable
+                                        .ic_dialog_alert));
+                        ivProductImageFiveField.setImageUrl(productUrl, imageLoader);
+                        break;
+                    default:
+                        break;
                 }
             }
         }

@@ -1,10 +1,16 @@
 package com.rmart.inventory.adapters;
 
+import android.graphics.Paint;
 import android.os.Build;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
@@ -13,12 +19,6 @@ import com.rmart.customer.models.ContentModel;
 import com.rmart.inventory.models.UnitObject;
 
 import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.ProductUnitViewHolder> {
 
@@ -47,28 +47,28 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProductUnitViewHolder holder, int position) {
         UnitObject unit = productUnitList.get(position);
-        if (unit.getDiscount().length()<=0 || unit.getDiscount().equalsIgnoreCase("0")) {
-            holder.tvActual.setVisibility(View.GONE);
-            holder.tvOffer.setVisibility(View.GONE);
-        } else {
-            holder.tvActual.setVisibility(View.VISIBLE);
-            holder.tvOffer.setVisibility(View.VISIBLE);
-        }
         holder.delete.setTag(unit);
-        String html = "<strike>" + unit.getActualCost()+" RS" + "</strike>";
-        holder.tvActual.setText(Html.fromHtml(html));
-        holder.tvFinalCost.setText(unit.getFinalCost()+" RS");
-        holder.tvUnitValue.setText(unit.getUnitNumber()+unit.getDisplayUnitValue());
-        holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer_single_line), unit.getDiscount() + "%"));
-        /*
-            holder.tvIUnitState.setText(unit.getProductStatus());
-            if(unit.getProductStatus().equalsIgnoreCase("Available")) {
-
-            }
-        */
+        String finalCost = String.format("%s Rs", unit.getFinalCost());
+        holder.tvFinalCost.setText(finalCost);
+        String unitValue = String.format("%s %s", unit.getUnitNumber(), unit.getDisplayUnitValue());
+        holder.tvUnitValue.setText(unitValue);
         holder.tvIUnitState.setText(unit.getStockName());
+
+        if (unit.getDiscount().length() <= 0 || unit.getDiscount().equalsIgnoreCase("0")) {
+            String actualCost = "0 Rs";
+            holder.tvActual.setText(actualCost);
+            holder.tvActual.setPaintFlags(holder.tvActual.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+            String offer = "0 %";
+            holder.tvOffer.setText(offer);
+        } else {
+            String actualCost = String.format("%s Rs", unit.getActualCost());
+            holder.tvActual.setText(actualCost);
+            holder.tvActual.setPaintFlags(holder.tvActual.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer_single_line), unit.getDiscount() + "%"));
+        }
+
         holder.delete.setTag(position);
-        // holder.edit.setTag(position);
         if (unit.getStockID().equalsIgnoreCase("5")) {
             holder.tvIUnitState.setTextColor(holder.itemView.getContext().getColor(R.color.colorPrimary));
         } else {

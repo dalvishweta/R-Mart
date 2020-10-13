@@ -26,11 +26,17 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
     private List<Object> productList;
     private LayoutInflater layoutInflater;
     private ImageLoader imageLoader;
+    private String quantityText;
+    private String unitText;
+    private String costText;
 
     public ProductListAdapter(Context context, List<Object> orderList) {
         this.productList = orderList;
         layoutInflater = LayoutInflater.from(context);
         imageLoader = RMartApplication.getInstance().getImageLoader();
+        quantityText = context.getString(R.string.quantity);
+        unitText = context.getString(R.string.unit);
+        costText = context.getString(R.string.cost);
     }
 
     public void setOnClickListener(View.OnClickListener onClickListener) {
@@ -49,11 +55,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
         Object dataObject = productList.get(position);
         if (dataObject instanceof Product) {
             Product productObject = (Product) dataObject;
-            holder.price.setText(productObject.getPrice());
+
             holder.productName.setText(productObject.getProductName());
-            holder.quantity.setText(String.valueOf(productObject.getQuantity()));
+
             String unitsDetails = String.format("%s %s", productObject.getUnit(), productObject.getUnitMeasure());
-            holder.units.setText(unitsDetails);
             String imageUrl = productObject.getDisplayImage();
             if (!TextUtils.isEmpty(imageUrl)) {
                 HttpsTrustManager.allowAllSSL();
@@ -62,14 +67,19 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
                                 .ic_dialog_alert));
                 holder.imageView.setImageUrl(imageUrl, RMartApplication.getInstance().getImageLoader());
             }
+
+            /*holder.price.setText(Utils.roundOffDoubleValue(productObject.getPrice()));
+            holder.quantity.setText(String.valueOf(productObject.getQuantity()));
+            holder.units.setText(unitsDetails);*/
+
+            String productQuantityPriceDetails = String.format("%s%s  %s%s  %s%s", quantityText, productObject.getQuantity(), unitText, unitsDetails,
+                    costText, Utils.roundOffDoubleValue(productObject.getPrice()));
+            holder.tvProductPriceQuantityDetailsField.setText(productQuantityPriceDetails);
+
         } else if (dataObject instanceof CustomerOrderProductOrderedDetails) {
             CustomerOrderProductOrderedDetails productObject = (CustomerOrderProductOrderedDetails) dataObject;
-            holder.price.setText(productObject.getTotalSellingPrice());
             holder.productName.setText(productObject.getProductName());
-            holder.units.setText(productObject.getUnitNumber());
-            holder.quantity.setText(productObject.getTotalProductCartQty());
             String unitsDetails = String.format("%s %s", productObject.getUnitNumber(), productObject.getUnitMeasure());
-            holder.units.setText(unitsDetails);
             String imageUrl = productObject.getProductImage();
             if (!TextUtils.isEmpty(imageUrl)) {
                 HttpsTrustManager.allowAllSSL();
@@ -78,6 +88,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
                                 .ic_dialog_alert));
                 holder.imageView.setImageUrl(imageUrl, RMartApplication.getInstance().getImageLoader());
             }
+
+            /*holder.price.setText();
+            holder.quantity.setText(productObject.getTotalProductCartQty());
+            holder.units.setText(unitsDetails);*/
+
+            String productQuantityPriceDetails = String.format("%s%s  %s%s  %s%s", quantityText, productObject.getTotalProductCartQty(), unitText, unitsDetails,
+                    costText, Utils.roundOffDoubleValue(productObject.getTotalSellingPrice()));
+            holder.tvProductPriceQuantityDetailsField.setText(productQuantityPriceDetails);
         }
     }
 
