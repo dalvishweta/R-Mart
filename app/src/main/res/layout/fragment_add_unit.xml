@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="10dp">
+
     <ImageView
         android:layout_gravity="end"
         android:padding="8dp"
@@ -14,6 +15,7 @@
         android:layout_width="40dp"
         android:contentDescription="@string/app_name"
         android:layout_height="40dp"/>
+
     <androidx.appcompat.widget.AppCompatTextView
         android:textSize="20sp"
         android:textColor="@color/black"
@@ -26,39 +28,51 @@
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/grey_rounded_borders_bg">
 
         <Spinner
             android:id="@+id/unit_spinner"
-            android:layout_height="wrap_content"
-            android:minHeight="50dp"
-            style="@style/upload_product_item_field"
+            android:layout_height="50dp"
             android:layout_marginEnd="0dp"
-            android:background="@drawable/curve_left_bg"
             android:layout_width="0dp"
-            android:layout_weight="0.34"/>
+            android:layout_weight="0.4"
+            android:background="@android:color/transparent" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/value_of_unit"
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray" />
+
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="0.33"
-            android:layout_height="wrap_content"
-            android:hint="@string/value_of_unit"
-            android:minHeight="50dp"
-            style="@style/upload_product_item_field"
-            android:inputType="numberDecimal"
-            android:background="@drawable/no_curve_bg"/>
+            android:layout_height="50dp"
+            android:layout_weight="0.6"
+            android:inputType="numberDecimal">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/display_unit"
-            android:layout_width="0dp"
-            android:layout_weight="0.33"
-            android:layout_height="wrap_content"
-            android:hint="@string/display_unit"
-            android:minHeight="50dp"
-            style="@style/upload_product_item_field"
-            android:background="@drawable/curve_right_bg"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/value_of_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/display_unit"
+                android:background="@android:color/transparent"
+                android:hint="@string/value_of_unit"
+                android:inputType="numberDecimal"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/display_unit"
+                style="@style/text_style_medium_normal"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:minHeight="50dp" />
+        </RelativeLayout>
     </LinearLayout>
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/price"

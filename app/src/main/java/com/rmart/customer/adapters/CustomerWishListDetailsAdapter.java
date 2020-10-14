@@ -2,7 +2,13 @@ package com.rmart.customer.adapters;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.StrikethroughSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,12 +83,17 @@ public class CustomerWishListDetailsAdapter extends RecyclerView.Adapter<Custome
         if (unitsList != null && !unitsList.isEmpty()) {
             CustomerProductsDetailsUnitModel unitModelDetails = unitsList.get(0);
             String quantityDetails = String.format("%s %s", unitModelDetails.getUnitNumber(), unitModelDetails.getShortUnitMeasure());
-            holder.tvQuantityField.setText(quantityDetails);
             String sellingPrice = String.format("Rs.%s", Utils.roundOffDoubleValue(unitModelDetails.getSellingPrice()));
-            holder.tvSellingPriceField.setText(sellingPrice);
+            String unitPriceDetails = Utils.roundOffDoubleValue(unitModelDetails.getUnitPrice());
 
-            holder.tvTotalPriceField.setText(Utils.roundOffDoubleValue(unitModelDetails.getUnitPrice()));
-            holder.tvTotalPriceField.setPaintFlags(holder.tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            String quantityPriceDetails = String.format("%s  %s  %s", quantityDetails, sellingPrice, unitPriceDetails);
+            SpannableString quantityPriceDetailsSpannable = new SpannableString(quantityPriceDetails);
+            quantityPriceDetailsSpannable.setSpan(new StyleSpan(Typeface.BOLD), quantityPriceDetails.indexOf(sellingPrice),
+                    quantityPriceDetails.indexOf(sellingPrice) + sellingPrice.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            quantityPriceDetailsSpannable.setSpan(new StrikethroughSpan(), quantityPriceDetails.indexOf(unitPriceDetails),
+                    quantityPriceDetails.indexOf(unitPriceDetails) + unitPriceDetails.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.tvQuantityPriceDetailsField.setText(quantityPriceDetailsSpannable);
         }
         holder.tvProductDiscountField.setText("");
         holder.btnRemoveField.setTag(position);
@@ -94,22 +105,18 @@ public class CustomerWishListDetailsAdapter extends RecyclerView.Adapter<Custome
         NetworkImageView ivProductImageField;
         TextView tvProductNameField;
         TextView tvProductDiscountField;
-        TextView tvQuantityField;
-        TextView tvSellingPriceField;
-        TextView tvTotalPriceField;
         AppCompatButton btnAddToCartField;
         AppCompatButton btnRemoveField;
+        TextView tvQuantityPriceDetailsField;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProductImageField = itemView.findViewById(R.id.iv_product_image_field);
             tvProductNameField = itemView.findViewById(R.id.tv_product_name_field);
             tvProductDiscountField = itemView.findViewById(R.id.tv_product_discount_field);
-            tvQuantityField = itemView.findViewById(R.id.tv_quantity_field);
-            tvSellingPriceField = itemView.findViewById(R.id.tv_selling_price_field);
-            tvTotalPriceField = itemView.findViewById(R.id.tv_total_price_field);
             btnAddToCartField = itemView.findViewById(R.id.btn_add_to_cart_field);
             btnRemoveField = itemView.findViewById(R.id.btn_remove_product_field);
+            tvQuantityPriceDetailsField = itemView.findViewById(R.id.tv_quantity_price_details_field);
 
             btnAddToCartField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();

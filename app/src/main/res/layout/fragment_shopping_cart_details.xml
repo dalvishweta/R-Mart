@@ -2,6 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -39,6 +40,7 @@
         android:layout_margin="10dp"
         android:layout_above="@id/btn_proceed_to_buy_field"
         android:layout_below="@id/header_layout_field"
+        tools:listitem="@layout/confirm_order_list_items"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <androidx.appcompat.widget.AppCompatButton

@@ -10,16 +10,16 @@ import android.widget.BaseAdapter;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.rmart.R;
-import com.rmart.utilits.pojos.APIUnitMeasureResponse;
 
 import java.util.ArrayList;
 
 public class CustomStringAdapter extends BaseAdapter {
-    ArrayList<String> units;
-    LayoutInflater inflter;
+    private ArrayList<String> units;
+    private LayoutInflater inflater;
+
     public CustomStringAdapter(ArrayList<String> units, Context context) {
         this.units = units;
-        inflter = (LayoutInflater.from(context));
+        inflater = (LayoutInflater.from(context));
     }
     @Override
     public int getCount() {
@@ -39,10 +39,9 @@ public class CustomStringAdapter extends BaseAdapter {
     @SuppressLint("ViewHolder")
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.unit_item_row, viewGroup, false);//set layout for displaying items
+        view = inflater.inflate(R.layout.unit_item_row, viewGroup, false);//set layout for displaying items
         view.findViewById(R.id.text);//get id for image view
         ((AppCompatTextView)view).setText(units.get(i));
-        // icon.setImageResource(flags[i]);//set image of the item’s
         return view;
     }
 }

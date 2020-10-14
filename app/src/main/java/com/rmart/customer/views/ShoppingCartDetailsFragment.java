@@ -109,7 +109,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
         productsListField.setHasFixedSize(false);
 
         DividerItemDecoration divider = new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL);
-        divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(requireActivity(), R.drawable.recycler_decoration_divider)));
+        divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(requireActivity(), R.drawable.recycler_decoration_divider_transparent)));
         productsListField.addItemDecoration(divider);
 
         tvShopNameField = view.findViewById(R.id.tv_shop_name_field);

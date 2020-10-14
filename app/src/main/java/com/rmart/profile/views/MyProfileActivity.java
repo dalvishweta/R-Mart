@@ -11,7 +11,6 @@ import com.rmart.R;
 import com.rmart.baseclass.views.BaseActivity;
 import com.rmart.mapview.MapsFragment;
 import com.rmart.profile.OnMyProfileClickedListener;
-import com.rmart.profile.model.MyAddress;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.viewmodels.AddressViewModel;
 import com.rmart.utilits.pojos.AddressResponse;
@@ -19,7 +18,6 @@ import com.rmart.utilits.pojos.AddressResponse;
 public class MyProfileActivity extends BaseActivity implements OnMyProfileClickedListener {
 
     private boolean isAddNewAddress = false;
-    private boolean isFromLogin = false;
     private EditAddressFragment editAddressFragment;
 
     @Override
@@ -36,7 +34,7 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            isFromLogin = extras.getBoolean("is_edit", false);
+            //isFromLogin = extras.getBoolean("is_edit", false);
             isAddNewAddress = extras.getBoolean("IsNewAddress", false);
         }
 
@@ -95,7 +93,7 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
 
     @Override
     public void gotoMapView() {
-        replaceFragment(MapsFragment.newInstance(true, ""), MapsFragment.class.getName(), false);
+        replaceFragment(MapsFragment.newInstance(true, false, 0.0, 0.0), MapsFragment.class.getName(), false);
     }
 
     @Override

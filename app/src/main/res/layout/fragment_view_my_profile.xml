@@ -154,6 +154,14 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="1"/>
                         </LinearLayout>
+                        <TextView
+                            style="@style/text_style_medium_normal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/delivery_in_days_text"
+                            android:textColor="@color/black" />
                         <LinearLayout
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
@@ -165,12 +173,10 @@
                                 android:hint="@string/delivery_days_before_time"
                                 style="@style/upload_product_item_field"
                                 android:background="@drawable/curve_left_bg"
-                                android:textSize="10sp"
                                 android:inputType="number"
                                 android:layout_width="0dp"
                                 android:layout_weight="1"/>
                             <androidx.appcompat.widget.AppCompatTextView
-                                android:textSize="10sp"
                                 android:inputType="number"
                                 android:id="@+id/delivery_days_after_time"
                                 android:hint="@string/delivery_days_after_time"
@@ -234,12 +240,12 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <fragment
-                android:id="@+id/map_view"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
+            <LinearLayout
+                android:id="@+id/map_layout_field"
                 android:layout_width="match_parent"
+                android:layout_margin="20dp"
                 android:layout_height="300dp"
-                android:layout_margin="20dp" />
+                android:orientation="vertical" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -38,7 +38,11 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/item_image"
         android:layout_height="120dp"
-        android:scaleType="centerInside"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@id/tv_product_discount_field"
+        android:scaleType="fitXY"
         android:layout_width="match_parent" />
     <TextView
         android:id="@+id/tv_product_discount_field"

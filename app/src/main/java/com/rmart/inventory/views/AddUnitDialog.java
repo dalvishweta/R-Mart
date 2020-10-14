@@ -32,6 +32,7 @@ import com.rmart.inventory.adapters.CustomStringAdapter;
 import com.rmart.inventory.models.APIUnitMeasures;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.APIStockListResponse;
@@ -113,6 +114,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        LoggerInfo.printLog("DialogFragment", "AddUnitDialog");
         return inflater.inflate(R.layout.fragment_add_unit, container, false);
     }
 

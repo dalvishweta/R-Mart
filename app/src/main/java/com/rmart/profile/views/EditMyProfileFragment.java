@@ -184,9 +184,9 @@ public class EditMyProfileFragment extends BaseMyProfileFragment implements View
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.update_location:
+           /* case R.id.update_location:
                 mListener.gotoMapView();
-                break;
+                break;*/
             case R.id.submit:
                 submitSelected();
                 break;

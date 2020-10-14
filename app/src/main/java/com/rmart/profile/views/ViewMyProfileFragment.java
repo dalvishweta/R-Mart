@@ -1,34 +1,38 @@
 package com.rmart.profile.views;
 
+import android.location.Location;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.rmart.BuildConfig;
 import com.rmart.R;
+import com.rmart.mapview.MapsFragment;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.AddressResponse;
 
+import java.util.List;
 import java.util.Objects;
 
 public class ViewMyProfileFragment extends BaseMyProfileFragment implements View.OnClickListener {
 
-    private AppCompatTextView tvEditProfile, tvEditAddress, addNewAddress;
     private AppCompatTextView tvFirstName, tvLastName, tvMobileNumber, tvEmail, tvGender, deliveryCharge,
             tvOpeningTIme, tvClosingTIme, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
     private AppCompatTextView tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress,tvCity, tvShopNO, tvDeliveryRadius, tvState, tvPINCode;
     RecyclerView recyclerView;
     AddressAdapter addressAdapter;
+    private MapsFragment mapsFragment;
     // MyProfileViewModel myProfileViewModel;
     public ViewMyProfileFragment() {
         // Required empty public constructor
@@ -67,13 +71,21 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
         tvMobileNumber = view.findViewById(R.id.mobile_number);
         tvEmail = view.findViewById(R.id.email);
         tvGender = view.findViewById(R.id.gender);
+
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        mapsFragment = MapsFragment.newInstance(false, false,0.0, 0.0);
+        fragmentTransaction.replace(R.id.map_layout_field, mapsFragment, MapsFragment.class.getName());
+        fragmentTransaction.commit();
+
         view.findViewById(R.id.edit_profile).setOnClickListener(this);
         // view.findViewById(R.id.submit).setOnClickListener(this);
-        if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
+        if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
             setRetailerView(view);
-        } else if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
+        } else if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
             setCustomerView(view);
         }
+
         updateUI(Objects.requireNonNull(MyProfile.getInstance()));
     }
 
@@ -117,45 +129,43 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
     }
 
     private void setRetailerAddressData() {
-        AddressResponse address = MyProfile.getInstance().getAddressResponses().get(0);
-        tvShopName.setText(address.getShopName());
-        tvPANNumber.setText(address.getPan_no());
-        tvGSTNumber.setText(address.getGstInNo());
-        tvStreetAddress.setText(address.getAddress());
-        tvShopNO.setText(address.getStore_number());
-        tvDeliveryRadius.setText(address.getDeliveryRadius());
-        tvCity.setText(address.getCity());
-        tvState.setText(address.getState());
-        tvPINCode.setText(address.getPinCode());
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            List<AddressResponse> addressResponseList = myProfile.getAddressResponses();
+            if (addressResponseList != null && !addressResponseList.isEmpty()) {
+                AddressResponse address = addressResponseList.get(0);
+                tvShopName.setText(address.getShopName());
+                tvPANNumber.setText(address.getPan_no());
+                tvGSTNumber.setText(address.getGstInNo());
+                tvStreetAddress.setText(address.getAddress());
+                tvShopNO.setText(address.getStore_number());
+                tvDeliveryRadius.setText(address.getDeliveryRadius());
+                tvCity.setText(address.getCity());
+                tvState.setText(address.getState());
+                tvPINCode.setText(address.getPinCode());
 
-        deliveryCharge.setText(address.getDeliveryCharges());
-        tvOpeningTIme.setText(address.getOpeningTime());
-        tvClosingTIme.setText(address.getClosingTime());
-        tvDeliveryDaysAfterTime.setText(address.getDeliveryDaysAfterTime());
-        tvDeliveryDaysBeforeTime.setText(address.getDeliveryDaysBeforeTime());
+                deliveryCharge.setText(address.getDeliveryCharges());
+                tvOpeningTIme.setText(address.getOpeningTime());
+                tvClosingTIme.setText(address.getClosingTime());
+                tvDeliveryDaysAfterTime.setText(address.getDeliveryDaysAfterTime());
+                tvDeliveryDaysBeforeTime.setText(address.getDeliveryDaysBeforeTime());
+
+                Location location = new Location("");
+                location.setLatitude(address.getLatitude());
+                location.setLongitude(address.getLongitude());
+                mapsFragment.setLocation(location);
+            }
+        }
     }
 
     private void updateUI(MyProfile myProfile) {
-        tvFirstName.setText(myProfile.getFirstName());
-        tvLastName.setText(myProfile.getLastName());
-        tvMobileNumber.setText(myProfile.getMobileNumber());
-        tvEmail.setText(myProfile.getEmail());
-        tvGender.setText(myProfile.getGender());
-        /*tvShopName.setText(myProfile.getShopName());
-        tvPANNumber.setText(myProfile.getPanNumber());
-        tvGSTNumber.setText(myProfile.getGstNumber());
-        ArrayList<MyLocation> locations = myProfile.getMyLocations();
-        if(MyProfile.getInstance().getRoleType().equals(MyProfile.RETAILER)) {
-            if(locations!= null && locations.size()>0) {
-                tvStreetAddress.setText(locations.get(0).getStreetAddress());
-                tvShopNO.setText(locations.get(0).getShopNo());
-                tvLandMark.setText(locations.get(0).getLandMark());
-                tvDistrict.setText(locations.get(0).getDistrict());
-                tvState.setText(locations.get(0).getState());
-            }
+        if (myProfile != null) {
+            tvFirstName.setText(myProfile.getFirstName());
+            tvLastName.setText(myProfile.getLastName());
+            tvMobileNumber.setText(myProfile.getMobileNumber());
+            tvEmail.setText(myProfile.getEmail());
+            tvGender.setText(myProfile.getGender());
         }
-        setMapView(false, "profile");
-        */
     }
 
     @Override

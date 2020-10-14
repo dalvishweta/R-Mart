@@ -110,34 +110,31 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
         } else {
 
 
-            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(this, new OnCompleteListener<Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        latitude = task.getResult().getLatitude();
-                        longitude = task.getResult().getLongitude();
+            fusedLocationProviderClient.getLastLocation().addOnCompleteListener(this, task -> {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    latitude = task.getResult().getLatitude();
+                    longitude = task.getResult().getLongitude();
+                } else {
+                   /* boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                    boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+                    if (isGPSEnabled) {
+
+                    } else if (isNetworkEnabled) {
+
+                    }*/
+                    if (ActivityCompat.checkSelfPermission(AuthenticationActivity.this,
+                            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(AuthenticationActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if (locationGPS != null) {
+                        currentLocation = locationGPS;
+                        latitude = locationGPS.getLatitude();
+                        longitude = locationGPS.getLongitude();
                     } else {
-                       /* boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-                        if (isGPSEnabled) {
-
-                        } else if (isNetworkEnabled) {
-
-                        }*/
-                        if (ActivityCompat.checkSelfPermission(AuthenticationActivity.this,
-                                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                                && ActivityCompat.checkSelfPermission(AuthenticationActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                            return;
-                        }
-                        Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                        if (locationGPS != null) {
-                            currentLocation = locationGPS;
-                            latitude = locationGPS.getLatitude();
-                            longitude = locationGPS.getLongitude();
-                        } else {
-                            MyLocation myLocation = new MyLocation(AuthenticationActivity.this);
-                            myLocation.getLocation(locationResult);
-                        }
+                        MyLocation myLocation = new MyLocation(AuthenticationActivity.this);
+                        myLocation.getLocation(locationResult);
                     }
                 }
             });
@@ -206,7 +203,6 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     public void validateOTP(String mobileNumber, boolean closePreviousScreen) {
         if(closePreviousScreen) {
             replaceFragment(OTPFragment.newInstance(mobileNumber, ""), OTPFragment.class.getName(), false);
-            // onBackPressed();
         } else {
             replaceFragment(OTPFragment.newInstance(mobileNumber, ""), OTPFragment.class.getName(), true);
         }
@@ -237,8 +233,6 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
         in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
         startActivity(in);
         finish();
-        /*FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);*/
     }
 
     @Override
@@ -253,6 +247,4 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     public void proceedToPayment(RSAKeyResponseDetails mobileNumber) {
         replaceFragment(PaymentFragment.newInstance(mobileNumber, ""), PaymentFragment.class.getName(), true);
     }
-
-
 }

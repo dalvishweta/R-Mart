@@ -11,23 +11,29 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/sub_title_1"
+        android:textSize="14sp"
         style="@style/product_unit_value" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/sub_title_2"
+        android:textSize="14sp"
         style="@style/product_unit_cost"
         android:layout_height="wrap_content" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/sub_title_3"
         style="@style/product_unit_value"
+        android:textSize="14sp"
         android:textColor="@color/discount"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/offer"
+        android:textSize="14sp"
         style="@style/product_unit_offer"/>
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/unit_status"
+        android:textSize="14sp"
         style="@style/product_unit_in_active"/>
 
     <androidx.appcompat.widget.AppCompatImageButton

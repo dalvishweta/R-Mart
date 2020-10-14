@@ -148,15 +148,12 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        mapsFragment = MapsFragment.newInstance(false, "");
-        mapsFragment.setCallBackListener(pObject -> {
-            if(pObject instanceof Location) {
-                Location selectedLocation = (Location) pObject;
-                latitude = selectedLocation.getLatitude();
-                longitude = selectedLocation.getLongitude();
-            }
-        });
-        fragmentTransaction.add(R.id.map_layout_field, mapsFragment, MapsFragment.class.getName());
+        if(myAddress != null) {
+            latitude = myAddress.getLatitude();
+            longitude = myAddress.getLongitude();
+        }
+        mapsFragment = MapsFragment.newInstance(false, true, latitude, longitude);
+        fragmentTransaction.replace(R.id.map_layout_field, mapsFragment, MapsFragment.class.getName());
         fragmentTransaction.commit();
 
         view.findViewById(R.id.add_address).setOnClickListener(this);
@@ -312,7 +309,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         } else {
             mRetailerView.setVisibility(View.GONE);
         }
-        setMapView(false, "profile");
+        //setMapView(false, "profile");
     }
 
     @Override

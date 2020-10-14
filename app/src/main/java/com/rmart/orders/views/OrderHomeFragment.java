@@ -5,6 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.rmart.R;
 import com.rmart.orders.adapters.OrdersHomeAdapter;
 import com.rmart.orders.viewmodel.MyOrdersViewModel;
@@ -15,13 +20,11 @@ import com.rmart.utilits.pojos.orders.OrderStateListResponse;
 import com.rmart.utilits.pojos.orders.StateOfOrders;
 import com.rmart.utilits.services.OrderService;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,13 +35,9 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private String mParam1;
-    private String mParam2;
-
     private ArrayList<StateOfOrders> orderStatus;
     private HashMap<String, Integer> mapOrderStatus = new HashMap<>();
     private RecyclerView recyclerView;
-    MyOrdersViewModel myOrdersViewModel;
     private AppCompatTextView openOrderCount;
 
     public OrderHomeFragment() {
@@ -53,15 +52,6 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -87,49 +77,50 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
             view.findViewById(R.id.accepted_orders).setOnClickListener(this);
             openOrderCount = view.findViewById(R.id.open_order_count);
             recyclerView = view.findViewById(R.id.other_order_names);
-            /*myOrdersViewModel.getOrderGroupList().observe(requireActivity(), orderGroups -> {
-                if(orderGroups != null) {
-
-                }
-            });*/
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     void getOrderStatusFromServer() {
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.getOrderHome(MyProfile.getInstance().getUserID()).enqueue(new Callback<OrderStateListResponse>() {
-            @Override
-            public void onResponse(Call<OrderStateListResponse> call, Response<OrderStateListResponse> response) {
-                if (response.isSuccessful()) {
-                    OrderStateListResponse data = response.body();
-                    assert data != null;
-                    if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        orderStatus = data.getOrderStates();
-                        for (int i = 0; i < orderStatus.size(); i++) {
-                            orderStatus.get(i).updateBackgroundColor();
-                            mapOrderStatus.put(orderStatus.get(i).getStatus(), i);
+        MyProfile myProfile = MyProfile.getInstance();
+        if(myProfile != null) {
+            String userId = myProfile.getUserID();
+            orderService.getOrderHome(userId).enqueue(new Callback<OrderStateListResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<OrderStateListResponse> call, @NotNull Response<OrderStateListResponse> response) {
+                    if (response.isSuccessful()) {
+                        OrderStateListResponse data = response.body();
+                        if (data != null) {
+                            if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                orderStatus = data.getOrderStates();
+                                for (int i = 0; i < orderStatus.size(); i++) {
+                                    orderStatus.get(i).updateBackgroundColor();
+                                    mapOrderStatus.put(orderStatus.get(i).getStatus(), i);
+                                }
+                                updateUI();
+                            } else {
+                                showDialog(data.getMsg());
+                            }
+                        } else {
+                            showDialog(getString(R.string.no_information_available));
                         }
-                        updateUI();
+
                     } else {
-                        showDialog(data.getMsg());
+                        showDialog(response.message());
                     }
-                } else {
-                    showDialog(response.message());
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
-            }
-            @Override
-            public void onFailure(Call<OrderStateListResponse> call, Throwable t) {
-                showDialog(t.getMessage());
-                progressDialog.dismiss();
-            }
-        });
+
+                @Override
+                public void onFailure(@NotNull Call<OrderStateListResponse> call, @NotNull Throwable t) {
+                    showDialog(t.getMessage());
+                    progressDialog.dismiss();
+                }
+            });
+        }
     }
 
     private void updateUI() {

@@ -4,8 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -18,8 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -31,14 +27,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.rmart.R;
-import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.profile.OnMyProfileClickedListener;
-import com.rmart.profile.viewmodels.AddressViewModel;
-import com.rmart.profile.views.EditAddressFragment;
 
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class MapsFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
@@ -55,40 +46,39 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     private boolean isEditable;
     private Location currentLocation;
     private String isFrom;
-    private CallBackInterface callBackListener;
     private OnMyProfileClickedListener profileClickedListener;
 
-    private AddressViewModel addressViewModel;
+    private boolean isMapClickable = false;
     // private MyProfile myProfile;
 
-    public static MapsFragment newInstance(boolean isEditable, String isFrom) {
+    public static MapsFragment newInstance(boolean isEditable, boolean isClickable, double latitude, double longitude) {
         MapsFragment fragment = new MapsFragment();
         Bundle args = new Bundle();
         args.putBoolean(ARG_PARAM1, isEditable);
-        args.putString(ARG_PARAM2, isFrom);
+        args.putBoolean(ARG_PARAM2, isClickable);
+        args.putDouble("Latitude", latitude);
+        args.putDouble("Longitude", longitude);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public void setCallBackListener(CallBackInterface callBackListener) {
-        this.callBackListener = callBackListener;
-    }
-
     public void setLocation(Location location) {
         currentLocation = location;
-        //updateMapLocation();
+        updateMapLocation();
     }
 
     private void updateMapLocation() {
-        googleMap.clear();
-        try {
-            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
-            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-            googleMap.addMarker(markerOptions);
-        } catch (Exception ex) {
+        if (googleMap != null) {
+            googleMap.clear();
+            try {
+                LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+                MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
+                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                googleMap.addMarker(markerOptions);
+            } catch (Exception ex) {
 
+            }
         }
     }
 
@@ -97,7 +87,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             isEditable = getArguments().getBoolean(ARG_PARAM1);
-            isFrom = getArguments().getString(ARG_PARAM2);
+            isMapClickable = getArguments().getBoolean(ARG_PARAM2);
+            double latitude = getArguments().getDouble("Latitude");
+            double longitude = getArguments().getDouble("Longitude");
+            currentLocation = new Location("");
+            currentLocation.setLongitude(longitude);
+            currentLocation.setLatitude(latitude);
         }
     }
 
@@ -112,7 +107,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        addressViewModel = new ViewModelProvider(Objects.requireNonNull(requireActivity())).get(AddressViewModel.class);
+        //AddressViewModel addressViewModel = new ViewModelProvider(Objects.requireNonNull(requireActivity())).get(AddressViewModel.class);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(requireActivity()));
         return inflater.inflate(R.layout.fragment_maps, container, false);
     }
@@ -120,32 +115,22 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(isEditable) {
+        /*if(isEditable) {
             view.findViewById(R.id.update_location).setVisibility(View.VISIBLE);
             view.findViewById(R.id.update_location).setOnClickListener(view1 -> updateLocationPoints());
         } else {
             view.findViewById(R.id.update_location).setVisibility(View.GONE);
-        }
+        }*/
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
         if (mapFragment != null) {
-            if (isFrom.equals(PROFILE) ) {
-                // myProfile = MyProfile.getInstance();
-
-                /*if(MyProfile.getInstance().getMyLocation()!= null && MyProfile.getInstance().getMyLocations().get(0).getMyLocation()!= null) {
-                    LocationPoints location = MyProfile.getInstance().getMyLocation().getMyLocation();
-                    currentLocation = new Location("");
-                    currentLocation.setLongitude(location.getLongitude());
-                    currentLocation.setLatitude(location.getLatitude());
+            if (isEditable) {
+                if (currentLocation == null) {
+                    fetchLocation();
                 } else {
-                    fetchLocation();
-                }*/
-            }
-            if(currentLocation == null) {
-                fetchLocation();
-            } else  {
-                if(currentLocation.getLatitude() == 0.0 && currentLocation.getLongitude() == 0.0) {
-                    fetchLocation();
+                    if (currentLocation.getLatitude() == 0.0 && currentLocation.getLongitude() == 0.0) {
+                        fetchLocation();
+                    }
                 }
             }
             mapFragment.getMapAsync(this);
@@ -237,17 +222,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
-        try {
-            if(callBackListener != null) {
-                callBackListener.callBackReceived(currentLocation);
-            }
-            Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-            Objects.requireNonNull(addressViewModel.getMyAddressMutableLiveData().getValue()).setLatitude(Double.toString(currentLocation.getLatitude()));
-            Objects.requireNonNull(addressViewModel.getMyAddressMutableLiveData().getValue()).setLongitude(Double.toString(currentLocation.getLongitude()));
-            List<Address> addresses = geocoder.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 2);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -272,7 +246,9 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
             }
             this.googleMap = map;
             googleMap.setMyLocationEnabled(true);
-            googleMap.setOnMapClickListener(this);
+            if (isMapClickable) {
+                googleMap.setOnMapClickListener(this);
+            }
 
             LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
             MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");

@@ -31,7 +31,7 @@ public class BaseMyProfileFragment extends BaseFragment {
     public void setMapView(boolean isEditable, String isFrom) {
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        MapsFragment mapsFragment = MapsFragment.newInstance(isEditable, isFrom);
+        MapsFragment mapsFragment = MapsFragment.newInstance(isEditable, false,0.0, 0.0);
         fragmentTransaction.add(R.id.map, mapsFragment, "MapsFragment");
         fragmentTransaction.commit();
     }

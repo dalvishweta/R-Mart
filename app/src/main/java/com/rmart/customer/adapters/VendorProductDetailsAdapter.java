@@ -133,7 +133,7 @@ public class VendorProductDetailsAdapter extends RecyclerView.Adapter<VendorProd
             productsTypesListField = itemView.findViewById(R.id.products_types_list_field);
             productsTypesListField.setHasFixedSize(false);
             productsTypesListField.setLayoutManager(new GridLayoutManager(context, 2));
-            productsTypesListField.addItemDecoration(new SpacesItemDecoration(20));
+            productsTypesListField.addItemDecoration(new SpacesItemDecoration(10));
 
             btnViewAllField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
