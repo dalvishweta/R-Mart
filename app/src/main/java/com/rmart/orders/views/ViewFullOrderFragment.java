@@ -59,6 +59,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     ArrayList<Object> reasonsList = new ArrayList<>();
     ArrayList<Object> deliveryBoyList = new ArrayList<>();
     private TextView tvStatusComments;
+    private String userID;
 
     public ViewFullOrderFragment() {
         // Required empty public constructor
@@ -85,13 +86,13 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     public void onResume() {
         super.onResume();
         requireActivity().setTitle("Order details");
-        getServerData();
+        getServerData(userID);
     }
 
-    private void getServerData() {
+    private void getServerData(String userID) {
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.getOrderProductList("0", MyProfile.getInstance().getUserID(), mOrderObject.getOrderID()).enqueue(new Callback<CustomerOrderProductResponse>() {
+        orderService.getOrderProductList("0", userID, mOrderObject.getOrderID()).enqueue(new Callback<CustomerOrderProductResponse>() {
             @Override
             public void onResponse(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Response<CustomerOrderProductResponse> response) {
                 if (response.isSuccessful()) {
@@ -130,6 +131,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        userID = MyProfile.getInstance().getUserID();
+
         recyclerView = view.findViewById(R.id.product_list);
         mCancelOrderBtn = view.findViewById(R.id.cancel_order);
         mCancelOrderBtn.setOnClickListener(this);
@@ -274,43 +277,52 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
     private void updateOrderStatus(String newStatus, String newStatusID, String reason) {
         if (newStatusID.equalsIgnoreCase(Utils.DELIVERED_ORDER_STATUS)) {
-            if (selectedDeliveryBoy != null && !TextUtils.isEmpty(selectedDeliveryBoy.getUserID())) {
+
                 if (Utils.isNetworkConnected(requireActivity())) {
                     progressDialog.show();
                     OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-                    orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newStatusID, reason, selectedDeliveryBoy.getUserID()).enqueue(new Callback<UpdatedOrderStatus>() {
-                        @Override
-                        public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
-                            if (response.isSuccessful()) {
-                                UpdatedOrderStatus data = response.body();
-                                if (data != null) {
-                                    if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                        String text = String.format(getString(R.string.status_update), newStatus);
-                                        showDialog(data.getStatus(), text, ((dialogInterface, i) -> requireActivity().onBackPressed()));
+                    String retailerID = "", deliveryBoy = "";
+                    if (MyProfile.getInstance().getRoleID().equalsIgnoreCase(Utils.RETAILER_ID)) {
+                        retailerID = MyProfile.getInstance().getUserID();
+                        deliveryBoy = selectedDeliveryBoy.getUserID();
+                    } else {
+                        retailerID = MyProfile.getInstance().getVendorInfo().getRoleID();
+                        deliveryBoy = MyProfile.getInstance().getUserID();
+                    }
+                    if (deliveryBoy != null && deliveryBoy.length()>0 ) {
+                        orderService.updateOrderStatus(mOrderObject.getOrderID(), retailerID, newStatusID, reason, deliveryBoy).enqueue(new Callback<UpdatedOrderStatus>() {
+                            @Override
+                            public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
+                                if (response.isSuccessful()) {
+                                    UpdatedOrderStatus data = response.body();
+                                    if (data != null) {
+                                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                            String text = String.format(getString(R.string.status_update), newStatus);
+                                            showDialog(data.getStatus(), text, ((dialogInterface, i) -> requireActivity().onBackPressed()));
+                                        } else {
+                                            showDialog(data.getMsg());
+                                        }
                                     } else {
-                                        showDialog(data.getMsg());
+                                        showDialog(getString(R.string.no_information_available));
                                     }
                                 } else {
-                                    showDialog(getString(R.string.no_information_available));
+                                    showDialog(response.message());
                                 }
-                            } else {
-                                showDialog(response.message());
+                                progressDialog.dismiss();
                             }
-                            progressDialog.dismiss();
-                        }
 
-                        @Override
-                        public void onFailure(@NotNull Call<UpdatedOrderStatus> call, @NotNull Throwable t) {
-                            progressDialog.dismiss();
-                            showDialog(t.getMessage());
-                        }
-                    });
+                            @Override
+                            public void onFailure(@NotNull Call<UpdatedOrderStatus> call, @NotNull Throwable t) {
+                                progressDialog.dismiss();
+                                showDialog(t.getMessage());
+                            }
+                        });
+                    } else {
+                        showDialog(getString(R.string.error_select_delivery_boy));
+                    }
                 } else {
                     showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
                 }
-            } else {
-                showDialog("Please select the delivery boy.");
-            }
         } else {
             if (Utils.isNetworkConnected(requireActivity())) {
                 progressDialog.show();
@@ -404,31 +416,37 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         mCancelOrderBtn.setBackgroundResource(R.drawable.btn_bg_canceled);
         mCancelOrderBtn.setText(R.string.cancel);
         deliveryBoyInfo.setVisibility(View.VISIBLE);
-
-        progressDialog.show();
-        OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.getDeliveryBoyList(MyProfile.getInstance().getMobileNumber(), MyProfile.getInstance().getUserID()).enqueue(new Callback<DeliveryBoyList>() {
-            @Override
-            public void onResponse(@NotNull Call<DeliveryBoyList> call, @NotNull Response<DeliveryBoyList> response) {
-                if (response.isSuccessful()) {
-                    DeliveryBoyList data = response.body();
-                    deliveryBoyList.clear();
-                    ArrayList<ProfileResponse> _deliveryBoyList = data.getDeliveryBoys();
-                    if (_deliveryBoyList.size() > 0) {
-                        deliveryBoyList.addAll(_deliveryBoyList);
-                        deliveryBoyAdapter = new CustomSpinnerAdapter(requireActivity(), deliveryBoyList);
-                        deliveryBoySpinner.setAdapter(deliveryBoyAdapter);
+        if (MyProfile.getInstance().getRoleID().equals(Utils.DELIVERY_ID)) {
+            deliveryBoyNumber.setVisibility(View.VISIBLE);
+            deliveryBoySpinner.setVisibility(View.GONE);
+            deliveryBoyNumber.setText(MyProfile.getInstance().getMobileNumber());
+            deliveryBoyName.setText(MyProfile.getInstance().getFirstName()+" "+MyProfile.getInstance().getLastName());
+            deliveryBoyName.setVisibility(View.VISIBLE);
+        } else {
+            progressDialog.show();
+            OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
+            orderService.getDeliveryBoyList(MyProfile.getInstance().getMobileNumber(), MyProfile.getInstance().getUserID()).enqueue(new Callback<DeliveryBoyList>() {
+                @Override
+                public void onResponse(@NotNull Call<DeliveryBoyList> call, @NotNull Response<DeliveryBoyList> response) {
+                    if (response.isSuccessful()) {
+                        DeliveryBoyList data = response.body();
+                        deliveryBoyList.clear();
+                        ArrayList<ProfileResponse> _deliveryBoyList = data.getDeliveryBoys();
+                        if (_deliveryBoyList.size() > 0) {
+                            deliveryBoyList.addAll(_deliveryBoyList);
+                            deliveryBoyAdapter = new CustomSpinnerAdapter(requireActivity(), deliveryBoyList);
+                            deliveryBoySpinner.setAdapter(deliveryBoyAdapter);
+                        }
                     }
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<DeliveryBoyList> call, @NotNull Throwable t) {
-                progressDialog.dismiss();
-            }
-        });
-
+                @Override
+                public void onFailure(@NotNull Call<DeliveryBoyList> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                }
+            });
+        }
     }
     void isDeliveredOrder() {
         mCancelOrderBtn.setVisibility(View.GONE);

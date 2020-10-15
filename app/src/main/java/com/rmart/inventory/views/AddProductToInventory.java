@@ -351,13 +351,15 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         int id = view.getId();
         switch (id) {
             case R.id.add_unit:
-                mListener.addUnit(new UnitObject(), new APIUnitMeasures(unitMeasurements), this, INT_ADD_UNIT);
+                UnitObject newObject = new UnitObject();
+                // newObject.setDefaultValues();
+                mListener.addUnit(newObject, new APIUnitMeasures(unitMeasurements), this, INT_ADD_UNIT);
                 break;
             case R.id.save:
                 saveSelected();
                 break;
             case R.id.expiry:
-                new CustomDatePicker((AppCompatTextView) view, getActivity(), Utils.DD_MM_YYYY);
+                new CustomDatePicker((AppCompatTextView) view, getActivity(), Utils.YYYY_MM_DD);
                 break;
             case R.id.iv_product_image_one_field:
                 selectedImagePosition = 0;
@@ -395,7 +397,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         long previousTime = Calendar.getInstance().getTimeInMillis();
         long presentTime = -1;
         try{
-            SimpleDateFormat sdf = new SimpleDateFormat(Utils.YYYY_MM_DD); // here set the pattern as you date in string was containing like date/month/year
+            SimpleDateFormat sdf = new SimpleDateFormat(Utils.  YYYY_MM_DD); // here set the pattern as you date in string was containing like date/month/year
             Date d = sdf.parse(expiry.getText().toString());
             Calendar temp = Calendar.getInstance();
             temp.setTime(d);

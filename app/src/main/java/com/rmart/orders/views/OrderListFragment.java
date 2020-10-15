@@ -37,6 +37,7 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
     private String startIndex = "0";
     private ArrayList<Order> orders = new ArrayList<>();
     private OrdersByStatus data;
+    private String mobileNumber;
 
     public OrderListFragment() {
         // Required empty public constructor
@@ -73,13 +74,13 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
         super.onResume();
         // Objects.requireNonNull(getActivity()).setTitle(mSelectedOrderGroup.getOrderType());
         startIndex = "0";
-        getOrdersOfStatesFromServer();
+        getOrdersOfStatesFromServer(mobileNumber, stateOfOrders.getStatus());
     }
 
-    private void getOrdersOfStatesFromServer() {
+    private void getOrdersOfStatesFromServer(String mobileNumber, String status) {
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.getStateOfOrder(startIndex, MyProfile.getInstance().getMobileNumber(), stateOfOrders.getStatus()).enqueue(new Callback<OrdersByStatus>() {
+        orderService.getStateOfOrder(startIndex, mobileNumber, status).enqueue(new Callback<OrdersByStatus>() {
             @Override
             public void onResponse(Call<OrdersByStatus> call, Response<OrdersByStatus> response) {
                 if(response.isSuccessful()) {
@@ -123,6 +124,11 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
         super.onViewCreated(view, savedInstanceState);
         tvTotalOrder = view.findViewById(R.id.total_order);
         orderList = view.findViewById(R.id.order_list);
+        if (MyProfile.getInstance().getRoleID().equals(Utils.DELIVERY_ID)) {
+            mobileNumber = "7416226233";// MyProfile.getInstance().getMobileNumber();
+        } else {
+            mobileNumber = MyProfile.getInstance().getMobileNumber();
+        }
     }
 
     @Override

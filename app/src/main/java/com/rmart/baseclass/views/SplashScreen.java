@@ -51,7 +51,7 @@ public class SplashScreen extends BaseActivity {
             } else {
                 getLoginDetails((LoginDetailsModel) lObject);
             }
-        } else if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.RETAILER)) {
+        } else if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.RETAILER) || BuildConfig.FLAVOR.equalsIgnoreCase(Utils.DELIVERY)) {
             /*Object lObject = RokadMartCache.getData(Constants.CACHE_RETAILER_DETAILS, this);
             if (lObject == null) {
                 setDelayHandler();
@@ -59,16 +59,17 @@ public class SplashScreen extends BaseActivity {
                 getLoginDetails((ProfileResponse) lObject);
             }*/
             setDelayHandler();
-        } else if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.DELIVERY)) {
+        } /*else if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.DELIVERY)) {
             Object lObject = RokadMartCache.getData(Constants.CACHE_DELIVERY_DETAILS, this);
             if (lObject == null) {
                 setDelayHandler();
             } else {
                 getLoginDetails((LoginDetailsModel) lObject);
             }
-        } else {
+        }*/ else {
             setDelayHandler();
         }
+
     }
 
     private void getLoginDetails(LoginDetailsModel loginDetails) {

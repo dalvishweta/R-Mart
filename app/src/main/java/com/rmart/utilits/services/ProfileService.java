@@ -36,7 +36,9 @@ public interface ProfileService {
 
     @FormUrlEncoded
     @POST(BuildConfig.UPDATE_ADDRESS)
-    Call<AddressListResponse> updateAddress(@Field("shop_name") String shopName,
+    Call<AddressListResponse> updateAddress(
+            @Field("shop_act") String shopACT,
+            @Field("shop_name") String shopName,
                                             @Field("pan_no") String panNO,
                                             @Field("gstin_no") String gstIN,
                                             @Field("store_number") String storeNumber,

@@ -80,6 +80,15 @@
                     android:inputType="text" />
 
                 <androidx.appcompat.widget.AppCompatEditText
+                    android:hint="@string/enter_shop_act_number"
+                    android:id="@+id/shop_act"
+                    android:drawableStart="@drawable/user"
+                    android:inputType="number"
+                    style="@style/my_profile_tv"
+                    android:maxLength="12"
+                    android:textAllCaps="true" />
+
+                <androidx.appcompat.widget.AppCompatEditText
                     android:hint="@string/enter_your_gst_number"
                     android:id="@+id/gst_number"
                     android:drawableStart="@drawable/user"

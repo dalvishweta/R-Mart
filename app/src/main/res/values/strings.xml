@@ -159,7 +159,7 @@
     <string name="shop_name">%1$s</string>
     <string name="update_location">Update location</string>
     <string name="required_password">Required password.</string>
-    <string name="error_role_login">You are trying to login with Retailer Application. Please check your credentials.</string>
+    <string name="error_role_login">You are trying to login with Retailer Application. \nPlease check your credentials.</string>
     <string name="error_otp">Please enter valid OTP</string>
     <string name="error_internet">No internet Connection</string>
     <string name="error_internet_text">Please turn on internet connection to continue</string>
@@ -305,4 +305,8 @@
     <string name="error_discount">Discount is required value from 0% to 99%</string>
     <string name="out_of_stock_error">Stock is not available</string>
     <string name="open_map">Open Map</string>
+    <string name="error_select_delivery_boy">Please select the delivery boy.</string>
+    <string name="enter_shop_act_number">Ente shop act number</string>
+    <string name="act_number_required">Shop act number required.</string>
+    <string name="valid_act_number_required">Please enter valid 12 digit shop act number</string>
 </resources>

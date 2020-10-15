@@ -13,6 +13,7 @@ import com.rmart.inventory.models.UnitObject;
 import com.rmart.inventory.viewmodel.InventoryViewModel;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.pojos.APIStockListResponse;
+import com.rmart.utilits.pojos.APIStockResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.services.APIService;
 
@@ -131,6 +132,14 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
             public void onResponse(@NotNull Call<APIStockListResponse> call, @NotNull Response<APIStockListResponse> response) {
                 if(response.isSuccessful()) {
                     apiStockListResponse = response.body();
+                    assert apiStockListResponse != null;
+                    for (APIStockResponse apiStockResponse: apiStockListResponse.getArrayList()) {
+                        if(apiStockResponse.getStockID().equalsIgnoreCase("5")) {
+                            apiStockListResponse.getArrayList().remove(apiStockResponse);
+                            apiStockListResponse.getArrayList().add(0, apiStockResponse);
+                            break;
+                        }
+                    }
                 }
             }
 

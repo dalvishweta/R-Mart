@@ -106,6 +106,12 @@
                             style="@style/my_profile_tv"
                             android:inputType="text"/>
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:hint="@string/enter_shop_act_number"
+                            android:id="@+id/shop_act"
+                            android:drawableStart="@drawable/user"
+                            style="@style/my_profile_tv"
+                            android:inputType="text"/>
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/enter_your_pan_number"
                             android:id="@+id/pan_number"
                             android:drawableStart="@drawable/user"

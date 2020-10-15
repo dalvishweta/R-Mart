@@ -14,17 +14,30 @@ import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.orders.Order;
 import com.rmart.utilits.pojos.orders.StateOfOrders;
 
+import java.util.Objects;
+
 
 public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOrdersInteractionListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // myOrdersViewModel = new ViewModelProvider(this).get(MyOrdersViewModel.class);
         try {
             if (MyProfile.getInstance().getRoleID().equals(Utils.DELIVERY_ID)) {
+
+
+
                 StateOfOrders stateOfOrders =  new StateOfOrders();
                 stateOfOrders.setStatus(Utils.SHIPPED_ORDER_STATUS);
+                stateOfOrders.setStatusName("Shipped Orders");
                 addFragment(OrderListFragment.newInstance(stateOfOrders), "OrderListFragment", false);
+                // hideHamburgerIcon();
+
+                if (toolbar != null) {
+                    Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+                }
+                actionBarDrawerToggle.syncState();
+                setTitle(getResources().getString(R.string.app_name));
+
             } else if (MyProfile.getInstance().getRoleID().equals(Utils.RETAILER_ID)) {
                 Bundle extras = getIntent().getExtras();
                 if (extras != null) {

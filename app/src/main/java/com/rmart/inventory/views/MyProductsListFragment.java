@@ -103,8 +103,8 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         popup = new PopupMenu(requireActivity(), view.findViewById(R.id.sort));
         popup.getMenu().add(Menu.NONE, 3, 3, "Out Of Stock");
         popup.getMenu().add(Menu.NONE, 5, 5, "Available");
-        popup.getMenu().add(Menu.NONE, 6, 5, "Unavailable");
-        popup.getMenu().add(Menu.NONE, 7, 7, "All Products");
+        /*popup.getMenu().add(Menu.NONE, 6, 5, "Unavailable");*/
+        popup.getMenu().add(Menu.NONE, 7, 7, "Category");
         popup.setOnMenuItemClickListener(item -> {
             int i = item.getItemId();
             switch (i) {

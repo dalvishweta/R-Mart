@@ -10,6 +10,7 @@ public class LoginResponse extends BaseResponse {
     @Expose
     ProfileResponse loginData;
 
+
     @SerializedName("ccavenue_data")
     @Expose
     RSAKeyResponseDetails paymentData;
@@ -29,4 +30,12 @@ public class LoginResponse extends BaseResponse {
     public void setPaymentData(RSAKeyResponseDetails paymentData) {
         this.paymentData = paymentData;
     }
+
+/*    public ProfileResponse getVendorData() {
+        return vendorData;
+    }
+
+    public void setVendorData(ProfileResponse vendorData) {
+        this.vendorData = vendorData;
+    }*/
 }

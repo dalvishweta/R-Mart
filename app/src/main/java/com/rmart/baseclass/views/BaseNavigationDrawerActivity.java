@@ -45,9 +45,9 @@ import org.jetbrains.annotations.NotNull;
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
+    protected ActionBarDrawerToggle actionBarDrawerToggle;
     private NavigationView navigationView;
-    private Toolbar toolbar;
+    protected Toolbar toolbar;
     private CircularNetworkImageView ivProfileImageField;
     private AppCompatTextView nameField;
     private AppCompatTextView mobileField;
@@ -352,16 +352,20 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
     @Override
     public void hideHamburgerIcon() {
-        /*if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);   //hide back button
-        }*/
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+        actionBarDrawerToggle.syncState();
+        setTitle(getResources().getString(R.string.app_name));
     }
 
     @Override
     public void showHamburgerIcon() {
-        /*if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);   //show back button
-        }*/
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        actionBarDrawerToggle.syncState();
+        setTitle(getResources().getString(R.string.app_name));
     }
 
     @Override

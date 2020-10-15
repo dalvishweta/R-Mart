@@ -283,4 +283,10 @@ public class UnitObject implements Serializable {
     public void setUnitID(String unitID) {
         this.unitID = unitID;
     }
+
+    public void setDefaultValues() {
+        setDiscount("0");
+        setStockID("5");
+        setStockName("Available");
+    }
 }

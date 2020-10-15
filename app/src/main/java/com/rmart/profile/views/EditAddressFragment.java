@@ -62,7 +62,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     private static final String AADHAR_BACK_IMAGE = "aadhar_back_image";
     private static final String PANCARD_IMAGE = "pancard_image";
     private static final String SHOP_IMAGE = "shop_image";
-    private AppCompatEditText tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress, tvCity, tvShopNO, tvDeliveryRadius, tvPinCode, tvState;
+    private AppCompatEditText tvShopName, tvPANNumber, tvGSTNumber, tvShopAct, tvStreetAddress, tvCity, tvShopNO, tvDeliveryRadius, tvPinCode, tvState;
     private LinearLayout mRetailerView;
     private AddressResponse myAddress;
     private AppCompatEditText tvAadharNoField, etvDeliveryCharges, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
@@ -123,6 +123,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         tvShopName = view.findViewById(R.id.shop_name);
         tvPANNumber = view.findViewById(R.id.pan_number);
         tvGSTNumber = view.findViewById(R.id.gst_number);
+        tvShopAct = view.findViewById(R.id.shop_act);
         tvStreetAddress = view.findViewById(R.id.street_address);
         tvShopNO = view.findViewById(R.id.shop_no);
         tvDeliveryRadius = view.findViewById(R.id.delivery_radius);
@@ -181,6 +182,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             tvShopName.setText(myAddress.getShopName());
             tvPANNumber.setText(myAddress.getPan_no());
             tvGSTNumber.setText(myAddress.getGstInNo());
+            tvShopAct.setText(myAddress.getShopACT());
             tvStreetAddress.setText(myAddress.getAddress());
             tvShopNO.setText(myAddress.getStore_number());
             tvState.setText(myAddress.getState());
@@ -401,6 +403,15 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 return;
             }
 
+            String actNumber = Objects.requireNonNull(tvShopAct.getText()).toString().trim();
+            if (TextUtils.isEmpty(actNumber)) {
+                showDialog(getString(R.string.act_number_required));
+                return;
+            }
+            if (actNumber.length() != 12) {
+                showDialog(getString(R.string.valid_act_number_required));
+                return;
+            }
             if (TextUtils.isEmpty(shopImageUrl)) {
                 showDialog(getString(R.string.shop_image_required));
                 return;
@@ -409,13 +420,6 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             String shopNO = Objects.requireNonNull(tvShopNO.getText()).toString().trim();
             if (TextUtils.isEmpty(shopNO)) {
                 showDialog(getString(R.string.shop_no_required));
-                return;
-            }
-
-
-            String gstNumber = Objects.requireNonNull(tvGSTNumber.getText()).toString().trim();
-            if (TextUtils.isEmpty(gstNumber)) {
-                showDialog(getString(R.string.gst_number_required));
                 return;
             }
 
@@ -541,7 +545,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         } else {
             getAddressData();
             ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
-            profileService.updateAddress(myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
+            profileService.updateAddress( myAddress.getShopACT(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                     myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                     myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
                     myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), aadharNo, myAddress.getDeliveryCharges(),
@@ -595,6 +599,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         myAddress.setShopName(Objects.requireNonNull(tvShopName.getText()).toString());
         myAddress.setPan_no(Objects.requireNonNull(tvPANNumber.getText()).toString());
         myAddress.setGstInNo(Objects.requireNonNull(tvGSTNumber.getText()).toString());
+        myAddress.setShopACT(Objects.requireNonNull(tvShopAct.getText()).toString());
         myAddress.setStore_number(Objects.requireNonNull(tvShopNO.getText()).toString());
         myAddress.setAddress(Objects.requireNonNull(tvStreetAddress.getText()).toString());
         myAddress.setCity(Objects.requireNonNull(tvCity.getText()).toString());

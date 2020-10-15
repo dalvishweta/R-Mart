@@ -79,6 +79,9 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
         etPassword = view.findViewById(R.id.password);
         view.findViewById(R.id.login).setOnClickListener(this);
         view.findViewById(R.id.register).setOnClickListener(this);
+        if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.DELIVERY_ID)) {
+            view.findViewById(R.id.register).setVisibility(View.INVISIBLE);
+        }
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         /*FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(requireActivity(), instanceIdResult -> {
@@ -149,6 +152,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                                     break;
                                                 case Utils.DELIVERY_ID:
                                                     RokadMartCache.putData(Constants.CACHE_DELIVERY_DETAILS, requireActivity(), loginDetailsModel);
+                                                    mListener.goToHomeActivity();
                                                     break;
                                             }
                                         }

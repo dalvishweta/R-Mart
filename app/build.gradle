@@ -117,19 +117,17 @@ android {
             applicationIdSuffix ".retailer"
             /*versionNameSuffix "-retailer"*/
             buildConfigField("String", "ROLE_ID", '"4"')
-            buildConfigField("String", "LOGIN_USERNAME", '"9703807080"')
+            buildConfigField("String", "LOGIN_USERNAME", '"7416226233"')
             buildConfigField("String", "LOGIN_PASSWORD", '"12345"')
         }
         delivery {
             dimension "rokard_mart"
-            applicationIdSuffix ".delivery"
-            versionNameSuffix "-delivery"
+            applicationIdSuffix ".retailer"
             buildConfigField("String", "ROLE_ID", '"6"')
-            buildConfigField("String", "LOGIN_USERNAME", '"8008538387"')
+            buildConfigField("String", "LOGIN_USERNAME", '"7441515151"')
             buildConfigField("String", "LOGIN_PASSWORD", '"1234"')
         }
     }
-
 }
 
 dependencies {
@@ -170,8 +168,6 @@ dependencies {
 
     //volley
     implementation 'com.android.volley:volley:1.1.1'
-    implementation 'androidx.navigation:navigation-fragment:2.3.0'
-    implementation 'androidx.navigation:navigation-ui:2.3.0'
     implementation 'org.apache.commons:commons-lang3:3.11'
 
     //image cropping

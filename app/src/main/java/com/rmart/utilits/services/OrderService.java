@@ -38,7 +38,7 @@ public interface OrderService {
     @POST(BuildConfig.VENDOR_UPDATE_ORDER)
     @FormUrlEncoded
     Call<UpdatedOrderStatus> updateOrderStatus(@Field("order_id")String orderID,
-                                               @Field("user_id") String id,
+                                               @Field("user_id") String user_id,
                                                @Field("status") String newOrderStatus,
                                                @Field("status_comment") String statusComment,
                                                @Field("order_assign_to") String orderAssignTO);

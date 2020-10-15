@@ -133,7 +133,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         actualPrice.setText("0");
         finalPrice.setText("0");*/
 
-        discount.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
+        discount.setFilters(new InputFilter[]{new InputFilterMinMax(1, 99)});
         actualPrice.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -320,22 +320,25 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                     unitObject.setStockID(apiStockResponse.getStockID());
                 }
             }
+            String _discount = Objects.requireNonNull(discount.getText()).toString();
+            if (_discount.length() <= 0) {
+                _discount = "0";
+                // Toast.makeText(getContext(), R.string.error_discount, Toast.LENGTH_SHORT).show();
+            }
             String _actualPrice = Objects.requireNonNull(actualPrice.getText()).toString();
             String _quantity = Objects.requireNonNull(quantity.getText()).toString();
-            String _discount = Objects.requireNonNull(discount.getText()).toString();
             int valueOfUnitValue = Utils.getIntegerValueFromString(valueOfUnit.getText().toString().trim());
              if ( valueOfUnitValue<=0 ) {
                 Toast.makeText(getContext(), R.string.error_unit_value, Toast.LENGTH_SHORT).show();
              } else if (_actualPrice.length() <= 0) {
                 Toast.makeText(getContext(), R.string.error_unit_amount, Toast.LENGTH_SHORT).show();
-             } else if (_discount.length() <= 0) {
-                 Toast.makeText(getContext(), R.string.error_discount, Toast.LENGTH_SHORT).show();
-             }else if (_quantity.length() <= 0) {
+             } else if (_quantity.length() <= 0) {
                 Toast.makeText(getContext(), R.string.error_valid_quantity, Toast.LENGTH_SHORT).show();
              }  else {
                 unitObject.setQuantity(_quantity);
                  unitObject.setActualCost(_actualPrice);
                  unitObject.setDiscount(_discount);
+                 calculateFinalCost(_actualPrice, _discount);
                 Intent i = new Intent().putExtra(UNIT_VALUE, unitObject);
                 Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
                 dismiss();

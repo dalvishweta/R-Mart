@@ -42,7 +42,6 @@ public class CustomDatePicker implements DatePickerDialog.OnDateSetListener {
         new DatePickerDialog(ctx, this, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                 myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
-
     @Override
     public void onDateSet(DatePicker datePicker,int year, int monthOfYear, int dayOfMonth) {
         // In which you need put here

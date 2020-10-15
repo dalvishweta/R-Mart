@@ -3,5 +3,5 @@
 <!--    https://www.flaticon.com/free-icon/edit_860814?term=edit&page=1&position=82-->
     <string name="app_name">Delivery Rokad Mart </string>
     <string name="role_id">6</string>
-    <string name="error_role_login">You are trying to login in Delivery Application. Please check your credentials.</string>
+    <string name="error_role_login">You are trying to login in Delivery Application. \nPlease check your credentials.</string>
 </resources>

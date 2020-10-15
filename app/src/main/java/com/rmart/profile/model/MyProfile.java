@@ -24,6 +24,8 @@ public class MyProfile {
     private String dob;
     private String email;
     private String mobileNumber;
+    private String vendorMobileNumber;
+    private ProfileResponse vendorInfo = new ProfileResponse();
     private String isAuthenticated;
     private String profileImage;
     private String roleID;
@@ -50,11 +52,24 @@ public class MyProfile {
         myProfile.profileImage = profileResponse.getProfileImage();
         myProfile.roleID = profileResponse.getRoleID();
         myProfile.primaryAddressId = profileResponse.getPrimaryAddressId();
+        ProfileResponse vendor = profileResponse.getVendorData();
+        if (null != vendor) {
+            myProfile.vendorInfo = vendor;
+        }
         if(profileResponse.getAddressResponses().size() > 0) {
             myProfile.setAddressResponses(profileResponse.getAddressResponses());
         }
 
     }
+
+    public String getVendorMobileNumber() {
+        return vendorMobileNumber;
+    }
+
+    public void setVendorMobileNumber(String vendorMobileNumber) {
+        this.vendorMobileNumber = vendorMobileNumber;
+    }
+
     public String getUserID() {
         return userID;
     }
@@ -168,6 +183,14 @@ public class MyProfile {
 
     public void setUserProfileImage(Bitmap userImageBitmap) {
         userProfileImage.setValue(userImageBitmap);
+    }
+
+    public ProfileResponse getVendorInfo() {
+        return vendorInfo;
+    }
+
+    public void setVendorInfo(ProfileResponse vendorInfo) {
+        this.vendorInfo = vendorInfo;
     }
 
     public MutableLiveData<Integer> getCartCount() {

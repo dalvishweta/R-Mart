@@ -28,6 +28,10 @@ public class AddressResponse extends BaseResponse implements Serializable {
     @Expose
     private String gstInNo;
 
+    @SerializedName("shop_act")
+    @Expose
+    private String shopACT;
+
     @SerializedName("latitude")
     @Expose
     private double latitude;
@@ -415,5 +419,13 @@ public class AddressResponse extends BaseResponse implements Serializable {
         }
         AddressResponse rhs = ((AddressResponse) other);
         return new EqualsBuilder().append(id, rhs.id).isEquals();
+    }
+
+    public String getShopACT() {
+        return shopACT;
+    }
+
+    public void setShopACT(String shopACT) {
+        this.shopACT = shopACT;
     }
 }

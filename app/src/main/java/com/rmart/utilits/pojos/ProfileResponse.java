@@ -62,6 +62,18 @@ public class ProfileResponse implements Serializable {
     @Expose
     Integer totalCartCount;
 
+    @SerializedName("vendor_data")
+    @Expose
+    ProfileResponse vendorData;
+
+    public ProfileResponse getVendorData() {
+        return vendorData;
+    }
+
+    public void setVendorData(ProfileResponse vendorData) {
+        this.vendorData = vendorData;
+    }
+
     public String getUserID() {
         return userID;
     }
