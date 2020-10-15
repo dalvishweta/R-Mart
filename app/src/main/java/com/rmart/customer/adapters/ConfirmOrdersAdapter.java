@@ -37,10 +37,10 @@ import java.util.Locale;
  */
 public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdapter.ViewHolder> {
 
-    private LayoutInflater layoutInflater;
-    private List<ProductInCartDetailsModel> listData;
-    private CallBackInterface callBackListener;
-    private ImageLoader imageLoader;
+    private final LayoutInflater layoutInflater;
+    private final List<ProductInCartDetailsModel> listData;
+    private final CallBackInterface callBackListener;
+    private final ImageLoader imageLoader;
 
     public ConfirmOrdersAdapter(Context context, List<ProductInCartDetailsModel> listData, CallBackInterface callBackListener) {
         layoutInflater = LayoutInflater.from(context);

@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.rmart.inventory.views.MyCategoryListFragment">
+
     <include layout="@layout/inventory_list_header"/>
+
     <androidx.appcompat.widget.AppCompatButton
         android:layout_marginTop="16dp"
         android:id="@+id/request_new_product"
@@ -16,6 +18,7 @@
         android:layout_alignParentBottom="true"
         android:layout_height="@dimen/field_height"
         android:layout_width="match_parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/product_list"
         android:layout_above="@+id/request_new_product"

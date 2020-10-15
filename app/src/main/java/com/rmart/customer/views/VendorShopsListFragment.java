@@ -24,7 +24,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -38,8 +37,8 @@ import com.rmart.customer.models.AddShopToWishListResponse;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsResponse;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
-import com.rmart.mapview.MapsFragment;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.CommonUtils;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -120,9 +119,16 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_field);
         swipeRefreshLayout.setRefreshing(false);
 
+        ivSearchField.setOnClickListener(v -> {
+            etProductsSearchField.setText("");
+            searchShopName = "";
+            CommonUtils.closeVirtualKeyboard(requireActivity(), ivSearchField);
+            resetShopsList();
+            getShopsList();
+        });
+
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            currentPage = 0;
-            shopsList.clear();
+            resetShopsList();
             getShopsList();
         });
 
@@ -140,9 +146,11 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().trim().length() != 0) {
+                    ivSearchField.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
                     performSearch();
+                } else {
+                    ivSearchField.setImageResource(R.drawable.search);
                 }
-                ivSearchField.setImageResource(R.drawable.search);
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity());
@@ -268,7 +276,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         }
     }
 
-    private CallBackInterface callBackListener = pObject -> {
+    private final CallBackInterface callBackListener = pObject -> {
         if (pObject instanceof CustomerProductsShopDetailsModel) {
             onCustomerHomeInteractionListener.gotoVendorProductDetails((CustomerProductsShopDetailsModel) pObject);
         } else if (pObject instanceof ContentModel) {
@@ -397,16 +405,15 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     }
 
     private void performSearch() {
-        String newText = Objects.requireNonNull(etProductsSearchField.getText()).toString().trim();
-        if (newText.length() < 1) {
-            vendorShopsListAdapter.updateItems(new ArrayList<>());
+        searchShopName = Objects.requireNonNull(etProductsSearchField.getText()).toString().trim();
+        if (searchShopName.length() == 0) {
+            vendorShopsListAdapter.updateItems(shopsList);
             vendorShopsListAdapter.notifyDataSetChanged();
-        } else if (newText.length() == 3) {
-            searchShopName = newText;
+        } else if (searchShopName.length() == 3) {
             currentPage = 0;
             getShopsList();
         } else {
-            vendorShopsListAdapter.getFilter().filter(newText);
+            vendorShopsListAdapter.getFilter().filter(searchShopName);
         }
     }
 
@@ -414,6 +421,13 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         isLoading = true;
         currentPage += 1;
         getShopsList();
+    }
+
+    private void resetShopsList() {
+        shopsList.clear();
+        vendorShopsListAdapter.updateItems(shopsList);
+        vendorShopsListAdapter.notifyDataSetChanged();
+        currentPage = 0;
     }
 
     private void getShopsList() {
@@ -425,6 +439,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 @Override
                 public void onResponse(@NotNull Call<CustomerProductsResponse> call, @NotNull Response<CustomerProductsResponse> response) {
                     progressDialog.dismiss();
+                    resetShopsList();
                     swipeRefreshLayout.setRefreshing(false);
                     if (response.isSuccessful()) {
                         CustomerProductsResponse data = response.body();

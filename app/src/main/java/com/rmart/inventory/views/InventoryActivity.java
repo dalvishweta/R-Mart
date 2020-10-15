@@ -16,6 +16,8 @@ import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.services.APIService;
 
+import org.jetbrains.annotations.NotNull;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -120,24 +122,20 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void onClick(View view) {
-        if (view.getId() != R.id.retailer_inventory) {
-            getToActivity(view.getId(), false);
-        } else {
-            getToActivity(view.getId(), true);
-        }
+        getToActivity(view.getId(), view.getId() == R.id.retailer_inventory);
     }
     public void getStockList() {
         APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
         apiService.getAPIStockList().enqueue(new Callback<APIStockListResponse>() {
             @Override
-            public void onResponse(Call<APIStockListResponse> call, Response<APIStockListResponse> response) {
+            public void onResponse(@NotNull Call<APIStockListResponse> call, @NotNull Response<APIStockListResponse> response) {
                 if(response.isSuccessful()) {
                     apiStockListResponse = response.body();
                 }
             }
 
             @Override
-            public void onFailure(Call<APIStockListResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<APIStockListResponse> call, @NotNull Throwable t) {
             }
         });
     }

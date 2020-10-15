@@ -26,7 +26,6 @@ import retrofit2.Response;
 
 public class OTPFragment extends LoginBaseFragment implements TextWatcher {
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     public static final int INT_OTP_LENGTH = 4;
     CustomEditTextWithErrorText otpEditText;
     // private String mParam1;
@@ -37,11 +36,10 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
         // Required empty public constructor
     }
 
-    public static OTPFragment newInstance(String param1, String param2) {
+    public static OTPFragment newInstance(String mobileNumber) {
         OTPFragment fragment = new OTPFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM1, mobileNumber);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,7 +49,6 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mMobileNumber = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 

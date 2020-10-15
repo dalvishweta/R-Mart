@@ -1,20 +1,22 @@
 package com.rmart.authentication.views;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.pojos.ChangePasswordResponse;
 import com.rmart.utilits.services.AuthenticationService;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -55,10 +57,10 @@ public class ChangePassword extends LoginBaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(mOTP.length()>0) {
-            Objects.requireNonNull(getActivity()).setTitle(R.string.forgot_password);
+        if (mOTP.length() > 0) {
+            Objects.requireNonNull(requireActivity()).setTitle(R.string.forgot_password);
         } else {
-            Objects.requireNonNull(getActivity()).setTitle(R.string.change_password);
+            Objects.requireNonNull(requireActivity()).setTitle(R.string.change_password);
         }
     }
 
@@ -73,7 +75,7 @@ public class ChangePassword extends LoginBaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         AppCompatEditText firstField = ((CustomEditTextWithErrorText) view.findViewById(R.id.current_password)).getAppCompatEditText();
-        if(mOTP.length()>0) {
+        if (mOTP.length() > 0) {
             firstField.setHint(R.string.otp);
         } else {
             firstField.setHint(R.string.hint_current_password);
@@ -82,32 +84,34 @@ public class ChangePassword extends LoginBaseFragment {
         AppCompatEditText confirmPassword = ((CustomEditTextWithErrorText) view.findViewById(R.id.confirm_password)).getAppCompatEditText();
 
         view.findViewById(R.id.register).setOnClickListener(view1 -> {
-            String _password = Objects.requireNonNull(password.getText()).toString();
-            String _confirmPassword = Objects.requireNonNull(confirmPassword.getText()).toString();
-            String otp = Objects.requireNonNull(firstField.getText()).toString();
-            if(otp.length()<=0) {
+            String _password = Objects.requireNonNull(password.getText()).toString().trim();
+            String _confirmPassword = Objects.requireNonNull(confirmPassword.getText()).toString().trim();
+            String otp = Objects.requireNonNull(firstField.getText()).toString().trim();
+            if (TextUtils.isEmpty(otp)) {
                 showDialog("", getString(R.string.error_otp));
-            } else if(_password.length()<=0) {
+            } else if (TextUtils.isEmpty(_password)) {
                 showDialog("", getString(R.string.error_empty_password));
-            } else if(_confirmPassword.length() <= 0) {
+            } else if (TextUtils.isEmpty(_confirmPassword)) {
                 showDialog("", getString(R.string.error_empty_confirm_password));
             } else if (!_password.equals(_confirmPassword)) {
                 showDialog("", getString(R.string.mismatch_confirm_password));
             } else {
                 progressDialog.show();
                 AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-                if(mOTP.length()>0) {
+                if (mOTP.length() > 0) {
                     authenticationService.changePasswordOTP(mMobileNumber, otp, _password).enqueue(new Callback<ChangePasswordResponse>() {
                         @Override
-                        public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
-                            if(response.isSuccessful()) {
+                        public void onResponse(@NotNull Call<ChangePasswordResponse> call, @NotNull Response<ChangePasswordResponse> response) {
+                            if (response.isSuccessful()) {
                                 ChangePasswordResponse data = response.body();
-                                if(data.getStatus().contains("Success")) {
-                                    showDialog("", data.getMsg(), (dialog, i) -> {
-                                                mListener.goToHomePage();
-                                    });
+                                if (data != null) {
+                                    if (data.getStatus().contains("Success")) {
+                                        showDialog("", data.getMsg(), (dialog, i) -> mListener.goToHomePage());
+                                    } else {
+                                        showDialog("", data.getMsg());
+                                    }
                                 } else {
-                                    showDialog("", data.getMsg());
+                                    showDialog(getString(R.string.no_information_available));
                                 }
                             } else {
                                 showDialog("", response.message());
@@ -116,7 +120,7 @@ public class ChangePassword extends LoginBaseFragment {
                         }
 
                         @Override
-                        public void onFailure(Call<ChangePasswordResponse> call, Throwable t) {
+                        public void onFailure(@NotNull Call<ChangePasswordResponse> call, @NotNull Throwable t) {
                             showDialog("", t.getMessage());
                             progressDialog.dismiss();
                         }
@@ -124,15 +128,17 @@ public class ChangePassword extends LoginBaseFragment {
                 } else {
                     authenticationService.changePassword(mMobileNumber, otp, _password).enqueue(new Callback<ChangePasswordResponse>() {
                         @Override
-                        public void onResponse(Call<ChangePasswordResponse> call, Response<ChangePasswordResponse> response) {
-                            if(response.isSuccessful()) {
+                        public void onResponse(@NotNull Call<ChangePasswordResponse> call, @NotNull Response<ChangePasswordResponse> response) {
+                            if (response.isSuccessful()) {
                                 ChangePasswordResponse data = response.body();
-                                if(data.getStatus().contains("Success")) {
-                                    showDialog("", data.getMsg(), (dialog, i) -> {
-                                        mListener.goToHomePage();
-                                    });
+                                if (data != null) {
+                                    if (data.getStatus().contains("Success")) {
+                                        showDialog("", data.getMsg(), (dialog, i) -> mListener.goToHomePage());
+                                    } else {
+                                        showDialog("", data.getMsg());
+                                    }
                                 } else {
-                                    showDialog("", data.getMsg());
+                                    showDialog(getString(R.string.no_information_available));
                                 }
                             } else {
                                 showDialog("", response.message());
@@ -141,7 +147,7 @@ public class ChangePassword extends LoginBaseFragment {
                         }
 
                         @Override
-                        public void onFailure(Call<ChangePasswordResponse> call, Throwable t) {
+                        public void onFailure(@NotNull Call<ChangePasswordResponse> call, @NotNull Throwable t) {
                             showDialog("", t.getMessage());
                             progressDialog.dismiss();
                         }
@@ -149,6 +155,5 @@ public class ChangePassword extends LoginBaseFragment {
                 }
             }
         });
-
     }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.inventory.adapters.ProductAdapter;
-import com.rmart.inventory.models.Product;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -25,6 +23,8 @@ import com.rmart.utilits.pojos.APIProductListResponse;
 import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.services.APIService;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -38,11 +38,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private APIStockListResponse apiStockListResponse;
-    private String mParam2;
-    Product product;
     private SearchView searchView;
-    private ImageView sortButton;
     private RecyclerView productRecycleView;
     ProductAdapter productAdapter;
     private AppCompatTextView tvTotalCount;
@@ -74,14 +70,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
         super.onResume();
         requireActivity().setTitle(getString(R.string.add_new_product));
     }
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            apiStockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -152,15 +141,20 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
         APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
         apiService.getAPIProducts("0", "100").enqueue(new Callback<APIProductListResponse>() {
             @Override
-            public void onResponse(Call<APIProductListResponse> call, Response<APIProductListResponse> response) {
-                if(response.isSuccessful()) {
+            public void onResponse(@NotNull Call<APIProductListResponse> call, @NotNull Response<APIProductListResponse> response) {
+                if (response.isSuccessful()) {
                     APIProductListResponse data = response.body();
-                    if(data.getStatus().equals(Utils.SUCCESS)) {
-                        products = data.getProductList();
-                        updateList();
+                    if (data != null) {
+                        if (data.getStatus().equals(Utils.SUCCESS)) {
+                            products = data.getProductList();
+                            updateList();
+                        } else {
+                            showDialog("", data.getMsg());
+                        }
                     } else {
-                        showDialog("", data.getMsg());
+                        showDialog(getString(R.string.no_information_available));
                     }
+
                 } else {
                     showDialog("", response.message());
                 }
@@ -168,7 +162,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
             }
 
             @Override
-            public void onFailure(Call<APIProductListResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<APIProductListResponse> call, @NotNull Throwable t) {
                 progressDialog.dismiss();
                 showDialog("", t.getMessage());
             }

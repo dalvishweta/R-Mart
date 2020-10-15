@@ -191,27 +191,27 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
 
     @Override
     public void goToForgotPassword() {
-        replaceFragment(ForgotPasswordFragment.newInstance("", ""), "ForgotPasswordFragment", true);
+        replaceFragment(ForgotPasswordFragment.getInstance(), ForgotPasswordFragment.class.getName(), true);
     }
 
     @Override
     public void goToRegistration() {
-        replaceFragment(RegistrationFragment.newInstance("", ""), "RegistrationFragment", true);
+        replaceFragment(RegistrationFragment.getInstance(), RegistrationFragment.class.getName(), true);
     }
 
     @Override
     public void validateOTP(String mobileNumber, boolean closePreviousScreen) {
         if(closePreviousScreen) {
-            replaceFragment(OTPFragment.newInstance(mobileNumber, ""), OTPFragment.class.getName(), false);
+            replaceFragment(OTPFragment.newInstance(mobileNumber),  OTPFragment.class.getName(), false);
         } else {
-            replaceFragment(OTPFragment.newInstance(mobileNumber, ""), OTPFragment.class.getName(), true);
+            replaceFragment(OTPFragment.newInstance(mobileNumber), OTPFragment.class.getName(), true);
         }
 
     }
 
     @Override
     public void changePassword(String otp, String mobileNumber) {
-        replaceFragment(ChangePassword.newInstance(otp, mobileNumber), "changePassword", true);
+        replaceFragment(ChangePassword.newInstance(otp, mobileNumber), ChangePassword.class.getName(), true);
     }
 
     @Override

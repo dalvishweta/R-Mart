@@ -2,6 +2,7 @@ package com.rmart.inventory.views;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -67,9 +68,6 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     public void onResume() {
         super.onResume();
         requireActivity().setTitle(getString(R.string.my_product_list));
-        /*InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-        searchView.clearFocus();*/
     }
 
     @Override
@@ -80,15 +78,6 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        /*inventoryViewModel.getProductList().observe(getActivity(), products -> {
-            if(null != products) {
-                updateList(products);
-            }
-        });*/
-        /*inventoryViewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
-        inventoryViewModel.getProductList().observe(requireActivity(), data-> {
-            updateList(new ArrayList<>(Objects.requireNonNull(inventoryViewModel.getProductList().getValue()).values()));
-        });*/
         LoggerInfo.printLog("Fragment", "MyProductsListFragment");
         vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
         return inflater.inflate(R.layout.fragment_inventory_product_list, container, false);
@@ -157,15 +146,20 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
             public void onResponse(@NotNull Call<ProductListResponse> call, @NotNull Response<ProductListResponse> response) {
                 if (response.isSuccessful()) {
                     ProductListResponse productsListResponse = response.body();
-                    if (productsListResponse.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        if (productsListResponse.getProductResponses().size() <= 0) {
-                            showDialog(getString(R.string.sorry), getString(R.string.no_products_error));
+                    if(productsListResponse != null) {
+
+                        if (productsListResponse.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            if (productsListResponse.getProductResponses().size() <= 0) {
+                                showDialog(getString(R.string.sorry), getString(R.string.no_products_error));
+                            } else {
+                                productsList = productsListResponse.getProductResponses();
+                                updateList();
+                            }
                         } else {
-                            productsList = productsListResponse.getProductResponses();
-                            updateList();
+                            showDialog("", productsListResponse.getMsg());
                         }
                     } else {
-                        showDialog("", productsListResponse.getMsg());
+                        showDialog(getString(R.string.no_information_available));
                     }
                 } else {
                     showDialog("", response.message());
@@ -206,7 +200,11 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    productAdapter.getFilter().filter(newText);
+                    if(!TextUtils.isEmpty(newText)) {
+                        productAdapter.getFilter().filter(newText);
+                    } else {
+                        updateList();
+                    }
                     return false;
                 }
             });
