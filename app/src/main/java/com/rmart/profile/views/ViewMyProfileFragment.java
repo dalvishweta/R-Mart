@@ -1,5 +1,8 @@
 package com.rmart.profile.views;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,11 +12,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.mapview.MapsFragment;
@@ -25,15 +35,15 @@ import com.rmart.utilits.pojos.AddressResponse;
 import java.util.List;
 import java.util.Objects;
 
-public class ViewMyProfileFragment extends BaseMyProfileFragment implements View.OnClickListener {
+public class ViewMyProfileFragment extends BaseMyProfileFragment implements View.OnClickListener, OnMapReadyCallback {
 
     private AppCompatTextView tvFirstName, tvLastName, tvMobileNumber, tvEmail, tvGender, deliveryCharge,
             tvOpeningTIme, tvClosingTIme, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
     private AppCompatTextView tvShopName, tvPANNumber, tvGSTNumber, tvStreetAddress,tvCity, tvShopNO, tvDeliveryRadius, tvState, tvPINCode;
-    RecyclerView recyclerView;
-    AddressAdapter addressAdapter;
-    private MapsFragment mapsFragment;
+    private RecyclerView recyclerView;
     // MyProfileViewModel myProfileViewModel;
+    private AddressResponse addressResponse;
+    private GoogleMap googleMap;
     public ViewMyProfileFragment() {
         // Required empty public constructor
     }
@@ -72,11 +82,10 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
         tvEmail = view.findViewById(R.id.email);
         tvGender = view.findViewById(R.id.gender);
 
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        mapsFragment = MapsFragment.newInstance(false, false,0.0, 0.0);
-        fragmentTransaction.replace(R.id.map_layout_field, mapsFragment, MapsFragment.class.getName());
-        fragmentTransaction.commit();
+        SupportMapFragment mapsFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if(mapsFragment != null) {
+            mapsFragment.getMapAsync(this);
+        }
 
         view.findViewById(R.id.edit_profile).setOnClickListener(this);
         // view.findViewById(R.id.submit).setOnClickListener(this);
@@ -99,7 +108,7 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
 
     private void setCustomerAddressData() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        addressAdapter = new AddressAdapter(view1 -> {
+        AddressAdapter addressAdapter = new AddressAdapter(view1 -> {
             int position = (int) view1.getTag();
             mListener.gotoEditAddress(MyProfile.getInstance().getAddressResponses().get(position));
         });
@@ -133,27 +142,23 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
         if (myProfile != null) {
             List<AddressResponse> addressResponseList = myProfile.getAddressResponses();
             if (addressResponseList != null && !addressResponseList.isEmpty()) {
-                AddressResponse address = addressResponseList.get(0);
-                tvShopName.setText(address.getShopName());
-                tvPANNumber.setText(address.getPan_no());
-                tvGSTNumber.setText(address.getGstInNo());
-                tvStreetAddress.setText(address.getAddress());
-                tvShopNO.setText(address.getStore_number());
-                tvDeliveryRadius.setText(address.getDeliveryRadius());
-                tvCity.setText(address.getCity());
-                tvState.setText(address.getState());
-                tvPINCode.setText(address.getPinCode());
+                addressResponse = addressResponseList.get(0);
+                tvShopName.setText(addressResponse.getShopName());
+                tvPANNumber.setText(addressResponse.getPan_no());
+                tvGSTNumber.setText(addressResponse.getGstInNo());
+                tvStreetAddress.setText(addressResponse.getAddress());
+                tvShopNO.setText(addressResponse.getStore_number());
+                tvDeliveryRadius.setText(addressResponse.getDeliveryRadius());
+                tvCity.setText(addressResponse.getCity());
+                tvState.setText(addressResponse.getState());
+                tvPINCode.setText(addressResponse.getPinCode());
 
-                deliveryCharge.setText(address.getDeliveryCharges());
-                tvOpeningTIme.setText(address.getOpeningTime());
-                tvClosingTIme.setText(address.getClosingTime());
-                tvDeliveryDaysAfterTime.setText(address.getDeliveryDaysAfterTime());
-                tvDeliveryDaysBeforeTime.setText(address.getDeliveryDaysBeforeTime());
-
-                Location location = new Location("");
-                location.setLatitude(address.getLatitude());
-                location.setLongitude(address.getLongitude());
-                mapsFragment.setLocation(location);
+                deliveryCharge.setText(addressResponse.getDeliveryCharges());
+                tvOpeningTIme.setText(addressResponse.getOpeningTime());
+                tvClosingTIme.setText(addressResponse.getClosingTime());
+                tvDeliveryDaysAfterTime.setText(addressResponse.getDeliveryDaysAfterTime());
+                tvDeliveryDaysBeforeTime.setText(addressResponse.getDeliveryDaysBeforeTime());
+                updateMapLocation();
             }
         }
     }
@@ -168,11 +173,12 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add_new_address:
-                AddressResponse addressResponse = new AddressResponse();
+                addressResponse = new AddressResponse();
                 addressResponse.setId(-1);
                 mListener.gotoEditAddress(addressResponse);
                 break;
@@ -184,6 +190,27 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        if (ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        this.googleMap = googleMap;
+        googleMap.setMyLocationEnabled(true);
+        updateMapLocation();
+    }
+
+    private void updateMapLocation() {
+        if(googleMap != null && addressResponse != null) {
+            LatLng latLng = new LatLng(addressResponse.getLatitude(), addressResponse.getLongitude());
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            googleMap.addMarker(markerOptions);
         }
     }
 }

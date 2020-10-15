@@ -24,6 +24,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -37,6 +38,7 @@ import com.rmart.customer.models.AddShopToWishListResponse;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsResponse;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.mapview.MapsFragment;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -73,7 +75,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private MyProfile myProfile;
     private CustomerProductsShopDetailsModel selectedShopDetails;
-    private SupportMapFragment mapFragment;
+    private SupportMapFragment mapsFragment;
     private double latitude = 0.0;
     private double longitude = 0.0;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -203,10 +205,9 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         }
 
 
-        mapFragment =
-                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
+        mapsFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        if (mapsFragment != null) {
+            mapsFragment.getMapAsync(this);
             fetchLocation();
         }
 
@@ -232,8 +233,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     }
 
     private void fetchLocation() {
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
+        if (mapsFragment != null) {
+            mapsFragment.getMapAsync(this);
         }
     }
 
@@ -246,10 +247,14 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     public void updateToolBar() {
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
-            int cartCount = myProfile.getCartCount().getValue();
-            if (cartCount > 0) {
-                ((CustomerHomeActivity) (requireActivity())).showCartIcon();
-            } else {
+            try {
+                int cartCount = myProfile.getCartCount().getValue();
+                if (cartCount > 0) {
+                    ((CustomerHomeActivity) (requireActivity())).showCartIcon();
+                } else {
+                    ((CustomerHomeActivity) (requireActivity())).hideCartIcon();
+                }
+            } catch (Exception ex) {
                 ((CustomerHomeActivity) (requireActivity())).hideCartIcon();
             }
         }

@@ -1,5 +1,6 @@
 package com.rmart.profile.views;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -269,9 +270,6 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                         ivPanCardImageField.setBackgroundResource(R.drawable.ic_pan);
                     }
                 });
-                /*imageLoader.get(lPancardImageUrl, ImageLoader.getImageListener(ivPanCardImageField,
-                        R.mipmap.ic_launcher, android.R.drawable
-                                .ic_dialog_alert));*/
             }
             String lShopImageUrl = myAddress.getShopImage();
             if (!TextUtils.isEmpty(lShopImageUrl)) {
@@ -304,14 +302,13 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             if (myAddress.getId() != -1) {
                 tvStreetAddress.setText(myAddress.getAddress());
             }
-        } else if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
-            mRetailerView.setVisibility(View.GONE);
         } else {
             mRetailerView.setVisibility(View.GONE);
         }
         //setMapView(false, "profile");
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
 

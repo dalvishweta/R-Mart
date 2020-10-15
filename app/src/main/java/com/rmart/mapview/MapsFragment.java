@@ -115,12 +115,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*if(isEditable) {
-            view.findViewById(R.id.update_location).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.update_location).setOnClickListener(view1 -> updateLocationPoints());
-        } else {
-            view.findViewById(R.id.update_location).setVisibility(View.GONE);
-        }*/
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
         if (mapFragment != null) {
@@ -196,14 +190,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     }
 
     private void updateLocationPoints() {
-        /*LocationPoints myLocation = new LocationPoints(currentLocation.getLatitude(), currentLocation.getLongitude());
-        if (MyProfile.getInstance().getMyLocations() == null || MyProfile.getInstance().getMyLocations().size() <= 0) {
-            com.rmart.profile.model.MyLocation location = new com.rmart.profile.model.MyLocation();
-            location.setMyLocation(myLocation);
-            MyProfile.getInstance().getMyLocations().add(location);
-        } else {
-            MyProfile.getInstance().getMyLocations().get(0).setMyLocation(myLocation);
-        }*/
         Objects.requireNonNull(requireActivity()).onBackPressed();
     }
 
@@ -245,6 +231,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
                 return;
             }
             this.googleMap = map;
+            googleMap.clear();
             googleMap.setMyLocationEnabled(true);
             if (isMapClickable) {
                 googleMap.setOnMapClickListener(this);
