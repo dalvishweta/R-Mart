@@ -52,6 +52,7 @@
             android:inputType="numberDecimal">
 
             <androidx.appcompat.widget.AppCompatEditText
+                style="@style/text_style_medium_normal"
                 android:id="@+id/value_of_unit"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -64,8 +65,8 @@
                 android:paddingEnd="10dp" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/display_unit"
                 style="@style/text_style_medium_normal"
+                android:id="@+id/display_unit"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"

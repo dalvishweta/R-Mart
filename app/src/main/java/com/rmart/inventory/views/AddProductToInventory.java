@@ -357,7 +357,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 saveSelected();
                 break;
             case R.id.expiry:
-                new CustomDatePicker((AppCompatTextView) view, getActivity(), Utils.YYYY_MM_DD);
+                new CustomDatePicker((AppCompatTextView) view, getActivity(), Utils.DD_MM_YYYY);
                 break;
             case R.id.iv_product_image_one_field:
                 selectedImagePosition = 0;
@@ -629,16 +629,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     }
 
     private void updateImage(Uri imageUri) {
-        Object lObject = images.get(selectedImagePosition);
-        if (lObject instanceof String) {
-            ImageURLResponse imageUrlResponse = new ImageURLResponse();
-            //imageUrlResponse.setImageRawData(getEncodedImage(bitmap));
-            images.set(selectedImagePosition, imageUrlResponse);
-        } else if (lObject instanceof ImageURLResponse) {
-            ImageURLResponse imageUrlResponse = (ImageURLResponse) lObject;
-            //imageUrlResponse.setImageRawData(getEncodedImage(bitmap));
-            images.set(selectedImagePosition, imageUrlResponse);
-        }
+        ImageURLResponse imageUrlResponse = images.get(selectedImagePosition);
+        images.set(selectedImagePosition, imageUrlResponse);
         displayImagesUI(imageUri);
     }
 
