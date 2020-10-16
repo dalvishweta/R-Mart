@@ -7,7 +7,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.rmart.BuildConfig;
 import com.rmart.R;
@@ -47,8 +52,11 @@ public class SplashScreen extends BaseActivity {
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
             deviceToken = instanceIdResult.getToken();
             LoggerInfo.printLog("FCM Token", deviceToken);
-        });
+            checkLoginCache();
+        }).addOnFailureListener(e -> checkLoginCache());
+    }
 
+    private void checkLoginCache() {
         if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.CUSTOMER)) {
             Object lObject = RokadMartCache.getData(Constants.CACHE_CUSTOMER_DETAILS, this);
             if (lObject == null) {
@@ -56,25 +64,9 @@ public class SplashScreen extends BaseActivity {
             } else {
                 getLoginDetails((LoginDetailsModel) lObject);
             }
-        } else if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.RETAILER) || BuildConfig.FLAVOR.equalsIgnoreCase(Utils.DELIVERY)) {
-            /*Object lObject = RokadMartCache.getData(Constants.CACHE_RETAILER_DETAILS, this);
-            if (lObject == null) {
-                setDelayHandler();
-            } else {
-                getLoginDetails((ProfileResponse) lObject);
-            }*/
-            setDelayHandler();
-        } /*else if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.DELIVERY)) {
-            Object lObject = RokadMartCache.getData(Constants.CACHE_DELIVERY_DETAILS, this);
-            if (lObject == null) {
-                setDelayHandler();
-            } else {
-                getLoginDetails((LoginDetailsModel) lObject);
-            }
-        }*/ else {
+        } else {
             setDelayHandler();
         }
-
     }
 
     private void getLoginDetails(LoginDetailsModel loginDetails) {

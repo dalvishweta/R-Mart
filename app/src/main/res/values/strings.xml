@@ -311,4 +311,6 @@
     <string name="valid_act_number_required">Please enter valid 12 digit shop act number</string>
     <string name="minimum_order">Minimum order</string>
     <string name="minimum_charges_required">Minimum charges required</string>
+    <string name="state_address_required">State address required</string>
+    <string name="pin_code_required">Pin Code Required</string>
 </resources>

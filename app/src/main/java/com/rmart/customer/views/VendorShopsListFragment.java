@@ -3,6 +3,7 @@ package com.rmart.customer.views;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -145,7 +146,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().trim().length() != 0) {
+                String value = s.toString().trim();
+                if (!TextUtils.isEmpty(value)) {
                     ivSearchField.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
                     performSearch();
                 } else {

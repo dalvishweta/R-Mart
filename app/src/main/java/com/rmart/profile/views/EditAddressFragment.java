@@ -506,7 +506,30 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 showDialog(getString(R.string.city_required));
                 return;
             }
+        } else {
+            String streetAddress = Objects.requireNonNull(tvStreetAddress.getText()).toString().trim();
+            if (TextUtils.isEmpty(streetAddress)) {
+                showDialog(getString(R.string.street_address_required));
+                return;
+            }
 
+            String city = Objects.requireNonNull(tvCity.getText()).toString().trim();
+            if (TextUtils.isEmpty(city)) {
+                showDialog(getString(R.string.city_required));
+                return;
+            }
+
+            String state = Objects.requireNonNull(tvState.getText()).toString().trim();
+            if (TextUtils.isEmpty(state)) {
+                showDialog(getString(R.string.state_address_required));
+                return;
+            }
+
+            String zipCode = Objects.requireNonNull(tvPinCode.getText()).toString().trim();
+            if (TextUtils.isEmpty(zipCode)) {
+                showDialog(getString(R.string.pin_code_required));
+                return;
+            }
         }
 
         progressDialog.show();

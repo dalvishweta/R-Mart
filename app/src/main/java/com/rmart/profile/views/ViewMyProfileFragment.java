@@ -175,6 +175,11 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
             tvMobileNumber.setText(myProfile.getMobileNumber());
             tvEmail.setText(myProfile.getEmail());
             tvGender.setText(myProfile.getGender());
+
+            List<AddressResponse> addressResponseList = myProfile.getAddressResponses();
+            if (addressResponseList != null && !addressResponseList.isEmpty()) {
+                addressResponse = myProfile.getAddressResponses().get(0);
+            }
         }
     }
 

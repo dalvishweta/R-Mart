@@ -28,6 +28,7 @@ import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.customer.models.VendorProductShopDataResponse;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.CommonUtils;
 import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -121,7 +122,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
     public void updateToolBar() {
         requireActivity().setTitle(productsShopDetailsModel.getShopName());
         ((CustomerHomeActivity) (requireActivity())).showCartIcon();
-        getVendorDetails();
+        getVendorProductDetails();
     }
 
     private void loadUIComponents(View view) {
@@ -130,6 +131,14 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
         ImageView ivSearchField = view.findViewById(R.id.iv_search_field);
+
+        ivSearchField.setOnClickListener(v -> {
+            etProductsSearchField.setText("");
+            searchProductName = "";
+            CommonUtils.closeVirtualKeyboard(requireActivity(), ivSearchField);
+            resetVendorProductDetails();
+            getVendorProductDetails();
+        });
         etProductsSearchField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -143,10 +152,13 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().trim().length() != 0) {
+                String value = s.toString().trim();
+                if (!TextUtils.isEmpty(value)) {
+                    ivSearchField.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
                     performSearch();
+                } else {
+                    ivSearchField.setImageResource(R.drawable.search);
                 }
-                ivSearchField.setImageResource(R.drawable.search);
             }
         });
 
@@ -168,13 +180,9 @@ public class VendorProductDetailsFragment extends BaseFragment {
             if (isWishListShop) deleteShopFromWishList();
             else addShopFromWishList();
         });
-        view.findViewById(R.id.iv_call_field).setOnClickListener(v -> {
-            callSelected();
-        });
+        view.findViewById(R.id.iv_call_field).setOnClickListener(v -> callSelected());
 
-        view.findViewById(R.id.iv_message_field).setOnClickListener(v -> {
-            messageSelected();
-        });
+        view.findViewById(R.id.iv_message_field).setOnClickListener(v -> messageSelected());
     }
 
     private void callSelected() {
@@ -185,7 +193,13 @@ public class VendorProductDetailsFragment extends BaseFragment {
         Utils.openGmailWindow(requireActivity(), productsShopDetailsModel.getEmailId());
     }
 
-    private CallBackInterface callBackListener = pObject -> {
+    private void resetVendorProductDetails() {
+        vendorProductsList.clear();
+        vendorProductDetailsAdapter.updateItems(vendorProductsList);
+        vendorProductDetailsAdapter.notifyDataSetChanged();
+    }
+
+    private final CallBackInterface callBackListener = pObject -> {
         if (pObject instanceof CustomerProductDetailsModel) {
             onCustomerHomeInteractionListener.gotoProductDescDetails((CustomerProductDetailsModel) pObject, productsShopDetailsModel);
         } else if (pObject instanceof ContentModel) {
@@ -200,7 +214,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
         }
     };
 
-    private void getVendorDetails() {
+    private void getVendorProductDetails() {
         if (Utils.isNetworkConnected(requireActivity())) {
             vendorProductsList.clear();
             progressDialog.show();
@@ -221,10 +235,14 @@ public class VendorProductDetailsFragment extends BaseFragment {
                 call = customerProductsService.getVendorShopDetails(clientID, productsShopDetailsModel.getVendorId(), productsShopDetailsModel.getShopId(), productCategoryId,
                         currentPage, searchProductName, customerId);
             }
+
+            /*Call<VendorProductDetailsResponse> call = customerProductsService.getVendorShopDetails(clientID, productsShopDetailsModel.getVendorId(), productsShopDetailsModel.getShopId(), productCategoryId,
+                    currentPage, searchProductName, customerId);*/
             call.enqueue(new Callback<VendorProductDetailsResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<VendorProductDetailsResponse> call, @NotNull Response<VendorProductDetailsResponse> response) {
                     progressDialog.dismiss();
+                    resetVendorProductDetails();
                     if (response.isSuccessful()) {
                         VendorProductDetailsResponse body = response.body();
                         if (body != null) {
@@ -247,6 +265,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
                 @Override
                 public void onFailure(@NotNull Call<VendorProductDetailsResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
+                    resetVendorProductDetails();
                 }
             });
         } else {
@@ -311,16 +330,15 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
     private void performSearch() {
         searchProductName = Objects.requireNonNull(etProductsSearchField.getText()).toString().trim();
-        /*if (newText.length() < 1) {
-            customerProductsListAdapter.updateItems(new ArrayList<>());
-            customerProductsListAdapter.notifyDataSetChanged();
-        } else if (newText.length() == 3) {
-            searchShopName = newText;
+        if (searchProductName.length() == 0) {
+            vendorProductDetailsAdapter.updateItems(vendorProductsList);
+            vendorProductDetailsAdapter.notifyDataSetChanged();
+        } else if (searchProductName.length() == 3) {
             currentPage = 0;
-            getShopsList();
+            getVendorProductDetails();
         } else {
-            customerProductsListAdapter.getFilter().filter(newText);
-        }*/
+            vendorProductDetailsAdapter.getFilter().filter(searchProductName);
+        }
     }
 
     private void deleteShopFromWishList() {
