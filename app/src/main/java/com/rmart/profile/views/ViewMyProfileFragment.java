@@ -37,7 +37,7 @@ import java.util.Objects;
 
 public class ViewMyProfileFragment extends BaseMyProfileFragment implements View.OnClickListener, OnMapReadyCallback {
 
-    private AppCompatTextView tvFirstName, tvLastName, tvMobileNumber, tvEmail, tvGender, deliveryCharge,
+    private AppCompatTextView tvFirstName, tvLastName, tvMobileNumber, tvEmail, tvGender, deliveryCharge, minimumCharge,
             tvOpeningTIme, tvClosingTIme, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
     private AppCompatTextView tvShopName, tvShopACT,tvPANNumber, tvGSTNumber, tvStreetAddress,tvCity, tvShopNO, tvDeliveryRadius, tvState, tvPINCode;
     private RecyclerView recyclerView;
@@ -130,6 +130,7 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
         tvCity = view.findViewById(R.id.city);
         tvPINCode = view.findViewById(R.id.pin_code);
         deliveryCharge = view.findViewById(R.id.delivery_charges);
+        minimumCharge  = view.findViewById(R.id.minimum_order);
         tvOpeningTIme = view.findViewById(R.id.open_time);
         tvClosingTIme = view.findViewById(R.id.close_time);
         tvDeliveryDaysAfterTime = view.findViewById(R.id.delivery_days_after_time);
@@ -156,6 +157,8 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
                 tvPINCode.setText(addressResponse.getPinCode());
 
                 deliveryCharge.setText(addressResponse.getDeliveryCharges());
+                minimumCharge.setText(addressResponse.getMinimumOrder());
+
                 tvOpeningTIme.setText(addressResponse.getOpeningTime());
                 tvClosingTIme.setText(addressResponse.getClosingTime());
                 tvDeliveryDaysAfterTime.setText(addressResponse.getDeliveryDaysAfterTime());

@@ -32,7 +32,7 @@ public class CustomDatePicker implements DatePickerDialog.OnDateSetListener {
         String text = dateTV.getText().toString();
         myCalendar = Calendar.getInstance();
         try{
-            SimpleDateFormat sdf = new SimpleDateFormat(Utils.YYYY_MM_DD); // here set the pattern as you date in string was containing like date/month/year
+            SimpleDateFormat sdf = new SimpleDateFormat(Utils.DD_MM_YYYY); // here set the pattern as you date in string was containing like date/month/year
             Date d = sdf.parse(dateTV.getText().toString());
             myCalendar.setTime(d);
 
@@ -59,7 +59,7 @@ public class CustomDatePicker implements DatePickerDialog.OnDateSetListener {
         if (previousTime < presentTime) {
             dateTV.setText(simple.format(myCalendar.getTime()));
         } else {
-            Toast.makeText(this.ctx, ctx.getText(R.string.erroe_expiry_date), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.ctx, ctx.getText(R.string.error_expiry_date), Toast.LENGTH_SHORT).show();
         }
     }
 }

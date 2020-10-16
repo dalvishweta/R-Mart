@@ -65,7 +65,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
     private AppCompatEditText tvShopName, tvPANNumber, tvGSTNumber, tvShopAct, tvStreetAddress, tvCity, tvShopNO, tvDeliveryRadius, tvPinCode, tvState;
     private LinearLayout mRetailerView;
     private AddressResponse myAddress;
-    private AppCompatEditText tvAadharNoField, etvDeliveryCharges, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
+    private AppCompatEditText tvAadharNoField, etvDeliveryCharges, etvMinimumOrder, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
     private AppCompatTextView tvClosingTIme, tvOpeningTIme;
     private CustomNetworkImageView ivAadharFrontImageField, ivAadharBackImageField, ivPanCardImageField, ivShopImageField;
     private String aadharFrontImageUrl;
@@ -141,7 +141,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         shopImageProgressBar = view.findViewById(R.id.shop_image_progess_bar);
 
         etvDeliveryCharges = view.findViewById(R.id.delivery_charges);
-
+        etvMinimumOrder = view.findViewById(R.id.minimum_order);
         tvOpeningTIme = view.findViewById(R.id.open_time);
         tvClosingTIme = view.findViewById(R.id.close_time);
 
@@ -192,6 +192,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
             tvAadharNoField.setText(myAddress.getAadhaarCardNo());
 
             etvDeliveryCharges.setText(myAddress.getDeliveryCharges());
+            etvMinimumOrder.setText(myAddress.getMinimumOrder());
             tvOpeningTIme.setText(myAddress.getOpeningTime());
             tvClosingTIme.setText(myAddress.getClosingTime());
             tvDeliveryDaysAfterTime.setText(myAddress.getDeliveryDaysAfterTime());
@@ -435,6 +436,12 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
                 return;
             }
 
+            String minimumOrder = Objects.requireNonNull(etvMinimumOrder.getText()).toString().trim();
+            if (TextUtils.isEmpty(minimumOrder)) {
+                showDialog(getString(R.string.minimum_charges_required));
+                return;
+            }
+
             String openingTime = Objects.requireNonNull(tvOpeningTIme.getText()).toString().trim();
             if (TextUtils.isEmpty(openingTime)) {
                 showDialog(getString(R.string.opening_time_required));
@@ -506,7 +513,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         if (myAddress.getId() == -1) {
             getAddressData();
             ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
-            profileService.addAddress(myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
+            profileService.addAddress(myAddress.getShopACT(), myAddress.getMinimumOrder() ,myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                     myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                     myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
                     myAddress.getDeliveryRadius(), Utils.CLIENT_ID, aadharNo, myAddress.getDeliveryCharges(),
@@ -545,7 +552,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         } else {
             getAddressData();
             ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
-            profileService.updateAddress( myAddress.getShopACT(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
+            profileService.updateAddress( myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                     myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                     myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
                     myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), aadharNo, myAddress.getDeliveryCharges(),
@@ -608,6 +615,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         myAddress.setPinCode(Objects.requireNonNull(tvPinCode.getText()).toString());
 
         myAddress.setDeliveryCharges(Objects.requireNonNull(etvDeliveryCharges.getText()).toString());
+        myAddress.setMinimumOrder(Objects.requireNonNull(etvMinimumOrder.getText()).toString());
 
         myAddress.setOpeningTime(Objects.requireNonNull(tvOpeningTIme.getText()).toString());
         myAddress.setClosingTime(Objects.requireNonNull(tvClosingTIme.getText()).toString());

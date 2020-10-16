@@ -48,7 +48,6 @@ import com.rmart.utilits.pojos.APIUnitMeasureResponse;
 import com.rmart.utilits.pojos.AddProductToInventoryResponse;
 import com.rmart.utilits.pojos.ImageURLResponse;
 import com.rmart.utilits.pojos.ProductResponse;
-import com.rmart.utilits.pojos.ShowProductResponse;
 import com.rmart.utilits.services.APIService;
 import com.rmart.utilits.services.VendorInventoryService;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -359,7 +358,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 saveSelected();
                 break;
             case R.id.expiry:
-                new CustomDatePicker((AppCompatTextView) view, getActivity(), Utils.YYYY_MM_DD);
+                new CustomDatePicker((AppCompatTextView) view, getActivity(), Utils.DD_MM_YYYY);
                 break;
             case R.id.iv_product_image_one_field:
                 selectedImagePosition = 0;
@@ -397,7 +396,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         long previousTime = Calendar.getInstance().getTimeInMillis();
         long presentTime = -1;
         try{
-            SimpleDateFormat sdf = new SimpleDateFormat(Utils.  YYYY_MM_DD); // here set the pattern as you date in string was containing like date/month/year
+            SimpleDateFormat sdf = new SimpleDateFormat(Utils.DD_MM_YYYY); // here set the pattern as you date in string was containing like date/month/year
             Date d = sdf.parse(expiry.getText().toString());
             Calendar temp = Calendar.getInstance();
             temp.setTime(d);
@@ -419,7 +418,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             showDialog("", getString(R.string.unit_required));
             return;
         } else if (Objects.requireNonNull(expiry.getText()).toString().length() <= 2 || previousTime > presentTime) {
-            showDialog("", getString(R.string.erroe_expiry_date));
+            showDialog("", getString(R.string.error_expiry_date));
             return;
         }
 

@@ -135,12 +135,30 @@
                             android:drawableStart="@drawable/user"
                             style="@style/my_profile_tv"
                             android:inputType="number"/>
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:hint="@string/delivery_charge"
-                            android:id="@+id/delivery_charges"
-                            android:drawableStart="@drawable/user"
-                            style="@style/my_profile_tv"
-                            android:inputType="number" />
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="24dp"
+                            android:layout_marginRight="24dp">
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:hint="@string/delivery_charge"
+                                android:id="@+id/delivery_charges"
+                                android:drawableStart="@drawable/user"
+                                style="@style/upload_product_item_field"
+                                android:inputType="number"
+                                android:background="@drawable/curve_left_bg"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"/>
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/minimum_order"
+                                android:hint="@string/minimum_order"
+                                style="@style/upload_product_item_field"
+                                android:background="@drawable/curve_right_bg"
+                                android:layout_width="0dp"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
                         <LinearLayout
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
