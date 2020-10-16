@@ -34,7 +34,8 @@ import retrofit2.Response;
 
 public class SplashScreen extends BaseActivity {
 
-    private Handler delayHandler = new Handler(Looper.getMainLooper());
+    private final Handler delayHandler = new Handler(Looper.getMainLooper());
+    private String deviceToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,10 @@ public class SplashScreen extends BaseActivity {
         setContentView(R.layout.activity_splash_screen);
 
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
+            deviceToken = instanceIdResult.getToken();
+            LoggerInfo.printLog("FCM Token", deviceToken);
+        });
 
         if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.CUSTOMER)) {
             Object lObject = RokadMartCache.getData(Constants.CACHE_CUSTOMER_DETAILS, this);
@@ -76,7 +81,7 @@ public class SplashScreen extends BaseActivity {
         if (Utils.isNetworkConnected(this)) {
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-            authenticationService.login(Utils.getDeviceId(this), loginDetails.getMobileNumber(), loginDetails.getPassword()).enqueue(new Callback<LoginResponse>() {
+            authenticationService.login(deviceToken, loginDetails.getMobileNumber(), loginDetails.getPassword()).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
                     progressDialog.dismiss();
@@ -136,7 +141,7 @@ public class SplashScreen extends BaseActivity {
         delayHandler.postDelayed(runnable, 1000);
     }
 
-    private Runnable runnable = () -> {
+    private final Runnable runnable = () -> {
         if (!isFinishing()) {
             gotoAuthenticationActivity();
         }

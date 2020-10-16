@@ -175,12 +175,4 @@ public class Utils {
         pView.setAlpha(0.5f);
         pView.setEnabled(false);
     }
-
-    @SuppressLint("HardwareIds")
-    public static String getDeviceId(Context context) {
-        return Settings.Secure.getString(
-                context.getContentResolver(),
-                Settings.Secure.ANDROID_ID
-        );
-    }
 }

@@ -52,6 +52,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     public String mMobileNumber;
     private String mPassword;
     private AppCompatEditText etPassword, etMobileNumber;
+    private String deviceToken;
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -84,14 +85,14 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
         }
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        /*FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(requireActivity(), instanceIdResult -> {
-            mDeviceKey = instanceIdResult.getToken();
-            LoggerInfo.printLog("FCM Token", mDeviceKey);
-        });*/
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(requireActivity(), instanceIdResult -> {
+            deviceToken = instanceIdResult.getToken();
+            LoggerInfo.printLog("FCM Token", deviceToken);
+        });
 
         etMobileNumber.setText(BuildConfig.LOGIN_USERNAME);
         etPassword.setText(BuildConfig.LOGIN_PASSWORD);
-        String token = MyFirebaseMessagingService.getToken(this.requireContext());
+        deviceToken = MyFirebaseMessagingService.getToken(this.requireContext());
     }
 
     @Override
@@ -119,7 +120,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
             // mPassword = "12345";
-            authenticationService.login(Utils.getDeviceId(requireActivity()), mMobileNumber, mPassword).enqueue(new Callback<LoginResponse>() {
+            authenticationService.login(deviceToken, mMobileNumber, mPassword).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
                     if (response.isSuccessful()) {
