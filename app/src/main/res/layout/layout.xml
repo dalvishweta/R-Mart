@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="30dp">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_weight="1.5"
+        android:gravity="center|left"
+        android:id="@+id/pay_type"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:background="@android:color/transparent"
+        android:text="Registration"
+        android:textColor="@color/white"
+        android:maxLines="1"
+        android:textSize="18sp" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_weight=".5"
+        android:gravity="center"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:background="@android:color/transparent"
+        android:text=" : "
+        android:maxLength="5"
+        android:maxLines="1"
+        android:textSize="18sp" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_weight="1"
+        android:gravity="center|right"
+        android:id="@+id/pay_amt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:background="@android:color/transparent"
+        android:text="2000"
+        android:textColor="@color/white"
+        android:maxLines="1"
+        android:textSize="18sp" />
+</LinearLayout>
