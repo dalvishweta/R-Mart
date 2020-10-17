@@ -30,6 +30,8 @@ import com.rmart.utilits.services.CustomerOrderService;
 import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -216,44 +218,55 @@ public class CheckAvailableProducts extends BaseFragment {
     private void addToCartSelected() {
         if (Utils.isNetworkConnected(requireActivity())) {
             if (orderedProductsList != null && !orderedProductsList.isEmpty()) {
-                progressDialog.show();
-                CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
-                String clientID = "2";
-                Call<AddToCartResponseDetails> call = customerProductsService.addReOrderToCart(clientID, order.getVendorInfo().getUserID(), MyProfile.getInstance().getUserID(),
-                        orderAgainProductsList);
-                call.enqueue(new Callback<AddToCartResponseDetails>() {
-                    @Override
-                    public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
-                        progressDialog.dismiss();
-                        if (response.isSuccessful()) {
-                            AddToCartResponseDetails body = response.body();
-                            if (body != null) {
-                                if (body.getStatus().equalsIgnoreCase("success")) {
-                                    AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = body.getAddToCartDataResponse();
-                                    if (addToCartDataResponse != null) {
-                                        Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
-                                        MyProfile.getInstance().setCartCount(totalCartCount);
-                                        showDialog(body.getMsg());
+                try {
+                    progressDialog.show();
+                    CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+                    String clientID = "2";
+                    JSONArray jsonArray = new JSONArray();
+                    for (OrderAgainProductModel orderAgainProductModel : orderAgainProductsList) {
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("product_unit_id", orderAgainProductModel.getProductUnitId());
+                        jsonObject.put("product_quantity", orderAgainProductModel.getProductQuantity());
+                        jsonArray.put(jsonObject);
+                    }
+                    Call<AddToCartResponseDetails> call = customerProductsService.addReOrderToCart(clientID, order.getVendorInfo().getUserID(), MyProfile.getInstance().getUserID(),
+                            jsonArray);
+                    call.enqueue(new Callback<AddToCartResponseDetails>() {
+                        @Override
+                        public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
+                            progressDialog.dismiss();
+                            if (response.isSuccessful()) {
+                                AddToCartResponseDetails body = response.body();
+                                if (body != null) {
+                                    if (body.getStatus().equalsIgnoreCase("success")) {
+                                        AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = body.getAddToCartDataResponse();
+                                        if (addToCartDataResponse != null) {
+                                            Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
+                                            MyProfile.getInstance().setCartCount(totalCartCount);
+                                            showDialog(body.getMsg());
+                                        } else {
+                                            showDialog(getString(R.string.no_information_available));
+                                        }
                                     } else {
-                                        showDialog(getString(R.string.no_information_available));
+                                        showDialog(body.getMsg());
                                     }
                                 } else {
-                                    showDialog(body.getMsg());
+                                    showDialog(getString(R.string.no_information_available));
                                 }
                             } else {
-                                showDialog(getString(R.string.no_information_available));
+                                showDialog(response.message());
                             }
-                        } else {
-                            showDialog(response.message());
                         }
-                    }
 
-                    @Override
-                    public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
-                        progressDialog.dismiss();
-                        showCloseDialog(null, t.getMessage());
-                    }
-                });
+                        @Override
+                        public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
+                            progressDialog.dismiss();
+                            showDialog(null, t.getMessage());
+                        }
+                    });
+                } catch (Exception ex) {
+                    showDialog(ex.getMessage());
+                }
             }
         } else {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));

@@ -17,6 +17,8 @@ import com.rmart.customer_order.models.OrderAgainProductModel;
 import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.orders.Product;
 
+import org.json.JSONArray;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -124,6 +126,6 @@ public interface CustomerProductsService {
     @POST(BuildConfig.ADD_RE_ORDER_TO_CART)
     @FormUrlEncoded
     Call<AddToCartResponseDetails> addReOrderToCart(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
-                                                    @Field("product_arr") List<OrderAgainProductModel> productList);
+                                                    @Field("product_arr") JSONArray productList);
 
 }

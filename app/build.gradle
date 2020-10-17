@@ -107,8 +107,8 @@ android {
             applicationIdSuffix ".customer"
             /*versionNameSuffix "-customer"*/
             buildConfigField("String", "ROLE_ID", '"5"')
-            buildConfigField("String", "LOGIN_USERNAME", '"8008538387"')
-            buildConfigField("String", "LOGIN_PASSWORD", '"1234"')
+            buildConfigField("String", "LOGIN_USERNAME", '"8686378737"')
+            buildConfigField("String", "LOGIN_PASSWORD", '"12345"')
             buildConfigField("boolean", "IS_DELIVERY", "false")
             buildConfigField("boolean", "IS_RETAILER", "false")
         }
@@ -139,6 +139,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.firebase:firebase-messaging:20.3.0'
+    implementation files('libs/YouTubeAndroidPlayerApi.jar')
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

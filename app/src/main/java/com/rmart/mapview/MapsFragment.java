@@ -88,11 +88,13 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
         if (getArguments() != null) {
             isEditable = getArguments().getBoolean(ARG_PARAM1);
             isMapClickable = getArguments().getBoolean(ARG_PARAM2);
-            double latitude = getArguments().getDouble("Latitude");
-            double longitude = getArguments().getDouble("Longitude");
-            currentLocation = new Location("");
-            currentLocation.setLongitude(longitude);
-            currentLocation.setLatitude(latitude);
+            if(!isEditable) {
+                double latitude = getArguments().getDouble("Latitude");
+                double longitude = getArguments().getDouble("Longitude");
+                currentLocation = new Location("");
+                currentLocation.setLongitude(longitude);
+                currentLocation.setLatitude(latitude);
+            }
         }
     }
 
@@ -242,6 +244,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             googleMap.addMarker(markerOptions);
+            profileClickedListener.getMapGeoCoordinates(latLng);
         }
     }
 }

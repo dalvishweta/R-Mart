@@ -86,7 +86,10 @@
             android:name=".customer.views.CustomerWishListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
-
+        <activity
+            android:name=".customer.views.PlayVideosView"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar" />
 
         <service
             android:name=".services.UpdateProductQuantityServices"

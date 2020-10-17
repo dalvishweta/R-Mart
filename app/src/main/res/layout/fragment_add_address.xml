@@ -1,340 +1,333 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
     android:background="@color/white"
     android:layout_height="match_parent">
-    <ScrollView
-        android:id="@+id/scroll_view"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/add_address"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
         <LinearLayout
+            android:id="@+id/retailer_view"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context="com.rmart.profile.views.ViewMyProfileFragment">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/retailer_view"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:visibility="gone"
-                    android:text="@string/retailer_details"
-                    style="@style/my_profile_title"
-                    android:layout_width="match_parent"
-                    android:background="@color/colorPrimary"
-                    android:layout_marginTop="0dp" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:hint="@string/enter_your_business_name"
-                    android:id="@+id/shop_name"
-                    android:drawableStart="@drawable/user"
-                    style="@style/my_profile_tv"
-                    android:inputType="text" />
-
-                <TextView
-                    style="@style/text_style_medium_normal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/shop_image"
-                    android:textColor="@color/black" />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="120dp"
-                    android:layout_height="80dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="10dp"
-                    android:elevation="10dp"
-                    app:cardCornerRadius="8dp">
-
-                    <com.rmart.utilits.custom_views.CustomNetworkImageView
-                        android:id="@+id/iv_shop_image_field"
-                        android:layout_width="120dp"
-                        android:layout_height="80dp"
-                        android:background="@drawable/ic_shop"
-                        android:contentDescription="@string/app_name"
-                        android:scaleType="fitXY" />
-
-                    <com.rmart.baseclass.views.ProgressBarCircular
-                        android:id="@+id/shop_image_progess_bar"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:visibility="gone" />
-
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:hint="@string/shop_no"
-                    android:id="@+id/shop_no"
-                    android:drawableStart="@drawable/user"
-                    style="@style/my_profile_tv"
-                    android:inputType="text" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:hint="@string/enter_shop_act_number"
-                    android:id="@+id/shop_act"
-                    android:drawableStart="@drawable/user"
-                    android:inputType="number"
-                    style="@style/my_profile_tv"
-                    android:maxLength="12"
-                    android:textAllCaps="true" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:hint="@string/enter_your_gst_number"
-                    android:id="@+id/gst_number"
-                    android:drawableStart="@drawable/user"
-                    android:inputType="text"
-                    style="@style/my_profile_tv"
-                    android:maxLength="16"
-                    android:textAllCaps="true" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:hint="@string/delivery_radius"
-                    android:id="@+id/delivery_radius"
-                    android:drawableStart="@drawable/user"
-                    style="@style/my_profile_tv"
-                    android:inputType="number" />
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginRight="24dp">
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:hint="@string/delivery_charge"
-                        android:id="@+id/delivery_charges"
-                        android:drawableStart="@drawable/user"
-                        style="@style/upload_product_item_field"
-                        android:inputType="number"
-                        android:background="@drawable/curve_left_bg"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"/>
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/minimum_order"
-                        android:hint="@string/minimum_order"
-                        style="@style/upload_product_item_field"
-                        android:background="@drawable/curve_right_bg"
-                        android:layout_width="0dp"
-                        android:layout_weight="1" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginRight="24dp">
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/open_time"
-                        android:hint="@string/opening_time"
-                        style="@style/upload_product_item_field"
-                        android:background="@drawable/curve_left_bg"
-                        android:layout_width="0dp"
-                        android:layout_weight="1" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/close_time"
-                        android:hint="@string/closing_time"
-                        style="@style/upload_product_item_field"
-                        android:background="@drawable/curve_right_bg"
-                        android:layout_width="0dp"
-                        android:layout_weight="1" />
-                </LinearLayout>
-
-                <TextView
-                    style="@style/text_style_medium_normal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/delivery_in_days_text"
-                    android:textColor="@color/black" />
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginRight="24dp">
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/delivery_days_before_time"
-                        android:hint="@string/delivery_days_before_time"
-                        style="@style/upload_product_item_field"
-                        android:background="@drawable/curve_left_bg"
-                        android:inputType="number"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"/>
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:inputType="number"
-                        android:id="@+id/delivery_days_after_time"
-                        android:hint="@string/delivery_days_after_time"
-                        style="@style/upload_product_item_field"
-                        android:background="@drawable/curve_right_bg"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"/>
-                </LinearLayout>
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/tv_aadhar_number_no_field"
-                    style="@style/my_profile_tv"
-                    android:drawableStart="@drawable/user"
-                    android:hint="@string/aadhar_number"
-                    android:inputType="numberSigned"
-                    android:maxLength="12" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        app:cardCornerRadius="8dp"
-                        android:layout_width="120dp"
-                        android:layout_height="80dp"
-                        android:layout_margin="5dp"
-                        android:elevation="10dp">
-
-                        <com.rmart.utilits.custom_views.CustomNetworkImageView
-                            android:id="@+id/iv_aadhar_front_image_field"
-                            android:layout_width="120dp"
-                            android:layout_height="80dp"
-                            android:background="@drawable/ic_aadhar_front"
-                            android:contentDescription="@string/app_name"
-                            android:scaleType="fitXY" />
-
-                        <com.rmart.baseclass.views.ProgressBarCircular
-                            android:id="@+id/aadhar_front_progess_bar"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:visibility="gone" />
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        app:cardCornerRadius="8dp"
-                        android:layout_width="120dp"
-                        android:layout_height="80dp"
-                        android:layout_margin="5dp"
-                        android:elevation="10dp">
-
-                        <com.rmart.utilits.custom_views.CustomNetworkImageView
-                            android:id="@+id/iv_aadhar_back_image_field"
-                            android:layout_width="120dp"
-                            android:layout_height="80dp"
-                            android:background="@drawable/ic_aadhar_back"
-                            android:contentDescription="@string/app_name"
-                            android:scaleType="fitXY" />
-
-                        <com.rmart.baseclass.views.ProgressBarCircular
-                            android:id="@+id/aadhar_back_progess_bar"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center"
-                            android:visibility="gone" />
-
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:hint="@string/enter_your_pan_number"
-                    android:id="@+id/pan_number"
-                    style="@style/my_profile_tv"
-                    android:drawableStart="@drawable/user"
-                    android:inputType="textCapSentences"
-                    android:textAllCaps="true"
-                    android:maxLength="10" />
-
-                <androidx.cardview.widget.CardView
-                    app:cardCornerRadius="8dp"
-                    android:layout_width="120dp"
-                    android:layout_height="80dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginTop="10dp"
-                    android:elevation="10dp">
-
-                    <com.rmart.utilits.custom_views.CustomNetworkImageView
-                        android:id="@+id/iv_pan_card_no_image_field"
-                        android:layout_width="120dp"
-                        android:layout_height="80dp"
-                        android:background="@drawable/ic_pan"
-                        android:contentDescription="@string/app_name"
-                        android:scaleType="fitXY" />
-
-                    <com.rmart.baseclass.views.ProgressBarCircular
-                        android:id="@+id/pan_progess_bar"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:visibility="gone" />
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:hint="@string/street_address"
-                android:id="@+id/street_address"
-                android:drawableStart="@drawable/user"
-                style="@style/my_profile_tv"
-                android:layout_marginTop="10dp"
-                android:inputType="text"/>
-            <androidx.appcompat.widget.AppCompatEditText
-                android:hint="@string/city"
-                android:id="@+id/city"
-                android:drawableStart="@drawable/user"
-                style="@style/my_profile_tv"
-                android:inputType="text"/>
-            <androidx.appcompat.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatTextView
                 android:visibility="gone"
-                android:hint="@string/district"
-                android:id="@+id/district"
+                android:text="@string/retailer_details"
+                style="@style/my_profile_title"
+                android:layout_width="match_parent"
+                android:background="@color/colorPrimary"
+                android:layout_marginTop="0dp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:hint="@string/enter_your_business_name"
+                android:id="@+id/shop_name"
                 android:drawableStart="@drawable/user"
                 style="@style/my_profile_tv"
-                android:inputType="text"/>
+                android:inputType="text" />
+
+            <TextView
+                style="@style/text_style_medium_normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/shop_image"
+                android:textColor="@color/black" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:elevation="10dp"
+                app:cardCornerRadius="8dp">
+
+                <com.rmart.utilits.custom_views.CustomNetworkImageView
+                    android:id="@+id/iv_shop_image_field"
+                    android:layout_width="120dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/ic_shop"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="fitXY" />
+
+                <com.rmart.baseclass.views.ProgressBarCircular
+                    android:id="@+id/shop_image_progess_bar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+            </androidx.cardview.widget.CardView>
+
+
             <androidx.appcompat.widget.AppCompatEditText
-                android:hint="@string/state"
-                android:id="@+id/state"
+                android:hint="@string/shop_no"
+                android:id="@+id/shop_no"
                 android:drawableStart="@drawable/user"
                 style="@style/my_profile_tv"
                 android:inputType="text" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:hint="@string/pin_code"
-                android:id="@+id/pin_code"
+                android:hint="@string/enter_shop_act_number"
+                android:id="@+id/shop_act"
+                android:drawableStart="@drawable/user"
+                android:inputType="number"
+                style="@style/my_profile_tv"
+                android:maxLength="12"
+                android:textAllCaps="true" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:hint="@string/enter_your_gst_number"
+                android:id="@+id/gst_number"
+                android:drawableStart="@drawable/user"
+                android:inputType="text"
+                style="@style/my_profile_tv"
+                android:maxLength="16"
+                android:textAllCaps="true" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:hint="@string/delivery_radius"
+                android:id="@+id/delivery_radius"
                 android:drawableStart="@drawable/user"
                 style="@style/my_profile_tv"
-                android:maxLength="9"
                 android:inputType="number" />
 
             <LinearLayout
-                android:id="@+id/map_layout_field"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_margin="20dp"
-                android:layout_height="300dp"
-                android:orientation="vertical" />
-        </LinearLayout>
-    </ScrollView>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:hint="@string/delivery_charge"
+                    android:id="@+id/delivery_charges"
+                    android:drawableStart="@drawable/user"
+                    style="@style/upload_product_item_field"
+                    android:inputType="number"
+                    android:background="@drawable/curve_left_bg"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"/>
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/minimum_order"
+                    android:hint="@string/minimum_order"
+                    style="@style/upload_product_item_field"
+                    android:background="@drawable/curve_right_bg"
+                    android:layout_width="0dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:layout_alignParentBottom="true"
-        android:id="@+id/add_address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save_details"
-        android:background="@drawable/product_edit"
-        android:textColor="@color/white"
-        android:layout_margin="8dp" />
-</RelativeLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/open_time"
+                    android:hint="@string/opening_time"
+                    style="@style/upload_product_item_field"
+                    android:background="@drawable/curve_left_bg"
+                    android:layout_width="0dp"
+                    android:layout_weight="1" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/close_time"
+                    android:hint="@string/closing_time"
+                    style="@style/upload_product_item_field"
+                    android:background="@drawable/curve_right_bg"
+                    android:layout_width="0dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/text_style_medium_normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/delivery_in_days_text"
+                android:textColor="@color/black" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/delivery_days_before_time"
+                    android:hint="@string/delivery_days_before_time"
+                    style="@style/upload_product_item_field"
+                    android:background="@drawable/curve_left_bg"
+                    android:inputType="number"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"/>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:inputType="number"
+                    android:id="@+id/delivery_days_after_time"
+                    android:hint="@string/delivery_days_after_time"
+                    style="@style/upload_product_item_field"
+                    android:background="@drawable/curve_right_bg"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/tv_aadhar_number_no_field"
+                style="@style/my_profile_tv"
+                android:drawableStart="@drawable/user"
+                android:hint="@string/aadhar_number"
+                android:inputType="numberSigned"
+                android:maxLength="12" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    app:cardCornerRadius="8dp"
+                    android:layout_width="120dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="5dp"
+                    android:elevation="10dp">
+
+                    <com.rmart.utilits.custom_views.CustomNetworkImageView
+                        android:id="@+id/iv_aadhar_front_image_field"
+                        android:layout_width="120dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/ic_aadhar_front"
+                        android:contentDescription="@string/app_name"
+                        android:scaleType="fitXY" />
+
+                    <com.rmart.baseclass.views.ProgressBarCircular
+                        android:id="@+id/aadhar_front_progess_bar"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    app:cardCornerRadius="8dp"
+                    android:layout_width="120dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="5dp"
+                    android:elevation="10dp">
+
+                    <com.rmart.utilits.custom_views.CustomNetworkImageView
+                        android:id="@+id/iv_aadhar_back_image_field"
+                        android:layout_width="120dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/ic_aadhar_back"
+                        android:contentDescription="@string/app_name"
+                        android:scaleType="fitXY" />
+
+                    <com.rmart.baseclass.views.ProgressBarCircular
+                        android:id="@+id/aadhar_back_progess_bar"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:hint="@string/enter_your_pan_number"
+                android:id="@+id/pan_number"
+                style="@style/my_profile_tv"
+                android:drawableStart="@drawable/user"
+                android:inputType="textCapSentences"
+                android:textAllCaps="true"
+                android:maxLength="10" />
+
+            <androidx.cardview.widget.CardView
+                app:cardCornerRadius="8dp"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="10dp"
+                android:elevation="10dp">
+
+                <com.rmart.utilits.custom_views.CustomNetworkImageView
+                    android:id="@+id/iv_pan_card_no_image_field"
+                    android:layout_width="120dp"
+                    android:layout_height="80dp"
+                    android:background="@drawable/ic_pan"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="fitXY" />
+
+                <com.rmart.baseclass.views.ProgressBarCircular
+                    android:id="@+id/pan_progess_bar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:hint="@string/street_address"
+            android:id="@+id/street_address"
+            android:drawableStart="@drawable/user"
+            style="@style/my_profile_tv"
+            android:layout_marginTop="10dp"
+            android:inputType="text"/>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:hint="@string/city"
+            android:id="@+id/city"
+            android:drawableStart="@drawable/user"
+            style="@style/my_profile_tv"
+            android:inputType="text"/>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:visibility="gone"
+            android:hint="@string/district"
+            android:id="@+id/district"
+            android:drawableStart="@drawable/user"
+            style="@style/my_profile_tv"
+            android:inputType="text"/>
+        <androidx.appcompat.widget.AppCompatEditText
+            android:hint="@string/state"
+            android:id="@+id/state"
+            android:drawableStart="@drawable/user"
+            style="@style/my_profile_tv"
+            android:inputType="text" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:hint="@string/pin_code"
+            android:id="@+id/pin_code"
+            android:drawableStart="@drawable/user"
+            style="@style/my_profile_tv"
+            android:maxLength="9"
+            android:inputType="number" />
+
+        <LinearLayout
+            android:id="@+id/map_layout_field"
+            android:layout_width="match_parent"
+            android:layout_margin="20dp"
+            android:layout_height="300dp"
+            android:orientation="vertical" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/add_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save_details"
+            android:background="@drawable/product_edit"
+            android:textColor="@color/white"
+            android:layout_margin="8dp" />
+    </LinearLayout>
+
+</ScrollView>

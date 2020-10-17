@@ -313,4 +313,5 @@
     <string name="minimum_charges_required">Minimum charges required</string>
     <string name="state_address_required">State address required</string>
     <string name="pin_code_required">Pin Code Required</string>
+    <string name="you_tube_error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
 </resources>

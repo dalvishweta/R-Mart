@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -116,6 +117,7 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
         return inflater.inflate(R.layout.fragment_add_address, container, false);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -150,11 +152,47 @@ public class EditAddressFragment extends BaseMyProfileFragment implements View.O
 
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if(myAddress != null) {
+        if (myAddress != null) {
             latitude = myAddress.getLatitude();
             longitude = myAddress.getLongitude();
         }
-        mapsFragment = MapsFragment.newInstance(false, true, latitude, longitude);
+
+        ScrollView scrollView = view.findViewById(R.id.scroll_view);
+        scrollView.requestDisallowInterceptTouchEvent(true);
+        LinearLayout mapLayoutField = view.findViewById(R.id.map_layout_field);
+
+        /*mapLayoutField.setOnTouchListener((v, event) -> {
+            int action = event.getAction();
+            switch (action) {
+                case MotionEvent.ACTION_DOWN:
+                    // Disallow ScrollView to intercept touch events
+                    .
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    break;
+
+                case MotionEvent.ACTION_UP:
+                    // Allow ScrollView to intercept touch events.
+                    v.getParent().requestDisallowInterceptTouchEvent(false);
+                    break;
+            }
+
+            // Handle ListView touch events.
+            v.onTouchEvent(event);
+            return true;
+        });*/
+
+        if (myAddress != null) {
+            if (myAddress.getId() == -1) {
+                mapsFragment = MapsFragment.newInstance(true, true, 0.0, 0.0);
+            } else {
+                mapsFragment = MapsFragment.newInstance(false, true, latitude, longitude);
+            }
+        } else {
+            myAddress = new AddressResponse();
+            myAddress.setId(-1);
+            mapsFragment = MapsFragment.newInstance(true, true, 0.0, 0.0);
+        }
+
         fragmentTransaction.replace(R.id.map_layout_field, mapsFragment, MapsFragment.class.getName());
         fragmentTransaction.commit();
 
