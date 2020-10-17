@@ -28,6 +28,8 @@ android {
 
         buildConfigField('String', 'PROFILE_UPDATE', '"login/updateprofile"')
         buildConfigField('String', 'API_PRODUCT_LIST', '"lib/product/product_list"')
+        buildConfigField('String', 'API_CATEGORY_LIST', '"lib/Category/category_list"')
+        buildConfigField('String', 'API_BRAND_LIST', '"lib/Category/category_list"')
         buildConfigField("String", 'UPDATE_PROFILE', '"updateprofile"')
 
         buildConfigField("String", 'ADD_ADDRESS', '"updateprofile/addAddress"')

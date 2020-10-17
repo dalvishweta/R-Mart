@@ -3,6 +3,7 @@ package com.rmart.utilits.pojos;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rmart.inventory.models.UnitObject;
+import com.rmart.utilits.Utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +14,17 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @Expose
     String productID;
 
+    @SerializedName("id")
+    @Expose
+    String id;
+
+    @SerializedName("image")
+    @Expose
+    String image;
+
+    @SerializedName("name")
+    @Expose
+    String name;
 
     @SerializedName("images")
     @Expose
@@ -28,7 +40,7 @@ public class ProductResponse extends BaseResponse implements Serializable {
 
     @SerializedName("product_name")
     @Expose
-    String name;
+    String productName;
 
     @SerializedName("product_desc")
     @Expose
@@ -78,6 +90,7 @@ public class ProductResponse extends BaseResponse implements Serializable {
     String subCategory;
     String expiry_date;
     String delivery_days;
+    String type = Utils.PRODUCT;
 
     public ProductResponse() {
 
@@ -87,7 +100,7 @@ public class ProductResponse extends BaseResponse implements Serializable {
     public ProductResponse(ProductResponse product) {
         productID = product.productID;
         productImage = product.productImage;
-        name = product.name;
+        productName = product.productName;
         description = product.description;
         categoryID = product.categoryID;
         // brandID = product.brandID;
@@ -146,12 +159,12 @@ public class ProductResponse extends BaseResponse implements Serializable {
         this.categoryID = categoryID;
     }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getDescription() {
@@ -264,5 +277,37 @@ public class ProductResponse extends BaseResponse implements Serializable {
 
     public void setBrandName(String brandName) {
         this.brandName = brandName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

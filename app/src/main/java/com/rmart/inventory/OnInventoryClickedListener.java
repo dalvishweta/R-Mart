@@ -12,7 +12,7 @@ public interface OnInventoryClickedListener {
     void showMyProducts();
     void showProductPreview(ProductResponse tag, boolean isEdit);
     void updateProduct(ProductResponse product, boolean isEdit);
-    void addProductToInventory();
+    void addProductToInventory(String listType, String id);
     void requestToCreateProduct();
     void addUnit(UnitObject unitValue, APIUnitMeasures unitMeasurements, BaseInventoryFragment fragment, int requestID);
     void goToHome();

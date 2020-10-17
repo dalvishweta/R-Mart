@@ -18,6 +18,7 @@ import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.inventory.views.viewholders.ProductViewHolder;
 import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.ProductResponse;
 
 import java.util.ArrayList;
@@ -72,7 +73,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         ProductResponse product = filteredListData.get(position);
-        holder.tvItemTitle.setText(product.getName());
         holder.itemView.setTag(product);
         if (null != product.getUnitObjects() && product.getUnitObjects().size() > 1) {
             holder.availableUnits.setVisibility(View.VISIBLE);
@@ -97,7 +97,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
             holder.unitView.setVisibility(View.GONE);
             holder.tvOffer.setVisibility(View.GONE);
         }
-        String imageUrl = product.getDisplayImage();
+        String imageUrl;
+        if (product.getType().equalsIgnoreCase(Utils.PRODUCT)) {
+            imageUrl = product.getDisplayImage();
+            holder.tvItemTitle.setText(product.getProductName());
+        } else {
+            imageUrl = product.getImage();
+            holder.tvItemTitle.setText(product.getName());
+        }
+
         if (TextUtils.isEmpty(imageUrl)) {
             imageUrl = product.getProductImage();
         }
@@ -129,7 +137,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
             if (constraint != null && constraint.length() > 0) {
                 filteredListData.clear();
                 for (ProductResponse product : productList) {
-                    if (product.getName().toLowerCase().contains(constraint.toString().toLowerCase())) {
+                    if (product.getProductName().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         filteredListData.add(product);
                     }
                 }

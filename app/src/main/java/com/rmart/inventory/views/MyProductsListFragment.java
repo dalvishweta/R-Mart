@@ -26,7 +26,6 @@ import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.ProductListResponse;
 import com.rmart.utilits.pojos.ProductResponse;
-import com.rmart.utilits.pojos.ShowProductResponse;
 import com.rmart.utilits.services.VendorInventoryService;
 
 import org.jetbrains.annotations.NotNull;
@@ -224,7 +223,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.add_product) {
-            mListener.addProductToInventory();
+            mListener.addProductToInventory(Utils.PRODUCT, "");
         }
     }
 }

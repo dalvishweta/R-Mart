@@ -48,6 +48,11 @@ public class Utils {
 
 
     public static final String CLIENT_ID = "2";
+    public static final String PRODUCT = "View by product";
+    public static final String BRAND = "View by brand";
+    public static final String CATEGORY = "View by category";
+    public static final String SUB_CATEGORY = "View by sub category";
+
     public static boolean isValidMobile(String phone) {
         String regex = "[0-9]+";
         Pattern p = Pattern.compile(regex);

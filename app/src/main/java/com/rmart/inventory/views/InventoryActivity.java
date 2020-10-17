@@ -77,8 +77,8 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     }
 
     @Override
-    public void addProductToInventory() {
-        replaceFragment(SelectProductFromInventory.newInstance(apiStockListResponse,""), SelectProductFromInventory.class.getName(),true);
+    public void addProductToInventory(String listType, String id) {
+        replaceFragment(SelectProductFromInventory.newInstance(listType, id), SelectProductFromInventory.class.getName(),true);
     }
 
     @Override

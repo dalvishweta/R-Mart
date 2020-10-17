@@ -51,6 +51,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     }
 
     private void getFeeDetails() {
+        registrationFeeStructures.clear();
         RegistrationFeeStructure registration = new RegistrationFeeStructure();
         registration.setPayType("Registration fee");
         registration.setAmount("2000");

@@ -94,9 +94,7 @@ public class MyCategoryListFragment extends BaseInventoryFragment {
                         }
                         return true;
                     });
-
                     popup.show(); //showing popup menu
-
                 });
         CategoryAdapter categoryAdapter = new CategoryAdapter(isGridView, view1 -> mListener.showMySubCategories());
         if(isGridView) {

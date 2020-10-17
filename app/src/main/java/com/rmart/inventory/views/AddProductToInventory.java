@@ -231,7 +231,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         // chooseCategory.setText(mClonedProduct.getCategory());
         if (null != mClonedProduct) {
             chooseSubCategory.setText(mClonedProduct.getSubCategory());
-            chooseProduct.setText(mClonedProduct.getName());
+            chooseProduct.setText(mClonedProduct.getProductName());
             // productBrand.setText(mClonedProduct.getBrand());
             productRegionalName.setText(mClonedProduct.getRegionalName());
             productDescription.setText(mClonedProduct.getDescription());
@@ -453,7 +453,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                         AddProductToInventoryResponse data = response.body();
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                showDialog(mClonedProduct.getName() + " " + getString(R.string.add_success_product),
+                                showDialog(mClonedProduct.getProductName() + " " + getString(R.string.add_success_product),
                                         pObject -> requireActivity().onBackPressed());
                             } else {
                                 showDialog("", data.getMsg(),
@@ -482,7 +482,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                         AddProductToInventoryResponse data = response.body();
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                showDialog("", mClonedProduct.getName() + " " + getString(R.string.add_success_product),
+                                showDialog("", mClonedProduct.getProductName() + " " + getString(R.string.add_success_product),
                                         pObject -> requireActivity().onBackPressed());
                             } else {
                                 showDialog("", data.getMsg(),

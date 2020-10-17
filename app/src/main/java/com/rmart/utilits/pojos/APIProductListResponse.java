@@ -14,6 +14,10 @@ public class APIProductListResponse extends BaseResponse {
     @Expose
     String endIndex;
 
+    @SerializedName("type")
+    @Expose
+    String type;
+
     @SerializedName("product_image_path")
     @Expose
     String productImagePath;
@@ -52,5 +56,13 @@ public class APIProductListResponse extends BaseResponse {
 
     public void setProductList(ArrayList<ProductResponse> productList) {
         this.productList = productList;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
