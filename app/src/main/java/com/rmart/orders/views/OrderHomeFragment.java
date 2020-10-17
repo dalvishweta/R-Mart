@@ -23,13 +23,20 @@ import com.rmart.utilits.services.OrderService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.rmart.utilits.Utils.ACCEPTED_ORDER_STATUS;
+import static com.rmart.utilits.Utils.CANCEL_BY_CUSTOMER;
+import static com.rmart.utilits.Utils.CANCEL_BY_RETAILER;
+import static com.rmart.utilits.Utils.DELIVERED_ORDER_STATUS;
 import static com.rmart.utilits.Utils.OPEN_ORDER_STATUS;
+import static com.rmart.utilits.Utils.PACKED_ORDER_STATUS;
+import static com.rmart.utilits.Utils.SHIPPED_ORDER_STATUS;
 
 public class OrderHomeFragment extends BaseOrderFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
@@ -127,9 +134,14 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
         int position = mapOrderStatus.get(OPEN_ORDER_STATUS);
         StateOfOrders data = orderStatus.get(position);
         openOrderCount.setText(data.getCount());
-        ArrayList<StateOfOrders> list = (ArrayList<StateOfOrders>) orderStatus.clone();
-        int index = mapOrderStatus.get(OPEN_ORDER_STATUS);
-        list.remove(index);
+        ArrayList<StateOfOrders> list = new ArrayList<>();//(ArrayList<StateOfOrders>) orderStatus.clone();
+        list.add(orderStatus.get( mapOrderStatus.get(ACCEPTED_ORDER_STATUS)));
+        list.add(orderStatus.get( mapOrderStatus.get(PACKED_ORDER_STATUS)));
+        list.add(orderStatus.get( mapOrderStatus.get(SHIPPED_ORDER_STATUS)));
+        list.add(orderStatus.get( mapOrderStatus.get(DELIVERED_ORDER_STATUS)));
+        list.add(orderStatus.get( mapOrderStatus.get(CANCEL_BY_RETAILER)));
+        list.add(orderStatus.get( mapOrderStatus.get(CANCEL_BY_CUSTOMER)));
+
         recyclerView.setAdapter(new OrdersHomeAdapter(list, this));
         /*ordersListAdapter = new OrdersListAdapter(orderStatus, this);
         orderList.setAdapter(ordersListAdapter);*/
