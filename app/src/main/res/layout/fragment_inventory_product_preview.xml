@@ -97,16 +97,13 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/product_description"
-                    android:text="@string/product_description"
                     style="@style/product_preview_item_value"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/product_regional_name"
                     style="@style/product_preview_item_title"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/product_regional_name"
-                    android:text="@string/product_regional_name_value"
                     style="@style/product_preview_item_value"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -115,7 +112,6 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/product_expiry"
-                    android:text="@string/product_expiry_title_value"
                     style="@style/product_preview_item_value"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -124,9 +120,22 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/delivery"
-                    android:text="@string/delivery_in_days"
                     style="@style/product_preview_item_value"/>
             </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_show_product_preview_field"
+                style="@style/text_style_medium_normal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/add_to_cart_background_bg"
+                android:text="@string/show_product_preview"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

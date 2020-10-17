@@ -314,4 +314,6 @@
     <string name="state_address_required">State address required</string>
     <string name="pin_code_required">Pin Code Required</string>
     <string name="you_tube_error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
+    <string name="show_product_preview">Show Product Preview</string>
+    <string name="no_video_link_found">No Video Link Found</string>
 </resources>

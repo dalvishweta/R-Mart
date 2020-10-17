@@ -73,6 +73,19 @@
                 android:minHeight="50dp"
                 android:drawableStart="@drawable/user"
                 android:hint="@string/product_description"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_marginTop="8dp"
+                android:padding="16dp"
+                android:drawablePadding="16dp"
+                android:background="@drawable/edit_product_field_bg"
+                android:gravity="start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/product_video_link"
+                android:minHeight="50dp"
+                android:drawableStart="@drawable/user"
+                android:hint="@string/product_video_link"/>
         </LinearLayout>
         <LinearLayout
             android:padding="8dp"

@@ -1,6 +1,10 @@
 package com.rmart.inventory.views;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +54,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     //private APIStockListResponse apiStockListResponse;
     private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryInDays;
     private TabLayout dotIndicatorLayoutField;
+    private String productVideoLink;
 
     public ShowProductPreviewFragment() {
         // Required empty public constructor
@@ -137,6 +142,9 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         AppCompatButton delete = view.findViewById(R.id.unit_delete);
         AppCompatButton edit = view.findViewById(R.id.edit);
         dotIndicatorLayoutField = view.findViewById(R.id.product_images_dot_indicator_field);
+        view.findViewById(R.id.btn_show_product_preview_field).setOnClickListener(v -> {
+            showProductPreviewSelected();
+        });
 
         viewPager.startAutoScroll();
         viewPager.setInterval(1000);
@@ -179,7 +187,22 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         // updateUI();
     }
 
-    private CallBackInterface callBackInterface = pObject -> {
+    private void showProductPreviewSelected() {
+        if (!TextUtils.isEmpty(productVideoLink)) {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(productVideoLink));
+            try {
+                this.startActivity(webIntent);
+            } catch (ActivityNotFoundException ex) {
+                showDialog(ex.getMessage());
+            }
+        } else {
+            showDialog(getString(R.string.no_video_link_found));
+        }
+
+    }
+
+    private final CallBackInterface callBackInterface = pObject -> {
 
     };
 
@@ -200,5 +223,6 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         tvProductDescription.setText(product.getDescription());
         tvProductRegionalName.setText(product.getRegionalName());
         tvProductExpiry.setText(product.getExpiry_date());
+        productVideoLink = product.getVideoLInk();
     }
 }

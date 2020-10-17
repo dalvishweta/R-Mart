@@ -87,7 +87,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     public AppCompatTextView chooseCategory, chooseSubCategory, chooseProduct, productBrand;
     // CustomStringAdapter customStringAdapter;
     // Spinner productBrand;
-    AppCompatEditText productRegionalName, deliveryDays, productDescription;
+    AppCompatEditText productRegionalName, deliveryDays, productDescription, tvProductVideoLink;
     AppCompatTextView expiry;
     private RecyclerView unitsRecyclerView;
     APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
@@ -99,6 +99,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     private CustomNetworkImageView ivProductImageFourField;
     private CustomNetworkImageView ivProductImageFiveField;
     private ProductUnitAdapter unitBaseAdapter;
+
 
     public AddProductToInventory() {
         // Required empty public constructor
@@ -114,7 +115,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         return fragment;
     }
 
-    private CallBackInterface callBackListener = pObject -> {
+    private final CallBackInterface callBackListener = pObject -> {
         if (pObject instanceof ContentModel) {
             ContentModel contentModel = (ContentModel) pObject;
             String status = contentModel.getStatus();
@@ -268,6 +269,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         expiry.setOnClickListener(this);
         deliveryDays = view.findViewById(R.id.delivery_days);
         unitsRecyclerView = view.findViewById(R.id.unit_base);
+        tvProductVideoLink = view.findViewById(R.id.product_video_link);
 
         unitsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         // addUnit = view.findViewById(R.id.add_unit);
@@ -442,7 +444,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         jsonObject.addProperty("delivery_days", MyProfile.getInstance().getDeliveryInDays());
         jsonObject.addProperty("client_id", "2");
         jsonObject.addProperty("user_id", MyProfile.getInstance().getUserID());
-        jsonObject.addProperty("product_video_link", "https://www.youtube.com/watch?v=pWjfA4hBNe8&ab_channel=CricketCloud");
+        jsonObject.addProperty("product_video_link", Objects.requireNonNull(tvProductVideoLink.getText()).toString().trim());
 
         VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
         if (isEdit) {
