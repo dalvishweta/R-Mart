@@ -1,5 +1,6 @@
 package com.rmart.baseclass.views;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -147,9 +148,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 }
             });
         }
-            nameField = findViewById(R.id.customer_name);
-            mobileField = findViewById(R.id.mobile);
-            emailIdField = findViewById(R.id.email_id_field);
+        nameField = findViewById(R.id.customer_name);
+        mobileField = findViewById(R.id.mobile);
+        emailIdField = findViewById(R.id.email_id_field);
         TextView tvAppVersionField = findViewById(R.id.tv_version_field);
         try {
             String versionNo = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -195,6 +196,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     public void getToActivity(int id, boolean isSameActivity) {
         if (!isSameActivity) {
             Intent intent;
@@ -248,22 +250,18 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     }
 
     private void showLogoutConfirmation() {
-        try {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialog);
-            builder.setTitle(getString(R.string.message));
-            builder.setMessage(getString(R.string.logout_confirmation_message));
-            builder.setCancelable(false);
-            builder.setNegativeButton(getString(R.string.no), (dialogInterface, i) -> dialogInterface.dismiss());
-            builder.setPositiveButton(getString(R.string.yes), (dialogInterface, i) -> {
-                logoutConfirmed();
-                dialogInterface.dismiss();
-            });
-            AlertDialog alertDialog = builder.create();
-            if (!isFinishing()) {
-                alertDialog.show();
-            }
-        } catch (Exception e) {
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialog);
+        builder.setTitle(getString(R.string.message));
+        builder.setMessage(getString(R.string.logout_confirmation_message));
+        builder.setCancelable(false);
+        builder.setNegativeButton(getString(R.string.no), (dialogInterface, i) -> dialogInterface.dismiss());
+        builder.setPositiveButton(getString(R.string.yes), (dialogInterface, i) -> {
+            logoutConfirmed();
+            dialogInterface.dismiss();
+        });
+        AlertDialog alertDialog = builder.create();
+        if (!isFinishing()) {
+            alertDialog.show();
         }
     }
 
@@ -324,7 +322,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     private void cartSelected() {
         BaseFragment baseFragment = getActiveFragment();
         if (!(baseFragment instanceof ShoppingCartFragment)) {
-            replaceFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
+            //hideCartIcon();
+            Intent intent = new Intent(this, CustomerHomeActivity.class);
+            intent.putExtra("ShoppingCart", true);
+            startActivity(intent);
         }
     }
 

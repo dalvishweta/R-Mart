@@ -177,7 +177,7 @@ public class CheckAvailableProducts extends BaseFragment {
             if(productOrder.getAvailableQuantity() != 0) {
                 OrderAgainProductModel product = new OrderAgainProductModel();
                 product.setProductUnitId(productOrder.getProductUnitId());
-                product.setProductQuantity(productOrder.getAvailableQuantity());
+                product.setProductQuantity(productOrder.getQuantity());
                 orderAgainProductsList.add(product);
             }
         }

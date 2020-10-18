@@ -1,5 +1,6 @@
 package com.rmart.inventory.views;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -347,6 +348,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         updateUI();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -410,17 +412,24 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         }catch(ParseException ex){
             // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
         }
-        if (Objects.requireNonNull(productRegionalName.getText()).toString().length() <= 1) {
-            showDialog("", getString(R.string.erroe_regional_name));
+        if (TextUtils.isEmpty(productRegionalName.getText().toString().trim())) {
+            showDialog("", getString(R.string.error_regional_name));
             return;
-        } else if (Objects.requireNonNull(productDescription.getText()).toString().length() <= 1) {
+        }
+        if (TextUtils.isEmpty(productDescription.getText().toString().trim())) {
             showDialog("", getString(R.string.error_product_description));
             return;
-        } else if (Objects.requireNonNull(mClonedProduct).getUnitObjects().size() < 1) {
+        }
+        if (Objects.requireNonNull(mClonedProduct).getUnitObjects().size() < 1) {
             showDialog("", getString(R.string.unit_required));
             return;
-        } else if (Objects.requireNonNull(expiry.getText()).toString().length() <= 2 || previousTime > presentTime) {
+        }
+        if (Objects.requireNonNull(expiry.getText()).toString().length() <= 2 || previousTime > presentTime) {
             showDialog("", getString(R.string.error_expiry_date));
+            return;
+        }
+        if (TextUtils.isEmpty(tvProductVideoLink.getText().toString().trim())) {
+            showDialog("", getString(R.string.error_video_link));
             return;
         }
 
@@ -484,7 +493,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                         AddProductToInventoryResponse data = response.body();
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                showDialog("", mClonedProduct.getProductName() + " " + getString(R.string.add_success_product),
+                                showDialog("", String.format("%s %s", mClonedProduct.getProductName(), getString(R.string.add_success_product)),
                                         pObject -> requireActivity().onBackPressed());
                             } else {
                                 showDialog("", data.getMsg(),

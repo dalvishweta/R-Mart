@@ -11,7 +11,6 @@ import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
-import com.rmart.utilits.LoggerInfo;
 
 public class CustomerHomeActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
 
@@ -23,12 +22,15 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
         //setContentView(R.layout.activity_authenticatin);
         Bundle data = getIntent().getExtras();
         vendorShopsListFragment = VendorShopsListFragment.getInstance();
-        /*if (data != null) {
-            addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
+        if (data != null) {
+            //addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
+            boolean isShoppingCart = data.getBoolean("ShoppingCart");
+            if(isShoppingCart) {
+                replaceFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), false);
+            }
         } else {
-            addFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), true);
-        }*/
-        replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);
+            replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);
+        }
     }
 
     @Override
@@ -38,11 +40,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
 
     @Override
     public void onClick(View view) {
-        if (view.getId() != R.id.customer_shopping) {
-            getToActivity(view.getId(), false);
-        } else {
-            getToActivity(view.getId(), true);
-        }
+        getToActivity(view.getId(), view.getId() == R.id.customer_shopping);
     }
 
     @Override
@@ -93,11 +91,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     @Override
     public void gotoCompleteOrderDetailsScreen(CustomerProductsShopDetailsModel vendorShopDetails) {
         hideCartIcon();
-        try {
-            replaceFragment(CustomerOrderDetailsFragment.getInstance(vendorShopDetails), PaymentOptionsFragment.class.getName(), true);
-        } catch (Exception ex) {
-            LoggerInfo.printLog("CustomerOrderDetailsFragment exception", ex.getMessage());
-        }
+        replaceFragment(CustomerOrderDetailsFragment.getInstance(vendorShopDetails), PaymentOptionsFragment.class.getName(), true);
     }
 
     @Override
