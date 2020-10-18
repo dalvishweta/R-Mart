@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import com.rmart.baseclass.views.BaseFragment;
 
 public class RegistrationFeeStructure extends BaseResponse {
+
     @SerializedName("pay_type")
     @Expose
     String payType;

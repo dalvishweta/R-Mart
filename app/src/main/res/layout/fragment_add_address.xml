@@ -96,7 +96,8 @@
                 android:id="@+id/delivery_radius"
                 android:drawableStart="@drawable/user"
                 style="@style/my_profile_tv"
-                android:inputType="number" />
+                android:inputType="numberSigned"
+                android:maxLength="2" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -104,20 +105,25 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="24dp"
                 android:layout_marginRight="24dp">
+
                 <androidx.appcompat.widget.AppCompatEditText
                     android:hint="@string/delivery_charge"
                     android:id="@+id/delivery_charges"
                     android:drawableStart="@drawable/user"
                     style="@style/upload_product_item_field"
-                    android:inputType="number"
+                    android:layout_weight="1"
+                    android:inputType="numberSigned"
                     android:background="@drawable/curve_left_bg"
                     android:layout_width="0dp"
-                    android:layout_weight="1"/>
+                    android:maxLength="4" />
+
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/minimum_order"
                     android:hint="@string/minimum_order"
                     style="@style/upload_product_item_field"
                     android:background="@drawable/curve_right_bg"
+                    android:inputType="numberSigned"
+                    android:maxLength="4"
                     android:layout_width="0dp"
                     android:layout_weight="1" />
             </LinearLayout>
@@ -167,18 +173,20 @@
                     android:hint="@string/delivery_days_before_time"
                     style="@style/upload_product_item_field"
                     android:background="@drawable/curve_left_bg"
-                    android:inputType="number"
+                    android:layout_weight="1"
+                    android:inputType="numberSigned"
                     android:layout_width="0dp"
-                    android:layout_weight="1"/>
+                    android:maxLength="1" />
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:inputType="number"
                     android:id="@+id/delivery_days_after_time"
                     android:hint="@string/delivery_days_after_time"
                     style="@style/upload_product_item_field"
                     android:background="@drawable/curve_right_bg"
                     android:layout_width="0dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:inputType="numberSigned"
+                    android:maxLength="1" />
             </LinearLayout>
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/tv_aadhar_number_no_field"

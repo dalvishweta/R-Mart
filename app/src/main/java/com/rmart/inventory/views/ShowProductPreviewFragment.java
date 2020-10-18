@@ -50,7 +50,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     private RecyclerView recyclerView;
     private ProductResponse product;
     private boolean isEdit;
-    private AutoScrollViewPager viewPager;
+    private AutoScrollViewPager autoScrollViewPager;
     //private APIStockListResponse apiStockListResponse;
     private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryInDays;
     private TabLayout dotIndicatorLayoutField;
@@ -138,7 +138,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         tvDeliveryInDays = view.findViewById(R.id.delivery);
         tvProductExpiry = view.findViewById(R.id.product_expiry);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        viewPager = view.findViewById(R.id.view_pager);
+        autoScrollViewPager = view.findViewById(R.id.view_pager);
         AppCompatButton delete = view.findViewById(R.id.unit_delete);
         AppCompatButton edit = view.findViewById(R.id.edit);
         dotIndicatorLayoutField = view.findViewById(R.id.product_images_dot_indicator_field);
@@ -146,14 +146,14 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
             showProductPreviewSelected();
         });
 
-        viewPager.startAutoScroll();
-        viewPager.setInterval(1000);
-        viewPager.setCycle(true);
-        viewPager.setStopScrollWhenTouch(true);
+        autoScrollViewPager.startAutoScroll();
+        autoScrollViewPager.setInterval(1000);
+        autoScrollViewPager.setCycle(true);
+        autoScrollViewPager.setStopScrollWhenTouch(true);
 
         if (isEdit) {
-            edit.setOnClickListener(view1 -> mListener.updateProduct(product, true));
-            delete.setOnClickListener(view1 -> {
+            edit.setOnClickListener(v -> mListener.updateProduct(product, true));
+            delete.setOnClickListener(v -> {
                 progressDialog.show();
                 VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
                 vendorInventoryService.deleteProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<BaseResponse>() {
@@ -199,7 +199,6 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         } else {
             showDialog(getString(R.string.no_video_link_found));
         }
-
     }
 
     private final CallBackInterface callBackInterface = pObject -> {
@@ -209,9 +208,9 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     private void updateUI() {
         List<ImageURLResponse> imagesList = product.getImageDataObject();
         ImageAdapter imageAdapter = new ImageAdapter(requireContext(), imagesList);
-        viewPager.setAdapter(imageAdapter);
+        autoScrollViewPager.setAdapter(imageAdapter);
         dotIndicatorLayoutField.setVisibility(imagesList.size() == 1 ? View.GONE : View.VISIBLE);
-        dotIndicatorLayoutField.setupWithViewPager(viewPager);
+        dotIndicatorLayoutField.setupWithViewPager(autoScrollViewPager);
         tvProductName.setText(product.getProductName());
         /*for (UnitObject unitObject: product.getUnitObjects()) {
             unitObject.setDisplayUnitValue(Objects.requireNonNull(stockList.get(unitObject.getStockID())).getStockName());

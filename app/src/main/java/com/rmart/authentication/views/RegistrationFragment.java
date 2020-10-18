@@ -7,6 +7,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
+
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -20,11 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatTextView;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +33,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
 
     AppCompatEditText tvFirstName, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
 
-    ArrayList<RegistrationFeeStructure> registrationFeeStructures = new ArrayList<>();
+    ArrayList<RegistrationFeeStructure> registrationFeeStructuresList = new ArrayList<>();
     public RegistrationFragment() {
         // Required empty public constructor
     }
@@ -51,9 +51,9 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     }
 
     private void getFeeDetails() {
-        registrationFeeStructures.clear();
+        registrationFeeStructuresList.clear();
         RegistrationFeeStructure registration = new RegistrationFeeStructure();
-        registration.setPayType("Registration fee");
+        registration.setPayType(getString(R.string.registration_fee));
         registration.setAmount("2000");
 
         RegistrationFeeStructure gst = new RegistrationFeeStructure();
@@ -61,12 +61,12 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         gst.setAmount("260");
 
         RegistrationFeeStructure total = new RegistrationFeeStructure();
-        total.setPayType("Total amount");
+        total.setPayType(getString(R.string.total_amount));
         total.setAmount("2260");
 
-        registrationFeeStructures.add(registration);
-        registrationFeeStructures.add(gst);
-        registrationFeeStructures.add(total);
+        registrationFeeStructuresList.add(registration);
+        registrationFeeStructuresList.add(gst);
+        registrationFeeStructuresList.add(total);
     }
 
     @Override
@@ -81,14 +81,15 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         tvPassword = view.findViewById(R.id.password);
         tvConformPassword = view.findViewById(R.id.confirm_password);
         LinearLayout  paymentBase = view.findViewById(R.id.payment_base);
+        paymentBase.removeAllViews();
         if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
             paymentBase.setVisibility(View.VISIBLE);
             for (RegistrationFeeStructure feeStructure :
-                    registrationFeeStructures) {
-                LinearLayout row = (LinearLayout) requireActivity().getLayoutInflater().inflate(R.layout.layout, null);
-                ((AppCompatTextView)row.findViewById(R.id.pay_type)).setText(feeStructure.getPayType());
-                ((AppCompatTextView)row.findViewById(R.id.pay_amt)).setText(feeStructure.getAmount());
-                paymentBase.addView(row);
+                    registrationFeeStructuresList) {
+                View v = View.inflate(requireActivity(), R.layout.layout, null);
+                ((AppCompatTextView) v.findViewById(R.id.pay_type)).setText(feeStructure.getPayType());
+                ((AppCompatTextView) v.findViewById(R.id.pay_amt)).setText(feeStructure.getAmount());
+                paymentBase.addView(v);
             }
             register.setText(R.string.proceed_to_pay);
         } else {
@@ -158,9 +159,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
                                             data.getRsaKeyResponseDetails().setUserMobileNumber(mobileNumber);
                                             mListener.proceedToPayment(data.getRsaKeyResponseDetails());
                                         } else {
-                                            showDialog("", otpMsg, (click, i) -> {
-                                                mListener.validateOTP(mobileNumber, false);
-                                            });
+                                            showDialog("", otpMsg, (click, i) -> mListener.validateOTP(mobileNumber, false));
                                         }
 
                                     } else {

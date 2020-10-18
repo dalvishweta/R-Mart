@@ -6,13 +6,12 @@
     android:minHeight="30dp">
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_weight="1.5"
-        android:gravity="center|left"
+        android:gravity="center|start"
         android:id="@+id/pay_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:background="@android:color/transparent"
-        android:text="Registration"
         android:textColor="@color/white"
         android:maxLines="1"
         android:textSize="18sp" />
@@ -23,19 +22,18 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:background="@android:color/transparent"
-        android:text=" : "
+        android:text="@string/colon"
         android:maxLength="5"
         android:maxLines="1"
         android:textSize="18sp" />
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_weight="1"
-        android:gravity="center|right"
+        android:gravity="center|end"
         android:id="@+id/pay_amt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:background="@android:color/transparent"
-        android:text="2000"
         android:textColor="@color/white"
         android:maxLines="1"
         android:textSize="18sp" />

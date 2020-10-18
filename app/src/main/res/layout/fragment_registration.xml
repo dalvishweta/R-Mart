@@ -215,9 +215,9 @@
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:text="Payment information"
+                android:text="@string/payment_information"
                 android:textColor="@color/white"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
@@ -229,155 +229,8 @@
                 android:layout_margin="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <!--<LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight="1.5"
-                        android:gravity="center|left"
-                        android:id="@+id/reg_text"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:background="@android:color/transparent"
-                        android:text="Registration"
-                        android:textColor="@color/white"
-                        android:maxLines="1"
-                        android:minHeight="50dp"
-                        android:textSize="18sp" />
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight=".5"
-                        android:gravity="center"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:background="@android:color/transparent"
-                        android:text=" : "
-                        android:maxLength="5"
-                        android:maxLines="1"
-                        android:minHeight="50dp"
-                        android:textSize="18sp" />
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight="1"
-                        android:gravity="center|right"
-                        android:id="@+id/reg_amt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:background="@android:color/transparent"
-                        android:text="2000"
-                        android:textColor="@color/white"
-                        android:maxLines="1"
-                        android:minHeight="50dp"
-                        android:textSize="18sp" />
-                </LinearLayout>-->
-                <!--<LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight="1.5"
-                        android:gravity="center|left"
-                        android:id="@+id/gst_text"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:background="@android:color/transparent"
-                        android:text="GST 13%"
-                        android:textColor="@color/white"
-                        android:maxLines="1"
-                        android:minHeight="50dp"
-                        android:textSize="18sp" />
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight=".5"
-                        android:gravity="center"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:background="@android:color/transparent"
-                        android:text=" : "
-                        android:maxLength="5"
-                        android:maxLines="1"
-                        android:minHeight="50dp"
-                        android:textSize="18sp" />
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight="1"
-                        android:gravity="center|right"
-                        android:id="@+id/gst_amt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:background="@android:color/transparent"
-                        android:text="260"
-                        android:textColor="@color/white"
-                        android:maxLines="1"
-                        android:minHeight="50dp"
-                        android:textSize="18sp" />
-                </LinearLayout>-->
-                <!--<LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight="1.5"
-                        android:gravity="center|left"
-                        android:id="@+id/total_text"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:background="@android:color/transparent"
-                        android:text="Total amount"
-                        android:textColor="@color/white"
-                        android:fontFamily="@font/roboto_bold"
-                        android:maxLines="1"
-                        android:minHeight="50dp"
-                        android:textSize="18sp" />
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight=".5"
-                        android:gravity="center"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:background="@android:color/transparent"
-                        android:text=" : "
-                        android:maxLength="5"
-                        android:maxLines="1"
-                        android:minHeight="50dp"
-                        android:textSize="18sp" />
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_weight="1"
-                        android:gravity="center|right"
-                        android:id="@+id/total_amt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:background="@android:color/transparent"
-                        android:text="2260"
-                        android:textColor="@color/white"
-                        android:fontFamily="@font/roboto_bold"
-                        android:maxLines="1"
-                        android:minHeight="50dp"
-                        android:textSize="18sp" />
-                </LinearLayout>-->
+                android:layout_height="wrap_content">
             </LinearLayout>
-
-            <!--
-            <androidx.appcompat.widget.AppCompatTextView
-                android:gravity="center"
-                android:layout_marginTop="20dp"
-                android:id="@+id/payment_text"
-                android:text="@string/payment_text"
-                android:layout_width="match_parent"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:textColor="@color/white"
-                android:minHeight="50dp"
-                android:paddingEnd="10dp"
-                android:paddingStart="10dp"
-                android:textSize="16sp" />
--->
-
         </LinearLayout>
     </ScrollView>
 

@@ -316,4 +316,7 @@
     <string name="you_tube_error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
     <string name="show_product_preview">Show Product Preview</string>
     <string name="no_video_link_found">No Video Link Found</string>
+    <string name="payment_information">Payment information</string>
+    <string name="registration_fee">Registration Fee</string>
+    <string name="total_amount">Total amount</string>
 </resources>
