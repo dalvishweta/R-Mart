@@ -83,6 +83,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         LinearLayout  paymentBase = view.findViewById(R.id.payment_base);
         paymentBase.removeAllViews();
         if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
+            paymentBase.removeAllViews();
             paymentBase.setVisibility(View.VISIBLE);
             for (RegistrationFeeStructure feeStructure :
                     registrationFeeStructuresList) {

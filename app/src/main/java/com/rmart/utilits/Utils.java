@@ -52,6 +52,7 @@ public class Utils {
     public static final String BRAND = "View by brand";
     public static final String CATEGORY = "View by category";
     public static final String SUB_CATEGORY = "View by sub category";
+    public static final String SUB_CATEGORY_PRODUCT = "Sub category products";
 
     public static boolean isValidMobile(String phone) {
         String regex = "[0-9]+";

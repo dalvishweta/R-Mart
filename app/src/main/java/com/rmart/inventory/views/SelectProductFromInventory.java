@@ -175,7 +175,6 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                     }
                     progressDialog.dismiss();
                 }
-
                 @Override
                 public void onFailure(@NotNull Call<APIProductListResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
@@ -209,7 +208,39 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                     }
                     progressDialog.dismiss();
                 }
+                @Override
+                public void onFailure(@NotNull Call<APIProductListResponse> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                    showDialog("", t.getMessage());
+                }
+            });
+        }  else if (listType.equalsIgnoreCase(Utils.SUB_CATEGORY_PRODUCT)) {
+            view.findViewById(R.id.sort).setVisibility(View.GONE);
+            progressDialog.show();
+            apiService.getSubCategoryProductsList("0", "100", id).enqueue(new Callback<APIProductListResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<APIProductListResponse> call, @NotNull Response<APIProductListResponse> response) {
+                    if (response.isSuccessful()) {
+                        APIProductListResponse data = response.body();
+                        if (data != null) {
+                            if (data.getStatus().equals(Utils.SUCCESS)) {
+                                products = data.getProductList();
+                                for (ProductResponse productResponse: products) {
+                                    productResponse.setType(Utils.PRODUCT);
+                                }
+                                updateList();
+                            } else {
+                                showDialog("", data.getMsg());
+                            }
+                        } else {
+                            showDialog(getString(R.string.no_information_available));
+                        }
 
+                    } else {
+                        showDialog("", response.message());
+                    }
+                    progressDialog.dismiss();
+                }
                 @Override
                 public void onFailure(@NotNull Call<APIProductListResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
@@ -245,7 +276,6 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                     }
                     progressDialog.dismiss();
                 }
-
                 @Override
                 public void onFailure(@NotNull Call<APIProductListResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
@@ -272,6 +302,8 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                     mListener.updateProduct(product, false);
                 } else if (product.getType().equalsIgnoreCase(Utils.CATEGORY)) {
                     mListener.addProductToInventory(Utils.SUB_CATEGORY, product.getId());
+                } else if(product.getType().equalsIgnoreCase(Utils.SUB_CATEGORY)) {
+                    mListener.addProductToInventory(Utils.SUB_CATEGORY_PRODUCT, product.getId());
                 }
             }, 3);
             productRecycleView.setAdapter(productAdapter);
