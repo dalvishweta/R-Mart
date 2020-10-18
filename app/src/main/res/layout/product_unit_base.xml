@@ -37,7 +37,7 @@
         style="@style/product_unit_in_active"/>
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/unit_delete"
+        android:id="@+id/unit_edit"
         android:background="@drawable/edit"
         android:layout_width="20dp"
         android:layout_height="20dp"/>

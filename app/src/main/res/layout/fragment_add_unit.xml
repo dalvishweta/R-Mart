@@ -67,7 +67,8 @@
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/text_style_medium_normal"
                 android:id="@+id/display_unit"
-                android:layout_width="60dp"
+                android:layout_width="80dp"
+                android:layout_marginEnd="10dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"

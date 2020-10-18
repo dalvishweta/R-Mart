@@ -121,7 +121,7 @@ android {
             /*versionNameSuffix "-retailer"*/
             buildConfigField("String", "ROLE_ID", '"4"')
             buildConfigField("String", "LOGIN_USERNAME", '"7416226233"')
-            buildConfigField("String", "LOGIN_PASSWORD", '"12345"')
+            buildConfigField("String", "LOGIN_PASSWORD", '"1234"')
         }
         delivery {
             dimension "rokard_mart"

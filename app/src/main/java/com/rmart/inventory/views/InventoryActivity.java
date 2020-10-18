@@ -97,7 +97,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
         AddUnitDialog addUnitDialog = AddUnitDialog.newInstance(unitValue,false, apiStockListResponse, unitMeasurements);
         addUnitDialog.setCancelable(false);
         addUnitDialog.setTargetFragment(fragment, requestID);
-        addUnitDialog.show(fm, "AddUnitDialog");
+        addUnitDialog.show(fm, AddUnitDialog.class.getName());
     }
 
     @Override
@@ -125,6 +125,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     public void onClick(View view) {
         getToActivity(view.getId(), view.getId() == R.id.retailer_inventory);
     }
+
     public void getStockList() {
         APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
         apiService.getAPIStockList().enqueue(new Callback<APIStockListResponse>() {

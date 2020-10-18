@@ -100,6 +100,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     private CustomNetworkImageView ivProductImageFourField;
     private CustomNetworkImageView ivProductImageFiveField;
     private ProductUnitAdapter unitBaseAdapter;
+    private ArrayList<UnitObject> unitsList = new ArrayList<>();
 
 
     public AddProductToInventory() {
@@ -127,10 +128,9 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             } else if (status.equalsIgnoreCase(Constants.TAG_EDIT_PRODUCT_IMAGE)) {
                 //selectedPosition = (int) value;
                 photoUploadSelected();
-            } else if (status.equalsIgnoreCase(Constants.TAG_DELETE)) {
+            } else if (status.equalsIgnoreCase(Constants.TAG_EDIT_UNIT)) {
                 UnitObject unitObject = (UnitObject) value;
-                UnitObject unitObject1 = new UnitObject(unitObject);
-                mListener.addUnit(unitObject1,new APIUnitMeasures(unitMeasurements), this, INT_UPDATE_UNIT);
+                mListener.addUnit(unitObject, new APIUnitMeasures(unitMeasurements), this, INT_UPDATE_UNIT);
                 // deleteUnits((UnitObject) value);
             }/* else if (status.equalsIgnoreCase(Constants.TAG_EDIT_UNIT)) {
                 mListener.addUnit((UnitObject) value,new APIUnitMeasures(unitMeasurements), this, INT_UPDATE_UNIT);
@@ -345,6 +345,9 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         ivProductImageFourField.setOnClickListener(this);
         ivProductImageFiveField.setOnClickListener(this);
 
+        unitBaseAdapter = new ProductUnitAdapter(unitsList, callBackListener, true);
+        unitsRecyclerView.setAdapter(unitBaseAdapter);
+
         updateUI();
     }
 
@@ -355,6 +358,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         switch (id) {
             case R.id.add_unit:
                 UnitObject newObject = new UnitObject();
+                newObject.setProductUnitID("");
+                newObject.setTimeStamp();
                 // newObject.setDefaultValues();
                 mListener.addUnit(newObject, new APIUnitMeasures(unitMeasurements), this, INT_ADD_UNIT);
                 break;
@@ -543,18 +548,15 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     }
 
     private void updateList() {
-
-        unitBaseAdapter = new ProductUnitAdapter(mClonedProduct.getUnitObjects(), callBackListener, true);
-        unitsRecyclerView.setAdapter(unitBaseAdapter);
+        unitBaseAdapter.updateItems(unitsList);
+        unitBaseAdapter.notifyDataSetChanged();
     }
 
     private void updateUnitsUI(UnitObject unitObject) {
-        ArrayList<UnitObject> unitsList = mClonedProduct.getUnitObjects();
         int index = unitsList.indexOf(unitObject);
         if (index > -1) {
             unitsList.remove(index);
             unitBaseAdapter.notifyItemRemoved(index);
-            mClonedProduct.setUnitObjects(unitsList);
         }
     }
 
@@ -584,7 +586,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
                     UnitObject unitData = (UnitObject) bundle.getSerializable(UNIT_VALUE);
-                    mClonedProduct.getUnitObjects().add(unitData);
+                    unitsList.add(unitData);
                     updateList();
                 }
             }
@@ -592,21 +594,34 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             if (data != null) {
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
-
                    if (bundle.getBoolean("IS_DELETED", false)) {
                        UnitObject unitData = (UnitObject) bundle.getSerializable(UNIT_VALUE);
-                       assert unitData != null;
-                       if (unitData.getTimeStamp() != -1) {
-                           for (int i = 0; i < mClonedProduct.getUnitObjects().size(); i++) {
-                               if (mClonedProduct.getUnitObjects().get(i).getTimeStamp() == unitData.getTimeStamp()) {
-                                   mClonedProduct.getUnitObjects().remove(i);
-                                   break;
+                       if (unitData != null) {
+                           if (unitData.getTimeStamp() != -1) {
+                               for (int i = 0; i < unitsList.size(); i++) {
+                                   if (unitsList.get(i).getTimeStamp() == unitData.getTimeStamp()) {
+                                       unitsList.remove(i);
+                                       unitBaseAdapter.updateItems(unitsList);
+                                       unitBaseAdapter.notifyDataSetChanged();
+                                       break;
+                                   }
+                               }
+                           } else {
+                               for (int i = 0; i < unitsList.size(); i++) {
+                                   if (unitsList.get(i).getProductUnitID().equalsIgnoreCase(unitData.getProductUnitID())) {
+                                       unitsList.remove(i);
+                                       unitBaseAdapter.updateItems(unitsList);
+                                       unitBaseAdapter.notifyDataSetChanged();
+                                       break;
+                                   }
                                }
                            }
                        } else {
-                           for (int i = 0; i < mClonedProduct.getUnitObjects().size(); i++) {
-                               if (mClonedProduct.getUnitObjects().get(i).getProductUnitID().equalsIgnoreCase(unitData.getProductUnitID())) {
-                                   mClonedProduct.getUnitObjects().remove(i);
+                           for (int i = 0; i < unitsList.size(); i++) {
+                               if (unitsList.get(i).getProductUnitID().equalsIgnoreCase(unitData.getProductUnitID())) {
+                                   unitsList.remove(i);
+                                   unitBaseAdapter.updateItems(unitsList);
+                                   unitBaseAdapter.notifyDataSetChanged();
                                    break;
                                }
                            }
@@ -616,24 +631,28 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                        UnitObject unitData = (UnitObject) bundle.getSerializable(UNIT_VALUE);
                        assert unitData != null;
                        if (unitData.getTimeStamp() != -1) {
-                           for (int i = 0; i < mClonedProduct.getUnitObjects().size(); i++) {
-                               if (mClonedProduct.getUnitObjects().get(i).getTimeStamp() == unitData.getTimeStamp()) {
-                                   mClonedProduct.getUnitObjects().remove(i);
-                                   mClonedProduct.getUnitObjects().add(i, unitData);
+                           for (int i = 0; i < unitsList.size(); i++) {
+                               if (unitsList.get(i).getTimeStamp() == unitData.getTimeStamp()) {
+                                   unitsList.remove(i);
+                                   unitsList.add(i, unitData);
+                                   unitBaseAdapter.updateItems(unitsList);
+                                   unitBaseAdapter.notifyDataSetChanged();
                                    break;
                                }
                            }
                        } else {
-                           for (int i = 0; i < mClonedProduct.getUnitObjects().size(); i++) {
-                               if (mClonedProduct.getUnitObjects().get(i).getProductUnitID().equalsIgnoreCase(unitData.getProductUnitID())) {
-                                   mClonedProduct.getUnitObjects().remove(i);
-                                   mClonedProduct.getUnitObjects().add(i, unitData);
+                           for (int i = 0; i < unitsList.size(); i++) {
+                               if (unitsList.get(i).getProductUnitID().equalsIgnoreCase(unitData.getProductUnitID())) {
+                                   unitsList.remove(i);
+                                   unitsList.add(i, unitData);
+                                   unitBaseAdapter.updateItems(unitsList);
+                                   unitBaseAdapter.notifyDataSetChanged();
                                    break;
                                }
                            }
                        }
                    }
-                    // mClonedProduct.getUnitObjects().add(unitData);
+                    // unitsList.add(unitData);
                     updateList();
                 }
             }

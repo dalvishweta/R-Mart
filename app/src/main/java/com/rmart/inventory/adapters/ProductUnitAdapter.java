@@ -32,6 +32,10 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
         this.canDelete = canDelete;
     }
 
+    public void updateItems(ArrayList<UnitObject> unitObjects) {
+        this.productUnitList = unitObjects;
+    }
+
     @NonNull
     @Override
     public ProductUnitAdapter.ProductUnitViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -39,7 +43,7 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
         View listItem;
         listItem = layoutInflater.inflate(R.layout.product_unit_base, parent, false);
         ProductUnitViewHolder productUnitViewHolder = new ProductUnitViewHolder(listItem);
-        productUnitViewHolder.delete.setVisibility(canDelete ? View.VISIBLE : View.GONE);
+        productUnitViewHolder.edit.setVisibility(canDelete ? View.VISIBLE : View.GONE);
         return productUnitViewHolder;
     }
 
@@ -47,7 +51,6 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProductUnitViewHolder holder, int position) {
         UnitObject unit = productUnitList.get(position);
-        holder.delete.setTag(unit);
         String finalCost = String.format("%s Rs", unit.getFinalCost());
         holder.tvFinalCost.setText(finalCost);
         String unitValue = String.format("%s %s", unit.getUnitNumber(), unit.getDisplayUnitValue());
@@ -68,7 +71,7 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
             holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer_single_line), unit.getDiscount() + "%"));
         }
 
-        holder.delete.setTag(position);
+        holder.edit.setTag(position);
         if (unit.getStockID().equalsIgnoreCase("5")) {
             holder.tvIUnitState.setTextColor(holder.itemView.getContext().getColor(R.color.colorPrimary));
         } else {
@@ -83,7 +86,7 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
 
     public class ProductUnitViewHolder extends RecyclerView.ViewHolder {
         public AppCompatTextView tvIUnitState, tvUnitValue, tvFinalCost, tvActual, tvOffer;
-        public AppCompatImageButton delete; // , edit;
+        public AppCompatImageButton edit; // , edit;
 
         public ProductUnitViewHolder(View listItem) {
             super(listItem);
@@ -92,12 +95,12 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
             tvActual = listItem.findViewById(R.id.sub_title_3);
             tvOffer = listItem.findViewById(R.id.offer);
             tvIUnitState = listItem.findViewById(R.id.unit_status);
-            delete = listItem.findViewById(R.id.unit_delete);
+            edit = listItem.findViewById(R.id.unit_edit);
             // edit = listItem.findViewById(R.id.edit);
-            delete.setOnClickListener(v -> {
+            edit.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
                 ContentModel contentModel = new ContentModel();
-                contentModel.setStatus(Constants.TAG_DELETE);
+                contentModel.setStatus(Constants.TAG_EDIT_UNIT);
                 contentModel.setValue(productUnitList.get(tag));
                 callBackInterface.callBackReceived(contentModel);
             });
