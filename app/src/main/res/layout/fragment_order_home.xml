@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="16dp"
     tools:context="com.rmart.orders.views.OrderHomeFragment">
+
     <LinearLayout
         android:id="@+id/accepted_orders"
         android:layout_width="match_parent"
@@ -32,6 +33,7 @@
                 android:src="@drawable/open_orders"
                 android:layout_width="0dp"
                 android:layout_weight="1.2"
+                android:contentDescription="@string/app_name"
                 android:layout_height="wrap_content"/>
             <LinearLayout
                 android:layout_gravity="center"

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.rmart.R;
-import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.ResendOTPResponse;
@@ -20,14 +19,17 @@ import org.jetbrains.annotations.NotNull;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class OTPFragment extends LoginBaseFragment implements TextWatcher {
+
     private static final String ARG_PARAM1 = "param1";
     public static final int INT_OTP_LENGTH = 4;
-    CustomEditTextWithErrorText otpEditText;
+    AppCompatEditText otpEditText;
     // private String mParam1;
     private String mParam2;
     private String mMobileNumber;
@@ -63,7 +65,7 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         otpEditText = view.findViewById(R.id.otp);
-        otpEditText.getAppCompatEditText().addTextChangedListener(this);
+        otpEditText.addTextChangedListener(this);
         view.findViewById(R.id.resend).setOnClickListener(view1 -> {
             resendOTP();
         });

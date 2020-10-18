@@ -2,6 +2,7 @@ package com.rmart.authentication.views;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,6 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 import com.rmart.R;
 import com.rmart.authentication.OnAuthenticationClickedListener;
-import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.ForgotPasswordResponse;
@@ -29,6 +29,8 @@ import retrofit2.Response;
 public class ForgotPasswordFragment extends LoginBaseFragment {
 
     private OnAuthenticationClickedListener mListener;
+    private AppCompatEditText etMobileNumber;
+
     public ForgotPasswordFragment() {
         // Required empty public constructor
     }
@@ -54,44 +56,43 @@ public class ForgotPasswordFragment extends LoginBaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        AppCompatEditText etMobileNumber = view.findViewById(R.id.mobile_number);
-        view.findViewById(R.id.forgot_password).setOnClickListener(view1 -> {
-            String mMobileNumber = Objects.requireNonNull(etMobileNumber.getText()).toString().trim();
-            if (mMobileNumber.length() == 0 || !Utils.isValidMobile(mMobileNumber)) {
-                showDialog("", getString(R.string.error_mobile));
-            } else {
-                progressDialog.show();
-                AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-                authenticationService.forgotPassword(mMobileNumber).enqueue(new Callback<ForgotPasswordResponse>() {
-                    @Override
-                    public void onResponse(@NotNull Call<ForgotPasswordResponse> call, @NotNull Response<ForgotPasswordResponse> response) {
-                        if (response.isSuccessful()) {
-                            ForgotPasswordResponse data = response.body();
-                            if (data != null) {
-                                if (data.getStatus().equalsIgnoreCase("Success")) {
-                                    showDialog("", data.getMsg() + " otp: " + data.getOtp(), (dialog, i) -> {
-                                        mListener.changePassword("otp", mMobileNumber);
-                                    });
-                                } else {
-                                    showDialog("", data.getMsg());
-                                }
-                            } else {
-                                showDialog(getString(R.string.no_information_available));
-                            }
-                        } else {
-                            showDialog("", response.message());
-                        }
-                        progressDialog.dismiss();
-                    }
+        etMobileNumber = view.findViewById(R.id.mobile_number);
+        view.findViewById(R.id.forgot_password).setOnClickListener(v -> forgotPasswordSelected());
+    }
 
-                    @Override
-                    public void onFailure(@NotNull Call<ForgotPasswordResponse> call, @NotNull Throwable t) {
-                        progressDialog.dismiss();
-                        showDialog("", t.getMessage());
+    private void forgotPasswordSelected() {
+        String mobileNumber = Objects.requireNonNull(etMobileNumber.getText()).toString().trim();
+        if (TextUtils.isEmpty(mobileNumber) || !Utils.isValidMobile(mobileNumber)) {
+            showDialog("", getString(R.string.error_mobile));
+            return;
+        }
+        progressDialog.show();
+        AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
+        authenticationService.forgotPassword(mobileNumber).enqueue(new Callback<ForgotPasswordResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<ForgotPasswordResponse> call, @NotNull Response<ForgotPasswordResponse> response) {
+                if (response.isSuccessful()) {
+                    ForgotPasswordResponse data = response.body();
+                    if (data != null) {
+                        if (data.getStatus().equalsIgnoreCase("Success")) {
+                            showDialog("", String.format("%s otp: %s", data.getMsg(), data.getOtp()), (dialog, i) -> mListener.changePassword("otp", mobileNumber));
+                        } else {
+                            showDialog(data.getMsg());
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
                     }
-                });
+                } else {
+                    showDialog(response.message());
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ForgotPasswordResponse> call, @NotNull Throwable t) {
+                progressDialog.dismiss();
+                showDialog(t.getMessage());
             }
         });
-        
     }
 }

@@ -11,7 +11,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.rmart.R;
-import com.rmart.baseclass.views.CustomEditTextWithErrorText;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.pojos.ChangePasswordResponse;
 import com.rmart.utilits.services.AuthenticationService;
@@ -75,7 +74,7 @@ public class ChangePassword extends LoginBaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         AppCompatEditText firstField = view.findViewById(R.id.current_password);
-        if (mOTP.length() > 0) {
+        if (TextUtils.isEmpty(mOTP)) {
             firstField.setHint(R.string.otp);
         } else {
             firstField.setHint(R.string.hint_current_password);

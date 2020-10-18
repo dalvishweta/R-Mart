@@ -1,5 +1,6 @@
 package com.rmart.baseclass.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -37,6 +38,7 @@ public class CustomEditTextWithErrorText extends LinearLayout {
         initView(attrs);
     }
 
+    @SuppressLint("NonConstantResourceId")
     private void initView(AttributeSet attrs) {
         View view = inflate(getContext(), R.layout.custom_edittext_with_error_text, this);
         appCompatEditText = view.findViewById(R.id.edit_text_view);
@@ -88,12 +90,5 @@ public class CustomEditTextWithErrorText extends LinearLayout {
             }
             a.recycle();
         }
-    }
-
-    public AppCompatTextView getErrorTextView(){
-        return errorTextView;
-    }
-    public AppCompatEditText getAppCompatEditText(){
-        return appCompatEditText;
     }
 }

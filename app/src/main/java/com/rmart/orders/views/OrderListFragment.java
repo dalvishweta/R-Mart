@@ -1,6 +1,7 @@
 package com.rmart.orders.views;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import com.rmart.utilits.pojos.orders.Order;
 import com.rmart.utilits.pojos.orders.OrdersByStatus;
 import com.rmart.utilits.pojos.orders.StateOfOrders;
 import com.rmart.utilits.services.OrderService;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -82,17 +85,20 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
         orderService.getStateOfOrder(startIndex, mobileNumber, status).enqueue(new Callback<OrdersByStatus>() {
             @Override
-            public void onResponse(Call<OrdersByStatus> call, Response<OrdersByStatus> response) {
-                if(response.isSuccessful()) {
+            public void onResponse(@NotNull Call<OrdersByStatus> call, @NotNull Response<OrdersByStatus> response) {
+                if (response.isSuccessful()) {
                     progressDialog.dismiss();
                     data = response.body();
                     orders = data.getOrders();
-                    assert data != null;
-                    if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        startIndex = data.getEndIndex();
-                        updateUI();
+                    if (data != null) {
+                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            startIndex = data.getEndIndex();
+                            updateUI();
+                        } else {
+                            showDialog(data.getMsg());
+                        }
                     } else {
-                        showDialog(data.getMsg());
+                        showDialog(getString(R.string.no_information_available));
                     }
                 } else {
                     showDialog(response.message());
@@ -100,7 +106,7 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
             }
 
             @Override
-            public void onFailure(Call<OrdersByStatus> call, Throwable t) {
+            public void onFailure(@NotNull Call<OrdersByStatus> call, @NotNull Throwable t) {
                 showDialog(t.getMessage());
                 progressDialog.dismiss();
             }
@@ -112,7 +118,7 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
         // private MyOrdersViewModel myOrdersViewModel;
         OrdersListAdapter ordersListAdapter = new OrdersListAdapter(orders, this);
         String count  = data.getOrdersCount();
-        if (null == count || count.length()<=0) {
+        if (TextUtils.isEmpty(count)) {
             count = "0";
         }
         tvTotalOrder.setText(String.format(getResources().getString(R.string.total_orders), count,  stateOfOrders.getStatusName()));
