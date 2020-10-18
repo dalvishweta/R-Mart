@@ -54,7 +54,7 @@ public class ForgotPasswordFragment extends LoginBaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        AppCompatEditText etMobileNumber = ((CustomEditTextWithErrorText) view.findViewById(R.id.mobile_number)).getAppCompatEditText();
+        AppCompatEditText etMobileNumber = view.findViewById(R.id.mobile_number);
         view.findViewById(R.id.forgot_password).setOnClickListener(view1 -> {
             String mMobileNumber = Objects.requireNonNull(etMobileNumber.getText()).toString().trim();
             if (mMobileNumber.length() == 0 || !Utils.isValidMobile(mMobileNumber)) {

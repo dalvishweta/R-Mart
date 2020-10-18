@@ -74,14 +74,14 @@ public class ChangePassword extends LoginBaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        AppCompatEditText firstField = ((CustomEditTextWithErrorText) view.findViewById(R.id.current_password)).getAppCompatEditText();
+        AppCompatEditText firstField = view.findViewById(R.id.current_password);
         if (mOTP.length() > 0) {
             firstField.setHint(R.string.otp);
         } else {
             firstField.setHint(R.string.hint_current_password);
         }
-        AppCompatEditText password = ((CustomEditTextWithErrorText) view.findViewById(R.id.password)).getAppCompatEditText();
-        AppCompatEditText confirmPassword = ((CustomEditTextWithErrorText) view.findViewById(R.id.confirm_password)).getAppCompatEditText();
+        AppCompatEditText password = view.findViewById(R.id.password);
+        AppCompatEditText confirmPassword = view.findViewById(R.id.confirm_password);
 
         view.findViewById(R.id.register).setOnClickListener(view1 -> {
             String _password = Objects.requireNonNull(password.getText()).toString().trim();
