@@ -88,9 +88,9 @@ public class ChangePassword extends LoginBaseFragment {
             String otp = Objects.requireNonNull(firstField.getText()).toString().trim();
             if (TextUtils.isEmpty(otp)) {
                 showDialog("", getString(R.string.error_otp));
-            } else if (TextUtils.isEmpty(_password)) {
+            } else if (TextUtils.isEmpty(_password) && _password.length() < 5) {
                 showDialog("", getString(R.string.error_empty_password));
-            } else if (TextUtils.isEmpty(_confirmPassword)) {
+            } else if (TextUtils.isEmpty(_confirmPassword) && _confirmPassword.length() < 5) {
                 showDialog("", getString(R.string.error_empty_confirm_password));
             } else if (!_password.equals(_confirmPassword)) {
                 showDialog("", getString(R.string.mismatch_confirm_password));

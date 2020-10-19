@@ -81,40 +81,44 @@
         android:layout_toStartOf="@id/iv_message_field"
         android:src="@drawable/phone" />
 
-    <TextView
-        android:id="@+id/tv_shop_name_field"
-        style="@style/text_style_medium_bold"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:layout_toStartOf="@id/iv_call_field"
+        android:layout_marginTop="15dp"
         android:layout_toEndOf="@id/shop_image_layout"
-        android:textColor="@color/black" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_view_address_field"
-        style="@style/text_style_medium_normal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="10dp"
-        android:layout_toStartOf="@id/iv_call_field"
-        android:layout_toEndOf="@id/shop_image_layout"
-        android:background="@android:color/transparent"
-        android:gravity="center_vertical"
-        android:maxLines="1"
-        android:textColor="@color/blue_color" />
+        <TextView
+            android:id="@+id/tv_shop_name_field"
+            style="@style/text_style_medium_bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black" />
 
-    <TextView
-        android:id="@+id/tv_phone_no_field"
-        style="@style/text_style_medium_normal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@id/iv_call_field"
-        android:layout_toEndOf="@id/shop_image_layout"
-        android:textColor="@color/item_sub_title_color"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="10dp" />
+        <TextView
+            android:id="@+id/tv_view_address_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@android:color/transparent"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textColor="@color/blue_color" />
+
+        <TextView
+            android:id="@+id/tv_phone_no_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:textColor="@color/item_sub_title_color"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="10dp" />
+
+    </LinearLayout>
 </RelativeLayout>

@@ -45,6 +45,8 @@
             style="@style/product_unit_offer"
             android:layout_width="0dp"
             android:layout_weight="1.5"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatTextView

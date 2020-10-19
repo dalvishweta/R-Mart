@@ -134,9 +134,9 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             showDialog("", getString(R.string.required_mail));
         } else if (!Utils.isValidEmail(email)) {
             showDialog("", getString(R.string.error_mail));
-        } else if (password.length() <= 2) {
+        } else if (password.length() < 5) {
             showDialog("", getString(R.string.error_empty_password));
-        } else if (conformPassword.length() <= 2) {
+        } else if (conformPassword.length() < 5) {
             showDialog("", getString(R.string.error_empty_confirm_password));
         } else if (!conformPassword.equals(password)) {
             showDialog("", getString(R.string.mismatch_confirm_password));
