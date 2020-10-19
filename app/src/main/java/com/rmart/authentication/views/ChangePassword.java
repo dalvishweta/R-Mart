@@ -75,9 +75,9 @@ public class ChangePassword extends LoginBaseFragment {
         super.onViewCreated(view, savedInstanceState);
         AppCompatEditText firstField = view.findViewById(R.id.current_password);
         if (TextUtils.isEmpty(mOTP)) {
-            firstField.setHint(R.string.otp);
-        } else {
             firstField.setHint(R.string.hint_current_password);
+        } else {
+            firstField.setHint(R.string.otp);
         }
         AppCompatEditText password = view.findViewById(R.id.password);
         AppCompatEditText confirmPassword = view.findViewById(R.id.confirm_password);
