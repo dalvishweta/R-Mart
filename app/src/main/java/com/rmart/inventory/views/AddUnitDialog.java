@@ -1,6 +1,7 @@
 package com.rmart.inventory.views;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,18 +28,29 @@ import androidx.fragment.app.DialogFragment;
 
 import com.rmart.R;
 import com.rmart.baseclass.InputFilterMinMax;
+import com.rmart.baseclass.views.CustomLoadingDialog;
 import com.rmart.inventory.adapters.CustomStringAdapter;
 import com.rmart.inventory.models.APIUnitMeasures;
 import com.rmart.inventory.models.UnitObject;
+import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
+import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.APIStockResponse;
 import com.rmart.utilits.pojos.APIUnitMeasureResponse;
+import com.rmart.utilits.pojos.ShowProductResponse;
+import com.rmart.utilits.services.VendorInventoryService;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.rmart.inventory.views.AddProductToInventory.UNIT_VALUE;
 
@@ -310,13 +322,12 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                     unitObject.setStockID(apiStockResponse.getStockID());
                 }
             }
-            String _discount = Objects.requireNonNull(discount.getText()).toString();
-            if (_discount.length() <= 0) {
+            String _discount = Objects.requireNonNull(discount.getText()).toString().trim();
+            if (TextUtils.isEmpty(_discount)) {
                 _discount = "0";
-                // Toast.makeText(getContext(), R.string.error_discount, Toast.LENGTH_SHORT).show();
             }
-            String _actualPrice = Objects.requireNonNull(actualPrice.getText()).toString();
-            String _quantity = Objects.requireNonNull(quantity.getText()).toString();
+            String _actualPrice = Objects.requireNonNull(actualPrice.getText()).toString().trim();
+            String _quantity = Objects.requireNonNull(quantity.getText()).toString().trim();
             int valueOfUnitValue = Utils.getIntegerValueFromString(valueOfUnit.getText().toString().trim());
             if (valueOfUnitValue <= 0) {
                 Toast.makeText(getContext(), R.string.error_unit_value, Toast.LENGTH_SHORT).show();
@@ -334,7 +345,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 i.putExtra(UNIT_VALUE, unitObject);
                 //i.putExtra("IS_DELETED", false);
                 Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
-                dismiss();
+                closeDialog();
             }
         } else if (view.getId() == R.id.cancel) {
             showDialog("Are you sure you want to delete this unit from your Inventory? ", (dialogInterface, i) -> {
@@ -351,49 +362,52 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         }
     }
     private void deleteUnits() {
-        Intent intent = new Intent();
-        intent.putExtra(UNIT_VALUE, unitObject);
-        intent.putExtra("IS_DELETED", true);
-        Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
-        dismiss();
-
-        /*Dialog progressDialog = CustomLoadingDialog.getInstance(getActivity());
-        progressDialog.show();
-        VendorInventoryService inventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
-        inventoryService.deleteProductUnit(MyProfile.getInstance().getUserID(), unitObject.getProductUnitID()).enqueue(new Callback<ShowProductResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<ShowProductResponse> call, @NotNull Response<ShowProductResponse> response) {
-                if (response.isSuccessful()) {
-                    ShowProductResponse data = response.body();
-                    if (data != null) {
-                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                            showDialog(data.getMsg(), (dialogInterface, i) -> {
-                                Intent intent = new Intent();
-                                intent.putExtra(UNIT_VALUE, unitObject);
-                                intent.putExtra("IS_DELETED", true);
-                                Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
-                                dismiss();
-                            }, false);
-                            AddUnitDialog.this.dismiss();
+        if(!TextUtils.isEmpty(unitObject.getProductUnitID())) {
+            Dialog progressDialog = CustomLoadingDialog.getInstance(getActivity());
+            progressDialog.show();
+            VendorInventoryService inventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
+            inventoryService.deleteProductUnit(MyProfile.getInstance().getUserID(), unitObject.getProductUnitID()).enqueue(new Callback<ShowProductResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<ShowProductResponse> call, @NotNull Response<ShowProductResponse> response) {
+                    if (response.isSuccessful()) {
+                        ShowProductResponse data = response.body();
+                        if (data != null) {
+                            if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                showDialog(data.getMsg(), (dialogInterface, i) -> {
+                                    Intent intent = new Intent();
+                                    intent.putExtra(UNIT_VALUE, unitObject);
+                                    intent.putExtra("IS_DELETED", true);
+                                    Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+                                    closeDialog();
+                                }, false);
+                                closeDialog();
+                            } else {
+                                showDialog(data.getMsg(), null, false);
+                            }
                         } else {
-                            showDialog(data.getMsg(), null, false);
+                            showDialog(getString(R.string.no_information_available), null, false);
                         }
                     } else {
-                        showDialog(getString(R.string.no_information_available), null, false);
+                        showDialog(response.message(), null, false);
                     }
-                } else {
-                    showDialog(response.message(), null, false);
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<ShowProductResponse> call, @NotNull Throwable t) {
-                showDialog(t.getMessage(), null, false);
-                progressDialog.dismiss();
-            }
-        });*/
+                @Override
+                public void onFailure(@NotNull Call<ShowProductResponse> call, @NotNull Throwable t) {
+                    showDialog(t.getMessage(), null, false);
+                    progressDialog.dismiss();
+                }
+            });
+        } else {
+            Intent intent = new Intent();
+            intent.putExtra(UNIT_VALUE, unitObject);
+            intent.putExtra("IS_DELETED", true);
+            Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
+            closeDialog();
+        }
     }
+
     protected void showDialog(String msg, DialogInterface.OnClickListener onPositiveClick, boolean cancelable) {
         try {
             AlertDialog.Builder builder = new
@@ -415,6 +429,13 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             }
         } catch (Exception e) {
             // LoggerInfo.errorLog("show dialog exception", e.getMessage());
+        }
+    }
+
+    private void closeDialog() {
+        Dialog dialog = getDialog();
+        if(dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
         }
     }
 }

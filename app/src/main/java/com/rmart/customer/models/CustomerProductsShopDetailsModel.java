@@ -62,6 +62,14 @@ public class CustomerProductsShopDetailsModel implements Serializable {
     @Expose
     private String emailId;
 
+    @SerializedName("shop_latitude")
+    @Expose
+    private Double shopLatitude;
+
+    @SerializedName("shop_longitude")
+    @Expose
+    private Double shopLongitude;
+
     public String getShopMobileNo() {
         return shopMobileNo;
     }
@@ -182,6 +190,22 @@ public class CustomerProductsShopDetailsModel implements Serializable {
         this.emailId = emailId;
     }
 
+    public Double getShopLatitude() {
+        return shopLatitude;
+    }
+
+    public void setShopLatitude(Double shopLatitude) {
+        this.shopLatitude = shopLatitude;
+    }
+
+    public Double getShopLongitude() {
+        return shopLongitude;
+    }
+
+    public void setShopLongitude(Double shopLongitude) {
+        this.shopLongitude = shopLongitude;
+    }
+
     @NotNull
     @Override
     public String toString() {
@@ -204,5 +228,4 @@ public class CustomerProductsShopDetailsModel implements Serializable {
         CustomerProductsShopDetailsModel rhs = ((CustomerProductsShopDetailsModel) other);
         return new EqualsBuilder().append(shopId, rhs.shopId).isEquals();
     }
-
 }

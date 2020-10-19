@@ -30,11 +30,14 @@ import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
+import com.rmart.baseclass.DateTimeInterface;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.inventory.models.APIUnitMeasures;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.CustomDatePickerDialog;
+import com.rmart.utilits.DateUtilities;
 import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -90,7 +93,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     // Spinner productBrand;
     AppCompatEditText productRegionalName, deliveryDays, productDescription, tvProductVideoLink;
     AppCompatTextView expiry;
-    private RecyclerView unitsRecyclerView;
     APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
     private ArrayList<ImageURLResponse> images;
     private int selectedImagePosition = -1;
@@ -100,8 +102,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     private CustomNetworkImageView ivProductImageFourField;
     private CustomNetworkImageView ivProductImageFiveField;
     private ProductUnitAdapter unitBaseAdapter;
-    private ArrayList<UnitObject> unitsList = new ArrayList<>();
-
+    private final ArrayList<UnitObject> unitsList = new ArrayList<>();
+    private Calendar expiryDateCalendar = Calendar.getInstance();
 
     public AddProductToInventory() {
         // Required empty public constructor
@@ -238,6 +240,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             productRegionalName.setText(mClonedProduct.getRegionalName());
             productDescription.setText(mClonedProduct.getDescription());
             expiry.setText(mClonedProduct.getExpiry_date());
+            expiryDateCalendar = DateUtilities.getCalendarFromString(mClonedProduct.getExpiry_date());
             deliveryDays.setText(mClonedProduct.getDelivery_days());
             productBrand.setText(mClonedProduct.getBrandName());
             updateList();
@@ -258,7 +261,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         expiry = view.findViewById(R.id.expiry);
         expiry.setOnClickListener(this);
         deliveryDays = view.findViewById(R.id.delivery_days);
-        unitsRecyclerView = view.findViewById(R.id.unit_base);
+        RecyclerView unitsRecyclerView = view.findViewById(R.id.unit_base);
         tvProductVideoLink = view.findViewById(R.id.product_video_link);
 
         unitsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -335,7 +338,10 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         ivProductImageFiveField.setOnClickListener(this);
 
         unitsList.clear();
-        unitsList.addAll(mClonedProduct.getUnitObjects());
+        for(UnitObject unitObject : mClonedProduct.getUnitObjects()) {
+            unitObject.setProductUpdated(true);
+            unitsList.add(unitObject);
+        }
 
         unitBaseAdapter = new ProductUnitAdapter(unitsList, callBackListener, true);
         unitsRecyclerView.setAdapter(unitBaseAdapter);
@@ -352,15 +358,14 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 UnitObject newObject = new UnitObject();
                 newObject.setProductUnitID("");
                 newObject.setProductUpdated(false);
-                //newObject.setTimeStamp();
-                // newObject.setDefaultValues();
                 mListener.addUnit(newObject, new APIUnitMeasures(unitMeasurements), this, INT_ADD_UNIT);
                 break;
             case R.id.save:
                 saveSelected();
                 break;
             case R.id.expiry:
-                new CustomDatePicker((AppCompatTextView) view, getActivity(), Utils.DD_MM_YYYY);
+                //new CustomDatePicker((AppCompatTextView) view, getActivity(), Utils.DD_MM_YYYY);
+                expiryDateSelected();
                 break;
             case R.id.iv_product_image_one_field:
                 selectedImagePosition = 0;
@@ -387,29 +392,35 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         }
     }
 
+    private void expiryDateSelected() {
+        CustomDatePickerDialog customDatePickerDialog = CustomDatePickerDialog.getInstance(Constants.CALENDAR_MIN_TYPE,
+                expiryDateCalendar.get(Calendar.YEAR), expiryDateCalendar.get(Calendar.MONTH), expiryDateCalendar.get(Calendar.DAY_OF_MONTH));
+        customDatePickerDialog.setCallBack(new DateTimeInterface() {
+            @Override
+            public void onDateSet(int year, int month, int dayOfMonth) {
+                expiryDateCalendar.set(Calendar.YEAR, year);
+                expiryDateCalendar.set(Calendar.MONTH, month);
+                expiryDateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                expiry.setText(DateUtilities.getDateStringFromCalendar(expiryDateCalendar));
+            }
+
+            @Override
+            public void onTimeSet(int hour, int minutes, String amOrPm) {
+
+            }
+        });
+        if(!requireActivity().isFinishing()) {
+            customDatePickerDialog.show(requireActivity().getSupportFragmentManager(), CustomDatePickerDialog.class.getName());
+        }
+    }
+
     private void captureImageSelected() {
         CropImage.activity()
                 .start(requireActivity(), this);
     }
 
     private void saveSelected() {
-
-
-        long previousTime = Calendar.getInstance().getTimeInMillis();
-        long presentTime = -1;
-        try{
-            SimpleDateFormat sdf = new SimpleDateFormat(Utils.DD_MM_YYYY); // here set the pattern as you date in string was containing like date/month/year
-            Date d = sdf.parse(expiry.getText().toString());
-            Calendar temp = Calendar.getInstance();
-            temp.setTime(d);
-            temp.set(Calendar.HOUR_OF_DAY, 23);
-            temp.set(Calendar.MINUTE, 59);
-
-            presentTime = temp.getTimeInMillis();
-
-        }catch(ParseException ex){
-            // handle parsing exception if date string was different from the pattern applying into the SimpleDateFormat contructor
-        }
         if (TextUtils.isEmpty(productRegionalName.getText().toString().trim())) {
             showDialog("", getString(R.string.error_regional_name));
             return;
@@ -422,7 +433,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             showDialog("", getString(R.string.unit_required));
             return;
         }
-        if (Objects.requireNonNull(expiry.getText()).toString().length() <= 2 || previousTime > presentTime) {
+        if(TextUtils.isEmpty(expiry.getText().toString())) {
             showDialog("", getString(R.string.error_expiry_date));
             return;
         }
@@ -492,24 +503,23 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                         AddProductToInventoryResponse data = response.body();
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                showDialog("", String.format("%s %s", mClonedProduct.getProductName(), getString(R.string.add_success_product)),
+                                showDialog(String.format("%s %s", mClonedProduct.getProductName(), getString(R.string.add_success_product)),
                                         pObject -> requireActivity().onBackPressed());
                             } else {
-                                showDialog("", data.getMsg(),
-                                        pObject -> requireActivity().onBackPressed());
+                                showDialog(data.getMsg());
                             }
                         } else {
                             showDialog(getString(R.string.no_information_available));
                         }
                     } else {
-                        showDialog("", response.message());
+                        showDialog(response.message());
                     }
                     progressDialog.dismiss();
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<AddProductToInventoryResponse> call, @NotNull Throwable t) {
-                    showDialog("", t.getMessage());
+                    showDialog(t.getMessage());
                     progressDialog.dismiss();
                 }
             });
@@ -544,14 +554,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     private void updateList() {
         unitBaseAdapter.updateItems(unitsList);
         unitBaseAdapter.notifyDataSetChanged();
-    }
-
-    private void updateUnitsUI(UnitObject unitObject) {
-        int index = unitsList.indexOf(unitObject);
-        if (index > -1) {
-            unitsList.remove(index);
-            unitBaseAdapter.notifyItemRemoved(index);
-        }
     }
 
     private void photoUploadSelected() {

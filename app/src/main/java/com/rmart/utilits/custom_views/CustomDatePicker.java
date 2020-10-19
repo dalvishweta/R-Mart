@@ -19,11 +19,10 @@ import java.util.Locale;
 public class CustomDatePicker implements DatePickerDialog.OnDateSetListener {
     private AppCompatTextView dateTV;
     private Calendar myCalendar;
-    private Context ctx;
     String ddmmyyy;
+
     public CustomDatePicker(AppCompatTextView tv, Context ctx, String date) {
         ddmmyyy = date;
-        this.ctx = ctx;
         setDate( tv, ctx);
     }
 
@@ -59,7 +58,7 @@ public class CustomDatePicker implements DatePickerDialog.OnDateSetListener {
         if (previousTime < presentTime) {
             dateTV.setText(simple.format(myCalendar.getTime()));
         } else {
-            Toast.makeText(this.ctx, ctx.getText(R.string.error_expiry_date), Toast.LENGTH_SHORT).show();
+            Toast.makeText(datePicker.getContext(), datePicker.getContext().getText(R.string.error_expiry_date), Toast.LENGTH_SHORT).show();
         }
     }
 }
