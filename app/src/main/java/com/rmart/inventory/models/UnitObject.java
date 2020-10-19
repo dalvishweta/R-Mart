@@ -62,9 +62,11 @@ public class UnitObject implements Serializable {
     String unitType;
     String unitMeasure;
     long timeStamp = -1;
+    boolean isProductUpdated = false;
 
     public UnitObject() {
     }
+
     public UnitObject( UnitObject unitObject) {
         this.displayUnitValue = unitObject.displayUnitValue;
         this.productUnitID = unitObject.productUnitID;
@@ -288,5 +290,13 @@ public class UnitObject implements Serializable {
         setDiscount("0");
         setStockID("5");
         setStockName("Available");
+    }
+
+    public boolean isProductUpdated() {
+        return isProductUpdated;
+    }
+
+    public void setProductUpdated(boolean productUpdated) {
+        isProductUpdated = productUpdated;
     }
 }

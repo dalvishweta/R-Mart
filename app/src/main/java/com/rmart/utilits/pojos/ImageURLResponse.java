@@ -37,6 +37,7 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
     String imageRawData;
 
     private Uri imageUri;
+    private boolean isProductVideoSelected = false;
 
     public String getDisplayImage() {
         return displayImage;
@@ -100,5 +101,13 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
+    }
+
+    public void setProductVideoSelected(boolean productVideoSelected) {
+        isProductVideoSelected = productVideoSelected;
+    }
+
+    public boolean isProductVideoSelected() {
+        return isProductVideoSelected;
     }
 }

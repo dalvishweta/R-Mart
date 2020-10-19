@@ -123,19 +123,6 @@
                     android:id="@+id/delivery"
                     style="@style/product_preview_item_value"/>
             </LinearLayout>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_show_product_preview_field"
-                style="@style/text_style_medium_normal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="20dp"
-                android:background="@drawable/add_to_cart_background_bg"
-                android:text="@string/show_product_preview"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

@@ -251,17 +251,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         chooseSubCategory = view.findViewById(R.id.choose_sub_category);
         chooseProduct = view.findViewById(R.id.choose_product);
         productBrand = view.findViewById(R.id.product_brand);
-        /*productBrand.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                mClonedProduct.setBrand(apiBrandResponses.get(pos).getBrandName());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });*/
 
         productRegionalName = view.findViewById(R.id.product_regional_name);
 
@@ -345,6 +334,9 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         ivProductImageFourField.setOnClickListener(this);
         ivProductImageFiveField.setOnClickListener(this);
 
+        unitsList.clear();
+        unitsList.addAll(mClonedProduct.getUnitObjects());
+
         unitBaseAdapter = new ProductUnitAdapter(unitsList, callBackListener, true);
         unitsRecyclerView.setAdapter(unitBaseAdapter);
 
@@ -359,7 +351,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             case R.id.add_unit:
                 UnitObject newObject = new UnitObject();
                 newObject.setProductUnitID("");
-                newObject.setTimeStamp();
+                newObject.setProductUpdated(false);
+                //newObject.setTimeStamp();
                 // newObject.setDefaultValues();
                 mListener.addUnit(newObject, new APIUnitMeasures(unitMeasurements), this, INT_ADD_UNIT);
                 break;
@@ -445,6 +438,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         ArrayList<ImageURLResponse> updateImagesList = new ArrayList<>();
         setImageURL(updateImagesList);
         mClonedProduct.setImageDataObject(updateImagesList);
+        mClonedProduct.setUnitObjects(unitsList);
         progressDialog.show();
 
         Gson gson = new GsonBuilder().create();
@@ -616,38 +610,27 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                                    }
                                }
                            }
-                       } else {
-                           for (int i = 0; i < unitsList.size(); i++) {
-                               if (unitsList.get(i).getProductUnitID().equalsIgnoreCase(unitData.getProductUnitID())) {
-                                   unitsList.remove(i);
-                                   unitBaseAdapter.updateItems(unitsList);
-                                   unitBaseAdapter.notifyDataSetChanged();
-                                   break;
-                               }
-                           }
                        }
-
                    } else {
                        UnitObject unitData = (UnitObject) bundle.getSerializable(UNIT_VALUE);
-                       assert unitData != null;
-                       if (unitData.getTimeStamp() != -1) {
-                           for (int i = 0; i < unitsList.size(); i++) {
-                               if (unitsList.get(i).getTimeStamp() == unitData.getTimeStamp()) {
-                                   unitsList.remove(i);
-                                   unitsList.add(i, unitData);
-                                   unitBaseAdapter.updateItems(unitsList);
-                                   unitBaseAdapter.notifyDataSetChanged();
-                                   break;
+                       if (unitData != null) {
+                           if (unitData.getTimeStamp() != -1) {
+                               for (int i = 0; i < unitsList.size(); i++) {
+                                   if (unitsList.get(i).getTimeStamp() == unitData.getTimeStamp()) {
+                                       unitsList.set(i, unitData);
+                                       unitBaseAdapter.updateItems(unitsList);
+                                       unitBaseAdapter.notifyDataSetChanged();
+                                       break;
+                                   }
                                }
-                           }
-                       } else {
-                           for (int i = 0; i < unitsList.size(); i++) {
-                               if (unitsList.get(i).getProductUnitID().equalsIgnoreCase(unitData.getProductUnitID())) {
-                                   unitsList.remove(i);
-                                   unitsList.add(i, unitData);
-                                   unitBaseAdapter.updateItems(unitsList);
-                                   unitBaseAdapter.notifyDataSetChanged();
-                                   break;
+                           } else {
+                               for (int i = 0; i < unitsList.size(); i++) {
+                                   if (unitsList.get(i).getProductUnitID().equalsIgnoreCase(unitData.getProductUnitID())) {
+                                       unitsList.set(i, unitData);
+                                       unitBaseAdapter.updateItems(unitsList);
+                                       unitBaseAdapter.notifyDataSetChanged();
+                                       break;
+                                   }
                                }
                            }
                        }

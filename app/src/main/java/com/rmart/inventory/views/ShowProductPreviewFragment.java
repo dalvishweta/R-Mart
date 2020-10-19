@@ -36,8 +36,12 @@ import com.rmart.utilits.services.VendorInventoryService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,7 +58,6 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     //private APIStockListResponse apiStockListResponse;
     private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryInDays;
     private TabLayout dotIndicatorLayoutField;
-    private String productVideoLink;
 
     public ShowProductPreviewFragment() {
         // Required empty public constructor
@@ -142,9 +145,6 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         AppCompatButton delete = view.findViewById(R.id.unit_delete);
         AppCompatButton edit = view.findViewById(R.id.edit);
         dotIndicatorLayoutField = view.findViewById(R.id.product_images_dot_indicator_field);
-        view.findViewById(R.id.btn_show_product_preview_field).setOnClickListener(v -> {
-            showProductPreviewSelected();
-        });
 
         autoScrollViewPager.startAutoScroll();
         autoScrollViewPager.setInterval(1000);
@@ -187,7 +187,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         // updateUI();
     }
 
-    private void showProductPreviewSelected() {
+    private void showProductPreviewSelected(String productVideoLink) {
         if (!TextUtils.isEmpty(productVideoLink)) {
             Intent webIntent = new Intent(Intent.ACTION_VIEW,
                     Uri.parse(productVideoLink));
@@ -207,14 +207,29 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
 
     private void updateUI() {
         List<ImageURLResponse> imagesList = product.getImageDataObject();
+        String videoLink = product.getVideoLInk();
+        if (!TextUtils.isEmpty(videoLink)) {
+            String productVideoUrl = getYoutubeThumbnailUrlFromVideoUrl(videoLink);
+            if (!TextUtils.isEmpty(productVideoUrl)) {
+                ImageURLResponse imageURLResponse = new ImageURLResponse();
+                imageURLResponse.setDisplayImage(productVideoUrl);
+                imageURLResponse.setImageURL(videoLink);
+                imageURLResponse.setProductVideoSelected(true);
+                imagesList.add(imageURLResponse);
+            }
+        }
         ImageAdapter imageAdapter = new ImageAdapter(requireContext(), imagesList);
+        imageAdapter.setCallBackListener(pObject -> {
+            if(pObject instanceof ImageURLResponse) {
+                ImageURLResponse imageURLResponse = (ImageURLResponse) pObject;
+                showProductPreviewSelected(imageURLResponse.getImageURL());
+            }
+        });
         autoScrollViewPager.setAdapter(imageAdapter);
         dotIndicatorLayoutField.setVisibility(imagesList.size() == 1 ? View.GONE : View.VISIBLE);
         dotIndicatorLayoutField.setupWithViewPager(autoScrollViewPager);
         tvProductName.setText(product.getProductName());
-        /*for (UnitObject unitObject: product.getUnitObjects()) {
-            unitObject.setDisplayUnitValue(Objects.requireNonNull(stockList.get(unitObject.getStockID())).getStockName());
-        }*/
+
         tvDeliveryInDays.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getDeliveryInDays()));
         ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(product.getUnitObjects(), callBackInterface, false);
         recyclerView.setAdapter(unitBaseAdapter);
@@ -222,6 +237,26 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         tvProductDescription.setText(product.getDescription());
         tvProductRegionalName.setText(product.getRegionalName());
         tvProductExpiry.setText(product.getExpiry_date());
-        productVideoLink = product.getVideoLInk();
+    }
+
+    public static String getYoutubeThumbnailUrlFromVideoUrl(String videoUrl) {
+        if (!TextUtils.isEmpty(videoUrl)) {
+            return "https://img.youtube.com/vi/" + getYoutubeVideoIdFromUrl(videoUrl) + "/0.jpg";
+        }
+        return null;
+    }
+
+    public static String getYoutubeVideoIdFromUrl(String inUrl) {
+        inUrl = inUrl.replace("&feature=youtu.be", "");
+        if (inUrl.toLowerCase().contains("youtu.be")) {
+            return inUrl.substring(inUrl.lastIndexOf("/") + 1);
+        }
+        String pattern = "(?<=watch\\?v=|/videos/|embed/)[^#&?]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(inUrl);
+        if (matcher.find()) {
+            return matcher.group();
+        }
+        return null;
     }
 }

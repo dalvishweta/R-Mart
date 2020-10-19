@@ -243,16 +243,14 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         quantity.setText(unitObject.getQuantity());
         valueOfUnit.setText(unitObject.getUnitNumber());
         calculateFinalCost(unitObject.getActualCost(), unitObject.getDiscount());
-        String unitProductId = unitObject.getProductUnitID();
-
-        if (!TextUtils.isEmpty(unitProductId) && unitObject.getTimeStamp() > 0) {
+        boolean isProductUpdated = unitObject.isProductUpdated();
+        if (isProductUpdated) {
             ((Button) view.findViewById(R.id.cancel)).setText(R.string.delete);
             ((Button) view.findViewById(R.id.save)).setText(R.string.update);
             unitsSpinner.setSelection(availableUnitsMeasurements.indexOf(unitObject.getDisplayUnitValue()));
             productStatusSpinner.setSelection(productStatus.indexOf(unitObject.getStockName()));
         } else {
-            unitObject.setTimeStamp();
-            unitObject.setProductUnitID(String.valueOf(unitObject.getTimeStamp()));
+            unitObject.setProductUpdated(false);
             view.findViewById(R.id.cancel).setVisibility(View.GONE);
         }
     }
@@ -327,6 +325,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             } else if (_quantity.length() <= 0) {
                 Toast.makeText(getContext(), R.string.error_valid_quantity, Toast.LENGTH_SHORT).show();
             } else {
+                unitObject.setProductUpdated(true);
                 unitObject.setQuantity(_quantity);
                 unitObject.setActualCost(_actualPrice);
                 unitObject.setDiscount(_discount);
