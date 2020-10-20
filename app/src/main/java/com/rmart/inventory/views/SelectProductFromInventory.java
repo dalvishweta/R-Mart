@@ -365,8 +365,6 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
     protected void setSearchView(@NonNull View view) {
         if (null != productAdapter) {
             searchView = view.findViewById(R.id.searchView);
-            searchView.setFocusable(false);
-            searchView.setIconified(false);
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {

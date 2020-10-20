@@ -85,9 +85,6 @@ public class MySubCategoriesListFragment extends BaseInventoryFragment {
     protected void setSearchView(@NonNull View view, SubCategoryAdapter subCategoryAdapter) {
         if(null != subCategoryAdapter) {
             SearchView searchView = view.findViewById(R.id.searchView);
-            searchView.setFocusable(true);
-            searchView.setIconified(false);
-            searchView.requestFocusFromTouch();
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {

@@ -16,6 +16,7 @@
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_toStartOf="@+id/sort"
@@ -25,7 +26,9 @@
             android:queryHint="Search Here"
             android:iconifiedByDefault="false"
             android:focusable="false"
+            android:focusableInTouchMode="false"
             android:layout_centerVertical="true" />
+
         <ImageView
             android:layout_marginEnd="8dp"
             android:layout_centerVertical="true"

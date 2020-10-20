@@ -99,6 +99,8 @@ public class SplashScreen extends BaseActivity {
                                                 case Utils.DELIVERY_ID:
                                                     gotoDeliveryActivity();
                                                     break;
+                                                default:
+                                                    break;
                                             }
                                         }
                                     } catch (Exception ex) {

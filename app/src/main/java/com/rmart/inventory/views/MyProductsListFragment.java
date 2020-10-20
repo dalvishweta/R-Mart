@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -185,8 +186,6 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     protected void setSearchView(@NonNull View view) {
         if (null != productAdapter) {
             searchView = view.findViewById(R.id.searchView);
-            searchView.setFocusable(false);
-            searchView.setIconified(false);
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
