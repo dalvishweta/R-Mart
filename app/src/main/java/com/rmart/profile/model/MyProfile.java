@@ -29,7 +29,7 @@ public class MyProfile {
     private String isAuthenticated;
     private String profileImage;
     private String roleID;
-    private String deliveryInDays = "5";
+    private String deliveryInDays;
     private String primaryAddressId;
     private ArrayList<AddressResponse> addressResponses;
     private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();

@@ -88,6 +88,10 @@ public class AddressResponse extends BaseResponse implements Serializable {
     @Expose
     private String deliveryDaysAfterTime;
 
+    @SerializedName("delivery_days_before_time")
+    @Expose
+    private String deliveryDaysBeforeTime;
+
     @SerializedName("delivery_radius")
     @Expose
     private String deliveryRadius;
@@ -115,10 +119,6 @@ public class AddressResponse extends BaseResponse implements Serializable {
     @SerializedName("is_active")
     @Expose
     private Integer isActive;
-
-    @SerializedName("delivery_days_before_time")
-    @Expose
-    private String deliveryDaysBeforeTime;
 
     @SerializedName("client_id")
     @Expose

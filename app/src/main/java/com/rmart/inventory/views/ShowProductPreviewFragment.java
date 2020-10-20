@@ -36,8 +36,6 @@ import com.rmart.utilits.services.VendorInventoryService;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -56,7 +54,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     private boolean isEdit;
     private AutoScrollViewPager autoScrollViewPager;
     //private APIStockListResponse apiStockListResponse;
-    private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryInDays;
+    private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryDaysBeforeTime, tvDeliveryDaysAfterTime;
     private TabLayout dotIndicatorLayoutField;
 
     public ShowProductPreviewFragment() {
@@ -138,7 +136,8 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         recyclerView = view.findViewById(R.id.unit_base);
         tvProductDescription = view.findViewById(R.id.product_description);
         tvProductRegionalName = view.findViewById(R.id.product_regional_name);
-        tvDeliveryInDays = view.findViewById(R.id.delivery);
+        tvDeliveryDaysBeforeTime = view.findViewById(R.id.delivery_before_time);
+        tvDeliveryDaysAfterTime = view.findViewById(R.id.delivery_after_time);
         tvProductExpiry = view.findViewById(R.id.product_expiry);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         autoScrollViewPager = view.findViewById(R.id.view_pager);
@@ -230,7 +229,19 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         dotIndicatorLayoutField.setupWithViewPager(autoScrollViewPager);
         tvProductName.setText(product.getProductName());
 
-        tvDeliveryInDays.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getDeliveryInDays()));
+        if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysBeforeTime().equalsIgnoreCase("1")) {
+            tvDeliveryDaysBeforeTime.setText(String.format(getString(R.string.delivery_in_day), MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysBeforeTime()));
+        } else {
+            tvDeliveryDaysBeforeTime.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysBeforeTime()));
+        }
+
+        if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysAfterTime().equalsIgnoreCase("1")) {
+            tvDeliveryDaysAfterTime.setText(String.format(getString(R.string.delivery_in_day), MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysAfterTime()));
+
+        } else {
+            tvDeliveryDaysAfterTime.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysAfterTime()));
+        }
+
         ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(product.getUnitObjects(), callBackInterface, false);
         recyclerView.setAdapter(unitBaseAdapter);
 

@@ -117,12 +117,22 @@
                     style="@style/product_preview_item_value"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/delivery_in"
+                    android:text="@string/delivery_days_before_time"
                     style="@style/product_preview_item_title"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/delivery"
+                    android:id="@+id/delivery_before_time"
                     style="@style/product_preview_item_value"/>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:text="@string/delivery_days_after_time"
+                    style="@style/product_preview_item_title"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delivery_after_time"
+                    style="@style/product_preview_item_value"/>
+
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
