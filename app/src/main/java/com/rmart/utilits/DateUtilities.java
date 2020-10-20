@@ -27,22 +27,22 @@ public class DateUtilities {
     }
 
     public static Calendar getCalendarFromString(String dateValue) {
-        Calendar calendar = Calendar.getInstance();
+        Date date;
         Locale locale = Locale.getDefault();
-        if (!TextUtils.isEmpty(dateValue)) {
-            SimpleDateFormat formatter1 = new SimpleDateFormat(Utils.DD_MM_YYYY, locale);
-            SimpleDateFormat formatter2 = new SimpleDateFormat(Utils.YYYY_MM_DD, locale);
-            SimpleDateFormat[] formats = new SimpleDateFormat[]{formatter1, formatter2};
-            Date parsedDate;
-            for (SimpleDateFormat format : formats) {
-                try {
-                    parsedDate = format.parse(dateValue);
-                    calendar.setTime(parsedDate);
-                    calendar.setTime(parsedDate);
-                    break;
-                } catch (ParseException e) {
-                    LoggerInfo.errorLog("getCalendarFromString exception", e.getMessage());
-                }
+        Calendar calendar = Calendar.getInstance();
+        if (TextUtils.isEmpty(dateValue)) {
+            return calendar;
+        }
+        SimpleDateFormat formatter1 = new SimpleDateFormat(Utils.MM_DD_YYYY, locale);
+        SimpleDateFormat formatter2 = new SimpleDateFormat(Utils.YYYY_MM_DD, locale);
+        //formatter = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss", Locale.getDefault());
+        SimpleDateFormat[] formats = new SimpleDateFormat[]{formatter1, formatter2};
+        for (SimpleDateFormat format : formats) {
+            try {
+                date = format.parse(dateValue);
+                calendar.setTime(date);
+            } catch (ParseException e) {
+                LoggerInfo.errorLog("", e.getMessage());
             }
         }
         return calendar;

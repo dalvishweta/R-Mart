@@ -23,6 +23,7 @@ import com.rmart.baseclass.views.AutoScrollViewPager;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.DateUtilities;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -36,6 +37,9 @@ import com.rmart.utilits.services.VendorInventoryService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -247,7 +251,10 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
 
         tvProductDescription.setText(product.getDescription());
         tvProductRegionalName.setText(product.getRegionalName());
-        tvProductExpiry.setText(product.getExpiry_date());
+        String expiryDate = product.getExpiry_date();
+
+        Calendar expiryDateCalendar = DateUtilities.getCalendarFromString(expiryDate);
+        tvProductExpiry.setText(DateUtilities.getDateStringFromCalendar(expiryDateCalendar));
     }
 
     public static String getYoutubeThumbnailUrlFromVideoUrl(String videoUrl) {

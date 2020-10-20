@@ -63,6 +63,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -210,10 +211,19 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             // productBrand.setText(mClonedProduct.getBrand());
             productRegionalName.setText(mClonedProduct.getRegionalName());
             productDescription.setText(mClonedProduct.getDescription());
-            expiry.setText(mClonedProduct.getExpiry_date());
-            expiryDateCalendar = DateUtilities.getCalendarFromString(mClonedProduct.getExpiry_date());
+            String expiryDate = mClonedProduct.getExpiry_date();
+            if(!TextUtils.isEmpty(expiryDate)) {
+                if(expiryDate.equalsIgnoreCase("1970-01-01")) {
+                    expiry.setText("");
+                } else {
+                    expiryDateCalendar = DateUtilities.getCalendarFromString(mClonedProduct.getExpiry_date());
+                    expiry.setText(DateUtilities.getDateStringFromCalendar(expiryDateCalendar));
+                }
+            }
+
             deliveryDays.setText(mClonedProduct.getDelivery_days());
             productBrand.setText(mClonedProduct.getBrandName());
+            tvProductVideoLink.setText(mClonedProduct.getVideoLInk());
             updateList();
         }
     }
@@ -433,7 +443,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
 
         mClonedProduct.setExpiry_date(expiry.getText().toString());
         mClonedProduct.setRegionalName(productRegionalName.getText().toString());
-        mClonedProduct.setDelivery_days(Objects.requireNonNull(MyProfile.getInstance().getDeliveryInDays()));
+        //mClonedProduct.setDelivery_days(Objects.requireNonNull(MyProfile.getInstance().getDeliveryInDays()));
         mClonedProduct.setDescription(productDescription.getText().toString());
         ArrayList<ImageURLResponse> updateImagesList = new ArrayList<>();
         setImageURL(updateImagesList);
@@ -462,17 +472,16 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                         AddProductToInventoryResponse data = response.body();
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                showDialog(mClonedProduct.getProductName() + " " + getString(R.string.add_success_product),
+                                showDialog(String.format("%s %s", mClonedProduct.getProductName(), getString(R.string.add_success_product)),
                                         pObject -> requireActivity().onBackPressed());
                             } else {
-                                showDialog("", data.getMsg(),
-                                        pObject -> requireActivity().onBackPressed());
+                                showDialog(data.getMsg());
                             }
                         } else {
                             showDialog(getString(R.string.no_information_available));
                         }
                     } else {
-                        showDialog("", response.message());
+                        showDialog(response.message());
                     }
                     progressDialog.dismiss();
                 }
