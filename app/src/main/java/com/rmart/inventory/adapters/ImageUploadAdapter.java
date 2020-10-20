@@ -1,6 +1,8 @@
 package com.rmart.inventory.adapters;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -21,19 +23,24 @@ import com.rmart.utilits.pojos.ImageURLResponse;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.ImageUploadViewHolder> {
 
     public static final String DEFAULT = "default";
     private List<Object> imagesList;
-    private CallBackInterface callBackListener;
-    private ImageLoader imageLoader;
+    private final CallBackInterface callBackListener;
+    private final ImageLoader imageLoader;
+    private final Drawable defaultDrawable;
+    private final LayoutInflater layoutInflater;
 
-    public ImageUploadAdapter(List<Object> imagesList, CallBackInterface callBackListener) {
+    public ImageUploadAdapter(Context context, List<Object> imagesList, CallBackInterface callBackListener) {
         this.imagesList = imagesList;
         this.callBackListener = callBackListener;
         imageLoader = RMartApplication.getInstance().getImageLoader();
+        defaultDrawable = ContextCompat.getDrawable(context, R.drawable.add);
+        layoutInflater = LayoutInflater.from(context);
     }
 
     public void updateImagesList(List<Object> imagesList) {
@@ -43,7 +50,6 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
     @NonNull
     @Override
     public ImageUploadViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.update_image, parent, false);
         return new ImageUploadViewHolder(view);
     }
@@ -55,7 +61,7 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
             String imagePath = (String) lObject;
             if (!TextUtils.isEmpty(imagePath)) {
                 if (imagePath.equalsIgnoreCase(DEFAULT)) {
-                    holder.ivProductImageField.setBackgroundResource(R.drawable.add);
+                    holder.ivProductImageField.setBackground(defaultDrawable);
                 } else {
                     updateImageUI(imagePath, holder.ivProductImageField);
                 }
@@ -64,25 +70,19 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
             holder.ivProductImageField.setLocalImageBitmap((Bitmap) lObject);
         } else if (lObject instanceof ImageURLResponse) {
             ImageURLResponse imageUrlResponse = (ImageURLResponse) lObject;
-            /*Bitmap bitmap = imageUrlResponse.getProductImageBitmap();
-            if (bitmap != null) {
-                holder.ivProductImageField.setLocalImageBitmap(bitmap);
+            if(imageUrlResponse.getImageName().equalsIgnoreCase(DEFAULT)) {
+                holder.ivProductImageField.setBackground(defaultDrawable);
             } else {
-                String imagePath = imageUrlResponse.getDisplayImage();
-                if (!TextUtils.isEmpty(imagePath)) {
-                    updateImageUI(imagePath, holder.ivProductImageField);
-                }
-            }*/
-            Uri imageUri = imageUrlResponse.getImageUri();
-            if (imageUri != null) {
-                holder.ivProductImageField.setLocalImageUri(imageUri);
-            } else {
-                String imagePath = imageUrlResponse.getImageURL();
-                if (!TextUtils.isEmpty(imagePath)) {
-                    updateImageUI(imagePath, holder.ivProductImageField);
+                Uri imageUri = imageUrlResponse.getImageUri();
+                if (imageUri != null) {
+                    holder.ivProductImageField.setLocalImageUri(imageUri);
+                } else {
+                    String imagePath = imageUrlResponse.getImageURL();
+                    if (!TextUtils.isEmpty(imagePath)) {
+                        updateImageUI(imagePath, holder.ivProductImageField);
+                    }
                 }
             }
-
         }
 
         holder.ivProductImageField.setTag(position);

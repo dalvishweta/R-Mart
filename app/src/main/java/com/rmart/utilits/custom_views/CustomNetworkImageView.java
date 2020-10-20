@@ -2,6 +2,7 @@ package com.rmart.utilits.custom_views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.AttributeSet;
 
@@ -19,6 +20,8 @@ public class CustomNetworkImageView extends NetworkImageView {
 
     private boolean mShowLocal;
 
+    private Drawable mDrawable;
+
     public void setLocalImageBitmap(Bitmap bitmap) {
         if (bitmap != null) {
             mShowLocal = true;
@@ -32,6 +35,14 @@ public class CustomNetworkImageView extends NetworkImageView {
             mShowLocal = true;
         }
         this.uri = uri;
+        requestLayout();
+    }
+
+    public void setLocalDrawable(Drawable drawable) {
+        if (uri != null) {
+            mShowLocal = false;
+        }
+        this.mDrawable = drawable;
         requestLayout();
     }
 
@@ -60,9 +71,10 @@ public class CustomNetworkImageView extends NetworkImageView {
         if (mShowLocal) {
             if (mLocalBitmap != null) {
                 setImageBitmap(mLocalBitmap);
-            }
-            if (uri != null) {
+            } else if (uri != null) {
                 setImageURI(uri);
+            } else if (mDrawable != null) {
+                setBackground(mDrawable);
             }
         }
     }

@@ -172,7 +172,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
                             showDialog(getString(R.string.no_information_available));
                         }
                     } else {
-                        showDialog(getString(R.string.no_information_available));
+                        showDialog(response.message());
                     }
                 }
 
@@ -203,7 +203,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
         }
     }
 
-    private CallBackInterface callBackListener = pObject -> {
+    private final CallBackInterface callBackListener = pObject -> {
         if (pObject instanceof ContentModel) {
             ContentModel contentModel = (ContentModel) pObject;
             String status = contentModel.getStatus();
@@ -229,7 +229,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
                 CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
                 String clientID = "2";
                 Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                        productUnitDetails.getProductUnitId(), productUnitDetails.getProductUnitQuantity(), "add");
+                        productUnitDetails.getProductUnitId(), 1, "add");
                 call.enqueue(new Callback<AddToCartResponseDetails>() {
                     @Override
                     public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {

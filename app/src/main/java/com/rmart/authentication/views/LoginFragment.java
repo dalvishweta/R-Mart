@@ -83,8 +83,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
             LoggerInfo.printLog("FCM Token", deviceToken);
         });
 
-        //etMobileNumber.setText(BuildConfig.LOGIN_USERNAME);
-        //etPassword.setText(BuildConfig.LOGIN_PASSWORD);
+        etMobileNumber.setText(BuildConfig.LOGIN_USERNAME);
+        etPassword.setText(BuildConfig.LOGIN_PASSWORD);
         deviceToken = MyFirebaseMessagingService.getToken(this.requireContext());
     }
 
@@ -94,12 +94,11 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
             mMobileNumber = Objects.requireNonNull(etMobileNumber.getText()).toString().trim();
             mPassword = Objects.requireNonNull(etPassword.getText()).toString();
             if (TextUtils.isEmpty(mMobileNumber) || !Utils.isValidMobile(mMobileNumber)) {
-                showDialog("", getString(R.string.error_mobile));
+                showDialog(getString(R.string.error_mobile));
             } else if (TextUtils.isEmpty(mPassword)) {
-                showDialog("", getString(R.string.error_password));
+                showDialog(getString(R.string.error_password));
             } else {
                 checkCredentials();
-                // notificationDialog();
             }
         } else if (view.getId() == R.id.forgot_password) {
             mListener.goToForgotPassword();

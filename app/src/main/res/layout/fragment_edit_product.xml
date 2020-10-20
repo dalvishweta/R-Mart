@@ -55,12 +55,12 @@
                 style="@style/upload_product_item_field"/>
 
             <androidx.appcompat.widget.AppCompatEditText
+                style="@style/text_style_medium_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/edit_product_field_bg"
                 android:drawablePadding="16dp"
-                android:fontFamily="@font/roboto_bold"
                 android:gravity="start"
                 android:hint="@string/product_regional_name"
                 android:id="@+id/product_regional_name"
@@ -69,12 +69,12 @@
                 android:padding="16dp" />
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:fontFamily="@font/roboto_bold"
+                style="@style/text_style_medium_bold"
                 android:layout_marginTop="8dp"
                 android:padding="16dp"
                 android:drawablePadding="16dp"
                 android:background="@drawable/edit_product_field_bg"
-                android:gravity="start"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/product_description"
@@ -83,17 +83,32 @@
                 android:hint="@string/product_description"/>
 
             <androidx.appcompat.widget.AppCompatEditText
+                style="@style/text_style_medium_bold"
                 android:layout_marginTop="8dp"
                 android:padding="16dp"
                 android:drawablePadding="16dp"
                 android:background="@drawable/edit_product_field_bg"
-                android:gravity="start"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/product_video_link"
                 android:minHeight="50dp"
                 android:drawableStart="@drawable/user"
-                android:hint="@string/product_video_link"/>
+                android:hint="@string/product_video_link" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/expiry"
+                style="@style/text_style_medium_bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_product_field_bg"
+                android:drawableStart="@drawable/user"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:hint="@string/expiry"
+                android:minHeight="50dp"
+                android:padding="16dp" />
         </LinearLayout>
         <LinearLayout
             android:padding="8dp"
@@ -132,8 +147,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_centerInParent="true"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/add"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/add"
                             android:contentDescription="@string/app_name"
                             android:scaleType="fitXY" />
 
@@ -152,8 +167,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_centerInParent="true"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/add"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/add"
                             android:contentDescription="@string/app_name"
                             android:scaleType="fitXY" />
 
@@ -172,8 +187,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_centerInParent="true"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/add"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/add"
                             android:contentDescription="@string/app_name"
                             android:scaleType="fitXY" />
 
@@ -192,8 +207,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_centerInParent="true"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/add"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/add"
                             android:contentDescription="@string/app_name"
                             android:scaleType="fitXY" />
 
@@ -212,8 +227,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_centerInParent="true"
-                            android:layout_margin="10dp"
-                            android:background="@drawable/add"
+                            android:layout_margin="5dp"
+                            android:src="@drawable/add"
                             android:contentDescription="@string/app_name"
                             android:scaleType="fitXY" />
 
@@ -268,21 +283,6 @@
                 android:hint="@string/delivery_days"
                 style="@style/upload_product_item_field"
                 android:inputType="number"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/edit_product_field_bg"
-                android:drawablePadding="16dp"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="start|center"
-                android:hint="@string/expiry"
-                android:id="@+id/expiry"
-                android:minHeight="50dp"
-                android:drawableStart="@drawable/user"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:layout_marginTop="16dp"

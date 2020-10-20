@@ -75,7 +75,7 @@ public class AddProductToAPI extends BaseInventoryFragment implements View.OnCli
         imagesList.add(ImageUploadAdapter.DEFAULT);
         imagesList.add(ImageUploadAdapter.DEFAULT);
 
-        imageUploadAdapter = new ImageUploadAdapter(imagesList, callBackListener);
+        imageUploadAdapter = new ImageUploadAdapter(requireActivity(), imagesList, callBackListener);
         RecyclerView recyclerView = view.findViewById(R.id.product_image);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         recyclerView.setAdapter(imageUploadAdapter);
