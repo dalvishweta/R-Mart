@@ -39,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -209,7 +210,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     };
 
     private void updateUI() {
-        List<ImageURLResponse> imagesList = product.getImageDataObject();
+        List<ImageURLResponse> lImagesList = new ArrayList<>(product.getImageDataObject());
         String videoLink = product.getVideoLInk();
         if (!TextUtils.isEmpty(videoLink)) {
             String productVideoUrl = getYoutubeThumbnailUrlFromVideoUrl(videoLink);
@@ -218,10 +219,10 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
                 imageURLResponse.setDisplayImage(productVideoUrl);
                 imageURLResponse.setImageURL(videoLink);
                 imageURLResponse.setProductVideoSelected(true);
-                imagesList.add(imageURLResponse);
+                lImagesList.add(imageURLResponse);
             }
         }
-        ImageAdapter imageAdapter = new ImageAdapter(requireContext(), imagesList);
+        ImageAdapter imageAdapter = new ImageAdapter(requireContext(), lImagesList);
         imageAdapter.setCallBackListener(pObject -> {
             if(pObject instanceof ImageURLResponse) {
                 ImageURLResponse imageURLResponse = (ImageURLResponse) pObject;
@@ -229,7 +230,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
             }
         });
         autoScrollViewPager.setAdapter(imageAdapter);
-        dotIndicatorLayoutField.setVisibility(imagesList.size() == 1 ? View.GONE : View.VISIBLE);
+        dotIndicatorLayoutField.setVisibility(lImagesList.size() == 1 ? View.GONE : View.VISIBLE);
         dotIndicatorLayoutField.setupWithViewPager(autoScrollViewPager);
         tvProductName.setText(product.getProductName());
 
@@ -252,9 +253,14 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         tvProductDescription.setText(product.getDescription());
         tvProductRegionalName.setText(product.getRegionalName());
         String expiryDate = product.getExpiry_date();
-
-        Calendar expiryDateCalendar = DateUtilities.getCalendarFromString(expiryDate);
-        tvProductExpiry.setText(DateUtilities.getDateStringFromCalendar(expiryDateCalendar));
+        if(!TextUtils.isEmpty(expiryDate)) {
+            if(expiryDate.equalsIgnoreCase("1970-01-01") || expiryDate.equalsIgnoreCase("01-01-1970")) {
+                tvProductExpiry.setText("");
+            } else {
+                Calendar expiryDateCalendar = DateUtilities.getCalendarFromString(expiryDate);
+                tvProductExpiry.setText(DateUtilities.getDateStringFromCalendar(expiryDateCalendar));
+            }
+        }
     }
 
     public static String getYoutubeThumbnailUrlFromVideoUrl(String videoUrl) {

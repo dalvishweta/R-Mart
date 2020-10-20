@@ -63,7 +63,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -213,7 +212,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             productDescription.setText(mClonedProduct.getDescription());
             String expiryDate = mClonedProduct.getExpiry_date();
             if(!TextUtils.isEmpty(expiryDate)) {
-                if(expiryDate.equalsIgnoreCase("1970-01-01")) {
+                if (expiryDate.equalsIgnoreCase("1970-01-01") || expiryDate.equalsIgnoreCase("01-01-1970")) {
                     expiry.setText("");
                 } else {
                     expiryDateCalendar = DateUtilities.getCalendarFromString(mClonedProduct.getExpiry_date());
@@ -520,7 +519,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                     progressDialog.dismiss();
                 }
             });
-
         }
     }
 
@@ -530,7 +528,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 Bitmap bitmap = null;
                 try {
                     ImageURLResponse imageURLResponse = (ImageURLResponse) lObject;
-                    Uri imageUri = Uri.parse(imageURLResponse.getImageURL()); // imageURLResponse.getImageUri();
+                    Uri imageUri = imageURLResponse.getImageUri();
                     if (imageUri != null) {
                         InputStream imageStream = requireActivity().getContentResolver().openInputStream(imageUri);
                         bitmap = BitmapFactory.decodeStream(imageStream);
@@ -643,6 +641,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
 
     private void updateImage(Uri imageUri) {
         ImageURLResponse imageUrlResponse = imagesList.get(selectedImagePosition);
+        imageUrlResponse.setImageUri(imageUri);
         imagesList.set(selectedImagePosition, imageUrlResponse);
         displayImagesUI(imageUri);
     }

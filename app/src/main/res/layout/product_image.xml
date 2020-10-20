@@ -21,5 +21,6 @@
         android:layout_centerVertical="true"
         android:contentDescription="@string/app_name"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_play_icon" />
+        android:src="@drawable/youtube_icon"
+        android:visibility="gone" />
 </RelativeLayout>

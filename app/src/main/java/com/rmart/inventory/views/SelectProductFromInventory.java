@@ -29,6 +29,7 @@ import com.rmart.utilits.services.APIService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -359,7 +360,9 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
 
     private void updateList() {
         try {
-            tvTotalCount.setText("Showing "+ products.size()+" "+type);
+            //tvTotalCount.setText("Showing "+ products.size()+" "+type);
+            String totalCount = String.format(Locale.getDefault(), "Showing %d %s", products.size(), type);
+            tvTotalCount.setText(totalCount);
             productAdapter.updateItems(products);
             productAdapter.notifyDataSetChanged();
         } catch (Resources.NotFoundException e) {
