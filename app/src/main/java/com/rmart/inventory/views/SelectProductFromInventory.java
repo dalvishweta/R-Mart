@@ -50,6 +50,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
     private int selectedContentType;
     private String listType;
     private String id;
+    private String type;
 
     public SelectProductFromInventory() {
         // Required empty public constructor
@@ -127,6 +128,11 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                                     productResponse.setType(Utils.PRODUCT);
                                 }
                                 products = data.getProductList();
+                                if(products.size() == 1) {
+                                    type = "Product";
+                                } else {
+                                    type = "Products";
+                                }
                                 updateList();
                             } else {
                                 showDialog("", data.getMsg());
@@ -159,6 +165,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                         if (data != null) {
                             if (data.getStatus().equals(Utils.SUCCESS)) {
                                 products = data.getProductList();
+                                type = "Category";
                                 for (ProductResponse productResponse: products) {
                                     productResponse.setType(Utils.CATEGORY);
                                 }
@@ -192,6 +199,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                         if (data != null) {
                             if (data.getStatus().equals(Utils.SUCCESS)) {
                                 products = data.getProductList();
+                                type = "Sub Category";
                                 for (ProductResponse productResponse: products) {
                                     productResponse.setType(Utils.SUB_CATEGORY);
                                 }
@@ -228,6 +236,41 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                                 for (ProductResponse productResponse: products) {
                                     productResponse.setType(Utils.PRODUCT);
                                 }
+                                type = "Products";
+                                updateList();
+                            } else {
+                                showDialog("", data.getMsg());
+                            }
+                        } else {
+                            showDialog(getString(R.string.no_information_available));
+                        }
+
+                    } else {
+                        showDialog("", response.message());
+                    }
+                    progressDialog.dismiss();
+                }
+                @Override
+                public void onFailure(@NotNull Call<APIProductListResponse> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                    showDialog("", t.getMessage());
+                }
+            });
+        } else if (listType.equalsIgnoreCase(Utils.BRAND_PRODUCTS)) {
+            view.findViewById(R.id.sort).setVisibility(View.GONE);
+            progressDialog.show();
+            apiService.getBrandProductsList("0", "100", id).enqueue(new Callback<APIProductListResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<APIProductListResponse> call, @NotNull Response<APIProductListResponse> response) {
+                    if (response.isSuccessful()) {
+                        APIProductListResponse data = response.body();
+                        if (data != null) {
+                            if (data.getStatus().equals(Utils.SUCCESS)) {
+                                products = data.getProductList();
+                                for (ProductResponse productResponse: products) {
+                                    productResponse.setType(Utils.PRODUCT);
+                                }
+                                type = "Products";
                                 updateList();
                             } else {
                                 showDialog("", data.getMsg());
@@ -263,6 +306,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                                     productResponse.setType(Utils.BRAND);
                                 }
                                 products = data.getProductList();
+                                type = "Brands";
                                 updateList();
                             } else {
                                 showDialog("", data.getMsg());
@@ -295,7 +339,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
 
     private void updateList() {
         try {
-            tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), products.size()));
+            tvTotalCount.setText("Showing "+ products.size()+" "+type);
             productAdapter = new ProductAdapter(requireActivity(), products, view -> {
                 ProductResponse product = (ProductResponse) view.getTag();
                 if (product.getType().equalsIgnoreCase(Utils.PRODUCT)) {
@@ -304,6 +348,8 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                     mListener.addProductToInventory(Utils.SUB_CATEGORY, product.getId());
                 } else if(product.getType().equalsIgnoreCase(Utils.SUB_CATEGORY)) {
                     mListener.addProductToInventory(Utils.SUB_CATEGORY_PRODUCT, product.getId());
+                } else if(product.getType().equalsIgnoreCase(Utils.BRAND)) {
+                    mListener.addProductToInventory(Utils.BRAND_PRODUCTS, product.getId());
                 }
             }, 3);
             productRecycleView.setAdapter(productAdapter);

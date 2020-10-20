@@ -87,7 +87,15 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @SerializedName("brand_name")
     @Expose
     String brandName;
+
+    @SerializedName("category_name")
+    @Expose
+    String category;
+
+    @SerializedName("sub_caategory_name")
+    @Expose
     String subCategory;
+
     String expiry_date;
     String delivery_days;
     String type = Utils.PRODUCT;
@@ -104,6 +112,7 @@ public class ProductResponse extends BaseResponse implements Serializable {
         description = product.description;
         categoryID = product.categoryID;
         // brandID = product.brandID;
+        category = product.category;
         subCategory = product.subCategory;
         brand = product.brand;
         brandID = product.brandID;
@@ -126,6 +135,14 @@ public class ProductResponse extends BaseResponse implements Serializable {
     public void setBrandID(String brandID) {
         this.brandID = brandID;
     }*/
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public String getProductLibID() {
         return productLibID;

@@ -26,7 +26,6 @@
                 style="@style/upload_product_item_field"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="gone"
                 android:text="@string/choose_sub_category"
                 android:id="@+id/choose_sub_category"
                 android:drawableStart="@drawable/user"
@@ -277,7 +276,7 @@
                 android:background="@drawable/edit_product_field_bg"
                 android:drawablePadding="16dp"
                 android:fontFamily="@font/roboto_bold"
-                android:gravity="start"
+                android:gravity="start|center"
                 android:hint="@string/expiry"
                 android:id="@+id/expiry"
                 android:minHeight="50dp"

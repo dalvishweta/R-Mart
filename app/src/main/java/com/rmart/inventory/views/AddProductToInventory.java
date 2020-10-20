@@ -151,35 +151,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         return inflater.inflate(R.layout.fragment_edit_product, container, false);
     }
 
-    private void getBrandFromAPI() {
-        progressDialog.show();
-        apiService.getAPIBrandList().enqueue(new Callback<APIBrandListResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<APIBrandListResponse> call, @NotNull Response<APIBrandListResponse> response) {
-                if (response.isSuccessful()) {
-                    APIBrandListResponse data = response.body();
-                    if (data != null) {
-                        apiBrandResponses = data.getArrayList();
-                        for (APIBrandResponse apiBrandResponse : apiBrandResponses) {
-                            //availableBrands.add(apiBrandResponse.getBrandName());
-                        }
-                    } else {
-                        showDialog(getString(R.string.no_information_available));
-                    }
-                } else {
-                    showDialog("", response.message());
-                }
-                progressDialog.dismiss();
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<APIBrandListResponse> call, @NotNull Throwable t) {
-                showDialog("", t.getMessage());
-                progressDialog.dismiss();
-            }
-        });
-    }
-
     private void getUnitMeasuresFromAPI() {
         progressDialog.show();
         apiService.getAPIUnitMeasureList().enqueue(new Callback<APIUnitMeasureListResponse>() {
@@ -232,9 +203,10 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     }
 
     private void updateUI() {
-        // chooseCategory.setText(mClonedProduct.getCategory());
+        //
         if (null != mClonedProduct) {
             chooseSubCategory.setText(mClonedProduct.getSubCategory());
+            chooseCategory.setText(mClonedProduct.getCategory());
             chooseProduct.setText(mClonedProduct.getProductName());
             // productBrand.setText(mClonedProduct.getBrand());
             productRegionalName.setText(mClonedProduct.getRegionalName());
@@ -684,5 +656,34 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             LoggerInfo.errorLog("encode image exception", ex.getMessage());
         }
         return "";
+    }
+
+    private void getBrandFromAPI() {
+        progressDialog.show();
+        apiService.getAPIBrandList().enqueue(new Callback<APIBrandListResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<APIBrandListResponse> call, @NotNull Response<APIBrandListResponse> response) {
+                if (response.isSuccessful()) {
+                    APIBrandListResponse data = response.body();
+                    if (data != null) {
+                        apiBrandResponses = data.getArrayList();
+                        for (APIBrandResponse apiBrandResponse : apiBrandResponses) {
+                            //availableBrands.add(apiBrandResponse.getBrandName());
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
+                    }
+                } else {
+                    showDialog("", response.message());
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<APIBrandListResponse> call, @NotNull Throwable t) {
+                showDialog("", t.getMessage());
+                progressDialog.dismiss();
+            }
+        });
     }
 }

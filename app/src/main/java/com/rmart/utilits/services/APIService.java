@@ -51,8 +51,13 @@ public interface APIService {
                                                     @Field("end_index") String endIndex,
                                                     @Field("sub_category_id") String subCategoryID);
 
+    @POST(BuildConfig.API_SUB_CATEGORY_PRODUCT_LIST)
+    @FormUrlEncoded
+    Call<APIProductListResponse> getBrandProductsList(@Field("start_index") String startIndex,
+                                                            @Field("end_index") String endIndex,
+                                                            @Field("brand_id") String brandID);
 
-    @POST(BuildConfig.API_CATEGORY_LIST)
+    @POST(BuildConfig.API_BRAND_LIST)
     @FormUrlEncoded
     Call<APIProductListResponse> getBrandList(@Field("start_index") String startIndex,
                                                     @Field("end_index") String endIndex);

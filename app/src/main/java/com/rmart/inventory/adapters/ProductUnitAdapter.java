@@ -58,10 +58,9 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
         holder.tvIUnitState.setText(unit.getStockName());
 
         if (unit.getDiscount().length() <= 0 || unit.getDiscount().equalsIgnoreCase("0")) {
-            String actualCost = "0 Rs";
+            String actualCost = "";
             holder.tvActual.setText(actualCost);
             holder.tvActual.setPaintFlags(holder.tvActual.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
             String offer = "0 %";
             holder.tvOffer.setText(offer);
         } else {
