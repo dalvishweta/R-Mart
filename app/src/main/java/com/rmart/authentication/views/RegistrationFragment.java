@@ -57,12 +57,12 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         registration.setAmount("2000");
 
         RegistrationFeeStructure gst = new RegistrationFeeStructure();
-        gst.setPayType("GST 13%");
-        gst.setAmount("260");
+        gst.setPayType("GST 18%");
+        gst.setAmount("360");
 
         RegistrationFeeStructure total = new RegistrationFeeStructure();
         total.setPayType(getString(R.string.total_amount));
-        total.setAmount("2260");
+        total.setAmount("2360");
 
         registrationFeeStructuresList.add(registration);
         registrationFeeStructuresList.add(gst);

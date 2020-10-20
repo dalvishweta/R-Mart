@@ -50,7 +50,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
     private int selectedContentType;
     private String listType;
     private String id;
-    private String type;
+    private String type = Utils.PRODUCT;
 
     public SelectProductFromInventory() {
         // Required empty public constructor
@@ -103,6 +103,20 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
         tvTotalCount = view.findViewById(R.id.category_count);
         addProduct.setOnClickListener(this);
         productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        productAdapter = new ProductAdapter(requireActivity(), products, productView -> {
+            ProductResponse product = (ProductResponse) productView.getTag();
+            if (product.getType().equalsIgnoreCase(Utils.PRODUCT)) {
+                mListener.updateProduct(product, false);
+            } else if (product.getType().equalsIgnoreCase(Utils.CATEGORY)) {
+                mListener.addProductToInventory(Utils.SUB_CATEGORY, product.getId());
+            } else if(product.getType().equalsIgnoreCase(Utils.SUB_CATEGORY)) {
+                mListener.addProductToInventory(Utils.SUB_CATEGORY_PRODUCT, product.getId());
+            } else if(product.getType().equalsIgnoreCase(Utils.BRAND)) {
+                mListener.addProductToInventory(Utils.BRAND_PRODUCTS, product.getId());
+            }
+        }, 3);
+        productRecycleView.setAdapter(productAdapter);
+
         searchView = view.findViewById(R.id.searchView);
         view.findViewById(R.id.sort).setOnClickListener(param -> {
             mListener.applyFilter(this, REQUEST_FILTERED_DATA_ID);
@@ -112,6 +126,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
         popup = new PopupMenu(requireActivity(), view.findViewById(R.id.sort));
 
         APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
+        resetProductsList();
         if (listType.equalsIgnoreCase(Utils.PRODUCT)) {
             popup.getMenu().add(Menu.NONE, 4, 4, Utils.CATEGORY);
             popup.getMenu().add(Menu.NONE, 3, 3, Utils.BRAND);
@@ -127,7 +142,6 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                                 for (ProductResponse productResponse: products) {
                                     productResponse.setType(Utils.PRODUCT);
                                 }
-                                products = data.getProductList();
                                 if(products.size() == 1) {
                                     type = "Product";
                                 } else {
@@ -305,7 +319,6 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                                 for (ProductResponse productResponse: products) {
                                     productResponse.setType(Utils.BRAND);
                                 }
-                                products = data.getProductList();
                                 type = "Brands";
                                 updateList();
                             } else {
@@ -334,25 +347,21 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
         view.findViewById(R.id.sort).setOnClickListener(param -> {
             popup.show();
         });
-        setSearchView(view);
+        searchView = view.findViewById(R.id.searchView);
+        setSearchView();
+    }
+
+    private void resetProductsList() {
+        products.clear();
+        productAdapter.updateItems(products);
+        productAdapter.notifyDataSetChanged();
     }
 
     private void updateList() {
         try {
             tvTotalCount.setText("Showing "+ products.size()+" "+type);
-            productAdapter = new ProductAdapter(requireActivity(), products, view -> {
-                ProductResponse product = (ProductResponse) view.getTag();
-                if (product.getType().equalsIgnoreCase(Utils.PRODUCT)) {
-                    mListener.updateProduct(product, false);
-                } else if (product.getType().equalsIgnoreCase(Utils.CATEGORY)) {
-                    mListener.addProductToInventory(Utils.SUB_CATEGORY, product.getId());
-                } else if(product.getType().equalsIgnoreCase(Utils.SUB_CATEGORY)) {
-                    mListener.addProductToInventory(Utils.SUB_CATEGORY_PRODUCT, product.getId());
-                } else if(product.getType().equalsIgnoreCase(Utils.BRAND)) {
-                    mListener.addProductToInventory(Utils.BRAND_PRODUCTS, product.getId());
-                }
-            }, 3);
-            productRecycleView.setAdapter(productAdapter);
+            productAdapter.updateItems(products);
+            productAdapter.notifyDataSetChanged();
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
         }
@@ -362,9 +371,9 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
     public void onClick(View view) {
         mListener.requestToCreateProduct();
     }
-    protected void setSearchView(@NonNull View view) {
+
+    protected void setSearchView() {
         if (null != productAdapter) {
-            searchView = view.findViewById(R.id.searchView);
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {

@@ -92,7 +92,7 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @Expose
     String category;
 
-    @SerializedName("sub_caategory_name")
+    @SerializedName("sub_category_name")
     @Expose
     String subCategory;
 

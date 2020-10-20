@@ -33,7 +33,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
     private int columnCount;
     private ImageLoader imageLoader;
     private LayoutInflater layoutInflater;
-
+    private String type;
     public ProductAdapter(Context context, ArrayList<ProductResponse> productList, View.OnClickListener onClickListener, int columnCount) {
         this.onClickListener = onClickListener;
         this.productList = productList;
@@ -121,6 +121,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
         return filteredListData.size();
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public Filter getFilter() {
         if (myFilter == null) {
@@ -137,7 +145,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
             if (constraint != null && constraint.length() > 0) {
                 filteredListData.clear();
                 for (ProductResponse product : productList) {
-                    if (product.getProductName().toLowerCase().contains(constraint.toString().toLowerCase())) {
+                    String name;
+                    if (product.getType().equalsIgnoreCase(Utils.PRODUCT)) {
+                        name = product.getProductName();
+                    } else {
+                        name = product.getName();
+                    }
+                    if (name.toLowerCase().contains(constraint.toString().toLowerCase())) {
                         filteredListData.add(product);
                     }
                 }
