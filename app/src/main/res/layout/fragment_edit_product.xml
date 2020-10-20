@@ -46,6 +46,20 @@
                 android:visibility="gone"
                 android:id="@+id/product_brand"
                 style="@style/upload_product_item_field"/>-->
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/product_description"
+                style="@style/text_style_medium_bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/edit_product_field_bg"
+                android:drawableStart="@drawable/user"
+                android:drawablePadding="16dp"
+                android:gravity="center_vertical"
+                android:hint="@string/product_description"
+                android:minHeight="50dp"
+                android:padding="16dp" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/product_brand"
                 android:text="@string/product_brand"
@@ -67,20 +81,6 @@
                 android:minHeight="50dp"
                 android:drawableStart="@drawable/user"
                 android:padding="16dp" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                style="@style/text_style_medium_bold"
-                android:layout_marginTop="8dp"
-                android:padding="16dp"
-                android:drawablePadding="16dp"
-                android:background="@drawable/edit_product_field_bg"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/product_description"
-                android:minHeight="50dp"
-                android:drawableStart="@drawable/user"
-                android:hint="@string/product_description"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 style="@style/text_style_medium_bold"

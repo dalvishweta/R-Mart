@@ -422,10 +422,10 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             showDialog("", getString(R.string.unit_required));
             return;
         }
-        if (TextUtils.isEmpty(expiry.getText().toString())) {
+        /*if (TextUtils.isEmpty(expiry.getText().toString())) {
             showDialog("", getString(R.string.error_expiry_date));
             return;
-        }
+        }*/
         if (TextUtils.isEmpty(Objects.requireNonNull(tvProductVideoLink.getText()).toString().trim())) {
             showDialog("", getString(R.string.error_video_link));
             return;
@@ -433,7 +433,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
 
         mClonedProduct.setExpiry_date(expiry.getText().toString());
         mClonedProduct.setRegionalName(productRegionalName.getText().toString());
-        mClonedProduct.setDelivery_days(Objects.requireNonNull(deliveryDays.getText()).toString());
+        mClonedProduct.setDelivery_days(Objects.requireNonNull(MyProfile.getInstance().getDeliveryInDays()));
         mClonedProduct.setDescription(productDescription.getText().toString());
         ArrayList<ImageURLResponse> updateImagesList = new ArrayList<>();
         setImageURL(updateImagesList);
