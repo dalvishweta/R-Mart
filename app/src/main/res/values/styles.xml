@@ -71,15 +71,15 @@
     <style name="product_preview_item_title">
         <item name="android:layout_width">match_parent</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:layout_margin">4dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/product_preview_title_color</item>
     </style>
     <style name="product_preview_item_value">
         <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:textSize">16sp</item>
         <item name="android:layout_margin">4dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black</item>

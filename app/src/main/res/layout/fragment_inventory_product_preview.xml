@@ -101,6 +101,7 @@
                     style="@style/product_preview_item_value"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:hint="@string/product_regional_name"
                     style="@style/product_preview_item_title"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
