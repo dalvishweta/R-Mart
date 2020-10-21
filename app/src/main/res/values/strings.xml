@@ -145,7 +145,7 @@
     <string name="delivery_in">Delivery in</string>
     <string name="delivery_in_days_text">Delivery in days</string>
     <string name="delivery_in_days">Delivery in %1$s days</string>
-    <string name="delivery_in_day">Delivery in %1$s day</string>
+    <string name="delivery_in_day">Delivery on the same day.</string>
     <string name="product">Product</string>
     <string name="add_new_product">Add new product</string>
     <string name="request_new_product">Create product</string>
@@ -321,4 +321,5 @@
     <string name="payment_information">Payment information</string>
     <string name="registration_fee">Registration Fee</string>
     <string name="total_amount">Total amount</string>
+    <string name="error_min_password">Please enter minimum of 5 characters</string>
 </resources>

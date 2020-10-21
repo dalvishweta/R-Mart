@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
@@ -47,7 +48,11 @@ public class SplashScreen extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash_screen);
-
+        if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.CUSTOMER)) {
+            ((ImageView)findViewById(R.id.splash_bg)).setImageResource(R.drawable.splashscreen);
+        } else {
+            ((ImageView)findViewById(R.id.splash_bg)).setImageResource(R.drawable.splashscreen);
+        }
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
             deviceToken = instanceIdResult.getToken();

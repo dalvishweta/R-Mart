@@ -97,6 +97,13 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             unitMeasurements = (APIUnitMeasures) getArguments().getSerializable(ARG_PARAM4);
             if (apiStockListResponse != null) {
                 apiStockResponses = apiStockListResponse.getArrayList();
+                for (APIStockResponse response :
+                        apiStockResponses) {
+                    if (response.getStockID().equalsIgnoreCase("6")) {
+                        apiStockResponses.remove(response);
+                        break;
+                    }
+                }
             }
             //mIsEdit = getArguments().getBoolean(ARG_PARAM2);
         }

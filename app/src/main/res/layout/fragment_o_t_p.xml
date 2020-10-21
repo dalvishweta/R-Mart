@@ -38,7 +38,7 @@
         android:maxLength="5"
         android:hint="@string/otp"
         android:background="@drawable/rounded_corners_edit_text_bg"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:maxLines="1"
         android:minHeight="50dp"

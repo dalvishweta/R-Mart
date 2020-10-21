@@ -5,5 +5,9 @@
     android:background="@color/colorPrimary"
     android:layout_height="match_parent"
     tools:context=".baseclass.views.SplashScreen">
-
+    <ImageView
+        android:id="@+id/splash_bg"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

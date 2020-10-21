@@ -156,7 +156,9 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         autoScrollViewPager.setStopScrollWhenTouch(true);
 
         if (isEdit) {
-            edit.setOnClickListener(v -> mListener.updateProduct(product, true));
+            edit.setOnClickListener(v -> {
+                mListener.updateProduct(product, true);
+            });
             delete.setOnClickListener(v -> {
                 progressDialog.show();
                 VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
