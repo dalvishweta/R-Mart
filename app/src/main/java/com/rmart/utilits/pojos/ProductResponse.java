@@ -78,11 +78,9 @@ public class ProductResponse extends BaseResponse implements Serializable {
     @Expose
     String brand;
 
-
     @SerializedName("brand_id")
     @Expose
     String brandID;
-
 
     @SerializedName("brand_name")
     @Expose
@@ -103,7 +101,6 @@ public class ProductResponse extends BaseResponse implements Serializable {
     public ProductResponse() {
 
     }
-
 
     public ProductResponse(ProductResponse product) {
         productID = product.productID;
@@ -327,4 +324,6 @@ public class ProductResponse extends BaseResponse implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
+
+
 }

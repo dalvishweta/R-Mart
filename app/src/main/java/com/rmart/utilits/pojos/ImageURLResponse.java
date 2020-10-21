@@ -110,4 +110,5 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
     public boolean isProductVideoSelected() {
         return isProductVideoSelected;
     }
+
 }

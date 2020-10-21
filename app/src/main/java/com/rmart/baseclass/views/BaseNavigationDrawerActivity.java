@@ -31,6 +31,7 @@ import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer.views.CustomerWishListFragment;
 import com.rmart.customer.views.ShoppingCartFragment;
 import com.rmart.customer_order.views.CustomerOrdersActivity;
+import com.rmart.inventory.views.AddProductToInventory;
 import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyProfile;
@@ -338,7 +339,11 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                 this.finish();
             } else {
-                getSupportFragmentManager().popBackStackImmediate();
+                Fragment fragment = getActiveFragment();
+                if (fragment instanceof AddProductToInventory) {
+                    ((AddProductToInventory) fragment).handleBackButton();
+                } else
+                    getSupportFragmentManager().popBackStackImmediate();
             }
         }
     }

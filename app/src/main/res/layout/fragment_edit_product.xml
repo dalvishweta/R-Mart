@@ -125,116 +125,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <HorizontalScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/product_images_list_field"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="90dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                tools:itemCount="5"
+                android:layout_gravity="center_vertical"
+                tools:listitem="@layout/add_product_image_item_view" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="10dp"
-                        android:background="@color/light_grey"
-                        android:gravity="center">
-
-                        <com.rmart.utilits.custom_views.CustomNetworkImageView
-                            android:id="@+id/iv_product_image_one_field"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
-                            android:layout_margin="5dp"
-                            android:src="@drawable/add"
-                            android:contentDescription="@string/app_name"
-                            android:scaleType="fitXY" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="10dp"
-                        android:background="@color/light_grey"
-                        android:gravity="center">
-
-                        <com.rmart.utilits.custom_views.CustomNetworkImageView
-                            android:id="@+id/iv_product_image_two_field"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
-                            android:layout_margin="5dp"
-                            android:src="@drawable/add"
-                            android:contentDescription="@string/app_name"
-                            android:scaleType="fitXY" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="10dp"
-                        android:background="@color/light_grey"
-                        android:gravity="center">
-
-                        <com.rmart.utilits.custom_views.CustomNetworkImageView
-                            android:id="@+id/iv_product_image_three_field"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
-                            android:layout_margin="5dp"
-                            android:src="@drawable/add"
-                            android:contentDescription="@string/app_name"
-                            android:scaleType="fitXY" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="10dp"
-                        android:background="@color/light_grey"
-                        android:gravity="center">
-
-                        <com.rmart.utilits.custom_views.CustomNetworkImageView
-                            android:id="@+id/iv_product_image_four_field"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
-                            android:layout_margin="5dp"
-                            android:src="@drawable/add"
-                            android:contentDescription="@string/app_name"
-                            android:scaleType="fitXY" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="10dp"
-                        android:background="@color/light_grey"
-                        android:gravity="center">
-
-                        <com.rmart.utilits.custom_views.CustomNetworkImageView
-                            android:id="@+id/iv_product_image_five_field"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
-                            android:layout_margin="5dp"
-                            android:src="@drawable/add"
-                            android:contentDescription="@string/app_name"
-                            android:scaleType="fitXY" />
-
-                    </RelativeLayout>
-                </LinearLayout>
-            </HorizontalScrollView>
         </LinearLayout>
         <RelativeLayout
             android:layout_margin="8dp"

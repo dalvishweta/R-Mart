@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,33 +17,31 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rmart.R;
-import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.DateTimeInterface;
 import com.rmart.customer.models.ContentModel;
-import com.rmart.inventory.adapters.ImageUploadAdapter;
+import com.rmart.inventory.adapters.ProductImagesAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.inventory.models.APIUnitMeasures;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.CustomDatePickerDialog;
 import com.rmart.utilits.DateUtilities;
-import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
+import com.rmart.utilits.RecyclerTouchListener;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.custom_views.CustomNetworkImageView;
+import com.rmart.utilits.custom_views.SpacesItemDecoration;
 import com.rmart.utilits.pojos.APIBrandListResponse;
 import com.rmart.utilits.pojos.APIBrandResponse;
 import com.rmart.utilits.pojos.APIStockListResponse;
@@ -95,14 +92,16 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
     private ArrayList<ImageURLResponse> imagesList;
     private int selectedImagePosition = -1;
-    private CustomNetworkImageView ivProductImageOneField;
+    /*private CustomNetworkImageView ivProductImageOneField;
     private CustomNetworkImageView ivProductImageTwoField;
     private CustomNetworkImageView ivProductImageThreeField;
     private CustomNetworkImageView ivProductImageFourField;
-    private CustomNetworkImageView ivProductImageFiveField;
+    private CustomNetworkImageView ivProductImageFiveField;*/
     private ProductUnitAdapter unitBaseAdapter;
     private final ArrayList<UnitObject> unitsList = new ArrayList<>();
     private Calendar expiryDateCalendar = Calendar.getInstance();
+    private ProductImagesAdapter productImagesAdapter;
+    private ImageURLResponse selectedProductImage;
 
     public AddProductToInventory() {
         // Required empty public constructor
@@ -179,6 +178,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             ProductResponse mProduct = (ProductResponse) getArguments().getSerializable(ARG_PRODUCT);
             //stockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM1);
@@ -235,6 +235,13 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         chooseProduct = view.findViewById(R.id.choose_product);
         productBrand = view.findViewById(R.id.product_brand);
 
+        RecyclerView productImagesListField = view.findViewById(R.id.product_images_list_field);
+        productImagesListField.setLayoutManager(new LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false));
+        productImagesListField.setHasFixedSize(false);
+        productImagesListField.setNestedScrollingEnabled(false);
+        productImagesListField.setItemAnimator(new DefaultItemAnimator());
+        productImagesListField.addItemDecoration(new SpacesItemDecoration(10));
+
         productRegionalName = view.findViewById(R.id.product_regional_name);
 
         productDescription = view.findViewById(R.id.product_description);
@@ -257,25 +264,38 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
 
         //imageUploadAdapter = new ImageUploadAdapter(imagesList, callBackListener);
         //imagesRecyclerView.setAdapter(imageUploadAdapter);
-        ivProductImageOneField = view.findViewById(R.id.iv_product_image_one_field);
+
+        /*ivProductImageOneField = view.findViewById(R.id.iv_product_image_one_field);
         ivProductImageTwoField = view.findViewById(R.id.iv_product_image_two_field);
         ivProductImageThreeField = view.findViewById(R.id.iv_product_image_three_field);
         ivProductImageFourField = view.findViewById(R.id.iv_product_image_four_field);
-        ivProductImageFiveField = view.findViewById(R.id.iv_product_image_five_field);
+        ivProductImageFiveField = view.findViewById(R.id.iv_product_image_five_field);*/
 
         imagesList = new ArrayList<>();
         if (mClonedProduct != null) {
             List<ImageURLResponse> clonedImagesList = mClonedProduct.getImageDataObject();
             imagesList.addAll(clonedImagesList);
-
-            int difference = 5 - imagesList.size();
-            for (int i = 0; i < difference; i++) {
-                ImageURLResponse imageURLResponse = new ImageURLResponse();
-                imageURLResponse.setImageName(ImageUploadAdapter.DEFAULT);
-                imagesList.add(imageURLResponse);
-            }
         }
-        ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
+
+        productImagesAdapter = new ProductImagesAdapter(requireActivity(), imagesList);
+        productImagesListField.setAdapter(productImagesAdapter);
+
+        productImagesListField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), "", productImagesListField, new RecyclerTouchListener.ClickListener() {
+
+            @Override
+            public void onClick(View view, int position) {
+                selectedImagePosition = position;
+                photoUploadSelected();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+
+        /*ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
         HttpsTrustManager.allowAllSSL();
         for (int i = 0; i < imagesList.size(); i++) {
             ImageURLResponse imageURLResponse = imagesList.get(i);
@@ -332,7 +352,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         ivProductImageTwoField.setOnClickListener(this);
         ivProductImageThreeField.setOnClickListener(this);
         ivProductImageFourField.setOnClickListener(this);
-        ivProductImageFiveField.setOnClickListener(this);
+        ivProductImageFiveField.setOnClickListener(this);*/
 
         unitsList.clear();
         for(UnitObject unitObject : mClonedProduct.getUnitObjects()) {
@@ -364,7 +384,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 //new CustomDatePicker((AppCompatTextView) view, getActivity(), Utils.DD_MM_YYYY);
                 expiryDateSelected();
                 break;
-            case R.id.iv_product_image_one_field:
+           /* case R.id.iv_product_image_one_field:
                 selectedImagePosition = 0;
                 captureImageSelected();
                 break;
@@ -383,7 +403,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             case R.id.iv_product_image_five_field:
                 selectedImagePosition = 4;
                 captureImageSelected();
-                break;
+                break;*/
             default:
                 break;
         }
@@ -641,14 +661,22 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     }
 
     private void updateImage(Uri imageUri) {
-        ImageURLResponse imageUrlResponse = imagesList.get(selectedImagePosition);
-        imageUrlResponse.setImageUri(imageUri);
-        imagesList.set(selectedImagePosition, imageUrlResponse);
-        displayImagesUI(imageUri);
+        if (selectedImagePosition < imagesList.size()) {
+            ImageURLResponse imageUrlResponse = imagesList.get(selectedImagePosition);
+            imageUrlResponse.setImageUri(imageUri);
+            imagesList.set(selectedImagePosition, imageUrlResponse);
+            productImagesAdapter.notifyItemChanged(selectedImagePosition);
+        } else {
+            ImageURLResponse imageUrlResponse = new ImageURLResponse();
+            imageUrlResponse.setImageUri(imageUri);
+            int size = imagesList.size();
+            imagesList.add(imageUrlResponse);
+            productImagesAdapter.notifyItemInserted(size);
+        }
     }
 
     private void displayImagesUI(Uri imageUri) {
-        switch (selectedImagePosition) {
+        /*switch (selectedImagePosition) {
             case 0:
                 ivProductImageOneField.setLocalImageUri(imageUri);
                 break;
@@ -666,7 +694,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 break;
             default:
                 break;
-        }
+        }*/
     }
 
     private String getEncodedImage(Bitmap bitmap) {
@@ -710,5 +738,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 progressDialog.dismiss();
             }
         });
+    }
+
+    public void handleBackButton() {
+        if (isEdit)
+            showConfirmationDialog(getString(R.string.product_discard_alert), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+        else requireActivity().getSupportFragmentManager().popBackStack();
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="90dp"
+    android:layout_gravity="center"
+    android:gravity="center">
+
+    <com.rmart.utilits.custom_views.CustomNetworkImageView
+        android:id="@+id/iv_product_image_field"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:background="@drawable/grey_filled_rounded_borders_bg"
+        android:contentDescription="@string/app_name"
+        android:padding="10dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/add" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_add_product_image_field"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/add"
+        android:visibility="gone" />
+</LinearLayout>
