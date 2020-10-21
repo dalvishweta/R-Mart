@@ -187,6 +187,7 @@
     <string name="error_unit_amount">Please enter valid price</string>
     <string name="error_valid_quantity">Please enter valid Quantity</string>
     <string name="add_success_product"> is Successfully added in your inventory.</string>
+    <string name="updated_success_product"> is Successfully updated in your inventory.</string>
 
     <string name="navigation_drawer_open">Navigation Drawer Open</string>
     <string name="navigation_drawer_close">Navigation Drawer Close</string>

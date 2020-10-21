@@ -502,8 +502,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                         AddProductToInventoryResponse data = response.body();
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                showDialog(String.format("%s %s", mClonedProduct.getProductName(), getString(R.string.add_success_product)),
-                                        pObject -> requireActivity().onBackPressed());
+                                showDialog(String.format("%s %s", mClonedProduct.getProductName(), getString(R.string.updated_success_product)),
+                                        pObject -> requireActivity().getSupportFragmentManager().popBackStack());
                             } else {
                                 showDialog(data.getMsg());
                             }
@@ -531,7 +531,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 showDialog(String.format("%s %s", mClonedProduct.getProductName(), getString(R.string.add_success_product)),
-                                        pObject -> requireActivity().onBackPressed());
+                                        pObject -> requireActivity().getSupportFragmentManager().popBackStack());
                             } else {
                                 showDialog(data.getMsg());
                             }
