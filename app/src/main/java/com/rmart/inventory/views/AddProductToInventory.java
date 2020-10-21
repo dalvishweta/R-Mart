@@ -57,6 +57,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -209,9 +210,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             chooseProduct.setText(mClonedProduct.getProductName());
             // productBrand.setText(mClonedProduct.getBrand());
             productRegionalName.setText(mClonedProduct.getRegionalName());
-            productDescription.setText(mClonedProduct.getDescription());
+            if (isEdit) {
+                productDescription.setText(mClonedProduct.getDescription());
+            }
             String expiryDate = mClonedProduct.getExpiry_date();
-            if(!TextUtils.isEmpty(expiryDate)) {
+            if (!TextUtils.isEmpty(expiryDate)) {
                 if (expiryDate.equalsIgnoreCase("1970-01-01") || expiryDate.equalsIgnoreCase("01-01-1970")) {
                     expiry.setText("");
                 } else {
@@ -275,6 +278,13 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         if (mClonedProduct != null) {
             List<ImageURLResponse> clonedImagesList = mClonedProduct.getImageDataObject();
             imagesList.addAll(clonedImagesList);
+
+            if (imagesList.size() != 5) {
+                ImageURLResponse imageURLResponse = new ImageURLResponse();
+                imageURLResponse.setImageURL("");
+                imageURLResponse.setId(-1);
+                imagesList.add(imageURLResponse);
+            }
         }
 
         productImagesAdapter = new ProductImagesAdapter(requireActivity(), imagesList);
@@ -355,7 +365,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         ivProductImageFiveField.setOnClickListener(this);*/
 
         unitsList.clear();
-        for(UnitObject unitObject : mClonedProduct.getUnitObjects()) {
+        for (UnitObject unitObject : mClonedProduct.getUnitObjects()) {
             unitObject.setProductUpdated(true);
             unitsList.add(unitObject);
         }
@@ -466,6 +476,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         mClonedProduct.setDescription(productDescription.getText().toString());
         ArrayList<ImageURLResponse> updateImagesList = new ArrayList<>();
         setImageURL(updateImagesList);
+        LoggerInfo.printLog("Images uploaded list", "Size is " + updateImagesList.size());
         mClonedProduct.setImageDataObject(updateImagesList);
         progressDialog.show();
 
@@ -548,13 +559,15 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 Bitmap bitmap = null;
                 try {
                     ImageURLResponse imageURLResponse = (ImageURLResponse) lObject;
-                    Uri imageUri = imageURLResponse.getImageUri();
+                    String imageUri = imageURLResponse.getImageUri();
                     if (imageUri != null) {
-                        imageURLResponse.setImageName("");
-                        InputStream imageStream = requireActivity().getContentResolver().openInputStream(imageUri);
-                        bitmap = BitmapFactory.decodeStream(imageStream);
-                        imageURLResponse.setImageRawData(getEncodedImage(bitmap));
-                        lUpdateImagesList.add(imageURLResponse);
+                        Uri uri = Uri.fromFile(new File(imageUri));
+                        if (uri != null) {
+                            InputStream imageStream = requireActivity().getContentResolver().openInputStream(uri);
+                            bitmap = BitmapFactory.decodeStream(imageStream);
+                            imageURLResponse.setImageRawData(getEncodedImage(bitmap));
+                            lUpdateImagesList.add(imageURLResponse);
+                        }
                     }
                 } catch (Exception ex) {
                     LoggerInfo.printLog("image error", "exception " + ex.getMessage());
@@ -661,17 +674,23 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     }
 
     private void updateImage(Uri imageUri) {
-        if (selectedImagePosition < imagesList.size()) {
+        if (selectedImagePosition < imagesList.size() - 1) {
             ImageURLResponse imageUrlResponse = imagesList.get(selectedImagePosition);
-            imageUrlResponse.setImageUri(imageUri);
+            imageUrlResponse.setImageUri(imageUri.getPath());
             imagesList.set(selectedImagePosition, imageUrlResponse);
             productImagesAdapter.notifyItemChanged(selectedImagePosition);
         } else {
             ImageURLResponse imageUrlResponse = new ImageURLResponse();
-            imageUrlResponse.setImageUri(imageUri);
+            imageUrlResponse.setImageUri(imageUri.getPath());
+            imageUrlResponse.setId(-1);
             int size = imagesList.size();
-            imagesList.add(imageUrlResponse);
-            productImagesAdapter.notifyItemInserted(size);
+            imagesList.add(selectedImagePosition, imageUrlResponse);
+            productImagesAdapter.notifyItemInserted(selectedImagePosition);
+            int updatedSize = imagesList.size();
+            if (updatedSize == 6) {
+                imagesList.remove(size);
+                productImagesAdapter.notifyItemRemoved(size);
+            }
         }
     }
 

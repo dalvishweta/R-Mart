@@ -20,6 +20,7 @@ import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.custom_views.CustomNetworkImageView;
 import com.rmart.utilits.pojos.ImageURLResponse;
 
+import java.io.File;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -73,9 +74,11 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
             if(imageUrlResponse.getImageName().equalsIgnoreCase(DEFAULT)) {
                 holder.ivProductImageField.setBackground(defaultDrawable);
             } else {
-                Uri imageUri = imageUrlResponse.getImageUri();
-                if (imageUri != null) {
-                    holder.ivProductImageField.setLocalImageUri(imageUri);
+                String imageUri = imageUrlResponse.getImageUri();
+                if (!TextUtils.isEmpty(imageUri)) {
+                    File file = new File(imageUri);
+                    Uri uri = Uri.fromFile(file);
+                    holder.ivProductImageField.setLocalImageUri(uri);
                 } else {
                     String imagePath = imageUrlResponse.getImageURL();
                     if (!TextUtils.isEmpty(imagePath)) {

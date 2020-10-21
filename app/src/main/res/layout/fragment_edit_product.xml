@@ -128,11 +128,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/product_images_list_field"
                 android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
                 tools:itemCount="5"
-                android:layout_gravity="center_vertical"
                 tools:listitem="@layout/add_product_image_item_view" />
 
         </LinearLayout>

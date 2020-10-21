@@ -8,6 +8,11 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class ImageURLResponse extends BaseResponse implements Serializable {
+
+    @SerializedName("id")
+    @Expose
+    Integer id;
+
     @SerializedName("display_image")
     @Expose
     String displayImage;
@@ -36,7 +41,7 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
     @Expose
     String imageRawData;
 
-    private Uri imageUri;
+    private String imageUri;
     private boolean isProductVideoSelected = false;
 
     public String getDisplayImage() {
@@ -87,11 +92,11 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
         this.imageRawData = imageRawData;
     }
 
-    public Uri getImageUri() {
+    public String getImageUri() {
         return imageUri;
     }
 
-    public void setImageUri(Uri imageUri) {
+    public void setImageUri(String imageUri) {
         this.imageUri = imageUri;
     }
 
@@ -111,4 +116,11 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
         return isProductVideoSelected;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }
