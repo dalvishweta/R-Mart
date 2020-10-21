@@ -237,13 +237,13 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         tvProductName.setText(product.getProductName());
 
         if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysBeforeTime().equalsIgnoreCase("1")) {
-            tvDeliveryDaysBeforeTime.setText(String.format(getString(R.string.delivery_in_day), MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysBeforeTime()));
+            tvDeliveryDaysBeforeTime.setText(getString(R.string.delivery_in_day));
         } else {
             tvDeliveryDaysBeforeTime.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysBeforeTime()));
         }
 
         if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysAfterTime().equalsIgnoreCase("1")) {
-            tvDeliveryDaysAfterTime.setText(String.format(getString(R.string.delivery_in_day), MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysAfterTime()));
+            tvDeliveryDaysAfterTime.setText(getString(R.string.delivery_in_day));
 
         } else {
             tvDeliveryDaysAfterTime.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysAfterTime()));
