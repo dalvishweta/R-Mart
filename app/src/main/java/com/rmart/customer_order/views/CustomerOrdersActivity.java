@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
 import com.rmart.R;
@@ -18,6 +19,14 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.my_orders);
+            toolbar.setNavigationIcon(R.drawable.ic_back_arrow);
+            toolbar.setNavigationOnClickListener(v -> finish());
+        }
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String orderID = extras.getString("OrderId");
@@ -33,7 +42,6 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
     public void onPermissionsGranted(Integer requestCode) {
 
     }
-
 
     @Override
     public void goToViewFullOrder(Order orderObject) {

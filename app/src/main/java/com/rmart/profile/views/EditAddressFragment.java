@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.RMartApplication;
+import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.baseclass.views.ProgressBarCircular;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.mapview.MapsFragment;
@@ -56,7 +57,8 @@ import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 
-public class EditAddressFragment extends BaseMyProfileFragment implements View.OnClickListener {
+public class EditAddressFragment extends BaseFragment implements View.OnClickListener {
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String AADHAR_FRONT_IMAGE = "aadhar_front_image";

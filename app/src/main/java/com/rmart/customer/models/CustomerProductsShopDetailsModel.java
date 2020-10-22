@@ -70,6 +70,14 @@ public class CustomerProductsShopDetailsModel implements Serializable {
     @Expose
     private Double shopLongitude;
 
+    @SerializedName("delivery_days_after_time")
+    @Expose
+    private String deliveryDaysAfterTime;
+
+    @SerializedName("delivery_days_before_time")
+    @Expose
+    private String deliveryDaysBeforeTime;
+
     public String getShopMobileNo() {
         return shopMobileNo;
     }
@@ -204,6 +212,22 @@ public class CustomerProductsShopDetailsModel implements Serializable {
 
     public void setShopLongitude(Double shopLongitude) {
         this.shopLongitude = shopLongitude;
+    }
+
+    public String getDeliveryDaysAfterTime() {
+        return deliveryDaysAfterTime;
+    }
+
+    public void setDeliveryDaysAfterTime(String deliveryDaysAfterTime) {
+        this.deliveryDaysAfterTime = deliveryDaysAfterTime;
+    }
+
+    public String getDeliveryDaysBeforeTime() {
+        return deliveryDaysBeforeTime;
+    }
+
+    public void setDeliveryDaysBeforeTime(String deliveryDaysBeforeTime) {
+        this.deliveryDaysBeforeTime = deliveryDaysBeforeTime;
     }
 
     @NotNull

@@ -204,67 +204,84 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_product_description_title_field"
-                style="@style/text_style_medium_bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/quantity_layout_field"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
-                android:text="@string/product_description" />
-
             <LinearLayout
-                android:id="@+id/product_description_layout_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_product_description_title_field"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
+                android:layout_below="@id/quantity_layout_field"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_product_description_field"
+                <androidx.appcompat.widget.AppCompatTextView
                     style="@style/text_style_medium_normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="80dp"
-                    android:maxLines="5"
-                    android:textColor="@color/item_sub_title_color" />
+                    android:text="@string/product_description"
+                    android:textColor="@color/edit_text_hint" />
 
-                <LinearLayout
-                    android:id="@+id/view_more_layout_field"
-                    android:layout_width="wrap_content"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_product_description_field"
+                    style="@style/text_style_medium_bold"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="-20dp"
-                    android:visibility="gone"
-                    android:background="@drawable/grey_filled_rounded_borders_bg"
-                    android:orientation="horizontal">
+                    android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/tv_view_more_field"
-                        style="@style/text_style_medium_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginStart="10dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/view_more"
-                        android:textAllCaps="false" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_regional_name"
+                    android:textColor="@color/edit_text_hint" />
 
-                    <ImageView
-                        android:id="@+id/iv_view_more_image_field"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:contentDescription="@string/app_name"
-                        android:gravity="center_vertical"
-                        android:src="@drawable/drop_down" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/product_regional_name"
+                    style="@style/text_style_medium_bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
 
-                </LinearLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_expiry_title"
+                    android:textColor="@color/edit_text_hint" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/product_expiry"
+                    style="@style/text_style_medium_bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delivery_days_before_time"
+                    android:textColor="@color/edit_text_hint" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delivery_before_time"
+                    style="@style/text_style_medium_bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delivery_days_after_time"
+                    android:textColor="@color/edit_text_hint" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/delivery_after_time"
+                    style="@style/text_style_medium_bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <TextView

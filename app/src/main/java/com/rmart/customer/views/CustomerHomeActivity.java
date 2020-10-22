@@ -3,6 +3,9 @@ package com.rmart.customer.views;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.ActionBar;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
@@ -11,6 +14,7 @@ import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
+import com.rmart.utilits.pojos.AddressResponse;
 
 public class CustomerHomeActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
 
@@ -26,6 +30,13 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
             //addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
             boolean isShoppingCart = data.getBoolean("ShoppingCart");
             if(isShoppingCart) {
+
+                ActionBar actionBar = getSupportActionBar();
+                if (actionBar != null) {
+                    actionBar.setTitle(R.string.shopping_cart);
+                    toolbar.setNavigationIcon(R.drawable.ic_back_arrow);
+                    toolbar.setNavigationOnClickListener(v -> finish());
+                }
                 replaceFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), false);
             }
         } else {
@@ -96,7 +107,32 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
 
     @Override
     public void gotoWishListDetailsScreen(ShopWiseWishListResponseDetails shopWiseWishListResponseDetails) {
-        replaceFragment(CustomerWishListDetailsFragment.getInstance(shopWiseWishListResponseDetails), CustomerWishListDetailsFragment.class.getName(), true);
+
+    }
+
+    @Override
+    public void gotoEditProfile() {
+
+    }
+
+    @Override
+    public void gotoEditAddress(AddressResponse address) {
+
+    }
+
+    @Override
+    public void gotoViewProfile() {
+
+    }
+
+    @Override
+    public void gotoMapView() {
+
+    }
+
+    @Override
+    public void getMapGeoCoordinates(LatLng latLng) {
+
     }
 
     @Override

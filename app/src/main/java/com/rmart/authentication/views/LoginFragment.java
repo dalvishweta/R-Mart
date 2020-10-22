@@ -83,8 +83,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
             LoggerInfo.printLog("FCM Token", deviceToken);
         });
 
-        //etMobileNumber.setText(BuildConfig.LOGIN_USERNAME);
-        //etPassword.setText(BuildConfig.LOGIN_PASSWORD);
+        etMobileNumber.setText(BuildConfig.LOGIN_USERNAME);
+        etPassword.setText(BuildConfig.LOGIN_PASSWORD);
         deviceToken = MyFirebaseMessagingService.getToken(this.requireContext());
     }
 

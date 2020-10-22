@@ -28,6 +28,7 @@ import com.rmart.RMartApplication;
 import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.views.CustomerHomeActivity;
+import com.rmart.customer.views.CustomerWishListActivity;
 import com.rmart.customer.views.CustomerWishListFragment;
 import com.rmart.customer.views.ShoppingCartFragment;
 import com.rmart.customer_order.views.CustomerOrdersActivity;
@@ -284,7 +285,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     }
 
     private void gotoWisListScreen() {
-        replaceFragment(CustomerWishListFragment.getInstance(), CustomerWishListFragment.class.getName(), true);
+        //replaceFragment(CustomerWishListFragment.getInstance(), CustomerWishListFragment.class.getName(), true);
+        hideCartIcon();
+        Intent intent = new Intent(BaseNavigationDrawerActivity.this, CustomerWishListActivity.class);
+        startActivity(intent);
     }
 
     private void checkBackStack() {

@@ -94,6 +94,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             }
             register.setText(R.string.proceed_to_pay);
         } else {
+            view.findViewById(R.id.tv_payment_information_field).setVisibility(View.GONE);
             paymentBase.setVisibility(View.GONE);
             register.setText(R.string.register_right);
         }

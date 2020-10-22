@@ -1,21 +1,31 @@
 package com.rmart.profile.views;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseActivity;
+import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
+import com.rmart.customer.OnCustomerHomeInteractionListener;
+import com.rmart.customer.models.CustomerProductDetailsModel;
+import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.models.ProductBaseModel;
+import com.rmart.customer.models.ShopWiseWishListResponseDetails;
+import com.rmart.customer.models.ShoppingCartResponseDetails;
 import com.rmart.mapview.MapsFragment;
 import com.rmart.profile.OnMyProfileClickedListener;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.viewmodels.AddressViewModel;
 import com.rmart.utilits.pojos.AddressResponse;
 
-public class MyProfileActivity extends BaseActivity implements OnMyProfileClickedListener {
+public class MyProfileActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
 
     private boolean isAddNewAddress = false;
     private EditAddressFragment editAddressFragment;
@@ -23,12 +33,13 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.base_container_layout);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.profile_details);
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            //actionBar.setDisplayHomeAsUpEnabled(true);
+            toolbar.setNavigationIcon(R.drawable.ic_back_arrow);
+            toolbar.setNavigationOnClickListener(v -> finish());
         }
 
         Bundle extras = getIntent().getExtras();
@@ -128,6 +139,66 @@ public class MyProfileActivity extends BaseActivity implements OnMyProfileClicke
 
     @Override
     public void hideCartIcon() {
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        getToActivity(view.getId(), view.getId() == R.id.update_profile);
+    }
+
+    @Override
+    public void gotoChangeAddress() {
+
+    }
+
+    @Override
+    public void gotoVendorProductDetails(CustomerProductsShopDetailsModel customerProductsModel) {
+
+    }
+
+    @Override
+    public void gotoProductDescDetails(CustomerProductDetailsModel vendorProductDataDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
+
+    }
+
+    @Override
+    public void gotoPaymentOptionsScreen(CustomerProductsShopDetailsModel vendorShopDetails) {
+
+    }
+
+    @Override
+    public void gotoShoppingCartScreen() {
+
+    }
+
+    @Override
+    public void gotoShoppingCartDetails(ShoppingCartResponseDetails shoppingCartResponseDetails) {
+
+    }
+
+    @Override
+    public void gotoVendorSameProductListScreen(ProductBaseModel productCategoryDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
+
+    }
+
+    @Override
+    public void gotoConfirmedOrderStatusScreen() {
+
+    }
+
+    @Override
+    public void updateShopWishListStatus(CustomerProductsShopDetailsModel vendorShopDetails) {
+
+    }
+
+    @Override
+    public void gotoCompleteOrderDetailsScreen(CustomerProductsShopDetailsModel vendorShopDetails) {
+
+    }
+
+    @Override
+    public void gotoWishListDetailsScreen(ShopWiseWishListResponseDetails shopWiseWishListResponseDetails) {
 
     }
 }

@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.profile.OnMyProfileClickedListener;
 
 import java.util.Objects;
@@ -46,7 +47,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     private boolean isEditable;
     private Location currentLocation;
     private String isFrom;
-    private OnMyProfileClickedListener profileClickedListener;
+    private OnCustomerHomeInteractionListener mListener;
 
     private boolean isMapClickable = false;
     // private MyProfile myProfile;
@@ -101,7 +102,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        profileClickedListener = (OnMyProfileClickedListener) context;
+        mListener = (OnCustomerHomeInteractionListener) context;
     }
 
     @Nullable
@@ -222,7 +223,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
         currentLocation = new Location("");
         currentLocation.setLatitude(latLng.latitude);
         currentLocation.setLongitude(latLng.longitude);
-        profileClickedListener.getMapGeoCoordinates(latLng);
+        mListener.getMapGeoCoordinates(latLng);
     }
 
     @Override
@@ -244,7 +245,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             googleMap.addMarker(markerOptions);
-            profileClickedListener.getMapGeoCoordinates(latLng);
+            mListener.getMapGeoCoordinates(latLng);
         }
     }
 }

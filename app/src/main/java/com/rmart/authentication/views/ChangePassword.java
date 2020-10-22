@@ -79,26 +79,27 @@ public class ChangePassword extends LoginBaseFragment {
         } else {
             firstField.setHint(R.string.otp);
         }
-        AppCompatEditText password = view.findViewById(R.id.password);
-        AppCompatEditText confirmPassword = view.findViewById(R.id.confirm_password);
+        AppCompatEditText passwordField = view.findViewById(R.id.password);
+        AppCompatEditText confirmPasswordField = view.findViewById(R.id.confirm_password);
 
-        view.findViewById(R.id.register).setOnClickListener(view1 -> {
-            String _password = Objects.requireNonNull(password.getText()).toString().trim();
-            String _confirmPassword = Objects.requireNonNull(confirmPassword.getText()).toString().trim();
+        view.findViewById(R.id.register).setOnClickListener(v -> {
+            String password = Objects.requireNonNull(passwordField.getText()).toString().trim();
+            String confirmPassword = Objects.requireNonNull(confirmPasswordField.getText()).toString().trim();
             String otp = Objects.requireNonNull(firstField.getText()).toString().trim();
+
             if (TextUtils.isEmpty(otp)) {
-                showDialog("", getString(R.string.error_otp));
-            } else if (TextUtils.isEmpty(_password) && _password.length() < 5) {
-                showDialog("", getString(R.string.error_empty_password));
-            } else if (TextUtils.isEmpty(_confirmPassword) && _confirmPassword.length() < 5) {
-                showDialog("", getString(R.string.error_empty_confirm_password));
-            } else if (!_password.equals(_confirmPassword)) {
-                showDialog("", getString(R.string.mismatch_confirm_password));
+                showDialog(getString(R.string.error_otp));
+            } else if (TextUtils.isEmpty(password) || password.length() < 5) {
+                showDialog(getString(R.string.error_empty_password));
+            } else if (TextUtils.isEmpty(confirmPassword) || confirmPassword.length() < 5) {
+                showDialog(getString(R.string.error_empty_confirm_password));
+            } else if (!password.equals(confirmPassword)) {
+                showDialog(getString(R.string.mismatch_confirm_password));
             } else {
                 progressDialog.show();
                 AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
                 if (mOTP.length() > 0) {
-                    authenticationService.changePasswordOTP(mMobileNumber, otp, _password).enqueue(new Callback<ChangePasswordResponse>() {
+                    authenticationService.changePasswordOTP(mMobileNumber, otp, password).enqueue(new Callback<ChangePasswordResponse>() {
                         @Override
                         public void onResponse(@NotNull Call<ChangePasswordResponse> call, @NotNull Response<ChangePasswordResponse> response) {
                             if (response.isSuccessful()) {
@@ -107,13 +108,13 @@ public class ChangePassword extends LoginBaseFragment {
                                     if (data.getStatus().contains("Success")) {
                                         showDialog("", data.getMsg(), (dialog, i) -> mListener.goToHomePage());
                                     } else {
-                                        showDialog("", data.getMsg());
+                                        showDialog(data.getMsg());
                                     }
                                 } else {
                                     showDialog(getString(R.string.no_information_available));
                                 }
                             } else {
-                                showDialog("", response.message());
+                                showDialog(response.message());
                             }
                             progressDialog.dismiss();
                         }
@@ -125,7 +126,7 @@ public class ChangePassword extends LoginBaseFragment {
                         }
                     });
                 } else {
-                    authenticationService.changePassword(mMobileNumber, otp, _password).enqueue(new Callback<ChangePasswordResponse>() {
+                    authenticationService.changePassword(mMobileNumber, otp, password).enqueue(new Callback<ChangePasswordResponse>() {
                         @Override
                         public void onResponse(@NotNull Call<ChangePasswordResponse> call, @NotNull Response<ChangePasswordResponse> response) {
                             if (response.isSuccessful()) {
@@ -134,13 +135,13 @@ public class ChangePassword extends LoginBaseFragment {
                                     if (data.getStatus().contains("Success")) {
                                         showDialog("", data.getMsg(), (dialog, i) -> mListener.goToHomePage());
                                     } else {
-                                        showDialog("", data.getMsg());
+                                        showDialog(data.getMsg());
                                     }
                                 } else {
                                     showDialog(getString(R.string.no_information_available));
                                 }
                             } else {
-                                showDialog("", response.message());
+                                showDialog(response.message());
                             }
                             progressDialog.dismiss();
                         }

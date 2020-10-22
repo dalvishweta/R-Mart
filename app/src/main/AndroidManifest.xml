@@ -42,7 +42,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".profile.views.MyProfileActivity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppThemeNoActionBar"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:screenOrientation="portrait"/>

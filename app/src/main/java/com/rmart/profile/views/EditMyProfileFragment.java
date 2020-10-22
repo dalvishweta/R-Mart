@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.rmart.R;
 import com.rmart.RMartApplication;
+import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.baseclass.views.CircularNetworkImageView;
 import com.rmart.baseclass.views.ProgressBarCircular;
 import com.rmart.inventory.adapters.CustomStringAdapter;
@@ -49,7 +50,7 @@ import retrofit2.Response;
 import static android.app.Activity.RESULT_OK;
 
 
-public class EditMyProfileFragment extends BaseMyProfileFragment implements View.OnClickListener {
+public class EditMyProfileFragment extends BaseFragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";

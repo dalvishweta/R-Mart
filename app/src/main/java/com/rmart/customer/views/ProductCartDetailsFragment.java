@@ -3,20 +3,20 @@ package com.rmart.customer.views;
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.rmart.R;
@@ -34,9 +34,11 @@ import com.rmart.customer.models.ProductDetailsDescResponse;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.DateUtilities;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.AddressResponse;
 import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.ImageURLResponse;
 import com.rmart.utilits.services.CustomerProductsService;
@@ -44,6 +46,7 @@ import com.rmart.utilits.services.CustomerProductsService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -67,12 +70,8 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private TextView tvTotalPriceField;
     private TextView tvNoOfQuantityField;
     private TextView tvProductDescField;
-    private LinearLayout viewMoreLayoutField;
     private TextView tvQuantityField;
     private int noOfQuantity = 1;
-    private boolean isViewMoreSelected = false;
-    private TextView tvViewMoreField;
-    private ImageView ivViewMoreImageField;
     private CustomerProductsDetailsUnitModel productUnitDetails;
     private Spinner quantitySpinnerField;
     private boolean isWishListProduct = false;
@@ -82,8 +81,8 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private TabLayout dotIndicatorLayoutField;
     private Button btnWishListField;
 
-    private int productId = -1;
     private boolean isAddToCartSelected = false;
+    private AppCompatTextView tvProductRegionalName, tvProductExpiry, tvDeliveryDaysBeforeTime, tvDeliveryDaysAfterTime;
 
     static ProductCartDetailsFragment getInstance(CustomerProductDetailsModel vendorProductDataDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
         ProductCartDetailsFragment productCartDetailsFragment = new ProductCartDetailsFragment();
@@ -192,12 +191,14 @@ public class ProductCartDetailsFragment extends BaseFragment {
         tvNoOfQuantityField = view.findViewById(R.id.tv_no_of_quantity_field);
         AppCompatButton btnPlusField = view.findViewById(R.id.btn_add_field);
         tvProductDescField = view.findViewById(R.id.tv_product_description_field);
-        viewMoreLayoutField = view.findViewById(R.id.view_more_layout_field);
         Button btnAddToCartField = view.findViewById(R.id.btn_add_to_cart_field);
         quantitySpinnerField = view.findViewById(R.id.quantity_spinner_field);
-        tvViewMoreField = view.findViewById(R.id.tv_view_more_field);
-        ivViewMoreImageField = view.findViewById(R.id.iv_view_more_image_field);
         btnWishListField = view.findViewById(R.id.btn_wish_list_field);
+
+        tvProductRegionalName = view.findViewById(R.id.product_regional_name);
+        tvDeliveryDaysBeforeTime = view.findViewById(R.id.delivery_before_time);
+        tvDeliveryDaysAfterTime = view.findViewById(R.id.delivery_after_time);
+        tvProductExpiry = view.findViewById(R.id.product_expiry);
 
         productsImagePagerField.startAutoScroll();
         productsImagePagerField.setInterval(1000);
@@ -236,7 +237,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
             }
         });
 
-        viewMoreLayoutField.setOnClickListener(v -> viewMoreSelected());
+        //viewMoreLayoutField.setOnClickListener(v -> viewMoreSelected());
 
         btnAddToCartField.setOnClickListener(v -> addToCartSelected());
         btnWishListField.setOnClickListener(v -> {
@@ -262,7 +263,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
         else btnWishListField.setText(getString(R.string.move_to_wish_list));
     }
 
-    private void viewMoreSelected() {
+    /*private void viewMoreSelected() {
         LinearLayout.LayoutParams buttonLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         if (!isViewMoreSelected) {
             isViewMoreSelected = true;
@@ -280,7 +281,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
         }
         buttonLayoutParams.gravity = Gravity.CENTER;
         viewMoreLayoutField.setLayoutParams(buttonLayoutParams);
-    }
+    }*/
 
     private void updateQuantityDetails() {
         tvNoOfQuantityField.setText(String.valueOf(noOfQuantity));
@@ -315,16 +316,49 @@ public class ProductCartDetailsFragment extends BaseFragment {
                 quantitySpinnerField.setAdapter(unitsAdapter);
             }
             tvProductDescField.setText(productDetailsDescModel.getProductDetails());
-            tvProductDescField.post(() -> {
+            /*tvProductDescField.post(() -> {
                 int lineCount = tvProductDescField.getLineCount();
                 viewMoreLayoutField.setVisibility(lineCount >= 5 ? View.VISIBLE : View.GONE);
-            });
+            });*/
 
-            tvProductDescField.setText(productDetailsDescModel.getProductDetails());
             isWishListProduct = productDetailsDescModel.getWishList();
 
             ivFavouriteImageField.setImageResource(isWishListProduct ? R.drawable.heart_active : R.drawable.heart_black);
             updateAddToWishListButton();
+
+
+            String deliveryDaysBeforeTime = vendorShopDetails.getDeliveryDaysBeforeTime();
+            if(!TextUtils.isEmpty(deliveryDaysBeforeTime)) {
+                if(deliveryDaysBeforeTime.equalsIgnoreCase("0")) {
+                    tvDeliveryDaysBeforeTime.setText(getString(R.string.delivery_in_same_day));
+                } else if(deliveryDaysBeforeTime.equalsIgnoreCase("1")) {
+                    tvDeliveryDaysBeforeTime.setText(getString(R.string.delivery_in_1_day));
+                } else {
+                    tvDeliveryDaysBeforeTime.setText(String.format(getString(R.string.delivery_in_days), deliveryDaysBeforeTime));
+                }
+            }
+
+            String deliveryDaysAfterTime = vendorShopDetails.getDeliveryDaysAfterTime();
+            if(!TextUtils.isEmpty(deliveryDaysAfterTime)) {
+                if(deliveryDaysAfterTime.equalsIgnoreCase("0")) {
+                    tvDeliveryDaysAfterTime.setText(getString(R.string.delivery_in_same_day));
+                } else if(deliveryDaysAfterTime.equalsIgnoreCase("1")) {
+                    tvDeliveryDaysAfterTime.setText(getString(R.string.delivery_in_1_day));
+                } else {
+                    tvDeliveryDaysAfterTime.setText(String.format(getString(R.string.delivery_in_days), deliveryDaysAfterTime));
+                }
+            }
+
+            tvProductRegionalName.setText(productDetailsDescModel.getProductRegionalName());
+            String expiryDate = productDetailsDescModel.getProductExpiryDate();
+            if (!TextUtils.isEmpty(expiryDate)) {
+                if (expiryDate.equalsIgnoreCase("1970-01-01") || expiryDate.equalsIgnoreCase("01-01-1970")) {
+                    tvProductExpiry.setText("");
+                } else {
+                    Calendar expiryDateCalendar = DateUtilities.getCalendarFromString(expiryDate);
+                    tvProductExpiry.setText(DateUtilities.getDateStringFromCalendar(expiryDateCalendar));
+                }
+            }
         } else {
             showCloseDialog(getString(R.string.no_product_details_found));
         }
@@ -371,7 +405,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
                         AddToCartResponseDetails body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                productId = -1;
                                 isAddToCartSelected = true;
                                 AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = body.getAddToCartDataResponse();
                                 if (addToCartDataResponse != null) {
@@ -403,14 +436,14 @@ public class ProductCartDetailsFragment extends BaseFragment {
         }
     }
 
-    private void buyNowSelected() {
+    /*private void buyNowSelected() {
         ShoppingCartResponseDetails shoppingCartResponseDetails = new ShoppingCartResponseDetails();
         shoppingCartResponseDetails.setVendorId(vendorShopDetails.getVendorId());
         shoppingCartResponseDetails.setMobileNumber(vendorShopDetails.getShopMobileNo());
         shoppingCartResponseDetails.setShopName(vendorShopDetails.getShopName());
         shoppingCartResponseDetails.setProductId(!isAddToCartSelected ? productDetailsDescModel.getProductId() : -1);
         onCustomerHomeInteractionListener.gotoShoppingCartDetails(shoppingCartResponseDetails);
-    }
+    }*/
 
     private void deleteProductFromWishList() {
         if (Utils.isNetworkConnected(requireActivity())) {

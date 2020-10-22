@@ -2,6 +2,7 @@ package com.rmart.profile.views;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rmart.BuildConfig;
 import com.rmart.R;
+import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.mapview.MapsFragment;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
@@ -35,7 +38,7 @@ import com.rmart.utilits.pojos.AddressResponse;
 import java.util.List;
 import java.util.Objects;
 
-public class ViewMyProfileFragment extends BaseMyProfileFragment implements View.OnClickListener, OnMapReadyCallback {
+public class ViewMyProfileFragment extends BaseFragment implements View.OnClickListener, OnMapReadyCallback {
 
     private AppCompatTextView tvFirstName, tvLastName, tvMobileNumber, tvEmail, tvGender, deliveryCharge, minimumCharge,
             tvOpeningTIme, tvClosingTIme, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
@@ -44,12 +47,20 @@ public class ViewMyProfileFragment extends BaseMyProfileFragment implements View
     // MyProfileViewModel myProfileViewModel;
     private AddressResponse addressResponse;
     private GoogleMap googleMap;
+    private OnCustomerHomeInteractionListener mListener;
+
     public ViewMyProfileFragment() {
         // Required empty public constructor
     }
 
     public static ViewMyProfileFragment newInstance() {
         return new ViewMyProfileFragment();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mListener = (OnCustomerHomeInteractionListener) context;
     }
 
     @Override

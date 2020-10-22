@@ -97,7 +97,7 @@
                     style="@style/product_preview_item_title"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/product_description"
+                    android:id="@+id/tv_product_description_field"
                     style="@style/product_preview_item_value"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -105,7 +105,7 @@
                     style="@style/product_preview_item_title"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/product_regional_name"
+                    android:id="@+id/tv_product_regional_name"
                     style="@style/product_preview_item_value"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -113,7 +113,7 @@
                     style="@style/product_preview_item_title"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/product_expiry"
+                    android:id="@+id/tv_product_expiry"
                     style="@style/product_preview_item_value"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -121,16 +121,15 @@
                     style="@style/product_preview_item_title"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/delivery_before_time"
+                    android:id="@+id/tv_delivery_before_time"
                     style="@style/product_preview_item_value"/>
-
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/delivery_days_after_time"
                     style="@style/product_preview_item_title"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/delivery_after_time"
+                    android:id="@+id/tv_delivery_after_time"
                     style="@style/product_preview_item_value"/>
 
             </LinearLayout>

@@ -67,6 +67,7 @@
         android:layout_marginEnd="10dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
+        android:visibility="gone"
         android:layout_toStartOf="@id/iv_call_field"
         android:textColor="@color/white" />
 </RelativeLayout>

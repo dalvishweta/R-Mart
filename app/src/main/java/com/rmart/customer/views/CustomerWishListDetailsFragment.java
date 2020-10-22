@@ -8,8 +8,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
@@ -23,6 +25,7 @@ import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.WishListResponseDetails;
 import com.rmart.customer.models.WishListResponseModel;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.GridSpacesItemDecoration;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -55,6 +58,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int PAGE_SIZE = 20;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public static CustomerWishListDetailsFragment getInstance(ShopWiseWishListResponseDetails vendorShopDetails) {
         CustomerWishListDetailsFragment customerWishListDetailsFragment = new CustomerWishListDetailsFragment();
@@ -98,17 +102,27 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
         TextView tvShopNameField = view.findViewById(R.id.tv_shop_name_field);
         tvNoOfProductsField = view.findViewById(R.id.tv_no_of_products_field);
 
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_field);
+        swipeRefreshLayout.setRefreshing(false);
+
         tvShopNameField.setText(vendorShopDetails.getShopName());
 
         productsListField.setHasFixedSize(false);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            resetProductsList();
+            getWishListDetails();
+        });
 
         wishListCart = new ArrayList<>();
 
         GridLayoutManager layoutManager = new GridLayoutManager(requireActivity(), 2, GridLayoutManager.VERTICAL, false);
         productsListField.setLayoutManager(layoutManager);
+        productsListField.addItemDecoration(new GridSpacesItemDecoration(20));
+
+        productsListField.setItemAnimator(new DefaultItemAnimator());
 
         productsListField.setHasFixedSize(false);
-        productsListField.setItemAnimator(new SlideInDownAnimator());
         productsListField.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -137,6 +151,13 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
         getWishListDetails();
     }
 
+    private void resetProductsList() {
+        wishListCart.clear();
+        customerWishListDetailsAdapter.updateItems(wishListCart);
+        customerWishListDetailsAdapter.notifyDataSetChanged();
+        currentPage = 0;
+    }
+
     private void loadMoreItems() {
         isLoading = true;
         currentPage += 1;
@@ -153,6 +174,8 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
                 @Override
                 public void onResponse(@NotNull Call<WishListResponseModel> call, @NotNull Response<WishListResponseModel> response) {
                     progressDialog.dismiss();
+                    resetProductsList();
+                    swipeRefreshLayout.setRefreshing(false);
                     if (response.isSuccessful()) {
                         WishListResponseModel body = response.body();
                         if (body != null) {
@@ -179,6 +202,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
                 @Override
                 public void onFailure(@NotNull Call<WishListResponseModel> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
+                    swipeRefreshLayout.setRefreshing(false);
                     showDialog(t.getMessage());
                 }
             });
