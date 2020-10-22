@@ -481,7 +481,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         progressDialog.show();
 
         Gson gson = new GsonBuilder().create();
-        mClonedProduct.setImageDataObject(imagesList);
+        // mClonedProduct.setImageDataObject(imagesList);
         JsonElement jsonElement = gson.toJsonTree(mClonedProduct);
         JsonObject jsonObject = (JsonObject) jsonElement;
         jsonObject.addProperty("stock_id", "5");
@@ -554,27 +554,24 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     }
 
     private void setImageURL(ArrayList<ImageURLResponse> lUpdateImagesList) {
-        for (Object lObject : imagesList) {
-            if (lObject instanceof ImageURLResponse) {
-                Bitmap bitmap = null;
-                try {
-                    ImageURLResponse imageURLResponse = (ImageURLResponse) lObject;
-                    String imageUri = imageURLResponse.getImageUri();
-                    if (imageUri != null) {
-                        Uri uri = Uri.fromFile(new File(imageUri));
-                        if (uri != null) {
-                            InputStream imageStream = requireActivity().getContentResolver().openInputStream(uri);
-                            bitmap = BitmapFactory.decodeStream(imageStream);
-                            imageURLResponse.setImageRawData(getEncodedImage(bitmap));
-                            lUpdateImagesList.add(imageURLResponse);
-                        }
+        for (ImageURLResponse imageURLResponse : imagesList) {
+            Bitmap bitmap = null;
+            try {
+                String imageUri = imageURLResponse.getImageUri();
+                if (imageUri != null) {
+                    Uri uri = Uri.fromFile(new File(imageUri));
+                    if (uri != null) {
+                        InputStream imageStream = requireActivity().getContentResolver().openInputStream(uri);
+                        bitmap = BitmapFactory.decodeStream(imageStream);
+                        imageURLResponse.setImageRawData(getEncodedImage(bitmap));
+                        lUpdateImagesList.add(imageURLResponse);
                     }
-                } catch (Exception ex) {
-                    LoggerInfo.printLog("image error", "exception " + ex.getMessage());
-                } finally {
-                    if (bitmap != null) {
-                        bitmap.recycle();
-                    }
+                }
+            } catch (Exception ex) {
+                LoggerInfo.printLog("image error", "exception " + ex.getMessage());
+            } finally {
+                if (bitmap != null) {
+                    bitmap.recycle();
                 }
             }
         }
