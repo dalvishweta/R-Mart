@@ -37,8 +37,6 @@ import com.rmart.utilits.services.VendorInventoryService;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -235,16 +233,18 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         dotIndicatorLayoutField.setVisibility(lImagesList.size() == 1 ? View.GONE : View.VISIBLE);
         dotIndicatorLayoutField.setupWithViewPager(autoScrollViewPager);
         tvProductName.setText(product.getProductName());
-
-        if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysBeforeTime().equalsIgnoreCase("1")) {
-            tvDeliveryDaysBeforeTime.setText(getString(R.string.delivery_in_day));
+        if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysBeforeTime().equalsIgnoreCase("0")) {
+            tvDeliveryDaysBeforeTime.setText(String.format(getString(R.string.delivery_in_same_day)));
+        } else if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysBeforeTime().equalsIgnoreCase("1")) {
+            tvDeliveryDaysBeforeTime.setText(String.format(getString(R.string.delivery_in_1_day)));
         } else {
             tvDeliveryDaysBeforeTime.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysBeforeTime()));
         }
 
-        if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysAfterTime().equalsIgnoreCase("1")) {
-            tvDeliveryDaysAfterTime.setText(getString(R.string.delivery_in_day));
-
+        if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysAfterTime().equalsIgnoreCase("0")) {
+            tvDeliveryDaysAfterTime.setText(String.format(getString(R.string.delivery_in_same_day)));
+        } else if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysAfterTime().equalsIgnoreCase("1")) {
+            tvDeliveryDaysAfterTime.setText(String.format(getString(R.string.delivery_in_1_day)));
         } else {
             tvDeliveryDaysAfterTime.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysAfterTime()));
         }
