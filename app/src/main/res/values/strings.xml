@@ -325,4 +325,5 @@
     <string name="total_amount">Total amount</string>
     <string name="error_min_password">Please enter minimum of 5 characters</string>
     <string name="product_discard_alert">Are you sure wants to discard your Changes?</string>
+    <string name="cart_is_empty">Cart is empty</string>
 </resources>

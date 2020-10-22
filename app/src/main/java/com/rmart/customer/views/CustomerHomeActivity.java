@@ -74,7 +74,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     @Override
     public void gotoShoppingCartScreen() {
         hideCartIcon();
-        replaceFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
+        replaceFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), false);
     }
 
     @Override

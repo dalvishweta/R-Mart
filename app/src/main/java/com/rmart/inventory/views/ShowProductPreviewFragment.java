@@ -29,6 +29,7 @@ import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.APIStockResponse;
+import com.rmart.utilits.pojos.AddressResponse;
 import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.ImageURLResponse;
 import com.rmart.utilits.pojos.ProductResponse;
@@ -137,11 +138,11 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         super.onViewCreated(view, savedInstanceState);
         tvProductName = view.findViewById(R.id.product_name);
         recyclerView = view.findViewById(R.id.unit_base);
-        tvProductDescription = view.findViewById(R.id.product_description);
-        tvProductRegionalName = view.findViewById(R.id.product_regional_name);
-        tvDeliveryDaysBeforeTime = view.findViewById(R.id.delivery_before_time);
-        tvDeliveryDaysAfterTime = view.findViewById(R.id.delivery_after_time);
-        tvProductExpiry = view.findViewById(R.id.product_expiry);
+        tvProductDescription = view.findViewById(R.id.tv_product_description_field);
+        tvProductRegionalName = view.findViewById(R.id.tv_product_regional_name);
+        tvDeliveryDaysBeforeTime = view.findViewById(R.id.tv_delivery_before_time);
+        tvDeliveryDaysAfterTime = view.findViewById(R.id.tv_delivery_after_time);
+        tvProductExpiry = view.findViewById(R.id.tv_product_expiry);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         autoScrollViewPager = view.findViewById(R.id.view_pager);
         AppCompatButton delete = view.findViewById(R.id.unit_delete);
@@ -224,7 +225,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         }
         ImageAdapter imageAdapter = new ImageAdapter(requireContext(), lImagesList);
         imageAdapter.setCallBackListener(pObject -> {
-            if(pObject instanceof ImageURLResponse) {
+            if (pObject instanceof ImageURLResponse) {
                 ImageURLResponse imageURLResponse = (ImageURLResponse) pObject;
                 showProductPreviewSelected(imageURLResponse.getImageURL());
             }
@@ -233,20 +234,34 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         dotIndicatorLayoutField.setVisibility(lImagesList.size() == 1 ? View.GONE : View.VISIBLE);
         dotIndicatorLayoutField.setupWithViewPager(autoScrollViewPager);
         tvProductName.setText(product.getProductName());
-        if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysBeforeTime().equalsIgnoreCase("0")) {
-            tvDeliveryDaysBeforeTime.setText(getString(R.string.delivery_in_same_day));
-        } else if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysBeforeTime().equalsIgnoreCase("1")) {
-            tvDeliveryDaysBeforeTime.setText(getString(R.string.delivery_in_1_day));
-        } else {
-            tvDeliveryDaysBeforeTime.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysBeforeTime()));
-        }
 
-        if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysAfterTime().equalsIgnoreCase("0")) {
-            tvDeliveryDaysAfterTime.setText(getString(R.string.delivery_in_same_day));
-        } else if(MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysAfterTime().equalsIgnoreCase("1")) {
-            tvDeliveryDaysAfterTime.setText(getString(R.string.delivery_in_1_day));
-        } else {
-            tvDeliveryDaysAfterTime.setText(String.format(getString(R.string.delivery_in_days), MyProfile.getInstance().getAddressResponses().get(0).getDeliveryDaysAfterTime()));
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            ArrayList<AddressResponse> addressResponsesList = myProfile.getAddressResponses();
+            if(addressResponsesList != null && !addressResponsesList.isEmpty()) {
+                AddressResponse addressResponse = addressResponsesList.get(0);
+                String deliveryDaysBeforeTime = addressResponse.getDeliveryDaysBeforeTime();
+                if(!TextUtils.isEmpty(deliveryDaysBeforeTime)) {
+                    if (deliveryDaysBeforeTime.equalsIgnoreCase("0")) {
+                        tvDeliveryDaysBeforeTime.setText(getString(R.string.delivery_in_same_day));
+                    } else if (deliveryDaysBeforeTime.equalsIgnoreCase("1")) {
+                        tvDeliveryDaysBeforeTime.setText(getString(R.string.delivery_in_1_day));
+                    } else {
+                        tvDeliveryDaysBeforeTime.setText(String.format(getString(R.string.delivery_in_days), deliveryDaysBeforeTime));
+                    }
+                }
+
+                String deliveryDaysAfterTime = addressResponse.getDeliveryDaysAfterTime();
+                if(!TextUtils.isEmpty(deliveryDaysAfterTime)) {
+                    if (deliveryDaysAfterTime.equalsIgnoreCase("0")) {
+                        tvDeliveryDaysAfterTime.setText(getString(R.string.delivery_in_same_day));
+                    } else if (deliveryDaysBeforeTime.equalsIgnoreCase("1")) {
+                        tvDeliveryDaysAfterTime.setText(getString(R.string.delivery_in_1_day));
+                    } else {
+                        tvDeliveryDaysAfterTime.setText(String.format(getString(R.string.delivery_in_days), deliveryDaysAfterTime));
+                    }
+                }
+            }
         }
 
         ProductUnitAdapter unitBaseAdapter = new ProductUnitAdapter(product.getUnitObjects(), callBackInterface, false);

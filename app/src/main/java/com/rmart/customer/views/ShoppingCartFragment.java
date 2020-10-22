@@ -6,6 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
@@ -25,11 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -153,7 +154,7 @@ public class ShoppingCartFragment extends BaseFragment {
                             showCloseDialog(getString(R.string.no_information_available));
                         }
                     } else {
-                        showCloseDialog(getString(R.string.no_information_available));
+                        showCloseDialog(response.message());
                     }
                 }
 
@@ -164,12 +165,24 @@ public class ShoppingCartFragment extends BaseFragment {
                 }
             });
         } else {
-            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            showCloseDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
     }
 
+    private void showCloseDialog(String title, String message) {
+        showDialog(title, message, pObject -> checkStack());
+    }
+
     private void showCloseDialog(String message) {
-        showDialog(message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+        showDialog(message, pObject -> checkStack());
+    }
+
+    private void checkStack() {
+        if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            requireActivity().finish();
+        } else {
+            requireActivity().getSupportFragmentManager().popBackStackImmediate();
+        }
     }
 
     private void shopDetailsSelected() {
@@ -184,6 +197,8 @@ public class ShoppingCartFragment extends BaseFragment {
         if (!shopWiseCartList.isEmpty()) {
             shoppingCartAdapter.updateItems(shopWiseCartList);
             shoppingCartAdapter.notifyDataSetChanged();
+        } else {
+            showCloseDialog(getString(R.string.cart_is_empty));
         }
     }
 }
