@@ -476,12 +476,10 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         mClonedProduct.setDescription(productDescription.getText().toString());
         ArrayList<ImageURLResponse> updateImagesList = new ArrayList<>();
         setImageURL(updateImagesList);
-        LoggerInfo.printLog("Images uploaded list", "Size is " + updateImagesList.size());
         mClonedProduct.setImageDataObject(updateImagesList);
         progressDialog.show();
 
         Gson gson = new GsonBuilder().create();
-        // mClonedProduct.setImageDataObject(imagesList);
         JsonElement jsonElement = gson.toJsonTree(mClonedProduct);
         JsonObject jsonObject = (JsonObject) jsonElement;
         jsonObject.addProperty("stock_id", "5");

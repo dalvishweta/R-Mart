@@ -57,18 +57,10 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
         holder.tvUnitValue.setText(unitValue);
         holder.tvIUnitState.setText(unit.getStockName());
 
-        if (unit.getDiscount().length() <= 0 || unit.getDiscount().equalsIgnoreCase("0")) {
-            String actualCost = "";
-            holder.tvActual.setText(actualCost);
-            holder.tvActual.setPaintFlags(holder.tvActual.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            String offer = "0 %";
-            holder.tvOffer.setText(offer);
-        } else {
-            String actualCost = String.format("%s Rs", unit.getActualCost());
-            holder.tvActual.setText(actualCost);
-            holder.tvActual.setPaintFlags(holder.tvActual.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer_single_line), unit.getDiscount() + "%"));
-        }
+        String actualCost = String.format("%s Rs", unit.getActualCost());
+        holder.tvActual.setText(actualCost);
+        holder.tvActual.setPaintFlags(holder.tvActual.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer_single_line), unit.getDiscount() + "%"));
 
         holder.edit.setTag(position);
         if (unit.getStockID().equalsIgnoreCase("5")) {
@@ -85,7 +77,7 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
 
     public class ProductUnitViewHolder extends RecyclerView.ViewHolder {
         public AppCompatTextView tvIUnitState, tvUnitValue, tvFinalCost, tvActual, tvOffer;
-        public AppCompatImageButton edit; // , edit;
+        public AppCompatImageButton edit;
 
         public ProductUnitViewHolder(View listItem) {
             super(listItem);
@@ -95,7 +87,6 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
             tvOffer = listItem.findViewById(R.id.offer);
             tvIUnitState = listItem.findViewById(R.id.unit_status);
             edit = listItem.findViewById(R.id.unit_edit);
-            // edit = listItem.findViewById(R.id.edit);
             edit.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
                 ContentModel contentModel = new ContentModel();
