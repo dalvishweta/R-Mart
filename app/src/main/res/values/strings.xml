@@ -145,7 +145,7 @@
     <string name="delivery_in">Delivery in</string>
     <string name="delivery_in_days_text">Delivery in days</string>
     <string name="delivery_in_days">Delivery in %1$s days</string>
-    <string name="delivery_in_1_day">Delivery in the 1 day.</string>
+    <string name="delivery_in_1_day">Delivery in 1 day</string>
     <string name="delivery_in_same_day">Delivery on the same day.</string>
     <string name="product">Product</string>
     <string name="add_new_product">Add new product</string>
@@ -327,4 +327,5 @@
     <string name="product_discard_alert">Are you sure wants to discard your Changes?</string>
     <string name="cart_is_empty">Cart is empty</string>
     <string name="allow_digits">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM</string>
+    <string name="allow_digits_for_address">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM -_,()\&amp;</string>
 </resources>

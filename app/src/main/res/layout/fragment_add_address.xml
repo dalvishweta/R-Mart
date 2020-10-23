@@ -292,7 +292,7 @@
             style="@style/my_profile_tv"
             android:layout_marginTop="10dp"
             android:inputType="text"
-            android:digits="@string/allow_digits"/>
+            android:digits="@string/allow_digits_for_address"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:hint="@string/city"
             android:id="@+id/city"
