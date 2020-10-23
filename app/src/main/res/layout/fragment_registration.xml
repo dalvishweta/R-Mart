@@ -43,7 +43,7 @@
                     android:layout_marginStart="5dp"
                     android:background="@android:color/transparent"
                     android:hint="@string/first_name"
-                    android:inputType="text|numberSigned"
+                    android:inputType="textEmailAddress"
                     android:maxLines="1"
                     android:minHeight="50dp"
                     android:paddingEnd="10dp"
@@ -75,7 +75,7 @@
                     android:layout_marginStart="5dp"
                     android:background="@android:color/transparent"
                     android:hint="@string/last_name"
-                    android:inputType="text|numberSigned"
+                    android:digits="@string/allow_digits"
                     android:maxLines="1"
                     android:minHeight="50dp"
                     android:paddingEnd="10dp"
@@ -131,7 +131,7 @@
                     android:layout_marginEnd="15dp"
                     android:layout_marginStart="15dp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/user" />
+                    android:src="@drawable/ic_mail" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/email"
@@ -163,7 +163,7 @@
                     android:layout_marginEnd="15dp"
                     android:layout_marginStart="15dp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/user" />
+                    android:src="@drawable/ic_password" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/password"
@@ -196,7 +196,7 @@
                     android:layout_marginEnd="15dp"
                     android:layout_marginStart="15dp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/user" />
+                    android:src="@drawable/ic_password" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/confirm_password"

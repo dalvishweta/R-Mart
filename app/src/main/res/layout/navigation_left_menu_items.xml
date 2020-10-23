@@ -72,18 +72,21 @@
                     android:id="@+id/my_wallet"
                     style="@style/nv_item_view"
                     android:drawableStart="@drawable/password_nv"
+                    android:visibility="gone"
                     android:text="@string/my_wallet" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/my_khata"
                     style="@style/nv_item_view"
                     android:drawableStart="@drawable/password_nv"
+                    android:visibility="gone"
                     android:text="@string/my_khata" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/support"
                     style="@style/nv_item_view"
                     android:drawableStart="@drawable/password_nv"
+                    android:visibility="gone"
                     android:text="@string/support" />
 
                 <androidx.appcompat.widget.AppCompatTextView

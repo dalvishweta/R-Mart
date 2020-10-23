@@ -292,14 +292,14 @@
             style="@style/my_profile_tv"
             android:layout_marginTop="10dp"
             android:inputType="text"
-            android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"/>
+            android:digits="@string/allow_digits"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:hint="@string/city"
             android:id="@+id/city"
             android:drawableStart="@drawable/user"
             style="@style/my_profile_tv"
             android:inputType="text"
-            android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"/>
+            android:digits="@string/allow_digits"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:visibility="gone"
             android:hint="@string/district"
@@ -307,7 +307,7 @@
             android:drawableStart="@drawable/user"
             style="@style/my_profile_tv"
             android:inputType="text"
-            android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"/>
+            android:digits="@string/allow_digits"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:hint="@string/state"
             android:id="@+id/state"

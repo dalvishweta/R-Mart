@@ -1,0 +1,42 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="23.27dp"
+    android:height="18dp"
+    android:viewportWidth="23.27"
+    android:viewportHeight="18">
+  <path
+      android:pathData="M22.785,1.125L0.485,1.125a0.569,0.569 0,0 1,0 -1.125h22.3a0.569,0.569 0,0 1,0 1.125Z"
+      android:fillColor="#878787"/>
+  <path
+      android:pathData="M22.785,4.5L0.485,4.5a0.569,0.569 0,0 1,0 -1.125h22.3a0.569,0.569 0,0 1,0 1.125Z"
+      android:fillColor="#878787"/>
+  <path
+      android:pathData="M22.785,7.875L0.485,7.875a0.569,0.569 0,0 1,0 -1.125h22.3a0.569,0.569 0,0 1,0 1.125Z"
+      android:fillColor="#878787"/>
+  <path
+      android:pathData="M22.785,11.25L0.485,11.25a0.569,0.569 0,0 1,0 -1.125h22.3a0.569,0.569 0,0 1,0 1.125Z"
+      android:fillColor="#878787"/>
+  <path
+      android:pathData="M22.785,14.625L0.485,14.625a0.569,0.569 0,0 1,0 -1.125h22.3a0.569,0.569 0,0 1,0 1.125Z"
+      android:fillColor="#878787"/>
+  <path
+      android:pathData="M18.562,18h-18a0.563,0.563 0,1 1,0 -1.125h18a0.563,0.563 0,1 1,0 1.125Z"
+      android:fillColor="#878787"/>
+  <path
+      android:pathData="M22.785,1.125L0.485,1.125a0.569,0.569 0,0 1,0 -1.125h22.3a0.569,0.569 0,0 1,0 1.125Z"
+      android:fillColor="#878787"/>
+  <path
+      android:pathData="M22.785,4.5L0.485,4.5a0.569,0.569 0,0 1,0 -1.125h22.3a0.569,0.569 0,0 1,0 1.125Z"
+      android:fillColor="#878787"/>
+  <path
+      android:pathData="M22.785,7.875L0.485,7.875a0.569,0.569 0,0 1,0 -1.125h22.3a0.569,0.569 0,0 1,0 1.125Z"
+      android:fillColor="#878787"/>
+  <path
+      android:pathData="M22.785,11.25L0.485,11.25a0.569,0.569 0,0 1,0 -1.125h22.3a0.569,0.569 0,0 1,0 1.125Z"
+      android:fillColor="#878787"/>
+  <path
+      android:pathData="M22.785,14.625L0.485,14.625a0.569,0.569 0,0 1,0 -1.125h22.3a0.569,0.569 0,0 1,0 1.125Z"
+      android:fillColor="#878787"/>
+  <path
+      android:pathData="M18.562,18h-18a0.563,0.563 0,1 1,0 -1.125h18a0.563,0.563 0,1 1,0 1.125Z"
+      android:fillColor="#878787"/>
+</vector>

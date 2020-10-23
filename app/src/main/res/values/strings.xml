@@ -326,4 +326,5 @@
     <string name="error_min_password">Please enter minimum of 8 characters</string>
     <string name="product_discard_alert">Are you sure wants to discard your Changes?</string>
     <string name="cart_is_empty">Cart is empty</string>
+    <string name="allow_digits">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM</string>
 </resources>

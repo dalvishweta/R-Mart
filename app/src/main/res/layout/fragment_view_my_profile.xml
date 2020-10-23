@@ -50,13 +50,13 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:hint="@string/hint_mobile_number"
                         android:id="@+id/mobile_number"
-                        android:drawableStart="@drawable/user"
+                        android:drawableStart="@drawable/ic_phone"
                         style="@style/my_profile_tv"
                         android:inputType="number|numberSigned"/>
                     <androidx.appcompat.widget.AppCompatTextView
                         android:hint="@string/please_enter_your_e_mail"
                         android:id="@+id/email"
-                        android:drawableStart="@drawable/user"
+                        android:drawableStart="@drawable/mail"
                         style="@style/my_profile_tv"
                         android:inputType="textEmailAddress"/>
 
@@ -102,37 +102,37 @@
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/enter_your_business_name"
                             android:id="@+id/shop_name"
-                            android:drawableStart="@drawable/user"
+                            android:drawableStart="@drawable/shop"
                             style="@style/my_profile_tv"
                             android:inputType="text"/>
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/enter_shop_act_number"
                             android:id="@+id/shop_act"
-                            android:drawableStart="@drawable/user"
+                            android:drawableStart="@drawable/ic_note"
                             style="@style/my_profile_tv"
                             android:inputType="text"/>
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/enter_your_pan_number"
                             android:id="@+id/pan_number"
-                            android:drawableStart="@drawable/user"
+                            android:drawableStart="@drawable/ic_note"
                             style="@style/my_profile_tv"
                             android:inputType="number"/>
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/enter_your_gst_number"
                             android:id="@+id/gst_number"
-                            android:drawableStart="@drawable/user"
+                            android:drawableStart="@drawable/ic_note"
                             style="@style/my_profile_tv"
                             android:inputType="text"/>
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/shop_no"
                             android:id="@+id/shop_no"
-                            android:drawableStart="@drawable/user"
+                            android:drawableStart="@drawable/shop"
                             style="@style/my_profile_tv"
                             android:inputType="text"/>
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/delivery_radius"
                             android:id="@+id/delivery_radius"
-                            android:drawableStart="@drawable/user"
+                            android:drawableStart="@drawable/ic_address"
                             style="@style/my_profile_tv"
                             android:inputType="number"/>
                         <LinearLayout
@@ -144,7 +144,7 @@
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:hint="@string/delivery_charge"
                                 android:id="@+id/delivery_charges"
-                                android:drawableStart="@drawable/user"
+                                android:drawableStart="@drawable/ic_note"
                                 style="@style/upload_product_item_field"
                                 android:inputType="number"
                                 android:background="@drawable/curve_left_bg"
@@ -215,25 +215,25 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:hint="@string/street_address"
                         android:id="@+id/street_address"
-                        android:drawableStart="@drawable/user"
+                        android:drawableStart="@drawable/ic_address"
                         style="@style/my_profile_tv"
                         android:inputType="text"/>
                     <androidx.appcompat.widget.AppCompatTextView
                         android:hint="@string/city"
                         android:id="@+id/city"
-                        android:drawableStart="@drawable/user"
+                        android:drawableStart="@drawable/ic_flag"
                         style="@style/my_profile_tv"
                         android:inputType="text"/>
                     <androidx.appcompat.widget.AppCompatTextView
                         android:hint="@string/state"
                         android:id="@+id/state"
-                        android:drawableStart="@drawable/user"
+                        android:drawableStart="@drawable/ic_flag"
                         style="@style/my_profile_tv"
                         android:inputType="text"/>
                     <androidx.appcompat.widget.AppCompatTextView
                         android:hint="@string/pin_code"
                         android:id="@+id/pin_code"
-                        android:drawableStart="@drawable/user"
+                        android:drawableStart="@drawable/ic_note"
                         style="@style/my_profile_tv"
                         android:inputType="number"/>
                 </LinearLayout>
