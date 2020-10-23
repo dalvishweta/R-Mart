@@ -43,12 +43,12 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
 
     private ProductAdapter productAdapter;
     private AppCompatTextView tvTotalCount;
-    LinearLayout addProduct;
-    PopupMenu popup;
-    SearchView searchView;
-    VendorInventoryService vendorInventoryService;
+    private PopupMenu popup;
+    private SearchView searchView;
+    private VendorInventoryService vendorInventoryService;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ArrayList<ProductResponse> productsList = new ArrayList<>();
+    private String filterType;
 
     public MyProductsListFragment() {
         // Required empty public constructor
@@ -86,7 +86,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView productRecycleView = view.findViewById(R.id.product_list);
-        addProduct = view.findViewById(R.id.add_product);
+        LinearLayout addProduct = view.findViewById(R.id.add_product);
         tvTotalCount = view.findViewById(R.id.category_count);
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_refresh_items);
 
@@ -95,9 +95,12 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         productAdapter = new ProductAdapter(requireActivity(), productsList, onClickListener, 2);
         productRecycleView.setAdapter(productAdapter);
 
-        getProductList("1,2,3,4,5,6,7", "");
+        filterType = "";
+        getProductList("1,2,3,4,5,6,7");
 
-        mSwipeRefreshLayout.setOnRefreshListener(() -> getProductList("1,2,3,4,5,6,7", ""));
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            getProductList("1,2,3,4,5,6,7");
+        });
         addProduct.setOnClickListener(this);
         popup = new PopupMenu(requireActivity(), view.findViewById(R.id.sort));
         popup.getMenu().add(Menu.NONE, 1, 1, "All Products");
@@ -107,18 +110,22 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         popup.setOnMenuItemClickListener(item -> {
             int i = item.getItemId();
             item.setChecked(true);
+            filterType = item.getTitle().toString();
             switch (i) {
                 case 3:
-                    getProductList(item.getItemId()+"", item.getTitle());
+                    getProductList(String.valueOf(item.getItemId()));
                     break;
                 case 2:
-                    getProductList("5", item.getTitle());
+                    getProductList("5");
                     break;
                 case 6:
-                    getProductList("6", item.getTitle());
+                    getProductList("6");
                     break;
                 case 1:
-                    getProductList("1,2,3,4,5,6,7", "");
+                    filterType = "";
+                    getProductList("1,2,3,4,5,6,7");
+                    break;
+                default:
                     break;
             }
             return true;
@@ -133,12 +140,13 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         setSearchView(view);
     }
 
-    private View.OnClickListener onClickListener = view -> {
+    private final View.OnClickListener onClickListener = view -> {
         ProductResponse product = (ProductResponse) view.getTag();
         mListener.showProductPreview(product, true);
     };
 
-    private void getProductList(String stockType, CharSequence title) {
+    private void getProductList(String stockType) {
+        resetProductsList();
         progressDialog.show();
         vendorInventoryService.getProductList("0", MyProfile.getInstance().getMobileNumber(), stockType).enqueue(new Callback<ProductListResponse>() {
             @Override
@@ -152,7 +160,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                                 showDialog(getString(R.string.sorry), getString(R.string.no_products_error));
                             } else {
                                 productsList = productsListResponse.getProductResponses();
-                                updateList(title);
+                                updateList();
                             }
                         } else {
                             showDialog("", productsListResponse.getMsg());
@@ -180,6 +188,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         productsList.clear();
         productAdapter.updateItems(productsList);
         productAdapter.notifyDataSetChanged();
+        tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), productsList.size(), filterType));
     }
 
     protected void setSearchView(@NonNull View view) {
@@ -198,9 +207,9 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     if(!TextUtils.isEmpty(newText)) {
-                        productAdapter.getFilter().filter(newText);
+                        productAdapter.getFilter().filter(newText, count -> tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), count, filterType)));
                     } else {
-                        updateList("");
+                        updateList();
                     }
                     return false;
                 }
@@ -208,10 +217,10 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         }
     }
 
-    private void updateList(CharSequence title) {
+    private void updateList() {
         try {
             // resetProductsList();
-            tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), productsList.size(), title));
+            tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), productsList.size(), filterType));
             productAdapter.updateItems(productsList);
             productAdapter.notifyDataSetChanged();
         } catch (Resources.NotFoundException e) {

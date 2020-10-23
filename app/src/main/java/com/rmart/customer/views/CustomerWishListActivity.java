@@ -27,14 +27,6 @@ public class CustomerWishListActivity extends BaseNavigationDrawerActivity imple
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.base_container_layout);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(R.string.my_wish_list);
-            //actionBar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setNavigationIcon(R.drawable.ic_back_arrow);
-            toolbar.setNavigationOnClickListener(v -> finish());
-        }
-
         replaceFragment(CustomerWishListFragment.getInstance(), CustomerWishListFragment.class.getName(), false);
     }
 

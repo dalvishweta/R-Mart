@@ -2,13 +2,17 @@ package com.rmart.customer.views;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +26,7 @@ import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.CommonUtils;
 import com.rmart.utilits.EqualSpacingItemDecoration;
 import com.rmart.utilits.GridSpacesItemDecoration;
 import com.rmart.utilits.LoggerInfo;
@@ -34,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 import retrofit2.Call;
@@ -55,6 +61,7 @@ public class VendorSameProductsListScreen extends BaseFragment {
     private boolean isLastPage = false;
     private int PAGE_SIZE = 20;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
+    private AppCompatEditText etProductsSearchField;
 
     public VendorSameProductsListScreen() {
         // Required empty public constructor
@@ -162,12 +169,65 @@ public class VendorSameProductsListScreen extends BaseFragment {
         productsList = new ArrayList<>();
         vendorProductsListAdapter = new VendorProductsListAdapter(requireActivity(), productsList);
         productsListField.setAdapter(vendorProductsListAdapter);
+
+        etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
+        ImageView ivSearchField = view.findViewById(R.id.iv_search_field);
+
+        ivSearchField.setOnClickListener(v -> {
+            etProductsSearchField.setText("");
+            searchProductName = "";
+            currentPage = 0;
+            CommonUtils.closeVirtualKeyboard(requireActivity(), ivSearchField);
+        });
+        etProductsSearchField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String value = s.toString().trim();
+                if (!TextUtils.isEmpty(value)) {
+                    ivSearchField.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
+                    performSearch();
+                } else {
+                    ivSearchField.setImageResource(R.drawable.search);
+                    resetVendorProductDetails();
+                    getVendorDetails();
+                }
+            }
+        });
+    }
+
+    private void performSearch() {
+        searchProductName = Objects.requireNonNull(etProductsSearchField.getText()).toString().trim();
+        if (searchProductName.length() == 0) {
+            vendorProductsListAdapter.updateItems(productsList);
+            vendorProductsListAdapter.notifyDataSetChanged();
+        } else if (searchProductName.length() == 3) {
+            currentPage = 0;
+            getVendorDetails();
+        } else {
+            vendorProductsListAdapter.getFilter().filter(searchProductName);
+        }
     }
 
     private void loadMoreItems() {
         isLoading = true;
         currentPage += 1;
         getVendorDetails();
+    }
+
+    private void resetVendorProductDetails() {
+        productsList.clear();
+        vendorProductsListAdapter.updateItems(productsList);
+        vendorProductsListAdapter.notifyDataSetChanged();
     }
 
     private void getVendorDetails() {
@@ -188,6 +248,7 @@ public class VendorSameProductsListScreen extends BaseFragment {
                 @Override
                 public void onResponse(@NotNull Call<VendorProductDetailsResponse> call, @NotNull Response<VendorProductDetailsResponse> response) {
                     progressDialog.dismiss();
+                    resetVendorProductDetails();
                     if (response.isSuccessful()) {
                         VendorProductDetailsResponse body = response.body();
                         if (body != null) {
@@ -198,20 +259,20 @@ public class VendorSameProductsListScreen extends BaseFragment {
                                 }
                                 updateAdapter(body.getMsg());
                             } else {
-                                showCloseDialog(getString(R.string.message), body.getMsg());
+                                showDialog(body.getMsg());
                             }
                         } else {
-                            showCloseDialog(getString(R.string.message), getString(R.string.no_information_available));
+                            showDialog(getString(R.string.no_information_available));
                         }
                     } else {
-                        showCloseDialog(getString(R.string.message), getString(R.string.no_information_available));
+                        showDialog(response.message());
                     }
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<VendorProductDetailsResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
-                    showCloseDialog(getString(R.string.message), t.getMessage());
+                    showDialog(t.getMessage());
                 }
             });
         } else {
@@ -228,7 +289,7 @@ public class VendorSameProductsListScreen extends BaseFragment {
             vendorProductsListAdapter.updateItems(productsList);
             vendorProductsListAdapter.notifyDataSetChanged();
         } else {
-            showCloseDialog(getString(R.string.message), message);
+            showDialog(message);
         }
     }
 }

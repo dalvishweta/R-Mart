@@ -43,12 +43,10 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
 
     private SearchView searchView;
     PopupMenu popup;
-    private RecyclerView productRecycleView;
     ProductAdapter productAdapter;
     private AppCompatTextView tvTotalCount;
     AppCompatButton addProduct;
     ArrayList<ProductResponse> products = new ArrayList<>();
-    private int selectedContentType;
     private String listType;
     private String id;
     private String type = Utils.PRODUCT;
@@ -99,20 +97,22 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        productRecycleView = view.findViewById(R.id.product_list);
+        RecyclerView productRecycleView = view.findViewById(R.id.product_list);
         addProduct = view.findViewById(R.id.request_new_product);
         tvTotalCount = view.findViewById(R.id.category_count);
         addProduct.setOnClickListener(this);
         productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         productAdapter = new ProductAdapter(requireActivity(), products, productView -> {
+            searchView.setQuery("", false);
+            searchView.clearFocus();
             ProductResponse product = (ProductResponse) productView.getTag();
             if (product.getType().equalsIgnoreCase(Utils.PRODUCT)) {
                 mListener.updateProduct(product, false);
             } else if (product.getType().equalsIgnoreCase(Utils.CATEGORY)) {
                 mListener.addProductToInventory(Utils.SUB_CATEGORY, product.getId());
-            } else if(product.getType().equalsIgnoreCase(Utils.SUB_CATEGORY)) {
+            } else if (product.getType().equalsIgnoreCase(Utils.SUB_CATEGORY)) {
                 mListener.addProductToInventory(Utils.SUB_CATEGORY_PRODUCT, product.getId());
-            } else if(product.getType().equalsIgnoreCase(Utils.BRAND)) {
+            } else if (product.getType().equalsIgnoreCase(Utils.BRAND)) {
                 mListener.addProductToInventory(Utils.BRAND_PRODUCTS, product.getId());
             }
         }, 3);
@@ -348,7 +348,6 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
         view.findViewById(R.id.sort).setOnClickListener(param -> {
             popup.show();
         });
-        searchView = view.findViewById(R.id.searchView);
         setSearchView();
     }
 
@@ -375,30 +374,33 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
         mListener.requestToCreateProduct();
     }
 
+    private final SearchView.OnQueryTextListener searchQueryListener = new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            if (query.length() == 0) {
+                searchView.clearFocus();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            if (!TextUtils.isEmpty(newText)) {
+                productAdapter.getFilter().filter(newText, count -> {
+                    String totalCount = String.format(Locale.getDefault(), "Showing %d %s", count, type);
+                    tvTotalCount.setText(totalCount);
+                });
+            } else {
+                updateList();
+            }
+            return false;
+        }
+    };
+
     protected void setSearchView() {
         if (null != productAdapter) {
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    if (query.length() == 0) {
-                        searchView.clearFocus();
-                        return true;
-                    }
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    if(!TextUtils.isEmpty(newText)) {
-                        productAdapter.getFilter().filter(newText);
-                    } else {
-                        updateList();
-                    }
-                    return false;
-                }
-            });
+            searchView.setOnQueryTextListener(searchQueryListener);
         }
     }
-
-
 }

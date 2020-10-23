@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -124,8 +125,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             etProductsSearchField.setText("");
             searchShopName = "";
             CommonUtils.closeVirtualKeyboard(requireActivity(), ivSearchField);
-            resetShopsList();
-            getShopsList();
         });
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
@@ -152,6 +151,10 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                     performSearch();
                 } else {
                     ivSearchField.setImageResource(R.drawable.search);
+                    currentPage = 0;
+                    searchShopName = "";
+                    resetShopsList();
+                    getShopsList();
                 }
             }
         });
@@ -251,6 +254,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
             try {
+                MutableLiveData<Integer> cartCountMutable = myProfile.getCartCount();
                 int cartCount = myProfile.getCartCount().getValue();
                 if (cartCount > 0) {
                     ((CustomerHomeActivity) (requireActivity())).showCartIcon();

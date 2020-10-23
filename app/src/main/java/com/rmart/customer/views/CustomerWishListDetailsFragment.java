@@ -336,7 +336,8 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
         int index = wishListCart.indexOf(wishListResponseDetails);
         if (index > -1) {
             wishListCart.remove(index);
-            customerWishListDetailsAdapter.notifyItemRemoved(index);
+            customerWishListDetailsAdapter.updateItems(wishListCart);
+            customerWishListDetailsAdapter.notifyDataSetChanged();
         }
         if (wishListCart.size() == 0) {
             requireActivity().getSupportFragmentManager().popBackStackImmediate();

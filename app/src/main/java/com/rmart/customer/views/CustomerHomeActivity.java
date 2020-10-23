@@ -30,13 +30,6 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
             //addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
             boolean isShoppingCart = data.getBoolean("ShoppingCart");
             if(isShoppingCart) {
-
-                ActionBar actionBar = getSupportActionBar();
-                if (actionBar != null) {
-                    actionBar.setTitle(R.string.shopping_cart);
-                    toolbar.setNavigationIcon(R.drawable.ic_back_arrow);
-                    toolbar.setNavigationOnClickListener(v -> finish());
-                }
                 replaceFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), false);
             }
         } else {

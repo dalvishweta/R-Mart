@@ -43,12 +43,12 @@ import java.util.List;
  */
 public class VendorProductsListAdapter extends RecyclerView.Adapter<VendorProductsListAdapter.ItemsViewHolder> implements Filterable {
 
-    private LayoutInflater layoutInflater;
+    private final LayoutInflater layoutInflater;
     private List<CustomerProductDetailsModel> filteredListData;
     private MyFilter myFilter;
 
     private List<CustomerProductDetailsModel> productsList;
-    private ImageLoader imageLoader;
+    private final ImageLoader imageLoader;
 
     public VendorProductsListAdapter(Context context, List<CustomerProductDetailsModel> productsList) {
         layoutInflater = LayoutInflater.from(context);

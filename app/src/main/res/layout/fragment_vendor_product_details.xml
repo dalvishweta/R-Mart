@@ -68,7 +68,7 @@
             android:layout_toStartOf="@id/iv_search_field"
             android:background="@android:color/transparent"
             android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"
-            android:hint="@string/search_for_products"
+            android:hint="@string/search_for_category"
             android:inputType="textCapSentences"
             android:lines="1"
             android:paddingStart="20dp"

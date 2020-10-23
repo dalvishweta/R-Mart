@@ -135,9 +135,8 @@ public class VendorProductDetailsFragment extends BaseFragment {
         ivSearchField.setOnClickListener(v -> {
             etProductsSearchField.setText("");
             searchProductName = "";
+            currentPage = 0;
             CommonUtils.closeVirtualKeyboard(requireActivity(), ivSearchField);
-            resetVendorProductDetails();
-            getVendorProductDetails();
         });
         etProductsSearchField.addTextChangedListener(new TextWatcher() {
             @Override
@@ -158,6 +157,8 @@ public class VendorProductDetailsFragment extends BaseFragment {
                     performSearch();
                 } else {
                     ivSearchField.setImageResource(R.drawable.search);
+                    resetVendorProductDetails();
+                    getVendorProductDetails();
                 }
             }
         });

@@ -34,14 +34,6 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(R.string.profile_details);
-            //actionBar.setDisplayHomeAsUpEnabled(true);
-            toolbar.setNavigationIcon(R.drawable.ic_back_arrow);
-            toolbar.setNavigationOnClickListener(v -> finish());
-        }
-
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {

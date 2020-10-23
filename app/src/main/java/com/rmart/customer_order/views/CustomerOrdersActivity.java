@@ -20,13 +20,6 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle(R.string.my_orders);
-            toolbar.setNavigationIcon(R.drawable.ic_back_arrow);
-            toolbar.setNavigationOnClickListener(v -> finish());
-        }
-
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String orderID = extras.getString("OrderId");

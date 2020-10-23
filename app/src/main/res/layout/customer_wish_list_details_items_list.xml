@@ -1,81 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/grey_rounded_borders_bg_three"
+    android:background="@color/white"
+    android:orientation="vertical"
     android:minHeight="170dp">
-
-    <TextView
-        android:id="@+id/tv_product_discount_field"
-        style="@style/text_style_medium_normal"
-        android:layout_width="30dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:textColor="@color/green" />
-
-    <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/iv_product_image_field"
-        android:layout_width="80dp"
-        android:layout_height="100dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:contentDescription="@string/app_name"
-        android:scaleType="fitXY" />
-
-    <TextView
-        android:id="@+id/tv_product_name_field"
-        style="@style/text_style_medium_normal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/iv_product_image_field"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:maxLines="2"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:textColor="@color/black" />
-
-    <TextView
-        android:id="@+id/tv_quantity_price_details_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_product_name_field"
-        android:gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
-        android:minLines="2"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:textColor="@color/black" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_add_to_cart_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_quantity_price_details_field"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/add_to_cart_gradient"
-        android:text="@string/add_to_cart"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_remove_product_field"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_add_to_cart_field"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@android:color/transparent"
-        android:text="@string/remove"
-        android:textAllCaps="false" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_below="@id/btn_remove_product_field" />
-</RelativeLayout>
+        android:layout_height="20dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/grey_rounded_borders_bg_three"
+        android:minHeight="170dp">
+
+        <TextView
+            android:id="@+id/tv_product_discount_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:textColor="@color/green" />
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/iv_product_image_field"
+            android:layout_width="80dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitXY" />
+
+        <TextView
+            android:id="@+id/tv_product_name_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_product_image_field"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:maxLines="2"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_quantity_price_details_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_product_name_field"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:minLines="2"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/black" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_add_to_cart_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_quantity_price_details_field"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/add_to_cart_gradient"
+            android:text="@string/add_to_cart"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_remove_product_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_add_to_cart_field"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:text="@string/remove"
+            android:textAllCaps="false" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_below="@id/btn_remove_product_field" />
+    </RelativeLayout>
+</LinearLayout>

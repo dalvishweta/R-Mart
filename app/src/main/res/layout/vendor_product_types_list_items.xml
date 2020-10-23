@@ -1,57 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="200dp"
-    android:minWidth="180dp"
-    android:background="@drawable/grey_rounded_borders_bg_three">
+    android:minWidth="200dp"
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_quantity_price_details_field"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_product_name_field"
-        android:gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
-        android:minLines="2"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:textColor="@color/black" />
+        android:background="@drawable/grey_rounded_borders_bg_three"
+        android:minHeight="180dp">
 
-    <TextView
-        android:id="@+id/tv_product_name_field"
-        style="@style/text_style_medium_normal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:maxLines="2"
-        android:paddingStart="10dp"
-        android:minHeight="40dp"
-        android:paddingEnd="10dp"
-        android:layout_below="@id/iv_product_image_field"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/tv_quantity_price_details_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_product_name_field"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:minLines="2"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/black" />
 
-    <com.android.volley.toolbox.NetworkImageView
-        android:paddingTop="8dp"
-        android:id="@+id/iv_product_image_field"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/item_image"
-        android:layout_height="120dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_toStartOf="@id/tv_product_discount_field"
-        android:scaleType="fitXY"
-        android:layout_width="match_parent" />
-    <TextView
-        android:id="@+id/tv_product_discount_field"
-        style="@style/text_style_small"
-        android:layout_width="30dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/green_rounded_border_bg"
-        android:gravity="center"
-        android:textColor="@color/white" />
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tv_product_name_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_product_image_field"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:maxLines="2"
+            android:minHeight="40dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/black" />
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/iv_product_image_field"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@id/tv_product_discount_field"
+            android:paddingTop="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/item_image" />
+
+        <TextView
+            android:id="@+id/tv_product_discount_field"
+            style="@style/text_style_small"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/green_rounded_border_bg"
+            android:gravity="center"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+</LinearLayout>

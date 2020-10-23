@@ -7,12 +7,12 @@
         <item>Found Cheaper SomeWhere Else</item>
         <item>Need to Change Shipping Address</item>
         <item>Need to Change Payment Method</item>
-        <item>Other</item>
+        <item>Others</item>
     </string-array>
     <string-array name="vendor_reasons_list">
-        <item>Item Created by Mistake</item>
         <item>Customer address was not found</item>
         <item>Item(s) Would Not Arrive on Time</item>
         <item>Few items are not available.</item>
+        <item>Others</item>
     </string-array>
 </resources>

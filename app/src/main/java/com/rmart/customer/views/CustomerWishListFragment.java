@@ -149,7 +149,7 @@ public class CustomerWishListFragment extends BaseFragment {
     }
 
     private void showCloseDialog(String title, String message) {
-        showDialog(title, message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+        showDialog(title, message, pObject -> requireActivity().onBackPressed());
     }
 
     private void shopDetailsSelected(ShopWiseWishListResponseDetails shopWiseWishListResponseDetails) {
