@@ -34,7 +34,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:inputType="numberPassword"
+        android:inputType="numberPassword|numberSigned"
         android:maxLength="5"
         android:hint="@string/otp"
         android:background="@drawable/rounded_corners_edit_text_bg"

@@ -12,6 +12,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 import com.rmart.R;
 import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.ChangePasswordResponse;
 import com.rmart.utilits.services.AuthenticationService;
 
@@ -89,9 +90,9 @@ public class ChangePassword extends LoginBaseFragment {
 
             if (TextUtils.isEmpty(otp)) {
                 showDialog(getString(R.string.error_otp));
-            } else if (TextUtils.isEmpty(password) || password.length() < 5) {
+            } else if (TextUtils.isEmpty(password) || password.length() < Utils.MIN_PASSWORD_LENGTH) {
                 showDialog(getString(R.string.error_empty_password));
-            } else if (TextUtils.isEmpty(confirmPassword) || confirmPassword.length() < 5) {
+            } else if (TextUtils.isEmpty(confirmPassword) || confirmPassword.length() < Utils.MIN_PASSWORD_LENGTH) {
                 showDialog(getString(R.string.error_empty_confirm_password));
             } else if (!password.equals(confirmPassword)) {
                 showDialog(getString(R.string.mismatch_confirm_password));

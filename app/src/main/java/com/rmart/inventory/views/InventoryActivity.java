@@ -35,15 +35,6 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
         // inventoryViewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
         getStockList();
         addFragment(MyProductsListFragment.newInstance("", ""), MyProductsListFragment.class.getName(), false);
-        /*
-            if (inventoryViewModel.getIsProductView().getValue().equals(InventoryViewModel.PRODUCT)) {
-                addFragment(MyProductsListFragment.newInstance("", ""), "MyProductsListFragment", false);
-            } else if (inventoryViewModel.getIsProductView().getValue().equals(InventoryViewModel.SUB_CATEGORY)) {
-                addFragment(MySubCategoriesListFragment.newInstance("", ""), "MyProductsListFragment", false);
-            } else {
-                addFragment(MyCategoryListFragment.newInstance("", ""), "MyCategoryFragment", false);
-            }
-        */
     }
 
     @Override

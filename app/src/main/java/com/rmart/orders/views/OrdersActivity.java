@@ -23,21 +23,17 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
         super.onCreate(savedInstanceState);
         try {
             if (MyProfile.getInstance().getRoleID().equals(Utils.DELIVERY_ID)) {
-
-
-
                 StateOfOrders stateOfOrders =  new StateOfOrders();
                 stateOfOrders.setStatus(Utils.SHIPPED_ORDER_STATUS);
                 stateOfOrders.setStatusName("Shipped Orders");
                 addFragment(OrderListFragment.newInstance(stateOfOrders), "OrderListFragment", false);
-                // hideHamburgerIcon();
 
                 if (toolbar != null) {
+                    setTitle(getResources().getString(R.string.app_name));
                     Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+                    toolbar.setVisibility(View.INVISIBLE);
+                    actionBarDrawerToggle.syncState();
                 }
-                actionBarDrawerToggle.syncState();
-                setTitle(getResources().getString(R.string.app_name));
-
             } else if (MyProfile.getInstance().getRoleID().equals(Utils.RETAILER_ID)) {
                 Bundle extras = getIntent().getExtras();
                 if (extras != null) {
@@ -53,7 +49,6 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override

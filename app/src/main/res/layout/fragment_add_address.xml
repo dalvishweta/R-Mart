@@ -111,11 +111,10 @@
                     android:id="@+id/delivery_charges"
                     android:drawableStart="@drawable/user"
                     style="@style/upload_product_item_field"
-                    android:layout_weight="1"
+                    android:layout_weight="1.8"
                     android:inputType="numberSigned"
                     android:background="@drawable/curve_left_bg"
-                    android:layout_width="0dp"
-                    android:maxLength="4" />
+                    android:layout_width="0dp"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/minimum_order"
@@ -125,7 +124,7 @@
                     android:inputType="numberSigned"
                     android:maxLength="4"
                     android:layout_width="0dp"
-                    android:layout_weight="1" />
+                    android:layout_weight="1.2" />
             </LinearLayout>
 
 
@@ -292,33 +291,37 @@
             android:drawableStart="@drawable/user"
             style="@style/my_profile_tv"
             android:layout_marginTop="10dp"
-            android:inputType="text"/>
+            android:inputType="text"
+            android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:hint="@string/city"
             android:id="@+id/city"
             android:drawableStart="@drawable/user"
             style="@style/my_profile_tv"
-            android:inputType="text"/>
+            android:inputType="text"
+            android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:visibility="gone"
             android:hint="@string/district"
             android:id="@+id/district"
             android:drawableStart="@drawable/user"
             style="@style/my_profile_tv"
-            android:inputType="text"/>
+            android:inputType="text"
+            android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"/>
         <androidx.appcompat.widget.AppCompatEditText
             android:hint="@string/state"
             android:id="@+id/state"
             android:drawableStart="@drawable/user"
             style="@style/my_profile_tv"
-            android:inputType="text" />
+            android:inputType="text"
+            android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM !@#$%^+=|\&amp;*()_-"/>
 
         <androidx.appcompat.widget.AppCompatEditText
             android:hint="@string/pin_code"
             android:id="@+id/pin_code"
             android:drawableStart="@drawable/user"
             style="@style/my_profile_tv"
-            android:maxLength="9"
+            android:maxLength="6"
             android:inputType="number" />
 
         <LinearLayout

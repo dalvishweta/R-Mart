@@ -1,94 +1,110 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:scrollbars="none">
-
-    <LinearLayout
-        android:orientation="vertical"
+    android:background="@color/white">
+    <ScrollView
+        android:layout_above="@+id/submit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:scrollbars="none">
 
-        <RelativeLayout
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark">
+            android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/my_profile_title"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="0dp"
-                android:text="@string/profile_details" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/submit"
-                style="@style/my_profile_title"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="0dp"
-                android:text="@string/save" />
-        </RelativeLayout>
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/please_enter_your_first_name"
-            android:id="@+id/first_name"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="text" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/please_enter_your_last_name"
-            android:id="@+id/last_name"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="text"/>
-        <androidx.appcompat.widget.AppCompatTextView
-            android:hint="@string/hint_mobile_number"
-            android:id="@+id/mobile_number"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="number|numberSigned"
-            android:textColor="@color/colorPrimary"/>
-        <androidx.appcompat.widget.AppCompatTextView
-            android:hint="@string/please_enter_your_e_mail"
-            android:id="@+id/email"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/colorPrimary"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:visibility="gone"
-            android:hint="@string/please_enter_your_date_of_birth"
-            android:id="@+id/dob"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="textEmailAddress"/>
-        <Spinner
-            android:id="@+id/gender"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            style="@style/upload_product_item_field"/>
-
-        <RelativeLayout
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:gravity="center">
-
-            <com.rmart.baseclass.views.CircularNetworkImageView
-                android:id="@+id/iv_profile_image_field"
+            <RelativeLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/avatar" />
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimaryDark">
 
-            <com.rmart.baseclass.views.ProgressBarCircular
-                android:id="@+id/profile_circular_field"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_centerInParent="true" />
-        </RelativeLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/my_profile_title"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="0dp"
+                    android:text="@string/profile_details" />
 
-    </LinearLayout>
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/my_profile_title"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="0dp"
+                    android:text="@string/save" />
+            </RelativeLayout>
 
-</ScrollView>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:hint="@string/please_enter_your_first_name"
+                android:id="@+id/first_name"
+                android:drawableStart="@drawable/user"
+                style="@style/my_profile_tv"
+                android:inputType="text" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:hint="@string/please_enter_your_last_name"
+                android:id="@+id/last_name"
+                android:drawableStart="@drawable/user"
+                style="@style/my_profile_tv"
+                android:inputType="text"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:hint="@string/hint_mobile_number"
+                android:id="@+id/mobile_number"
+                android:drawableStart="@drawable/user"
+                style="@style/my_profile_tv"
+                android:inputType="number|numberSigned"
+                android:textColor="@color/colorPrimary"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:hint="@string/please_enter_your_e_mail"
+                android:id="@+id/email"
+                android:drawableStart="@drawable/user"
+                style="@style/my_profile_tv"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/colorPrimary"/>
+            <androidx.appcompat.widget.AppCompatEditText
+                android:visibility="gone"
+                android:hint="@string/please_enter_your_date_of_birth"
+                android:id="@+id/dob"
+                android:drawableStart="@drawable/user"
+                style="@style/my_profile_tv"
+                android:inputType="textEmailAddress"/>
+            <Spinner
+                android:id="@+id/gender"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
+                style="@style/upload_product_item_field"/>
+
+            <RelativeLayout
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <com.rmart.baseclass.views.CircularNetworkImageView
+                    android:id="@+id/iv_profile_image_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/avatar" />
+
+                <com.rmart.baseclass.views.ProgressBarCircular
+                    android:id="@+id/profile_circular_field"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_alignParentBottom="true"
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save_details"
+        android:background="@drawable/product_edit"
+        android:textColor="@color/white"
+        android:layout_margin="8dp" />
+</RelativeLayout>

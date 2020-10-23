@@ -95,9 +95,9 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         productAdapter = new ProductAdapter(requireActivity(), productsList, onClickListener, 2);
         productRecycleView.setAdapter(productAdapter);
 
-        getProductList("1,2,3,4,5,6,7");
+        getProductList("1,2,3,4,5,6,7", "");
 
-        mSwipeRefreshLayout.setOnRefreshListener(() -> getProductList("1,2,3,4,5,6,7"));
+        mSwipeRefreshLayout.setOnRefreshListener(() -> getProductList("1,2,3,4,5,6,7", ""));
         addProduct.setOnClickListener(this);
         popup = new PopupMenu(requireActivity(), view.findViewById(R.id.sort));
         popup.getMenu().add(Menu.NONE, 1, 1, "All Products");
@@ -106,18 +106,19 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         /*popup.getMenu().add(Menu.NONE, 6, 5, "Unavailable");*/
         popup.setOnMenuItemClickListener(item -> {
             int i = item.getItemId();
+            item.setChecked(true);
             switch (i) {
                 case 3:
-                    getProductList("3");
+                    getProductList(item.getItemId()+"", item.getTitle());
                     break;
                 case 2:
-                    getProductList("5");
+                    getProductList("5", item.getTitle());
                     break;
                 case 6:
-                    getProductList("6");
+                    getProductList("6", item.getTitle());
                     break;
                 case 1:
-                    getProductList("1,2,3,4,5,6,7");
+                    getProductList("1,2,3,4,5,6,7", "");
                     break;
             }
             return true;
@@ -137,9 +138,8 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         mListener.showProductPreview(product, true);
     };
 
-    private void getProductList(String stockType) {
+    private void getProductList(String stockType, CharSequence title) {
         progressDialog.show();
-        resetProductsList();
         vendorInventoryService.getProductList("0", MyProfile.getInstance().getMobileNumber(), stockType).enqueue(new Callback<ProductListResponse>() {
             @Override
             public void onResponse(@NotNull Call<ProductListResponse> call, @NotNull Response<ProductListResponse> response) {
@@ -152,7 +152,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                                 showDialog(getString(R.string.sorry), getString(R.string.no_products_error));
                             } else {
                                 productsList = productsListResponse.getProductResponses();
-                                updateList();
+                                updateList(title);
                             }
                         } else {
                             showDialog("", productsListResponse.getMsg());
@@ -200,7 +200,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
                     if(!TextUtils.isEmpty(newText)) {
                         productAdapter.getFilter().filter(newText);
                     } else {
-                        updateList();
+                        updateList("");
                     }
                     return false;
                 }
@@ -208,9 +208,10 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         }
     }
 
-    private void updateList() {
+    private void updateList(CharSequence title) {
         try {
-            tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), productsList.size()));
+            // resetProductsList();
+            tvTotalCount.setText(String.format(getResources().getString(R.string.total_products), productsList.size(), title));
             productAdapter.updateItems(productsList);
             productAdapter.notifyDataSetChanged();
         } catch (Resources.NotFoundException e) {
