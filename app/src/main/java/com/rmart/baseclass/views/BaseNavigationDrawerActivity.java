@@ -27,6 +27,7 @@ import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.baseclass.Constants;
+import com.rmart.customer.views.CustomerFavouritesActivity;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer.views.CustomerWishListActivity;
 import com.rmart.customer.views.CustomerWishListFragment;
@@ -87,6 +88,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.customer_orders).setOnClickListener(this);
         findViewById(R.id.change_password).setOnClickListener(this);
         findViewById(R.id.logout).setOnClickListener(this);
+        findViewById(R.id.my_favourites_list).setOnClickListener(this);
         findViewById(R.id.my_wish_list).setOnClickListener(this);
         ivProfileImageField = findViewById(R.id.iv_user_profile_image);
         MyProfile myProfile = MyProfile.getInstance();
@@ -104,6 +106,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                         findViewById(R.id.customer_shopping).setVisibility(View.GONE);
                         findViewById(R.id.customer_orders).setVisibility(View.GONE);
                         findViewById(R.id.my_wish_list).setVisibility(View.GONE);
+                        findViewById(R.id.my_favourites_list).setVisibility(View.GONE);
                         findViewById(R.id.my_wallet).setVisibility(View.GONE);
                         break;
                     case Utils.DELIVERY_ID:
@@ -111,6 +114,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                         findViewById(R.id.retailer_orders).setVisibility(View.GONE);
                         findViewById(R.id.customer_shopping).setVisibility(View.GONE);
                         findViewById(R.id.customer_orders).setVisibility(View.GONE);
+                        findViewById(R.id.my_favourites_list).setVisibility(View.GONE);
                         findViewById(R.id.my_wallet).setVisibility(View.GONE);
                         break;
                     default:
@@ -236,6 +240,11 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 case R.id.customer_shopping:
                     showCartIcon();
                     intent = new Intent(this, CustomerHomeActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.my_favourites_list:
+                    showCartIcon();
+                    intent = new Intent(this, CustomerFavouritesActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.my_wish_list:

@@ -1,6 +1,5 @@
 package com.rmart.utilits;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,7 +13,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
-import android.provider.Settings;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -183,4 +182,14 @@ public class Utils {
         pView.setAlpha(0.5f);
         pView.setEnabled(false);
     }
+
+    public static InputFilter emojiFilter = (source, start, end, dest, dStart, dEnd) -> {
+        for (int index = start; index < end; index++) {
+            int type = Character.getType(source.charAt(index));
+            if (type == Character.SURROGATE) {
+                return "";
+            }
+        }
+        return null;
+    };
 }

@@ -1,6 +1,7 @@
 package com.rmart.authentication.views;
 
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +81,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         tvEmail = view.findViewById(R.id.email);
         tvPassword = view.findViewById(R.id.password);
         tvConformPassword = view.findViewById(R.id.confirm_password);
+
         LinearLayout  paymentBase = view.findViewById(R.id.payment_base);
         paymentBase.removeAllViews();
         if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {

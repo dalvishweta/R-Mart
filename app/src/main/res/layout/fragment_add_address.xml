@@ -49,8 +49,10 @@
                 app:cardCornerRadius="8dp">
 
                 <com.rmart.baseclass.views.ProgressBarCircular
+                    android:id="@+id/shop_image_progress_bar"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:visibility="gone"
                     android:layout_gravity="center" />
 
                 <com.rmart.utilits.custom_views.CustomNetworkImageView
@@ -208,8 +210,10 @@
                     android:elevation="10dp">
 
                     <com.rmart.baseclass.views.ProgressBarCircular
+                        android:id="@+id/aadhar_front_progress_bar"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
+                        android:visibility="gone"
                         android:layout_gravity="center" />
 
                     <com.rmart.utilits.custom_views.CustomNetworkImageView
@@ -232,8 +236,10 @@
                     android:elevation="10dp">
 
                     <com.rmart.baseclass.views.ProgressBarCircular
+                        android:id="@+id/aadhar_back_progress_bar"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
+                        android:visibility="gone"
                         android:layout_gravity="center" />
 
                     <com.rmart.utilits.custom_views.CustomNetworkImageView
@@ -265,8 +271,10 @@
                 android:elevation="10dp">
 
                 <com.rmart.baseclass.views.ProgressBarCircular
+                    android:id="@+id/pan_progress_bar"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
+                    android:visibility="gone"
                     android:layout_gravity="center" />
 
                 <com.rmart.utilits.custom_views.CustomNetworkImageView

@@ -11,6 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
@@ -44,10 +49,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -136,6 +137,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
             etProductsSearchField.setText("");
             searchProductName = "";
             currentPage = 0;
+            productCategoryId = -1;
             CommonUtils.closeVirtualKeyboard(requireActivity(), ivSearchField);
         });
         etProductsSearchField.addTextChangedListener(new TextWatcher() {
@@ -157,6 +159,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
                     performSearch();
                 } else {
                     ivSearchField.setImageResource(R.drawable.search);
+                    searchProductName = "";
                     resetVendorProductDetails();
                     getVendorProductDetails();
                 }

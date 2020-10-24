@@ -198,6 +198,7 @@ public class VendorSameProductsListScreen extends BaseFragment {
                     performSearch();
                 } else {
                     ivSearchField.setImageResource(R.drawable.search);
+                    searchProductName = "";
                     resetVendorProductDetails();
                     getVendorDetails();
                 }

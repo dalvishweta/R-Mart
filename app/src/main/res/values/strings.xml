@@ -329,4 +329,5 @@
     <string name="allow_digits">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM</string>
     <string name="allow_digits_for_address">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM -_,()\&amp;</string>
     <string name="search_for_category">Search For Category</string>
+    <string name="my_favourites">My Favourites</string>
 </resources>
