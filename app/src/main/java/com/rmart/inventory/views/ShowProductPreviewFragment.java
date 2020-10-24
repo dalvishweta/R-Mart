@@ -58,7 +58,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     private boolean isEdit;
     private AutoScrollViewPager autoScrollViewPager;
     //private APIStockListResponse apiStockListResponse;
-    private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryDaysBeforeTime, tvDeliveryDaysAfterTime;
+    private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryDaysBeforeTime, tvClosingTime, tvDeliveryDaysAfterTime;
     private TabLayout dotIndicatorLayoutField;
 
     public ShowProductPreviewFragment() {
@@ -141,6 +141,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         tvProductDescription = view.findViewById(R.id.tv_product_description_field);
         tvProductRegionalName = view.findViewById(R.id.tv_product_regional_name);
         tvDeliveryDaysBeforeTime = view.findViewById(R.id.tv_delivery_before_time);
+        tvClosingTime = view.findViewById(R.id.tv_closing_time);
         tvDeliveryDaysAfterTime = view.findViewById(R.id.tv_delivery_after_time);
         tvProductExpiry = view.findViewById(R.id.tv_product_expiry);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -255,12 +256,13 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
                 if(!TextUtils.isEmpty(deliveryDaysAfterTime)) {
                     if (deliveryDaysAfterTime.equalsIgnoreCase("0")) {
                         tvDeliveryDaysAfterTime.setText(getString(R.string.delivery_in_same_day));
-                    } else if (deliveryDaysBeforeTime.equalsIgnoreCase("1")) {
+                    } else if (deliveryDaysAfterTime.equalsIgnoreCase("1")) {
                         tvDeliveryDaysAfterTime.setText(getString(R.string.delivery_in_1_day));
                     } else {
                         tvDeliveryDaysAfterTime.setText(String.format(getString(R.string.delivery_in_days), deliveryDaysAfterTime));
                     }
                 }
+                tvClosingTime.setText(addressResponse.getClosingTime());
             }
         }
 
