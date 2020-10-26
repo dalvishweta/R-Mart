@@ -110,13 +110,13 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     }
 
     private void validateRegistration() {
-        String firstName, lastName, mobileNumber, email, password, conformPassword;
+        String firstName, lastName, mobileNumber, email, password, confirmPassword;
         firstName = Objects.requireNonNull(tvFirstName.getText()).toString().trim();
         lastName = Objects.requireNonNull(tvLastName.getText()).toString().trim();
         mobileNumber = Objects.requireNonNull(tVMobileNumber.getText()).toString().trim();
         email = Objects.requireNonNull(tvEmail.getText()).toString().trim();
         password = Objects.requireNonNull(tvPassword.getText()).toString().trim();
-        conformPassword = Objects.requireNonNull(tvConformPassword.getText()).toString().trim();
+        confirmPassword = Objects.requireNonNull(tvConformPassword.getText()).toString().trim();
 
         /*firstName = "ffff";
         lastName = "lllll";
@@ -141,9 +141,13 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             showDialog("", getString(R.string.error_empty_password));
         } else if (password.length() < Utils.MIN_PASSWORD_LENGTH) {
             showDialog("", getString(R.string.error_min_password));
-        } else if (conformPassword.length() < Utils.MIN_PASSWORD_LENGTH) {
+        } else if (!Utils.isValidPassword(password)) {
+            showDialog("", getString(R.string.password_strength_error));
+        } else if (confirmPassword.length() < Utils.MIN_PASSWORD_LENGTH) {
             showDialog("", getString(R.string.error_empty_confirm_password));
-        } else if (!conformPassword.equals(password)) {
+        } else if (!Utils.isValidPassword(confirmPassword)) {
+            showDialog("", getString(R.string.confirm_password_strength_error));
+        } else if (!confirmPassword.equals(password)) {
             showDialog("", getString(R.string.mismatch_confirm_password));
         } else {
             progressDialog.show();

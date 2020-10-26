@@ -42,7 +42,6 @@
         android:textSize="20sp"
         android:maxLines="1"
         android:minHeight="50dp"
-        android:fontFamily="@font/roboto_bold"
         android:paddingStart="20dp"
         android:paddingEnd="20dp" />
 

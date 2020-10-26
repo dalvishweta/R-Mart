@@ -259,6 +259,35 @@
                     style="@style/text_style_medium_normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/opening_time"
+                    android:visibility="gone"
+                    android:textColor="@color/edit_text_hint" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_opening_time"
+                    style="@style/text_style_medium_bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/closing_time"
+                    android:textColor="@color/edit_text_hint" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_closing_time"
+                    style="@style/text_style_medium_bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="@string/delivery_days_before_time"
                     android:textColor="@color/edit_text_hint" />
 

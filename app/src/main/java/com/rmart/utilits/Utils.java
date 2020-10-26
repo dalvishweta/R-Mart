@@ -183,13 +183,17 @@ public class Utils {
         pView.setEnabled(false);
     }
 
-    public static InputFilter emojiFilter = (source, start, end, dest, dStart, dEnd) -> {
-        for (int index = start; index < end; index++) {
-            int type = Character.getType(source.charAt(index));
-            if (type == Character.SURROGATE) {
-                return "";
-            }
+    public static boolean isValidPassword(String password) {
+        String regex = "^(?=.*[0-9])"
+                + "(?=.*[a-z])(?=.*[A-Z])"
+                + "(?=.*[@#$%^&+=])"
+                + "(?=\\S+$).{8,20}$";
+
+        Pattern p = Pattern.compile(regex);
+        if (TextUtils.isEmpty(password)) {
+            return false;
         }
-        return null;
-    };
+        Matcher m = p.matcher(password);
+        return m.matches();
+    }
 }

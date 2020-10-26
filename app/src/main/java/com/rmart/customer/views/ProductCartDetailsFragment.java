@@ -359,6 +359,9 @@ public class ProductCartDetailsFragment extends BaseFragment {
                     tvProductExpiry.setText(DateUtilities.getDateStringFromCalendar(expiryDateCalendar));
                 }
             }
+
+            /*tvClosingTime.setText(vendorShopDetails.getClosingTime());
+            tvOpeningTime.setText(vendorShopDetails.getOpeningTime());*/
         } else {
             showCloseDialog(getString(R.string.no_product_details_found));
         }

@@ -332,4 +332,6 @@
     <string name="search_for_category">Search For Category</string>
     <string name="my_favourites">My Favourites</string>
     <string name="required_gender">"Gender is required. "</string>
+    <string name="password_strength_error">Password should contain  min of 8 characters  and atleast one special charcter</string>
+    <string name="confirm_password_strength_error">Confirm Password should contain  min of 8 characters  and atleast one special charcter</string>
 </resources>

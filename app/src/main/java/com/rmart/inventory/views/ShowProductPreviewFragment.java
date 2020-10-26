@@ -58,7 +58,8 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     private boolean isEdit;
     private AutoScrollViewPager autoScrollViewPager;
     //private APIStockListResponse apiStockListResponse;
-    private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryDaysBeforeTime, tvClosingTime, tvDeliveryDaysAfterTime;
+    private AppCompatTextView tvProductName, tvProductDescription, tvProductRegionalName, tvProductExpiry, tvDeliveryDaysBeforeTime,
+            tvOpeningTime, tvClosingTime, tvDeliveryDaysAfterTime;
     private TabLayout dotIndicatorLayoutField;
 
     public ShowProductPreviewFragment() {
@@ -142,6 +143,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         tvProductRegionalName = view.findViewById(R.id.tv_product_regional_name);
         tvDeliveryDaysBeforeTime = view.findViewById(R.id.tv_delivery_before_time);
         tvClosingTime = view.findViewById(R.id.tv_closing_time);
+        tvOpeningTime = view.findViewById(R.id.tv_opening_time);
         tvDeliveryDaysAfterTime = view.findViewById(R.id.tv_delivery_after_time);
         tvProductExpiry = view.findViewById(R.id.tv_product_expiry);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -263,6 +265,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
                     }
                 }
                 tvClosingTime.setText(addressResponse.getClosingTime());
+                tvOpeningTime.setText(addressResponse.getOpeningTime());
             }
         }
 

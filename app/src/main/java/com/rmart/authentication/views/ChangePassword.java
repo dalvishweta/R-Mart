@@ -90,70 +90,85 @@ public class ChangePassword extends LoginBaseFragment {
 
             if (TextUtils.isEmpty(otp)) {
                 showDialog(getString(R.string.error_otp));
-            } else if (TextUtils.isEmpty(password) || password.length() < Utils.MIN_PASSWORD_LENGTH) {
+                return;
+            }
+            if (TextUtils.isEmpty(password) || password.length() < Utils.MIN_PASSWORD_LENGTH) {
                 showDialog(getString(R.string.error_empty_password));
-            } else if (TextUtils.isEmpty(confirmPassword) || confirmPassword.length() < Utils.MIN_PASSWORD_LENGTH) {
+                return;
+            }
+            if (!Utils.isValidPassword(password)) {
+                showDialog(getString(R.string.password_strength_error));
+                return;
+            }
+            if (TextUtils.isEmpty(confirmPassword) || confirmPassword.length() < Utils.MIN_PASSWORD_LENGTH) {
                 showDialog(getString(R.string.error_empty_confirm_password));
-            } else if (!password.equals(confirmPassword)) {
+                return;
+            }
+            if (!Utils.isValidPassword(confirmPassword)) {
+                showDialog(getString(R.string.confirm_password_strength_error));
+                return;
+            }
+            if (!password.equals(confirmPassword)) {
                 showDialog(getString(R.string.mismatch_confirm_password));
+                return;
+            }
+
+            progressDialog.show();
+            AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
+            if (mOTP.length() > 0) {
+                authenticationService.changePasswordOTP(mMobileNumber, otp, password).enqueue(new Callback<ChangePasswordResponse>() {
+                    @Override
+                    public void onResponse(@NotNull Call<ChangePasswordResponse> call, @NotNull Response<ChangePasswordResponse> response) {
+                        if (response.isSuccessful()) {
+                            ChangePasswordResponse data = response.body();
+                            if (data != null) {
+                                if (data.getStatus().contains("Success")) {
+                                    showDialog("", data.getMsg(), (dialog, i) -> mListener.goToHomePage());
+                                } else {
+                                    showDialog(data.getMsg());
+                                }
+                            } else {
+                                showDialog(getString(R.string.no_information_available));
+                            }
+                        } else {
+                            showDialog(response.message());
+                        }
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull Call<ChangePasswordResponse> call, @NotNull Throwable t) {
+                        showDialog("", t.getMessage());
+                        progressDialog.dismiss();
+                    }
+                });
             } else {
-                progressDialog.show();
-                AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-                if (mOTP.length() > 0) {
-                    authenticationService.changePasswordOTP(mMobileNumber, otp, password).enqueue(new Callback<ChangePasswordResponse>() {
-                        @Override
-                        public void onResponse(@NotNull Call<ChangePasswordResponse> call, @NotNull Response<ChangePasswordResponse> response) {
-                            if (response.isSuccessful()) {
-                                ChangePasswordResponse data = response.body();
-                                if (data != null) {
-                                    if (data.getStatus().contains("Success")) {
-                                        showDialog("", data.getMsg(), (dialog, i) -> mListener.goToHomePage());
-                                    } else {
-                                        showDialog(data.getMsg());
-                                    }
+                authenticationService.changePassword(mMobileNumber, otp, password).enqueue(new Callback<ChangePasswordResponse>() {
+                    @Override
+                    public void onResponse(@NotNull Call<ChangePasswordResponse> call, @NotNull Response<ChangePasswordResponse> response) {
+                        if (response.isSuccessful()) {
+                            ChangePasswordResponse data = response.body();
+                            if (data != null) {
+                                if (data.getStatus().contains("Success")) {
+                                    showDialog("", data.getMsg(), (dialog, i) -> mListener.goToHomePage());
                                 } else {
-                                    showDialog(getString(R.string.no_information_available));
+                                    showDialog(data.getMsg());
                                 }
                             } else {
-                                showDialog(response.message());
+                                showDialog(getString(R.string.no_information_available));
                             }
-                            progressDialog.dismiss();
+                        } else {
+                            showDialog(response.message());
                         }
+                        progressDialog.dismiss();
+                    }
 
                         @Override
                         public void onFailure(@NotNull Call<ChangePasswordResponse> call, @NotNull Throwable t) {
                             showDialog("", t.getMessage());
                             progressDialog.dismiss();
                         }
-                    });
-                } else {
-                    authenticationService.changePassword(mMobileNumber, otp, password).enqueue(new Callback<ChangePasswordResponse>() {
-                        @Override
-                        public void onResponse(@NotNull Call<ChangePasswordResponse> call, @NotNull Response<ChangePasswordResponse> response) {
-                            if (response.isSuccessful()) {
-                                ChangePasswordResponse data = response.body();
-                                if (data != null) {
-                                    if (data.getStatus().contains("Success")) {
-                                        showDialog("", data.getMsg(), (dialog, i) -> mListener.goToHomePage());
-                                    } else {
-                                        showDialog(data.getMsg());
-                                    }
-                                } else {
-                                    showDialog(getString(R.string.no_information_available));
-                                }
-                            } else {
-                                showDialog(response.message());
-                            }
-                            progressDialog.dismiss();
-                        }
-
-                        @Override
-                        public void onFailure(@NotNull Call<ChangePasswordResponse> call, @NotNull Throwable t) {
-                            showDialog("", t.getMessage());
-                            progressDialog.dismiss();
-                        }
-                    });
-                }
+                });
             }
         });
     }

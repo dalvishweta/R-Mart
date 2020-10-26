@@ -79,8 +79,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private double latitude = 0.0;
     private double longitude = 0.0;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private TextView tvAddressField;
     private GoogleMap googleMap;
+    private TextView tvAddressField;
 
     public static VendorShopsListFragment getInstance() {
         return new VendorShopsListFragment();
@@ -448,13 +448,16 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                                 List<CustomerProductsShopDetailsModel> customerProductsList = data.getCustomerShopsList().getCustomerShopsList();
                                 updateAdapter(customerProductsList);
                             } else {
-                                showCloseDialog(data.getMsg());
+                                showDialog(data.getMsg());
+                                displayDefaultMapLocation();
                             }
                         } else {
-                            showCloseDialog(getString(R.string.no_products_error));
+                            showDialog(getString(R.string.no_products_error));
+                            displayDefaultMapLocation();
                         }
                     } else {
-                        showCloseDialog(response.message());
+                        showDialog(response.message());
+                        displayDefaultMapLocation();
                     }
                 }
 
@@ -462,9 +465,21 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 public void onFailure(@NotNull Call<CustomerProductsResponse> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
                     swipeRefreshLayout.setRefreshing(false);
-                    showCloseDialog(t.getMessage());
+                    showDialog(t.getMessage());
+                    displayDefaultMapLocation();
                 }
             });
+        }
+    }
+
+    private void displayDefaultMapLocation() {
+        boolean isCoordinatesValid = isValidLatLng(latitude, longitude);
+        if (isCoordinatesValid) {
+            LatLng latLng = new LatLng(latitude, longitude);
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            googleMap.addMarker(markerOptions);
         }
     }
 
@@ -478,12 +493,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         } else {
             isLoading = false;
         }
-    }
-
-    private void showCloseDialog(String message) {
-        showDialog(message, pObject -> {
-            //requireActivity().onBackPressed();
-        });
     }
 
     public boolean isValidLatLng(double lat, double lng) {
@@ -500,14 +509,16 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
 
     private void updateShopsListMap() {
         if (googleMap == null) return;
-        for (CustomerProductsShopDetailsModel shopDetailsModel : shopsList) {
-            boolean isCoordinatesValid = isValidLatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
-            if (isCoordinatesValid) {
-                LatLng latLng = new LatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
-                MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                googleMap.addMarker(markerOptions);
+        if(!shopsList.isEmpty()) {
+            for (CustomerProductsShopDetailsModel shopDetailsModel : shopsList) {
+                boolean isCoordinatesValid = isValidLatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
+                if (isCoordinatesValid) {
+                    LatLng latLng = new LatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
+                    MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(shopDetailsModel.getShopName());
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                    googleMap.addMarker(markerOptions);
+                }
             }
         }
     }

@@ -16,12 +16,15 @@ import android.widget.RelativeLayout;
 
 import androidx.core.content.ContextCompat;
 
+import com.rmart.R;
+
 public class ProgressBarCircular extends RelativeLayout {
 
 
     final static String ANDROID_XML = "http://schemas.android.com/apk/res/android";
 
-    int backgroundColor = Color.parseColor("#FF0000");
+    //int backgroundColor = Color.parseColor("#FF0000");
+    private int backgroundColor;
 
     float radius1 = 0;
     float radius2 = 0;
@@ -32,17 +35,18 @@ public class ProgressBarCircular extends RelativeLayout {
     int arcO = 0;
     float rotateAngle = 0;
     int limit = 0;
-    private Context mContext;
+    private int transparentColor;
 
     public ProgressBarCircular(Context pContext) {
         super(pContext);
-        this.mContext = pContext;
+        backgroundColor = ContextCompat.getColor(pContext, R.color.colorPrimary);
+        transparentColor = ContextCompat.getColor(pContext, android.R.color.transparent);
     }
 
     public ProgressBarCircular(Context pContext, AttributeSet attrs) {
         super(pContext, attrs);
-        this.mContext = pContext;
-        setAttributes(attrs);
+        backgroundColor = ContextCompat.getColor(pContext, R.color.colorPrimary);
+        setAttributes(pContext, attrs);
     }
 
     public int dpToPx(float dp, Resources resources) {
@@ -52,7 +56,7 @@ public class ProgressBarCircular extends RelativeLayout {
 
     // Set attributes of XML to View
     @SuppressWarnings("deprecation")
-    protected void setAttributes(AttributeSet attrs) {
+    protected void setAttributes(Context pContext, AttributeSet attrs) {
 
         setMinimumHeight(dpToPx(32, getResources()));
         setMinimumWidth(dpToPx(32, getResources()));
@@ -62,7 +66,7 @@ public class ProgressBarCircular extends RelativeLayout {
         int backgroundColor = attrs.getAttributeResourceValue(ANDROID_XML, "background", -1);
         if (backgroundColor != -1) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                setBackgroundColor(ContextCompat.getColor(mContext, backgroundColor));
+                setBackgroundColor(ContextCompat.getColor(pContext, backgroundColor));
             } else {
                 setBackgroundColor(getResources().getColor(backgroundColor));
             }
@@ -77,15 +81,10 @@ public class ProgressBarCircular extends RelativeLayout {
         setMinimumHeight(dpToPx(3, getResources()));
     }
 
-    /**
-     * Make a dark color to ripple effect
-     *
-     * @return
-     */
     protected int makePressColor() {
         int r = (this.backgroundColor >> 16) & 0xFF;
         int g = (this.backgroundColor >> 8) & 0xFF;
-        int b = (this.backgroundColor >> 0) & 0xFF;
+        int b = (this.backgroundColor) & 0xFF;
         return Color.argb(128, r, g, b);
     }
 
@@ -99,48 +98,40 @@ public class ProgressBarCircular extends RelativeLayout {
         invalidate();
     }
 
-    /**
-     * Draw first animation of view
-     *
-     * @param canvas
-     */
     private void drawFirstAnimation(Canvas canvas) {
-        if (radius1 < getWidth() / 2) {
+        int newWidth = getWidth() / 2;
+        int newHeight = getHeight() / 2;
+        if (radius1 < newWidth) {
             Paint paint = new Paint();
             paint.setAntiAlias(true);
             paint.setColor(Color.RED);
-            radius1 = (radius1 >= getWidth() / 2) ? (float) getWidth() / 2 : radius1 + 1;
-            canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius1, paint);
+            radius1 = (radius1 >= newWidth) ? (float) getWidth() / 2 : radius1 + 1;
+            canvas.drawCircle(newWidth, newHeight, radius1, paint);
         } else {
             Bitmap bitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
             Canvas temp = new Canvas(bitmap);
             Paint paint = new Paint();
             paint.setAntiAlias(true);
             paint.setColor(Color.RED);
-            temp.drawCircle(getWidth() / 2, getHeight() / 2, getHeight() / 2, paint);
+            temp.drawCircle(newWidth, newHeight, newHeight, paint);
             Paint transparentPaint = new Paint();
             transparentPaint.setAntiAlias(true);
-            transparentPaint.setColor(ContextCompat.getColor(mContext, android.R.color.transparent));
+            transparentPaint.setColor(transparentColor);
             transparentPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
             if (cont >= 50) {
-                radius2 = (radius2 >= getWidth() / 2) ? (float) getWidth() / 2 : radius2 + 1;
+                radius2 = (radius2 >= newWidth) ? (float) getWidth() / 2 : radius2 + 1;
             } else {
-                radius2 = (radius2 >= getWidth() / 2 - dpToPx(4, getResources())) ? (float) getWidth() / 2 - dpToPx(4, getResources()) : radius2 + 1;
+                radius2 = (radius2 >= newWidth - dpToPx(4, getResources())) ? (float) getWidth() / 2 - dpToPx(4, getResources()) : radius2 + 1;
             }
-            temp.drawCircle(getWidth() / 2, getHeight() / 2, radius2, transparentPaint);
+            temp.drawCircle(newWidth, newHeight, radius2, transparentPaint);
             canvas.drawBitmap(bitmap, 0, 0, new Paint());
-            if (radius2 >= getWidth() / 2 - dpToPx(4, getResources()))
+            if (radius2 >= newWidth - dpToPx(4, getResources()))
                 cont++;
-            if (radius2 >= getWidth() / 2)
+            if (radius2 >= newWidth)
                 firstAnimationOver = true;
         }
     }
 
-    /**
-     * Draw second animation of view
-     *
-     * @param canvas
-     */
     private void drawSecondAnimation(Canvas canvas) {
         if (arcO == limit)
             arcD += 6;
@@ -153,8 +144,10 @@ public class ProgressBarCircular extends RelativeLayout {
             arcO = limit;
             arcD = 1;
         }
+        int newWidth = getWidth() / 2;
+        int newHeight = getHeight() / 2;
         rotateAngle += 4;
-        canvas.rotate(rotateAngle, getWidth() / 2, getHeight() / 2);
+        canvas.rotate(rotateAngle, newWidth, newHeight);
 
         Bitmap bitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas temp = new Canvas(bitmap);
@@ -166,7 +159,7 @@ public class ProgressBarCircular extends RelativeLayout {
         transparentPaint.setAntiAlias(true);
         transparentPaint.setColor(getResources().getColor(android.R.color.transparent));
         transparentPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-        temp.drawCircle(getWidth() / 2, getHeight() / 2, (getWidth() / 2) - dpToPx(4, getResources()), transparentPaint);
+        temp.drawCircle(newWidth, newHeight, (newWidth) - dpToPx(4, getResources()), transparentPaint);
 
         canvas.drawBitmap(bitmap, 0, 0, new Paint());
     }
