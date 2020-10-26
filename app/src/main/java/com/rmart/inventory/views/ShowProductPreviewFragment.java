@@ -219,7 +219,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         List<ImageURLResponse> lImagesList = new ArrayList<>(product.getImageDataObject());
         String videoLink = product.getVideoLInk();
         if (!TextUtils.isEmpty(videoLink)) {
-            String productVideoUrl = getYoutubeThumbnailUrlFromVideoUrl(videoLink);
+            String productVideoUrl = Utils.getYoutubeThumbnailUrlFromVideoUrl(videoLink);
             if (!TextUtils.isEmpty(productVideoUrl)) {
                 ImageURLResponse imageURLResponse = new ImageURLResponse();
                 imageURLResponse.setDisplayImage(productVideoUrl);
@@ -285,26 +285,5 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
                 tvProductExpiry.setText(DateUtilities.getDateStringFromCalendar(expiryDateCalendar));
             }
         }
-    }
-
-    public static String getYoutubeThumbnailUrlFromVideoUrl(String videoUrl) {
-        if (!TextUtils.isEmpty(videoUrl)) {
-            return "https://img.youtube.com/vi/" + getYoutubeVideoIdFromUrl(videoUrl) + "/0.jpg";
-        }
-        return null;
-    }
-
-    public static String getYoutubeVideoIdFromUrl(String inUrl) {
-        inUrl = inUrl.replace("&feature=youtu.be", "");
-        if (inUrl.toLowerCase().contains("youtu.be")) {
-            return inUrl.substring(inUrl.lastIndexOf("/") + 1);
-        }
-        String pattern = "(?<=watch\\?v=|/videos/|embed/)[^#&?]*";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        Matcher matcher = compiledPattern.matcher(inUrl);
-        if (matcher.find()) {
-            return matcher.group();
-        }
-        return null;
     }
 }

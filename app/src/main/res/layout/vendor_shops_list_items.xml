@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.rmart.baseclass.views.ProgressBarCircular
-            android:id="@+id/profile_circular_field"
+            android:id="@+id/progress_circular_field"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerInParent="true"
@@ -22,7 +22,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.android.volley.toolbox.NetworkImageView
+        <com.rmart.utilits.custom_views.CustomNetworkImageView
             android:id="@+id/iv_shop_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -30,7 +30,6 @@
             android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-
 
         <ImageView
             android:id="@+id/iv_favourite_image"

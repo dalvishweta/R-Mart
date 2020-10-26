@@ -1,6 +1,7 @@
 package com.rmart.customer.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
@@ -23,6 +25,7 @@ import com.rmart.baseclass.views.ProgressBarCircular;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.custom_views.CustomNetworkImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,10 +74,24 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
         String shopImageUrl = shopDetails.getShopImage();
         if(!TextUtils.isEmpty(shopImageUrl)) {
             HttpsTrustManager.allowAllSSL();
-            imageLoader.get(shopImageUrl, ImageLoader.getImageListener(holder.ivShopImageField,
-                    R.mipmap.ic_launcher, android.R.drawable
-                            .ic_dialog_alert));
-            holder.ivShopImageField.setImageUrl(shopImageUrl, imageLoader);
+            imageLoader.get(shopImageUrl, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    holder.progressBarCircular.setVisibility(View.GONE);
+                    Bitmap bitmap = response.getBitmap();
+                    if (bitmap != null) {
+                        holder.ivShopImageField.setLocalImageBitmap(bitmap);
+                    }
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    holder.progressBarCircular.setVisibility(View.GONE);
+                    holder.ivShopImageField.setBackgroundResource(android.R.drawable
+                            .ic_dialog_alert);
+                }
+            });
+            holder.ivShopImageField.setImageUrl(shopImageUrl, RMartApplication.getInstance().getImageLoader());
         }
 
         boolean isWishListShop = shopDetails.getShopWishListStatus() == 1;
@@ -101,7 +118,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        NetworkImageView ivShopImageField;
+        CustomNetworkImageView ivShopImageField;
         TextView tvShopNameField;
         TextView tvPhoneNoField;
         TextView tvViewAddressField;
@@ -120,7 +137,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
             ivCallIconField = itemView.findViewById(R.id.iv_call_field);
             ivMessageField = itemView.findViewById(R.id.iv_message_field);
 
-            progressBarCircular = itemView.findViewById(R.id.profile_circular_field);
+            progressBarCircular = itemView.findViewById(R.id.progress_circular_field);
             ivShopImageField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
                 CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);

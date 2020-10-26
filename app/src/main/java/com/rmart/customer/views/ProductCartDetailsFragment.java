@@ -1,7 +1,10 @@
 package com.rmart.customer.views;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -293,15 +296,34 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
     private void updateUI() {
         if (productDetailsDescModel != null) {
-            List<String> productsImagesList = productDetailsDescModel.getProductImage();
-            if (productsImagesList != null && !productsImagesList.isEmpty()) {
+            List<String> productsImagesList = new ArrayList<>(productDetailsDescModel.getProductImage());
+            if (!productsImagesList.isEmpty()) {
                 List<ImageURLResponse> lUpdatedImagesList = new ArrayList<>();
                 for (String imageUrl : productsImagesList) {
                     ImageURLResponse imageURLResponse = new ImageURLResponse();
                     imageURLResponse.setDisplayImage(imageUrl);
+                    imageURLResponse.setProductVideoSelected(false);
                     lUpdatedImagesList.add(imageURLResponse);
                 }
+
+                String videoLink = productDetailsDescModel.getProductVideoLink();
+                if (!TextUtils.isEmpty(videoLink)) {
+                    String productVideoUrl = Utils.getYoutubeThumbnailUrlFromVideoUrl(videoLink);
+                    if (!TextUtils.isEmpty(productVideoUrl)) {
+                        ImageURLResponse imageURLResponse = new ImageURLResponse();
+                        imageURLResponse.setDisplayImage(productVideoUrl);
+                        imageURLResponse.setImageURL(videoLink);
+                        imageURLResponse.setProductVideoSelected(true);
+                        lUpdatedImagesList.add(imageURLResponse);
+                    }
+                }
                 ImageAdapter imageAdapter = new ImageAdapter(requireActivity(), lUpdatedImagesList);
+                imageAdapter.setCallBackListener(pObject -> {
+                    if (pObject instanceof ImageURLResponse) {
+                        ImageURLResponse imageURLResponse = (ImageURLResponse) pObject;
+                        showProductPreviewSelected(imageURLResponse.getImageURL());
+                    }
+                });
                 productsImagePagerField.setAdapter(imageAdapter);
 
                 dotIndicatorLayoutField.setVisibility(lUpdatedImagesList.size() == 1 ? View.GONE : View.VISIBLE);
@@ -364,6 +386,20 @@ public class ProductCartDetailsFragment extends BaseFragment {
             tvOpeningTime.setText(vendorShopDetails.getOpeningTime());*/
         } else {
             showCloseDialog(getString(R.string.no_product_details_found));
+        }
+    }
+
+    private void showProductPreviewSelected(String productVideoLink) {
+        if (!TextUtils.isEmpty(productVideoLink)) {
+            Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse(productVideoLink));
+            try {
+                this.startActivity(webIntent);
+            } catch (ActivityNotFoundException ex) {
+                showDialog(ex.getMessage());
+            }
+        } else {
+            showDialog(getString(R.string.no_video_link_found));
         }
     }
 

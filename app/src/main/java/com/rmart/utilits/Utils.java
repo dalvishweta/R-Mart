@@ -196,4 +196,25 @@ public class Utils {
         Matcher m = p.matcher(password);
         return m.matches();
     }
+
+    public static String getYoutubeThumbnailUrlFromVideoUrl(String videoUrl) {
+        if (!TextUtils.isEmpty(videoUrl)) {
+            return "https://img.youtube.com/vi/" + getYoutubeVideoIdFromUrl(videoUrl) + "/0.jpg";
+        }
+        return null;
+    }
+
+    public static String getYoutubeVideoIdFromUrl(String inUrl) {
+        inUrl = inUrl.replace("&feature=youtu.be", "");
+        if (inUrl.toLowerCase().contains("youtu.be")) {
+            return inUrl.substring(inUrl.lastIndexOf("/") + 1);
+        }
+        String pattern = "(?<=watch\\?v=|/videos/|embed/)[^#&?]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(inUrl);
+        if (matcher.find()) {
+            return matcher.group();
+        }
+        return null;
+    }
 }
