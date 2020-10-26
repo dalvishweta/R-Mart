@@ -78,7 +78,7 @@
     </LinearLayout>
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/price"
-        android:drawableStart="@drawable/user"
+        android:drawableStart="@drawable/ic_rupee"
         android:hint="@string/price"
         android:inputType="numberDecimal"
         style="@style/upload_product_item_field"
@@ -86,14 +86,14 @@
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/discount"
-        android:drawableStart="@drawable/user"
+        android:drawableStart="@drawable/ic_rupee_discount"
         android:hint="@string/discount"
         android:inputType="number"
         style="@style/upload_product_item_field"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/final_price"
-        android:drawableStart="@drawable/user"
+        android:drawableStart="@drawable/ic_rupee_discount"
         android:hint="@string/after_discount"
         android:inputType="number"
         style="@style/upload_product_item_field"/>
@@ -104,7 +104,7 @@
         android:layout_height="wrap_content">
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/quantity"
-            android:drawableStart="@drawable/user"
+            android:drawableStart="@drawable/ic_quantity"
             android:hint="@string/quantity_id"
             android:inputType="number"
             style="@style/upload_product_item_field"
