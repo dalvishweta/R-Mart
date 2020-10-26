@@ -74,7 +74,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
         view.findViewById(R.id.login).setOnClickListener(this);
         view.findViewById(R.id.register).setOnClickListener(this);
         if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.DELIVERY_ID)) {
-            view.findViewById(R.id.register).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.footer).setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.login_root).setBackgroundResource(R.drawable.authentication_bg_2);
         }
         view.findViewById(R.id.forgot_password).setOnClickListener(this);
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
@@ -83,8 +84,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
             LoggerInfo.printLog("FCM Token", deviceToken);
         });
 
-        etMobileNumber.setText(BuildConfig.LOGIN_USERNAME);
-        etPassword.setText(BuildConfig.LOGIN_PASSWORD);
+        /*etMobileNumber.setText(BuildConfig.LOGIN_USERNAME);
+        etPassword.setText(BuildConfig.LOGIN_PASSWORD);*/
         deviceToken = MyFirebaseMessagingService.getToken(this.requireContext());
     }
 

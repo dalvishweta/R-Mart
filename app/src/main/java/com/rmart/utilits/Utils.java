@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import java.text.DecimalFormat;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,6 +55,8 @@ public class Utils {
     public static final String SUB_CATEGORY_PRODUCT = "Sub category products";
     public static final String BRAND_PRODUCTS = "BRAND PRODUCTS";
     public static final int MIN_PASSWORD_LENGTH = 8;
+
+    private static final String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
 
     public static boolean isValidMobile(String phone) {
         String regex = "[0-9]+";
@@ -202,5 +205,29 @@ public class Utils {
             return matcher.group();
         }
         return null;
+    }
+
+    public static String  isValidPassword(String password) {
+        //Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+        Matcher matcher;
+        StringBuilder stringBuffer = new StringBuilder();
+        // matcher = pattern.matcher(password);
+
+        if(!Pattern.compile(".*[0-9].*").matcher(password).matches()) {
+            stringBuffer.append("* Must contains one digit from 0-9.").append("\n");
+        }
+        if(!Pattern.compile(".*[a-z].*").matcher(password).matches()) {
+            stringBuffer.append("* Must contains one lowercase characters.").append("\n");
+        }
+        if(!Pattern.compile(".*[A-Z].*").matcher(password).matches()) {
+            stringBuffer.append("* Must contains one uppercase characters.").append("\n");
+        }
+        if(!Pattern.compile(".*[@#$%].*").matcher(password).matches()) {
+            stringBuffer.append("* Must contains one special symbols in the list \"@#$%\".").append("\n");
+        }
+        if(password.length()<8 || password.length()>11) {
+            stringBuffer.append("* Length at least 8 characters and maximum of 11.").append("\n");
+        }
+        return stringBuffer.toString();
     }
 }

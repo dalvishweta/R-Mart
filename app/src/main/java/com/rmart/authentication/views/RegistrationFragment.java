@@ -117,7 +117,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         email = Objects.requireNonNull(tvEmail.getText()).toString().trim();
         password = Objects.requireNonNull(tvPassword.getText()).toString().trim();
         confirmPassword = Objects.requireNonNull(tvConformPassword.getText()).toString().trim();
-
+        String passwordError = Utils.isValidPassword(password);
         /*firstName = "ffff";
         lastName = "lllll";
         mobileNumber = "1234556";
@@ -137,13 +137,13 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             showDialog("", getString(R.string.required_mail));
         } else if (!Utils.isValidEmail(email)) {
             showDialog("", getString(R.string.error_mail));
-        } else if (password.length() <= 0) {
+        } else if (TextUtils.isEmpty(password) || password.length() <= 0) {
             showDialog("", getString(R.string.error_empty_password));
-        } else if (TextUtils.isEmpty(password) || password.length() < Utils.MIN_PASSWORD_LENGTH) {
-            showDialog("", getString(R.string.password_strength_error));
-        } else if (TextUtils.isEmpty(confirmPassword) || confirmPassword.length() < Utils.MIN_PASSWORD_LENGTH) {
+        } else if (passwordError.length()>0) {
+            showDialog("", passwordError);
+        }/* else if (TextUtils.isEmpty(confirmPassword) || confirmPassword.length() < Utils.MIN_PASSWORD_LENGTH) {
             showDialog("", getString(R.string.confirm_password_strength_error));
-        } else if (!confirmPassword.equals(password)) {
+        }*/ else if (!confirmPassword.equals(password)) {
             showDialog("", getString(R.string.mismatch_confirm_password));
         } else {
             progressDialog.show();

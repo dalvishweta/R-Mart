@@ -27,7 +27,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:hint="@string/enter_your_business_name"
                 android:id="@+id/shop_name"
-                android:drawableStart="@drawable/user"
+                android:drawableStart="@drawable/shop"
                 style="@style/my_profile_tv"
                 android:inputType="text" />
 
@@ -69,14 +69,14 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:hint="@string/shop_no"
                 android:id="@+id/shop_no"
-                android:drawableStart="@drawable/user"
+                android:drawableStart="@drawable/ic_note"
                 style="@style/my_profile_tv"
                 android:inputType="text" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:hint="@string/enter_shop_act_number"
                 android:id="@+id/shop_act"
-                android:drawableStart="@drawable/user"
+                android:drawableStart="@drawable/ic_note"
                 android:inputType="number"
                 style="@style/my_profile_tv"
                 android:maxLength="12"
@@ -85,7 +85,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:hint="@string/enter_your_gst_number"
                 android:id="@+id/gst_number"
-                android:drawableStart="@drawable/user"
+                android:drawableStart="@drawable/ic_note"
                 android:inputType="text"
                 style="@style/my_profile_tv"
                 android:maxLength="16"
@@ -94,7 +94,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:hint="@string/delivery_radius"
                 android:id="@+id/delivery_radius"
-                android:drawableStart="@drawable/user"
+                android:drawableStart="@drawable/ic_address"
                 style="@style/my_profile_tv"
                 android:inputType="numberSigned"
                 android:maxLength="2" />
@@ -109,7 +109,7 @@
                 <androidx.appcompat.widget.AppCompatEditText
                     android:hint="@string/delivery_charge"
                     android:id="@+id/delivery_charges"
-                    android:drawableStart="@drawable/user"
+                    android:drawableStart="@drawable/ic_rupee"
                     style="@style/upload_product_item_field"
                     android:layout_weight="1.8"
                     android:inputType="numberSigned"
@@ -190,7 +190,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/tv_aadhar_number_no_field"
                 style="@style/my_profile_tv"
-                android:drawableStart="@drawable/user"
+                android:drawableStart="@drawable/ic_note"
                 android:hint="@string/aadhar_number"
                 android:inputType="numberSigned"
                 android:maxLength="12" />
@@ -257,7 +257,7 @@
                 android:hint="@string/enter_your_pan_number"
                 android:id="@+id/pan_number"
                 style="@style/my_profile_tv"
-                android:drawableStart="@drawable/user"
+                android:drawableStart="@drawable/ic_note"
                 android:inputType="textCapSentences"
                 android:textAllCaps="true"
                 android:maxLength="10" />
@@ -290,7 +290,7 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:hint="@string/street_address"
             android:id="@+id/street_address"
-            android:drawableStart="@drawable/user"
+            android:drawableStart="@drawable/ic_address"
             style="@style/my_profile_tv"
             android:layout_marginTop="10dp"
             android:inputType="text"
@@ -298,7 +298,7 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:hint="@string/city"
             android:id="@+id/city"
-            android:drawableStart="@drawable/user"
+            android:drawableStart="@drawable/ic_flag"
             style="@style/my_profile_tv"
             android:inputType="text"
             android:digits="@string/allow_digits"/>
@@ -313,7 +313,7 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:hint="@string/state"
             android:id="@+id/state"
-            android:drawableStart="@drawable/user"
+            android:drawableStart="@drawable/ic_flag"
             style="@style/my_profile_tv"
             android:inputType="text"
             android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM !@#$%^+=|\&amp;*()_-"/>
@@ -321,7 +321,7 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:hint="@string/pin_code"
             android:id="@+id/pin_code"
-            android:drawableStart="@drawable/user"
+            android:drawableStart="@drawable/ic_note"
             style="@style/my_profile_tv"
             android:maxLength="6"
             android:inputType="number" />

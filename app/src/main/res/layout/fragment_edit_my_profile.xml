@@ -50,14 +50,14 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:hint="@string/hint_mobile_number"
                 android:id="@+id/mobile_number"
-                android:drawableStart="@drawable/user"
+                android:drawableStart="@drawable/ic_phone"
                 style="@style/my_profile_tv"
                 android:inputType="number|numberSigned"
                 android:textColor="@color/colorPrimary"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:hint="@string/please_enter_your_e_mail"
                 android:id="@+id/email"
-                android:drawableStart="@drawable/user"
+                android:drawableStart="@drawable/ic_mail"
                 style="@style/my_profile_tv"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/colorPrimary"/>
@@ -75,6 +75,7 @@
                 style="@style/upload_product_item_field"/>
 
             <RelativeLayout
+                android:visibility="visible"
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:layout_marginTop="20dp"

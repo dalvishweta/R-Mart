@@ -144,7 +144,7 @@
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:hint="@string/delivery_charge"
                                 android:id="@+id/delivery_charges"
-                                android:drawableStart="@drawable/ic_note"
+                                android:drawableStart="@drawable/ic_rupee"
                                 style="@style/upload_product_item_field"
                                 android:inputType="number"
                                 android:background="@drawable/curve_left_bg"

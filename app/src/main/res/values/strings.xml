@@ -327,12 +327,14 @@
     <string name="error_min_password">Please enter minimum of 8 characters</string>
     <string name="product_discard_alert">Are you sure wants to discard your Changes?</string>
     <string name="cart_is_empty">Cart is empty</string>
-    <string name="allow_digits">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM</string>
+    <string name="allow_digits">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM </string>
     <string name="allow_digits_for_address">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM -_,@#*/!$~()\&amp;</string>
+    <string name="allow_digits_for_password">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM @#$%</string>
     <string name="search_for_category">Search For Category</string>
     <string name="my_favourites">My Favourites</string>
     <string name="required_gender">"Gender is required. "</string>
-    <string name="password_strength_error">Password should contain  min of 8 characters and maximum of 11 characters</string>
+    <string name="password_strength_error"> Password should contain \n1) Must contains one digit from 0-9. \n2) Must contains one lowercase characters.\n3) Must contains one uppercase characters.\n4) Must contains one special symbols in the list \"@#$%\".\n5) Length at least 6 characters and maximum of 20.</string>
+<!--    <string name="password_strength_error">Password should contain  min of 8 characters and maximum of 11 characters</string>-->
     <string name="confirm_password_strength_error">Confirm Password should contain  min of 8 characters and maximum of 11 characters</string>
     <string name="allow_digits_email">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM @-_.</string>
     <string name="delete_product_conformation">"Do you want to remove product from your inventory? "</string>
