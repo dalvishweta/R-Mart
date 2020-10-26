@@ -328,7 +328,7 @@
     <string name="product_discard_alert">Are you sure wants to discard your Changes?</string>
     <string name="cart_is_empty">Cart is empty</string>
     <string name="allow_digits">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM</string>
-    <string name="allow_digits_for_address">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM -_,()\&amp;</string>
+    <string name="allow_digits_for_address">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM -_,@#*/!$~()\&amp;</string>
     <string name="search_for_category">Search For Category</string>
     <string name="my_favourites">My Favourites</string>
     <string name="required_gender">"Gender is required. "</string>
