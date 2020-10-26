@@ -183,20 +183,6 @@ public class Utils {
         pView.setEnabled(false);
     }
 
-    public static boolean isValidPassword(String password) {
-        String regex = "^(?=.*[0-9])"
-                + "(?=.*[a-z])(?=.*[A-Z])"
-                + "(?=.*[@#$%^&+=])"
-                + "(?=\\S+$).{8,20}$";
-
-        Pattern p = Pattern.compile(regex);
-        if (TextUtils.isEmpty(password)) {
-            return false;
-        }
-        Matcher m = p.matcher(password);
-        return m.matches();
-    }
-
     public static String getYoutubeThumbnailUrlFromVideoUrl(String videoUrl) {
         if (!TextUtils.isEmpty(videoUrl)) {
             return "https://img.youtube.com/vi/" + getYoutubeVideoIdFromUrl(videoUrl) + "/0.jpg";

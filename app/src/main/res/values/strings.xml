@@ -332,7 +332,8 @@
     <string name="search_for_category">Search For Category</string>
     <string name="my_favourites">My Favourites</string>
     <string name="required_gender">"Gender is required. "</string>
-    <string name="password_strength_error">Password should contain  min of 8 characters  and atleast one special charcter</string>
-    <string name="confirm_password_strength_error">Confirm Password should contain  min of 8 characters  and atleast one special charcter</string>
+    <string name="password_strength_error">Password should contain  min of 8 characters and maximum of 11 characters</string>
+    <string name="confirm_password_strength_error">Confirm Password should contain  min of 8 characters and maximum of 11 characters</string>
+    <string name="allow_digits_email">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM @-_.</string>
     <string name="delete_product_conformation">"Do you want to remove product from your inventory? "</string>
 </resources>

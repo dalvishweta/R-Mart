@@ -93,18 +93,10 @@ public class ChangePassword extends LoginBaseFragment {
                 return;
             }
             if (TextUtils.isEmpty(password) || password.length() < Utils.MIN_PASSWORD_LENGTH) {
-                showDialog(getString(R.string.error_empty_password));
-                return;
-            }
-            if (!Utils.isValidPassword(password)) {
                 showDialog(getString(R.string.password_strength_error));
                 return;
             }
             if (TextUtils.isEmpty(confirmPassword) || confirmPassword.length() < Utils.MIN_PASSWORD_LENGTH) {
-                showDialog(getString(R.string.error_empty_confirm_password));
-                return;
-            }
-            if (!Utils.isValidPassword(confirmPassword)) {
                 showDialog(getString(R.string.confirm_password_strength_error));
                 return;
             }

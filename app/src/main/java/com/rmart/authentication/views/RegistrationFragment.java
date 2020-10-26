@@ -1,7 +1,7 @@
 package com.rmart.authentication.views;
 
 import android.os.Bundle;
-import android.text.InputFilter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,13 +139,9 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             showDialog("", getString(R.string.error_mail));
         } else if (password.length() <= 0) {
             showDialog("", getString(R.string.error_empty_password));
-        } else if (password.length() < Utils.MIN_PASSWORD_LENGTH) {
-            showDialog("", getString(R.string.error_min_password));
-        } else if (!Utils.isValidPassword(password)) {
+        } else if (TextUtils.isEmpty(password) || password.length() < Utils.MIN_PASSWORD_LENGTH) {
             showDialog("", getString(R.string.password_strength_error));
-        } else if (confirmPassword.length() < Utils.MIN_PASSWORD_LENGTH) {
-            showDialog("", getString(R.string.error_empty_confirm_password));
-        } else if (!Utils.isValidPassword(confirmPassword)) {
+        } else if (TextUtils.isEmpty(confirmPassword) || confirmPassword.length() < Utils.MIN_PASSWORD_LENGTH) {
             showDialog("", getString(R.string.confirm_password_strength_error));
         } else if (!confirmPassword.equals(password)) {
             showDialog("", getString(R.string.mismatch_confirm_password));
