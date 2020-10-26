@@ -32,7 +32,7 @@
                         android:text="@string/profile"
                         style="@style/my_profile_title"
                         android:layout_marginTop="0dp"
-                        android:drawableEnd="@drawable/edit"
+                        android:drawableEnd="@drawable/pencil_white"
                         android:background="@color/colorPrimary"
                         android:layout_width="match_parent"/>
                     <androidx.appcompat.widget.AppCompatTextView
@@ -96,7 +96,7 @@
                             android:text="@string/retailer_details"
                             style="@style/my_profile_title"
                             android:layout_marginTop="0dp"
-                            android:drawableEnd="@drawable/edit"
+                            android:drawableEnd="@drawable/pencil_white"
                             android:background="@color/colorPrimary"
                             android:layout_width="match_parent"/>
                         <androidx.appcompat.widget.AppCompatTextView
@@ -258,7 +258,7 @@
                         android:layout_marginTop="0dp"
                         android:background="@color/colorPrimary"
                         android:layout_width="match_parent"
-                        android:drawableEnd="@drawable/add" />
+                        android:drawableEnd="@drawable/add_white" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/address_list"

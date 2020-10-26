@@ -162,29 +162,31 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
                 mListener.updateProduct(product, true);
             });
             delete.setOnClickListener(v -> {
-                progressDialog.show();
-                VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
-                vendorInventoryService.deleteProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<BaseResponse>() {
-                    @Override
-                    public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
-                        BaseResponse data = response.body();
-                        if(data != null) {
-                            if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                showDialog("", data.getMsg(), (dialogInterface, i) -> requireActivity().onBackPressed());
+                showConfirmationDialog(getString(R.string.delete_product_conformation), deleteView -> {
+                    progressDialog.show();
+                    VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
+                    vendorInventoryService.deleteProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<BaseResponse>() {
+                        @Override
+                        public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
+                            BaseResponse data = response.body();
+                            if(data != null) {
+                                if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                    showDialog("", data.getMsg(), (dialogInterface, i) -> requireActivity().onBackPressed());
+                                } else {
+                                    showDialog(getString(R.string.no_information_available));
+                                }
                             } else {
                                 showDialog(getString(R.string.no_information_available));
                             }
-                        } else {
-                            showDialog(getString(R.string.no_information_available));
+                            progressDialog.dismiss();
                         }
-                        progressDialog.dismiss();
-                    }
 
-                    @Override
-                    public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
-                        showDialog("", t.getMessage());
-                        progressDialog.dismiss();
-                    }
+                        @Override
+                        public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
+                            showDialog("", t.getMessage());
+                            progressDialog.dismiss();
+                        }
+                    });
                 });
             });
         } else {

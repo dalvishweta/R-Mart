@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"/>
         <ImageView
             android:padding="10dp"
-            android:src="@drawable/edit"
+            android:src="@drawable/pencil"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:id="@+id/edit"

@@ -334,4 +334,5 @@
     <string name="required_gender">"Gender is required. "</string>
     <string name="password_strength_error">Password should contain  min of 8 characters  and atleast one special charcter</string>
     <string name="confirm_password_strength_error">Confirm Password should contain  min of 8 characters  and atleast one special charcter</string>
+    <string name="delete_product_conformation">"Do you want to remove product from your inventory? "</string>
 </resources>

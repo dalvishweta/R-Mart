@@ -59,7 +59,7 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/unit_edit"
-        android:background="@drawable/edit"
+        android:background="@drawable/pencil"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_alignParentEnd="true"

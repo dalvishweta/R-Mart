@@ -570,6 +570,9 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                         imageURLResponse.setImageRawData(getEncodedImage(bitmap));
                         lUpdateImagesList.add(imageURLResponse);
                     }
+                } else if((null != imageURLResponse.getDisplayImage() && imageURLResponse.getDisplayImage().length() >10) ||
+                        (null != imageURLResponse.getImageURL() && imageURLResponse.getImageURL().length() >10) ) {
+                    lUpdateImagesList.add(imageURLResponse);
                 }
             } catch (Exception ex) {
                 LoggerInfo.printLog("image error", "exception " + ex.getMessage());
