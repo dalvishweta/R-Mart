@@ -252,6 +252,11 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
             return;
         }
 
+        if (TextUtils.isEmpty(selectedGender)) {
+            showDialog("", getString(R.string.required_gender));
+            return;
+        }
+
         progressDialog.show();
         String encodedImage = getEncodedImage();
         ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);

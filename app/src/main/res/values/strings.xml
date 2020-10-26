@@ -301,6 +301,7 @@
     <string name="error_expiry_date">Please enter valid expiry date.</string>
     <string name="error_regional_name">Please enter valid regional name.</string>
     <string name="error_video_link">Please enter valid product Link</string>
+    <string name="error_image_thumb">Please upload at least one image.</string>
     <string name="status_update">Order status successfully changed to %1$s</string>
     <string name="error_product_description">Please enter valid product description</string>
     <string name="unit_required">Please add at least one unit</string>
@@ -330,4 +331,5 @@
     <string name="allow_digits_for_address">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM -_,()\&amp;</string>
     <string name="search_for_category">Search For Category</string>
     <string name="my_favourites">My Favourites</string>
+    <string name="required_gender">"Gender is required. "</string>
 </resources>
