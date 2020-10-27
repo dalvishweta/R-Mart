@@ -89,7 +89,8 @@
                 android:inputType="text"
                 style="@style/my_profile_tv"
                 android:maxLength="16"
-                android:textAllCaps="true" />
+                android:textAllCaps="true"
+                android:digits="@string/allow_digits_with_out_space"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:hint="@string/delivery_radius"
