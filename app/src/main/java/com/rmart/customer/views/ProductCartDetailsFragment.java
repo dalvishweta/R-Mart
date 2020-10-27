@@ -85,7 +85,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private Button btnWishListField;
 
     private boolean isAddToCartSelected = false;
-    private AppCompatTextView tvProductRegionalName, tvProductExpiry, tvDeliveryDaysBeforeTime, tvDeliveryDaysAfterTime;
+    private AppCompatTextView tvProductRegionalName, tvProductExpiry, tvDeliveryDaysBeforeTime, tvDeliveryDaysAfterTime, tvOpeningTime, tvClosingTime;
 
     static ProductCartDetailsFragment getInstance(CustomerProductDetailsModel vendorProductDataDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
         ProductCartDetailsFragment productCartDetailsFragment = new ProductCartDetailsFragment();
@@ -197,6 +197,8 @@ public class ProductCartDetailsFragment extends BaseFragment {
         Button btnAddToCartField = view.findViewById(R.id.btn_add_to_cart_field);
         quantitySpinnerField = view.findViewById(R.id.quantity_spinner_field);
         btnWishListField = view.findViewById(R.id.btn_wish_list_field);
+        tvOpeningTime = view.findViewById(R.id.tv_opening_time);
+        tvClosingTime = view.findViewById(R.id.tv_closing_time);
 
         tvProductRegionalName = view.findViewById(R.id.product_regional_name);
         tvDeliveryDaysBeforeTime = view.findViewById(R.id.delivery_before_time);
@@ -382,8 +384,8 @@ public class ProductCartDetailsFragment extends BaseFragment {
                 }
             }
 
-            /*tvClosingTime.setText(vendorShopDetails.getClosingTime());
-            tvOpeningTime.setText(vendorShopDetails.getOpeningTime());*/
+            tvClosingTime.setText(vendorShopDetails.getClosingTime());
+            tvOpeningTime.setText(vendorShopDetails.getOpeningTime());
         } else {
             showCloseDialog(getString(R.string.no_product_details_found));
         }

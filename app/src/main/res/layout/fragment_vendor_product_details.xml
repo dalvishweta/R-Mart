@@ -27,6 +27,7 @@
             android:background="@drawable/grey_left_corners_bg"
             android:contentDescription="@string/app_name"
             android:padding="10dp"
+            android:visibility="gone"
             android:src="@drawable/heart" />
 
         <include

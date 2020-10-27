@@ -93,16 +93,10 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     APIService apiService = RetrofitClientInstance.getRetrofitInstance().create(APIService.class);
     private ArrayList<ImageURLResponse> imagesList;
     private int selectedImagePosition = -1;
-    /*private CustomNetworkImageView ivProductImageOneField;
-    private CustomNetworkImageView ivProductImageTwoField;
-    private CustomNetworkImageView ivProductImageThreeField;
-    private CustomNetworkImageView ivProductImageFourField;
-    private CustomNetworkImageView ivProductImageFiveField;*/
     private ProductUnitAdapter unitBaseAdapter;
     private final ArrayList<UnitObject> unitsList = new ArrayList<>();
     private Calendar expiryDateCalendar = Calendar.getInstance();
     private ProductImagesAdapter productImagesAdapter;
-    private ImageURLResponse selectedProductImage;
 
     public AddProductToInventory() {
         // Required empty public constructor
@@ -265,15 +259,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         save.setOnClickListener(this);
         view.findViewById(R.id.add_unit).setOnClickListener(this);
 
-        //imageUploadAdapter = new ImageUploadAdapter(imagesList, callBackListener);
-        //imagesRecyclerView.setAdapter(imageUploadAdapter);
-
-        /*ivProductImageOneField = view.findViewById(R.id.iv_product_image_one_field);
-        ivProductImageTwoField = view.findViewById(R.id.iv_product_image_two_field);
-        ivProductImageThreeField = view.findViewById(R.id.iv_product_image_three_field);
-        ivProductImageFourField = view.findViewById(R.id.iv_product_image_four_field);
-        ivProductImageFiveField = view.findViewById(R.id.iv_product_image_five_field);*/
-
         imagesList = new ArrayList<>();
         if (mClonedProduct != null) {
             List<ImageURLResponse> clonedImagesList = mClonedProduct.getImageDataObject();
@@ -304,66 +289,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             }
         }));
 
-
-        /*ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
-        HttpsTrustManager.allowAllSSL();
-        for (int i = 0; i < imagesList.size(); i++) {
-            ImageURLResponse imageURLResponse = imagesList.get(i);
-            String productUrl = imageURLResponse.getImageURL();
-            int errorImageAlert = android.R.drawable.ic_dialog_alert;
-            Drawable drawable = ContextCompat.getDrawable(requireActivity(), R.drawable.add);
-            switch (i) {
-                case 0:
-                    if (!TextUtils.isEmpty(productUrl)) {
-                        imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageOneField, errorImageAlert, errorImageAlert));
-                        ivProductImageOneField.setImageUrl(productUrl, imageLoader);
-                    } else {
-                        ivProductImageOneField.setBackground(drawable);
-                    }
-                    break;
-                case 1:
-                    if (!TextUtils.isEmpty(productUrl)) {
-                        imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageTwoField, errorImageAlert, errorImageAlert));
-                        ivProductImageTwoField.setImageUrl(productUrl, imageLoader);
-                    } else {
-                        ivProductImageTwoField.setBackground(drawable);
-                    }
-                    break;
-                case 2:
-                    if (!TextUtils.isEmpty(productUrl)) {
-                        imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageThreeField, errorImageAlert, errorImageAlert));
-                        ivProductImageThreeField.setImageUrl(productUrl, imageLoader);
-                    } else {
-                        ivProductImageThreeField.setBackground(drawable);
-                    }
-                    break;
-                case 3:
-                    if (!TextUtils.isEmpty(productUrl)) {
-                        imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageFourField, errorImageAlert, errorImageAlert));
-                        ivProductImageFourField.setImageUrl(productUrl, imageLoader);
-                    } else {
-                        ivProductImageFourField.setBackground(drawable);
-                    }
-                    break;
-                case 4:
-                    if (!TextUtils.isEmpty(productUrl)) {
-                        imageLoader.get(productUrl, ImageLoader.getImageListener(ivProductImageFiveField, errorImageAlert, errorImageAlert));
-                        ivProductImageFiveField.setImageUrl(productUrl, imageLoader);
-                    } else {
-                        ivProductImageFiveField.setBackground(drawable);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        ivProductImageOneField.setOnClickListener(this);
-        ivProductImageTwoField.setOnClickListener(this);
-        ivProductImageThreeField.setOnClickListener(this);
-        ivProductImageFourField.setOnClickListener(this);
-        ivProductImageFiveField.setOnClickListener(this);*/
-
         unitsList.clear();
         for (UnitObject unitObject : mClonedProduct.getUnitObjects()) {
             unitObject.setProductUpdated(true);
@@ -391,29 +316,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 saveSelected();
                 break;
             case R.id.expiry:
-                //new CustomDatePicker((AppCompatTextView) view, getActivity(), Utils.DD_MM_YYYY);
                 expiryDateSelected();
                 break;
-           /* case R.id.iv_product_image_one_field:
-                selectedImagePosition = 0;
-                captureImageSelected();
-                break;
-            case R.id.iv_product_image_two_field:
-                selectedImagePosition = 1;
-                captureImageSelected();
-                break;
-            case R.id.iv_product_image_three_field:
-                selectedImagePosition = 2;
-                captureImageSelected();
-                break;
-            case R.id.iv_product_image_four_field:
-                selectedImagePosition = 3;
-                captureImageSelected();
-                break;
-            case R.id.iv_product_image_five_field:
-                selectedImagePosition = 4;
-                captureImageSelected();
-                break;*/
             default:
                 break;
         }
@@ -442,11 +346,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         }
     }
 
-    private void captureImageSelected() {
-        CropImage.activity()
-                .start(requireActivity(), this);
-    }
-
     private void saveSelected() {
         if (TextUtils.isEmpty(Objects.requireNonNull(productRegionalName.getText()).toString().trim())) {
             showDialog("", getString(R.string.error_regional_name));
@@ -465,10 +364,10 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             showDialog("", getString(R.string.error_expiry_date));
             return;
         }*/
-        if (TextUtils.isEmpty(Objects.requireNonNull(tvProductVideoLink.getText()).toString().trim())) {
+        /*if (TextUtils.isEmpty(Objects.requireNonNull(tvProductVideoLink.getText()).toString().trim())) {
             showDialog("", getString(R.string.error_video_link));
             return;
-        }
+        }*/
 
         mClonedProduct.setExpiry_date(expiry.getText().toString());
         mClonedProduct.setRegionalName(productRegionalName.getText().toString());
@@ -696,28 +595,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 productImagesAdapter.notifyItemRemoved(size);
             }
         }
-    }
-
-    private void displayImagesUI(Uri imageUri) {
-        /*switch (selectedImagePosition) {
-            case 0:
-                ivProductImageOneField.setLocalImageUri(imageUri);
-                break;
-            case 1:
-                ivProductImageTwoField.setLocalImageUri(imageUri);
-                break;
-            case 2:
-                ivProductImageThreeField.setLocalImageUri(imageUri);
-                break;
-            case 3:
-                ivProductImageFourField.setLocalImageUri(imageUri);
-                break;
-            case 4:
-                ivProductImageFiveField.setLocalImageUri(imageUri);
-                break;
-            default:
-                break;
-        }*/
     }
 
     private String getEncodedImage(Bitmap bitmap) {

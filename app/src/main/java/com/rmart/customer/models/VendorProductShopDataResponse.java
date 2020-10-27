@@ -29,7 +29,7 @@ public class VendorProductShopDataResponse extends BaseResponse {
     private String shopName;
     @SerializedName("shop_del_chrg")
     @Expose
-    private String shopDelChrg;
+    private String shopDeliveryCharge;
     @SerializedName("min_order_amt")
     @Expose
     private Integer minOrderAmt;
@@ -48,6 +48,58 @@ public class VendorProductShopDataResponse extends BaseResponse {
     @SerializedName("shop_wishlist_status")
     @Expose
     private Integer shopWishListStatus;
+    @SerializedName("email_id")
+    @Expose
+    private String emailId;
+    @SerializedName("delivery_days_after_time")
+    @Expose
+    private String deliveryDaysAfterTime;
+    @SerializedName("delivery_days_before_time")
+    @Expose
+    private String deliveryDaysBeforeTime;
+    @SerializedName("closing_time")
+    @Expose
+    private String closingTime;
+    @SerializedName("opening_time")
+    @Expose
+    private String openingTime;
+    @SerializedName("shop_latitude")
+    @Expose
+    private String shopLatitude;
+    @SerializedName("shop_longitude")
+    @Expose
+    private String shopLongitude;
+    @SerializedName("shop_wishlist_id")
+    @Expose
+    private Integer shopWishListId;
+
+    public String getShopDeliveryCharge() {
+        return shopDeliveryCharge;
+    }
+
+    public void setShopDeliveryCharge(String shopDeliveryCharge) {
+        this.shopDeliveryCharge = shopDeliveryCharge;
+    }
+
+    public String getDeliveryDays() {
+        return deliveryDays;
+    }
+
+    public void setDeliveryDays(String deliveryDays) {
+        this.deliveryDays = deliveryDays;
+    }
+
+    public void setDeliveryCharges(Integer deliveryCharges) {
+        this.deliveryCharges = deliveryCharges;
+    }
+
+    public Integer getShopWishListStatus() {
+        return shopWishListStatus;
+    }
+
+    public void setShopWishListStatus(Integer shopWishListStatus) {
+        this.shopWishListStatus = shopWishListStatus;
+    }
 
     public String getShopMobileNo() {
         return shopMobileNo;
@@ -63,6 +115,14 @@ public class VendorProductShopDataResponse extends BaseResponse {
 
     public void setVendorId(Integer vendorId) {
         this.vendorId = vendorId;
+    }
+
+    public String getEmailId() {
+        return emailId;
+    }
+
+    public void setEmailId(String emailId) {
+        this.emailId = emailId;
     }
 
     public List<String> getShopImage() {
@@ -89,14 +149,6 @@ public class VendorProductShopDataResponse extends BaseResponse {
         this.shopName = shopName;
     }
 
-    public String getShopDelChrg() {
-        return shopDelChrg;
-    }
-
-    public void setShopDelChrg(String shopDelChrg) {
-        this.shopDelChrg = shopDelChrg;
-    }
-
     public Integer getMinOrderAmt() {
         return minOrderAmt;
     }
@@ -105,12 +157,20 @@ public class VendorProductShopDataResponse extends BaseResponse {
         this.minOrderAmt = minOrderAmt;
     }
 
-    public String getDeliveryDays() {
-        return deliveryDays;
+    public String getDeliveryDaysAfterTime() {
+        return deliveryDaysAfterTime;
     }
 
-    public void setDeliveryDays(String deliveryDays) {
-        this.deliveryDays = deliveryDays;
+    public void setDeliveryDaysAfterTime(String deliveryDaysAfterTime) {
+        this.deliveryDaysAfterTime = deliveryDaysAfterTime;
+    }
+
+    public String getDeliveryDaysBeforeTime() {
+        return deliveryDaysBeforeTime;
+    }
+
+    public void setDeliveryDaysBeforeTime(String deliveryDaysBeforeTime) {
+        this.deliveryDaysBeforeTime = deliveryDaysBeforeTime;
     }
 
     public Integer getShopId() {
@@ -129,19 +189,35 @@ public class VendorProductShopDataResponse extends BaseResponse {
         this.clientId = clientId;
     }
 
-    public Integer getDeliveryCharges() {
-        return deliveryCharges;
+    public String getClosingTime() {
+        return closingTime;
     }
 
-    public void setDeliveryCharges(Integer deliveryCharges) {
-        this.deliveryCharges = deliveryCharges;
+    public void setClosingTime(String closingTime) {
+        this.closingTime = closingTime;
     }
 
-    public Integer getShopWishListStatus() {
-        return shopWishListStatus;
+    public String getOpeningTime() {
+        return openingTime;
     }
 
-    public void setShopWishListStatus(Integer shopWishListStatus) {
-        this.shopWishListStatus = shopWishListStatus;
+    public void setOpeningTime(String openingTime) {
+        this.openingTime = openingTime;
+    }
+
+    public String getShopLatitude() {
+        return shopLatitude;
+    }
+
+    public void setShopLatitude(String shopLatitude) {
+        this.shopLatitude = shopLatitude;
+    }
+
+    public String getShopLongitude() {
+        return shopLongitude;
+    }
+
+    public void setShopLongitude(String shopLongitude) {
+        this.shopLongitude = shopLongitude;
     }
 }

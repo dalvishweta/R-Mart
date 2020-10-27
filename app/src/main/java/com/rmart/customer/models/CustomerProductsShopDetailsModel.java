@@ -32,7 +32,7 @@ public class CustomerProductsShopDetailsModel implements Serializable {
     private String shopName;
     @SerializedName("shop_del_chrg")
     @Expose
-    private String shopDelChrg;
+    private String shopDeliveryCharges;
     @SerializedName("min_order_amt")
     @Expose
     private Integer minOrderAmt;
@@ -77,6 +77,12 @@ public class CustomerProductsShopDetailsModel implements Serializable {
     @SerializedName("delivery_days_before_time")
     @Expose
     private String deliveryDaysBeforeTime;
+    @SerializedName("closing_time")
+    @Expose
+    private String closingTime;
+    @SerializedName("opening_time")
+    @Expose
+    private String openingTime;
 
     public String getShopMobileNo() {
         return shopMobileNo;
@@ -118,12 +124,12 @@ public class CustomerProductsShopDetailsModel implements Serializable {
         this.shopName = shopName;
     }
 
-    public String getShopDelChrg() {
-        return shopDelChrg;
+    public String getShopDeliveryCharges() {
+        return shopDeliveryCharges;
     }
 
-    public void setShopDelChrg(String shopDelChrg) {
-        this.shopDelChrg = shopDelChrg;
+    public void setShopDeliveryCharges(String shopDeliveryCharges) {
+        this.shopDeliveryCharges = shopDeliveryCharges;
     }
 
     public Integer getMinOrderAmt() {
@@ -228,6 +234,22 @@ public class CustomerProductsShopDetailsModel implements Serializable {
 
     public void setDeliveryDaysBeforeTime(String deliveryDaysBeforeTime) {
         this.deliveryDaysBeforeTime = deliveryDaysBeforeTime;
+    }
+
+    public String getClosingTime() {
+        return closingTime;
+    }
+
+    public void setClosingTime(String closingTime) {
+        this.closingTime = closingTime;
+    }
+
+    public String getOpeningTime() {
+        return openingTime;
+    }
+
+    public void setOpeningTime(String openingTime) {
+        this.openingTime = openingTime;
     }
 
     @NotNull
