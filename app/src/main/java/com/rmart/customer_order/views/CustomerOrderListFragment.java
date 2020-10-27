@@ -79,6 +79,11 @@ public class CustomerOrderListFragment extends BaseOrderFragment implements View
                         if (orders.size() > 0) {
                             assert data != null;
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                for (Order order: orders) {
+                                   if(order.getStatus().equalsIgnoreCase(Utils.CANCEL_BY_CUSTOMER)) {
+                                        order.setStatusDisplay(order.getStatusDisplay().replace("Customer", "me"));
+                                    }
+                                }
                                 startIndex = data.getEndIndex();
                                 updateUI();
                             } else {

@@ -95,6 +95,10 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 orderProductList = data.getProductList();
+                                if (orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_BY_CUSTOMER))
+                                {
+                                    orderProductList.getOrderInfo().setStatusName(orderProductList.getOrderInfo().getStatusName().replace("Customer", "me"));
+                                }
                                 updateUI();
                             } else {
                                 showCloseDialog(null, data.getMsg());
