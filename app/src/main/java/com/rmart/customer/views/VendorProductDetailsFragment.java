@@ -220,28 +220,20 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
     private void getVendorProductDetails() {
         if (Utils.isNetworkConnected(requireActivity())) {
+            productCategoryId = -1;
             vendorProductsList.clear();
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             String customerId = MyProfile.getInstance().getUserID();
             Call<VendorProductDetailsResponse> call;
-            if (TextUtils.isEmpty(searchProductName) && currentPage == 0 && productCategoryId == -1) {
+            if (TextUtils.isEmpty(searchProductName)) {
                 call = customerProductsService.getVendorShopDetails(clientID, productsShopDetailsModel.getVendorId(),
                         productsShopDetailsModel.getShopId(), customerId);
-            } else if (TextUtils.isEmpty(searchProductName) && currentPage != 0 && productCategoryId != -1) {
-                call = customerProductsService.getVendorShopDetails(clientID, productsShopDetailsModel.getVendorId(),
-                        productsShopDetailsModel.getShopId(), productCategoryId, currentPage, searchProductName, customerId);
-            } else if (!TextUtils.isEmpty(searchProductName) && currentPage != 0 && productCategoryId == -1) {
+            } else {
                 call = customerProductsService.getVendorShopDetails(clientID, productsShopDetailsModel.getVendorId(), productsShopDetailsModel.getShopId(),
                         currentPage, searchProductName, customerId);
-            } else {
-                call = customerProductsService.getVendorShopDetails(clientID, productsShopDetailsModel.getVendorId(), productsShopDetailsModel.getShopId(), productCategoryId,
-                        currentPage, searchProductName, customerId);
             }
-
-            /*Call<VendorProductDetailsResponse> call = customerProductsService.getVendorShopDetails(clientID, productsShopDetailsModel.getVendorId(), productsShopDetailsModel.getShopId(), productCategoryId,
-                    currentPage, searchProductName, customerId);*/
             call.enqueue(new Callback<VendorProductDetailsResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<VendorProductDetailsResponse> call, @NotNull Response<VendorProductDetailsResponse> response) {
