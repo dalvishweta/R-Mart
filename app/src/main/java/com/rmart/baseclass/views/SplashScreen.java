@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -58,8 +59,7 @@ public class SplashScreen extends BaseActivity {
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
             deviceToken = instanceIdResult.getToken();
             LoggerInfo.printLog("FCM Token", deviceToken);
-            checkLoginCache();
-        }).addOnFailureListener(e -> checkLoginCache());
+        }).addOnFailureListener(e -> checkLoginCache()).addOnCompleteListener(task -> checkLoginCache());
     }
 
     private void checkLoginCache() {
