@@ -162,7 +162,7 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                 tvGSTNumber.setText(addressResponse.getGstInNo());
                 tvStreetAddress.setText(addressResponse.getAddress());
                 tvShopNO.setText(addressResponse.getStore_number());
-                tvDeliveryRadius.setText(addressResponse.getDeliveryRadius());
+                tvDeliveryRadius.setText(addressResponse.getDeliveryRadius() + " km");
                 tvCity.setText(addressResponse.getCity());
                 tvState.setText(addressResponse.getState());
                 tvPINCode.setText(addressResponse.getPinCode());

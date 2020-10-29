@@ -368,7 +368,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             showDialog("", getString(R.string.error_video_link));
             return;
         }*/
-
         mClonedProduct.setExpiry_date(expiry.getText().toString());
         mClonedProduct.setRegionalName(productRegionalName.getText().toString());
         //mClonedProduct.setDelivery_days(Objects.requireNonNull(MyProfile.getInstance().getDeliveryInDays()));

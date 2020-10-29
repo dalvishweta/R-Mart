@@ -133,7 +133,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             showDialog("", getString(R.string.required_mobile_number));
         } else if (!Utils.isValidMobile(mobileNumber)) {
             showDialog("", getString(R.string.error_mobile_number));
-        } else if (email.length() <= 2) {
+        } else if (email.length() <= 0) {
             showDialog("", getString(R.string.required_mail));
         } else if (!Utils.isValidEmail(email)) {
             showDialog("", getString(R.string.error_mail));
