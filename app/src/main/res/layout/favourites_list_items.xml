@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="wrap_content"
+    android:minHeight="150dp"
     android:background="@color/light_grey">
 
     <androidx.appcompat.widget.AppCompatButton
@@ -23,12 +24,12 @@
         android:layout_centerVertical="true">
 
         <com.rmart.baseclass.views.ProgressBarCircular
-            android:id="@+id/profile_circular_field"
+            android:id="@+id/progress_circular_field"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_centerInParent="true" />
 
-        <com.android.volley.toolbox.NetworkImageView
+        <com.rmart.utilits.custom_views.CustomNetworkImageView
             android:id="@+id/iv_shop_image_field"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -40,8 +41,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_toStartOf="@id/btn_remove_field"
+        android:gravity="center_vertical"
+        android:layout_centerVertical="true"
         android:layout_toEndOf="@id/shop_image_layout"
         android:orientation="vertical">
 

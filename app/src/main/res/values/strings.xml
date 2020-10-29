@@ -343,4 +343,5 @@
     <string name="invalid_pin_code">Invalid Pin Code</string>
     <string name="success_product_delete">Product deleted successfully.</string>
     <string name="cancel_status">Status: </string>
+    <string name="favourite_shop_details_delete_alert">Are you sure wants to delete Shop Details</string>
 </resources>

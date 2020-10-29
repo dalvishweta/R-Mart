@@ -1,13 +1,15 @@
 package com.rmart.customer.views;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.rmart.baseclass.views.BaseActivity;
+import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 
 /**
  * Created by Satya Seshu on 24/10/20.
  */
-public class CustomerFavouritesActivity extends BaseActivity {
+public class CustomerFavouritesActivity extends BaseNavigationDrawerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,11 @@ public class CustomerFavouritesActivity extends BaseActivity {
 
     @Override
     public void onPermissionsGranted(Integer requestCode) {
+
+    }
+
+    @Override
+    public void onClick(View view) {
 
     }
 }

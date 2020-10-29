@@ -64,7 +64,8 @@ android {
         buildConfigField("String", "SHOW_CART_ORDER_DETAILS", '"customer/VendorShop/showCartOrderDetails"')
         buildConfigField("String", "UPDATE_KYC_IMAGE_DETAILS", '"updateprofile/onChangeKYCImages"')
         buildConfigField("String", "ADD_RE_ORDER_TO_CART", '"customer/VendorShop/addReOrderToCart"')
-        //
+        buildConfigField("String", "SHOW_SHOP_FAV_DATA", '"customer/VendorShop/showShopFavData"')
+        //showShopFavData
 
         /*Vendor inventory services*/
 

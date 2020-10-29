@@ -41,7 +41,6 @@
             android:src="@drawable/heart"
             android:background="@color/gray"
             android:padding="5dp"
-            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/iv_shop_image"
             app:layout_constraintTop_toTopOf="parent" />
 

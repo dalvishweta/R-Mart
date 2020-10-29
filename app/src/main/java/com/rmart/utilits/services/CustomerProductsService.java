@@ -9,6 +9,7 @@ import com.rmart.customer.models.CustomerProductsResponse;
 import com.rmart.customer.models.ProductDetailsDescResponse;
 import com.rmart.customer.models.ProductInCartResponse;
 import com.rmart.customer.models.ProductOrderedResponseModel;
+import com.rmart.customer.models.ShopFavouritesListResponseModel;
 import com.rmart.customer.models.ShopWiseWishListResponseModel;
 import com.rmart.customer.models.ShoppingCartResponse;
 import com.rmart.customer.models.VendorProductDetailsResponse;
@@ -127,5 +128,9 @@ public interface CustomerProductsService {
     @FormUrlEncoded
     Call<AddToCartResponseDetails> addReOrderToCart(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
                                                     @Field("product_arr") JSONArray productList);
+
+    @POST(BuildConfig.SHOW_SHOP_FAV_DATA)
+    @FormUrlEncoded
+    Call<ShopFavouritesListResponseModel> getShowShopFavouritesList(@Field("client_id") String clientId, @Field("customer_id") String customerId, @Field("start_page") Integer startPage);
 
 }

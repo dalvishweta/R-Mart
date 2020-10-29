@@ -13,14 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
+import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.adapters.FavouritesShopsAdapter;
-import com.rmart.customer.models.ShopWiseWishListResponseDetails;
-import com.rmart.customer.models.ShopWiseWishListResponseModel;
+import com.rmart.customer.models.CustomerFavShopResponseDetails;
+import com.rmart.customer.models.ShopFavouritesListResponseModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +40,7 @@ import retrofit2.Response;
  */
 public class CustomerFavouritesFragment extends BaseFragment {
 
-    private List<ShopWiseWishListResponseDetails> favoritesShopsList;
+    private List<CustomerFavShopResponseDetails> favoritesShopsList;
     private FavouritesShopsAdapter favouritesShopsAdapter;
 
     public static CustomerFavouritesFragment getInstance() {
@@ -70,7 +72,7 @@ public class CustomerFavouritesFragment extends BaseFragment {
     }
 
     private void loadUIComponents(View view) {
-        RecyclerView favouritesShopsListField = view.findViewById(R.id.wish_list_field);
+        RecyclerView favouritesShopsListField = view.findViewById(R.id.favourites_list_field);
         favouritesShopsListField.setHasFixedSize(false);
 
         favoritesShopsList = new ArrayList<>();
@@ -84,10 +86,67 @@ public class CustomerFavouritesFragment extends BaseFragment {
     }
 
     private final CallBackInterface callBackListener = pObject -> {
-          if(pObject instanceof Integer) {
-
-          }
+        if (pObject instanceof CustomerFavShopResponseDetails) {
+            showConfirmationDialog(getString(R.string.favourite_shop_details_delete_alert), pObject1 -> {
+                if (pObject1 == Constants.TAG_SUCCESS) {
+                    CustomerFavShopResponseDetails selectedShopDetails = (CustomerFavShopResponseDetails) pObject;
+                    deleteShopFromWishList(selectedShopDetails);
+                }
+            });
+        }
     };
+
+    private void deleteShopFromWishList(CustomerFavShopResponseDetails selectedShopDetails) {
+        if (Utils.isNetworkConnected(requireActivity())) {
+            progressDialog.show();
+            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            String clientID = "2";
+            Call<BaseResponse> call = customerProductsService.deleteShopFromWishList(clientID, selectedShopDetails.getVendorId(), selectedShopDetails.getShopId(),
+                    MyProfile.getInstance().getUserID());
+            call.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        BaseResponse body = response.body();
+                        if (body != null) {
+                            if (body.getStatus().equalsIgnoreCase("success")) {
+                                showDialog(body.getMsg(), pObject -> {
+                                    updatedDeletedAdapter(selectedShopDetails);
+                                });
+                            } else {
+                                showDialog(body.getMsg());
+                            }
+                        } else {
+                            showDialog(getString(R.string.no_information_available));
+                        }
+                    } else {
+                        showDialog(response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
+                    progressDialog.dismiss();
+                    showDialog(t.getMessage());
+                }
+            });
+        } else {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+        }
+    }
+
+    private void updatedDeletedAdapter(CustomerFavShopResponseDetails selectedShopDetails) {
+        int index = favoritesShopsList.indexOf(selectedShopDetails);
+        if (index > -1) {
+            favoritesShopsList.remove(selectedShopDetails);
+            favouritesShopsAdapter.updateItems(favoritesShopsList);
+            favouritesShopsAdapter.notifyDataSetChanged();
+            if (favoritesShopsList.isEmpty()) {
+                requireActivity().onBackPressed();
+            }
+        }
+    }
 
     private void getFavouritesListData() {
         if (Utils.isNetworkConnected(requireActivity())) {
@@ -95,19 +154,19 @@ public class CustomerFavouritesFragment extends BaseFragment {
             favoritesShopsList.clear();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<ShopWiseWishListResponseModel> call = customerProductsService.getShowShopWiseWishListData(clientID, MyProfile.getInstance().getUserID());
-            call.enqueue(new Callback<ShopWiseWishListResponseModel>() {
+            Call<ShopFavouritesListResponseModel> call = customerProductsService.getShowShopFavouritesList(clientID, MyProfile.getInstance().getUserID(), 0);
+            call.enqueue(new Callback<ShopFavouritesListResponseModel>() {
                 @Override
-                public void onResponse(@NotNull Call<ShopWiseWishListResponseModel> call, @NotNull Response<ShopWiseWishListResponseModel> response) {
+                public void onResponse(@NotNull Call<ShopFavouritesListResponseModel> call, @NotNull Response<ShopFavouritesListResponseModel> response) {
                     progressDialog.dismiss();
                     if (response.isSuccessful()) {
-                        ShopWiseWishListResponseModel body = response.body();
+                        ShopFavouritesListResponseModel body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                List<ShopWiseWishListResponseDetails> shopWiseCartList = body.getShopWiseWishListDataResponse().getShopWiseWishListResponseDetailsList();
+                                List<CustomerFavShopResponseDetails> shopWiseCartList = body.getShopFavouritesListDataResponse().getFavouritesShopsList();
                                 if (shopWiseCartList != null && !shopWiseCartList.isEmpty()) {
                                     favoritesShopsList.addAll(shopWiseCartList);
-                                    setAdapter(body.getMsg());
+                                    updateAdapter(body.getMsg());
                                 } else {
                                     showCloseDialog(null, body.getMsg());
                                 }
@@ -118,12 +177,12 @@ public class CustomerFavouritesFragment extends BaseFragment {
                             showCloseDialog(null, getString(R.string.no_information_available));
                         }
                     } else {
-                        showCloseDialog(null, getString(R.string.no_information_available));
+                        showCloseDialog(null, response.message());
                     }
                 }
 
                 @Override
-                public void onFailure(@NotNull Call<ShopWiseWishListResponseModel> call, @NotNull Throwable t) {
+                public void onFailure(@NotNull Call<ShopFavouritesListResponseModel> call, @NotNull Throwable t) {
                     progressDialog.dismiss();
                     showCloseDialog(null, t.getMessage());
                 }
@@ -137,7 +196,7 @@ public class CustomerFavouritesFragment extends BaseFragment {
         showDialog(title, message, pObject -> requireActivity().onBackPressed());
     }
 
-    private void setAdapter(String message) {
+    private void updateAdapter(String message) {
         if (!favoritesShopsList.isEmpty()) {
             favouritesShopsAdapter.updateItems(favoritesShopsList);
             favouritesShopsAdapter.notifyDataSetChanged();

@@ -66,8 +66,7 @@
                     android:id="@+id/my_favourites_list"
                     style="@style/nv_item_view"
                     android:drawableStart="@drawable/inventory_nv"
-                    android:text="@string/my_favourites"
-                    android:visibility="gone" />
+                    android:text="@string/my_favourites" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/my_wish_list"
