@@ -17,9 +17,9 @@ public class Order extends BaseResponse {
     @Expose
     private String productCount;
 
-    /*@SerializedName("status")
+    @SerializedName("receipt_number")
     @Expose
-    private String status = "";*/
+    private String receiptNumber = "";
 
     @SerializedName("status_displayName")
     @Expose
@@ -78,6 +78,14 @@ public class Order extends BaseResponse {
         this.status = status;
     }
 */
+
+    public String getReceiptNumber() {
+        return receiptNumber;
+    }
+
+    public void setReceiptNumber(String receiptNumber) {
+        this.receiptNumber = receiptNumber;
+    }
 
     public String getStatusDisplay() {
         return statusDisplay;

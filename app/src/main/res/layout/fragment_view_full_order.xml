@@ -117,7 +117,7 @@
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="end"
                         android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </RelativeLayout>
             </LinearLayout>
 

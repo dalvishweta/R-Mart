@@ -67,7 +67,7 @@
             android:layout_below="@+id/date_value"
             android:layout_toEndOf="@+id/order_id"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:layout_width="wrap_content"
             android:fontFamily="@font/roboto_regular"
             android:layout_height="wrap_content"/>

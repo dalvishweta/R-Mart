@@ -36,7 +36,7 @@ public class OrdersListAdapter extends RecyclerView.Adapter<OrdersListItemViewHo
     public void onBindViewHolder(@NonNull OrdersListItemViewHolder holder, int position) {
         Order orderObject = orderList.get(position);
         holder.orderCount.setText(orderObject.getProductCount());
-        holder.orderID.setText(orderObject.getOrderID());
+        holder.orderID.setText(orderObject.getReceiptNumber());
         holder.date.setText(orderObject.getOrderDate().split(" ")[0]);
         holder.itemView.setTag(orderObject);
     }

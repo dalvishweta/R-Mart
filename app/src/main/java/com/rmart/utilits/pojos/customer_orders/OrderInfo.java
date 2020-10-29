@@ -15,6 +15,10 @@ public class OrderInfo implements Serializable {
     @Expose
     String orderID;
 
+    @SerializedName("receipt_number")
+    @Expose
+    String receiptNumber;
+
     @SerializedName("mode_of_payment")
     @Expose
     String modeOfPayment;
@@ -136,5 +140,13 @@ public class OrderInfo implements Serializable {
 
     public void setStatusComments(String statusComments) {
         this.statusComments = statusComments;
+    }
+
+    public String getReceiptNumber() {
+        return receiptNumber;
+    }
+
+    public void setReceiptNumber(String receiptNumber) {
+        this.receiptNumber = receiptNumber;
     }
 }

@@ -190,7 +190,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
     }
     void setValuesToUI() {
-        orderIdValue.setText(mOrderObject.getOrderID());
+        orderIdValue.setText(mOrderObject.getReceiptNumber());
         dateValue.setText(mOrderObject.getOrderDate());
     }
 
@@ -208,7 +208,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         }
         String statusComments = String.format("%s : %s", getString(R.string.comments), statusCommentsReason);
         tvStatusComments.setText(statusComments);
-        orderIdValue.setText(orderProductList.getOrderInfo().getOrderID());
+        orderIdValue.setText(orderProductList.getOrderInfo().getReceiptNumber());
         dateValue.setText(mOrderObject.getOrderDate().split(" ")[0]);
 
         // vendor

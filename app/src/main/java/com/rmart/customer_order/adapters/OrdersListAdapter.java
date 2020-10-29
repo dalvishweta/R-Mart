@@ -43,7 +43,7 @@ public class OrdersListAdapter extends RecyclerView.Adapter<OrdersListItemViewHo
             // holder.statusDisplayName.setText(orderObject.getStatus());
         }
         holder.orderCount.setText(orderObject.getProductCount());
-        holder.orderID.setText(orderObject.getOrderID());
+        holder.orderID.setText(orderObject.getReceiptNumber());
         String date = "";
         try {
             date = orderObject.getOrderDate().split(" ")[0];

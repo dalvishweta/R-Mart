@@ -192,7 +192,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         String statusComments = String.format("%s : %s", getString(R.string.comments), statusCommentsReason);
         tvStatusComments.setText(statusComments);
 
-        orderIdValue.setText(orderProductList.getOrderInfo().getOrderID());
+        orderIdValue.setText(orderProductList.getOrderInfo().getReceiptNumber());
         dateValue.setText(mOrderObject.getOrderDate().split(" ")[0]);
         if (orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.OPEN_ORDER_STATUS) ||
                 orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.ACCEPTED_ORDER_STATUS) ||
