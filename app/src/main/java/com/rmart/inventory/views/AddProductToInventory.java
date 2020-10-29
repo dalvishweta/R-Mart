@@ -375,7 +375,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         ArrayList<ImageURLResponse> updateImagesList = new ArrayList<>();
         setImageURL(updateImagesList);
         mClonedProduct.setImageDataObject(updateImagesList);
-        if(updateImagesList.size()>0 && updateImagesList.get(0).getImageShow().equalsIgnoreCase("1")) {
+        if(updateImagesList.size()>0 && !updateImagesList.get(0).getImageShow().equalsIgnoreCase("1")) {
             updateImagesList.get(0).setImageShow("1");
         } else {
             showDialog("", getString(R.string.error_image_thumb));

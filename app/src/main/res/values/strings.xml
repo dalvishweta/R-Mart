@@ -107,7 +107,7 @@
     <string name="open">Open</string>
     <string name="accepted">Accepted</string>
     <string name="returned">Returned</string>
-    <string name="canceled">Canceled</string>
+    <string name="canceled">Cancelled</string>
     <string name="my_orders">My Orders</string>
     <string name="inventory">My Inventory</string>
     <string name="logout">Logout</string>
@@ -302,7 +302,7 @@
     <string name="error_regional_name">Please enter valid regional name.</string>
     <string name="error_video_link">Please enter valid product Link</string>
     <string name="error_image_thumb">Please upload at least one image.</string>
-    <string name="status_update">Order status successfully changed to %1$s</string>
+    <string name="status_update">Order successfully %1$s</string>
     <string name="error_product_description">Please enter valid product description</string>
     <string name="unit_required">Please add at least one unit</string>
     <string name="date">Date</string>
@@ -341,4 +341,6 @@
     <string name="allow_digits_email">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM @-_.</string>
     <string name="delete_product_conformation">"Do you want to remove product from your inventory? "</string>
     <string name="invalid_pin_code">Invalid Pin Code</string>
+    <string name="success_product_delete">Product deleted successfully.</string>
+    <string name="cancel_status">Status: </string>
 </resources>

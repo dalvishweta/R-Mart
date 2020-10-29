@@ -171,7 +171,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
                             BaseResponse data = response.body();
                             if(data != null) {
                                 if(data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                    showDialog("", data.getMsg(), (dialogInterface, i) -> requireActivity().onBackPressed());
+                                    showDialog("", getString(R.string.success_product_delete), (dialogInterface, i) -> requireActivity().onBackPressed());
                                 } else {
                                     showDialog(getString(R.string.no_information_available));
                                 }

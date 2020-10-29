@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.rmart.authentication.views.LoginFragment;
 import com.rmart.baseclass.views.SplashScreen;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer_order.views.CustomerOrdersActivity;
@@ -99,7 +100,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (roleID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
                 intent = new Intent(getApplicationContext(), CustomerOrdersActivity.class);
             } else {
-                intent = new Intent(getApplicationContext(), SplashScreen.class);
+                intent = new Intent(getApplicationContext(), LoginFragment.class);
             }
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 

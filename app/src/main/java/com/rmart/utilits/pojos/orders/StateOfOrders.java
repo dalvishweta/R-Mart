@@ -115,7 +115,7 @@ public class StateOfOrders implements Serializable {
                 setPosition(6);
                 bgTop = R.drawable.item_canceled_top_bg;
                 bgBottom = R.drawable.item_canceled_bottom_bg;
-                statusName = "CANCEL BY ME";
+                statusName = "CANCELLED BY ME";
                 break;
         }
     }

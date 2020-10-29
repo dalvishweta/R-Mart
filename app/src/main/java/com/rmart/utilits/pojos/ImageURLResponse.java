@@ -19,7 +19,7 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
 
     @SerializedName("image_show")
     @Expose
-    String imageShow;
+    String imageShow="";
 
     @SerializedName("image")
     @Expose

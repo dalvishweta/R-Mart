@@ -100,6 +100,11 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
                     if (data != null) {
                         if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                             orderProductList = data.getProductList();
+                            if (orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_BY_RETAILER)) {
+                                orderProductList.getOrderInfo().setStatusName("Order cancelled by Retailer");
+                            } else if (orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_BY_CUSTOMER)) {
+                                orderProductList.getOrderInfo().setStatusName("Order cancelled by Customer");
+                            }
                             updateUI();
                         } else {
                             showDialog(data.getMsg());
@@ -191,8 +196,12 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
     void updateUI() {
         Resources res = getResources();
-        String text = String.format(res.getString(R.string.status_order), orderProductList.getOrderInfo().getStatusName());
-        tvStatus.setText(text);
+        if (orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_BY_RETAILER)|| orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_BY_CUSTOMER)) {
+            tvStatus.setText(getString(R.string.cancel_status) +orderProductList.getOrderInfo().getStatusName());
+        } else {
+            String text = String.format(res.getString(R.string.status_order), orderProductList.getOrderInfo().getStatusName());
+            tvStatus.setText(text);
+        }
         String statusCommentsReason = orderProductList.getOrderInfo().getStatusComments();
         if(TextUtils.isEmpty(statusCommentsReason)) {
             tvStatusComments.setVisibility(View.GONE);
@@ -209,7 +218,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         vendorAddress.setText(orderProductList.getVendorInfo().getCompleteAddress());*/
 
         // Customer info
-        text = orderProductList.getCustomerInfo().getFirstName()+" "+ orderProductList.getCustomerInfo().getLastName();
+        String text = orderProductList.getCustomerInfo().getFirstName()+" "+ orderProductList.getCustomerInfo().getLastName();
         customerName.setText(text);
         customerNumber.setText(orderProductList.getCustomerInfo().getCustomerNumber());
         customerAddress.setText(orderProductList.getCustomerInfo().getCompleteAddress());

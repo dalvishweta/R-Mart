@@ -46,8 +46,9 @@ public class MyNotificationManager {
         NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
         bigPictureStyle.setBigContentTitle(title);
         bigPictureStyle.setSummaryText(message);
-        if (null != imageURL && imageURL.length() > 10) {
-            bigPictureStyle.bigPicture(getBitmapFromURL(imageURL));
+        Bitmap bitmap = getBitmapFromURL(imageURL);
+        if (null != bitmap) {
+            bigPictureStyle.bigPicture(bitmap);
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
