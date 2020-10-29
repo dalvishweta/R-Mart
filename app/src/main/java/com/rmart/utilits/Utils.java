@@ -13,12 +13,10 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
-import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 
 import java.text.DecimalFormat;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -219,15 +217,34 @@ public class Utils {
         if(!Pattern.compile(".*[a-z].*").matcher(password).matches()) {
             stringBuffer.append("* Must contains one lowercase characters.").append("\n");
         }
-        if(!Pattern.compile(".*[A-Z].*").matcher(password).matches()) {
+        if (!Pattern.compile(".*[A-Z].*").matcher(password).matches()) {
             stringBuffer.append("* Must contains one uppercase characters.").append("\n");
         }
-        if(!Pattern.compile(".*[@#$%].*").matcher(password).matches()) {
+        if (!Pattern.compile(".*[@#$%].*").matcher(password).matches()) {
             stringBuffer.append("* Must contains one special symbols in the list \"@#$%\".").append("\n");
         }
-        if(password.length()<8 || password.length()>11) {
+        if (password.length() < 8 || password.length() > 11) {
             stringBuffer.append("* Length at least 8 characters and maximum of 11.").append("\n");
         }
         return stringBuffer.toString();
+    }
+
+    public static boolean isValidPinCode(String pinCode) {
+        String regex
+                = "^[1-9]{1}[0-9]{5}$";
+        Pattern p = Pattern.compile(regex);
+        if (pinCode == null) {
+            return false;
+        }
+        Matcher m = p.matcher(pinCode);
+        return m.matches();
+    }
+
+    public static boolean isValidYoutubeUrl(String youTubeURl) {
+        String pattern = "^(http(s)?://)?((w){3}.)?youtu(be|.be)?(\\.com)?/.+";
+        if (!youTubeURl.isEmpty() && youTubeURl.matches(pattern)) {
+            return true;
+        }
+        return false;
     }
 }

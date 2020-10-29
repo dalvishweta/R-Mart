@@ -219,13 +219,15 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         List<ImageURLResponse> lImagesList = new ArrayList<>(product.getImageDataObject());
         String videoLink = product.getVideoLInk();
         if (!TextUtils.isEmpty(videoLink)) {
-            String productVideoUrl = Utils.getYoutubeThumbnailUrlFromVideoUrl(videoLink);
-            if (!TextUtils.isEmpty(productVideoUrl)) {
-                ImageURLResponse imageURLResponse = new ImageURLResponse();
-                imageURLResponse.setDisplayImage(productVideoUrl);
-                imageURLResponse.setImageURL(videoLink);
-                imageURLResponse.setProductVideoSelected(true);
-                lImagesList.add(imageURLResponse);
+            if(Utils.isValidYoutubeUrl(videoLink)) {
+                String productVideoUrl = Utils.getYoutubeThumbnailUrlFromVideoUrl(videoLink);
+                if (!TextUtils.isEmpty(productVideoUrl)) {
+                    ImageURLResponse imageURLResponse = new ImageURLResponse();
+                    imageURLResponse.setDisplayImage(productVideoUrl);
+                    imageURLResponse.setImageURL(videoLink);
+                    imageURLResponse.setProductVideoSelected(true);
+                    lImagesList.add(imageURLResponse);
+                }
             }
         }
         ImageAdapter imageAdapter = new ImageAdapter(requireContext(), lImagesList);

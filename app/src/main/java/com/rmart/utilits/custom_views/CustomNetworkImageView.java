@@ -14,13 +14,13 @@ import com.android.volley.toolbox.NetworkImageView;
  */
 public class CustomNetworkImageView extends NetworkImageView {
 
-    private Bitmap mLocalBitmap;
+    private Bitmap mLocalBitmap = null;
 
-    private Uri uri;
+    private Uri uri = null;
 
     private boolean mShowLocal;
 
-    private Drawable mDrawable;
+    private Drawable mDrawable = null;
 
     public void setLocalImageBitmap(Bitmap bitmap) {
         if (bitmap != null) {
@@ -69,10 +69,10 @@ public class CustomNetworkImageView extends NetworkImageView {
 
         super.onLayout(changed, left, top, right, bottom);
         if (mShowLocal) {
-            if (mLocalBitmap != null) {
-                setImageBitmap(mLocalBitmap);
-            } else if (uri != null) {
+            if (uri != null) {
                 setImageURI(uri);
+            } else if (mLocalBitmap != null) {
+                setImageBitmap(mLocalBitmap);
             } else if (mDrawable != null) {
                 setBackground(mDrawable);
             }

@@ -206,6 +206,8 @@ public class VendorProductDetailsFragment extends BaseFragment {
     private final CallBackInterface callBackListener = pObject -> {
         if (pObject instanceof CustomerProductDetailsModel) {
             onCustomerHomeInteractionListener.gotoProductDescDetails((CustomerProductDetailsModel) pObject, productsShopDetailsModel);
+            etProductsSearchField.setText("");
+            searchProductName = "";
         } else if (pObject instanceof ContentModel) {
             ContentModel contentModel = (ContentModel) pObject;
             String status = contentModel.getStatus();
@@ -214,6 +216,8 @@ public class VendorProductDetailsFragment extends BaseFragment {
                 currentPage = 0;
                 productCategoryId = selectedProductCategoryDetails.getProductCategoryId();
                 onCustomerHomeInteractionListener.gotoVendorSameProductListScreen(selectedProductCategoryDetails, productsShopDetailsModel);
+                etProductsSearchField.setText("");
+                searchProductName = "";
             }
         }
     };

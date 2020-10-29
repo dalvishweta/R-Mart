@@ -53,7 +53,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         try {
             //getting the json data
             JSONObject data = json.getJSONObject("data");
-            String rollID = "", title = "", message = "", imageUrl = "", userID = "", orderID = "", mobileNO ="";
+            String roleID = "", title = "", message = "", imageUrl = "", userID = "", orderID = "", mobileNO ="";
             //parsing json data
             try {
                 title = data.getString("title");
@@ -66,7 +66,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             }
             try {
-                rollID = data.getString("role_id");
+                roleID = data.getString("role_id");
             } catch (Exception e) {
 
             }
@@ -96,7 +96,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             //creating an intent for the notification
             Intent intent;
-            if (rollID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
+            if (roleID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
                 intent = new Intent(getApplicationContext(), CustomerOrdersActivity.class);
             } else {
                 intent = new Intent(getApplicationContext(), SplashScreen.class);
@@ -105,10 +105,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             intent.putExtra("user_id", userID);
             intent.putExtra("order_id", orderID);
-            intent.putExtra("role_id", rollID);
+            intent.putExtra("role_id", roleID);
             intent.putExtra("mobile_no", mobileNO);
 
-            mNotificationManager.notificationDialog(rollID, title, message, imageUrl, orderID, intent);
+            mNotificationManager.notificationDialog(roleID, title, message, imageUrl, orderID, intent);
             //if there is no image
             /*if(imageUrl.equals("null")){
                 //displaying small notification

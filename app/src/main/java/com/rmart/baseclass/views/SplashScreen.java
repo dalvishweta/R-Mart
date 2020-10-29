@@ -48,11 +48,12 @@ public class SplashScreen extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash_screen);
-        if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.CUSTOMER)) {
+        /*if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.CUSTOMER)) {
             ((ImageView)findViewById(R.id.splash_bg)).setImageResource(R.drawable.splashscreen);
         } else {
             ((ImageView)findViewById(R.id.splash_bg)).setImageResource(R.drawable.splashscreen);
-        }
+        }*/
+        ((ImageView)findViewById(R.id.splash_bg)).setImageResource(R.drawable.splashscreen);
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
             deviceToken = instanceIdResult.getToken();

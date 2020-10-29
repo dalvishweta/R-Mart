@@ -146,7 +146,6 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         pancardProgressBar = view.findViewById(R.id.pan_progress_bar);
         shopImageProgressBar = view.findViewById(R.id.shop_image_progress_bar);
 
-
         etvDeliveryCharges = view.findViewById(R.id.delivery_charges);
         etvMinimumOrder = view.findViewById(R.id.minimum_order);
         tvOpeningTIme = view.findViewById(R.id.open_time);
@@ -210,13 +209,14 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         tvOpeningTIme.setOnClickListener(this);
         tvClosingTIme.setOnClickListener(this);
 
+        updateUI();
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         requireActivity().setTitle(getString(R.string.update_address));
-        updateUI();
     }
 
     private void updateUI() {
@@ -567,12 +567,16 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                 showDialog(getString(R.string.state_address_required));
                 return;
             }
+        }
 
-            String zipCode = Objects.requireNonNull(tvPinCode.getText()).toString().trim();
-            if (TextUtils.isEmpty(zipCode)) {
-                showDialog(getString(R.string.pin_code_required));
-                return;
-            }
+        String zipCode = Objects.requireNonNull(tvPinCode.getText()).toString().trim();
+        if (TextUtils.isEmpty(zipCode)) {
+            showDialog(getString(R.string.pin_code_required));
+            return;
+        }
+        if(zipCode.length() != 6) {
+            showDialog(getString(R.string.invalid_pin_code));
+            return;
         }
 
         progressDialog.show();
@@ -634,7 +638,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                                     Objects.requireNonNull(requireActivity()).onBackPressed();
                                 });
                             } else {
-                                showDialog("", data.getMsg());
+                                showDialog(data.getMsg());
                             }
                         } else {
                             showDialog(getString(R.string.no_information_available));

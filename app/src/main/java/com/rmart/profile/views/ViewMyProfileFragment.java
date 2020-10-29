@@ -4,8 +4,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,12 +31,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rmart.BuildConfig;
 import com.rmart.R;
+import com.rmart.RMartApplication;
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.baseclass.views.ProgressBarCircular;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.mapview.MapsFragment;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.custom_views.CustomNetworkImageView;
 import com.rmart.utilits.pojos.AddressResponse;
 
 import java.util.List;
@@ -42,12 +50,18 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
 
     private AppCompatTextView tvFirstName, tvLastName, tvMobileNumber, tvEmail, tvGender, deliveryCharge, minimumCharge,
             tvOpeningTIme, tvClosingTIme, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
-    private AppCompatTextView tvShopName, tvShopACT,tvPANNumber, tvGSTNumber, tvStreetAddress,tvCity, tvShopNO, tvDeliveryRadius, tvState, tvPINCode;
+    private AppCompatTextView tvShopName, tvShopACT,tvPANNumber, tvGSTNumber, tvStreetAddress,tvCity, tvShopNO, tvDeliveryRadius, tvState, tvPINCode, tvAadharNoField;
     private RecyclerView recyclerView;
     // MyProfileViewModel myProfileViewModel;
     private AddressResponse addressResponse;
     private GoogleMap googleMap;
     private OnCustomerHomeInteractionListener mListener;
+    private ImageLoader imageLoader;
+    private ProgressBarCircular aadharFrontImageProgressBar;
+    private ProgressBarCircular aadharBackImageProgressBar;
+    private ProgressBarCircular pancardProgressBar;
+    private ProgressBarCircular shopImageProgressBar;
+    private CustomNetworkImageView ivAadharFrontImageField, ivAadharBackImageField, ivPanCardImageField, ivShopImageField;
 
     public ViewMyProfileFragment() {
         // Required empty public constructor
@@ -127,6 +141,7 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
     }
 
     private void setRetailerView(View view) {
+        imageLoader = RMartApplication.getInstance().getImageLoader();
         view.findViewById(R.id.location_list_view).setVisibility(View.GONE);
         view.findViewById(R.id.retailer_view).setVisibility(View.VISIBLE);
         view.findViewById(R.id.edit_retailer).setOnClickListener(this);
@@ -147,6 +162,16 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
         tvDeliveryDaysAfterTime = view.findViewById(R.id.delivery_days_after_time);
         tvDeliveryDaysBeforeTime = view.findViewById(R.id.delivery_days_before_time);
 
+        ivAadharFrontImageField = view.findViewById(R.id.iv_aadhar_front_image_field);
+        ivAadharBackImageField = view.findViewById(R.id.iv_aadhar_back_image_field);
+        ivPanCardImageField = view.findViewById(R.id.iv_pan_card_no_image_field);
+        ivShopImageField = view.findViewById(R.id.iv_shop_image_field);
+        aadharFrontImageProgressBar = view.findViewById(R.id.aadhar_front_progress_bar);
+        aadharBackImageProgressBar = view.findViewById(R.id.aadhar_back_progress_bar);
+        pancardProgressBar = view.findViewById(R.id.pan_progress_bar);
+        shopImageProgressBar = view.findViewById(R.id.shop_image_progress_bar);
+        tvAadharNoField = view.findViewById(R.id.tv_aadhar_number_no_field);
+
         setRetailerAddressData();
     }
 
@@ -162,10 +187,12 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                 tvGSTNumber.setText(addressResponse.getGstInNo());
                 tvStreetAddress.setText(addressResponse.getAddress());
                 tvShopNO.setText(addressResponse.getStore_number());
-                tvDeliveryRadius.setText(addressResponse.getDeliveryRadius() + " km");
+                String deliveryRadius = String.format("%s km", addressResponse.getDeliveryRadius());
+                tvDeliveryRadius.setText(deliveryRadius);
                 tvCity.setText(addressResponse.getCity());
                 tvState.setText(addressResponse.getState());
                 tvPINCode.setText(addressResponse.getPinCode());
+                tvAadharNoField.setText(addressResponse.getAadhaarCardNo());
 
                 deliveryCharge.setText(addressResponse.getDeliveryCharges());
                 minimumCharge.setText(addressResponse.getMinimumOrder());
@@ -174,6 +201,95 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                 tvClosingTIme.setText(addressResponse.getClosingTime());
                 tvDeliveryDaysAfterTime.setText(addressResponse.getDeliveryDaysAfterTime());
                 tvDeliveryDaysBeforeTime.setText(addressResponse.getDeliveryDaysBeforeTime());
+
+                String lAadharFrontImageUrl = addressResponse.getAadharFrontImage();
+                if (!TextUtils.isEmpty(lAadharFrontImageUrl)) {
+                    aadharFrontImageProgressBar.setVisibility(View.VISIBLE);
+                    HttpsTrustManager.allowAllSSL();
+                    imageLoader.get(lAadharFrontImageUrl, new ImageLoader.ImageListener() {
+                        @Override
+                        public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                            aadharFrontImageProgressBar.setVisibility(View.GONE);
+                            Bitmap bitmap = response.getBitmap();
+                            if (bitmap != null) {
+                                ivAadharFrontImageField.setLocalImageBitmap(bitmap);
+                            }
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            aadharFrontImageProgressBar.setVisibility(View.GONE);
+                            ivAadharFrontImageField.setBackgroundResource(R.drawable.ic_aadhar_front);
+                        }
+                    });
+                    ivAadharFrontImageField.setImageUrl(lAadharFrontImageUrl, RMartApplication.getInstance().getImageLoader());
+                }
+                String lAadharBackImageUrl = addressResponse.getAadharBackImage();
+                if (!TextUtils.isEmpty(lAadharBackImageUrl)) {
+                    aadharBackImageProgressBar.setVisibility(View.VISIBLE);
+                    HttpsTrustManager.allowAllSSL();
+                    imageLoader.get(lAadharBackImageUrl, new ImageLoader.ImageListener() {
+                        @Override
+                        public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                            aadharBackImageProgressBar.setVisibility(View.GONE);
+                            Bitmap bitmap = response.getBitmap();
+                            if (bitmap != null) {
+                                ivAadharBackImageField.setLocalImageBitmap(bitmap);
+                            }
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            aadharBackImageProgressBar.setVisibility(View.GONE);
+                            ivAadharBackImageField.setBackgroundResource(R.drawable.ic_aadhar_back);
+                        }
+                    });
+                    ivAadharBackImageField.setImageUrl(lAadharBackImageUrl, RMartApplication.getInstance().getImageLoader());
+                }
+                String lPanCardImageUrl = addressResponse.getPanCardImage();
+                if (!TextUtils.isEmpty(lPanCardImageUrl)) {
+                    pancardProgressBar.setVisibility(View.VISIBLE);
+                    HttpsTrustManager.allowAllSSL();
+                    ivPanCardImageField.setImageUrl(lPanCardImageUrl, RMartApplication.getInstance().getImageLoader());
+                    imageLoader.get(lPanCardImageUrl, new ImageLoader.ImageListener() {
+                        @Override
+                        public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                            pancardProgressBar.setVisibility(View.GONE);
+                            Bitmap bitmap = response.getBitmap();
+                            if (bitmap != null) {
+                                ivPanCardImageField.setLocalImageBitmap(bitmap);
+                            }
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            pancardProgressBar.setVisibility(View.GONE);
+                            ivPanCardImageField.setBackgroundResource(R.drawable.ic_pan);
+                        }
+                    });
+                }
+                String lShopImageUrl = addressResponse.getShopImage();
+                if (!TextUtils.isEmpty(lShopImageUrl)) {
+                    shopImageProgressBar.setVisibility(View.VISIBLE);
+                    HttpsTrustManager.allowAllSSL();
+                    imageLoader.get(lShopImageUrl, new ImageLoader.ImageListener() {
+                        @Override
+                        public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                            shopImageProgressBar.setVisibility(View.GONE);
+                            Bitmap bitmap = response.getBitmap();
+                            if (bitmap != null) {
+                                ivShopImageField.setLocalImageBitmap(bitmap);
+                            }
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            shopImageProgressBar.setVisibility(View.GONE);
+                            ivShopImageField.setBackgroundResource(R.drawable.ic_shop);
+                        }
+                    });
+                    ivShopImageField.setImageUrl(lShopImageUrl, RMartApplication.getInstance().getImageLoader());
+                }
                 updateMapLocation();
             }
         }

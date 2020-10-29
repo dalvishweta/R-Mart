@@ -25,6 +25,7 @@ public class ProgressBarCircular extends RelativeLayout {
 
     //int backgroundColor = Color.parseColor("#FF0000");
     private int backgroundColor;
+    private int progressColor;
 
     float radius1 = 0;
     float radius2 = 0;
@@ -39,12 +40,14 @@ public class ProgressBarCircular extends RelativeLayout {
 
     public ProgressBarCircular(Context pContext) {
         super(pContext);
+        progressColor = ContextCompat.getColor(pContext, R.color.colorPrimary);
         backgroundColor = ContextCompat.getColor(pContext, R.color.colorPrimary);
         transparentColor = ContextCompat.getColor(pContext, android.R.color.transparent);
     }
 
     public ProgressBarCircular(Context pContext, AttributeSet attrs) {
         super(pContext, attrs);
+        progressColor = ContextCompat.getColor(pContext, R.color.colorPrimary);
         backgroundColor = ContextCompat.getColor(pContext, R.color.colorPrimary);
         setAttributes(pContext, attrs);
     }
@@ -76,7 +79,7 @@ public class ProgressBarCircular extends RelativeLayout {
             if (background != null)
                 setBackgroundColor(Color.parseColor(background));
             else
-                setBackgroundColor(Color.RED);
+                setBackgroundColor(progressColor);
         }
         setMinimumHeight(dpToPx(3, getResources()));
     }
@@ -104,7 +107,7 @@ public class ProgressBarCircular extends RelativeLayout {
         if (radius1 < newWidth) {
             Paint paint = new Paint();
             paint.setAntiAlias(true);
-            paint.setColor(Color.RED);
+            paint.setColor(progressColor);
             radius1 = (radius1 >= newWidth) ? (float) getWidth() / 2 : radius1 + 1;
             canvas.drawCircle(newWidth, newHeight, radius1, paint);
         } else {
@@ -112,7 +115,7 @@ public class ProgressBarCircular extends RelativeLayout {
             Canvas temp = new Canvas(bitmap);
             Paint paint = new Paint();
             paint.setAntiAlias(true);
-            paint.setColor(Color.RED);
+            paint.setColor(progressColor);
             temp.drawCircle(newWidth, newHeight, newHeight, paint);
             Paint transparentPaint = new Paint();
             transparentPaint.setAntiAlias(true);

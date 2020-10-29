@@ -103,8 +103,10 @@ public class VendorProductDetailsAdapter extends RecyclerView.Adapter<VendorProd
             if (constraint != null && constraint.length() > 0) {
                 filteredListData.clear();
                 for (ProductBaseModel productBaseModel : vendorProductsList) {
-                    if (productBaseModel.getProductCategoryName().toLowerCase().contains(constraint.toString().toLowerCase())) {
-                        filteredListData.add(productBaseModel);
+                    for(CustomerProductDetailsModel productDetailsModel : productBaseModel.getProductsList()) {
+                        if(productDetailsModel.getProductName().contains(constraint.toString())) {
+                            filteredListData.add(productBaseModel);
+                        }
                     }
                 }
             }

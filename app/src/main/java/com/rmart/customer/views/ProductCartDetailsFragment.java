@@ -310,13 +310,15 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
                 String videoLink = productDetailsDescModel.getProductVideoLink();
                 if (!TextUtils.isEmpty(videoLink)) {
-                    String productVideoUrl = Utils.getYoutubeThumbnailUrlFromVideoUrl(videoLink);
-                    if (!TextUtils.isEmpty(productVideoUrl)) {
-                        ImageURLResponse imageURLResponse = new ImageURLResponse();
-                        imageURLResponse.setDisplayImage(productVideoUrl);
-                        imageURLResponse.setImageURL(videoLink);
-                        imageURLResponse.setProductVideoSelected(true);
-                        lUpdatedImagesList.add(imageURLResponse);
+                    if(Utils.isValidYoutubeUrl(videoLink)) {
+                        String productVideoUrl = Utils.getYoutubeThumbnailUrlFromVideoUrl(videoLink);
+                        if (!TextUtils.isEmpty(productVideoUrl)) {
+                            ImageURLResponse imageURLResponse = new ImageURLResponse();
+                            imageURLResponse.setDisplayImage(productVideoUrl);
+                            imageURLResponse.setImageURL(videoLink);
+                            imageURLResponse.setProductVideoSelected(true);
+                            lUpdatedImagesList.add(imageURLResponse);
+                        }
                     }
                 }
                 ImageAdapter imageAdapter = new ImageAdapter(requireActivity(), lUpdatedImagesList);

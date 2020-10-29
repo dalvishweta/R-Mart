@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:context="com.rmart.profile.views.ViewMyProfileFragment">
+
             <androidx.cardview.widget.CardView
                 android:visibility="visible"
                 android:layout_margin="8dp"
@@ -105,6 +107,31 @@
                             android:drawableStart="@drawable/shop"
                             style="@style/my_profile_tv"
                             android:inputType="text"/>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="120dp"
+                            android:layout_height="80dp"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="10dp"
+                            android:elevation="10dp"
+                            app:cardCornerRadius="8dp">
+
+                            <com.rmart.baseclass.views.ProgressBarCircular
+                                android:id="@+id/shop_image_progress_bar"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:visibility="gone"
+                                android:layout_gravity="center" />
+
+                            <com.rmart.utilits.custom_views.CustomNetworkImageView
+                                android:id="@+id/iv_shop_image_field"
+                                android:layout_width="120dp"
+                                android:layout_height="80dp"
+                                android:background="@drawable/ic_shop"
+                                android:contentDescription="@string/app_name"
+                                android:scaleType="fitXY" />
+
+                        </androidx.cardview.widget.CardView>
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/enter_shop_act_number"
                             android:id="@+id/shop_act"
@@ -117,6 +144,29 @@
                             android:drawableStart="@drawable/ic_note"
                             style="@style/my_profile_tv"
                             android:inputType="number"/>
+                        <androidx.cardview.widget.CardView
+                            app:cardCornerRadius="8dp"
+                            android:layout_width="120dp"
+                            android:layout_height="80dp"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="10dp"
+                            android:elevation="10dp">
+
+                            <com.rmart.baseclass.views.ProgressBarCircular
+                                android:id="@+id/pan_progress_bar"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:visibility="gone"
+                                android:layout_gravity="center" />
+
+                            <com.rmart.utilits.custom_views.CustomNetworkImageView
+                                android:id="@+id/iv_pan_card_no_image_field"
+                                android:layout_width="120dp"
+                                android:layout_height="80dp"
+                                android:background="@drawable/ic_pan"
+                                android:contentDescription="@string/app_name"
+                                android:scaleType="fitXY" />
+                        </androidx.cardview.widget.CardView>
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/enter_your_gst_number"
                             android:id="@+id/gst_number"
@@ -210,6 +260,71 @@
                                 android:background="@drawable/curve_right_bg"
                                 android:layout_width="0dp"
                                 android:layout_weight="1"/>
+                        </LinearLayout>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_aadhar_number_no_field"
+                            style="@style/my_profile_tv"
+                            android:drawableStart="@drawable/ic_note"
+                            android:hint="@string/aadhar_number"
+                            android:inputType="numberSigned"
+                            android:maxLength="12" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <androidx.cardview.widget.CardView
+                                app:cardCornerRadius="8dp"
+                                android:layout_width="120dp"
+                                android:layout_height="80dp"
+                                android:layout_margin="5dp"
+                                android:elevation="10dp">
+
+                                <com.rmart.baseclass.views.ProgressBarCircular
+                                    android:id="@+id/aadhar_front_progress_bar"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:visibility="gone"
+                                    android:layout_gravity="center" />
+
+                                <com.rmart.utilits.custom_views.CustomNetworkImageView
+                                    android:id="@+id/iv_aadhar_front_image_field"
+                                    android:layout_width="120dp"
+                                    android:layout_height="80dp"
+                                    android:background="@drawable/ic_aadhar_front"
+                                    android:contentDescription="@string/app_name"
+                                    android:scaleType="fitXY" />
+
+
+
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                app:cardCornerRadius="8dp"
+                                android:layout_width="120dp"
+                                android:layout_height="80dp"
+                                android:layout_margin="5dp"
+                                android:elevation="10dp">
+
+                                <com.rmart.baseclass.views.ProgressBarCircular
+                                    android:id="@+id/aadhar_back_progress_bar"
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp"
+                                    android:visibility="gone"
+                                    android:layout_gravity="center" />
+
+                                <com.rmart.utilits.custom_views.CustomNetworkImageView
+                                    android:id="@+id/iv_aadhar_back_image_field"
+                                    android:layout_width="120dp"
+                                    android:layout_height="80dp"
+                                    android:background="@drawable/ic_aadhar_back"
+                                    android:contentDescription="@string/app_name"
+                                    android:scaleType="fitXY" />
+
+                            </androidx.cardview.widget.CardView>
                         </LinearLayout>
                     </LinearLayout>
                     <androidx.appcompat.widget.AppCompatTextView
