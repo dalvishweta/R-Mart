@@ -139,35 +139,6 @@
                             style="@style/my_profile_tv"
                             android:inputType="text"/>
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:hint="@string/enter_your_pan_number"
-                            android:id="@+id/pan_number"
-                            android:drawableStart="@drawable/ic_note"
-                            style="@style/my_profile_tv"
-                            android:inputType="number"/>
-                        <androidx.cardview.widget.CardView
-                            app:cardCornerRadius="8dp"
-                            android:layout_width="120dp"
-                            android:layout_height="80dp"
-                            android:layout_marginStart="24dp"
-                            android:layout_marginTop="10dp"
-                            android:elevation="10dp">
-
-                            <com.rmart.baseclass.views.ProgressBarCircular
-                                android:id="@+id/pan_progress_bar"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:visibility="gone"
-                                android:layout_gravity="center" />
-
-                            <com.rmart.utilits.custom_views.CustomNetworkImageView
-                                android:id="@+id/iv_pan_card_no_image_field"
-                                android:layout_width="120dp"
-                                android:layout_height="80dp"
-                                android:background="@drawable/ic_pan"
-                                android:contentDescription="@string/app_name"
-                                android:scaleType="fitXY" />
-                        </androidx.cardview.widget.CardView>
-                        <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/enter_your_gst_number"
                             android:id="@+id/gst_number"
                             android:drawableStart="@drawable/ic_note"
@@ -325,7 +296,37 @@
                                     android:scaleType="fitXY" />
 
                             </androidx.cardview.widget.CardView>
+
                         </LinearLayout>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:hint="@string/enter_your_pan_number"
+                            android:id="@+id/pan_number"
+                            android:drawableStart="@drawable/ic_note"
+                            style="@style/my_profile_tv"
+                            android:inputType="number"/>
+                        <androidx.cardview.widget.CardView
+                            app:cardCornerRadius="8dp"
+                            android:layout_width="120dp"
+                            android:layout_height="80dp"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginTop="10dp"
+                            android:elevation="10dp">
+
+                            <com.rmart.baseclass.views.ProgressBarCircular
+                                android:id="@+id/pan_progress_bar"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:visibility="gone"
+                                android:layout_gravity="center" />
+
+                            <com.rmart.utilits.custom_views.CustomNetworkImageView
+                                android:id="@+id/iv_pan_card_no_image_field"
+                                android:layout_width="120dp"
+                                android:layout_height="80dp"
+                                android:background="@drawable/ic_pan"
+                                android:contentDescription="@string/app_name"
+                                android:scaleType="fitXY" />
+                        </androidx.cardview.widget.CardView>
                     </LinearLayout>
                     <androidx.appcompat.widget.AppCompatTextView
                         android:hint="@string/street_address"

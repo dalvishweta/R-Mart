@@ -240,8 +240,7 @@ public class Utils {
     }
 
     public static boolean isValidPinCode(String pinCode) {
-        String regex
-                = "^[1-9]{1}[0-9]{5}$";
+        String regex = "^[1-9]{1}[0-9]{2}\\s{0,1}[0-9]{3}$";
         Pattern p = Pattern.compile(regex);
         if (pinCode == null) {
             return false;

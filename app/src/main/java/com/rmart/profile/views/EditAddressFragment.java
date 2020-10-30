@@ -574,7 +574,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             showDialog(getString(R.string.pin_code_required));
             return;
         }
-        if(zipCode.length() != 6) {
+        if(zipCode.length() != 6 || !Utils.isValidPinCode(zipCode)) {
             showDialog(getString(R.string.invalid_pin_code));
             return;
         }
