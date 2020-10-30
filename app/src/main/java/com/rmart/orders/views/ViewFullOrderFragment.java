@@ -298,7 +298,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
                         retailerID = MyProfile.getInstance().getVendorInfo().getRoleID();
                         deliveryBoy = MyProfile.getInstance().getUserID();
                     }
-                    if (deliveryBoy != null && deliveryBoy.length()>0 ) {
+                    if ((deliveryBoyList.size()<=0) || (deliveryBoy != null && deliveryBoy.length()>0 )) {
                         orderService.updateOrderStatus(mOrderObject.getOrderID(), retailerID, newStatusID, reason, deliveryBoy).enqueue(new Callback<UpdatedOrderStatus>() {
                             @Override
                             public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {

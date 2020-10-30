@@ -302,7 +302,7 @@
     <string name="error_regional_name">Please enter valid regional name.</string>
     <string name="error_video_link">Please enter valid product Link</string>
     <string name="error_image_thumb">Please upload at least one image.</string>
-    <string name="status_update">Order successfully %1$s</string>
+    <string name="status_update">Order %1$s successfully</string>
     <string name="error_product_description">Please enter valid product description</string>
     <string name="unit_required">Please add at least one unit</string>
     <string name="date">Date</string>
