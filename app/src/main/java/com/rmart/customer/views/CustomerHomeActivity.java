@@ -3,8 +3,6 @@ package com.rmart.customer.views;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.appcompat.app.ActionBar;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
@@ -29,8 +27,11 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
         if (data != null) {
             //addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
             boolean isShoppingCart = data.getBoolean("ShoppingCart");
-            if(isShoppingCart) {
+            boolean isFavouritesSelected = data.getBoolean("IsFavourites", false);
+            if (isShoppingCart) {
                 replaceFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), false);
+            } else if (isFavouritesSelected) {
+                replaceFragment(CustomerFavouritesFragment.getInstance(), CustomerFavouritesFragment.class.getName(), false);
             }
         } else {
             replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);

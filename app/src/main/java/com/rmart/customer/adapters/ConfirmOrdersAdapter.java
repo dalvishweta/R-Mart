@@ -70,8 +70,9 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
         String sellingPrice = String.format("Rs. %s", Utils.roundOffDoubleValue(totalSellingPrice));
 
         Double totalUnitPrice = totalProductCartQuantity * dataObject.getPerProductUnitPrice();
-        String unitPriceDetails = String.valueOf(totalUnitPrice);
+        String unitPriceDetails = Utils.roundOffDoubleValue(totalUnitPrice);
         String quantityPriceDetails = String.format("%s  %s  %s", quantityDetails, sellingPrice, unitPriceDetails);
+
         SpannableString quantityPriceDetailsSpannable = new SpannableString(quantityPriceDetails);
         quantityPriceDetailsSpannable.setSpan(new StyleSpan(Typeface.BOLD), quantityPriceDetails.indexOf(sellingPrice),
                 quantityPriceDetails.indexOf(sellingPrice) + sellingPrice.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

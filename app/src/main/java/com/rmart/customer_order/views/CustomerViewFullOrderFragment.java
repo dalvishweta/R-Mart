@@ -57,8 +57,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     public CustomerViewFullOrderFragment() {
         // Required empty public constructor
     }
-
-
+    
     public static CustomerViewFullOrderFragment newInstance(Order param1, String param2) {
         CustomerViewFullOrderFragment fragment = new CustomerViewFullOrderFragment();
         Bundle args = new Bundle();
@@ -178,22 +177,28 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
 
     void updateUI() {
         Resources res = getResources();
+        String status;
         if (orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_BY_RETAILER)|| orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_BY_CUSTOMER)) {
-            tvStatus.setText(getString(R.string.cancel_status) +orderProductList.getOrderInfo().getStatusName());
+            status = getString(R.string.cancel_status) + orderProductList.getOrderInfo().getStatusName();
+            tvStatus.setText(status);
         } else {
-            String text = String.format(res.getString(R.string.status_order), orderProductList.getOrderInfo().getStatusName());
-            tvStatus.setText(text);
+            status = String.format(res.getString(R.string.status_order), orderProductList.getOrderInfo().getStatusName());
         }
+        tvStatus.setText(status);
 
         String statusCommentsReason = orderProductList.getOrderInfo().getStatusComments();
-        if(TextUtils.isEmpty(statusCommentsReason)) {
+        if (TextUtils.isEmpty(statusCommentsReason)) {
             tvStatusComments.setVisibility(View.GONE);
         }
         String statusComments = String.format("%s : %s", getString(R.string.comments), statusCommentsReason);
         tvStatusComments.setText(statusComments);
 
         orderIdValue.setText(orderProductList.getOrderInfo().getReceiptNumber());
-        dateValue.setText(mOrderObject.getOrderDate().split(" ")[0]);
+        String orderDate = orderProductList.getOrderInfo().getOrderDate();
+        if (!TextUtils.isEmpty(orderDate)) {
+            dateValue.setText(orderDate);
+        }
+
         if (orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.OPEN_ORDER_STATUS) ||
                 orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.ACCEPTED_ORDER_STATUS) ||
                 orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.PACKED_ORDER_STATUS)) {
@@ -232,15 +237,8 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
 
         // payment info
         tvAmount.setText(Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getOrderAmount()));
-        text = orderProductList.getOrderInfo().getOrderCharges();
-        tvDeliveryCharges.setText(text);
-        tvTotalCharges.setText(Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getTotalAmt()));
-        tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
-
-        // payment info
-        tvAmount.setText(Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getOrderAmount()));
-        text = orderProductList.getOrderInfo().getOrderCharges();
-        tvDeliveryCharges.setText(text);
+        String deliveryCharges = orderProductList.getOrderInfo().getOrderCharges();
+        tvDeliveryCharges.setText(deliveryCharges);
         tvTotalCharges.setText(Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getTotalAmt()));
         tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
 

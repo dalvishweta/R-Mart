@@ -58,7 +58,7 @@ public class CustomerFavouritesFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        LoggerInfo.printLog("Fragment", "CustomerWishListFragment");
+        LoggerInfo.printLog("Fragment", "CustomerFavouritesFragment");
         return inflater.inflate(R.layout.fragment_customer_favourites_view, container, false);
     }
 

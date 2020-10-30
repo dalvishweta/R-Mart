@@ -105,7 +105,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
 
             intent.putExtra("user_id", userID);
-            intent.putExtra("order_id", orderID);
+            intent.putExtra("OrderId", orderID);
             intent.putExtra("role_id", roleID);
             intent.putExtra("mobile_no", mobileNO);
 

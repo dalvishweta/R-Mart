@@ -185,7 +185,8 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
         if (customerOrderPaymentInfoDetails != null) {
             tvAmount.setText(Utils.roundOffDoubleValue(customerOrderPaymentInfoDetails.getOrderAmount()));
             tvExpectedDateDelivery.setText(String.valueOf(customerOrderPaymentInfoDetails.getExpectedDateOfDelivery()));
-            tvDeliveryCharges.setText(String.valueOf(customerOrderPaymentInfoDetails.getDeliveryCharges()));
+            int deliveryCharges = customerOrderPaymentInfoDetails.getDeliveryCharges();
+            tvDeliveryCharges.setText(Utils.roundOffDoubleValue((double) deliveryCharges));
             tvTotalCharges.setText(Utils.roundOffDoubleValue(customerOrderPaymentInfoDetails.getTotalAmount()));
         }
 

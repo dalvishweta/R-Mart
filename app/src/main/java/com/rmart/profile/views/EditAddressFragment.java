@@ -578,7 +578,6 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             showDialog(getString(R.string.invalid_pin_code));
             return;
         }
-
         progressDialog.show();
         if (myAddress.getId() == -1) {
             getAddressData();

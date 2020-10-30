@@ -27,10 +27,8 @@ import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.baseclass.Constants;
-import com.rmart.customer.views.CustomerFavouritesActivity;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer.views.CustomerWishListActivity;
-import com.rmart.customer.views.CustomerWishListFragment;
 import com.rmart.customer.views.ShoppingCartFragment;
 import com.rmart.customer_order.views.CustomerOrdersActivity;
 import com.rmart.inventory.views.AddProductToInventory;
@@ -244,7 +242,8 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     break;
                 case R.id.my_favourites_list:
                     showCartIcon();
-                    intent = new Intent(this, CustomerFavouritesActivity.class);
+                    intent = new Intent(this, CustomerHomeActivity.class);
+                    intent.putExtra("IsFavourites", true);
                     startActivity(intent);
                     break;
                 case R.id.my_wish_list:

@@ -69,12 +69,18 @@ public class MyNotificationManager {
 
         Bitmap bitmap = getBitmapFromURL(imageURL);
         if (bitmap != null) {
-            NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
+            /*NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
             bigPictureStyle.setBigContentTitle(title);
             bigPictureStyle.setSummaryText(message);
             bigPictureStyle.bigPicture(bitmap);
-            notificationBuilder.setStyle(bigPictureStyle);
+            notificationBuilder.setStyle(bigPictureStyle);*/
+            notificationBuilder.setLargeIcon(bitmap);
         }
+
+        NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
+        bigTextStyle.setBigContentTitle(title);
+        bigTextStyle.bigText(message);
+        notificationBuilder.setStyle(bigTextStyle);
 
         int id = Integer.parseInt(orderID);
         notificationManager.notify(id, notificationBuilder.build());

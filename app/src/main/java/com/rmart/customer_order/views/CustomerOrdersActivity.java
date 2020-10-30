@@ -1,6 +1,7 @@
 package com.rmart.customer_order.views;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -23,9 +24,13 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String orderID = extras.getString("OrderId");
-            Order lOrderDetails = new Order();
-            lOrderDetails.setOrderID(orderID);
-            replaceFragment(CustomerViewFullOrderFragment.newInstance(lOrderDetails, ""), CustomerViewFullOrderFragment.class.getName(), true);
+            if(!TextUtils.isEmpty(orderID)) {
+                Order lOrderDetails = new Order();
+                lOrderDetails.setOrderID(orderID);
+                replaceFragment(CustomerViewFullOrderFragment.newInstance(lOrderDetails, ""), CustomerViewFullOrderFragment.class.getName(), true);
+            } else {
+                replaceFragment(CustomerOrderListFragment.newInstance(), CustomerOrderListFragment.class.getName(), false);
+            }
         } else {
             replaceFragment(CustomerOrderListFragment.newInstance(), CustomerOrderListFragment.class.getName(), false);
         }

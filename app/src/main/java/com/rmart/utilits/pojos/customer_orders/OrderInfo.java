@@ -53,6 +53,9 @@ public class OrderInfo implements Serializable {
     @SerializedName("status_comment")
     @Expose
     String statusComments;
+    @SerializedName("order_date")
+    @Expose
+    private String orderDate;
 
     public String getStatus() {
         return status;
@@ -148,5 +151,13 @@ public class OrderInfo implements Serializable {
 
     public void setReceiptNumber(String receiptNumber) {
         this.receiptNumber = receiptNumber;
+    }
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
     }
 }
