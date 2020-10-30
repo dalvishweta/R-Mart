@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/shop_image_layout"
@@ -58,33 +58,33 @@
         android:layout_height="30dp"
         android:background="@drawable/green_color_rounded_circle"
         android:contentDescription="@string/app_name"
-        android:padding="8dp"
         android:layout_alignParentEnd="true"
-        android:scaleType="fitXY"
-        android:layout_above="@id/bottom_view"
-        android:layout_margin="10dp"
+        android:scaleType="centerInside"
+        android:layout_below="@+id/address"
+        android:padding="8dp"
+        android:layout_marginLeft="10dp"
         android:src="@drawable/message" />
 
     <ImageView
         android:id="@+id/iv_call_field"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="10dp"
         android:background="@drawable/sky_blue_color_rounded_circle"
         android:contentDescription="@string/app_name"
+        android:layout_toStartOf="@+id/iv_message_field"
+        android:scaleType="centerInside"
+        android:layout_below="@+id/address"
         android:padding="8dp"
-        android:scaleType="fitXY"
-        android:layout_above="@id/bottom_view"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_toStartOf="@id/iv_message_field"
+        android:layout_marginRight="10dp"
         android:src="@drawable/phone" />
 
     <LinearLayout
+        android:id="@+id/address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@id/iv_call_field"
-        android:layout_marginTop="15dp"
+        android:padding="8dp"
+        android:gravity="center|left"
+        android:layout_alignParentTop="true"
         android:layout_toEndOf="@id/shop_image_layout"
         android:orientation="vertical">
 
@@ -122,6 +122,7 @@
     </LinearLayout>
 
     <View
+        android:layout_below="@+id/iv_call_field"
         android:id="@+id/bottom_view"
         android:layout_width="match_parent"
         android:layout_height="20dp"

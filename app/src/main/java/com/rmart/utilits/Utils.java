@@ -17,6 +17,8 @@ import android.text.TextUtils;
 import android.view.View;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -95,8 +97,16 @@ public class Utils {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    public static String getDateString(Long value) {
-        return "";
+    public static String getDateString(String value, String format, String requiredFormat) {
+        try {
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+            Date date = simpleDateFormat.parse(value);
+            String convertedDate = new SimpleDateFormat(requiredFormat).format(date);
+            return convertedDate;
+        } catch (Exception e) {
+            return value;
+        }
     }
 
     public static int getIntegerValueFromString(String value) {

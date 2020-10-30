@@ -297,7 +297,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
                     UpdatedOrderStatus data = response.body();
                     assert data != null;
                     if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        showDialog(data.getStatus(), data.getMsg(), ((dialogInterface, i) -> {
+                        showDialog(data.getStatus(), getString(R.string.order_cancelled), ((dialogInterface, i) -> {
                             requireActivity().onBackPressed();
                         }));
                     } else {

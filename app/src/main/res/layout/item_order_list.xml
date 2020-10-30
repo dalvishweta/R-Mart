@@ -15,7 +15,7 @@
         android:paddingEnd="8dp"
         android:src="@drawable/bag"
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_weight=".95"
         android:layout_height="wrap_content"
         android:contentDescription="@string/app_name" />
     <RelativeLayout
@@ -52,6 +52,8 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/order_id"
+            android:layout_marginTop="2dp"
+            android:gravity="left|center"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/date_value"
             android:text="@string/order_id"
@@ -61,7 +63,8 @@
             android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:gravity="end"
+            android:layout_marginTop="2dp"
+            android:gravity="center|end"
             android:id="@+id/order_id_value"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/date_value"
@@ -73,7 +76,8 @@
             android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:gravity="end"
+            android:layout_marginTop="2dp"
+            android:gravity="center|end"
             android:id="@+id/status_value"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/order_id_value"
@@ -85,6 +89,8 @@
             android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:layout_marginTop="2dp"
+            android:gravity="center|end"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/order_id_value"
             android:id="@+id/status"
@@ -100,7 +106,7 @@
         android:orientation="vertical"
         android:background="@drawable/item_order_list_count_bg"
         android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_weight=".94"
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatTextView

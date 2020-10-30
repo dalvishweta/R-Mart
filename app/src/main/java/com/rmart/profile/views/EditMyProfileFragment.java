@@ -54,6 +54,7 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final String SELECT_YOUR_GENDER = "Select your gender";
     private AppCompatEditText tvFirstName, tvLastName;
     AppCompatTextView tvMobileNumber, tvEmail;
     private boolean mIsFromLogin;
@@ -110,7 +111,7 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
         ivProfileImageField = view.findViewById(R.id.iv_profile_image_field);
         ivProfileImageField.setOnClickListener(this);
         profileCircularBar = view.findViewById(R.id.profile_circular_field);
-
+        strings.add(SELECT_YOUR_GENDER);
         strings.add("Male");
         strings.add("Female");
         strings.add("Other");
@@ -252,7 +253,7 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
             return;
         }
 
-        if (TextUtils.isEmpty(selectedGender)) {
+        if (TextUtils.isEmpty(selectedGender) || selectedGender.equalsIgnoreCase(SELECT_YOUR_GENDER)) {
             showDialog("", getString(R.string.required_gender));
             return;
         }

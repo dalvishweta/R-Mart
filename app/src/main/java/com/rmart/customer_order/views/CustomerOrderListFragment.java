@@ -80,8 +80,9 @@ public class CustomerOrderListFragment extends BaseOrderFragment implements View
                             assert data != null;
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 for (Order order: orders) {
+                                    order.setOrderDate(Utils.getDateString(order.getOrderDate(), Utils.YYYY_MM_DD, Utils.DD_MM_YYYY));
                                    if(order.getStatus().equalsIgnoreCase(Utils.CANCEL_BY_CUSTOMER)) {
-                                        order.setStatusDisplay(order.getStatusDisplay().replace("Customer", "me"));
+                                        order.setStatusDisplay(getString(R.string.canceled_by_me));
                                     }
                                 }
                                 startIndex = data.getEndIndex();
