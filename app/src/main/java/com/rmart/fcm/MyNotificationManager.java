@@ -11,15 +11,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
-import android.text.TextUtils;
 
 import androidx.core.app.NotificationCompat;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.rmart.R;
-import com.rmart.RMartApplication;
-import com.rmart.utilits.HttpsTrustManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,33 +43,6 @@ public class MyNotificationManager {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mCtx, roleID);
         NotificationManager notificationManager = (NotificationManager) mCtx.getSystemService(Context.NOTIFICATION_SERVICE);
-        // String NOTIFICATION_CHANNEL_ID = rollID;
-       /* NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
-        bigPictureStyle.setBigContentTitle(title);
-        bigPictureStyle.setSummaryText(message);
-        Bitmap bitmap = getBitmapFromURL(imageURL);
-        if (null != bitmap) {
-            bigPictureStyle.bigPicture(bitmap);
-        }*/
-
-        if (!TextUtils.isEmpty(imageURL)) {
-            ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
-            HttpsTrustManager.allowAllSSL();
-            imageLoader.get(imageURL, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    Bitmap bitmap = response.getBitmap();
-                    if (bitmap != null) {
-                        notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap).setBigContentTitle(title).setSummaryText(message));
-                    }
-                }
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-            });
-        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             @SuppressLint("WrongConstant")
@@ -98,7 +66,31 @@ public class MyNotificationManager {
                 .setContentText(message)
                 .setContentIntent(resultPendingIntent)
                 .setContentInfo("Information");
+
+        Bitmap bitmap = getBitmapFromURL(imageURL);
+        if (bitmap != null) {
+            NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
+            bigPictureStyle.setBigContentTitle(title);
+            bigPictureStyle.setSummaryText(message);
+            bigPictureStyle.bigPicture(bitmap);
+            notificationBuilder.setStyle(bigPictureStyle);
+        }
+
         int id = Integer.parseInt(orderID);
         notificationManager.notify(id, notificationBuilder.build());
+    }
+
+    private Bitmap getBitmapFromURL(String strURL) {
+        try {
+            URL url = new URL(strURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            return BitmapFactory.decodeStream(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

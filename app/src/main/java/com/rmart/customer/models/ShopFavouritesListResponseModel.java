@@ -27,14 +27,14 @@ public class ShopFavouritesListResponseModel extends BaseResponse {
 
         @SerializedName("customer_fav_shop_data")
         @Expose
-        private List<CustomerFavShopResponseDetails>  favouritesShopsList;
+        private List<CustomerProductsShopDetailsModel>  customerProductsShopDetails;
 
-        public List<CustomerFavShopResponseDetails> getFavouritesShopsList() {
-            return favouritesShopsList;
+        public List<CustomerProductsShopDetailsModel> getCustomerProductsShopDetails() {
+            return customerProductsShopDetails;
         }
 
-        public void setFavouritesShopsList(List<CustomerFavShopResponseDetails> favouritesShopsList) {
-            this.favouritesShopsList = favouritesShopsList;
+        public void setCustomerProductsShopDetails(List<CustomerProductsShopDetailsModel> customerProductsShopDetails) {
+            this.customerProductsShopDetails = customerProductsShopDetails;
         }
     }
 }

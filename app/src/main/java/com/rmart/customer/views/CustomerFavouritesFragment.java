@@ -1,5 +1,6 @@
 package com.rmart.customer.views;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +16,10 @@ import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.FavouritesShopsAdapter;
-import com.rmart.customer.models.CustomerFavShopResponseDetails;
+import com.rmart.customer.models.ContentModel;
+import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ShopFavouritesListResponseModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
@@ -40,8 +43,9 @@ import retrofit2.Response;
  */
 public class CustomerFavouritesFragment extends BaseFragment {
 
-    private List<CustomerFavShopResponseDetails> favoritesShopsList;
+    private List<CustomerProductsShopDetailsModel> favoritesShopsList;
     private FavouritesShopsAdapter favouritesShopsAdapter;
+    private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
 
     public static CustomerFavouritesFragment getInstance() {
         CustomerFavouritesFragment customerWishListFragment = new CustomerFavouritesFragment();
@@ -59,9 +63,17 @@ public class CustomerFavouritesFragment extends BaseFragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof OnCustomerHomeInteractionListener) {
+            onCustomerHomeInteractionListener = (OnCustomerHomeInteractionListener) context;
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.wish_list));
+        Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.my_favourites));
         getFavouritesListData();
     }
 
@@ -86,17 +98,23 @@ public class CustomerFavouritesFragment extends BaseFragment {
     }
 
     private final CallBackInterface callBackListener = pObject -> {
-        if (pObject instanceof CustomerFavShopResponseDetails) {
-            showConfirmationDialog(getString(R.string.favourite_shop_details_delete_alert), pObject1 -> {
-                if (pObject1 == Constants.TAG_SUCCESS) {
-                    CustomerFavShopResponseDetails selectedShopDetails = (CustomerFavShopResponseDetails) pObject;
-                    deleteShopFromWishList(selectedShopDetails);
-                }
-            });
+        if(pObject instanceof ContentModel) {
+            ContentModel contentModel = (ContentModel) pObject;
+            String status = contentModel.getStatus();
+            CustomerProductsShopDetailsModel selectedShopDetails = (CustomerProductsShopDetailsModel) contentModel.getValue();
+            if(status.equalsIgnoreCase(Constants.TAG_REMOVE)) {
+                showConfirmationDialog(getString(R.string.favourite_shop_details_delete_alert), pObject1 -> {
+                    if (pObject1 == Constants.TAG_SUCCESS) {
+                        deleteShopFromWishList(selectedShopDetails);
+                    }
+                });
+            } else if(status.equalsIgnoreCase(Constants.TAG_DETAILS)) {
+                onCustomerHomeInteractionListener.gotoVendorProductDetails(selectedShopDetails);
+            }
         }
     };
 
-    private void deleteShopFromWishList(CustomerFavShopResponseDetails selectedShopDetails) {
+    private void deleteShopFromWishList(CustomerProductsShopDetailsModel selectedShopDetails) {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
@@ -136,7 +154,7 @@ public class CustomerFavouritesFragment extends BaseFragment {
         }
     }
 
-    private void updatedDeletedAdapter(CustomerFavShopResponseDetails selectedShopDetails) {
+    private void updatedDeletedAdapter(CustomerProductsShopDetailsModel selectedShopDetails) {
         int index = favoritesShopsList.indexOf(selectedShopDetails);
         if (index > -1) {
             favoritesShopsList.remove(selectedShopDetails);
@@ -163,7 +181,7 @@ public class CustomerFavouritesFragment extends BaseFragment {
                         ShopFavouritesListResponseModel body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                List<CustomerFavShopResponseDetails> shopWiseCartList = body.getShopFavouritesListDataResponse().getFavouritesShopsList();
+                                List<CustomerProductsShopDetailsModel> shopWiseCartList = body.getShopFavouritesListDataResponse().getCustomerProductsShopDetails();
                                 if (shopWiseCartList != null && !shopWiseCartList.isEmpty()) {
                                     favoritesShopsList.addAll(shopWiseCartList);
                                     updateAdapter(body.getMsg());

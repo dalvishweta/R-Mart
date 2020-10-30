@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,13 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
+import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.views.ProgressBarCircular;
-import com.rmart.customer.models.CustomerFavShopResponseDetails;
-import com.rmart.customer.models.ShopWiseWishListResponseDetails;
+import com.rmart.customer.models.ContentModel;
+import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.custom_views.CustomNetworkImageView;
 
@@ -32,18 +33,18 @@ import java.util.List;
 public class FavouritesShopsAdapter extends RecyclerView.Adapter<FavouritesShopsAdapter.ViewHolder> {
 
     private final LayoutInflater layoutInflater;
-    private List<CustomerFavShopResponseDetails> listData;
+    private List<CustomerProductsShopDetailsModel> listData;
     private final CallBackInterface callBackListener;
     private final ImageLoader imageLoader;
 
-    public FavouritesShopsAdapter(Context context, List<CustomerFavShopResponseDetails> listData, CallBackInterface callBackListener) {
+    public FavouritesShopsAdapter(Context context, List<CustomerProductsShopDetailsModel> listData, CallBackInterface callBackListener) {
         layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
         this.callBackListener = callBackListener;
         imageLoader = RMartApplication.getInstance().getImageLoader();
     }
 
-    public void updateItems(List<CustomerFavShopResponseDetails> listData) {
+    public void updateItems(List<CustomerProductsShopDetailsModel> listData) {
         this.listData = listData;
     }
 
@@ -57,11 +58,12 @@ public class FavouritesShopsAdapter extends RecyclerView.Adapter<FavouritesShops
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        CustomerFavShopResponseDetails favouritesListData = listData.get(position);
+        CustomerProductsShopDetailsModel favouritesListData = listData.get(position);
 
         holder.tvShopNameField.setText(favouritesListData.getShopName());
         holder.tvViewAddressField.setText(favouritesListData.getShopAddress());
         holder.btnRemoveField.setTag(position);
+        holder.shopDetailsLayoutField.setTag(position);
         String shopImageUrl = favouritesListData.getShopImage();
         if(!TextUtils.isEmpty(shopImageUrl)) {
             HttpsTrustManager.allowAllSSL();
@@ -98,6 +100,7 @@ public class FavouritesShopsAdapter extends RecyclerView.Adapter<FavouritesShops
         TextView tvViewAddressField;
         AppCompatButton btnRemoveField;
         ProgressBarCircular progressBarCircular;
+        RelativeLayout shopDetailsLayoutField;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,11 +109,23 @@ public class FavouritesShopsAdapter extends RecyclerView.Adapter<FavouritesShops
             tvViewAddressField = itemView.findViewById(R.id.tv_shop_address_field);
             btnRemoveField = itemView.findViewById(R.id.btn_remove_field);
             progressBarCircular = itemView.findViewById(R.id.progress_circular_field);
+            shopDetailsLayoutField = itemView.findViewById(R.id.shop_details_layout_field);
 
             btnRemoveField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
-                CustomerFavShopResponseDetails selectedShop = listData.get(tag);
-                callBackListener.callBackReceived(selectedShop);
+                CustomerProductsShopDetailsModel selectedShop = listData.get(tag);
+                ContentModel contentModel = new ContentModel();
+                contentModel.setStatus(Constants.TAG_REMOVE);
+                contentModel.setValue(selectedShop);
+                callBackListener.callBackReceived(contentModel);
+            });
+            shopDetailsLayoutField.setOnClickListener(v -> {
+                int tag = (int) v.getTag();
+                CustomerProductsShopDetailsModel selectedShop = listData.get(tag);
+                ContentModel contentModel = new ContentModel();
+                contentModel.setStatus(Constants.TAG_DETAILS);
+                contentModel.setValue(selectedShop);
+                callBackListener.callBackReceived(contentModel);
             });
         }
     }

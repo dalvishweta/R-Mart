@@ -15,6 +15,7 @@ public class Constants {
     public static final String TAG_MESSAGE = "message";
     public static final String TAG_SHOP_FAVOURITE = "shop_favourite";
     public static final String TAG_EDIT_UNIT = "edit_unit";
+    public static final String TAG_DETAILS = "details";
 
     public static final int JOB_INSTANT_MESSENGER = 1;
 
