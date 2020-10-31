@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ import com.rmart.profile.OnMyProfileClickedListener;
 
 import java.util.Objects;
 
-public class MapsFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
+public class MapsFragment extends BaseFragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMyLocationButtonClickListener {
 
     private static final String ARG_PARAM1 = "ARG_PARAM1";
     private static final String ARG_PARAM2 = "ARG_PARAM2";
@@ -119,6 +120,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
 
         if (mapFragment != null) {
             if (isEditable) {
@@ -154,7 +156,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
                     mapFragment.getMapAsync(this);
                 }
             } else {
-                locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
                 if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     onGPS();
                 } else {
@@ -237,6 +238,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
             googleMap.clear();
             googleMap.setMyLocationEnabled(true);
             if (isMapClickable) {
+                googleMap.setOnMyLocationButtonClickListener(this);
                 googleMap.setOnMapClickListener(this);
             }
 
@@ -247,5 +249,12 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
             googleMap.addMarker(markerOptions);
             mListener.getMapGeoCoordinates(latLng);
         }
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        Log.d("BhuvanMithileshVidhita", "onMyLocationButtonClick");
+        getLocation();
+        return false;
     }
 }

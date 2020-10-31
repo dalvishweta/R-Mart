@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
+import android.text.TextUtils;
 
 import androidx.core.app.NotificationCompat;
 
@@ -64,17 +65,20 @@ public class MyNotificationManager {
                 .setPriority(Notification.PRIORITY_MAX)
                 .setContentTitle(title)
                 .setContentText(message)
+                //.setVibrate(new long[]{0L})
                 .setContentIntent(resultPendingIntent)
                 .setContentInfo("Information");
 
-        Bitmap bitmap = getBitmapFromURL(imageURL);
-        if (bitmap != null) {
+        if (!TextUtils.isEmpty(imageURL)) {
+            Bitmap bitmap = getBitmapFromURL(imageURL);
+            if (bitmap != null) {
             /*NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
             bigPictureStyle.setBigContentTitle(title);
             bigPictureStyle.setSummaryText(message);
             bigPictureStyle.bigPicture(bitmap);
             notificationBuilder.setStyle(bigPictureStyle);*/
-            notificationBuilder.setLargeIcon(bitmap);
+                notificationBuilder.setLargeIcon(bitmap);
+            }
         }
 
         NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();

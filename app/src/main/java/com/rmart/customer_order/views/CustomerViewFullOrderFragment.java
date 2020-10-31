@@ -57,7 +57,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     public CustomerViewFullOrderFragment() {
         // Required empty public constructor
     }
-    
+
     public static CustomerViewFullOrderFragment newInstance(Order param1, String param2) {
         CustomerViewFullOrderFragment fragment = new CustomerViewFullOrderFragment();
         Bundle args = new Bundle();
