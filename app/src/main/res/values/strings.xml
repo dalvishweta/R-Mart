@@ -332,6 +332,7 @@
     <string name="allow_digits_with_out_space">qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM</string>
     <string name="allow_digits_for_address">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM -_,@#*/!$~()\&amp;</string>
     <string name="allow_digits_for_password">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM @#$%</string>
+    <string name="only_numbers">1234567890</string>
     <string name="search_for_category">Search For Category</string>
     <string name="my_favourites">My Favourites</string>
     <string name="required_gender">"Gender is required. "</string>

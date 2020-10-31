@@ -215,6 +215,10 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
                         if (profileImageUri != null) {
                             InputStream imageStream = requireActivity().getContentResolver().openInputStream(profileImageUri);
                             profileImageBitmap = BitmapFactory.decodeStream(imageStream);
+                            ByteArrayOutputStream out = new ByteArrayOutputStream();
+                            //
+                            // Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+                            profileImageBitmap.compress(Bitmap.CompressFormat.JPEG,10,out);
                             if (profileImageBitmap != null) {
                                 ivProfileImageField.setImageBitmap(profileImageBitmap);
                             }
