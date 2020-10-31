@@ -253,7 +253,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
 
     @Override
     public boolean onMyLocationButtonClick() {
-        Log.d("BhuvanMithileshVidhita", "onMyLocationButtonClick");
         getLocation();
         return false;
     }

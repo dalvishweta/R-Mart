@@ -66,13 +66,15 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
         super.onViewCreated(view, savedInstanceState);
         otpEditText = view.findViewById(R.id.otp);
         otpEditText.addTextChangedListener(this);
-        view.findViewById(R.id.resend).setOnClickListener(view1 -> {
-            resendOTP();
-        });
+        view.findViewById(R.id.resend).setOnClickListener(v -> resendOTP());
         ((TextView) view.findViewById(R.id.otp_mobile_sent)).setText(String.format(getString(R.string.verification_code_mobile_hint), mMobileNumber));
     }
 
     private void resendOTP() {
+        if(!Utils.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            return;
+        }
         AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
         authenticationService.resendOTP(mMobileNumber, Utils.CLIENT_ID).enqueue(new Callback<ResendOTPResponse>() {
             @Override
@@ -107,30 +109,34 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         if (s.toString().length() >= INT_OTP_LENGTH) {
+            if(!Utils.isNetworkConnected(requireActivity())) {
+                showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                return;
+            }
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
             authenticationService.validateOTP(mMobileNumber, s.toString()).enqueue(new Callback<ValidateOTP>() {
                 @Override
-                public void onResponse(Call<ValidateOTP> call, Response<ValidateOTP> response) {
+                public void onResponse(@NotNull Call<ValidateOTP> call, @NotNull Response<ValidateOTP> response) {
                     if (response.isSuccessful()) {
-                        ValidateOTP date = response.body();
-                        assert date != null;
-                        if (date.getStatus().equalsIgnoreCase("Success")) {
-                            showDialog("", "Your account is activated please login.", (dialog, i) -> {
-                                mListener.goToHomePage();
-                            });
+                        ValidateOTP data = response.body();
+                        if(data != null) {
+                            if (data.getStatus().equalsIgnoreCase("Success")) {
+                                showDialog("", "Your account is activated please login.", (dialog, i) -> mListener.goToHomePage());
+                            } else {
+                                showDialog(data.getMsg());
+                            }
                         } else {
-                            showDialog("", date.getMsg());
+                            showDialog(getString(R.string.no_information_available));
                         }
-
                     } else {
-                        showDialog("", response.message());
+                        showDialog(response.message());
                     }
                     progressDialog.dismiss();
                 }
 
                 @Override
-                public void onFailure(Call<ValidateOTP> call, Throwable t) {
+                public void onFailure(@NotNull Call<ValidateOTP> call, @NotNull Throwable t) {
                     showDialog("", t.getMessage());
                     progressDialog.dismiss();
                 }

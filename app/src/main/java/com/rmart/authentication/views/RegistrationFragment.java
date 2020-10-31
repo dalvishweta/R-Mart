@@ -146,6 +146,10 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         }*/ else if (!confirmPassword.equals(password)) {
             showDialog("", getString(R.string.mismatch_confirm_password));
         } else {
+            if(!Utils.isNetworkConnected(requireActivity())) {
+                showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                return;
+            }
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
             authenticationService.registration(firstName, lastName, mobileNumber, email, password, getString(R.string.role_id), Utils.CLIENT_ID).enqueue(

@@ -119,6 +119,10 @@ public class ChangePassword extends LoginBaseFragment {
                 showDialog(getString(R.string.mismatch_confirm_password));
                 return;
             }
+            if(!Utils.isNetworkConnected(requireActivity())) {
+                showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                return;
+            }
 
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);

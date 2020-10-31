@@ -66,6 +66,10 @@ public class ForgotPasswordFragment extends LoginBaseFragment {
             showDialog("", getString(R.string.error_mobile));
             return;
         }
+        if(!Utils.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            return;
+        }
         progressDialog.show();
         AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
         authenticationService.forgotPassword(mobileNumber).enqueue(new Callback<ForgotPasswordResponse>() {
