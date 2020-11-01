@@ -131,6 +131,10 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
         if (listType.equalsIgnoreCase(Utils.PRODUCT)) {
             popup.getMenu().add(Menu.NONE, 4, 4, Utils.CATEGORY);
             popup.getMenu().add(Menu.NONE, 3, 3, Utils.BRAND);
+            if(!Utils.isNetworkConnected(requireActivity())) {
+                showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                return;
+            }
             progressDialog.show();
             apiService.getProductList("0", "100").enqueue(new Callback<APIProductListResponse>() {
                 @Override
@@ -171,6 +175,10 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
         } else if (listType.equalsIgnoreCase(Utils.CATEGORY)) {
             popup.getMenu().add(Menu.NONE, 1, 1, Utils.PRODUCT);
             popup.getMenu().add(Menu.NONE, 3, 3, Utils.BRAND);
+            if(!Utils.isNetworkConnected(requireActivity())) {
+                showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                return;
+            }
             progressDialog.show();
             apiService.getCategoryList("0", "100").enqueue(new Callback<APIProductListResponse>() {
                 @Override
@@ -205,6 +213,10 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
             });
         } else if (listType.equalsIgnoreCase(Utils.SUB_CATEGORY)) {
             view.findViewById(R.id.sort).setVisibility(View.GONE);
+            if(!Utils.isNetworkConnected(requireActivity())) {
+                showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                return;
+            }
             progressDialog.show();
             apiService.getSubCategoryList("0", "100", id).enqueue(new Callback<APIProductListResponse>() {
                 @Override
@@ -239,6 +251,10 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
             });
         }  else if (listType.equalsIgnoreCase(Utils.SUB_CATEGORY_PRODUCT)) {
             view.findViewById(R.id.sort).setVisibility(View.GONE);
+            if(!Utils.isNetworkConnected(requireActivity())) {
+                showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                return;
+            }
             progressDialog.show();
             apiService.getSubCategoryProductsList("0", "100", id).enqueue(new Callback<APIProductListResponse>() {
                 @Override
@@ -273,6 +289,10 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
             });
         } else if (listType.equalsIgnoreCase(Utils.BRAND_PRODUCTS)) {
             view.findViewById(R.id.sort).setVisibility(View.GONE);
+            if(!Utils.isNetworkConnected(requireActivity())) {
+                showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                return;
+            }
             progressDialog.show();
             apiService.getBrandProductsList("0", "100", id).enqueue(new Callback<APIProductListResponse>() {
                 @Override
@@ -308,6 +328,10 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
         } else {
             popup.getMenu().add(Menu.NONE, 1, 1, Utils.PRODUCT);
             popup.getMenu().add(Menu.NONE, 4, 4, Utils.CATEGORY);
+            if(!Utils.isNetworkConnected(requireActivity())) {
+                showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                return;
+            }
             progressDialog.show();
             apiService.getBrandList("0", "100").enqueue(new Callback<APIProductListResponse>() {
                 @Override

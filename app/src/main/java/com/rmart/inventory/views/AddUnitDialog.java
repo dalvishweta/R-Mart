@@ -370,6 +370,10 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     }
     private void deleteUnits() {
         if(!TextUtils.isEmpty(unitObject.getProductUnitID())) {
+            if(!Utils.isNetworkConnected(requireActivity())) {
+                showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                return;
+            }
             Dialog progressDialog = CustomLoadingDialog.getInstance(getActivity());
             progressDialog.show();
             VendorInventoryService inventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
@@ -438,6 +442,31 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             // LoggerInfo.errorLog("show dialog exception", e.getMessage());
         }
     }
+
+    protected void showDialog(String title, String msg) {
+        try {
+            AlertDialog.Builder builder = new
+                    AlertDialog.Builder(
+                    requireActivity(),
+                    R.style.AlertDialog
+            );
+            if (TextUtils.isEmpty(title)) {
+                title = requireActivity().getString(R.string.message);
+            }
+            builder.setTitle(title);
+            builder.setMessage(msg);
+            builder.setCancelable(false);
+            builder.setNegativeButton(requireActivity().getString(R.string.close), null);
+            AlertDialog alertDialog = builder.create();
+            alertDialog.setOnShowListener(arg0 -> alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(requireActivity(), R.color.button_bg)));
+            if (!requireActivity().isFinishing()) {
+                alertDialog.show();
+            }
+        } catch (Exception e) {
+            // LoggerInfo.errorLog("show dialog exception", e.getMessage());
+        }
+    }
+
 
     private void closeDialog() {
         Dialog dialog = getDialog();

@@ -13,6 +13,7 @@ import com.rmart.customer.models.ProductInCartDetailsModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.Utils;
 import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,29 +48,33 @@ public class UpdateProductQuantityServices extends JobIntentService {
     }
 
     private void updateProductQuantityDetails() {
-        CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
-        String clientID = "2";
-        Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, productInCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                productInCartDetails.getProductUnitId(), productInCartDetails.getTotalProductCartQty(), event);
-        call.enqueue(new Callback<AddToCartResponseDetails>() {
-            @Override
-            public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
-                try {
-                    if(response.isSuccessful()) {
-                        AddToCartResponseDetails addToCartResponseDetails = response.body();
-                        AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = addToCartResponseDetails.getAddToCartDataResponse();
-                        int count = addToCartDataResponse.getTotalCartCount();
-                        LoggerInfo.printLog("addToCart response", count);
+        if(Utils.isNetworkConnected(this)) {
+            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            String clientID = "2";
+            Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, productInCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),
+                    productInCartDetails.getProductUnitId(), productInCartDetails.getTotalProductCartQty(), event);
+            call.enqueue(new Callback<AddToCartResponseDetails>() {
+                @Override
+                public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
+                    try {
+                        if (response.isSuccessful()) {
+                            AddToCartResponseDetails addToCartResponseDetails = response.body();
+                            if(addToCartResponseDetails != null) {
+                                AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = addToCartResponseDetails.getAddToCartDataResponse();
+                                int count = addToCartDataResponse.getTotalCartCount();
+                                LoggerInfo.printLog("addToCart response", count);
+                            }
+                        }
+                    } catch (Exception ex) {
+                        LoggerInfo.errorLog("addToCart response exception", ex.getMessage());
                     }
-                } catch (Exception ex) {
-                    LoggerInfo.errorLog("addToCart response exception", ex.getMessage());
                 }
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
+                @Override
+                public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
 
-            }
-        });
+                }
+            });
+        }
     }
 }

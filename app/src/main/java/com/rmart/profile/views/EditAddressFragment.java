@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -216,12 +217,11 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
-        requireActivity().setTitle(getString(R.string.update_address));
+        requireActivity().setTitle(myAddress.getId() == -1 ? getString(R.string.add_address) : getString(R.string.update_address));
     }
 
     private void updateUI() {
         if (myAddress.getId() != -1) {
-            Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.add_address));
             tvShopName.setText(myAddress.getShopName());
             tvPANNumber.setText(myAddress.getPan_no());
             tvGSTNumber.setText(myAddress.getGstInNo());
@@ -340,8 +340,6 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                 });
                 ivShopImageField.setImageUrl(lShopImageUrl, RMartApplication.getInstance().getImageLoader());
             }
-        } else {
-            Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.update_address));
         }
         if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
             mRetailerView.setVisibility(View.VISIBLE);
@@ -420,19 +418,50 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             if (selectedPhotoType == 0) {
                 aadharFrontImageUrl = profileImageUri.getPath();
                 UpdateProfileImageServices.enqueueWork(requireActivity(), AADHAR_FRONT_IMAGE, aadharFrontImageUrl);
-                ivAadharFrontImageField.setLocalImageUri(profileImageUri);
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), profileImageUri);
+                    if(bitmap != null) {
+                        ivAadharFrontImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                    }
+                } catch (Exception ex) {
+
+                }
             } else if (selectedPhotoType == 1) {
                 aadharBackImageUrl = profileImageUri.getPath();
                 UpdateProfileImageServices.enqueueWork(requireActivity(), AADHAR_BACK_IMAGE, aadharBackImageUrl);
-                ivAadharBackImageField.setLocalImageUri(profileImageUri);
+                //ivAadharBackImageField.setLocalImageUri(profileImageUri);
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), profileImageUri);
+                    if(bitmap != null) {
+                        ivAadharBackImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                    }
+                } catch (Exception ex) {
+
+                }
             } else if (selectedPhotoType == 2) {
                 panCardImageUrl = profileImageUri.getPath();
                 UpdateProfileImageServices.enqueueWork(requireActivity(), PANCARD_IMAGE, panCardImageUrl);
-                ivPanCardImageField.setLocalImageUri(profileImageUri);
+                //ivPanCardImageField.setLocalImageUri(profileImageUri);
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), profileImageUri);
+                    if(bitmap != null) {
+                        ivPanCardImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                    }
+                } catch (Exception ex) {
+
+                }
             } else if (selectedPhotoType == 3) {
                 shopImageUrl = profileImageUri.getPath();
                 UpdateProfileImageServices.enqueueWork(requireActivity(), SHOP_IMAGE, shopImageUrl);
-                ivShopImageField.setLocalImageUri(profileImageUri);
+                //ivShopImageField.setLocalImageUri(profileImageUri);
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), profileImageUri);
+                    if(bitmap != null) {
+                        ivShopImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                    }
+                } catch (Exception ex) {
+
+                }
             }
         });
     }
@@ -440,7 +469,6 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
     private void addAddressSelected() {
         String aadharNo = "";
         if (mRetailerView.getVisibility() == View.VISIBLE) {
-
             String shopName = Objects.requireNonNull(tvShopName.getText()).toString().trim();
             if (TextUtils.isEmpty(shopName)) {
                 showDialog(getString(R.string.shop_name_required));
@@ -576,6 +604,10 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         }
         if(zipCode.length() != 6 || !Utils.isValidPinCode(zipCode)) {
             showDialog(getString(R.string.invalid_pin_code));
+            return;
+        }
+        if(!Utils.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
             return;
         }
         progressDialog.show();

@@ -383,6 +383,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             showDialog("", getString(R.string.error_image_thumb));
             return;
         }
+
+        if(!Utils.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            return;
+        }
         progressDialog.show();
 
         Gson gson = new GsonBuilder().create();

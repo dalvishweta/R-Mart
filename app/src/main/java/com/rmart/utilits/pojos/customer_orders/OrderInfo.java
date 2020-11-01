@@ -25,7 +25,7 @@ public class OrderInfo implements Serializable {
 
     @SerializedName("delivery_charges")
     @Expose
-    String deliveryCharges;
+    double deliveryCharges;
 
     @SerializedName("order_amount")
     @Expose
@@ -45,7 +45,7 @@ public class OrderInfo implements Serializable {
 
     @SerializedName("order_charges")
     @Expose
-    String orderCharges;
+    double orderCharges;
 
     @SerializedName("total_amount")
     @Expose
@@ -97,11 +97,11 @@ public class OrderInfo implements Serializable {
         this.statusName = statusName;
     }
 
-    public String getDeliveryCharges() {
+    public double getDeliveryCharges() {
         return deliveryCharges;
     }
 
-    public void setDeliveryCharges(String deliveryCharges) {
+    public void setDeliveryCharges(double deliveryCharges) {
         this.deliveryCharges = deliveryCharges;
     }
 
@@ -129,11 +129,11 @@ public class OrderInfo implements Serializable {
         this.deliveryStatus = deliveryStatus;
     }
 
-    public String getOrderCharges() {
+    public double getOrderCharges() {
         return orderCharges;
     }
 
-    public void setOrderCharges(String orderCharges) {
+    public void setOrderCharges(double orderCharges) {
         this.orderCharges = orderCharges;
     }
 

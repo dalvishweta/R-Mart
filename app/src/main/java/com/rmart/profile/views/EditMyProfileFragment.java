@@ -215,12 +215,8 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
                         if (profileImageUri != null) {
                             InputStream imageStream = requireActivity().getContentResolver().openInputStream(profileImageUri);
                             profileImageBitmap = BitmapFactory.decodeStream(imageStream);
-                            ByteArrayOutputStream out = new ByteArrayOutputStream();
-                            //
-                            // Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
-                            profileImageBitmap.compress(Bitmap.CompressFormat.JPEG,10,out);
                             if (profileImageBitmap != null) {
-                                ivProfileImageField.setImageBitmap(profileImageBitmap);
+                                ivProfileImageField.setImageBitmap(Utils.getCompressBitmapImage(profileImageBitmap));
                             }
                         }
                     } catch (Exception ex) {
@@ -259,6 +255,10 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
 
         if (TextUtils.isEmpty(selectedGender) || selectedGender.equalsIgnoreCase(SELECT_YOUR_GENDER)) {
             showDialog("", getString(R.string.required_gender));
+            return;
+        }
+        if(!Utils.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
             return;
         }
 

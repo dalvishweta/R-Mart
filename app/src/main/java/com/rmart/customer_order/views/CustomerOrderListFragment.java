@@ -67,6 +67,10 @@ public class CustomerOrderListFragment extends BaseOrderFragment implements View
     }
 
     private void getOrdersOfStatesFromServer() {
+        if(!Utils.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            return;
+        }
         progressDialog.show();
         CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
         customerOrderService.getStateOfOrder(startIndex, MyProfile.getInstance().getMobileNumber()).enqueue(new Callback<OrdersByStatus>() {

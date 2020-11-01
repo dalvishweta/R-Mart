@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -255,5 +256,12 @@ public class Utils {
             return true;
         }
         return false;
+    }
+
+    public static Bitmap getCompressBitmapImage(Bitmap bitmap) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        // Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
+        bitmap.compress(Bitmap.CompressFormat.JPEG,10,out);
+        return bitmap;
     }
 }

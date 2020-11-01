@@ -27,7 +27,7 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
             if(!TextUtils.isEmpty(orderID)) {
                 Order lOrderDetails = new Order();
                 lOrderDetails.setOrderID(orderID);
-                replaceFragment(CustomerViewFullOrderFragment.newInstance(lOrderDetails, ""), CustomerViewFullOrderFragment.class.getName(), true);
+                replaceFragment(CustomerViewFullOrderFragment.newInstance(lOrderDetails, ""), CustomerViewFullOrderFragment.class.getName(), false);
             } else {
                 replaceFragment(CustomerOrderListFragment.newInstance(), CustomerOrderListFragment.class.getName(), false);
             }

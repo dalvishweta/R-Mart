@@ -146,6 +146,10 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     };
 
     private void getProductList(String stockType) {
+        if(!Utils.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            return;
+        }
         resetProductsList();
         progressDialog.show();
         vendorInventoryService.getProductList("0", MyProfile.getInstance().getMobileNumber(), stockType).enqueue(new Callback<ProductListResponse>() {

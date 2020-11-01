@@ -105,6 +105,10 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
     public void onResume() {
         super.onResume();
         requireActivity().setTitle(getString(R.string.product_details));
+        if(!Utils.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            return;
+        }
         progressDialog.show();
         VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
         vendorInventoryService.getProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<ShowProductResponse>() {
@@ -163,6 +167,10 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
             });
             delete.setOnClickListener(v -> {
                 showConfirmationDialog(getString(R.string.delete_product_conformation), deleteView -> {
+                    if(!Utils.isNetworkConnected(requireActivity())) {
+                        showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                        return;
+                    }
                     progressDialog.show();
                     VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
                     vendorInventoryService.deleteProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<BaseResponse>() {

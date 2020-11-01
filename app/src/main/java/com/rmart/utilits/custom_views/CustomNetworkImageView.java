@@ -21,9 +21,13 @@ public class CustomNetworkImageView extends NetworkImageView {
     private boolean mShowLocal;
 
     private Drawable mDrawable = null;
+    private boolean isImageUri = false;
+    private boolean isImageBitmap = false;
+    private boolean isImageDrawable = false;
 
     public void setLocalImageBitmap(Bitmap bitmap) {
         if (bitmap != null) {
+            isImageBitmap = true;
             mShowLocal = true;
         }
         this.mLocalBitmap = bitmap;
@@ -32,6 +36,7 @@ public class CustomNetworkImageView extends NetworkImageView {
 
     public void setLocalImageUri(Uri uri) {
         if (uri != null) {
+            isImageUri = true;
             mShowLocal = true;
         }
         this.uri = uri;
@@ -40,6 +45,7 @@ public class CustomNetworkImageView extends NetworkImageView {
 
     public void setLocalDrawable(Drawable drawable) {
         if (uri != null) {
+            isImageDrawable = true;
             mShowLocal = false;
         }
         this.mDrawable = drawable;
@@ -69,11 +75,11 @@ public class CustomNetworkImageView extends NetworkImageView {
 
         super.onLayout(changed, left, top, right, bottom);
         if (mShowLocal) {
-            if (uri != null) {
+            if (uri != null && isImageUri) {
                 setImageURI(uri);
-            } else if (mLocalBitmap != null) {
+            } else if (mLocalBitmap != null && isImageBitmap) {
                 setImageBitmap(mLocalBitmap);
-            } else if (mDrawable != null) {
+            } else if (mDrawable != null && isImageDrawable) {
                 setBackground(mDrawable);
             }
         }

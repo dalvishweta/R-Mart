@@ -41,7 +41,7 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
                     String orderID = extras.getString("OrderId");
                     Order lOrderDetails = new Order();
                     lOrderDetails.setOrderID(orderID);
-                    replaceFragment(ViewFullOrderFragment.newInstance(lOrderDetails, ""), "ViewFullOrderFragment", true);
+                    replaceFragment(ViewFullOrderFragment.newInstance(lOrderDetails, ""), "ViewFullOrderFragment", false);
                 } else {
                     addFragment(OrderHomeFragment.newInstance("", ""), "OrderHomeFragment", false);
                 }

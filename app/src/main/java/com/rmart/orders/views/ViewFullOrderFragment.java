@@ -90,6 +90,10 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     }
 
     private void getServerData(String userID) {
+        if(!Utils.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            return;
+        }
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
         orderService.getOrderProductList("0", userID, mOrderObject.getOrderID()).enqueue(new Callback<CustomerOrderProductResponse>() {
@@ -225,8 +229,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
 
         // payment info
         tvAmount.setText(Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getOrderAmount()));
-        text = orderProductList.getOrderInfo().getOrderCharges();
-        tvDeliveryCharges.setText(text);
+        double deliveryCharges = orderProductList.getOrderInfo().getOrderCharges();
+        tvDeliveryCharges.setText(Utils.roundOffDoubleValue(deliveryCharges));
         tvTotalCharges.setText(Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getTotalAmt()));
         tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
         setFooter();

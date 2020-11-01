@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.R;
 import com.rmart.orders.adapters.OrdersListAdapter;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.orders.Order;
@@ -39,8 +40,8 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
     StateOfOrders stateOfOrders;
     private String startIndex = "0";
     private ArrayList<Order> orders = new ArrayList<>();
-    private OrdersByStatus data;
     private String mobileNumber;
+    private String count = "";
 
     public OrderListFragment() {
         // Required empty public constructor
@@ -69,6 +70,7 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
         // Inflate the layout for this fragment
         // myOrdersViewModel = new ViewModelProvider(Objects.requireNonNull(getActivity())).get(MyOrdersViewModel.class);
         // mSelectedOrderGroup = myOrdersViewModel.getReturnedOrders().getValue();
+        LoggerInfo.printLog("Fragment", "OrderListFragment");
         return inflater.inflate(R.layout.fragment_order_list, container, false);
     }
 
@@ -81,6 +83,10 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
     }
 
     private void getOrdersOfStatesFromServer(String mobileNumber, String status) {
+        if(!Utils.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            return;
+        }
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
         orderService.getStateOfOrder(startIndex, mobileNumber, status).enqueue(new Callback<OrdersByStatus>() {
@@ -88,9 +94,10 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
             public void onResponse(@NotNull Call<OrdersByStatus> call, @NotNull Response<OrdersByStatus> response) {
                 if (response.isSuccessful()) {
                     progressDialog.dismiss();
-                    data = response.body();
-                    orders = data.getOrders();
+                    OrdersByStatus data = response.body();
                     if (data != null) {
+                        orders = data.getOrders();
+                        count = data.getOrdersCount();
                         if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                             startIndex = data.getEndIndex();
                             updateUI();
@@ -117,7 +124,6 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
         // SelectedOrderGroup mSelectedOrderGroup;
         // private MyOrdersViewModel myOrdersViewModel;
         OrdersListAdapter ordersListAdapter = new OrdersListAdapter(orders, this);
-        String count  = data.getOrdersCount();
         if (TextUtils.isEmpty(count)) {
             count = "0";
         }

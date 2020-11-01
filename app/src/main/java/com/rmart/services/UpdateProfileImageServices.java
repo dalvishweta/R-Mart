@@ -15,6 +15,7 @@ import com.rmart.baseclass.Constants;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.services.ProfileService;
 
@@ -54,35 +55,37 @@ public class UpdateProfileImageServices extends JobIntentService {
     }
 
     private void updateImageDetails() {
-        String clientID = "2";
-        try {
-            File file = new File(photoImagePath);
-            Uri profileImageUri = Uri.fromFile(file);
-            if (profileImageUri != null) {
-                InputStream imageStream = getContentResolver().openInputStream(profileImageUri);
-                Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
-                ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
-                Call<BaseResponse> call = profileService.uploadPhotoImage(clientID, MyProfile.getInstance().getUserID(),
-                        imageType, getEncodedImage(bitmap));
-                call.enqueue(new Callback<BaseResponse>() {
-                    @Override
-                    public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
-                        if (response.isSuccessful()) {
-                            BaseResponse body = response.body();
-                            if (body != null) {
-                                LoggerInfo.errorLog("Image Upload response", body.getMsg());
+        if(Utils.isNetworkConnected(this)) {
+            String clientID = "2";
+            try {
+                File file = new File(photoImagePath);
+                Uri profileImageUri = Uri.fromFile(file);
+                if (profileImageUri != null) {
+                    InputStream imageStream = getContentResolver().openInputStream(profileImageUri);
+                    Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+                    ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
+                    Call<BaseResponse> call = profileService.uploadPhotoImage(clientID, MyProfile.getInstance().getUserID(),
+                            imageType, getEncodedImage(bitmap));
+                    call.enqueue(new Callback<BaseResponse>() {
+                        @Override
+                        public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
+                            if (response.isSuccessful()) {
+                                BaseResponse body = response.body();
+                                if (body != null) {
+                                    LoggerInfo.errorLog("Image Upload response", body.getMsg());
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
-                        LoggerInfo.errorLog("Image Upload onFailure", t.getMessage());
-                    }
-                });
+                        @Override
+                        public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
+                            LoggerInfo.errorLog("Image Upload onFailure", t.getMessage());
+                        }
+                    });
+                }
+            } catch (Exception ex) {
+                LoggerInfo.errorLog("Image Upload exception", ex.getMessage());
             }
-        } catch (Exception ex) {
-            LoggerInfo.errorLog("Image Upload exception", ex.getMessage());
         }
     }
 

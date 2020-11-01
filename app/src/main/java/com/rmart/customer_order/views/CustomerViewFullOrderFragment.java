@@ -237,8 +237,8 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
 
         // payment info
         tvAmount.setText(Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getOrderAmount()));
-        String deliveryCharges = orderProductList.getOrderInfo().getOrderCharges();
-        tvDeliveryCharges.setText(deliveryCharges);
+        double deliveryCharges = orderProductList.getOrderInfo().getOrderCharges();
+        tvDeliveryCharges.setText(Utils.roundOffDoubleValue(deliveryCharges));
         tvTotalCharges.setText(Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getTotalAmt()));
         tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
 

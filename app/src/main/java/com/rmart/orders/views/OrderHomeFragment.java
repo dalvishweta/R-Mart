@@ -91,6 +91,10 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
     }
 
     void getOrderStatusFromServer() {
+        if(!Utils.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            return;
+        }
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
         MyProfile myProfile = MyProfile.getInstance();
