@@ -35,6 +35,7 @@ public interface AuthenticationService {
                                             @Field("last_name") String lName,
                                             @Field("mobile_number") String mobile,
                                             @Field("email") String email,
+                                            @Field("gender") String gender,
                                             @Field("password") String password,
                                             @Field("roll") String roll_no,
                                             @Field("client_id") String client_id);

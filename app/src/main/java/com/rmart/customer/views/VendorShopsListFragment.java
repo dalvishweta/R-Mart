@@ -1,6 +1,10 @@
 package com.rmart.customer.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -28,7 +32,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
@@ -81,6 +91,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private SwipeRefreshLayout swipeRefreshLayout;
     private GoogleMap googleMap;
     private TextView tvAddressField;
+    private Circle currentCircle = null;
 
     public static VendorShopsListFragment getInstance() {
         return new VendorShopsListFragment();
@@ -286,8 +297,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             } else if (status.equalsIgnoreCase(Constants.TAG_MESSAGE)) {
                 messageSelected((String) contentModel.getValue());
             } else if (status.equalsIgnoreCase(Constants.TAG_SHOP_FAVOURITE)) {
-                //selectedShopDetails = (CustomerProductsShopDetailsModel) contentModel.getValue();
-                //shopFavouriteSelected();
+                selectedShopDetails = (CustomerProductsShopDetailsModel) contentModel.getValue();
+                shopFavouriteSelected();
             }
         }
     };
@@ -321,7 +332,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                         BaseResponse body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                showDialog(body.getMsg(), pObject -> {
+                                showDialog(getString(R.string.shop_removed_from_favourites_successfully), pObject -> {
                                     selectedShopDetails.setShopWishListStatus(0);
                                     selectedShopDetails.setShopWishListId(-1);
                                     updateShopDetailsAdapter();
@@ -371,7 +382,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                         AddShopToWishListResponse body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                showDialog(body.getMsg(), pObject -> {
+                                showDialog(getString(R.string.shop_added_to_favourites_successfully), pObject -> {
                                     int shopWishId = body.getShopToWishListDataResponse().getShopWishListId();
                                     selectedShopDetails.setShopWishListId(shopWishId);
                                     selectedShopDetails.setShopWishListStatus(1);
@@ -505,6 +516,13 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     public void onMapReady(GoogleMap map) {
         this.googleMap = map;
         googleMap.clear();
+        LatLng latLng = new LatLng(latitude, longitude);
+        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
+        Marker marker = googleMap.addMarker(markerOptions);
+        marker.showInfoWindow();
+        addCircleToMap();
     }
 
     private void updateShopsListMap() {
@@ -515,11 +533,20 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 if (isCoordinatesValid) {
                     LatLng latLng = new LatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
                     MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(shopDetailsModel.getShopName());
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                    googleMap.addMarker(markerOptions);
+                    Marker marker = googleMap.addMarker(markerOptions);
+                    marker.showInfoWindow();
                 }
             }
         }
+    }
+
+    private void addCircleToMap() {
+        googleMap.addCircle(new CircleOptions()
+                .center(new LatLng(latitude, longitude))
+                .radius(15000)
+                .strokeWidth(2)
+                .strokeColor(ContextCompat.getColor(requireActivity(), R.color.grey_color_five))
+                .fillColor(Color.argb(128, 0, 0, 0))
+                .clickable(true));
     }
 }

@@ -56,6 +56,7 @@ public class Utils {
     public static final String SUB_CATEGORY_PRODUCT = "Sub category products";
     public static final String BRAND_PRODUCTS = "BRAND PRODUCTS";
     public static final int MIN_PASSWORD_LENGTH = 8;
+    public static final String SELECT_YOUR_GENDER = "Select your gender";
 
     private static final String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
 

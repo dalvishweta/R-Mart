@@ -39,6 +39,7 @@
                 android:id="@+id/first_name"
                 android:drawableStart="@drawable/user"
                 style="@style/my_profile_tv"
+                android:digits="@string/allow_name"
                 android:inputType="text" />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -46,18 +47,21 @@
                 android:id="@+id/last_name"
                 android:drawableStart="@drawable/user"
                 style="@style/my_profile_tv"
+                android:digits="@string/allow_name"
                 android:inputType="text"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:hint="@string/hint_mobile_number"
                 android:id="@+id/mobile_number"
                 android:drawableStart="@drawable/ic_phone"
                 style="@style/my_profile_tv"
+                android:maxLength="10"
                 android:inputType="number|numberSigned"
                 android:textColor="@color/colorPrimary"/>
             <androidx.appcompat.widget.AppCompatTextView
                 android:hint="@string/please_enter_your_e_mail"
                 android:id="@+id/email"
                 android:drawableStart="@drawable/ic_mail"
+                android:digits="@string/allow_digits_email"
                 style="@style/my_profile_tv"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/colorPrimary"/>
@@ -68,6 +72,7 @@
                 android:drawableStart="@drawable/user"
                 style="@style/my_profile_tv"
                 android:inputType="textEmailAddress"/>
+
             <Spinner
                 android:id="@+id/gender"
                 android:layout_marginStart="24dp"

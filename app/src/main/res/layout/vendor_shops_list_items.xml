@@ -8,7 +8,6 @@
         android:id="@+id/shop_image_layout"
         android:layout_width="125dp"
         android:layout_height="100dp"
-        android:layout_centerVertical="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -24,12 +23,10 @@
 
         <com.rmart.utilits.custom_views.CustomNetworkImageView
             android:id="@+id/iv_shop_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:contentDescription="@string/app_name"
-            android:scaleType="fitXY"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:scaleType="fitXY" />
 
         <ImageView
             android:id="@+id/iv_favourite_image"
@@ -60,9 +57,9 @@
         android:contentDescription="@string/app_name"
         android:layout_alignParentEnd="true"
         android:scaleType="centerInside"
-        android:layout_below="@+id/address"
+        android:layout_below="@+id/address_layout_field"
         android:padding="8dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:src="@drawable/message" />
 
     <ImageView
@@ -73,17 +70,17 @@
         android:contentDescription="@string/app_name"
         android:layout_toStartOf="@+id/iv_message_field"
         android:scaleType="centerInside"
-        android:layout_below="@+id/address"
+        android:layout_below="@+id/address_layout_field"
         android:padding="8dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:src="@drawable/phone" />
 
     <LinearLayout
-        android:id="@+id/address"
+        android:id="@+id/address_layout_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:gravity="center|left"
+        android:gravity="center|start"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@id/shop_image_layout"
         android:orientation="vertical">

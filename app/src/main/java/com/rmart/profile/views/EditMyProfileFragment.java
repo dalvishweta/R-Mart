@@ -25,6 +25,7 @@ import com.rmart.RMartApplication;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.baseclass.views.CircularNetworkImageView;
 import com.rmart.baseclass.views.ProgressBarCircular;
+import com.rmart.customer.adapters.CustomSpinnerAdapter;
 import com.rmart.inventory.adapters.CustomStringAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.CommonUtils;
@@ -41,6 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -54,14 +56,13 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    public static final String SELECT_YOUR_GENDER = "Select your gender";
     private AppCompatEditText tvFirstName, tvLastName;
     AppCompatTextView tvMobileNumber, tvEmail;
     private boolean mIsFromLogin;
     private Spinner spinner;
     private String selectedGender;
     // private MyProfileViewModel myProfileViewModel;
-    private ArrayList<String> strings = new ArrayList<>();
+    private List<Object> gendersList = new ArrayList<>();
 
     private CircularNetworkImageView ivProfileImageField;
     private ProgressBarCircular profileCircularBar;
@@ -111,15 +112,15 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
         ivProfileImageField = view.findViewById(R.id.iv_profile_image_field);
         ivProfileImageField.setOnClickListener(this);
         profileCircularBar = view.findViewById(R.id.profile_circular_field);
-        strings.add(SELECT_YOUR_GENDER);
-        strings.add("Male");
-        strings.add("Female");
-        strings.add("Other");
+        gendersList.add(Utils.SELECT_YOUR_GENDER);
+        gendersList.add("Male");
+        gendersList.add("Female");
+        gendersList.add("Other");
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
-                selectedGender = strings.get(pos);
+                selectedGender = (String) gendersList.get(pos);
             }
 
             @Override
@@ -128,7 +129,7 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
             }
         });
 
-        CustomStringAdapter customStringAdapter = new CustomStringAdapter(strings, this.getContext());
+        CustomSpinnerAdapter customStringAdapter = new CustomSpinnerAdapter(requireActivity(), gendersList);
         spinner.setAdapter(customStringAdapter);
         view.findViewById(R.id.submit).setOnClickListener(this);
 
@@ -142,7 +143,7 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
             tvLastName.setText(myProfile.getLastName());
             tvMobileNumber.setText(myProfile.getMobileNumber());
             tvEmail.setText(myProfile.getEmail());
-            spinner.setSelection(strings.indexOf(myProfile.getGender()));
+            spinner.setSelection(gendersList.indexOf(myProfile.getGender()));
             updateUserProfileImage();
         }
     }
@@ -253,7 +254,7 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
             return;
         }
 
-        if (TextUtils.isEmpty(selectedGender) || selectedGender.equalsIgnoreCase(SELECT_YOUR_GENDER)) {
+        if (TextUtils.isEmpty(selectedGender) || selectedGender.equalsIgnoreCase(Utils.SELECT_YOUR_GENDER)) {
             showDialog("", getString(R.string.required_gender));
             return;
         }

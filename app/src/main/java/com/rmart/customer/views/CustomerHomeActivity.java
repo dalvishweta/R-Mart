@@ -1,7 +1,10 @@
 package com.rmart.customer.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.rmart.R;
@@ -143,5 +146,22 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     @Override
     public void updateBadgeCount() {
 
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Bundle data = intent.getExtras();
+        if (data != null) {
+            boolean isShoppingCart = data.getBoolean("ShoppingCart");
+            boolean isFavouritesSelected = data.getBoolean("IsFavourites", false);
+            if (isShoppingCart) {
+                replaceFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
+            } else if (isFavouritesSelected) {
+                replaceFragment(CustomerFavouritesFragment.getInstance(), CustomerFavouritesFragment.class.getName(), true);
+            }
+        } else {
+            replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);
+        }
     }
 }

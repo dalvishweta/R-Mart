@@ -129,7 +129,7 @@ public class CustomerFavouritesFragment extends BaseFragment {
                         BaseResponse body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                showDialog(body.getMsg(), pObject -> {
+                                showDialog(getString(R.string.shop_removed_from_favourites_successfully), pObject -> {
                                     updatedDeletedAdapter(selectedShopDetails);
                                 });
                             } else {
@@ -184,12 +184,12 @@ public class CustomerFavouritesFragment extends BaseFragment {
                                 List<CustomerProductsShopDetailsModel> shopWiseCartList = body.getShopFavouritesListDataResponse().getCustomerProductsShopDetails();
                                 if (shopWiseCartList != null && !shopWiseCartList.isEmpty()) {
                                     favoritesShopsList.addAll(shopWiseCartList);
-                                    updateAdapter(body.getMsg());
+                                    updateAdapter();
                                 } else {
                                     showCloseDialog(null, body.getMsg());
                                 }
                             } else {
-                                showCloseDialog(null, body.getMsg());
+                                showCloseDialog(null, getString(R.string.no_favourites_found));
                             }
                         } else {
                             showCloseDialog(null, getString(R.string.no_information_available));
@@ -214,12 +214,12 @@ public class CustomerFavouritesFragment extends BaseFragment {
         showDialog(title, message, pObject -> requireActivity().onBackPressed());
     }
 
-    private void updateAdapter(String message) {
+    private void updateAdapter() {
         if (!favoritesShopsList.isEmpty()) {
             favouritesShopsAdapter.updateItems(favoritesShopsList);
             favouritesShopsAdapter.notifyDataSetChanged();
         } else {
-            showCloseDialog(null, message);
+            showCloseDialog(null, "");
         }
     }
 }

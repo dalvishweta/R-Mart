@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/grey_color_four"
     android:minHeight="40dp"
     android:orientation="horizontal">
 
@@ -20,7 +19,7 @@
 
     <Button
         android:id="@+id/btn_view_all_field"
-        style="@style/text_style_medium_normal"
+        style="@style/text_style_medium_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAllCaps="false"

@@ -34,14 +34,12 @@ import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductDetailsDescModel;
 import com.rmart.customer.models.ProductDetailsDescResponse;
-import com.rmart.customer.models.ShoppingCartResponseDetails;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.DateUtilities;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.AddressResponse;
 import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.ImageURLResponse;
 import com.rmart.utilits.services.CustomerProductsService;
@@ -79,6 +77,8 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private Spinner quantitySpinnerField;
     private boolean isWishListProduct = false;
     private AutoScrollViewPager productsImagePagerField;
+    private TextView expiryLabelField;
+    private TextView tvProductRegionalNameField;
 
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private TabLayout dotIndicatorLayoutField;
@@ -183,6 +183,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     }
 
     private void loadUIComponents(View view) {
+        expiryLabelField = view.findViewById(R.id.expiry_label_field);
         ivFavouriteImageField = view.findViewById(R.id.iv_favourite_image_field);
         tvProductDiscountField = view.findViewById(R.id.tv_product_discount_field);
         productsImagePagerField = view.findViewById(R.id.view_pager);
@@ -384,8 +385,10 @@ public class ProductCartDetailsFragment extends BaseFragment {
                     Calendar expiryDateCalendar = DateUtilities.getCalendarFromString(expiryDate);
                     tvProductExpiry.setText(DateUtilities.getDateStringFromCalendar(expiryDateCalendar));
                 }
+            } else {
+                expiryLabelField.setVisibility(View.GONE);
+                tvProductExpiry.setVisibility(View.GONE);
             }
-
             tvClosingTime.setText(vendorShopDetails.getClosingTime());
             tvOpeningTime.setText(vendorShopDetails.getOpeningTime());
         } else {

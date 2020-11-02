@@ -102,7 +102,7 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
                             startIndex = data.getEndIndex();
                             updateUI();
                         } else {
-                            showDialog(data.getMsg());
+                            showDialog(getString(R.string.no_orders_placed_yet));
                         }
                     } else {
                         showDialog(getString(R.string.no_information_available));

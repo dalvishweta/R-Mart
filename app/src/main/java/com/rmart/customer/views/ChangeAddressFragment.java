@@ -98,7 +98,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
         addressListField.setItemAnimator(new SlideInDownAnimator());
     }
 
-    private CallBackInterface callBackListener = pObject -> {
+    private final CallBackInterface callBackListener = pObject -> {
         if (pObject instanceof AddressResponse) {
             resetAddressList();
             MyProfile.getInstance().setAddressResponses(addressList);

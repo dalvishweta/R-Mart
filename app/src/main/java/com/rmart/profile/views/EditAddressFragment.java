@@ -252,6 +252,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             if (!TextUtils.isEmpty(lAadharFrontImageUrl)) {
                 aadharFrontImageProgressBar.setVisibility(View.VISIBLE);
                 HttpsTrustManager.allowAllSSL();
+                //RMartApplication.getInstance().removeCache(lAadharFrontImageUrl);
                 imageLoader.get(lAadharFrontImageUrl, new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
@@ -275,6 +276,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             if (!TextUtils.isEmpty(lAadharBackImageUrl)) {
                 aadharBackImageProgressBar.setVisibility(View.VISIBLE);
                 HttpsTrustManager.allowAllSSL();
+                //RMartApplication.getInstance().removeCache(lAadharBackImageUrl);
                 imageLoader.get(lAadharBackImageUrl, new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
@@ -297,6 +299,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             String lPanCardImageUrl = myAddress.getPanCardImage();
             if (!TextUtils.isEmpty(lPanCardImageUrl)) {
                 pancardProgressBar.setVisibility(View.VISIBLE);
+                //RMartApplication.getInstance().removeCache(lPanCardImageUrl);
                 HttpsTrustManager.allowAllSSL();
                 ivPanCardImageField.setImageUrl(lPanCardImageUrl, RMartApplication.getInstance().getImageLoader());
                 imageLoader.get(lPanCardImageUrl, new ImageLoader.ImageListener() {
@@ -320,6 +323,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             String lShopImageUrl = myAddress.getShopImage();
             if (!TextUtils.isEmpty(lShopImageUrl)) {
                 shopImageProgressBar.setVisibility(View.VISIBLE);
+                //RMartApplication.getInstance().removeCache(lShopImageUrl);
                 HttpsTrustManager.allowAllSSL();
                 imageLoader.get(lShopImageUrl, new ImageLoader.ImageListener() {
                     @Override

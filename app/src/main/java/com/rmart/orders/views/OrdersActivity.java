@@ -29,7 +29,7 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
                 addFragment(OrderListFragment.newInstance(stateOfOrders), "OrderListFragment", false);
 
                 if (toolbar != null) {
-                    setTitle(getResources().getString(R.string.app_name));
+                    //setTitle(getResources().getString(R.string.app_name));
                     Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
                     toolbar.setVisibility(View.INVISIBLE);
                     actionBarDrawerToggle.syncState();

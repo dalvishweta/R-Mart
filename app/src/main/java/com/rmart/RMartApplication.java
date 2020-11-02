@@ -54,6 +54,12 @@ public class RMartApplication extends Application {
         return this.mImageLoader;
     }
 
+    public void removeCache(String url) {
+        if(mRequestQueue != null) {
+            mRequestQueue.getCache().remove(url);
+        }
+    }
+
     public <T> void addToRequestQueue(Request<T> req, String tag) {
         // set the default tag if tag is empty
         int SOCKET_TIMEOUT = 60000; // 60 seconds

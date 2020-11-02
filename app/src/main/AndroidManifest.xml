@@ -69,6 +69,7 @@
         <activity
             android:name=".customer.views.CustomerHomeActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
             android:theme="@style/AppThemeNoActionBar" />

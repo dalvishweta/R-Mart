@@ -124,10 +124,10 @@ public class CustomerWishListFragment extends BaseFragment {
                                     wishListCart.addAll(shopWiseCartList);
                                     setAdapter(body.getMsg());
                                 } else {
-                                    showCloseDialog(null, body.getMsg());
+                                    showCloseDialog(null, getString(R.string.no_wish_list_found));
                                 }
                             } else {
-                                showCloseDialog(null, body.getMsg());
+                                showCloseDialog(null, getString(R.string.no_wish_list_found));
                             }
                         } else {
                             showCloseDialog(null, getString(R.string.no_information_available));

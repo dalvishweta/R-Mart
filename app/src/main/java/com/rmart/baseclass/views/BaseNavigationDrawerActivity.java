@@ -165,6 +165,12 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         }
     }
 
+    public void setTitle(String title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.badge_menu_drawer, menu);
@@ -312,7 +318,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             }
             actionBarDrawerToggle.syncState();
-            setTitle(getResources().getString(R.string.app_name));
+            //setTitle(getResources().getString(R.string.app_name));
         }
     }
 
@@ -374,7 +380,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
         actionBarDrawerToggle.syncState();
-        setTitle(getResources().getString(R.string.app_name));
+        //setTitle(getResources().getString(R.string.app_name));
     }
 
     @Override
@@ -383,7 +389,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         actionBarDrawerToggle.syncState();
-        setTitle(getResources().getString(R.string.app_name));
+        //setTitle(getResources().getString(R.string.app_name));
     }
 
     @Override

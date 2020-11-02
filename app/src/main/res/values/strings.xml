@@ -175,7 +175,6 @@
     <string name="gender">Gender</string>
     <string name="add_address">Add address</string>
     <string name="update_address">Update address</string>
-    <string name="address_list_item">Rajesh Agarwal #405, Abc Towers, 1-2 33, \nGandhi Nagar, Mumbai\n 523987</string>
     <string name="value_of_unit">Value</string>
     <string name="display_unit">1KG</string>
     <string name="no_information_available">No Information Available</string>
@@ -248,7 +247,6 @@
     <string name="cart">Cart</string>
     <string name="make_payment">Make Payment</string>
     <string name="shops_list">Shops List</string>
-    <string name="sample_address">Vamshee Krishna, 18-1814, Sagar road, Hanuman pent, miryalguda, Nalgonda district, Telangana</string>
     <string name="delivery_boy_number">Delivery Boy number</string>
     <string name="shopping_cart">Shopping Cart</string>
     <string name="contact_number">Contact Number</string>
@@ -279,7 +277,7 @@
     <string name="map_view">Map View</string>
     <string name="list_view">List View</string>
     <string name="runtime_permissions_txt">Please enable permissions from app settings.</string>
-    <string name="dialog_ok">Ok</string>
+    <string name="dialog_ok">OK</string>
     <string name="status">Status</string>
     <string name="select_reason_for_cancelling">Select Reason For Cancelling</string>
     <string name="submit">Submit</string>
@@ -328,6 +326,7 @@
     <string name="product_discard_alert">Are you sure wants to discard your Changes?</string>
     <string name="cart_is_empty">Cart is empty</string>
     <string name="allow_digits">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM </string>
+    <string name="allow_name">qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM </string>
     <string name="allow_number_digits">1234567890</string>
     <string name="allow_digits_with_out_space">qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM</string>
     <string name="allow_digits_for_address">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM -_,@#*/!$~()\&amp;</string>
@@ -336,15 +335,19 @@
     <string name="search_for_category">Search For Category</string>
     <string name="my_favourites">My Favourites</string>
     <string name="required_gender">"Gender is required. "</string>
-    <string name="password_strength_error"> Password should contain \n1) Must contains one digit from 0-9. \n2) Must contains one lowercase characters.\n3) Must contains one uppercase characters.\n4) Must contains one special symbols in the list \"@#$%\".\n5) Length at least 6 characters and maximum of 20.</string>
-<!--    <string name="password_strength_error">Password should contain  min of 8 characters and maximum of 11 characters</string>-->
+    <string name="password_strength_error"> Password should contain \n1) Must contains one digit from 0&#8211;9. \n2) Must contains one lowercase characters.\n3) Must contains one uppercase characters.\n4) Must contains one special symbols in the list \"@#$%\".\n5) Length at least 6 characters and maximum of 20.</string>
     <string name="confirm_password_strength_error">Confirm Password should contain  min of 8 characters and maximum of 11 characters</string>
     <string name="allow_digits_email">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM @-_.</string>
     <string name="delete_product_conformation">"Do you want to remove product from your inventory? "</string>
     <string name="invalid_pin_code">Invalid Pin Code</string>
     <string name="success_product_delete">Product deleted successfully.</string>
     <string name="cancel_status">Status: </string>
-    <string name="favourite_shop_details_delete_alert">Are you sure wants to delete Shop Details</string>
+    <string name="favourite_shop_details_delete_alert">Are you sure wants to delete shop from Favourites?</string>
     <string name="canceled_by_me">Cancelled by me</string>
     <string name="order_cancelled">Your order is successfully cancelled.</string>
+    <string name="shop_removed_from_favourites_successfully">Shop removed from favourites successfully</string>
+    <string name="shop_added_to_favourites_successfully">Shop Added to favourites successfully</string>
+    <string name="no_wish_list_found">You haven\'t Wish-Listed any product</string>
+    <string name="no_orders_placed_yet">No orders placed yet</string>
+    <string name="no_favourites_found">You haven\'t listed any shop as favourite</string>
 </resources>

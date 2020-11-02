@@ -5,16 +5,19 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.rmart.BuildConfig;
 import com.rmart.R;
+import com.rmart.customer.adapters.CustomSpinnerAdapter;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.RegistrationFeeStructure;
@@ -24,6 +27,7 @@ import com.rmart.utilits.services.AuthenticationService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -32,9 +36,11 @@ import retrofit2.Response;
 
 public class RegistrationFragment extends LoginBaseFragment implements View.OnClickListener {
 
-    AppCompatEditText tvFirstName, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
+    private AppCompatEditText tvFirstName, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
+    private String selectedGender;
 
     ArrayList<RegistrationFeeStructure> registrationFeeStructuresList = new ArrayList<>();
+
     public RegistrationFragment() {
         // Required empty public constructor
     }
@@ -81,10 +87,33 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         tvEmail = view.findViewById(R.id.email);
         tvPassword = view.findViewById(R.id.password);
         tvConformPassword = view.findViewById(R.id.confirm_password);
+        AppCompatSpinner genderSpinnerField = view.findViewById(R.id.gender_spinner_field);
 
-        LinearLayout  paymentBase = view.findViewById(R.id.payment_base);
+        List<Object> gendersList = new ArrayList<>();
+
+        gendersList.add(Utils.SELECT_YOUR_GENDER);
+        gendersList.add("Male");
+        gendersList.add("Female");
+        gendersList.add("Other");
+
+        genderSpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                selectedGender = (String) gendersList.get(pos);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        CustomSpinnerAdapter customStringAdapter = new CustomSpinnerAdapter(requireActivity(), gendersList);
+        genderSpinnerField.setAdapter(customStringAdapter);
+
+        LinearLayout paymentBase = view.findViewById(R.id.payment_base);
         paymentBase.removeAllViews();
-        if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
+        if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
             paymentBase.removeAllViews();
             paymentBase.setVisibility(View.VISIBLE);
             for (RegistrationFeeStructure feeStructure :
@@ -118,6 +147,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         password = Objects.requireNonNull(tvPassword.getText()).toString().trim();
         confirmPassword = Objects.requireNonNull(tvConformPassword.getText()).toString().trim();
         String passwordError = Utils.isValidPassword(password);
+        String confirmPasswordError = Utils.isValidPassword(confirmPassword);
         /*firstName = "ffff";
         lastName = "lllll";
         mobileNumber = "1234556";
@@ -129,6 +159,8 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             showDialog("", getString(R.string.error_full_name));
         } else if (lastName.length() <= 2) {
             showDialog("", getString(R.string.error_last_name));
+        } else if (TextUtils.isEmpty(selectedGender) || selectedGender.equalsIgnoreCase(Utils.SELECT_YOUR_GENDER)) {
+            showDialog(getString(R.string.required_gender));
         } else if (mobileNumber.length() <= 2) {
             showDialog("", getString(R.string.required_mobile_number));
         } else if (!Utils.isValidMobile(mobileNumber)) {
@@ -137,22 +169,24 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             showDialog("", getString(R.string.required_mail));
         } else if (!Utils.isValidEmail(email)) {
             showDialog("", getString(R.string.error_mail));
-        } else if (TextUtils.isEmpty(password) || password.length() <= 0) {
+        } else if (TextUtils.isEmpty(password)) {
             showDialog("", getString(R.string.error_empty_password));
-        } else if (passwordError.length()>0) {
+        } else if (!TextUtils.isEmpty(passwordError)) {
             showDialog("", passwordError);
-        }/* else if (TextUtils.isEmpty(confirmPassword) || confirmPassword.length() < Utils.MIN_PASSWORD_LENGTH) {
-            showDialog("", getString(R.string.confirm_password_strength_error));
-        }*/ else if (!confirmPassword.equals(password)) {
+        } else if (TextUtils.isEmpty(confirmPassword)) {
+            showDialog("", getString(R.string.error_empty_confirm_password));
+        } else if (!TextUtils.isEmpty(passwordError)) {
+            showDialog("", confirmPasswordError);
+        } else if (!confirmPassword.equals(password)) {
             showDialog("", getString(R.string.mismatch_confirm_password));
         } else {
-            if(!Utils.isNetworkConnected(requireActivity())) {
+            if (!Utils.isNetworkConnected(requireActivity())) {
                 showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
                 return;
             }
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-            authenticationService.registration(firstName, lastName, mobileNumber, email, password, getString(R.string.role_id), Utils.CLIENT_ID).enqueue(
+            authenticationService.registration(firstName, lastName, mobileNumber, email, selectedGender, password, getString(R.string.role_id), Utils.CLIENT_ID).enqueue(
                     new Callback<RegistrationResponse>() {
                         @Override
                         public void onResponse(@NotNull Call<RegistrationResponse> call, @NotNull Response<RegistrationResponse> response) {

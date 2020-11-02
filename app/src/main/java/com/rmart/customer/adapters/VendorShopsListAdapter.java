@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -101,6 +102,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
         holder.ivMessageField.setTag(position);
         holder.ivCallIconField.setTag(position);
         holder.ivFavouriteImageField.setTag(position);
+        holder.addressLayoutField.setTag(position);
     }
 
     @Override
@@ -126,6 +128,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
         ImageView ivCallIconField;
         ImageView ivMessageField;
         ProgressBarCircular progressBarCircular;
+        LinearLayout addressLayoutField;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -136,6 +139,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
             ivFavouriteImageField = itemView.findViewById(R.id.iv_favourite_image);
             ivCallIconField = itemView.findViewById(R.id.iv_call_field);
             ivMessageField = itemView.findViewById(R.id.iv_message_field);
+            addressLayoutField = itemView.findViewById(R.id.address_layout_field);
 
             progressBarCircular = itemView.findViewById(R.id.progress_circular_field);
             ivShopImageField.setOnClickListener(v -> {
@@ -166,6 +170,11 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
                 contentModel.setStatus(Constants.TAG_SHOP_FAVOURITE);
                 contentModel.setValue(selectedDetails);
                 callBackListener.callBackReceived(contentModel);
+            });
+            addressLayoutField.setOnClickListener(v -> {
+                int tag = (int) v.getTag();
+                CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);
+                callBackListener.callBackReceived(selectedDetails);
             });
         }
     }

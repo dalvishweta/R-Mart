@@ -8,11 +8,12 @@
 
     <RelativeLayout
         android:id="@+id/searchLayout"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="5dp"
         android:background="@drawable/grey_rounded_borders_bg"
         android:minHeight="40dp">
@@ -114,6 +115,7 @@
             android:button="@android:color/transparent"
             android:gravity="center"
             android:padding="8dp"
+            android:checked="true"
             android:text="@string/list_view"
             android:textColor="@drawable/txt_segmented" />
     </RadioGroup>
