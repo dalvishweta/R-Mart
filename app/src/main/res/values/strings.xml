@@ -347,7 +347,7 @@
     <string name="order_cancelled">Your order is successfully cancelled.</string>
     <string name="shop_removed_from_favourites_successfully">Shop removed from favourites successfully</string>
     <string name="shop_added_to_favourites_successfully">Shop Added to favourites successfully</string>
-    <string name="no_wish_list_found">You haven\'t Wish-Listed any product</string>
+    <string name="no_wish_list_found">You haven\'t wish-listed any product</string>
     <string name="no_orders_placed_yet">No orders placed yet</string>
     <string name="no_favourites_found">You haven\'t listed any shop as favourite</string>
 </resources>
