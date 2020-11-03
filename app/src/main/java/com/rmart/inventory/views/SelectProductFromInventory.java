@@ -28,6 +28,7 @@ import com.rmart.utilits.services.APIService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -168,8 +169,12 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
 
                 @Override
                 public void onFailure(@NotNull Call<APIProductListResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog("", t.getMessage());
                 }
             });
         } else if (listType.equalsIgnoreCase(Utils.CATEGORY)) {
@@ -207,8 +212,12 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                 }
                 @Override
                 public void onFailure(@NotNull Call<APIProductListResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog("", t.getMessage());
                 }
             });
         } else if (listType.equalsIgnoreCase(Utils.SUB_CATEGORY)) {
@@ -245,8 +254,12 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                 }
                 @Override
                 public void onFailure(@NotNull Call<APIProductListResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog("", t.getMessage());
                 }
             });
         }  else if (listType.equalsIgnoreCase(Utils.SUB_CATEGORY_PRODUCT)) {
@@ -283,8 +296,12 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                 }
                 @Override
                 public void onFailure(@NotNull Call<APIProductListResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog("", t.getMessage());
                 }
             });
         } else if (listType.equalsIgnoreCase(Utils.BRAND_PRODUCTS)) {
@@ -321,8 +338,12 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                 }
                 @Override
                 public void onFailure(@NotNull Call<APIProductListResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog("", t.getMessage());
                 }
             });
         } else {
@@ -360,8 +381,12 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                 }
                 @Override
                 public void onFailure(@NotNull Call<APIProductListResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog("", t.getMessage());
                 }
             });
         }

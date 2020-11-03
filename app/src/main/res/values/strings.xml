@@ -25,6 +25,7 @@
     <string name="last_name">Last Name</string>
     <string name="error_full_name">Please enter first name minimum of 3 characters</string>
     <string name="hint_conform_password">Confirm Password</string>
+    <string name="hint_conform_new_password">Confirm new password</string>
     <string name="hint_mail">Enter your E-Mail</string>
     <string name="required_mail">Email required .</string>
     <string name="error_mail">Please enter valid email.</string>
@@ -350,4 +351,5 @@
     <string name="no_wish_list_found">You haven\'t wish-listed any product</string>
     <string name="no_orders_placed_yet">No orders placed yet</string>
     <string name="no_favourites_found">You haven\'t listed any shop as favourite</string>
+    <string name="network_slow">Your network is unstable, please try again.</string>
 </resources>

@@ -22,6 +22,7 @@ import com.rmart.utilits.services.OrderService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -128,7 +129,11 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
 
                 @Override
                 public void onFailure(@NotNull Call<OrderStateListResponse> call, @NotNull Throwable t) {
-                    showDialog(t.getMessage());
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
                 }
             });

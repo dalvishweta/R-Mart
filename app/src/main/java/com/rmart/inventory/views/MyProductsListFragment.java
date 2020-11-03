@@ -30,6 +30,7 @@ import com.rmart.utilits.services.VendorInventoryService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -181,9 +182,13 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
 
             @Override
             public void onFailure(@NotNull Call<ProductListResponse> call, @NotNull Throwable t) {
-                showDialog("", t.getMessage());
-                mSwipeRefreshLayout.setRefreshing(false);
+                if(t instanceof SocketTimeoutException){
+                    showDialog("", getString(R.string.network_slow));
+                } else {
+                    showDialog("", t.getMessage());
+                }
                 progressDialog.dismiss();
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }

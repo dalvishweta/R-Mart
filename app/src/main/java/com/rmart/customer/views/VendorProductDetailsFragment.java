@@ -43,6 +43,7 @@ import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -264,8 +265,12 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<VendorProductDetailsResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    resetVendorProductDetails();
                 }
             });
         } else {
@@ -376,8 +381,12 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog(t.getMessage());
                 }
             });
         } else {
@@ -421,8 +430,12 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<AddShopToWishListResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog(t.getMessage());
                 }
             });
         } else {

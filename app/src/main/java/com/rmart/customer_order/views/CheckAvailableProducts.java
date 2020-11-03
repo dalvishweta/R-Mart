@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -127,8 +128,12 @@ public class CheckAvailableProducts extends BaseFragment {
 
                         @Override
                         public void onFailure(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Throwable t) {
+                            if(t instanceof SocketTimeoutException){
+                                showDialog("", getString(R.string.network_slow));
+                            } else {
+                                showDialog("", t.getMessage());
+                            }
                             progressDialog.dismiss();
-                            showCloseDialog(null, t.getMessage());
                         }
                     });
                 } else {
@@ -260,8 +265,12 @@ public class CheckAvailableProducts extends BaseFragment {
 
                         @Override
                         public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
+                            if(t instanceof SocketTimeoutException){
+                                showDialog("", getString(R.string.network_slow));
+                            } else {
+                                showDialog("", t.getMessage());
+                            }
                             progressDialog.dismiss();
-                            showDialog(null, t.getMessage());
                         }
                     });
                 } catch (Exception ex) {

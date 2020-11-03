@@ -40,6 +40,7 @@ import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -190,8 +191,12 @@ public class PaymentOptionsFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<ProductOrderedResponseModel> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog(t.getMessage());
                 }
             });
         } else {

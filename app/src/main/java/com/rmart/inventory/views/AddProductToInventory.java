@@ -59,6 +59,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -164,7 +165,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
 
             @Override
             public void onFailure(@NotNull Call<APIUnitMeasureListResponse> call, @NotNull Throwable t) {
-                showDialog("", t.getMessage());
+                if(t instanceof SocketTimeoutException){
+                    showDialog("", getString(R.string.network_slow));
+                } else {
+                    showDialog("", t.getMessage());
+                }
                 progressDialog.dismiss();
             }
         });
@@ -427,7 +432,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
 
                 @Override
                 public void onFailure(@NotNull Call<AddProductToInventoryResponse> call, @NotNull Throwable t) {
-                    showDialog("", t.getMessage());
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
                 }
             });
@@ -455,7 +464,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
 
                 @Override
                 public void onFailure(@NotNull Call<AddProductToInventoryResponse> call, @NotNull Throwable t) {
-                    showDialog(t.getMessage());
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
                 }
             });
@@ -640,7 +653,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
 
             @Override
             public void onFailure(@NotNull Call<APIBrandListResponse> call, @NotNull Throwable t) {
-                showDialog("", t.getMessage());
+                if(t instanceof SocketTimeoutException){
+                    showDialog("", getString(R.string.network_slow));
+                } else {
+                    showDialog("", t.getMessage());
+                }
                 progressDialog.dismiss();
             }
         });

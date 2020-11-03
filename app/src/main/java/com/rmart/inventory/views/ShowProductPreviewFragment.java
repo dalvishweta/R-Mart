@@ -38,6 +38,7 @@ import com.rmart.utilits.services.VendorInventoryService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -132,7 +133,11 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
 
             @Override
             public void onFailure(@NotNull Call<ShowProductResponse> call, @NotNull Throwable t) {
-                showDialog("", t.getMessage());
+                if(t instanceof SocketTimeoutException){
+                    showDialog("", getString(R.string.network_slow));
+                } else {
+                    showDialog("", t.getMessage());
+                }
                 progressDialog.dismiss();
             }
         });
@@ -191,7 +196,11 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
 
                         @Override
                         public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
-                            showDialog("", t.getMessage());
+                            if(t instanceof SocketTimeoutException){
+                                showDialog("", getString(R.string.network_slow));
+                            } else {
+                                showDialog("", t.getMessage());
+                            }
                             progressDialog.dismiss();
                         }
                     });

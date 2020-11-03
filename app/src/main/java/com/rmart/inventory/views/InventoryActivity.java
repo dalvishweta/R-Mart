@@ -138,6 +138,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
 
             @Override
             public void onFailure(@NotNull Call<APIStockListResponse> call, @NotNull Throwable t) {
+
             }
         });
     }

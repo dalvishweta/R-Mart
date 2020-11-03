@@ -30,6 +30,7 @@ import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -145,8 +146,12 @@ public class CustomerFavouritesFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog(t.getMessage());
                 }
             });
         } else {
@@ -201,8 +206,12 @@ public class CustomerFavouritesFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<ShopFavouritesListResponseModel> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showCloseDialog(null, t.getMessage());
                 }
             });
         } else {

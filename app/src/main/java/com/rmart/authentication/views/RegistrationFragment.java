@@ -26,6 +26,7 @@ import com.rmart.utilits.services.AuthenticationService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -220,7 +221,11 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
 
                         @Override
                         public void onFailure(@NotNull Call<RegistrationResponse> call, @NotNull Throwable t) {
-                            showDialog("", t.getMessage());
+                            if(t instanceof SocketTimeoutException){
+                                showDialog("", getString(R.string.network_slow));
+                            } else {
+                                showDialog("", t.getMessage());
+                            }
                             progressDialog.dismiss();
                         }
                     }

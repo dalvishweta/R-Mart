@@ -34,6 +34,7 @@ import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -201,9 +202,13 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<WishListResponseModel> call, @NotNull Throwable t) {
-                    progressDialog.dismiss();
                     swipeRefreshLayout.setRefreshing(false);
-                    showDialog(t.getMessage());
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
+                    progressDialog.dismiss();
                 }
             });
         } else {
@@ -283,8 +288,12 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
 
                     @Override
                     public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
+                        if(t instanceof SocketTimeoutException){
+                            showDialog("", getString(R.string.network_slow));
+                        } else {
+                            showDialog("", t.getMessage());
+                        }
                         progressDialog.dismiss();
-                        showDialog(t.getMessage());
                     }
                 });
             } else {
@@ -323,8 +332,12 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog(t.getMessage());
                 }
             });
         } else {

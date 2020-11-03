@@ -46,6 +46,7 @@ import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -173,8 +174,12 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<ProductDetailsDescResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showCloseDialog(t.getMessage());
                 }
             });
         } else {
@@ -473,8 +478,12 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog(t.getMessage());
                 }
             });
         } else {
@@ -524,8 +533,12 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog(t.getMessage());
                 }
             });
         } else {
@@ -570,8 +583,12 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<AddProductToWishListResponse> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showDialog(t.getMessage());
                 }
             });
         } else {

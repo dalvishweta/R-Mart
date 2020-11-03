@@ -20,6 +20,7 @@ import com.rmart.utilits.services.AuthenticationService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -94,8 +95,12 @@ public class ForgotPasswordFragment extends LoginBaseFragment {
 
             @Override
             public void onFailure(@NotNull Call<ForgotPasswordResponse> call, @NotNull Throwable t) {
+                if(t instanceof SocketTimeoutException){
+                    showDialog("", getString(R.string.network_slow));
+                } else {
+                    showDialog("", t.getMessage());
+                }
                 progressDialog.dismiss();
-                showDialog(t.getMessage());
             }
         });
     }

@@ -44,6 +44,7 @@ import com.rmart.utilits.services.VendorInventoryService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
@@ -406,7 +407,11 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
                 @Override
                 public void onFailure(@NotNull Call<ShowProductResponse> call, @NotNull Throwable t) {
-                    showDialog(t.getMessage(), null, false);
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
                 }
             });

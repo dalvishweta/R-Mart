@@ -23,6 +23,7 @@ import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -121,8 +122,12 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
 
                 @Override
                 public void onFailure(@NotNull Call<CustomerOrderedResponseModel> call, @NotNull Throwable t) {
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
-                    showCloseDialog(t.getMessage());
                 }
             });
         } else {

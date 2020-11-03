@@ -21,6 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
+import java.net.SocketTimeoutException;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -96,7 +98,12 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
 
             @Override
             public void onFailure(@NotNull Call<ResendOTPResponse> call, @NotNull Throwable t) {
-
+                if(t instanceof SocketTimeoutException){
+                    showDialog("", getString(R.string.network_slow));
+                } else {
+                    showDialog("", t.getMessage());
+                }
+                progressDialog.dismiss();
             }
         });
     }
@@ -137,7 +144,11 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
 
                 @Override
                 public void onFailure(@NotNull Call<ValidateOTP> call, @NotNull Throwable t) {
-                    showDialog("", t.getMessage());
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
                 }
             });

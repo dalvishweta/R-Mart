@@ -81,6 +81,7 @@
         android:drawableStart="@drawable/ic_rupee"
         android:hint="@string/price"
         android:inputType="numberDecimal"
+        android:digits="@string/allow_number_digits"
         style="@style/upload_product_item_field"
         android:maxLength="8" />
 
@@ -88,7 +89,7 @@
         android:id="@+id/discount"
         android:drawableStart="@drawable/ic_rupee_discount"
         android:hint="@string/discount"
-        android:inputType="number"
+        android:digits="@string/allow_number_digits"
         style="@style/upload_product_item_field"/>
 
     <androidx.appcompat.widget.AppCompatTextView
