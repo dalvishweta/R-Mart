@@ -9,9 +9,11 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -120,16 +122,29 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         Objects.requireNonNull(getDialog().getWindow()).setAttributes(params);
     }
 
+
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        super.onCreateDialog(savedInstanceState);
         LoggerInfo.printLog("DialogFragment", "AddUnitDialog");
-        return inflater.inflate(R.layout.fragment_add_unit, container, false);
+        Dialog dialog = new Dialog(requireActivity(), R.style.Theme_Custom_Dialog);
+        View view = View.inflate(requireActivity(), R.layout.fragment_add_unit, null);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(view);
+
+        dialog.setOnKeyListener((dialogInterface, keyCode, keyEvent) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                closeDialog();
+            }
+            return false;
+        });
+
+        loadUIComponents(view);
+        return dialog;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void loadUIComponents(View view) {
         discount = view.findViewById(R.id.discount);
         view.findViewById(R.id.close).setOnClickListener(this);
         actualPrice = view.findViewById(R.id.price);
@@ -238,7 +253,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-               updateQuantityDetails();
+                updateQuantityDetails();
             }
 
             @Override

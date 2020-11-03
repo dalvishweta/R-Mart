@@ -168,9 +168,17 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
 
         if (isEdit) {
             edit.setOnClickListener(v -> {
+                if(!Utils.isNetworkConnected(requireActivity())) {
+                    showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                    return;
+                }
                 mListener.updateProduct(product, true);
             });
             delete.setOnClickListener(v -> {
+                if(!Utils.isNetworkConnected(requireActivity())) {
+                    showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+                    return;
+                }
                 showConfirmationDialog(getString(R.string.delete_product_conformation), deleteView -> {
                     if(!Utils.isNetworkConnected(requireActivity())) {
                         showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));

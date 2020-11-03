@@ -35,7 +35,6 @@ import com.rmart.RMartApplication;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.baseclass.views.ProgressBarCircular;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
-import com.rmart.mapview.MapsFragment;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
@@ -209,11 +208,11 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                     imageLoader.get(lAadharFrontImageUrl, new ImageLoader.ImageListener() {
                         @Override
                         public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                            aadharFrontImageProgressBar.setVisibility(View.GONE);
                             Bitmap bitmap = response.getBitmap();
                             if (bitmap != null) {
                                 ivAadharFrontImageField.setLocalImageBitmap(bitmap);
                             }
+                            aadharFrontImageProgressBar.setVisibility(View.GONE);
                         }
 
                         @Override
@@ -223,10 +222,11 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                         }
                     });
                     ivAadharFrontImageField.setImageUrl(lAadharFrontImageUrl, RMartApplication.getInstance().getImageLoader());
+                }  else {
+                    ivAadharFrontImageField.setVisibility(View.GONE);
                 }
                 String lAadharBackImageUrl = addressResponse.getAadharBackImage();
                 if (!TextUtils.isEmpty(lAadharBackImageUrl)) {
-                    aadharBackImageProgressBar.setVisibility(View.VISIBLE);
                     HttpsTrustManager.allowAllSSL();
                     imageLoader.get(lAadharBackImageUrl, new ImageLoader.ImageListener() {
                         @Override
@@ -236,6 +236,7 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                             if (bitmap != null) {
                                 ivAadharBackImageField.setLocalImageBitmap(bitmap);
                             }
+                            aadharBackImageProgressBar.setVisibility(View.GONE);
                         }
 
                         @Override
@@ -245,20 +246,21 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                         }
                     });
                     ivAadharBackImageField.setImageUrl(lAadharBackImageUrl, RMartApplication.getInstance().getImageLoader());
+                }  else {
+                    aadharBackImageProgressBar.setVisibility(View.GONE);
                 }
                 String lPanCardImageUrl = addressResponse.getPanCardImage();
                 if (!TextUtils.isEmpty(lPanCardImageUrl)) {
-                    pancardProgressBar.setVisibility(View.VISIBLE);
                     HttpsTrustManager.allowAllSSL();
                     ivPanCardImageField.setImageUrl(lPanCardImageUrl, RMartApplication.getInstance().getImageLoader());
                     imageLoader.get(lPanCardImageUrl, new ImageLoader.ImageListener() {
                         @Override
                         public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                            pancardProgressBar.setVisibility(View.GONE);
                             Bitmap bitmap = response.getBitmap();
                             if (bitmap != null) {
                                 ivPanCardImageField.setLocalImageBitmap(bitmap);
                             }
+                            pancardProgressBar.setVisibility(View.GONE);
                         }
 
                         @Override
@@ -267,19 +269,20 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                             ivPanCardImageField.setBackgroundResource(R.drawable.ic_pan);
                         }
                     });
+                } else {
+                    pancardProgressBar.setVisibility(View.GONE);
                 }
                 String lShopImageUrl = addressResponse.getShopImage();
                 if (!TextUtils.isEmpty(lShopImageUrl)) {
-                    shopImageProgressBar.setVisibility(View.VISIBLE);
                     HttpsTrustManager.allowAllSSL();
                     imageLoader.get(lShopImageUrl, new ImageLoader.ImageListener() {
                         @Override
                         public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                            shopImageProgressBar.setVisibility(View.GONE);
                             Bitmap bitmap = response.getBitmap();
                             if (bitmap != null) {
                                 ivShopImageField.setLocalImageBitmap(bitmap);
                             }
+                            ivShopImageField.setBackgroundResource(R.drawable.ic_shop);
                         }
 
                         @Override
@@ -289,6 +292,8 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                         }
                     });
                     ivShopImageField.setImageUrl(lShopImageUrl, RMartApplication.getInstance().getImageLoader());
+                } else {
+                    shopImageProgressBar.setVisibility(View.GONE);
                 }
                 updateMapLocation();
             }
@@ -337,14 +342,14 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
             return;
         }
         this.googleMap = googleMap;
-        googleMap.setMyLocationEnabled(true);
         updateMapLocation();
     }
 
     private void updateMapLocation() {
         if(googleMap != null && addressResponse != null) {
+            googleMap.clear();
             LatLng latLng = new LatLng(addressResponse.getLatitude(), addressResponse.getLongitude());
-            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("I am here!");
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(addressResponse.getAddress());
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             googleMap.addMarker(markerOptions);

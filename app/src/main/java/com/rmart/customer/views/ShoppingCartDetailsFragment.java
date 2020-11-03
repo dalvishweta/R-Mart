@@ -83,9 +83,6 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
         Bundle extras = getArguments();
         if (extras != null) {
             vendorShoppingCartDetails = (ShoppingCartResponseDetails) extras.getSerializable("VendorShopDetails");
-            if(vendorShoppingCartDetails != null) {
-                //productId = vendorShoppingCartDetails.getProductId();
-            }
         }
     }
 
