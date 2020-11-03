@@ -25,7 +25,7 @@ public class ProgressBarCircular extends RelativeLayout {
 
     //int backgroundColor = Color.parseColor("#FF0000");
     private int backgroundColor;
-    private int progressColor;
+    private final int progressColor;
 
     float radius1 = 0;
     float radius2 = 0;

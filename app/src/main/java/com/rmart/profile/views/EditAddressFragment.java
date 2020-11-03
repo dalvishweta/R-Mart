@@ -250,13 +250,12 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
             String lAadharFrontImageUrl = myAddress.getAadharFrontImage();
             if (!TextUtils.isEmpty(lAadharFrontImageUrl)) {
-                aadharFrontImageProgressBar.setVisibility(View.VISIBLE);
                 HttpsTrustManager.allowAllSSL();
                 //RMartApplication.getInstance().removeCache(lAadharFrontImageUrl);
                 imageLoader.get(lAadharFrontImageUrl, new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        aadharFrontImageProgressBar.setVisibility(View.GONE);
+                        //aadharFrontImageProgressBar.setVisibility(View.GONE);
                         aadharFrontImageUrl = lAadharFrontImageUrl;
                         Bitmap bitmap = response.getBitmap();
                         if (bitmap != null) {
@@ -271,16 +270,17 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                     }
                 });
                 ivAadharFrontImageField.setImageUrl(lAadharFrontImageUrl, RMartApplication.getInstance().getImageLoader());
+            } else {
+                aadharFrontImageProgressBar.setVisibility(View.GONE);
             }
             String lAadharBackImageUrl = myAddress.getAadharBackImage();
             if (!TextUtils.isEmpty(lAadharBackImageUrl)) {
-                aadharBackImageProgressBar.setVisibility(View.VISIBLE);
                 HttpsTrustManager.allowAllSSL();
                 //RMartApplication.getInstance().removeCache(lAadharBackImageUrl);
                 imageLoader.get(lAadharBackImageUrl, new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        aadharBackImageProgressBar.setVisibility(View.GONE);
+                        //aadharBackImageProgressBar.setVisibility(View.GONE);
                         aadharBackImageUrl = lAadharBackImageUrl;
                         Bitmap bitmap = response.getBitmap();
                         if (bitmap != null) {
@@ -295,17 +295,18 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                     }
                 });
                 ivAadharBackImageField.setImageUrl(lAadharBackImageUrl, RMartApplication.getInstance().getImageLoader());
+            } else {
+                aadharBackImageProgressBar.setVisibility(View.GONE);
             }
             String lPanCardImageUrl = myAddress.getPanCardImage();
             if (!TextUtils.isEmpty(lPanCardImageUrl)) {
-                pancardProgressBar.setVisibility(View.VISIBLE);
                 //RMartApplication.getInstance().removeCache(lPanCardImageUrl);
                 HttpsTrustManager.allowAllSSL();
                 ivPanCardImageField.setImageUrl(lPanCardImageUrl, RMartApplication.getInstance().getImageLoader());
                 imageLoader.get(lPanCardImageUrl, new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        pancardProgressBar.setVisibility(View.GONE);
+                        //pancardProgressBar.setVisibility(View.GONE);
                         panCardImageUrl = lPanCardImageUrl;
                         Bitmap bitmap = response.getBitmap();
                         if (bitmap != null) {
@@ -319,16 +320,17 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                         ivPanCardImageField.setBackgroundResource(R.drawable.ic_pan);
                     }
                 });
+            } else {
+                pancardProgressBar.setVisibility(View.GONE);
             }
             String lShopImageUrl = myAddress.getShopImage();
             if (!TextUtils.isEmpty(lShopImageUrl)) {
-                shopImageProgressBar.setVisibility(View.VISIBLE);
                 //RMartApplication.getInstance().removeCache(lShopImageUrl);
                 HttpsTrustManager.allowAllSSL();
                 imageLoader.get(lShopImageUrl, new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        shopImageProgressBar.setVisibility(View.GONE);
+                        //shopImageProgressBar.setVisibility(View.GONE);
                         shopImageUrl = lShopImageUrl;
                         Bitmap bitmap = response.getBitmap();
                         if (bitmap != null) {
@@ -343,6 +345,8 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                     }
                 });
                 ivShopImageField.setImageUrl(lShopImageUrl, RMartApplication.getInstance().getImageLoader());
+            } else {
+                shopImageProgressBar.setVisibility(View.GONE);
             }
         }
         if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {

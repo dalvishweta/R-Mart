@@ -78,7 +78,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
             imageLoader.get(shopImageUrl, new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    holder.progressBarCircular.setVisibility(View.GONE);
+                    //holder.progressBarCircular.setVisibility(View.GONE);
                     Bitmap bitmap = response.getBitmap();
                     if (bitmap != null) {
                         holder.ivShopImageField.setLocalImageBitmap(bitmap);
