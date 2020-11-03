@@ -90,6 +90,7 @@
         android:drawableStart="@drawable/ic_rupee_discount"
         android:hint="@string/discount"
         android:digits="@string/allow_number_digits"
+        android:inputType="number"
         style="@style/upload_product_item_field"/>
 
     <androidx.appcompat.widget.AppCompatTextView
