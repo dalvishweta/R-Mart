@@ -6,4 +6,11 @@
         android:title="@string/cart"
         app:actionLayout="@layout/badge_menu"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/app_logo"
+        android:title="@string/app_logo"
+        app:actionLayout="@layout/app_logo"
+        app:showAsAction="always" />
+
 </menu>
