@@ -31,6 +31,7 @@ import com.rmart.utilits.services.AuthenticationService;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.SocketTimeoutException;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -84,8 +85,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
             LoggerInfo.printLog("FCM Token", deviceToken);
         });
 
-        etMobileNumber.setText(BuildConfig.LOGIN_USERNAME);
-        etPassword.setText(BuildConfig.LOGIN_PASSWORD);
+        /*etMobileNumber.setText(BuildConfig.LOGIN_USERNAME);
+        etPassword.setText(BuildConfig.LOGIN_PASSWORD);*/
         deviceToken = MyFirebaseMessagingService.getToken(this.requireContext());
     }
 
@@ -113,7 +114,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
             // mPassword = "12345";
-            authenticationService.login(deviceToken, mMobileNumber, mPassword).enqueue(new Callback<LoginResponse>() {
+            authenticationService.login(deviceToken, mMobileNumber, mPassword, BuildConfig.ROLE_ID).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
                     if (response.isSuccessful()) {
@@ -153,21 +154,29 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                         // mListener.goToProfileActivity();
                                         Objects.requireNonNull(requireActivity()).onBackPressed();
                                     } catch (Exception e) {
-                                        showDialog(e.getMessage());
+                                        if (data.getMsg().contains("role id")) {
+                                            showDialog("", getString(R.string.error_role_login));
+                                        } else {
+                                            showDialog(e.getMessage());
+                                        }
                                     }
                                 } else {
                                     showDialog("", getString(R.string.error_role_login));
                                 }
                             } else {
-                                showDialog("", data.getMsg(), (dialogInterface, i) -> {
-                                    if (data.getMsg().contains("verify")) {
-                                        resendOTP();
-                                    } else if (data.getMsg().contains("mail_verify")) {
-                                        mListener.validateMailOTP();
-                                    } else if (data.getMsg().contains("pay")) {
-                                        mListener.proceedToPayment(data.getPaymentData());
-                                    }
-                                });
+                                if (data.getMsg().contains("role id")) {
+                                    showDialog("", getString(R.string.error_role_login));
+                                } else {
+                                    showDialog("", data.getMsg(), (dialogInterface, i) -> {
+                                        if (data.getMsg().contains("verify")) {
+                                            resendOTP();
+                                        } else if (data.getMsg().contains("mail_verify")) {
+                                            mListener.validateMailOTP();
+                                        } else if (data.getMsg().contains("pay")) {
+                                            mListener.proceedToPayment(data.getPaymentData());
+                                        }
+                                    });
+                                }
                             }
                         } else {
                             showDialog(getString(R.string.no_information_available));
@@ -183,7 +192,11 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
 
                 @Override
                 public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
-                    showDialog("", t.getMessage());
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
                     progressDialog.dismiss();
                 }
             });
@@ -218,7 +231,12 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
 
                 @Override
                 public void onFailure(@NotNull Call<ResendOTPResponse> call, @NotNull Throwable t) {
-
+                    if(t instanceof SocketTimeoutException){
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
+                    progressDialog.dismiss();
                 }
             });
         } else {

@@ -355,4 +355,5 @@
     <string name="payment_success_message">Thank you for registration and on-boarding payment from RokadMart, with payment of Rs. 2360 has been successfully done.</string>
     <string name="app_logo">Rokad</string>
     <string name="loading">Loading</string>
+    <string name="invalid_PAN">Please enter valid PAN number.</string>
 </resources>

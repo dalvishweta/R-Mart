@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
+import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.authentication.OnAuthenticationClickedListener;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -73,7 +74,7 @@ public class ForgotPasswordFragment extends LoginBaseFragment {
         }
         progressDialog.show();
         AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-        authenticationService.forgotPassword(mobileNumber).enqueue(new Callback<ForgotPasswordResponse>() {
+        authenticationService.forgotPassword(mobileNumber, BuildConfig.ROLE_ID).enqueue(new Callback<ForgotPasswordResponse>() {
             @Override
             public void onResponse(@NotNull Call<ForgotPasswordResponse> call, @NotNull Response<ForgotPasswordResponse> response) {
                 if (response.isSuccessful()) {
@@ -82,7 +83,11 @@ public class ForgotPasswordFragment extends LoginBaseFragment {
                         if (data.getStatus().equalsIgnoreCase("Success")) {
                             showDialog("", String.format("%s otp: %s", data.getMsg(), data.getOtp()), (dialog, i) -> mListener.changePassword("otp", mobileNumber));
                         } else {
-                            showDialog(data.getMsg());
+                            if (data.getMsg().contains("role id")) {
+                                showDialog("", getString(R.string.error_role_login));
+                            } else {
+                                showDialog(data.getMsg());
+                            }
                         }
                     } else {
                         showDialog(getString(R.string.no_information_available));

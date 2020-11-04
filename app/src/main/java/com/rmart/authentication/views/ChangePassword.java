@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
+import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -128,7 +129,7 @@ public class ChangePassword extends LoginBaseFragment {
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
             if (mOTP.length() > 0) {
-                authenticationService.changePasswordOTP(mMobileNumber, otp, password).enqueue(new Callback<ChangePasswordResponse>() {
+                authenticationService.changePasswordOTP(mMobileNumber, otp, password, BuildConfig.ROLE_ID).enqueue(new Callback<ChangePasswordResponse>() {
                     @Override
                     public void onResponse(@NotNull Call<ChangePasswordResponse> call, @NotNull Response<ChangePasswordResponse> response) {
                         if (response.isSuccessful()) {
@@ -137,7 +138,12 @@ public class ChangePassword extends LoginBaseFragment {
                                 if (data.getStatus().contains("Success")) {
                                     showDialog("", data.getMsg(), (dialog, i) -> mListener.goToHomePage());
                                 } else {
-                                    showDialog(data.getMsg());
+                                    if (data.getMsg().contains("role id")) {
+                                        showDialog("", getString(R.string.error_role_login));
+                                    } else {
+                                        showDialog(data.getMsg());
+                                    }
+                                    // showDialog(data.getMsg());
                                 }
                             } else {
                                 showDialog(getString(R.string.no_information_available));
@@ -159,7 +165,7 @@ public class ChangePassword extends LoginBaseFragment {
                     }
                 });
             } else {
-                authenticationService.changePassword(mMobileNumber, otp, password).enqueue(new Callback<ChangePasswordResponse>() {
+                authenticationService.changePassword(mMobileNumber, otp, password, BuildConfig.ROLE_ID).enqueue(new Callback<ChangePasswordResponse>() {
                     @Override
                     public void onResponse(@NotNull Call<ChangePasswordResponse> call, @NotNull Response<ChangePasswordResponse> response) {
                         if (response.isSuccessful()) {
@@ -168,7 +174,11 @@ public class ChangePassword extends LoginBaseFragment {
                                 if (data.getStatus().contains("Success")) {
                                     showDialog("", data.getMsg(), (dialog, i) -> mListener.goToHomePage());
                                 } else {
-                                    showDialog(data.getMsg());
+                                    if (data.getMsg().contains("role id")) {
+                                        showDialog("", getString(R.string.error_role_login));
+                                    } else {
+                                        showDialog(data.getMsg());
+                                    }
                                 }
                             } else {
                                 showDialog(getString(R.string.no_information_available));

@@ -1,6 +1,7 @@
 package com.rmart.baseclass.views;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -175,6 +177,27 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.badge_menu_drawer, menu);
         menuItem = menu.findItem(R.id.badge_menu);
+        ((MenuItem)menu.findItem(R.id.app_logo)).getActionView().setOnClickListener(view -> {
+            MyProfile myProfile = MyProfile.getInstance();
+            if (myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
+                Intent in = new Intent(this, CustomerHomeActivity.class);
+                in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(in);
+                finish();
+            } else if (myProfile.getRoleID().equalsIgnoreCase(Utils.RETAILER_ID)) {
+                Intent in = new Intent(this, OrdersActivity.class);
+                in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(in);
+                finish();
+            } else if (myProfile.getRoleID().equalsIgnoreCase(Utils.DELIVERY_ID)) {Intent in = new Intent(this, OrdersActivity.class);
+                in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(in);
+                finish();
+            }
+
+
+            // Toast.makeText(getApplicationContext(),"Logo selected", Toast.LENGTH_SHORT).show();
+        });
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
             if (myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {

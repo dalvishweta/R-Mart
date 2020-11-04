@@ -7,7 +7,9 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -129,6 +131,27 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         mRetailerView = view.findViewById(R.id.retailer_view);
         tvShopName = view.findViewById(R.id.shop_name);
         tvPANNumber = view.findViewById(R.id.pan_number);
+        /*tvPANNumber.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+            }
+            @Override
+            public void afterTextChanged(Editable et) {
+                String s=et.toString();
+                if(!s.equals(s.toUpperCase()))
+                {
+                    s=s.toUpperCase();
+                    tvPANNumber.setText(s);
+                    tvPANNumber.setSelection(tvPANNumber.length()); //fix reverse texting
+                }
+            }
+        });*/
         tvGSTNumber = view.findViewById(R.id.gst_number);
         tvShopAct = view.findViewById(R.id.shop_act);
         tvStreetAddress = view.findViewById(R.id.street_address);
@@ -571,8 +594,14 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                 return;
             }
             String panCardNo = Objects.requireNonNull(tvPANNumber.getText()).toString().trim();
+            panCardNo = panCardNo.toUpperCase();
             if (TextUtils.isEmpty(panCardNo)) {
                 showDialog(getString(R.string.enter_your_pan_number));
+                return;
+            }
+            boolean data = Utils.isValidPanCardNo(panCardNo);
+            if (!data) {
+                showDialog(getString(R.string.invalid_PAN));
                 return;
             }
             if (TextUtils.isEmpty(panCardImageUrl)) {

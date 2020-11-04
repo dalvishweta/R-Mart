@@ -23,7 +23,8 @@ public interface AuthenticationService {
     @FormUrlEncoded
     Call<LoginResponse> login(@Field("device_id") String deviceKey,
                               @Field("username") String username,
-                              @Field("password") String password);
+                              @Field("password") String password,
+                              @Field("role_id") String role_id);
 
 
 /*    @GET(BuildConfig.REGISTRATION)
@@ -47,21 +48,24 @@ public interface AuthenticationService {
 
     @POST(BuildConfig.FORGOT_PASSWORD)
     @FormUrlEncoded
-    Call<ForgotPasswordResponse> forgotPassword(@Field("mobile_number") String mobile);
+    Call<ForgotPasswordResponse> forgotPassword(@Field("mobile_number") String mobile,
+                                                @Field("role_id") String role_id);
 
     @POST(BuildConfig.CHANGE_PASSWORD)
     @FormUrlEncoded
     Call<ChangePasswordResponse> changePassword(
             @Field("mobile") String mobileno,
             @Field("old_password") String old_password,
-            @Field("new_password") String new_password);
+            @Field("new_password") String new_password,
+            @Field("role_id") String role_id);
 
     @POST(BuildConfig.CHANGE_PASSWORD_OTP)
     @FormUrlEncoded
     Call<ChangePasswordResponse> changePasswordOTP(
             @Field("mobile") String mobileno,
             @Field("otp") String otp,
-            @Field("cpassword") String new_password);
+            @Field("cpassword") String new_password,
+            @Field("role_id") String role_id);
 
     @POST(BuildConfig.RESEND_OTP)
     @FormUrlEncoded

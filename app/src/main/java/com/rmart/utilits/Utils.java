@@ -265,4 +265,23 @@ public class Utils {
         bitmap.compress(Bitmap.CompressFormat.JPEG,10,out);
         return bitmap;
     }
+    public static boolean isValidPanCardNo(String panCardNo)
+    {
+        // Regex to check valid PAN Card number.
+        String regex = "[A-Z]{5}[0-9]{4}[A-Z]{1}";
+        // Compile the ReGex
+        Pattern p = Pattern.compile("[A-Z]{5}[0-9]{4}[A-Z]{1}");
+        // If the PAN Card number
+        // is empty return false
+        if (panCardNo == null) {
+            return false;
+        }
+        // Pattern class contains matcher() method
+        // to find matching between given
+        // PAN Card number using regular expression.
+        Matcher m = p.matcher(panCardNo);
+        // Return if the PAN Card number
+        // matched the ReGex
+        return m.matches();
+    }
 }
