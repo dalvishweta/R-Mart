@@ -29,7 +29,7 @@ public class VendorProductDetailsResponse extends BaseResponse {
         private List<CustomerProductDetailsModel> productsListData = null;
         @SerializedName("shop_data")
         @Expose
-        private VendorProductShopDataResponse vendorShopDetails;
+        private CustomerProductsShopDetailsModel vendorShopDetails;
 
         public List<CustomerProductDetailsModel> getProductsListData() {
             return productsListData;
@@ -39,11 +39,11 @@ public class VendorProductDetailsResponse extends BaseResponse {
             this.productsListData = productsListData;
         }
 
-        public VendorProductShopDataResponse getVendorShopDetails() {
+        public CustomerProductsShopDetailsModel getVendorShopDetails() {
             return vendorShopDetails;
         }
 
-        public void setVendorShopDetails(VendorProductShopDataResponse vendorShopDetails) {
+        public void setVendorShopDetails(CustomerProductsShopDetailsModel vendorShopDetails) {
             this.vendorShopDetails = vendorShopDetails;
         }
     }

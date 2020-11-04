@@ -1,17 +1,14 @@
 package com.rmart.profile.views;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.rmart.R;
-import com.rmart.baseclass.views.BaseActivity;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerProductDetailsModel;
@@ -20,7 +17,6 @@ import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
 import com.rmart.mapview.MapsFragment;
-import com.rmart.profile.OnMyProfileClickedListener;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.viewmodels.AddressViewModel;
 import com.rmart.utilits.pojos.AddressResponse;
@@ -42,17 +38,20 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
         }
 
         new ViewModelProvider(this).get(AddressViewModel.class);
-
-        if (MyProfile.getInstance().getPrimaryAddressId() == null || isAddNewAddress) {
-            AddressResponse addressResponse = new AddressResponse();
-            addressResponse.setId(-1);
-            editAddressFragment = EditAddressFragment.newInstance(isAddNewAddress, addressResponse);
-            replaceFragment(editAddressFragment, EditAddressFragment.class.getName(), false);
+        MyProfile myProfile = MyProfile.getInstance();
+        if (myProfile != null) {
+            String primaryAddressId = myProfile.getPrimaryAddressId();
+            if(TextUtils.isEmpty(primaryAddressId) || isAddNewAddress) {
+                AddressResponse addressResponse = new AddressResponse();
+                addressResponse.setId(-1);
+                editAddressFragment = EditAddressFragment.newInstance(isAddNewAddress, addressResponse);
+                replaceFragment(editAddressFragment, EditAddressFragment.class.getName(), false);
+            } else {
+                replaceFragment(ViewMyProfileFragment.newInstance(), ViewMyProfileFragment.class.getName(), false);
+            }
         } else {
             replaceFragment(ViewMyProfileFragment.newInstance(), ViewMyProfileFragment.class.getName(), false);
         }
-
-        // MyProfileViewModel myProfileViewModel = new ViewModelProvider(this).get(MyProfileViewModel.class);
     }
 
     @Override

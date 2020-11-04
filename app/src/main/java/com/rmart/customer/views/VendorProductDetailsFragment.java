@@ -31,7 +31,6 @@ import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.VendorProductDetailsResponse;
-import com.rmart.customer.models.VendorProductShopDataResponse;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.CommonUtils;
 import com.rmart.utilits.HttpsTrustManager;
@@ -66,7 +65,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
     private int currentPage = 0;
     private String searchProductName = "";
     private CustomerProductsShopDetailsModel productsShopDetailsModel;
-    private int productCategoryId = -1;
     private TextView tvShopNameField;
     private TextView tvPhoneNoField;
     private TextView tvViewAddressField;
@@ -138,7 +136,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
             etProductsSearchField.setText("");
             searchProductName = "";
             currentPage = 0;
-            productCategoryId = -1;
             CommonUtils.closeVirtualKeyboard(requireActivity(), ivSearchField);
         });
         etProductsSearchField.addTextChangedListener(new TextWatcher() {
@@ -215,7 +212,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
             if (status.equalsIgnoreCase(Constants.TAG_VIEW_ALL)) {
                 ProductBaseModel selectedProductCategoryDetails = (ProductBaseModel) contentModel.getValue();
                 currentPage = 0;
-                productCategoryId = selectedProductCategoryDetails.getProductCategoryId();
+                //productCategoryId = selectedProductCategoryDetails.getProductCategoryId();
                 onCustomerHomeInteractionListener.gotoVendorSameProductListScreen(selectedProductCategoryDetails, productsShopDetailsModel);
                 etProductsSearchField.setText("");
                 searchProductName = "";
@@ -225,7 +222,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
     private void getVendorProductDetails() {
         if (Utils.isNetworkConnected(requireActivity())) {
-            productCategoryId = -1;
+            //productCategoryId = -1;
             vendorProductsList.clear();
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
@@ -249,8 +246,8 @@ public class VendorProductDetailsFragment extends BaseFragment {
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
                                 List<CustomerProductDetailsModel> productDataList = body.getVendorProductDataResponse().getProductsListData();
-                                VendorProductShopDataResponse shopDataResponse = body.getVendorProductDataResponse().getVendorShopDetails();
-                                updateShopDetailsUI(shopDataResponse);
+                                productsShopDetailsModel = body.getVendorProductDataResponse().getVendorShopDetails();
+                                updateShopDetailsUI();
                                 updateAdapter(productDataList);
                             } else {
                                 showDialog(body.getMsg());
@@ -314,23 +311,26 @@ public class VendorProductDetailsFragment extends BaseFragment {
         return groupedHashMap;
     }
 
-    private void updateShopDetailsUI(VendorProductShopDataResponse shopDataResponse) {
-        requireActivity().setTitle(shopDataResponse.getShopName());
-        List<String> shopImagesList = shopDataResponse.getShopImage();
-        if(shopImagesList != null && !shopImagesList.isEmpty()) {
-            String shopImageUrl = shopImagesList.get(0);
-            if(!TextUtils.isEmpty(shopImageUrl)) {
-                HttpsTrustManager.allowAllSSL();
-                ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
-                imageLoader.get(shopImageUrl, ImageLoader.getImageListener(ivShopImageField,
-                        R.mipmap.ic_launcher, android.R.drawable
-                                .ic_dialog_alert));
-                ivShopImageField.setImageUrl(shopImageUrl, imageLoader);
+    private void updateShopDetailsUI() {
+        requireActivity().setTitle(productsShopDetailsModel.getShopName());
+        Object lShopImageObject = productsShopDetailsModel.getShopImage();
+        if(lShopImageObject instanceof String) {
+            List<String> shopImagesList = (List<String>) lShopImageObject;
+            if(!shopImagesList.isEmpty()) {
+                String shopImageUrl = shopImagesList.get(0);
+                if(!TextUtils.isEmpty(shopImageUrl)) {
+                    HttpsTrustManager.allowAllSSL();
+                    ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
+                    imageLoader.get(shopImageUrl, ImageLoader.getImageListener(ivShopImageField,
+                            R.mipmap.ic_launcher, android.R.drawable
+                                    .ic_dialog_alert));
+                    ivShopImageField.setImageUrl(shopImageUrl, imageLoader);
+                }
             }
         }
-        tvShopNameField.setText(shopDataResponse.getShopName());
-        tvViewAddressField.setText(shopDataResponse.getShopAddress());
-        tvPhoneNoField.setText(shopDataResponse.getShopMobileNo());
+        tvShopNameField.setText(productsShopDetailsModel.getShopName());
+        tvViewAddressField.setText(productsShopDetailsModel.getShopAddress());
+        tvPhoneNoField.setText(productsShopDetailsModel.getShopMobileNo());
     }
 
     private void performSearch() {

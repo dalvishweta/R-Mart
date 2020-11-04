@@ -79,13 +79,11 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private boolean isWishListProduct = false;
     private AutoScrollViewPager productsImagePagerField;
     private TextView expiryLabelField;
-    private TextView tvProductRegionalNameField;
 
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private TabLayout dotIndicatorLayoutField;
     private Button btnWishListField;
 
-    private boolean isAddToCartSelected = false;
     private AppCompatTextView tvProductRegionalName, tvProductExpiry, tvDeliveryDaysBeforeTime, tvDeliveryDaysAfterTime, tvOpeningTime, tvClosingTime;
 
     static ProductCartDetailsFragment getInstance(CustomerProductDetailsModel vendorProductDataDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
@@ -247,8 +245,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
             }
         });
-
-        //viewMoreLayoutField.setOnClickListener(v -> viewMoreSelected());
 
         btnAddToCartField.setOnClickListener(v -> addToCartSelected());
         btnWishListField.setOnClickListener(v -> {
@@ -456,7 +452,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
                         AddToCartResponseDetails body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                isAddToCartSelected = true;
                                 AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = body.getAddToCartDataResponse();
                                 if (addToCartDataResponse != null) {
                                     Integer totalCartCount = addToCartDataResponse.getTotalCartCount();

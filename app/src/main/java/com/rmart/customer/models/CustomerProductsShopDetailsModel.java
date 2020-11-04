@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Satya Seshu on 08/09/20.
@@ -23,7 +24,7 @@ public class CustomerProductsShopDetailsModel implements Serializable {
     private Integer vendorId;
     @SerializedName("shop_image")
     @Expose
-    private String shopImage;
+    private Object shopImage;
     @SerializedName("shop_address")
     @Expose
     private String shopAddress;
@@ -84,6 +85,18 @@ public class CustomerProductsShopDetailsModel implements Serializable {
     @Expose
     private String openingTime;
 
+    @SerializedName("delivery_charges")
+    @Expose
+    private Integer deliveryCharges;
+
+    public Integer getDeliveryCharges() {
+        return deliveryCharges;
+    }
+
+    public void setDeliveryCharges(Integer deliveryCharges) {
+        this.deliveryCharges = deliveryCharges;
+    }
+
     public String getShopMobileNo() {
         return shopMobileNo;
     }
@@ -100,11 +113,11 @@ public class CustomerProductsShopDetailsModel implements Serializable {
         this.vendorId = vendorId;
     }
 
-    public String getShopImage() {
+    public Object getShopImage() {
         return shopImage;
     }
 
-    public void setShopImage(String shopImage) {
+    public void setShopImage(Object shopImage) {
         this.shopImage = shopImage;
     }
 

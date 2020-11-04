@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
@@ -72,27 +71,34 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
         holder.tvPhoneNoField.setText(shopDetails.getShopMobileNo());
         holder.tvViewAddressField.setText(shopDetails.getShopAddress());
 
-        String shopImageUrl = shopDetails.getShopImage();
-        if(!TextUtils.isEmpty(shopImageUrl)) {
-            HttpsTrustManager.allowAllSSL();
-            imageLoader.get(shopImageUrl, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    //holder.progressBarCircular.setVisibility(View.GONE);
-                    Bitmap bitmap = response.getBitmap();
-                    if (bitmap != null) {
-                        holder.ivShopImageField.setLocalImageBitmap(bitmap);
+        Object lShopImageObject = shopDetails.getShopImage();
+        if (lShopImageObject instanceof String) {
+            String shopImageUrl = (String) lShopImageObject;
+            if (!TextUtils.isEmpty(shopImageUrl)) {
+                HttpsTrustManager.allowAllSSL();
+                imageLoader.get(shopImageUrl, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                        Bitmap bitmap = response.getBitmap();
+                        if (bitmap != null) {
+                            holder.ivShopImageField.setLocalImageBitmap(bitmap);
+                        }
+                        holder.progressBarLayout.setVisibility(View.GONE);
                     }
-                }
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    holder.progressBarCircular.setVisibility(View.GONE);
-                    holder.ivShopImageField.setBackgroundResource(android.R.drawable
-                            .ic_dialog_alert);
-                }
-            });
-            holder.ivShopImageField.setImageUrl(shopImageUrl, RMartApplication.getInstance().getImageLoader());
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        holder.progressBarLayout.setVisibility(View.GONE);
+                        holder.ivShopImageField.setBackgroundResource(android.R.drawable
+                                .ic_dialog_alert);
+                    }
+                });
+                holder.ivShopImageField.setImageUrl(shopImageUrl, RMartApplication.getInstance().getImageLoader());
+            } else {
+                holder.progressBarLayout.setVisibility(View.GONE);
+            }
+        } else {
+            holder.progressBarLayout.setVisibility(View.GONE);
         }
 
         boolean isWishListShop = shopDetails.getShopWishListStatus() == 1;
@@ -127,7 +133,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
         ImageView ivFavouriteImageField;
         ImageView ivCallIconField;
         ImageView ivMessageField;
-        ProgressBarCircular progressBarCircular;
+        LinearLayout progressBarLayout;
         LinearLayout addressLayoutField;
 
         public ViewHolder(@NonNull View itemView) {
@@ -141,7 +147,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
             ivMessageField = itemView.findViewById(R.id.iv_message_field);
             addressLayoutField = itemView.findViewById(R.id.address_layout_field);
 
-            progressBarCircular = itemView.findViewById(R.id.progress_circular_field);
+            progressBarLayout = itemView.findViewById(R.id.progress_layout_field);
             ivShopImageField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
                 CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);

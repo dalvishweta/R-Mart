@@ -31,7 +31,6 @@ import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.baseclass.views.ProgressBarCircular;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.mapview.MapsFragment;
 import com.rmart.orders.views.OrdersActivity;
@@ -53,6 +52,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.SocketTimeoutException;
+import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -669,10 +669,15 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 showDialog(getString(R.string.address_is_added), pObject -> {
-                                    MyProfile.getInstance().setPrimaryAddressId(data.getResponse().get(0).getId().toString());
-                                    MyProfile.getInstance().setAddressResponses(data.getResponse());
-                                    if (isAddNewAddress) {
-                                        gotoCustomerHomeScreen();
+                                    List<AddressResponse> addressesList = data.getResponse();
+                                    int size = addressesList.size();
+                                    if (size > 0) {
+                                        AddressResponse lastAddressDetails = addressesList.get(size - 1);
+                                        MyProfile.getInstance().setPrimaryAddressId(lastAddressDetails.getId().toString());
+                                        MyProfile.getInstance().setAddressResponses(data.getResponse());
+                                        if (isAddNewAddress) {
+                                            gotoCustomerHomeScreen();
+                                        }
                                     }
                                     Objects.requireNonNull(requireActivity()).onBackPressed();
                                 });

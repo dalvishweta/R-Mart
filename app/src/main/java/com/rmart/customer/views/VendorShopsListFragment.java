@@ -266,7 +266,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
             try {
-                MutableLiveData<Integer> cartCountMutable = myProfile.getCartCount();
                 int cartCount = myProfile.getCartCount().getValue();
                 if (cartCount > 0) {
                     ((CustomerHomeActivity) (requireActivity())).showCartIcon();
@@ -534,7 +533,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
         Marker marker = googleMap.addMarker(markerOptions);
-        marker.showInfoWindow();
+        //marker.showInfoWindow();
         addCircleToMap();
     }
 
@@ -546,6 +545,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 if (isCoordinatesValid) {
                     LatLng latLng = new LatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
                     MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(shopDetailsModel.getShopName());
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
                     Marker marker = googleMap.addMarker(markerOptions);
                     marker.showInfoWindow();
                 }

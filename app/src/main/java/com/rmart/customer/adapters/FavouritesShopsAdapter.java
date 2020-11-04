@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -64,27 +65,34 @@ public class FavouritesShopsAdapter extends RecyclerView.Adapter<FavouritesShops
         holder.tvViewAddressField.setText(favouritesListData.getShopAddress());
         holder.btnRemoveField.setTag(position);
         holder.shopDetailsLayoutField.setTag(position);
-        String shopImageUrl = favouritesListData.getShopImage();
-        if(!TextUtils.isEmpty(shopImageUrl)) {
-            HttpsTrustManager.allowAllSSL();
-            imageLoader.get(shopImageUrl, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    holder.progressBarCircular.setVisibility(View.GONE);
-                    Bitmap bitmap = response.getBitmap();
-                    if (bitmap != null) {
-                        holder.ivShopImageField.setLocalImageBitmap(bitmap);
+        Object lShopImageObject = favouritesListData.getShopImage();
+        if (lShopImageObject instanceof String) {
+            String shopImageUrl = (String) lShopImageObject;
+            if (!TextUtils.isEmpty(shopImageUrl)) {
+                HttpsTrustManager.allowAllSSL();
+                imageLoader.get(shopImageUrl, new ImageLoader.ImageListener() {
+                    @Override
+                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                        Bitmap bitmap = response.getBitmap();
+                        if (bitmap != null) {
+                            holder.ivShopImageField.setLocalImageBitmap(bitmap);
+                        }
+                        holder.progressBarLayout.setVisibility(View.GONE);
                     }
-                }
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    holder.progressBarCircular.setVisibility(View.GONE);
-                    holder.ivShopImageField.setBackgroundResource(android.R.drawable
-                            .ic_dialog_alert);
-                }
-            });
-            holder.ivShopImageField.setImageUrl(shopImageUrl, RMartApplication.getInstance().getImageLoader());
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        holder.progressBarLayout.setVisibility(View.GONE);
+                        holder.ivShopImageField.setBackgroundResource(android.R.drawable
+                                .ic_dialog_alert);
+                    }
+                });
+                holder.ivShopImageField.setImageUrl(shopImageUrl, RMartApplication.getInstance().getImageLoader());
+            } else {
+                holder.progressBarLayout.setVisibility(View.GONE);
+            }
+        } else {
+            holder.progressBarLayout.setVisibility(View.GONE);
         }
     }
 
@@ -99,7 +107,7 @@ public class FavouritesShopsAdapter extends RecyclerView.Adapter<FavouritesShops
         TextView tvShopNameField;
         TextView tvViewAddressField;
         AppCompatButton btnRemoveField;
-        ProgressBarCircular progressBarCircular;
+        LinearLayout progressBarLayout;
         RelativeLayout shopDetailsLayoutField;
 
         public ViewHolder(@NonNull View itemView) {
@@ -108,7 +116,7 @@ public class FavouritesShopsAdapter extends RecyclerView.Adapter<FavouritesShops
             tvShopNameField = itemView.findViewById(R.id.tv_shop_name_field);
             tvViewAddressField = itemView.findViewById(R.id.tv_shop_address_field);
             btnRemoveField = itemView.findViewById(R.id.btn_remove_field);
-            progressBarCircular = itemView.findViewById(R.id.progress_circular_field);
+            progressBarLayout = itemView.findViewById(R.id.progress_layout_field);
             shopDetailsLayoutField = itemView.findViewById(R.id.shop_details_layout_field);
 
             btnRemoveField.setOnClickListener(v -> {
