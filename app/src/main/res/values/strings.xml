@@ -352,5 +352,7 @@
     <string name="no_orders_placed_yet">No orders placed yet</string>
     <string name="no_favourites_found">You haven\'t listed any shop as favourite</string>
     <string name="network_slow">Your network is unstable, please try again.</string>
+    <string name="payment_success_message">Thank you for registration and on-boarding payment from RokadMart, with payment of Rs. 2360 has been successfully done.</string>
     <string name="app_logo">Rokad</string>
+    <string name="loading">Loading</string>
 </resources>

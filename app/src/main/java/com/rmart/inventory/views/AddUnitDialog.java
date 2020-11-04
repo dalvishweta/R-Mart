@@ -351,7 +351,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             }
             String _actualPrice = Objects.requireNonNull(actualPrice.getText()).toString().trim();
             String _quantity = Objects.requireNonNull(quantity.getText()).toString().trim();
-            int valueOfUnitValue = Utils.getIntegerValueFromString(valueOfUnit.getText().toString().trim());
+            int valueOfUnitValue = Utils.getIntegerValueFromString(Objects.requireNonNull(valueOfUnit.getText()).toString().trim());
             if (valueOfUnitValue <= 0) {
                 Toast.makeText(getContext(), R.string.error_unit_value, Toast.LENGTH_SHORT).show();
             } else if (_actualPrice.length() <= 0) {

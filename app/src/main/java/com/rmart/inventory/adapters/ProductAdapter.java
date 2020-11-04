@@ -1,6 +1,7 @@
 package com.rmart.inventory.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.rmart.R;
 import com.rmart.RMartApplication;
@@ -111,8 +113,25 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
         }
         if (!TextUtils.isEmpty(imageUrl)) {
             HttpsTrustManager.allowAllSSL();
-            imageLoader.get(imageUrl, ImageLoader.getImageListener(holder.itemImg, R.mipmap.ic_launcher, R.mipmap.ic_launcher));
+            imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    Bitmap bitmap = response.getBitmap();
+                    if (bitmap != null) {
+                        holder.itemImg.setLocalImageBitmap(bitmap);
+                    }
+                    holder.progressLayoutField.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    holder.progressLayoutField.setVisibility(View.GONE);
+                    holder.itemImg.setBackgroundResource(R.drawable.ic_header);
+                }
+            });
             holder.itemImg.setImageUrl(imageUrl, RMartApplication.getInstance().getImageLoader());
+        } else {
+            holder.progressLayoutField.setVisibility(View.GONE);
         }
     }
 

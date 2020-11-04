@@ -11,6 +11,6 @@
         android:id="@+id/app_logo"
         android:title="@string/app_logo"
         app:actionLayout="@layout/app_logo"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 </menu>

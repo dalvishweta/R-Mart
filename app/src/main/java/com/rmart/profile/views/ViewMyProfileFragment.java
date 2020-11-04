@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,10 +57,10 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
     private GoogleMap googleMap;
     private OnCustomerHomeInteractionListener mListener;
     private ImageLoader imageLoader;
-    private ProgressBarCircular aadharFrontImageProgressBar;
-    private ProgressBarCircular aadharBackImageProgressBar;
-    private ProgressBarCircular pancardProgressBar;
-    private ProgressBarCircular shopImageProgressBar;
+    private LinearLayout aadharFrontImageProgressLayout;
+    private LinearLayout aadharBackImageProgressLayout;
+    private LinearLayout panCardProgressLayout;
+    private LinearLayout shopImageProgressLayout;
     private CustomNetworkImageView ivAadharFrontImageField, ivAadharBackImageField, ivPanCardImageField, ivShopImageField;
 
     public ViewMyProfileFragment() {
@@ -165,10 +166,10 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
         ivAadharBackImageField = view.findViewById(R.id.iv_aadhar_back_image_field);
         ivPanCardImageField = view.findViewById(R.id.iv_pan_card_no_image_field);
         ivShopImageField = view.findViewById(R.id.iv_shop_image_field);
-        aadharFrontImageProgressBar = view.findViewById(R.id.aadhar_front_progress_bar);
-        aadharBackImageProgressBar = view.findViewById(R.id.aadhar_back_progress_bar);
-        pancardProgressBar = view.findViewById(R.id.pan_progress_bar);
-        shopImageProgressBar = view.findViewById(R.id.shop_image_progress_bar);
+        aadharFrontImageProgressLayout = view.findViewById(R.id.aadhar_front_progress_layout_field);
+        aadharBackImageProgressLayout = view.findViewById(R.id.aadhar_back_progress_layout_field);
+        panCardProgressLayout = view.findViewById(R.id.pan_card_progress_layout_field);
+        shopImageProgressLayout = view.findViewById(R.id.shop_image_progress_layout_field);
         tvAadharNoField = view.findViewById(R.id.tv_aadhar_number_no_field);
 
         setRetailerAddressData();
@@ -203,7 +204,6 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
 
                 String lAadharFrontImageUrl = addressResponse.getAadharFrontImage();
                 if (!TextUtils.isEmpty(lAadharFrontImageUrl)) {
-                    aadharFrontImageProgressBar.setVisibility(View.VISIBLE);
                     HttpsTrustManager.allowAllSSL();
                     imageLoader.get(lAadharFrontImageUrl, new ImageLoader.ImageListener() {
                         @Override
@@ -212,12 +212,12 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                             if (bitmap != null) {
                                 ivAadharFrontImageField.setLocalImageBitmap(bitmap);
                             }
-                            aadharFrontImageProgressBar.setVisibility(View.GONE);
+                            aadharFrontImageProgressLayout.setVisibility(View.GONE);
                         }
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            aadharFrontImageProgressBar.setVisibility(View.GONE);
+                            aadharFrontImageProgressLayout.setVisibility(View.GONE);
                             ivAadharFrontImageField.setBackgroundResource(R.drawable.ic_aadhar_front);
                         }
                     });
@@ -231,23 +231,22 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                     imageLoader.get(lAadharBackImageUrl, new ImageLoader.ImageListener() {
                         @Override
                         public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                            aadharBackImageProgressBar.setVisibility(View.GONE);
                             Bitmap bitmap = response.getBitmap();
                             if (bitmap != null) {
                                 ivAadharBackImageField.setLocalImageBitmap(bitmap);
                             }
-                            aadharBackImageProgressBar.setVisibility(View.GONE);
+                            aadharBackImageProgressLayout.setVisibility(View.GONE);
                         }
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            aadharBackImageProgressBar.setVisibility(View.GONE);
+                            aadharBackImageProgressLayout.setVisibility(View.GONE);
                             ivAadharBackImageField.setBackgroundResource(R.drawable.ic_aadhar_back);
                         }
                     });
                     ivAadharBackImageField.setImageUrl(lAadharBackImageUrl, RMartApplication.getInstance().getImageLoader());
                 }  else {
-                    aadharBackImageProgressBar.setVisibility(View.GONE);
+                    aadharBackImageProgressLayout.setVisibility(View.GONE);
                 }
                 String lPanCardImageUrl = addressResponse.getPanCardImage();
                 if (!TextUtils.isEmpty(lPanCardImageUrl)) {
@@ -260,17 +259,17 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                             if (bitmap != null) {
                                 ivPanCardImageField.setLocalImageBitmap(bitmap);
                             }
-                            pancardProgressBar.setVisibility(View.GONE);
+                            panCardProgressLayout.setVisibility(View.GONE);
                         }
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            pancardProgressBar.setVisibility(View.GONE);
+                            panCardProgressLayout.setVisibility(View.GONE);
                             ivPanCardImageField.setBackgroundResource(R.drawable.ic_pan);
                         }
                     });
                 } else {
-                    pancardProgressBar.setVisibility(View.GONE);
+                    panCardProgressLayout.setVisibility(View.GONE);
                 }
                 String lShopImageUrl = addressResponse.getShopImage();
                 if (!TextUtils.isEmpty(lShopImageUrl)) {
@@ -282,18 +281,18 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                             if (bitmap != null) {
                                 ivShopImageField.setLocalImageBitmap(bitmap);
                             }
-                            ivShopImageField.setBackgroundResource(R.drawable.ic_shop);
+                            shopImageProgressLayout.setVisibility(View.GONE);
                         }
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            shopImageProgressBar.setVisibility(View.GONE);
+                            shopImageProgressLayout.setVisibility(View.GONE);
                             ivShopImageField.setBackgroundResource(R.drawable.ic_shop);
                         }
                     });
                     ivShopImageField.setImageUrl(lShopImageUrl, RMartApplication.getInstance().getImageLoader());
                 } else {
-                    shopImageProgressBar.setVisibility(View.GONE);
+                    shopImageProgressLayout.setVisibility(View.GONE);
                 }
                 updateMapLocation();
             }

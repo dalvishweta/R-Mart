@@ -48,12 +48,6 @@
                 android:elevation="10dp"
                 app:cardCornerRadius="8dp">
 
-                <com.rmart.baseclass.views.ProgressBarCircular
-                    android:id="@+id/shop_image_progress_bar"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center" />
-
                 <com.rmart.utilits.custom_views.CustomNetworkImageView
                     android:id="@+id/iv_shop_image_field"
                     android:layout_width="120dp"
@@ -61,6 +55,30 @@
                     android:background="@drawable/ic_shop"
                     android:contentDescription="@string/app_name"
                     android:scaleType="fitXY" />
+
+                <LinearLayout
+                    android:id="@+id/shop_image_progress_layout_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.rmart.baseclass.views.ProgressBarCircular
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        style="@style/text_style_small_bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/loading"
+                        android:textColor="@color/colorPrimary" />
+
+                </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
@@ -209,12 +227,6 @@
                     android:layout_margin="5dp"
                     android:elevation="10dp">
 
-                    <com.rmart.baseclass.views.ProgressBarCircular
-                        android:id="@+id/aadhar_front_progress_bar"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center" />
-
                     <com.rmart.utilits.custom_views.CustomNetworkImageView
                         android:id="@+id/iv_aadhar_front_image_field"
                         android:layout_width="120dp"
@@ -223,7 +235,29 @@
                         android:contentDescription="@string/app_name"
                         android:scaleType="fitXY" />
 
+                    <LinearLayout
+                        android:id="@+id/aadhar_front_progress_layout_field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
+                        <com.rmart.baseclass.views.ProgressBarCircular
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center" />
+
+                        <TextView
+                            style="@style/text_style_small_bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/loading"
+                            android:textColor="@color/colorPrimary" />
+
+                    </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
 
@@ -234,12 +268,6 @@
                     android:layout_margin="5dp"
                     android:elevation="10dp">
 
-                    <com.rmart.baseclass.views.ProgressBarCircular
-                        android:id="@+id/aadhar_back_progress_bar"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center" />
-
                     <com.rmart.utilits.custom_views.CustomNetworkImageView
                         android:id="@+id/iv_aadhar_back_image_field"
                         android:layout_width="120dp"
@@ -247,6 +275,30 @@
                         android:background="@drawable/ic_aadhar_back"
                         android:contentDescription="@string/app_name"
                         android:scaleType="fitXY" />
+
+                    <LinearLayout
+                        android:id="@+id/aadhar_back_progress_layout_field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <com.rmart.baseclass.views.ProgressBarCircular
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center" />
+
+                        <TextView
+                            style="@style/text_style_small_bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/loading"
+                            android:textColor="@color/colorPrimary" />
+
+                    </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
@@ -268,12 +320,6 @@
                 android:layout_marginTop="10dp"
                 android:elevation="10dp">
 
-                <com.rmart.baseclass.views.ProgressBarCircular
-                    android:id="@+id/pan_progress_bar"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center" />
-
                 <com.rmart.utilits.custom_views.CustomNetworkImageView
                     android:id="@+id/iv_pan_card_no_image_field"
                     android:layout_width="120dp"
@@ -281,6 +327,30 @@
                     android:background="@drawable/ic_pan"
                     android:contentDescription="@string/app_name"
                     android:scaleType="fitXY" />
+
+                <LinearLayout
+                    android:id="@+id/pan_card_progress_layout_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <com.rmart.baseclass.views.ProgressBarCircular
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        style="@style/text_style_small_bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/loading"
+                        android:textColor="@color/colorPrimary" />
+
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
 

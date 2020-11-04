@@ -85,7 +85,7 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
                     ResendOTPResponse data = response.body();
                     if(data != null) {
                         if (data.getStatus().equals("Success")) {
-                            showDialog("", data.getMsg() + " OTP: " + data.getOtp());
+                            showDialog(getString(R.string.payment_success_message));
                         } else {
                             showDialog("", data.getMsg());
                         }
