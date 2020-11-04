@@ -256,12 +256,12 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                 imageLoader.get(lAadharFrontImageUrl, new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        //aadharFrontImageProgressBar.setVisibility(View.GONE);
                         aadharFrontImageUrl = lAadharFrontImageUrl;
                         Bitmap bitmap = response.getBitmap();
                         if (bitmap != null) {
                             ivAadharFrontImageField.setLocalImageBitmap(bitmap);
                         }
+                        aadharFrontImageProgressBar.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -287,6 +287,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                         if (bitmap != null) {
                             ivAadharBackImageField.setLocalImageBitmap(bitmap);
                         }
+                        aadharBackImageProgressBar.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -313,6 +314,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                         if (bitmap != null) {
                             ivPanCardImageField.setLocalImageBitmap(bitmap);
                         }
+                        pancardProgressBar.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -331,12 +333,12 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                 imageLoader.get(lShopImageUrl, new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        //shopImageProgressBar.setVisibility(View.GONE);
                         shopImageUrl = lShopImageUrl;
                         Bitmap bitmap = response.getBitmap();
                         if (bitmap != null) {
                             ivShopImageField.setLocalImageBitmap(bitmap);
                         }
+                        shopImageProgressBar.setVisibility(View.GONE);
                     }
 
                     @Override
