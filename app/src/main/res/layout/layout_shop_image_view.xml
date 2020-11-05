@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/shop_image_layout_field"
     android:layout_width="120dp"
     android:layout_height="80dp"
+    android:background="@drawable/ic_shop"
     app:cardCornerRadius="8dp">
 
     <LinearLayout
@@ -33,9 +34,8 @@
         android:id="@+id/iv_shop_image_field"
         android:layout_width="120dp"
         android:layout_height="80dp"
-        android:background="@drawable/ic_shop"
         android:contentDescription="@string/app_name"
         android:scaleType="fitXY"
         android:visibility="gone" />
 
-</androidx.cardview.widget.CardView>
+</RelativeLayout>
