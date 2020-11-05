@@ -19,7 +19,6 @@ import com.android.volley.toolbox.ImageLoader;
 import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.inventory.views.viewholders.ProductViewHolder;
-import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.ProductResponse;
 
@@ -28,14 +27,14 @@ import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> implements Filterable {
 
-    private View.OnClickListener onClickListener;
+    private final View.OnClickListener onClickListener;
     private ArrayList<ProductResponse> productList;
     private List<ProductResponse> filteredListData;
     private MyFilter myFilter;
-    private int columnCount;
-    private ImageLoader imageLoader;
-    private LayoutInflater layoutInflater;
-    private String type;
+    private final int columnCount;
+    private final ImageLoader imageLoader;
+    private final LayoutInflater layoutInflater;
+
     public ProductAdapter(Context context, ArrayList<ProductResponse> productList, View.OnClickListener onClickListener, int columnCount) {
         this.onClickListener = onClickListener;
         this.productList = productList;
@@ -111,8 +110,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
         if (TextUtils.isEmpty(imageUrl)) {
             imageUrl = product.getProductImage();
         }
+
+        /*holder.itemImg.setVisibility(View.GONE);
+        holder.progressLayoutField.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(imageUrl)) {
-            HttpsTrustManager.allowAllSSL();
             imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
                 @Override
                 public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
@@ -120,32 +121,53 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
                     if (bitmap != null) {
                         holder.itemImg.setLocalImageBitmap(bitmap);
                     }
+                    holder.itemImg.setVisibility(View.VISIBLE);
                     holder.progressLayoutField.setVisibility(View.GONE);
                 }
 
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     holder.progressLayoutField.setVisibility(View.GONE);
-                    holder.itemImg.setBackgroundResource(R.drawable.ic_header);
+                    holder.itemImg.setVisibility(View.VISIBLE);
+                    holder.itemImg.setBackgroundResource(android.R.drawable.ic_dialog_alert);
                 }
             });
-            holder.itemImg.setImageUrl(imageUrl, RMartApplication.getInstance().getImageLoader());
         } else {
             holder.progressLayoutField.setVisibility(View.GONE);
+            holder.itemImg.setVisibility(View.VISIBLE);
+            holder.itemImg.setBackgroundResource(android.R.drawable.ic_dialog_alert);
+        }*/
+        holder.itemImg.setVisibility(View.GONE);
+        holder.progressLayoutField.setVisibility(View.VISIBLE);
+
+        if (!TextUtils.isEmpty(imageUrl)) {
+            imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    Bitmap bitmap = response.getBitmap();
+                    if (bitmap != null) {
+                        holder.itemImg.setLocalImageBitmap(bitmap);
+                    }
+                    holder.itemImg.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    holder.progressLayoutField.setVisibility(View.GONE);
+                    holder.itemImg.setVisibility(View.VISIBLE);
+                    holder.itemImg.setBackgroundResource(android.R.drawable.ic_dialog_alert);
+                }
+            });
+        } else {
+            holder.progressLayoutField.setVisibility(View.GONE);
+            holder.itemImg.setVisibility(View.VISIBLE);
+            holder.itemImg.setBackgroundResource(android.R.drawable.ic_dialog_alert);
         }
     }
 
     @Override
     public int getItemCount() {
         return filteredListData.size();
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     @Override

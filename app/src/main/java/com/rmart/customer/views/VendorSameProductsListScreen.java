@@ -20,14 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
-import com.rmart.customer.adapters.VendorProductsListAdapter;
+import com.rmart.customer.adapters.VendorProductTypesAdapter;
 import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.CommonUtils;
-import com.rmart.utilits.EqualSpacingItemDecoration;
 import com.rmart.utilits.GridSpacesItemDecoration;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RecyclerTouchListener;
@@ -42,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -57,7 +55,7 @@ public class VendorSameProductsListScreen extends BaseFragment {
     private int currentPage = 0;
     private String searchProductName = "";
     private List<CustomerProductDetailsModel> productsList;
-    private VendorProductsListAdapter vendorProductsListAdapter;
+    private VendorProductTypesAdapter vendorProductsListAdapter;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int PAGE_SIZE = 20;
@@ -168,7 +166,7 @@ public class VendorSameProductsListScreen extends BaseFragment {
         }));
 
         productsList = new ArrayList<>();
-        vendorProductsListAdapter = new VendorProductsListAdapter(requireActivity(), productsList);
+        vendorProductsListAdapter = new VendorProductTypesAdapter(requireActivity(), productsList);
         productsListField.setAdapter(vendorProductsListAdapter);
 
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);

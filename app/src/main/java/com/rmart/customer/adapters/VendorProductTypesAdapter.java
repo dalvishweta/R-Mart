@@ -1,6 +1,7 @@
 package com.rmart.customer.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -11,35 +12,49 @@ import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
-import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.custom_views.CustomNetworkImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Satya Seshu on 10/09/20.
  */
-public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProductTypesAdapter.ViewHolder> {
+public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProductTypesAdapter.ViewHolder> implements Filterable {
 
-    private LayoutInflater layoutInflater;
-    private List<CustomerProductDetailsModel> productTypesList;
-    private ImageLoader imageLoader;
+    private final LayoutInflater layoutInflater;
+    private List<CustomerProductDetailsModel> productsList;
+    private final ImageLoader imageLoader;
+    private MyFilter myFilter;
+    private List<CustomerProductDetailsModel> filteredListData;
 
-    public VendorProductTypesAdapter(Context context, List<CustomerProductDetailsModel> productTypesList) {
+    public VendorProductTypesAdapter(Context context, List<CustomerProductDetailsModel> productsList) {
         layoutInflater = LayoutInflater.from(context);
-        this.productTypesList = productTypesList;
+        this.productsList = productsList;
         imageLoader = RMartApplication.getInstance().getImageLoader();
+        filteredListData = new ArrayList<>();
+        this.filteredListData.addAll(productsList);
+    }
+
+    public void updateItems(List<CustomerProductDetailsModel> productsList) {
+        this.productsList = productsList;
+        this.filteredListData.clear();
+        this.filteredListData.addAll(productsList);
     }
 
     @NonNull
@@ -51,14 +66,31 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CustomerProductDetailsModel dataObject = productTypesList.get(position);
+        CustomerProductDetailsModel dataObject = productsList.get(position);
         String productImageUrl = dataObject.getProductImage();
         if (!TextUtils.isEmpty(productImageUrl)) {
-            HttpsTrustManager.allowAllSSL();
-            imageLoader.get(productImageUrl, ImageLoader.getImageListener(holder.ivProductImageField,
-                    R.mipmap.ic_launcher, android.R.drawable
-                            .ic_dialog_alert));
-            holder.ivProductImageField.setImageUrl(productImageUrl, imageLoader);
+            imageLoader.get(productImageUrl, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    Bitmap bitmap = response.getBitmap();
+                    if (bitmap != null) {
+                        holder.ivProductImageField.setLocalImageBitmap(bitmap);
+                    }
+                    holder.progressBarLayout.setVisibility(View.GONE);
+                    holder.ivProductImageField.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    holder.progressBarLayout.setVisibility(View.GONE);
+                    holder.ivProductImageField.setVisibility(View.VISIBLE);
+                    holder.ivProductImageField.setBackgroundResource(android.R.drawable.ic_dialog_alert);
+                }
+            });
+        } else {
+            holder.progressBarLayout.setVisibility(View.GONE);
+            holder.ivProductImageField.setVisibility(View.VISIBLE);
+            holder.ivProductImageField.setBackgroundResource(android.R.drawable.ic_dialog_alert);
         }
         holder.tvProductNameField.setText(dataObject.getProductName());
 
@@ -85,15 +117,49 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
 
     @Override
     public int getItemCount() {
-        return productTypesList.size();
+        return productsList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (myFilter == null) {
+            myFilter = new MyFilter();
+        }
+        return myFilter;
+    }
+
+    private class MyFilter extends Filter {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            if (constraint != null && constraint.length() > 0) {
+                filteredListData.clear();
+                for (CustomerProductDetailsModel productDetails : productsList) {
+                    if (productDetails.getProductName().toLowerCase().contains(constraint.toString().toLowerCase())) {
+                        filteredListData.add(productDetails);
+                    }
+                }
+            }
+            results.count = filteredListData.size();
+            results.values = filteredListData;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteredListData = (List<CustomerProductDetailsModel>) results.values;
+            notifyDataSetChanged();
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        NetworkImageView ivProductImageField;
+        CustomNetworkImageView ivProductImageField;
         TextView tvProductNameField;
         TextView tvProductDiscountField;
         TextView tvQuantityPriceDetailsField;
+        LinearLayout progressBarLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +167,7 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
             tvProductNameField = itemView.findViewById(R.id.tv_product_name_field);
             tvProductDiscountField = itemView.findViewById(R.id.tv_product_discount_field);
             tvQuantityPriceDetailsField = itemView.findViewById(R.id.tv_quantity_price_details_field);
+            progressBarLayout = itemView.findViewById(R.id.progress_layout_field);
         }
     }
 }

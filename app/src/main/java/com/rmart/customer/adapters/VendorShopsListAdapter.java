@@ -21,10 +21,8 @@ import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
-import com.rmart.baseclass.views.ProgressBarCircular;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
-import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.custom_views.CustomNetworkImageView;
 
 import java.util.ArrayList;
@@ -72,10 +70,11 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
         holder.tvViewAddressField.setText(shopDetails.getShopAddress());
 
         Object lShopImageObject = shopDetails.getShopImage();
+        holder.ivShopImageField.setVisibility(View.GONE);
+        holder.progressBarLayout.setVisibility(View.VISIBLE);
         if (lShopImageObject instanceof String) {
             String shopImageUrl = (String) lShopImageObject;
             if (!TextUtils.isEmpty(shopImageUrl)) {
-                HttpsTrustManager.allowAllSSL();
                 imageLoader.get(shopImageUrl, new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
@@ -83,22 +82,25 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
                         if (bitmap != null) {
                             holder.ivShopImageField.setLocalImageBitmap(bitmap);
                         }
-                        holder.progressBarLayout.setVisibility(View.GONE);
+                        holder.ivShopImageField.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         holder.progressBarLayout.setVisibility(View.GONE);
-                        holder.ivShopImageField.setBackgroundResource(android.R.drawable
-                                .ic_dialog_alert);
+                        holder.ivShopImageField.setVisibility(View.VISIBLE);
+                        holder.ivShopImageField.setBackgroundResource(android.R.drawable.ic_dialog_alert);
                     }
                 });
-                holder.ivShopImageField.setImageUrl(shopImageUrl, RMartApplication.getInstance().getImageLoader());
             } else {
                 holder.progressBarLayout.setVisibility(View.GONE);
+                holder.ivShopImageField.setVisibility(View.VISIBLE);
+                holder.ivShopImageField.setBackgroundResource(android.R.drawable.ic_dialog_alert);
             }
         } else {
             holder.progressBarLayout.setVisibility(View.GONE);
+            holder.ivShopImageField.setVisibility(View.VISIBLE);
+            holder.ivShopImageField.setBackgroundResource(android.R.drawable.ic_dialog_alert);
         }
 
         boolean isWishListShop = shopDetails.getShopWishListStatus() == 1;

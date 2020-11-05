@@ -11,16 +11,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.rmart.utilits.custom_views.CustomNetworkImageView
-            android:id="@+id/iv_shop_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:contentDescription="@string/app_name"
-            android:scaleType="fitXY" />
-
         <LinearLayout
             android:id="@+id/progress_layout_field"
-            android:layout_width="100dp"
+            android:layout_width="125dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:gravity="center"
@@ -41,6 +34,14 @@
                 android:textColor="@color/colorPrimary" />
 
         </LinearLayout>
+
+        <com.rmart.utilits.custom_views.CustomNetworkImageView
+            android:id="@+id/iv_shop_image"
+            android:layout_width="125dp"
+            android:layout_height="100dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitXY"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_favourite_image"

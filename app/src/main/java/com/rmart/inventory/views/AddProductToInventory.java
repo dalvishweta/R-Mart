@@ -373,6 +373,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             showDialog("", getString(R.string.error_video_link));
             return;
         }*/
+        if(!Utils.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            return;
+        }
+        progressDialog.show();
         mClonedProduct.setExpiry_date(expiry.getText().toString());
         mClonedProduct.setRegionalName(productRegionalName.getText().toString());
         //mClonedProduct.setDelivery_days(Objects.requireNonNull(MyProfile.getInstance().getDeliveryInDays()));
@@ -385,15 +390,10 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 updateImagesList.get(0).setImageShow("1");
             }
         } else {
+            progressDialog.dismiss();
             showDialog("", getString(R.string.error_image_thumb));
             return;
         }
-
-        if(!Utils.isNetworkConnected(requireActivity())) {
-            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
-            return;
-        }
-        progressDialog.show();
 
         Gson gson = new GsonBuilder().create();
         JsonElement jsonElement = gson.toJsonTree(mClonedProduct);

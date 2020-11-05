@@ -31,5 +31,7 @@ public class Constants {
     public static final int CALENDAR_MIN_TYPE = 1;
     public static final int CALENDAR_MAX_TYPE = 2;
 
+    public static final int KEY_CHANGE_ADDRESS = 100;
+
     public static final String YOU_TUBE_API_KEY = "";
 }

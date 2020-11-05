@@ -265,8 +265,7 @@ public class Utils {
         bitmap.compress(Bitmap.CompressFormat.JPEG,10,out);
         return bitmap;
     }
-    public static boolean isValidPanCardNo(String panCardNo)
-    {
+    public static boolean isValidPanCardNo(String panCardNo) {
         // Regex to check valid PAN Card number.
         String regex = "[A-Z]{5}[0-9]{4}[A-Z]{1}";
         // Compile the ReGex

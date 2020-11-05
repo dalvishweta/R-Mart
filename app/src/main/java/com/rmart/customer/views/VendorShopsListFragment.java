@@ -1,10 +1,7 @@
 package com.rmart.customer.views;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -22,7 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,11 +28,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -93,6 +86,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private GoogleMap googleMap;
     private TextView tvAddressField;
     private Circle currentCircle = null;
+    private AppCompatRadioButton selectedRadioButton = null;
 
     public static VendorShopsListFragment getInstance() {
         return new VendorShopsListFragment();
@@ -235,14 +229,32 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             mapsFragment.getMapAsync(this);
         }
 
-        AppCompatRadioButton listViewRadio = view.findViewById(R.id.list_view_radio_button);
-        listViewRadio.setChecked(true);
-        RadioGroup mapViewOrListViewRadioGroup = view.findViewById(R.id.map_view_or_list_view_radio_group);
-
         RelativeLayout mapLayout = view.findViewById(R.id.map_layout_field);
 
+        //AppCompatRadioButton listViewRadio = view.findViewById(R.id.list_view_radio_button);
+        //listViewRadio.setChecked(true);
+        if (selectedRadioButton != null) {
+            String selectedText = selectedRadioButton.getText().toString();
+            if(!TextUtils.isEmpty(selectedText)) {
+                AppCompatRadioButton mapViewRadio = view.findViewById(R.id.map_view_radio_button);
+                AppCompatRadioButton listViewRadio = view.findViewById(R.id.list_view_radio_button);
+                if (selectedText.equalsIgnoreCase(getString(R.string.map_view))) {
+                    listViewRadio.setChecked(false);
+                    mapViewRadio.setChecked(true);
+                    mapLayout.setVisibility(View.VISIBLE);
+                    vendorShopsListField.setVisibility(View.GONE);
+                } else {
+                    mapViewRadio.setChecked(false);
+                    listViewRadio.setChecked(true);
+                    mapLayout.setVisibility(View.GONE);
+                    vendorShopsListField.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+        RadioGroup mapViewOrListViewRadioGroup = view.findViewById(R.id.map_view_or_list_view_radio_group);
+
         mapViewOrListViewRadioGroup.setOnCheckedChangeListener((radioGroup, radioButtonID) -> {
-            AppCompatRadioButton selectedRadioButton = radioGroup.findViewById(radioButtonID);
+            selectedRadioButton = radioGroup.findViewById(radioButtonID);
             String selectedText = selectedRadioButton.getText().toString();
             if (selectedText.equalsIgnoreCase(getString(R.string.map_view))) {
                 mapLayout.setVisibility(View.VISIBLE);

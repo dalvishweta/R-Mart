@@ -14,19 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
-        <com.rmart.utilits.custom_views.CustomNetworkImageView
-            android:id="@+id/item_img"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:paddingTop="8dp"
-            android:scaleType="centerInside" />
-
         <LinearLayout
             android:id="@+id/progress_layout_field"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_width="125dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
             android:orientation="vertical">
 
             <com.rmart.baseclass.views.ProgressBarCircular
@@ -44,6 +38,15 @@
                 android:textColor="@color/colorPrimary" />
 
         </LinearLayout>
+
+        <com.rmart.utilits.custom_views.CustomNetworkImageView
+            android:id="@+id/item_img"
+            android:layout_width="125dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitXY"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

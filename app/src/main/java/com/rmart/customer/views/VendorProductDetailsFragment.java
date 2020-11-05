@@ -1,6 +1,7 @@
 package com.rmart.customer.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -9,15 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
@@ -33,10 +36,10 @@ import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.CommonUtils;
-import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.custom_views.CustomNetworkImageView;
 import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.services.CustomerProductsService;
 
@@ -68,12 +71,13 @@ public class VendorProductDetailsFragment extends BaseFragment {
     private TextView tvShopNameField;
     private TextView tvPhoneNoField;
     private TextView tvViewAddressField;
-    private NetworkImageView ivShopImageField;
+    private CustomNetworkImageView ivShopImageField;
     private VendorProductDetailsAdapter vendorProductDetailsAdapter;
     private List<ProductBaseModel> vendorProductsList;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private ImageView ivFavouriteImageField;
     private boolean isWishListShop = false;
+    private LinearLayout progressLayoutField;
 
     public static VendorProductDetailsFragment getInstance(CustomerProductsShopDetailsModel productsShopDetailsModel) {
         VendorProductDetailsFragment fragment = new VendorProductDetailsFragment();
@@ -164,6 +168,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
             }
         });
 
+        progressLayoutField = view.findViewById(R.id.progress_layout_field);
         ivShopImageField = view.findViewById(R.id.iv_shop_image);
         tvShopNameField = view.findViewById(R.id.tv_shop_name_field);
         tvPhoneNoField = view.findViewById(R.id.tv_phone_no_field);
@@ -311,22 +316,49 @@ public class VendorProductDetailsFragment extends BaseFragment {
         return groupedHashMap;
     }
 
+    private void updateShopImageUI(String shopImageUrl) {
+        if (!TextUtils.isEmpty(shopImageUrl)) {
+            ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
+            imageLoader.get(shopImageUrl, new ImageLoader.ImageListener() {
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    Bitmap bitmap = response.getBitmap();
+                    if (bitmap != null) {
+                        ivShopImageField.setLocalImageBitmap(bitmap);
+                    }
+                    progressLayoutField.setVisibility(View.GONE);
+                    ivShopImageField.setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressLayoutField.setVisibility(View.GONE);
+                    ivShopImageField.setVisibility(View.VISIBLE);
+                    ivShopImageField.setBackgroundResource(R.mipmap.ic_launcher);
+                    tvShopNameField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black));
+                    tvViewAddressField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black));
+                }
+            });
+        } else {
+            progressLayoutField.setVisibility(View.GONE);
+            ivShopImageField.setVisibility(View.VISIBLE);
+            ivShopImageField.setBackgroundResource(R.mipmap.ic_launcher);
+            tvShopNameField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black));
+            tvViewAddressField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black));
+        }
+    }
+
     private void updateShopDetailsUI() {
         requireActivity().setTitle(productsShopDetailsModel.getShopName());
         Object lShopImageObject = productsShopDetailsModel.getShopImage();
-        if(lShopImageObject instanceof String) {
+        if (lShopImageObject instanceof ArrayList) {
             List<String> shopImagesList = (List<String>) lShopImageObject;
-            if(!shopImagesList.isEmpty()) {
+            if (!shopImagesList.isEmpty()) {
                 String shopImageUrl = shopImagesList.get(0);
-                if(!TextUtils.isEmpty(shopImageUrl)) {
-                    HttpsTrustManager.allowAllSSL();
-                    ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
-                    imageLoader.get(shopImageUrl, ImageLoader.getImageListener(ivShopImageField,
-                            R.mipmap.ic_launcher, android.R.drawable
-                                    .ic_dialog_alert));
-                    ivShopImageField.setImageUrl(shopImageUrl, imageLoader);
-                }
+                updateShopImageUI(shopImageUrl);
             }
+        } else if (lShopImageObject instanceof String) {
+            updateShopImageUI((String) lShopImageObject);
         }
         tvShopNameField.setText(productsShopDetailsModel.getShopName());
         tvViewAddressField.setText(productsShopDetailsModel.getShopAddress());

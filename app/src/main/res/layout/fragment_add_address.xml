@@ -40,48 +40,12 @@
                 android:text="@string/shop_image"
                 android:textColor="@color/black" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="120dp"
-                android:layout_height="80dp"
+            <include
+                layout="@layout/layout_shop_image_view"
+                android:layout_width="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="10dp"
-                android:elevation="10dp"
-                app:cardCornerRadius="8dp">
-
-                <com.rmart.utilits.custom_views.CustomNetworkImageView
-                    android:id="@+id/iv_shop_image_field"
-                    android:layout_width="120dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/ic_shop"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="fitXY" />
-
-                <LinearLayout
-                    android:id="@+id/shop_image_progress_layout_field"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <com.rmart.baseclass.views.ProgressBarCircular
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        style="@style/text_style_small_bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="@string/loading"
-                        android:textColor="@color/colorPrimary" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
+                android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:hint="@string/shop_no"
@@ -220,87 +184,16 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <androidx.cardview.widget.CardView
-                    app:cardCornerRadius="8dp"
-                    android:layout_width="120dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="5dp"
-                    android:elevation="10dp">
+                <include
+                    layout="@layout/layout_aadhar_front_image_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-                    <com.rmart.utilits.custom_views.CustomNetworkImageView
-                        android:id="@+id/iv_aadhar_front_image_field"
-                        android:layout_width="120dp"
-                        android:layout_height="80dp"
-                        android:background="@drawable/ic_aadhar_front"
-                        android:contentDescription="@string/app_name"
-                        android:scaleType="fitXY" />
-
-                    <LinearLayout
-                        android:id="@+id/aadhar_front_progress_layout_field"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <com.rmart.baseclass.views.ProgressBarCircular
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center" />
-
-                        <TextView
-                            style="@style/text_style_small_bold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="@string/loading"
-                            android:textColor="@color/colorPrimary" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    app:cardCornerRadius="8dp"
-                    android:layout_width="120dp"
-                    android:layout_height="80dp"
-                    android:layout_margin="5dp"
-                    android:elevation="10dp">
-
-                    <com.rmart.utilits.custom_views.CustomNetworkImageView
-                        android:id="@+id/iv_aadhar_back_image_field"
-                        android:layout_width="120dp"
-                        android:layout_height="80dp"
-                        android:background="@drawable/ic_aadhar_back"
-                        android:contentDescription="@string/app_name"
-                        android:scaleType="fitXY" />
-
-                    <LinearLayout
-                        android:id="@+id/aadhar_back_progress_layout_field"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <com.rmart.baseclass.views.ProgressBarCircular
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center" />
-
-                        <TextView
-                            style="@style/text_style_small_bold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="@string/loading"
-                            android:textColor="@color/colorPrimary" />
-
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
+                <include
+                    layout="@layout/layout_aadhar_back_image_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp" />
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -313,46 +206,12 @@
                 android:textAllCaps="true"
                 android:maxLength="10" />
 
-            <androidx.cardview.widget.CardView
-                app:cardCornerRadius="8dp"
-                android:layout_width="120dp"
-                android:layout_height="80dp"
+            <include
+                layout="@layout/layout_pan_card_image_view"
+                android:layout_width="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="10dp"
-                android:elevation="10dp">
-
-                <com.rmart.utilits.custom_views.CustomNetworkImageView
-                    android:id="@+id/iv_pan_card_no_image_field"
-                    android:layout_width="120dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/ic_pan"
-                    android:contentDescription="@string/app_name"
-                    android:scaleType="fitXY" />
-
-                <LinearLayout
-                    android:id="@+id/pan_card_progress_layout_field"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <com.rmart.baseclass.views.ProgressBarCircular
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        style="@style/text_style_small_bold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="@string/loading"
-                        android:textColor="@color/colorPrimary" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatEditText

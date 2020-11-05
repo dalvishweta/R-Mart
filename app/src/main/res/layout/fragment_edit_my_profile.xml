@@ -48,7 +48,8 @@
                 android:drawableStart="@drawable/user"
                 style="@style/my_profile_tv"
                 android:digits="@string/allow_name"
-                android:inputType="text"/>
+                android:inputType="text" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:hint="@string/hint_mobile_number"
                 android:id="@+id/mobile_number"
@@ -56,7 +57,8 @@
                 style="@style/my_profile_tv"
                 android:maxLength="10"
                 android:inputType="number|numberSigned"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/colorPrimary" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:hint="@string/please_enter_your_e_mail"
                 android:id="@+id/email"
@@ -64,20 +66,30 @@
                 android:digits="@string/allow_digits_email"
                 style="@style/my_profile_tv"
                 android:inputType="textEmailAddress"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/colorPrimary" />
+
             <androidx.appcompat.widget.AppCompatEditText
                 android:visibility="gone"
                 android:hint="@string/please_enter_your_date_of_birth"
                 android:id="@+id/dob"
                 android:drawableStart="@drawable/user"
                 style="@style/my_profile_tv"
-                android:inputType="textEmailAddress"/>
+                android:inputType="textEmailAddress" />
 
-            <Spinner
-                android:id="@+id/gender"
+            <LinearLayout
+                style="@style/upload_product_item_field"
+                android:layout_width="match_parent"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                style="@style/upload_product_item_field"/>
+                android:layout_height="wrap_content">
+
+                <Spinner
+                    android:id="@+id/gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="50dp" />
+            </LinearLayout>
+
 
             <RelativeLayout
                 android:visibility="visible"

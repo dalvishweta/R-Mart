@@ -10,13 +10,37 @@
         android:layout_width="match_parent"
         android:layout_height="200dp">
 
-        <com.android.volley.toolbox.NetworkImageView
+        <com.rmart.utilits.custom_views.CustomNetworkImageView
             android:id="@+id/iv_shop_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@mipmap/ic_launcher"
             android:contentDescription="@string/app_name"
+            android:visibility="gone"
             android:scaleType="fitXY" />
+
+        <LinearLayout
+            android:id="@+id/progress_layout_field"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.rmart.baseclass.views.ProgressBarCircular
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center" />
+
+            <TextView
+                style="@style/text_style_small_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/loading"
+                android:textColor="@color/colorPrimary" />
+
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_favourite_image_field"

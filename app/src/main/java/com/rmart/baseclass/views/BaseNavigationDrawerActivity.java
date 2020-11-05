@@ -1,7 +1,6 @@
 package com.rmart.baseclass.views;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -11,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
@@ -383,8 +382,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 Fragment fragment = getActiveFragment();
                 if (fragment instanceof AddProductToInventory) {
                     ((AddProductToInventory) fragment).handleBackButton();
-                } else
+                } else {
                     getSupportFragmentManager().popBackStackImmediate();
+                }
             }
         }
     }

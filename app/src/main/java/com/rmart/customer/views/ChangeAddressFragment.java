@@ -1,5 +1,6 @@
 package com.rmart.customer.views;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
+import com.rmart.baseclass.Constants;
 import com.rmart.customer.adapters.ChangeAddressAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
@@ -131,6 +133,15 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
         resetAddressList();
         Intent intent = new Intent(requireActivity(), MyProfileActivity.class);
         intent.putExtra("IsNewAddress", true);
-        startActivity(intent);
+        startActivityForResult(intent, Constants.KEY_CHANGE_ADDRESS);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode != Activity.RESULT_OK) return;
+        if(requestCode == Constants.KEY_CHANGE_ADDRESS) {
+            requireActivity().getSupportFragmentManager().popBackStackImmediate();
+        }
     }
 }

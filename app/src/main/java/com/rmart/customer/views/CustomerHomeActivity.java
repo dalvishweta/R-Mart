@@ -37,7 +37,9 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
                 replaceFragment(CustomerFavouritesFragment.getInstance(), CustomerFavouritesFragment.class.getName(), false);
             }
         } else {
-            replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);
+            if(!vendorShopsListFragment.isAdded()) {
+                replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);
+            }
         }
     }
 
@@ -161,7 +163,9 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
                 replaceFragment(CustomerFavouritesFragment.getInstance(), CustomerFavouritesFragment.class.getName(), true);
             }
         } else {
-            replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);
+            if(!vendorShopsListFragment.isAdded()) {
+                replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);
+            }
         }
     }
 }
