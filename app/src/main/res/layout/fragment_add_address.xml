@@ -309,6 +309,7 @@
                 style="@style/my_profile_tv"
                 android:drawableStart="@drawable/ic_note"
                 android:inputType="textCapSentences"
+                android:digits="@string/allow_digits_with_out_space"
                 android:textAllCaps="true"
                 android:maxLength="10" />
 
