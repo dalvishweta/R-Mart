@@ -20,9 +20,11 @@ import com.rmart.R;
 import com.rmart.customer.adapters.CustomSpinnerAdapter;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.RegistrationFeeStructure;
 import com.rmart.utilits.pojos.RegistrationResponse;
 import com.rmart.utilits.services.AuthenticationService;
+import com.rmart.utilits.services.RegPayAmtResponse;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -53,14 +55,47 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getFeeDetails();
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_registration, container, false);
     }
 
-    private void getFeeDetails() {
-        registrationFeeStructuresList.clear();
-        RegistrationFeeStructure registration = new RegistrationFeeStructure();
+    private void getFeeDetails(LinearLayout paymentBase) {
+        progressDialog.show();
+        AuthenticationService service = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
+        service.regPayAmt().enqueue(new Callback<RegPayAmtResponse>() {
+            @Override
+            public void onResponse(Call<RegPayAmtResponse> call, Response<RegPayAmtResponse> response) {
+                if (response.isSuccessful()) {
+                    RegPayAmtResponse data = response.body();
+                    assert data != null;
+                    registrationFeeStructuresList.clear();
+                    registrationFeeStructuresList = data.getPaymentObjects();
+                    paymentBase.removeAllViews();
+                    paymentBase.setVisibility(View.VISIBLE);
+                    for (RegistrationFeeStructure feeStructure : registrationFeeStructuresList) {
+                        View v = View.inflate(requireActivity(), R.layout.layout, null);
+                        ((AppCompatTextView) v.findViewById(R.id.pay_type)).setText(feeStructure.getPayType());
+                        ((AppCompatTextView) v.findViewById(R.id.pay_amt)).setText(feeStructure.getAmount());
+                        paymentBase.addView(v);
+                    }
+                } else {
+                    showDialog("", response.message());
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<RegPayAmtResponse> call, Throwable t) {
+                if(t instanceof SocketTimeoutException){
+                    showDialog("", getString(R.string.network_slow));
+                } else {
+                    showDialog("", t.getMessage());
+                }
+                progressDialog.dismiss();
+            }
+        });
+
+        /*RegistrationFeeStructure registration = new RegistrationFeeStructure();
         registration.setPayType(getString(R.string.registration_fee));
         registration.setAmount("2000");
 
@@ -70,11 +105,11 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
 
         RegistrationFeeStructure total = new RegistrationFeeStructure();
         total.setPayType(getString(R.string.total_amount));
-        total.setAmount("2360");
+        total.setAmount("2360");*/
 
-        registrationFeeStructuresList.add(registration);
+        /*registrationFeeStructuresList.add(registration);
         registrationFeeStructuresList.add(gst);
-        registrationFeeStructuresList.add(total);
+        registrationFeeStructuresList.add(total);*/
     }
 
     @Override
@@ -115,15 +150,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         LinearLayout paymentBase = view.findViewById(R.id.payment_base);
         paymentBase.removeAllViews();
         if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
-            paymentBase.removeAllViews();
-            paymentBase.setVisibility(View.VISIBLE);
-            for (RegistrationFeeStructure feeStructure :
-                    registrationFeeStructuresList) {
-                View v = View.inflate(requireActivity(), R.layout.layout, null);
-                ((AppCompatTextView) v.findViewById(R.id.pay_type)).setText(feeStructure.getPayType());
-                ((AppCompatTextView) v.findViewById(R.id.pay_amt)).setText(feeStructure.getAmount());
-                paymentBase.addView(v);
-            }
+            getFeeDetails(paymentBase);
             register.setText(R.string.proceed_to_pay);
         } else {
             view.findViewById(R.id.tv_payment_information_field).setVisibility(View.GONE);

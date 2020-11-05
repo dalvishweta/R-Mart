@@ -1,0 +1,7 @@
+<resources>
+    <!--https://xd.adobe.com/view/abf6f0b6-d078-41e6-8ed1-c1a53f4021d5-fea5/screen/176b1ba8-2022-4b76-807c-a13b274426dc/-->
+<!--    https://www.flaticon.com/free-icon/edit_860814?term=edit&page=1&position=82-->
+    <string name="app_name">Delivery Rokad Mart </string>
+    <string name="role_id">6</string>
+    <string name="error_role_login">You are trying to login in Delivery Application. \nPlease check your mobile number.</string>
+</resources>

@@ -20,6 +20,7 @@ android {
         buildConfigField('String', 'CHANGE_PASSWORD', '"changepassword/update"')
         buildConfigField("String", "VALIDATE_OTP", '"otpcheck"')
         buildConfigField("String", 'RESEND_OTP', '"Otpcheck/resendotp"')
+        buildConfigField("String", 'FEGISTRATION_FEE', '"Login/regPayAmt"')
         buildConfigField("String", "REGISTRATION", '"reg"')
         buildConfigField("String", "LOGIN", '"login"')
 
@@ -111,8 +112,8 @@ android {
             applicationIdSuffix ".customer"
             /*versionNameSuffix "-customer"*/
             buildConfigField("String", "ROLE_ID", '"5"')
-            buildConfigField("String", "LOGIN_USERNAME", '"8008838387"')
-            buildConfigField("String", "LOGIN_PASSWORD", '"Abcd123@"')
+            buildConfigField("String", "LOGIN_USERNAME", '"7416226244"')
+            buildConfigField("String", "LOGIN_PASSWORD", '"1qQ@1234"')
             buildConfigField("boolean", "IS_DELIVERY", "false")
             buildConfigField("boolean", "IS_RETAILER", "false")
         }
@@ -127,6 +128,34 @@ android {
         delivery {
             dimension "rokard_mart"
             applicationIdSuffix ".delivery"
+            buildConfigField("String", "ROLE_ID", '"6"')
+            buildConfigField("String", "LOGIN_USERNAME", '"7441515151"')
+            buildConfigField("String", "LOGIN_PASSWORD", '"1234"')
+        }
+        customer_production {
+            dimension "rokard_mart"
+            applicationIdSuffix ".customer"
+            /*versionNameSuffix "-customer"*/
+            buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/"')
+            buildConfigField("String", "ROLE_ID", '"5"')
+            buildConfigField("String", "LOGIN_USERNAME", '"7416226244"')
+            buildConfigField("String", "LOGIN_PASSWORD", '"1qQ@1234"')
+            buildConfigField("boolean", "IS_DELIVERY", "false")
+            buildConfigField("boolean", "IS_RETAILER", "false")
+        }
+        retailer_production {
+            dimension "rokard_mart"
+            applicationIdSuffix ".retailer"
+            /*versionNameSuffix "-retailer"*/
+            buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/"')
+            buildConfigField("String", "ROLE_ID", '"4"')
+            buildConfigField("String", "LOGIN_USERNAME", '"7416226233"')
+            buildConfigField("String", "LOGIN_PASSWORD", '"1qQ@1234"')
+        }
+        delivery_production {
+            dimension "rokard_mart"
+            applicationIdSuffix ".delivery"
+            buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/"')
             buildConfigField("String", "ROLE_ID", '"6"')
             buildConfigField("String", "LOGIN_USERNAME", '"7441515151"')
             buildConfigField("String", "LOGIN_PASSWORD", '"1234"')

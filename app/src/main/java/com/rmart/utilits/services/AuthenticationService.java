@@ -27,6 +27,9 @@ public interface AuthenticationService {
                               @Field("role_id") String role_id);
 
 
+    @GET(BuildConfig.FEGISTRATION_FEE)
+    Call<RegPayAmtResponse> regPayAmt();
+
 /*    @GET(BuildConfig.REGISTRATION)
     Call<RegistrationResponse> registration();*/
 
@@ -98,8 +101,8 @@ public interface AuthenticationService {
 
 //    @GET(BuildConfig.PRODUCTS)
 //    Call<List<ProductPojo>> getProducts();
-
+/*
     @GET(BuildConfig.REGISTRATION)
-    Call<List<BaseResponse>> getREGISTRATION();
+    Call<List<BaseResponse>> getREGISTRATION();*/
 
 }
