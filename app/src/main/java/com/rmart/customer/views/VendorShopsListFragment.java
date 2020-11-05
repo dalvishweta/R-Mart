@@ -557,8 +557,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 if (isCoordinatesValid) {
                     LatLng latLng = new LatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
                     MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(shopDetailsModel.getShopName());
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
+                    //googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
+                    //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
                     Marker marker = googleMap.addMarker(markerOptions);
                     marker.showInfoWindow();
                 }
