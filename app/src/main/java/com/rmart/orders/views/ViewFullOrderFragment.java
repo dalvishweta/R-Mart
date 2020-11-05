@@ -302,7 +302,10 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
                     String retailerID = "", deliveryBoy = "";
                     if (MyProfile.getInstance().getRoleID().equalsIgnoreCase(Utils.RETAILER_ID)) {
                         retailerID = MyProfile.getInstance().getUserID();
-                        deliveryBoy = selectedDeliveryBoy.getUserID();
+                        deliveryBoy = retailerID;
+                        if (null != selectedDeliveryBoy) {
+                            deliveryBoy = selectedDeliveryBoy.getUserID();
+                        }
                     } else {
                         retailerID = MyProfile.getInstance().getVendorInfo().getRoleID();
                         deliveryBoy = MyProfile.getInstance().getUserID();
