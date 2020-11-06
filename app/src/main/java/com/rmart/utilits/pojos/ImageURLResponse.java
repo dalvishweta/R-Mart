@@ -43,6 +43,7 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
 
     private String imageUri;
     private boolean isProductVideoSelected = false;
+    private int isImageUpdated = -1; // 0 -> server image,  1 -> local image, 2 -> local image deleted
 
     public String getDisplayImage() {
         return displayImage;
@@ -122,5 +123,13 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public int getIsImageUpdated() {
+        return isImageUpdated;
+    }
+
+    public void setIsImageUpdated(int isImageUpdated) {
+        this.isImageUpdated = isImageUpdated;
     }
 }

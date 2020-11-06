@@ -57,6 +57,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     private AppCompatTextView emailIdField;
     private TextView tvCartCountField;
     private MenuItem menuItem;
+    private int cartCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +148,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             });
 
             myProfile.getCartCount().observe(this, count -> {
+                this.cartCount = count;
                 if (tvCartCountField != null) {
                     tvCartCountField.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
                     tvCartCountField.setText(String.valueOf(count));
@@ -203,7 +205,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 View actionView = menuItem.getActionView();
                 tvCartCountField = actionView.findViewById(R.id.tv_cart_count_field);
                 if (MyProfile.getInstance() != null) {
-                    int cartCount = myProfile.getCartCount().getValue();
+                    cartCount = myProfile.getCartCount().getValue();
                     if (cartCount > 0) {
                         Fragment currentFragment = getActiveFragment();
                         if (currentFragment instanceof ShoppingCartFragment) {
@@ -215,12 +217,16 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                         tvCartCountField.setText(String.valueOf(cartCount));
                     } else {
                         tvCartCountField.setVisibility(View.GONE);
-                        menuItem.setVisible(false);
+                        //menuItem.setVisible(false);
                     }
                 }
                 //actionView.setOnClickListener(v -> cartSelected());
                 // showBadge(true);
-                actionView.setOnClickListener(v -> cartSelected());
+                actionView.setOnClickListener(v -> {
+                    if(cartCount > 0) {
+                        cartSelected();
+                    }
+                });
             } else {
                 menuItem.setVisible(false);
             }
@@ -264,7 +270,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     startActivity(intent);
                     break;
                 case R.id.customer_shopping:
-                    showCartIcon();
                     intent = new Intent(this, CustomerHomeActivity.class);
                     startActivity(intent);
                     break;

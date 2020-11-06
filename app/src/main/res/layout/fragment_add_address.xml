@@ -154,7 +154,8 @@
                     style="@style/upload_product_item_field"
                     android:background="@drawable/curve_left_bg"
                     android:layout_weight="1"
-                    android:inputType="numberSigned"
+                    android:inputType="numberDecimal"
+                    android:digits="@string/allow_digits_for_numbers"
                     android:layout_width="0dp"
                     android:maxLength="1" />
 
@@ -165,7 +166,8 @@
                     android:background="@drawable/curve_right_bg"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:inputType="numberSigned"
+                    android:digits="@string/allow_digits_for_numbers"
+                    android:inputType="numberDecimal"
                     android:maxLength="1" />
             </LinearLayout>
 

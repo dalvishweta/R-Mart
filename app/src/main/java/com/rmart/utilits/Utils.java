@@ -262,7 +262,7 @@ public class Utils {
     public static Bitmap getCompressBitmapImage(Bitmap bitmap) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         // Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(out.toByteArray()));
-        bitmap.compress(Bitmap.CompressFormat.JPEG,10,out);
+        bitmap.compress(Bitmap.CompressFormat.JPEG,10, out);
         return bitmap;
     }
     public static boolean isValidPanCardNo(String panCardNo) {

@@ -165,7 +165,7 @@
     <string name="error_role_login">You are trying to login with Retailer Application. \nPlease check your credentials.</string>
     <string name="error_otp">Please enter valid OTP</string>
     <string name="error_internet">No internet Connection</string>
-    <string name="error_internet_text">Please turn on internet connection to continue</string>
+    <string name="error_internet_text">Your internet connection not stable please try again later</string>
     <string name="profile_details">Profile Details</string>
     <string name="please_enter_your_date_of_birth">Enter DOB</string>
     <string name="save_details">Save Details</string>
@@ -272,8 +272,8 @@
     <string name="sorry">Sorry</string>
     <string name="opening_time">Opening Time</string>
     <string name="closing_time">Closing Time</string>
-    <string name="delivery_days_before_time">Before closing</string>
-    <string name="delivery_days_after_time">After closing</string>
+    <string name="delivery_days_before_time">Enter no. of days for before closing</string>
+    <string name="delivery_days_after_time">Enter no. of days for after closing</string>
     <string name="no_product_details_found">No Product Details Found</string>
     <string name="map_view">Map View</string>
     <string name="list_view">List View</string>
@@ -287,7 +287,7 @@
     <string name="logout_confirmation_message">Are you sure wants to Logout?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
-    <string name="expected_date_of_delivery">Expected date of delivery</string>
+    <string name="expected_date_of_delivery">Expected date of delivery:</string>
     <string name="comments">Comments</string>
     <string name="payment_text">On boarding and Registration Fee is 2000, GST is 360 \n Total amount 2360.</string>
     <string name="title_payment">Payment</string>
@@ -327,6 +327,7 @@
     <string name="product_discard_alert">Are you sure wants to discard your Changes?</string>
     <string name="cart_is_empty">Cart is empty</string>
     <string name="allow_digits">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM </string>
+    <string name="allow_digits_for_numbers">123456789</string>
     <string name="allow_name">qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM </string>
     <string name="allow_number_digits">1234567890</string>
     <string name="allow_digits_with_out_space">qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM</string>

@@ -217,7 +217,10 @@ public class CheckAvailableProducts extends BaseFragment {
         view.findViewById(R.id.payment_info_layout_field).setVisibility(View.GONE);
         view.findViewById(R.id.custom_details_root).setVisibility(View.GONE);
         btnAddToCartField = view.findViewById(R.id.btn_add_to_cart_field);
-        btnAddToCartField.setOnClickListener(v -> addToCartSelected());
+        btnAddToCartField.setOnClickListener(v -> {
+            btnAddToCartField.setVisibility(View.GONE);
+            addToCartSelected();
+        });
     }
 
     private void addToCartSelected() {
@@ -250,21 +253,26 @@ public class CheckAvailableProducts extends BaseFragment {
                                             MyProfile.getInstance().setCartCount(totalCartCount);
                                             showDialog(body.getMsg());
                                         } else {
+                                            btnAddToCartField.setVisibility(View.VISIBLE);
                                             showDialog(getString(R.string.no_information_available));
                                         }
                                     } else {
+                                        btnAddToCartField.setVisibility(View.VISIBLE);
                                         showDialog(body.getMsg());
                                     }
                                 } else {
+                                    btnAddToCartField.setVisibility(View.VISIBLE);
                                     showDialog(getString(R.string.no_information_available));
                                 }
                             } else {
+                                btnAddToCartField.setVisibility(View.VISIBLE);
                                 showDialog(response.message());
                             }
                         }
 
                         @Override
                         public void onFailure(@NotNull Call<AddToCartResponseDetails> call, @NotNull Throwable t) {
+                            btnAddToCartField.setVisibility(View.VISIBLE);
                             if(t instanceof SocketTimeoutException){
                                 showDialog("", getString(R.string.network_slow));
                             } else {
@@ -274,10 +282,12 @@ public class CheckAvailableProducts extends BaseFragment {
                         }
                     });
                 } catch (Exception ex) {
+                    btnAddToCartField.setVisibility(View.VISIBLE);
                     showDialog(ex.getMessage());
                 }
             }
         } else {
+            btnAddToCartField.setVisibility(View.VISIBLE);
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
     }

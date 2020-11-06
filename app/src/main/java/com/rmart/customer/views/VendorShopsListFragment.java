@@ -279,11 +279,12 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         if (myProfile != null) {
             try {
                 int cartCount = myProfile.getCartCount().getValue();
-                if (cartCount > 0) {
+                /*if (cartCount > 0) {
                     ((CustomerHomeActivity) (requireActivity())).showCartIcon();
                 } else {
                     ((CustomerHomeActivity) (requireActivity())).hideCartIcon();
-                }
+                }*/
+                ((CustomerHomeActivity) (requireActivity())).showCartIcon();
             } catch (Exception ex) {
                 ((CustomerHomeActivity) (requireActivity())).hideCartIcon();
             }

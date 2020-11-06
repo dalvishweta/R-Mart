@@ -261,23 +261,29 @@ public class VendorProductDetailsFragment extends BaseFragment {
                             showDialog(getString(R.string.no_information_available));
                         }
                     }  else {
-                        showDialog(getString(R.string.no_information_available));
+                        progressLayoutField.setVisibility(View.GONE);
+                        showDialog("", response.message());
                     }
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<VendorProductDetailsResponse> call, @NotNull Throwable t) {
                     if(t instanceof SocketTimeoutException){
-                        showDialog("", getString(R.string.network_slow));
+                        showCloseDialog("", getString(R.string.network_slow));
                     } else {
-                        showDialog("", t.getMessage());
+                        showCloseDialog("", t.getMessage());
                     }
                     progressDialog.dismiss();
                 }
             });
         } else {
-            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            showCloseDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
+    }
+
+    private void showCloseDialog(String title, String message) {
+        progressLayoutField.setVisibility(View.GONE);
+        showDialog(title, message, pObject -> requireActivity().getSupportFragmentManager().popBackStackImmediate());
     }
 
     private void updateAdapter(List<CustomerProductDetailsModel> productDataList) {
@@ -318,6 +324,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
     private void updateShopImageUI(String shopImageUrl) {
         if (!TextUtils.isEmpty(shopImageUrl)) {
+            progressLayoutField.setVisibility(View.VISIBLE);
             ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
             imageLoader.get(shopImageUrl, new ImageLoader.ImageListener() {
                 @Override

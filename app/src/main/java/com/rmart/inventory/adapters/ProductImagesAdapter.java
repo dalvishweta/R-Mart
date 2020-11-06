@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -30,13 +31,11 @@ public class ProductImagesAdapter extends RecyclerView.Adapter<ProductImagesAdap
     private final LayoutInflater layoutInflater;
     private final List<ImageURLResponse> imagesList;
     private final ImageLoader imageLoader;
-    private final Drawable drawable;
 
     public ProductImagesAdapter(Context context, List<ImageURLResponse> imagesList) {
         layoutInflater = LayoutInflater.from(context);
         this.imagesList = imagesList;
         imageLoader = RMartApplication.getInstance().getImageLoader();
-        drawable = ContextCompat.getDrawable(context, R.drawable.add);
     }
 
     @NonNull
@@ -50,7 +49,7 @@ public class ProductImagesAdapter extends RecyclerView.Adapter<ProductImagesAdap
     public void onBindViewHolder(@NonNull ViewHolderItem holder, int position) {
         ImageURLResponse imageURLResponse = imagesList.get(position);
         String imageUri = imageURLResponse.getImageUri();
-        holder.ivProductImageField.setVisibility(View.VISIBLE);
+        holder.productImageLayoutField.setVisibility(View.VISIBLE);
         holder.ivAddProductImageField.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(imageUri)) {
             File file = new File(imageUri);
@@ -63,7 +62,7 @@ public class ProductImagesAdapter extends RecyclerView.Adapter<ProductImagesAdap
                 imageLoader.get(productUrl, ImageLoader.getImageListener(holder.ivProductImageField, errorImageAlert, errorImageAlert));
                 holder.ivProductImageField.setImageUrl(productUrl, imageLoader);
             } else {
-                holder.ivProductImageField.setVisibility(View.GONE);
+                holder.productImageLayoutField.setVisibility(View.GONE);
                 holder.ivAddProductImageField.setVisibility(View.VISIBLE);
             }
         }
@@ -78,11 +77,15 @@ public class ProductImagesAdapter extends RecyclerView.Adapter<ProductImagesAdap
 
         CustomNetworkImageView ivProductImageField;
         AppCompatImageView ivAddProductImageField;
+        AppCompatImageView ivDeleteProductImageField;
+        RelativeLayout productImageLayoutField;
 
         public ViewHolderItem(@NonNull View itemView) {
             super(itemView);
             ivProductImageField = itemView.findViewById(R.id.iv_product_image_field);
             ivAddProductImageField = itemView.findViewById(R.id.iv_add_product_image_field);
+            ivDeleteProductImageField = itemView.findViewById(R.id.iv_delete_product_image_field);
+            productImageLayoutField = itemView.findViewById(R.id.product_image_layout_field);
         }
     }
 }

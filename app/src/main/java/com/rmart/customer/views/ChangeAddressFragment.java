@@ -130,7 +130,6 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     }
 
     private void addNewAddressSelected() {
-        resetAddressList();
         Intent intent = new Intent(requireActivity(), MyProfileActivity.class);
         intent.putExtra("IsNewAddress", true);
         startActivityForResult(intent, Constants.KEY_CHANGE_ADDRESS);
