@@ -17,6 +17,11 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
     @Expose
     String displayImage;
 
+
+    @SerializedName("is_delete")
+    @Expose
+    String isDelete;
+
     @SerializedName("image_show")
     @Expose
     String imageShow="";
@@ -132,4 +137,13 @@ public class ImageURLResponse extends BaseResponse implements Serializable {
     public void setIsImageUpdated(int isImageUpdated) {
         this.isImageUpdated = isImageUpdated;
     }
+
+    public String getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(String isDelete) {
+        this.isDelete = isDelete;
+    }
+
 }
