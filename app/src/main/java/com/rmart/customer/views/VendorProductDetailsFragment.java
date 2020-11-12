@@ -342,8 +342,8 @@ public class VendorProductDetailsFragment extends BaseFragment {
                     progressLayoutField.setVisibility(View.GONE);
                     ivShopImageField.setVisibility(View.VISIBLE);
                     ivShopImageField.setBackgroundResource(R.mipmap.ic_launcher);
-                    tvShopNameField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black));
-                    tvViewAddressField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black));
+                    tvShopNameField.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                    tvViewAddressField.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
                 }
             });
         } else {
