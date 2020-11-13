@@ -142,7 +142,7 @@
     <string name="available_other_sizes">Available in %1$s other sizes</string>
     <string name="in_active">In Active</string>
     <string name="delivered_in"> Delivered %1$s hour.</string>
-    <string name="after_discount">After discount: %1$s</string>
+    <string name="after_discount">After discount: %.2f</string>
     <string name="delivery_in">Delivery in</string>
     <string name="delivery_in_days_text">Delivery in days</string>
     <string name="delivery_in_days">Delivery in %1$s days</string>

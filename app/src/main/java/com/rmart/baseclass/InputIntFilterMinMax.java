@@ -2,16 +2,16 @@ package com.rmart.baseclass;
 import android.text.InputFilter;
 import android.text.Spanned;
 
-public class InputFilterMinMax implements InputFilter {
+public class InputIntFilterMinMax implements InputFilter {
 
     private int min, max;
 
-    public InputFilterMinMax(int min, int max) {
+    public InputIntFilterMinMax(int min, int max) {
         this.min = min;
         this.max = max;
     }
 
-    public InputFilterMinMax(String min, String max) {
+    public InputIntFilterMinMax(String min, String max) {
         this.min = Integer.parseInt(min);
         this.max = Integer.parseInt(max);
     }
