@@ -21,6 +21,7 @@ import android.webkit.WebViewClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.authentication.OnAuthenticationClickedListener;
 import com.rmart.baseclass.views.BaseFragment;
@@ -123,8 +124,7 @@ public class PaymentFragment extends BaseFragment {
         try {
             /* An instance of this class will be registered as a JavaScript interface */
             StringBuilder params = new StringBuilder();
-            String access_code, merchant_id, redirect_url, cancel_url, billing_country, merchant_param1, merchant_param2,
-                    billing_name, billing_email, billing_tel, encVal = "";
+            String access_code, merchant_id, redirect_url, cancel_url, billing_country, merchant_param1, merchant_param2, billing_name, billing_email, billing_tel, encVal = "";
             access_code = rsaKeyResponseDetails.getAccessCode(); //getString(R.string.access_code);
             merchant_id = rsaKeyResponseDetails.getMerchantId(); //getString(R.string.merchant_id);
             redirect_url = rsaKeyResponseDetails.getRedirectUrl(); // getString(R.string.redirect_url);
@@ -156,7 +156,7 @@ public class PaymentFragment extends BaseFragment {
             params.append(ServiceUtility.addToPostParams(AvenuesParams.MERCHANT_PARAM2, "android"));//platform
 
             String vPostParams = params.substring(0, params.length() - 1);
-            String vTransUrl = ("https://test.ccavenue.com/transaction/initTrans");
+            String vTransUrl = (BuildConfig.PAYMENT_URL);
             Log.d("vPostParams", "vPostParams :"+vPostParams);
             Log.d("vTransUrl", "vTransUrl :"+vPostParams);
             webview.postUrl(vTransUrl, vPostParams.getBytes(StandardCharsets.UTF_8));// EncodingUtils.getBytes(vPostParams, "UTF-8"));
@@ -190,7 +190,7 @@ public class PaymentFragment extends BaseFragment {
     private void showSuccessDialog(String orderedMessage) {
         orderedMessage = orderedMessage.replace("<p>", "\n").replace("</p>", "");
         showDialog(orderedMessage, pObject -> {
-            authenticationClickedListener.validateOTP(rsaKeyResponseDetails.getUserMobileNumber(), true);
+            authenticationClickedListener.validateOTP(rsaKeyResponseDetails.getBillingTel(), true);
             // requireActivity().onBackPressed();
 /*            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
             String name = fragmentManager.getBackStackEntryAt(0).getName();
