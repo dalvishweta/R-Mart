@@ -173,9 +173,9 @@ public class ProductCartDetailsFragment extends BaseFragment {
                 @Override
                 public void onFailure(@NotNull Call<ProductDetailsDescResponse> call, @NotNull Throwable t) {
                     if(t instanceof SocketTimeoutException){
-                        showDialog("", getString(R.string.network_slow));
+                        showCloseDialog(getString(R.string.network_slow));
                     } else {
-                        showDialog("", t.getMessage());
+                        showCloseDialog(t.getMessage());
                     }
                     progressDialog.dismiss();
                 }

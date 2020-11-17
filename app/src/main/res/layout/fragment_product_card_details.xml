@@ -260,7 +260,7 @@
                     style="@style/text_style_medium_normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/before_closing"
+                    android:text="@string/opening_time"
                     android:textColor="@color/edit_text_hint" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -274,7 +274,7 @@
                     style="@style/text_style_medium_normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/after_closing"
+                    android:text="@string/closing_time"
                     android:textColor="@color/edit_text_hint" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -288,7 +288,7 @@
                     style="@style/text_style_medium_normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/delivery_days_before_time"
+                    android:text="@string/before_closing"
                     android:textColor="@color/edit_text_hint" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -302,7 +302,7 @@
                     style="@style/text_style_medium_normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/delivery_days_after_time"
+                    android:text="@string/closing_time"
                     android:textColor="@color/edit_text_hint" />
 
                 <androidx.appcompat.widget.AppCompatTextView
