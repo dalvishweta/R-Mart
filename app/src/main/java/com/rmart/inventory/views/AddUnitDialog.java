@@ -355,6 +355,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 } else {
                     String __finalPrice = String.format(getString(R.string.after_discount), 0.0);
                     finalPrice.setText(__finalPrice);
+                    //
                 }
             } else {
                 unitObject.setFinalCost(price+"");
