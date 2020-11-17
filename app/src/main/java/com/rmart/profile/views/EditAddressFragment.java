@@ -791,10 +791,12 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             String roleId = myProfile.getRoleID();
             if (roleId.equals(Utils.CUSTOMER_ID)) {
                 intent = new Intent(requireActivity(), CustomerHomeActivity.class);
-                requireActivity().setResult(Activity.RESULT_OK, intent);
-                requireActivity().onBackPressed();
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                // requireActivity().setResult(Activity.RESULT_OK, intent);
             } else {
                 intent = new Intent(requireActivity(), OrdersActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         }
