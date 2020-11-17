@@ -258,7 +258,7 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                         }
                     });
                 } else {
-                    ivPanCardImageField.setVisibility(View.GONE);
+                    panCardProgressLayout.setVisibility(View.GONE);
                     ivPanCardImageField.setVisibility(View.VISIBLE);
                 }
                 String lShopImageUrl = addressResponse.getShopImage();

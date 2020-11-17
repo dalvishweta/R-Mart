@@ -357,4 +357,7 @@
     <string name="app_logo">Rokad</string>
     <string name="loading">Loading</string>
     <string name="invalid_PAN">Please enter valid PAN number.</string>
+    <string name="before_closing">Before Closing</string>
+    <string name="after_closing">After Closing</string>
+    <string name="image_upload_error">Image Upload Error</string>
 </resources>

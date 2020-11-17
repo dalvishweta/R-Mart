@@ -23,6 +23,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.models.CustomerProductsShopDetailsModel;
@@ -272,7 +273,7 @@ public class PaymentOptionsFragment extends BaseFragment {
 
             String vPostParams = params.substring(0, params.length() - 1);
 
-            String vTransUrl = ("https://test.ccavenue.com/transaction/initTrans");
+            String vTransUrl = (BuildConfig.PAYMENT_URL);
             webview.postUrl(vTransUrl, vPostParams.getBytes(StandardCharsets.UTF_8));// EncodingUtils.getBytes(vPostParams, "UTF-8"));
         } catch (Exception e) {
             showDialog(e.getMessage());
