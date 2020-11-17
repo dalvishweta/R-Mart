@@ -4,13 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +38,6 @@ import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyAddress;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.viewmodels.AddressViewModel;
-import com.rmart.services.UpdateProfileImageServices;
 import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -47,11 +46,14 @@ import com.rmart.utilits.custom_views.CustomNetworkImageView;
 import com.rmart.utilits.custom_views.CustomTimePicker;
 import com.rmart.utilits.pojos.AddressListResponse;
 import com.rmart.utilits.pojos.AddressResponse;
+import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.services.ProfileService;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.Objects;
@@ -338,7 +340,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                     }
                 });
             } else {
-                ivPanCardImageField.setVisibility(View.GONE);
+                panCardProgressLayout.setVisibility(View.GONE);
                 ivPanCardImageField.setVisibility(View.VISIBLE);
             }
             String lShopImageUrl = myAddress.getShopImage();
@@ -451,53 +453,95 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         showConfirmationDialog(getString(R.string.image_saving_confirmation_alert), pObject -> {
             if (selectedPhotoType == 0) {
                 aadharFrontImageUrl = profileImageUri.getPath();
-                UpdateProfileImageServices.enqueueWork(requireActivity(), AADHAR_FRONT_IMAGE, aadharFrontImageUrl);
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), profileImageUri);
-                    if(bitmap != null) {
-                        ivAadharFrontImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
-                    }
-                } catch (Exception ex) {
-
-                }
+                updateImageDetails(profileImageUri, AADHAR_FRONT_IMAGE);
             } else if (selectedPhotoType == 1) {
                 aadharBackImageUrl = profileImageUri.getPath();
-                UpdateProfileImageServices.enqueueWork(requireActivity(), AADHAR_BACK_IMAGE, aadharBackImageUrl);
-                //ivAadharBackImageField.setLocalImageUri(profileImageUri);
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), profileImageUri);
-                    if(bitmap != null) {
-                        ivAadharBackImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
-                    }
-                } catch (Exception ex) {
-
-                }
+                updateImageDetails(profileImageUri, AADHAR_BACK_IMAGE);
             } else if (selectedPhotoType == 2) {
                 panCardImageUrl = profileImageUri.getPath();
-                UpdateProfileImageServices.enqueueWork(requireActivity(), PANCARD_IMAGE, panCardImageUrl);
-                //ivPanCardImageField.setLocalImageUri(profileImageUri);
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), profileImageUri);
-                    if(bitmap != null) {
-                        ivPanCardImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
-                    }
-                } catch (Exception ex) {
-
-                }
+                updateImageDetails(profileImageUri, PANCARD_IMAGE);
             } else if (selectedPhotoType == 3) {
                 shopImageUrl = profileImageUri.getPath();
-                UpdateProfileImageServices.enqueueWork(requireActivity(), SHOP_IMAGE, shopImageUrl);
-                //ivShopImageField.setLocalImageUri(profileImageUri);
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), profileImageUri);
-                    if(bitmap != null) {
-                        ivShopImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
-                    }
-                } catch (Exception ex) {
-
-                }
+                updateImageDetails(profileImageUri, SHOP_IMAGE);
             }
         });
+    }
+
+    private void updateImageDetails(Uri photoImagePath, String imageType) {
+        if (Utils.isNetworkConnected(requireActivity())) {
+            String clientID = "2";
+            try {
+                if (photoImagePath != null) {
+                    progressDialog.show();
+                    InputStream imageStream = requireActivity().getContentResolver().openInputStream(photoImagePath);
+                    Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+                    ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
+                    Call<BaseResponse> call = profileService.uploadPhotoImage(clientID, MyProfile.getInstance().getUserID(),
+                            imageType, getEncodedImage(bitmap));
+                    call.enqueue(new Callback<BaseResponse>() {
+                        @Override
+                        public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
+                            progressDialog.dismiss();
+                            if (response.isSuccessful()) {
+                                BaseResponse body = response.body();
+                                if (body != null) {
+                                    showDialog(body.getMsg());
+                                    updateImageUI(photoImagePath, imageType);
+                                } else {
+                                    showDialog(getString(R.string.image_upload_error));
+                                }
+                            } else {
+                                showDialog(response.message());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
+                            progressDialog.dismiss();
+                            LoggerInfo.errorLog("Image Upload onFailure", t.getMessage());
+                            showDialog(t.getMessage());
+                        }
+                    });
+                }
+            } catch (Exception ex) {
+                LoggerInfo.errorLog("Image Upload exception", ex.getMessage());
+            }
+        }
+    }
+
+    private void updateImageUI(Uri profileImageUri, String imageType) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), profileImageUri);
+            if (bitmap != null) {
+                if (imageType.equalsIgnoreCase(SHOP_IMAGE)) {
+                    ivShopImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                } else if (imageType.equalsIgnoreCase(AADHAR_FRONT_IMAGE)) {
+                    ivAadharFrontImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                } else if (imageType.equalsIgnoreCase(AADHAR_BACK_IMAGE)) {
+                    ivAadharBackImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                } else {
+                    ivPanCardImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                }
+            }
+        } catch (Exception ex) {
+
+        } finally {
+
+        }
+    }
+
+    private String getEncodedImage(Bitmap bitmap) {
+        try {
+            if (bitmap != null) {
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                byte[] b = byteArrayOutputStream.toByteArray();
+                return Base64.encodeToString(b, Base64.DEFAULT);
+            }
+        } catch (Exception ex) {
+            LoggerInfo.errorLog("encode image exception", ex.getMessage());
+        }
+        return "";
     }
 
     private void addAddressSelected() {
@@ -747,10 +791,12 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             String roleId = myProfile.getRoleID();
             if (roleId.equals(Utils.CUSTOMER_ID)) {
                 intent = new Intent(requireActivity(), CustomerHomeActivity.class);
-                requireActivity().setResult(Activity.RESULT_OK, intent);
-                requireActivity().onBackPressed();
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                // requireActivity().setResult(Activity.RESULT_OK, intent);
             } else {
                 intent = new Intent(requireActivity(), OrdersActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
         }
