@@ -178,9 +178,7 @@ public class PaymentFragment extends BaseFragment {
                 showSuccessDialog(ccAvenueResponse.getOrderMessage());
             }else{
                 showDialog(getString(R.string.message), ccAvenueResponse.getOrderMessage(), pObject -> {
-                    Intent in = new Intent(requireActivity(), AuthenticationActivity.class);
-                    in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(in);
+                    goToLoginPage();
                     // requireActivity().getSupportFragmentManager().popBackStack();
                 });
 
@@ -193,6 +191,7 @@ public class PaymentFragment extends BaseFragment {
             // Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         }
     }
+
     private void showSuccessDialog(String orderedMessage) {
         orderedMessage = orderedMessage.replace("<p>", "\n").replace("</p>", "");
         showDialog(orderedMessage, pObject -> {

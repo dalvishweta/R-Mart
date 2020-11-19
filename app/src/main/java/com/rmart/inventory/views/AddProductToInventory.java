@@ -152,6 +152,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             public void onResponse(@NotNull Call<APIUnitMeasureListResponse> call, @NotNull Response<APIUnitMeasureListResponse> response) {
                 if (response.isSuccessful()) {
                     APIUnitMeasureListResponse data = response.body();
+
+                    for (APIUnitMeasureResponse apiUnitMeasureResponse:
+                         data.getArrayList()) {
+                        apiUnitMeasureResponse.setAttributesName(apiUnitMeasureResponse.getAttributesName().replace(".",""));
+                    }
                     if (data != null) {
                         unitMeasurements = data.getArrayList();
                     } else {
