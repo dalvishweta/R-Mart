@@ -207,21 +207,25 @@ public class VendorProductDetailsFragment extends BaseFragment {
     }
 
     private final CallBackInterface callBackListener = pObject -> {
-        if (pObject instanceof CustomerProductDetailsModel) {
-            onCustomerHomeInteractionListener.gotoProductDescDetails((CustomerProductDetailsModel) pObject, productsShopDetailsModel);
-            etProductsSearchField.setText("");
-            searchProductName = "";
-        } else if (pObject instanceof ContentModel) {
-            ContentModel contentModel = (ContentModel) pObject;
-            String status = contentModel.getStatus();
-            if (status.equalsIgnoreCase(Constants.TAG_VIEW_ALL)) {
-                ProductBaseModel selectedProductCategoryDetails = (ProductBaseModel) contentModel.getValue();
-                currentPage = 0;
-                //productCategoryId = selectedProductCategoryDetails.getProductCategoryId();
-                onCustomerHomeInteractionListener.gotoVendorSameProductListScreen(selectedProductCategoryDetails, productsShopDetailsModel);
+        if (Utils.isNetworkConnected(requireActivity())) {
+            if (pObject instanceof CustomerProductDetailsModel) {
+                onCustomerHomeInteractionListener.gotoProductDescDetails((CustomerProductDetailsModel) pObject, productsShopDetailsModel);
                 etProductsSearchField.setText("");
                 searchProductName = "";
+            } else if (pObject instanceof ContentModel) {
+                ContentModel contentModel = (ContentModel) pObject;
+                String status = contentModel.getStatus();
+                if (status.equalsIgnoreCase(Constants.TAG_VIEW_ALL)) {
+                    ProductBaseModel selectedProductCategoryDetails = (ProductBaseModel) contentModel.getValue();
+                    currentPage = 0;
+                    //productCategoryId = selectedProductCategoryDetails.getProductCategoryId();
+                    onCustomerHomeInteractionListener.gotoVendorSameProductListScreen(selectedProductCategoryDetails, productsShopDetailsModel);
+                    etProductsSearchField.setText("");
+                    searchProductName = "";
+                }
             }
+        } else {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
     };
 
@@ -283,7 +287,9 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
     private void showCloseDialog(String title, String message) {
         progressLayoutField.setVisibility(View.GONE);
-        showDialog(title, message, pObject -> requireActivity().getSupportFragmentManager().popBackStackImmediate());
+        if (!requireActivity().isFinishing()) {
+            showDialog(title, message, pObject -> requireActivity().getSupportFragmentManager().popBackStackImmediate());
+        }
     }
 
     private void updateAdapter(List<CustomerProductDetailsModel> productDataList) {

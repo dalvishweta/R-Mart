@@ -288,7 +288,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         productImagesAdapter = new ProductImagesAdapter(requireActivity(), imagesList);
         productImagesListField.setAdapter(productImagesAdapter);
 
-        /*productImagesListField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), "", productImagesListField, new RecyclerTouchListener.ClickListener() {
+        productImagesListField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), "", productImagesListField, new RecyclerTouchListener.ClickListener() {
 
             @Override
             public void onClick(View view, int position) {
@@ -300,7 +300,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             public void onLongClick(View view, int position) {
 
             }
-        }));*/
+        }));
 
         unitsList.clear();
         for (UnitObject unitObject : mClonedProduct.getUnitObjects()) {

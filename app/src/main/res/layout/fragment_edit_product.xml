@@ -130,8 +130,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                tools:itemCount="5"
-                tools:listitem="@layout/add_product_image_item_view" />
+                tools:itemCount="5" />
 
         </LinearLayout>
         <RelativeLayout
@@ -159,9 +158,9 @@
                 android:textColor="@color/colorPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/unit_base"
-                tools:listitem="@layout/product_unit_base"
                 tools:itemCount="4"
                 android:layout_below="@+id/add_unit"
                 android:layout_width="match_parent"

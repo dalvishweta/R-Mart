@@ -27,6 +27,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="10dp"
             android:layout_alignParentEnd="true"
+            android:visibility="gone"
             android:background="@drawable/delete" />
     </RelativeLayout>
     <androidx.appcompat.widget.AppCompatImageView
