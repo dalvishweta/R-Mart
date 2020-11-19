@@ -78,7 +78,7 @@
                 android:id="@+id/delivery_radius"
                 android:drawableStart="@drawable/ic_address"
                 style="@style/my_profile_tv"
-                android:inputType="numberDecimal"
+                android:inputType="numberSigned"
                 android:maxLength="2" />
 
             <LinearLayout
