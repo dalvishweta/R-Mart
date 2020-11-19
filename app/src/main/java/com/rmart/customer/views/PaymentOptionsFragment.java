@@ -289,6 +289,7 @@ public class PaymentOptionsFragment extends BaseFragment {
             Gson g = new Gson();
             CCAvenueResponse ccAvenueResponse = g.fromJson(html, CCAvenueResponse.class);
             if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
+                MyProfile.getInstance().setCartCount(ccAvenueResponse.getTotalCartCount());
                 showSuccessDialog(ccAvenueResponse.getOrderMessage());
             }else{
                 showDialog(getString(R.string.message), ccAvenueResponse.getOrderMessage(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
