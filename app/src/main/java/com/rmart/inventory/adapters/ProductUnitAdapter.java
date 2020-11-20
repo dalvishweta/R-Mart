@@ -51,13 +51,14 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
     @Override
     public void onBindViewHolder(@NonNull ProductUnitViewHolder holder, int position) {
         UnitObject unit = productUnitList.get(position);
-        String finalCost = String.format("%s Rs", unit.getFinalCost());
+
+        String finalCost = String.format("%.2f Rs", Double.parseDouble(unit.getFinalCost()));
         holder.tvFinalCost.setText(finalCost);
         String unitValue = String.format("%s %s", unit.getUnitNumber(), unit.getDisplayUnitValue());
         holder.tvUnitValue.setText(unitValue);
         holder.tvIUnitState.setText(unit.getStockName());
 
-        String actualCost = String.format("%s Rs", unit.getActualCost());
+        String actualCost = String.format("%.2f Rs",Double.parseDouble(unit.getActualCost()));
         holder.tvActual.setText(actualCost);
         holder.tvActual.setPaintFlags(holder.tvActual.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.tvOffer.setText(String.format(holder.itemView.getContext().getString(R.string.offer_single_line), unit.getDiscount() + "%"));

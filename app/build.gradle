@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 30
@@ -31,7 +32,7 @@ android {
         buildConfigField('String', 'API_PRODUCT_LIST', '"lib/product/product_list"')
         buildConfigField('String', 'API_SUB_CATEGORY_PRODUCT_LIST', '"lib/Category/sub_category_list"')
         buildConfigField('String', 'API_CATEGORY_LIST', '"lib/Category/category_list"')
-            buildConfigField('String', 'API_BRAND_LIST', '"lib/Brand/brand_list"')
+        buildConfigField('String', 'API_BRAND_LIST', '"lib/Brand/brand_list"')
         buildConfigField("String", 'UPDATE_PROFILE', '"updateprofile"')
 
         buildConfigField("String", 'ADD_ADDRESS', '"updateprofile/addAddress"')
@@ -209,7 +210,14 @@ dependencies {
     //volley
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'org.apache.commons:commons-lang3:3.11'
+    implementation platform('com.google.firebase:firebase-bom:26.0.0')
+    implementation 'com.google.firebase:firebase-crashlytics-ndk:17.2.2'
 
+    // Declare the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics'
     //image cropping
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+
 }
