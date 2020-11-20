@@ -92,6 +92,7 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
                 int tag = (int) v.getTag();
                 ContentModel contentModel = new ContentModel();
                 contentModel.setStatus(Constants.TAG_EDIT_UNIT);
+                productUnitList.get(tag).setPosition(tag);
                 contentModel.setValue(productUnitList.get(tag));
                 callBackInterface.callBackReceived(contentModel);
             });

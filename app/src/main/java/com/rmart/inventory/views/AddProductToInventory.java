@@ -552,6 +552,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                    if (bundle.getBoolean("IS_DELETED", false)) {
                        UnitObject unitData = (UnitObject) bundle.getSerializable(UNIT_VALUE);
                        if (unitData != null) {
+                           unitsList.remove(unitData.getPosition());
+                           unitBaseAdapter.updateItems(unitsList);
+                           unitBaseAdapter.notifyDataSetChanged();
+                       }
+                       /*if (unitData != null) {
                            if (unitData.getTimeStamp() != -1) {
                                for (int i = 0; i < unitsList.size(); i++) {
                                    if (unitsList.get(i).getTimeStamp() == unitData.getTimeStamp()) {
@@ -571,11 +576,14 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                                    }
                                }
                            }
-                       }
+                       }*/
                    } else {
                        UnitObject unitData = (UnitObject) bundle.getSerializable(UNIT_VALUE);
                        if (unitData != null) {
-                           if (unitData.getTimeStamp() != -1) {
+                           unitsList.set(unitData.getPosition(), unitData);
+                           unitBaseAdapter.updateItems(unitsList);
+                           unitBaseAdapter.notifyDataSetChanged();
+                           /*if (unitData.getTimeStamp() != -1) {
                                for (int i = 0; i < unitsList.size(); i++) {
                                    if (unitsList.get(i).getTimeStamp() == unitData.getTimeStamp()) {
                                        unitsList.set(i, unitData);
@@ -593,7 +601,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                                        break;
                                    }
                                }
-                           }
+                           }*/
                        }
                    }
                     // unitsList.add(unitData);

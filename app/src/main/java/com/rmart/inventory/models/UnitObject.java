@@ -56,6 +56,7 @@ public class UnitObject implements Serializable {
     @Expose
     String shortName;*/
 
+    private int position;
     boolean isActive = true;
     int minDiscount;
     int maxDiscount;
@@ -298,5 +299,14 @@ public class UnitObject implements Serializable {
 
     public void setProductUpdated(boolean productUpdated) {
         isProductUpdated = productUpdated;
+    }
+
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 }
