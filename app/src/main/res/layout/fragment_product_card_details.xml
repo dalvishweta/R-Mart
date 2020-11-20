@@ -302,7 +302,7 @@
                     style="@style/text_style_medium_normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/closing_time"
+                    android:text="@string/after_closing"
                     android:textColor="@color/edit_text_hint" />
 
                 <androidx.appcompat.widget.AppCompatTextView

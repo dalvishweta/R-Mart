@@ -150,7 +150,7 @@
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/delivery_days_before_time"
-                    android:hint="@string/delivery_days_before_time"
+                    android:hint="@string/before_closing"
                     style="@style/upload_product_item_field"
                     android:background="@drawable/curve_left_bg"
                     android:layout_weight="1"
@@ -161,7 +161,7 @@
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/delivery_days_after_time"
-                    android:hint="@string/delivery_days_after_time"
+                    android:hint="@string/after_closing"
                     style="@style/upload_product_item_field"
                     android:background="@drawable/curve_right_bg"
                     android:layout_width="0dp"

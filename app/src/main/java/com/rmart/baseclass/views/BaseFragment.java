@@ -2,11 +2,13 @@ package com.rmart.baseclass.views;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.rmart.R;
+import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.utilits.Utils;
@@ -194,5 +196,9 @@ public class BaseFragment extends Fragment {
 
         }
     }
-
+    protected void goToLoginPage() {
+        Intent in = new Intent(requireActivity(), AuthenticationActivity.class);
+        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(in);
+    }
 }

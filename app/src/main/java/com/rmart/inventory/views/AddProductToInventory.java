@@ -152,6 +152,11 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             public void onResponse(@NotNull Call<APIUnitMeasureListResponse> call, @NotNull Response<APIUnitMeasureListResponse> response) {
                 if (response.isSuccessful()) {
                     APIUnitMeasureListResponse data = response.body();
+
+                    for (APIUnitMeasureResponse apiUnitMeasureResponse:
+                         data.getArrayList()) {
+                        apiUnitMeasureResponse.setAttributesName(apiUnitMeasureResponse.getAttributesName().replace(".",""));
+                    }
                     if (data != null) {
                         unitMeasurements = data.getArrayList();
                     } else {
@@ -283,7 +288,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         productImagesAdapter = new ProductImagesAdapter(requireActivity(), imagesList);
         productImagesListField.setAdapter(productImagesAdapter);
 
-        /*productImagesListField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), "", productImagesListField, new RecyclerTouchListener.ClickListener() {
+        productImagesListField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), "", productImagesListField, new RecyclerTouchListener.ClickListener() {
 
             @Override
             public void onClick(View view, int position) {
@@ -295,7 +300,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             public void onLongClick(View view, int position) {
 
             }
-        }));*/
+        }));
 
         unitsList.clear();
         for (UnitObject unitObject : mClonedProduct.getUnitObjects()) {

@@ -274,6 +274,8 @@
     <string name="closing_time">Closing Time</string>
     <string name="delivery_days_before_time">Enter no. of days for before closing</string>
     <string name="delivery_days_after_time">Enter no. of days for after closing</string>
+    <string name="retailer_delivery_days_before_time">Before closing time</string>
+    <string name="retailer_delivery_days_after_time">After closing time</string>
     <string name="no_product_details_found">No Product Details Found</string>
     <string name="map_view">Map View</string>
     <string name="list_view">List View</string>

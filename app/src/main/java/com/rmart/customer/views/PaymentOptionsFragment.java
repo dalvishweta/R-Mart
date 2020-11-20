@@ -288,11 +288,7 @@ public class PaymentOptionsFragment extends BaseFragment {
             jsonObject = new JsonParser().parse(html).getAsJsonObject();
             Gson g = new Gson();
             CCAvenueResponse ccAvenueResponse = g.fromJson(html, CCAvenueResponse.class);
-            if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
-                showSuccessDialog(ccAvenueResponse.getOrderMessage());
-            }else{
-                showDialog(getString(R.string.message), ccAvenueResponse.getOrderMessage(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
-            }
+            updateCartCount(ccAvenueResponse);
         }
 
         @JavascriptInterface
@@ -300,6 +296,17 @@ public class PaymentOptionsFragment extends BaseFragment {
             showDialog("", msg);
             // Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void updateCartCount(CCAvenueResponse ccAvenueResponse) {
+        requireActivity().runOnUiThread(() -> {
+            if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
+                MyProfile.getInstance().setCartCount(ccAvenueResponse.getTotalCartCount());
+                showSuccessDialog(ccAvenueResponse.getOrderMessage());
+            }else{
+                showDialog(getString(R.string.message), ccAvenueResponse.getOrderMessage(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+            }
+        });
     }
 
     private void showSuccessDialog(String orderedMessage) {

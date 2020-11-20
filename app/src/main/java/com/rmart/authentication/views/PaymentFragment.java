@@ -1,6 +1,7 @@
 package com.rmart.authentication.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.http.SslError;
 import android.os.Bundle;
 
@@ -176,7 +177,10 @@ public class PaymentFragment extends BaseFragment {
             if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
                 showSuccessDialog(ccAvenueResponse.getOrderMessage());
             }else{
-                showDialog(getString(R.string.message), ccAvenueResponse.getOrderMessage(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+                showDialog(getString(R.string.message), ccAvenueResponse.getOrderMessage(), pObject -> {
+                    goToLoginPage();
+                    // requireActivity().getSupportFragmentManager().popBackStack();
+                });
 
             }
         }
@@ -187,6 +191,7 @@ public class PaymentFragment extends BaseFragment {
             // Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         }
     }
+
     private void showSuccessDialog(String orderedMessage) {
         orderedMessage = orderedMessage.replace("<p>", "\n").replace("</p>", "");
         showDialog(orderedMessage, pObject -> {

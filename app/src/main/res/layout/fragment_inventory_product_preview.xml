@@ -133,7 +133,7 @@
                     style="@style/product_preview_item_value"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/delivery_days_before_time"
+                    android:text="@string/retailer_delivery_days_before_time"
                     style="@style/product_preview_item_title"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -141,7 +141,7 @@
                     style="@style/product_preview_item_value"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/delivery_days_after_time"
+                    android:text="@string/retailer_delivery_days_after_time"
                     style="@style/product_preview_item_title"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
