@@ -451,6 +451,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
     private void showConfirmDialog(Uri profileImageUri) {
         showConfirmationDialog(getString(R.string.image_saving_confirmation_alert), pObject -> {
+            progressDialog.show();
             if (selectedPhotoType == 0) {
                 aadharFrontImageUrl = profileImageUri.getPath();
                 updateImageDetails(profileImageUri, AADHAR_FRONT_IMAGE);
@@ -463,6 +464,8 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             } else if (selectedPhotoType == 3) {
                 shopImageUrl = profileImageUri.getPath();
                 updateImageDetails(profileImageUri, SHOP_IMAGE);
+            } else {
+                progressDialog.dismiss();
             }
         });
     }
@@ -471,7 +474,6 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         if (Utils.isNetworkConnected(requireActivity())) {
             String clientID = "2";
             try {
-                progressDialog.show();
                 if (photoImagePath != null) {
                     InputStream imageStream = requireActivity().getContentResolver().openInputStream(photoImagePath);
                     Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
@@ -505,8 +507,12 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                 }
             } catch (Exception ex) {
                 progressDialog.dismiss();
+                showDialog(ex.getMessage());
                 LoggerInfo.errorLog("Image Upload exception", ex.getMessage());
             }
+        } else {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            progressDialog.dismiss();
         }
     }
 

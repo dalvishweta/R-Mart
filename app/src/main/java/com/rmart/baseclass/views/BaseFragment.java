@@ -183,11 +183,11 @@ public class BaseFragment extends Fragment {
 
     public void showConfirmationDialog(String msg, CallBackInterface callBackInterface) {
         try {
-            AlertDialog alertDialog = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog).create();
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
             alertDialog.setTitle(getString(R.string.message));
             alertDialog.setMessage(msg);
             alertDialog.setCancelable(false);
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES", (dialogInterface, i) -> {
+            /*alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES", (dialogInterface, i) -> {
                 requireActivity().runOnUiThread(() -> {
                     Toast.makeText(getActivity(), "Processing.....", Toast.LENGTH_LONG).show();
                 });
@@ -196,7 +196,12 @@ public class BaseFragment extends Fragment {
             });
             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "close", (dialogInterface, i) -> {
                 alertDialog.dismiss();
+            });*/
+            alertDialog.setPositiveButton("OK", (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+                callBackInterface.callBackReceived(Constants.TAG_SUCCESS);
             });
+            alertDialog.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
             // alertDialog.setNegativeButton("close", null);
             /*alertDialog.setButton("Ok", (dialogInterface, i) -> {
                 callBackInterface.callBackReceived(Constants.TAG_SUCCESS);

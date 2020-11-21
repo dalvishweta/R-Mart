@@ -1,5 +1,6 @@
 package com.rmart.customer.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
@@ -287,8 +289,11 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
     private void showCloseDialog(String title, String message) {
         progressLayoutField.setVisibility(View.GONE);
-        if (!requireActivity().isFinishing()) {
-            showDialog(title, message, pObject -> requireActivity().getSupportFragmentManager().popBackStackImmediate());
+        Activity activity = getActivity();
+        if(activity != null) {
+            if(!activity.isFinishing()) {
+                showDialog(title, message, pObject -> requireActivity().getSupportFragmentManager().popBackStackImmediate());
+            }
         }
     }
 

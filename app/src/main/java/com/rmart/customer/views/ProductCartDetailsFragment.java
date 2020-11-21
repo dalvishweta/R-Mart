@@ -39,6 +39,7 @@ import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.DateUtilities;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.ImageURLResponse;
@@ -455,7 +456,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
                                 AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = body.getAddToCartDataResponse();
                                 if (addToCartDataResponse != null) {
                                     Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
-                                    MyProfile.getInstance().setCartCount(totalCartCount);
+                                    UpdateCartCountDetails.updateCartCountDetails.onNext(totalCartCount);
                                     showDialog(body.getMsg());
                                 } else {
                                     showDialog(getString(R.string.no_information_available));

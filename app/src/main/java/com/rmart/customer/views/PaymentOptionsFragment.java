@@ -32,6 +32,7 @@ import com.rmart.customer.models.RSAKeyResponseDetails;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.ccavenue.AvenuesParams;
 import com.rmart.utilits.ccavenue.CCAvenueResponse;
@@ -172,7 +173,7 @@ public class PaymentOptionsFragment extends BaseFragment {
                                 ProductOrderedResponseModel.ProductOrderedResponseDetails productOrderedResponseDetails = body.getProductOrderedResponseDetails();
                                 if (selectedPaymentType == 1) {
                                     showSuccessDialog(productOrderedResponseDetails.getOrderMessage());
-                                    MyProfile.getInstance().setCartCount(productOrderedResponseDetails.getTotalCartCount());
+                                    UpdateCartCountDetails.updateCartCountDetails.onNext(productOrderedResponseDetails.getTotalCartCount());
                                 } else if (selectedPaymentType == 2) {
                                     paymentOptionsLayoutField.setVisibility(View.GONE);
                                     webview.setVisibility(View.VISIBLE);
@@ -301,7 +302,7 @@ public class PaymentOptionsFragment extends BaseFragment {
     private void updateCartCount(CCAvenueResponse ccAvenueResponse) {
         requireActivity().runOnUiThread(() -> {
             if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
-                MyProfile.getInstance().setCartCount(ccAvenueResponse.getTotalCartCount());
+                UpdateCartCountDetails.updateCartCountDetails.onNext(ccAvenueResponse.getTotalCartCount());
                 showSuccessDialog(ccAvenueResponse.getOrderMessage());
             }else{
                 showDialog(getString(R.string.message), ccAvenueResponse.getOrderMessage(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());

@@ -31,6 +31,7 @@ import com.rmart.profile.model.MyProfile;
 import com.rmart.services.UpdateProductQuantityServices;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.services.CustomerProductsService;
@@ -306,7 +307,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
 
     private void showSuccessDialog(int totalCartInCount, String message) {
         showDialog(message, pObject -> {
-            MyProfile.getInstance().setCartCount(totalCartInCount);
+            UpdateCartCountDetails.updateCartCountDetails.onNext(totalCartInCount);
             int index = productInCartDetailsList.indexOf(selectedProductInCartDetails);
             if (index > -1) {
                 productInCartDetailsList.remove(index);

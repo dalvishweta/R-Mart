@@ -39,10 +39,17 @@ import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
 import com.rmart.utilits.CommonUtils;
 import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RokadMartCache;
+import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
 
 import org.jetbrains.annotations.NotNull;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public abstract class BaseNavigationDrawerActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -80,6 +87,32 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     }
 
     private void loadUIComponents() {
+        UpdateCartCountDetails.updateCartCountDetails.observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(
+                        Schedulers.io()
+                ).subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull Integer count) {
+                LoggerInfo.printLog("cart count info", count);
+                cartCount = count;
+                updateCart();
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
         navigationView = findViewById(R.id.navigation_view);
         findViewById(R.id.update_profile).setOnClickListener(this);
         findViewById(R.id.retailer_orders).setOnClickListener(this);
@@ -147,13 +180,13 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 ivProfileImageField.setImageBitmap(newBitmap);
             });
 
-            myProfile.getCartCount().observe(this, count -> {
+            /*myProfile.getCartCount().observe(this, count -> {
                 this.cartCount = count;
                 if (tvCartCountField != null) {
                     tvCartCountField.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
                     tvCartCountField.setText(String.valueOf(count));
                 }
-            });
+            });*/
         }
         nameField = findViewById(R.id.customer_name);
         mobileField = findViewById(R.id.mobile);
@@ -165,6 +198,13 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             tvAppVersionField.setText(appVersion);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void updateCart() {
+        if (tvCartCountField != null) {
+            tvCartCountField.setVisibility(cartCount == 0 ? View.GONE : View.VISIBLE);
+            tvCartCountField.setText(String.valueOf(cartCount));
         }
     }
 
@@ -205,7 +245,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 View actionView = menuItem.getActionView();
                 tvCartCountField = actionView.findViewById(R.id.tv_cart_count_field);
                 if (MyProfile.getInstance() != null) {
-                    cartCount = myProfile.getCartCount().getValue();
                     if (cartCount > 0) {
                         Fragment currentFragment = getActiveFragment();
                         if (currentFragment instanceof ShoppingCartFragment) {
@@ -214,7 +253,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                             showCartIcon();
                         }
                         tvCartCountField.setVisibility(View.VISIBLE);
-                        tvCartCountField.setText(String.valueOf(cartCount));
+                        UpdateCartCountDetails.updateCartCountDetails.onNext(cartCount);
                     } else {
                         tvCartCountField.setVisibility(View.GONE);
                         //menuItem.setVisible(false);
