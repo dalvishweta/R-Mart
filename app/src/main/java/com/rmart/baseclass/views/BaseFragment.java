@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import com.rmart.R;
 import com.rmart.authentication.views.AuthenticationActivity;
@@ -182,13 +183,25 @@ public class BaseFragment extends Fragment {
 
     public void showConfirmationDialog(String msg, CallBackInterface callBackInterface) {
         try {
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
-            builder.setTitle(getString(R.string.message));
-            builder.setMessage(msg);
-            builder.setCancelable(false);
-            builder.setNegativeButton("close", null);
-            builder.setPositiveButton("Ok", (dialogInterface, i) -> callBackInterface.callBackReceived(Constants.TAG_SUCCESS));
-            AlertDialog alertDialog = builder.create();
+            AlertDialog alertDialog = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog).create();
+            alertDialog.setTitle(getString(R.string.message));
+            alertDialog.setMessage(msg);
+            alertDialog.setCancelable(false);
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "YES", (dialogInterface, i) -> {
+                requireActivity().runOnUiThread(() -> {
+                    Toast.makeText(getActivity(), "Processing.....", Toast.LENGTH_LONG).show();
+                });
+                alertDialog.dismiss();
+                callBackInterface.callBackReceived(Constants.TAG_SUCCESS);
+            });
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "close", (dialogInterface, i) -> {
+                alertDialog.dismiss();
+            });
+            // alertDialog.setNegativeButton("close", null);
+            /*alertDialog.setButton("Ok", (dialogInterface, i) -> {
+                callBackInterface.callBackReceived(Constants.TAG_SUCCESS);
+            });*/
+            // AlertDialog alertDialog = builder.create();
             if (!requireActivity().isFinishing()) {
                 alertDialog.show();
             }

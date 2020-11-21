@@ -471,8 +471,8 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         if (Utils.isNetworkConnected(requireActivity())) {
             String clientID = "2";
             try {
+                progressDialog.show();
                 if (photoImagePath != null) {
-                    progressDialog.show();
                     InputStream imageStream = requireActivity().getContentResolver().openInputStream(photoImagePath);
                     Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
                     ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
@@ -504,6 +504,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                     });
                 }
             } catch (Exception ex) {
+                progressDialog.dismiss();
                 LoggerInfo.errorLog("Image Upload exception", ex.getMessage());
             }
         }
