@@ -2,6 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
+
+project.ext {
+    rxjava = "2.2.19"
+    rxandroid = "2.1.1"
+}
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.1"
@@ -125,8 +131,15 @@ android {
             /*versionNameSuffix "-retailer"*/
             buildConfigField("String", "ROLE_ID", '"4"')
             buildConfigField("String", "PAYMENT_URL", '"https://test.ccavenue.com/transaction/initTrans"')
-            buildConfigField("String", "LOGIN_USERNAME", '"7416226233"')
-            buildConfigField("String", "LOGIN_PASSWORD", '"1qQ@1234"')
+            //buildConfigField("String", "LOGIN_USERNAME", '"7416226233"')
+            //buildConfigField("String", "LOGIN_PASSWORD", '"Aaa@1111"')
+            //buildConfigField("String", "LOGIN_USERNAME", '"7039191834"')
+            //buildConfigField("String", "LOGIN_PASSWORD", '"Nikita@123"')
+            //buildConfigField("String", "LOGIN_USERNAME", '"9975294788"')
+            //buildConfigField("String", "LOGIN_PASSWORD", '"Vishal@1235"')
+            buildConfigField("String", "LOGIN_USERNAME", '"9975294782"')
+            buildConfigField("String", "LOGIN_PASSWORD", '"Amol@1234"')
+            //8855885588
         }
         delivery {
             dimension "rokard_mart"
@@ -143,8 +156,12 @@ android {
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"') //?command=initiateTransaction
             buildConfigField("String", "ROLE_ID", '"5"')
-            buildConfigField("String", "LOGIN_USERNAME", '"7416226244"')
-            buildConfigField("String", "LOGIN_PASSWORD", '"1qQ@1234"')
+            buildConfigField("String", "LOGIN_USERNAME", '"9912592822"')
+            buildConfigField("String", "LOGIN_PASSWORD", '"Qwerty@123"')
+            /*buildConfigField("String", "LOGIN_USERNAME", '"7039244243"')
+            buildConfigField("String", "LOGIN_PASSWORD", '"Trimax@123"')*/
+            //buildConfigField("String", "LOGIN_USERNAME", '"7416226244"')
+            //buildConfigField("String", "LOGIN_PASSWORD", '"Aaa@1111"')
             buildConfigField("boolean", "IS_DELIVERY", "false")
             buildConfigField("boolean", "IS_RETAILER", "false")
         }
@@ -155,8 +172,8 @@ android {
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"')
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
             buildConfigField("String", "ROLE_ID", '"4"')
-            buildConfigField("String", "LOGIN_USERNAME", '"7416226233"')
-            buildConfigField("String", "LOGIN_PASSWORD", '"1qQ@1234"')
+            buildConfigField("String", "LOGIN_USERNAME", '"9975294782"')
+            buildConfigField("String", "LOGIN_PASSWORD", '"Amol@1234"')
         }
         delivery_production {
             dimension "rokard_mart"
@@ -174,11 +191,11 @@ dependencies {
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.firebase:firebase-messaging:20.3.0'
+    implementation 'com.google.firebase:firebase-messaging:21.0.0'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
 
     testImplementation 'junit:junit:4.13.1'
@@ -219,5 +236,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     //image cropping
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
+
+    //Rx
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid"
 
 }
