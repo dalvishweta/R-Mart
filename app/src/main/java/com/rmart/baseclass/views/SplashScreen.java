@@ -64,7 +64,7 @@ public class SplashScreen extends BaseActivity {
     }
 
     private void checkLoginCache() {
-        if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.CUSTOMER)) {
+        if (BuildConfig.FLAVOR.contains(Utils.CUSTOMER)) {
             Object lObject = RokadMartCache.getData(Constants.CACHE_CUSTOMER_DETAILS, this);
             if (lObject == null) {
                 setDelayHandler();
