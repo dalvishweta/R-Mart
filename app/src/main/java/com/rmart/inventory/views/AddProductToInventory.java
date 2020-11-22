@@ -152,7 +152,6 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
             public void onResponse(@NotNull Call<APIUnitMeasureListResponse> call, @NotNull Response<APIUnitMeasureListResponse> response) {
                 if (response.isSuccessful()) {
                     APIUnitMeasureListResponse data = response.body();
-
                     for (APIUnitMeasureResponse apiUnitMeasureResponse:
                          data.getArrayList()) {
                         apiUnitMeasureResponse.setAttributesName(apiUnitMeasureResponse.getAttributesName().replace(".",""));
@@ -394,9 +393,10 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         setImageURL(updateImagesList);
         mClonedProduct.setImageDataObject(updateImagesList);
         if(updateImagesList.size()>0) {
-            if (!updateImagesList.get(0).getImageShow().equalsIgnoreCase("1")) {
-                updateImagesList.get(0).setImageShow("1");
+            for (ImageURLResponse imageURLResponse : updateImagesList) {
+                imageURLResponse.setImageShow("0");
             }
+            updateImagesList.get(0).setImageShow("1");
         } else {
             progressDialog.dismiss();
             showDialog("", getString(R.string.error_image_thumb));
