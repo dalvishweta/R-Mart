@@ -23,6 +23,7 @@ import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.RokadMartCache;
+import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.LoginResponse;
 import com.rmart.utilits.pojos.ProfileResponse;
@@ -85,8 +86,6 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
             LoggerInfo.printLog("FCM Token", deviceToken);
         });
 
-         etMobileNumber.setText("9581065425");
-         etPassword.setText("Abc@1234");
         deviceToken = MyFirebaseMessagingService.getToken(this.requireContext());
     }
 
@@ -128,7 +127,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                         loginDetailsModel.setPassword(mPassword);
                                         ProfileResponse profileResponse = data.getLoginData();
                                         MyProfile.setInstance(profileResponse);
-                                        MyProfile.getInstance().setCartCount(profileResponse.getTotalCartCount());
+                                        //MyProfile.getInstance().setCartCount(profileResponse.getTotalCartCount());
+                                        UpdateCartCountDetails.updateCartCountDetails.onNext(profileResponse.getTotalCartCount());
                                         if (MyProfile.getInstance().getPrimaryAddressId() == null) {
                                             mListener.goToProfileActivity(true);
                                         } else {

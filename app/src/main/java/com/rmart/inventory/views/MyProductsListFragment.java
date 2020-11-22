@@ -142,6 +142,8 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     }
 
     private final View.OnClickListener onClickListener = view -> {
+        searchView.setQuery("", false);
+        searchView.clearFocus();
         ProductResponse product = (ProductResponse) view.getTag();
         mListener.showProductPreview(product, true);
     };
