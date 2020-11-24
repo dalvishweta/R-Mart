@@ -329,7 +329,7 @@
     <string name="product_discard_alert">Are you sure wants to discard your Changes?</string>
     <string name="cart_is_empty">Cart is empty</string>
     <string name="allow_digits">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM </string>
-    <string name="allow_digits_for_numbers">123456789</string>
+    <string name="allow_digits_for_numbers">1234567890</string>
     <string name="allow_name">qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM </string>
     <string name="allow_number_digits">1234567890</string>
     <string name="allow_digits_with_out_space">qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM</string>

@@ -2,7 +2,6 @@ package com.rmart.utilits;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -14,6 +13,12 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
+import java.util.List;
 
 /**
  * Created by Satya Seshu on 27/06/20.
@@ -63,5 +68,17 @@ public class CommonUtils {
     public static void closeVirtualKeyboard(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void dismissAllDialogs(FragmentManager manager) {
+        List<Fragment> fragments = manager.getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment instanceof DialogFragment) {
+                DialogFragment dialogFragment = (DialogFragment) fragment;
+                dialogFragment.dismissAllowingStateLoss();
+            }
+            FragmentManager childFragmentManager = fragment.getChildFragmentManager();
+            dismissAllDialogs(childFragmentManager);
+        }
     }
 }

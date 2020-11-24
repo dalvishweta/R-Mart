@@ -117,6 +117,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadUIComponents(view);
+        CommonUtils.dismissAllDialogs(requireActivity().getSupportFragmentManager());
     }
 
     @Override
