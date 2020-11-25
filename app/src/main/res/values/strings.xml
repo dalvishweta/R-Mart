@@ -296,6 +296,7 @@
     <string name="remove_from_wish_list">Remove WishList</string>
     <string name="shop_no_required">Shop number required</string>
     <string name="delivery_radius_required">Delivery Radius required</string>
+    <string name="delivery_radius_min_required">Delivery Radius should be minimum of 1 km.</string>
     <string name="street_address_required">Street address required</string>
     <string name="city_required">City required</string>
     <string name="error_quantity_value">Quantity value required.</string>

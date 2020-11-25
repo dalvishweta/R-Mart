@@ -9,6 +9,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -39,6 +40,8 @@ import com.rmart.profile.model.MyAddress;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.viewmodels.AddressViewModel;
 import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.InputFilterIntMinMax;
+import com.rmart.utilits.InputFilterMinMax;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -160,6 +163,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         tvStreetAddress = view.findViewById(R.id.street_address);
         tvShopNO = view.findViewById(R.id.shop_no);
         tvDeliveryRadius = view.findViewById(R.id.delivery_radius);
+        tvDeliveryRadius.setFilters(new InputFilter[]{new InputFilterIntMinMax(1, 99)});
         tvPinCode = view.findViewById(R.id.pin_code);
         tvState = view.findViewById(R.id.state);
         tvCity = view.findViewById(R.id.city);
@@ -582,6 +586,10 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
             String deliveryRadius = Objects.requireNonNull(tvDeliveryRadius.getText()).toString().trim();
             if (TextUtils.isEmpty(deliveryRadius)) {
+                showDialog(getString(R.string.delivery_radius_required));
+                return;
+            }
+            if (deliveryRadius.equals("0")) {
                 showDialog(getString(R.string.delivery_radius_required));
                 return;
             }
