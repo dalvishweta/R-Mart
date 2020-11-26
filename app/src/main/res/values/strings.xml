@@ -363,4 +363,5 @@
     <string name="before_closing">Before Closing</string>
     <string name="after_closing">After Closing</string>
     <string name="image_upload_error">Image Upload Error</string>
+    <string name="product_re_order">Product Re-Order</string>
 </resources>

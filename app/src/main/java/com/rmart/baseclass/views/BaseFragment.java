@@ -75,7 +75,7 @@ public class BaseFragment extends Fragment {
             builder.setTitle(title);
             builder.setMessage(msg);
             builder.setCancelable(false);
-            builder.setNegativeButton(requireActivity().getString(R.string.close), null);
+            builder.setNegativeButton("Close", (dialogInterface, i) -> dialogInterface.dismiss());
             AlertDialog alertDialog = builder.create();
             alertDialog.setOnShowListener(arg0 -> alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(requireActivity(), R.color.button_bg)));
             if (!requireActivity().isFinishing()) {

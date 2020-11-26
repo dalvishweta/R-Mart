@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.rmart.R;
+import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerProductDetailsModel;
@@ -15,11 +16,16 @@ import com.rmart.customer.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
+import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.pojos.AddressResponse;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CustomerHomeActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
 
     private VendorShopsListFragment vendorShopsListFragment;
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +172,38 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
             if(!vendorShopsListFragment.isAdded()) {
                 replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);
             }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timer = new Timer();
+        LoggerInfo.printLog("Main", "Invoking logout timer");
+        LogOutTimerTask logoutTimeTask = new LogOutTimerTask();
+        timer.schedule(logoutTimeTask, 100000); //auto logout in 5 minutes
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+            LoggerInfo.printLog("Main", "cancel timer");
+        }
+    }
+
+    private class LogOutTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            //redirect user to login screen
+            LoggerInfo.printLog("LogOutTimerTask", "run method");
+            Intent i = new Intent(CustomerHomeActivity.this, AuthenticationActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            finish();
         }
     }
 }

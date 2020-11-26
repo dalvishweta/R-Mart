@@ -90,7 +90,7 @@ public class CheckAvailableProducts extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        requireActivity().setTitle(getString(R.string.check_available_products));
+        requireActivity().setTitle(getString(R.string.product_re_order));
         getServerData();
     }
 

@@ -103,6 +103,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private SupportMapFragment mapsFragment;
     private LocationManager locationManager;
     private Location currentLocation;
+    private ImageView ivSearchField;
 
     public static VendorShopsListFragment getInstance() {
         return new VendorShopsListFragment();
@@ -139,7 +140,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         RecyclerView vendorShopsListField = view.findViewById(R.id.products_list_field);
         tvAddressField = view.findViewById(R.id.tv_address_field);
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
-        ImageView ivSearchField = view.findViewById(R.id.iv_search_field);
+        ivSearchField = view.findViewById(R.id.iv_search_field);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_field);
         swipeRefreshLayout.setRefreshing(false);
 
@@ -167,17 +168,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
 
             @Override
             public void afterTextChanged(Editable s) {
-                String value = s.toString().trim();
-                if (!TextUtils.isEmpty(value)) {
-                    ivSearchField.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-                    performSearch();
-                } else {
-                    ivSearchField.setImageResource(R.drawable.search);
-                    currentPage = 0;
-                    searchShopName = "";
-                    resetShopsList();
-                    getShopsList();
-                }
+                performSearch();
             }
         });
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity());
@@ -454,12 +445,19 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private void performSearch() {
         searchShopName = Objects.requireNonNull(etProductsSearchField.getText()).toString().trim();
         if (searchShopName.length() == 0) {
-            vendorShopsListAdapter.updateItems(shopsList);
-            vendorShopsListAdapter.notifyDataSetChanged();
+            if(shopsList.isEmpty()) {
+                getShopsList();
+            } else {
+                vendorShopsListAdapter.updateItems(shopsList);
+                vendorShopsListAdapter.notifyDataSetChanged();
+            }
+            ivSearchField.setImageResource(R.drawable.search);
         } else if (searchShopName.length() == 3) {
+            ivSearchField.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
             currentPage = 0;
             getShopsList();
         } else {
+            ivSearchField.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
             vendorShopsListAdapter.getFilter().filter(searchShopName);
         }
     }

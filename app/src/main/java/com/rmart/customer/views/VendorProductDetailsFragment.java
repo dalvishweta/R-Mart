@@ -80,6 +80,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
     private ImageView ivFavouriteImageField;
     private boolean isWishListShop = false;
     private LinearLayout progressLayoutField;
+    private ImageView ivSearchField;
 
     public static VendorProductDetailsFragment getInstance(CustomerProductsShopDetailsModel productsShopDetailsModel) {
         VendorProductDetailsFragment fragment = new VendorProductDetailsFragment();
@@ -129,7 +130,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
     public void updateToolBar() {
         requireActivity().setTitle(productsShopDetailsModel.getShopName());
         ((CustomerHomeActivity) (requireActivity())).showCartIcon();
-        getVendorProductDetails();
     }
 
     private void loadUIComponents(View view) {
@@ -137,7 +137,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
         productsListField.setHasFixedSize(false);
 
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
-        ImageView ivSearchField = view.findViewById(R.id.iv_search_field);
+        ivSearchField = view.findViewById(R.id.iv_search_field);
 
         ivSearchField.setOnClickListener(v -> {
             etProductsSearchField.setText("");
@@ -153,21 +153,11 @@ public class VendorProductDetailsFragment extends BaseFragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                performSearch();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                String value = s.toString().trim();
-                if (!TextUtils.isEmpty(value)) {
-                    ivSearchField.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-                    performSearch();
-                } else {
-                    ivSearchField.setImageResource(R.drawable.search);
-                    searchProductName = "";
-                    resetVendorProductDetails();
-                    getVendorProductDetails();
-                }
             }
         });
 
@@ -193,6 +183,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
         view.findViewById(R.id.iv_call_field).setOnClickListener(v -> callSelected());
 
         view.findViewById(R.id.iv_message_field).setOnClickListener(v -> messageSelected());
+        etProductsSearchField.setText("");
     }
 
     private void callSelected() {
@@ -284,7 +275,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
                 }
             });
         } else {
-            showCloseDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
     }
 
@@ -387,12 +378,19 @@ public class VendorProductDetailsFragment extends BaseFragment {
     private void performSearch() {
         searchProductName = Objects.requireNonNull(etProductsSearchField.getText()).toString().trim();
         if (searchProductName.length() == 0) {
-            vendorProductDetailsAdapter.updateItems(vendorProductsList);
-            vendorProductDetailsAdapter.notifyDataSetChanged();
+            ivSearchField.setImageResource(R.drawable.search);
+            if(vendorProductsList.isEmpty()) {
+                getVendorProductDetails();
+            } else {
+                vendorProductDetailsAdapter.updateItems(vendorProductsList);
+                vendorProductDetailsAdapter.notifyDataSetChanged();
+            }
         } else if (searchProductName.length() == 3) {
+            ivSearchField.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
             currentPage = 0;
             getVendorProductDetails();
         } else {
+            ivSearchField.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
             vendorProductDetailsAdapter.getFilter().filter(searchProductName);
         }
     }

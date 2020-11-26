@@ -69,7 +69,7 @@ public class MyNotificationManager {
                 .setContentIntent(resultPendingIntent)
                 .setContentInfo("Information");
 
-        if (!TextUtils.isEmpty(imageURL)) {
+        if (!TextUtils.isEmpty(imageURL) || !imageURL.equalsIgnoreCase("null")) {
             Bitmap bitmap = getBitmapFromURL(imageURL);
             if (bitmap != null) {
             /*NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();

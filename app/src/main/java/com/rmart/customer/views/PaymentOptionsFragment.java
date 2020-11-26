@@ -305,7 +305,11 @@ public class PaymentOptionsFragment extends BaseFragment {
                 UpdateCartCountDetails.updateCartCountDetails.onNext(ccAvenueResponse.getTotalCartCount());
                 showSuccessDialog(ccAvenueResponse.getOrderMessage());
             }else{
-                showDialog(getString(R.string.message), ccAvenueResponse.getOrderMessage(), pObject -> requireActivity().getSupportFragmentManager().popBackStack());
+                showDialog(getString(R.string.message), ccAvenueResponse.getOrderMessage(), pObject -> {
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                    String name = fragmentManager.getBackStackEntryAt(0).getName();
+                    fragmentManager.popBackStackImmediate(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                });
             }
         });
     }
