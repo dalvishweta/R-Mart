@@ -102,7 +102,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private FusedLocationProviderClient fusedLocationProviderClient;
     private SupportMapFragment mapsFragment;
     private LocationManager locationManager;
-    private Location currentLocation;
     private ImageView ivSearchField;
 
     public static VendorShopsListFragment getInstance() {
@@ -370,7 +369,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
 
                 @Override
                 public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
-                    if(t instanceof SocketTimeoutException){
+                    if(t instanceof SocketTimeoutException) {
                         showDialog("", getString(R.string.network_slow));
                     } else {
                         showDialog("", t.getMessage());
@@ -556,10 +555,10 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         this.googleMap = map;
         googleMap.clear();
         LatLng latLng = new LatLng(latitude, longitude);
-        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
+        //MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
-        Marker marker = googleMap.addMarker(markerOptions);
+        //Marker marker = googleMap.addMarker(markerOptions);
         //marker.showInfoWindow();
         addCircleToMap();
     }
@@ -594,7 +593,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
         task.addOnSuccessListener(location -> {
             if (location != null) {
-                currentLocation = location;
+                //currentLocation = location;
                 // latitude = currentLocation.getLatitude();
                 // longitude = currentLocation.getLongitude();
                 // Toast.makeText(getContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
@@ -630,7 +629,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         } else {
             Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (locationGPS != null) {
-                currentLocation = locationGPS;
+                //currentLocation = locationGPS;
                 updateMap();
             } else {
                 MyLocation myLocation = new MyLocation(requireActivity());
@@ -644,7 +643,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         @Override
         public void gotLocation(Location location) {
             if (location != null) {
-                currentLocation = location;
+                //currentLocation = location;
                 updateMap();
             }
         }

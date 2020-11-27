@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.fragment.app.FragmentManager;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.rmart.R;
 import com.rmart.authentication.views.AuthenticationActivity;
@@ -30,7 +28,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_authenticatin);
+        //setContentView(R.layout.activity_authentication);
         Bundle data = getIntent().getExtras();
         vendorShopsListFragment = VendorShopsListFragment.getInstance();
         if (data != null) {
@@ -181,7 +179,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
         timer = new Timer();
         LoggerInfo.printLog("Main", "Invoking logout timer");
         LogOutTimerTask logoutTimeTask = new LogOutTimerTask();
-        timer.schedule(logoutTimeTask, 100000); //auto logout in 5 minutes
+        timer.schedule(logoutTimeTask, 6000000); // auto logout in 5 minutes
     }
 
     @Override

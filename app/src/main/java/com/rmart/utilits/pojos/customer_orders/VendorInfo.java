@@ -48,6 +48,9 @@ public class VendorInfo implements Serializable {
     @SerializedName("state")
     @Expose
     String state;
+    @SerializedName("shop_name")
+    @Expose
+    String shopName;
 
     public String getFirstName() {
         return firstName;
@@ -143,5 +146,13 @@ public class VendorInfo implements Serializable {
 
     public void setUserID(Integer userID) {
         this.userID = userID;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 }

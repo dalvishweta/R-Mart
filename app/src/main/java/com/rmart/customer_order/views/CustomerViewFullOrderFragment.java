@@ -22,8 +22,10 @@ import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.UpdatedOrderStatus;
+import com.rmart.utilits.pojos.customer_orders.CustomerInfo;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
+import com.rmart.utilits.pojos.customer_orders.OrderInfo;
 import com.rmart.utilits.pojos.customer_orders.VendorInfo;
 import com.rmart.utilits.pojos.orders.Order;
 import com.rmart.utilits.pojos.orders.Product;
@@ -224,28 +226,31 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         // setFooter();
         // vendor
         VendorInfo vendorDetails = orderProductList.getVendorInfo();
-        String text;
         if (vendorDetails != null) {
-            text = vendorDetails.getFirstName() + " " + vendorDetails.getLastName();
-            vendorName.setText(text);
+            vendorName.setText(vendorDetails.getShopName());
             vendorNumber.setText(vendorDetails.getMobileNumber());
             vendorAddress.setText(vendorDetails.getCompleteAddress());
         } else {
             vendorDetailsLayout.setVisibility(View.GONE);
         }
 
-
-        String customerNameDetails = orderProductList.getCustomerInfo().getFirstName() + " " + orderProductList.getCustomerInfo().getLastName();
-        customerName.setText(customerNameDetails);
-        customerAddress.setText(orderProductList.getCustomerInfo().getCompleteAddress());
-        customerNumber.setText(orderProductList.getCustomerInfo().getCustomerNumber());
+        CustomerInfo customerInfo = orderProductList.getCustomerInfo();
+        if(customerInfo != null) {
+            String customerNameDetails = customerInfo.getFirstName() + " " + customerInfo.getLastName();
+            customerName.setText(customerNameDetails);
+            customerAddress.setText(customerInfo.getCompleteAddress());
+            customerNumber.setText(customerInfo.getCustomerNumber());
+        }
 
         // payment info
-        tvAmount.setText(Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getOrderAmount()));
-        double deliveryCharges = orderProductList.getOrderInfo().getOrderCharges();
-        tvDeliveryCharges.setText(Utils.roundOffDoubleValue(deliveryCharges));
-        tvTotalCharges.setText(Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getTotalAmt()));
-        tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
+        OrderInfo orderInfo = orderProductList.getOrderInfo();
+        if(orderInfo != null) {
+            tvAmount.setText(Utils.roundOffDoubleValue(orderInfo.getOrderAmount()));
+            double deliveryCharges = orderInfo.getOrderCharges();
+            tvDeliveryCharges.setText(Utils.roundOffDoubleValue(deliveryCharges));
+            tvTotalCharges.setText(Utils.roundOffDoubleValue(orderInfo.getTotalAmt()));
+            tvPaymentType.setText(orderInfo.getModeOfPayment());
+        }
 
         List<Product> orderedProductsList = orderProductList.getProduct();
         if (orderedProductsList != null && !orderedProductsList.isEmpty()) {

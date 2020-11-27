@@ -34,11 +34,11 @@ import java.util.List;
 public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsListAdapter.ViewHolder> implements Filterable {
 
     private List<CustomerProductsShopDetailsModel> productList;
-    private LayoutInflater layoutInflater;
+    private final LayoutInflater layoutInflater;
     private List<CustomerProductsShopDetailsModel> filteredListData;
     private MyFilter myFilter;
-    private ImageLoader imageLoader;
-    private CallBackInterface callBackListener;
+    private final ImageLoader imageLoader;
+    private final CallBackInterface callBackListener;
 
     public VendorShopsListAdapter(Context context, List<CustomerProductsShopDetailsModel> productList, CallBackInterface callBackListener) {
         this.productList = productList;

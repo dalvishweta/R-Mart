@@ -22,7 +22,7 @@ import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.pojos.customer_orders.CustomerInfo;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductResponse;
 import com.rmart.utilits.pojos.customer_orders.VendorInfo;
@@ -150,16 +150,21 @@ public class CheckAvailableProducts extends BaseFragment {
     private void updateUI() {
 
         // vendor
-        String text = order.getCustomerInfo().getFirstName() + " " + order.getCustomerInfo().getLastName();
-        customerName.setText(text);
-        customerNumber.setText(order.getCustomerInfo().getMobileNumber());
-        customerAddress.setText(order.getCustomerInfo().getCompleteAddress());
+        CustomerInfo customerInfo = order.getCustomerInfo();
+        if (customerInfo != null) {
+            String text = customerInfo.getFirstName() + " " + customerInfo.getLastName();
+            customerName.setText(text);
+            customerNumber.setText(customerInfo.getMobileNumber());
+            customerAddress.setText(customerInfo.getCompleteAddress());
+        }
 
         // vendor
-        String name = order.getVendorInfo().getFirstName() + " " + order.getVendorInfo().getLastName();
-        vendorName.setText(name);
-        vendorNumber.setText(order.getVendorInfo().getMobileNumber());
-        vendorAddress.setText(order.getVendorInfo().getCompleteAddress());
+        VendorInfo vendorInfo = order.getVendorInfo();
+        if(vendorInfo != null) {
+            vendorName.setText(vendorInfo.getShopName());
+            vendorNumber.setText(vendorInfo.getMobileNumber());
+            vendorAddress.setText(vendorInfo.getCompleteAddress());
+        }
 
         // payment info
         /*tvAmount.setText(order.getOrderInfo().getOrderAmount());
