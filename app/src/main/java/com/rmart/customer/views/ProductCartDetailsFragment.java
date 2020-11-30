@@ -298,7 +298,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
             updateUnitPriceDetails();
         }
     }
-
     private void updateUI() {
         if (productDetailsDescModel != null) {
             List<String> productsImagesList = new ArrayList<>(productDetailsDescModel.getProductImage());
@@ -397,7 +396,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
             showCloseDialog(getString(R.string.no_product_details_found));
         }
     }
-
     private void showProductPreviewSelected(String productVideoLink) {
         if (!TextUtils.isEmpty(productVideoLink)) {
             Intent webIntent = new Intent(Intent.ACTION_VIEW,
@@ -411,7 +409,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
             showDialog(getString(R.string.no_video_link_found));
         }
     }
-
     private void updateUnitPriceDetails() {
         double sellingPriceValue = noOfQuantity * productUnitDetails.getSellingPrice();
         String sellingPrice = String.format("Rs. %s", Utils.roundOffDoubleValue(sellingPriceValue));
@@ -420,8 +417,8 @@ public class ProductCartDetailsFragment extends BaseFragment {
         tvTotalPriceField.setText(Utils.roundOffDoubleValue(totalPrice));
         tvTotalPriceField.setPaintFlags(tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
-        int quantityNoDetails = noOfQuantity * productUnitDetails.getUnitNumber();
-        String quantityDetails = String.format(Locale.getDefault(), "%d %s", quantityNoDetails, productUnitDetails.getShortUnitMeasure());
+        double quantityNoDetails = noOfQuantity * productUnitDetails.getUnitNumber();
+        String quantityDetails = String.format(Locale.getDefault(), "%f %s", quantityNoDetails, productUnitDetails.getShortUnitMeasure());
         tvQuantityField.setText(quantityDetails);
         tvNoOfQuantityField.setText(String.valueOf(noOfQuantity));
 
@@ -429,15 +426,12 @@ public class ProductCartDetailsFragment extends BaseFragment {
         String productDiscountDetails = productDiscount + "% \n Off";
         tvProductDiscountField.setText(productDiscountDetails);
     }
-
     private void showCloseDialog(String title, String message) {
         showDialog(title, message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
     }
-
     private void showCloseDialog(String message) {
         showDialog(message, pObject -> requireActivity().getSupportFragmentManager().popBackStack());
     }
-
     private void addToCartSelected() {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
@@ -486,7 +480,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
     }
-
     /*private void buyNowSelected() {
         ShoppingCartResponseDetails shoppingCartResponseDetails = new ShoppingCartResponseDetails();
         shoppingCartResponseDetails.setVendorId(vendorShopDetails.getVendorId());
@@ -495,7 +488,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
         shoppingCartResponseDetails.setProductId(!isAddToCartSelected ? productDetailsDescModel.getProductId() : -1);
         onCustomerHomeInteractionListener.gotoShoppingCartDetails(shoppingCartResponseDetails);
     }*/
-
     private void deleteProductFromWishList() {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
@@ -541,7 +533,6 @@ public class ProductCartDetailsFragment extends BaseFragment {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
     }
-
     private void addProductToWishList() {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();

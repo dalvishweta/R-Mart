@@ -12,29 +12,36 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:background="@android:color/transparent"
-        android:textColor="@color/white"
+        android:textColor="@color/item_sub_title_color"
         android:maxLines="1"
-        android:textSize="18sp" />
+        android:fontFamily="@font/montserrat_regular"
+        android:textSize="16sp"
+     />
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_weight=".5"
         android:gravity="center"
         android:layout_width="0dp"
+        android:fontFamily="@font/montserrat_regular"
+
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:background="@android:color/transparent"
         android:text="@string/colon"
         android:maxLength="5"
+        android:textColor="@color/item_sub_title_color"
         android:maxLines="1"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_weight="1"
         android:gravity="center|end"
+        android:fontFamily="@font/montserrat_regular"
+
         android:id="@+id/pay_amt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:background="@android:color/transparent"
-        android:textColor="@color/white"
+        android:textColor="@color/item_sub_title_color"
         android:maxLines="1"
-        android:textSize="18sp" />
+        android:textSize="16sp" />
 </LinearLayout>
