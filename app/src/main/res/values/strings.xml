@@ -18,7 +18,9 @@
     <string name="error_mobile_number">Please enter valid mobile number.</string>
     <string name="error_last_name">Please enter last name minimum of 3 characters</string>
     <string name="register_left">Don\'t have an account?</string>
+    <string name="login_left">Have an account?</string>
     <string name="register_right">Register</string>
+    <string name="login_right">Login</string>
     <string name="proceed_to_pay">proceed to pay</string>
     <string name="forgot_password">Forgot password</string>
     <string name="full_name">Full Name</string>
@@ -37,6 +39,10 @@
     <string name="resend_otp">Resend OTP?</string>
     <string name="send_otp">Send OTP</string>
     <string name="change_password">Change Password</string>
+    <string name="subchange_password">Your identy has been verified!</string>
+    <string name="forgot_message">Please Enter your register mobile number, to reset your password</string>
+    <string name="subchange_password2">Set your new password</string>
+
     <string name="hint_current_password">Current Password</string>
     <string name="hint_new_password">New Password</string>
     <string name="category"><![CDATA[Grocery & Staples]]></string>

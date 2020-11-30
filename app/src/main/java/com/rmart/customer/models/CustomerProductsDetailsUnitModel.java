@@ -21,7 +21,7 @@ public class CustomerProductsDetailsUnitModel implements Serializable {
     private Double unitPrice;
     @SerializedName("unit_number")
     @Expose
-    private Integer unitNumber;
+    private Double unitNumber;
     @SerializedName("selling_price")
     @Expose
     private Double sellingPrice;
@@ -66,11 +66,11 @@ public class CustomerProductsDetailsUnitModel implements Serializable {
         this.unitPrice = unitPrice;
     }
 
-    public Integer getUnitNumber() {
+    public Double getUnitNumber() {
         return unitNumber;
     }
 
-    public void setUnitNumber(Integer unitNumber) {
+    public void setUnitNumber(Double unitNumber) {
         this.unitNumber = unitNumber;
     }
 

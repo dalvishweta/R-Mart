@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +45,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     private AppCompatEditText tvFirstName, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
     private String selectedGender;
 
+    TextView login;
     ArrayList<RegistrationFeeStructure> registrationFeeStructuresList = new ArrayList<>();
 
     public RegistrationFragment() {
@@ -75,7 +79,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
                     for (RegistrationFeeStructure feeStructure : registrationFeeStructuresList) {
                         View v = View.inflate(requireActivity(), R.layout.layout, null);
                         ((AppCompatTextView) v.findViewById(R.id.pay_type)).setText(feeStructure.getPayType());
-                        ((AppCompatTextView) v.findViewById(R.id.pay_amt)).setText(feeStructure.getAmount());
+                        ((AppCompatTextView) v.findViewById(R.id.pay_amt)).setText("Rs. "+String.format("%.2f",Double.parseDouble(feeStructure.getAmount())));
                         paymentBase.addView(v);
                     }
                 } else {
@@ -118,6 +122,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         Button register = view.findViewById(R.id.register);
         register.setOnClickListener(this);
         tvFirstName = view.findViewById(R.id.first_name);
+        login = view.findViewById(R.id.login);
         tvLastName = view.findViewById(R.id.lase_name);
         tVMobileNumber = view.findViewById(R.id.mobile_number);
         tvEmail = view.findViewById(R.id.email);
@@ -157,6 +162,16 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             paymentBase.setVisibility(View.GONE);
             register.setText(R.string.register_right);
         }
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.replace(R.id.base_container, LoginFragment.newInstance("", ""), "login");
+                fragmentTransaction.commit();
+            }
+        });
     }
 
     @Override

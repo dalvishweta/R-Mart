@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -77,10 +78,12 @@ public class ChangePassword extends LoginBaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         AppCompatEditText firstField = view.findViewById(R.id.current_password);
+        TextInputLayout firstFieldLayout = view.findViewById(R.id.current_password_layout);
+
         if (TextUtils.isEmpty(mOTP)) {
-            firstField.setHint(R.string.hint_current_password);
+            firstFieldLayout.setHint(R.string.hint_current_password);
         } else {
-            firstField.setHint(R.string.otp);
+            firstFieldLayout.setHint(R.string.otp);
         }
         AppCompatEditText passwordField = view.findViewById(R.id.password);
         AppCompatEditText confirmPasswordField = view.findViewById(R.id.confirm_password);
