@@ -62,7 +62,8 @@ public interface ProfileService {
             @Field("opening_time") String openingTime,
             @Field("closing_time") String closingTime,
             @Field("delivery_days_after_time") String deliveryDaysAfterTime,
-            @Field("delivery_days_before_time") String deliveryDaysBeforeTime);
+            @Field("delivery_days_before_time") String deliveryDaysBeforeTime,
+            @Field("primary_add_id") String primary_add_id);
 
 
 

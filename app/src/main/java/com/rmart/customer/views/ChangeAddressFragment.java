@@ -19,12 +19,22 @@ import com.rmart.customer.adapters.ChangeAddressAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
 import com.rmart.utilits.LoggerInfo;
+import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.AddressListResponse;
 import com.rmart.utilits.pojos.AddressResponse;
+import com.rmart.utilits.services.ProfileService;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Satya Seshu on 07/09/20.
@@ -34,6 +44,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     private ChangeAddressAdapter changeAddressAdapter;
     private ArrayList<AddressResponse> addressList = new ArrayList<>();
     private RecyclerView addressListField;
+    private AddressResponse myAddress;
 
     public static ChangeAddressFragment getInstance() {
         ChangeAddressFragment changeAddressFragment = new ChangeAddressFragment();
@@ -104,12 +115,12 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
         if (pObject instanceof AddressResponse) {
             resetAddressList();
             MyProfile.getInstance().setAddressResponses(addressList);
-            AddressResponse addressResponse = (AddressResponse) pObject;
-            int index = addressList.indexOf(addressResponse);
+            myAddress = (AddressResponse) pObject;
+            int index = addressList.indexOf(myAddress);
             if (index > -1) {
-                MyProfile.getInstance().setPrimaryAddressId(addressResponse.getId().toString());
-                addressResponse.setPrimaryAddress(true);
-                addressList.set(index, addressResponse);
+                MyProfile.getInstance().setPrimaryAddressId(myAddress.getId().toString());
+                myAddress.setPrimaryAddress(true);
+                addressList.set(index, myAddress);
                 changeAddressAdapter.notifyItemChanged(index);
             }
         }
@@ -125,8 +136,43 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     }
 
     private void selectThisAddressSelected() {
-        MyProfile.getInstance().setAddressResponses(addressList);
-        requireActivity().onBackPressed();
+        ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
+        profileService.updateAddress( myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
+                myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
+                myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
+                myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), "", myAddress.getDeliveryCharges(),
+                myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(), myAddress.getId().toString()).enqueue(new Callback<AddressListResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
+                if (response.isSuccessful()) {
+                    AddressListResponse data = response.body();
+                    if (data != null) {
+                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            showDialog(data.getMsg(), pObject -> {
+                                MyProfile.getInstance().setPrimaryAddressId(myAddress.getId().toString());
+                                MyProfile.getInstance().setAddressResponses(addressList);
+                                Objects.requireNonNull(requireActivity()).onBackPressed();
+                            });
+                        } else {
+                            showDialog(data.getMsg());
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
+                    }
+                }
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<AddressListResponse> call, @NotNull Throwable t) {
+                if(t instanceof SocketTimeoutException){
+                    showDialog("", getString(R.string.network_slow));
+                } else {
+                    showDialog("", t.getMessage());
+                }
+                progressDialog.dismiss();
+            }
+        });
     }
 
     private void addNewAddressSelected() {

@@ -494,7 +494,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                                 updateAdapter(customerProductsList);
                             } else {
                                 showDialog(data.getMsg());
-                                displayDefaultMapLocation();
+                                //displayDefaultMapLocation();
+                                getLocation();
                             }
                         } else {
                             showDialog(getString(R.string.no_products_error));
@@ -555,11 +556,12 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         this.googleMap = map;
         googleMap.clear();
         LatLng latLng = new LatLng(latitude, longitude);
-        //MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
+
+        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
-        //Marker marker = googleMap.addMarker(markerOptions);
-        //marker.showInfoWindow();
+        googleMap.addMarker(markerOptions);
+
         addCircleToMap();
     }
 
@@ -629,6 +631,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         } else {
             Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (locationGPS != null) {
+                latitude = locationGPS.getLatitude();
+                longitude = locationGPS.getLongitude();
                 //currentLocation = locationGPS;
                 updateMap();
             } else {
@@ -643,7 +647,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         @Override
         public void gotLocation(Location location) {
             if (location != null) {
-                //currentLocation = location;
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
                 updateMap();
             }
         }
