@@ -370,4 +370,5 @@
     <string name="after_closing">After Closing</string>
     <string name="image_upload_error">Image Upload Error</string>
     <string name="product_re_order">Product Re-Order</string>
+    <string name="allow_digits_with_out_capital_letters">1234567890QWERTYUIOPASDFGHJKLZXCVBNM</string>
 </resources>

@@ -28,6 +28,7 @@
                 android:id="@+id/shop_name"
                 android:drawableStart="@drawable/shop"
                 style="@style/my_profile_tv"
+                android:digits="@string/allow_digits"
                 android:inputType="text" />
 
             <TextView
@@ -52,6 +53,7 @@
                 android:id="@+id/shop_no"
                 android:drawableStart="@drawable/ic_note"
                 style="@style/my_profile_tv"
+                android:digits="@string/allow_digits"
                 android:inputType="text" />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -192,8 +194,8 @@
                 android:id="@+id/pan_number"
                 style="@style/my_profile_tv"
                 android:drawableStart="@drawable/ic_note"
-                android:inputType="textCapSentences"
-                android:digits="@string/allow_digits_with_out_space"
+                android:inputType="textCapCharacters"
+                android:digits="@string/allow_digits_with_out_capital_letters"
                 android:textAllCaps="true"
                 android:maxLength="10" />
 

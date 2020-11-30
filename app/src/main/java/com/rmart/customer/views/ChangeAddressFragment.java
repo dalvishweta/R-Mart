@@ -136,6 +136,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     }
 
     private void selectThisAddressSelected() {
+        progressDialog.show();
         ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
         profileService.updateAddress( myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                 myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
