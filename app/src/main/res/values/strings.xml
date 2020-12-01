@@ -323,7 +323,7 @@
     <string name="act_number_required">Shop act number required.</string>
     <string name="valid_act_number_required">Please enter valid 12 digit shop act number</string>
     <string name="minimum_order">Min order</string>
-    <string name="minimum_charges_required">Minimum charges required</string>
+    <string name="minimum_charges_required">Minimum order required.</string>
     <string name="state_address_required">State address required</string>
     <string name="pin_code_required">Pin Code Required</string>
     <string name="you_tube_error_player">There was an error initializing the YouTubePlayer (%1$s)</string>

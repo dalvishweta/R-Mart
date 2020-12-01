@@ -10,7 +10,6 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -48,7 +47,6 @@ import com.rmart.utilits.services.VendorInventoryService;
 import org.jetbrains.annotations.NotNull;
 
 import java.net.SocketTimeoutException;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Objects;
@@ -348,7 +346,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 float data = ((float) (100-discount) / (float) 100);
                 double discountedPrice = price * data;
                 if (discountedPrice > 0) {
-                    unitObject.setFinalCost(String.valueOf(Utils.roundOffDoubleValue(discountedPrice)));
+                    unitObject.setFinalCost(String.valueOf(Utils.roundOffDoubleValue(discountedPrice, "0.00")));
                    // String __finalPrice = String.format(getString(R.string.after_discount), unitObject.getFinalCost());
                     String actualCost = String.format(getString(R.string.after_discount),Double.parseDouble(unitObject.getFinalCost()));
                     finalPrice.setText(actualCost);

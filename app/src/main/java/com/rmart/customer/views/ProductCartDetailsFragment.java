@@ -411,14 +411,14 @@ public class ProductCartDetailsFragment extends BaseFragment {
     }
     private void updateUnitPriceDetails() {
         double sellingPriceValue = noOfQuantity * productUnitDetails.getSellingPrice();
-        String sellingPrice = String.format("Rs. %s", Utils.roundOffDoubleValue(sellingPriceValue));
+        String sellingPrice = String.format("Rs. %s", Utils.roundOffDoubleValue(sellingPriceValue, "0.00"));
         tvSellingPriceField.setText(sellingPrice);
         Double totalPrice = noOfQuantity * productUnitDetails.getUnitPrice();
-        tvTotalPriceField.setText(Utils.roundOffDoubleValue(totalPrice));
+        tvTotalPriceField.setText(Utils.roundOffDoubleValue(totalPrice, "0.00"));
         tvTotalPriceField.setPaintFlags(tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         double quantityNoDetails = noOfQuantity * productUnitDetails.getUnitNumber();
-        String quantityDetails = String.format(Locale.getDefault(), "%s %s", Utils.roundOffDoubleValue(quantityNoDetails), productUnitDetails.getShortUnitMeasure());
+        String quantityDetails = String.format(Locale.getDefault(), "%s %s", Utils.roundOffDoubleValue(quantityNoDetails, "0.0"), productUnitDetails.getShortUnitMeasure());
         tvQuantityField.setText(quantityDetails);
         tvNoOfQuantityField.setText(String.valueOf(noOfQuantity));
 

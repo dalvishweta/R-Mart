@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "com.rokad.mart"
-        minSdkVersion 24
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -151,7 +151,7 @@ android {
         }
         customer_production {
             dimension "rokard_mart"
-            applicationIdSuffix ".customer"
+            applicationIdSuffix ".customerprod"
             /*versionNameSuffix "-customer"*/
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"') //?command=initiateTransaction

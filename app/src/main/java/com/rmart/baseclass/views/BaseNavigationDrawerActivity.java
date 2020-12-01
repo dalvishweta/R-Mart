@@ -259,8 +259,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                         //menuItem.setVisible(false);
                     }
                 }
-                //actionView.setOnClickListener(v -> cartSelected());
-                // showBadge(true);
                 actionView.setOnClickListener(v -> {
                     if(cartCount > 0) {
                         cartSelected();

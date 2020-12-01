@@ -69,7 +69,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductItemViewHold
         holder.units.setText(unitsDetails);*/
 
         String productQuantityPriceDetails = String.format("%s%s  %s%s  %s%s", quantityText, productObject.getQuantity(), unitText, unitsDetails,
-                costText, Utils.roundOffDoubleValue(productObject.getPrice()));
+                costText, Utils.roundOffDoubleValue(productObject.getPrice(), "0.00"));
         holder.tvProductPriceQuantityDetailsField.setText(productQuantityPriceDetails);
     }
 

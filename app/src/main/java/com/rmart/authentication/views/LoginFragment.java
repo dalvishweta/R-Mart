@@ -137,12 +137,12 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
         } else if (view.getId() == R.id.forgot_password) {
             mListener.goToForgotPassword();
         } else  {
-
-            FragmentManager fm = getActivity().getSupportFragmentManager();
+            mListener.goToRegistration();
+            /*FragmentManager fm = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fm.beginTransaction();
             fragmentTransaction.replace(R.id.base_container, RegistrationFragment.getInstance(), RegistrationFragment.class.getName());
             fragmentTransaction.addToBackStack( RegistrationFragment.class.getName());
-            fragmentTransaction.commit();
+            fragmentTransaction.commit();*/
         }
     }
 

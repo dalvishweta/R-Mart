@@ -181,8 +181,8 @@ public class Utils {
         context.startActivity(emailIntent);
     }
 
-    public static String roundOffDoubleValue(Double value) {
-        DecimalFormat df = new DecimalFormat("0.00");
+    public static String roundOffDoubleValue(Double value, String pattern) {
+        DecimalFormat df = new DecimalFormat(pattern);
         return df.format(value);
     }
 

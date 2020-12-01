@@ -102,8 +102,8 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
         if(unitsList != null && !unitsList.isEmpty()) {
             CustomerProductsDetailsUnitModel unitModelDetails = unitsList.get(0);
             String quantityDetails = String.format("%s %s", unitModelDetails.getUnitNumber(), unitModelDetails.getShortUnitMeasure());
-            String sellingPrice = String.format("Rs.%s", Utils.roundOffDoubleValue(unitModelDetails.getSellingPrice()));
-            String unitPriceDetails = Utils.roundOffDoubleValue(unitModelDetails.getUnitPrice());
+            String sellingPrice = String.format("Rs.%s", Utils.roundOffDoubleValue(unitModelDetails.getSellingPrice(), "0.00"));
+            String unitPriceDetails = Utils.roundOffDoubleValue(unitModelDetails.getUnitPrice(), "0.0");
             int productDiscount = unitModelDetails.getProductDiscount();
             String productDiscountDetails = productDiscount + "% \n Off";
             holder.tvProductDiscountField.setText(productDiscountDetails);

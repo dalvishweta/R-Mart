@@ -254,6 +254,7 @@
 
             <LinearLayout
                 android:id="@+id/footer"
+                android:visibility="gone"
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal"
                 android:gravity="center"

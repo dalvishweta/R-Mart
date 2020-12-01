@@ -1,7 +1,6 @@
 package com.rmart.customer.adapters;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -26,9 +25,7 @@ import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
-import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.WishListResponseDetails;
-import com.rmart.customer.models.WishListResponseModel;
 import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.Utils;
 
@@ -83,8 +80,8 @@ public class CustomerWishListDetailsAdapter extends RecyclerView.Adapter<Custome
         if (unitsList != null && !unitsList.isEmpty()) {
             CustomerProductsDetailsUnitModel unitModelDetails = unitsList.get(0);
             String quantityDetails = String.format("%s %s", unitModelDetails.getUnitNumber(), unitModelDetails.getShortUnitMeasure());
-            String sellingPrice = String.format("Rs.%s", Utils.roundOffDoubleValue(unitModelDetails.getSellingPrice()));
-            String unitPriceDetails = Utils.roundOffDoubleValue(unitModelDetails.getUnitPrice());
+            String sellingPrice = String.format("Rs.%s", Utils.roundOffDoubleValue(unitModelDetails.getSellingPrice(), "0.00"));
+            String unitPriceDetails = Utils.roundOffDoubleValue(unitModelDetails.getUnitPrice(), "0.0");
 
             String quantityPriceDetails = String.format("%s  %s  %s", quantityDetails, sellingPrice, unitPriceDetails);
             SpannableString quantityPriceDetailsSpannable = new SpannableString(quantityPriceDetails);

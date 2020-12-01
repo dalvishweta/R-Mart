@@ -100,16 +100,19 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
         tvGender = view.findViewById(R.id.gender);
 
         SupportMapFragment mapsFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        if(mapsFragment != null) {
-            mapsFragment.getMapAsync(this);
-        }
+
 
         view.findViewById(R.id.edit_profile).setOnClickListener(this);
         // view.findViewById(R.id.submit).setOnClickListener(this);
         if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
             setRetailerView(view);
+            if(mapsFragment != null) {
+                mapsFragment.getMapAsync(this);
+            }
         } else if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.CUSTOMER_ID)) {
             setCustomerView(view);
+            view.findViewById(R.id.map).setVisibility(View.GONE);
+
         }
 
         Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.view_my_profile));
