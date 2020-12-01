@@ -7,12 +7,14 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.authentication.OnAuthenticationClickedListener;
@@ -33,7 +35,7 @@ import retrofit2.Response;
 public class ForgotPasswordFragment extends LoginBaseFragment {
 
     private OnAuthenticationClickedListener mListener;
-    private AppCompatEditText etMobileNumber;
+    private EditText etMobileNumber;
 
     public ForgotPasswordFragment() {
         // Required empty public constructor
@@ -55,7 +57,6 @@ public class ForgotPasswordFragment extends LoginBaseFragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_forgot_password, container, false);
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
