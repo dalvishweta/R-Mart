@@ -30,6 +30,8 @@ import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
 
+import static com.rmart.fcm.MyFirebaseMessagingService.ORDER_ID;
+
 public class AuthenticationActivity extends BaseActivity implements OnAuthenticationClickedListener {
 
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -39,11 +41,16 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     private double longitude = 0.0;
     private LocationManager locationManager;
     private int REQUEST_CHECK_SETTINGS = 199;
+    private String orderID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authenticatin);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            orderID = extras.getString(ORDER_ID);
+        }
         if (getIntent().getBooleanExtra(getString(R.string.change_password), false)) {
             addFragment(ChangePassword.newInstance("", MyProfile.getInstance().getMobileNumber()), "changePassword", false);
         } else {
@@ -142,7 +149,6 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     }
 
     public MyLocation.LocationResult locationResult = new MyLocation.LocationResult() {
-
         @Override
         public void gotLocation(Location location) {
             if (location != null) {
@@ -186,6 +192,10 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     @Override
     public void goToHomeActivity() {
         Intent intent = new Intent(AuthenticationActivity.this, OrdersActivity.class);
+        if(null!=orderID) {
+            intent.putExtra(ORDER_ID, orderID);
+        }
+        // intent.putExtra(ORDER_ID, "106");
         startActivity(intent);
     }
 

@@ -115,7 +115,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
             deviceToken = instanceIdResult.getToken();
             LoggerInfo.printLog("FCM Token", deviceToken);
         });
-
+        // etMobileNumber.setText("9912592822");
+        // etPassword.setText("Qwerty@123");
         deviceToken = MyFirebaseMessagingService.getToken(this.requireContext());
     }
 
@@ -172,11 +173,11 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                                     editor.apply();
                                                     break;
                                                 case Utils.RETAILER_ID:
-                                                    RokadMartCache.putData(Constants.CACHE_RETAILER_DETAILS, requireActivity(), loginDetailsModel);
+                                                    // RokadMartCache.putData(Constants.CACHE_RETAILER_DETAILS, requireActivity(), loginDetailsModel);
                                                     mListener.goToHomeActivity();
                                                     break;
                                                 case Utils.DELIVERY_ID:
-                                                    RokadMartCache.putData(Constants.CACHE_DELIVERY_DETAILS, requireActivity(), loginDetailsModel);
+                                                    // RokadMartCache.putData(Constants.CACHE_DELIVERY_DETAILS, requireActivity(), loginDetailsModel);
                                                     mListener.goToHomeActivity();
                                                     break;
                                             }

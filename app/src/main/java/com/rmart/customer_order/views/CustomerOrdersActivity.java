@@ -14,6 +14,8 @@ import com.rmart.customer_order.OnCustomerOrdersInteractionListener;
 import com.rmart.utilits.pojos.customer_orders.CustomerOrderProductList;
 import com.rmart.utilits.pojos.orders.Order;
 
+import static com.rmart.fcm.MyFirebaseMessagingService.ORDER_ID;
+
 
 public class CustomerOrdersActivity extends BaseNavigationDrawerActivity implements OnCustomerOrdersInteractionListener {
 
@@ -23,7 +25,7 @@ public class CustomerOrdersActivity extends BaseNavigationDrawerActivity impleme
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String orderID = extras.getString("OrderId");
+            String orderID = extras.getString(ORDER_ID);
             if(!TextUtils.isEmpty(orderID)) {
                 Order lOrderDetails = new Order();
                 lOrderDetails.setOrderID(orderID);

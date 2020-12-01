@@ -16,6 +16,8 @@ import com.rmart.utilits.pojos.orders.StateOfOrders;
 
 import java.util.Objects;
 
+import static com.rmart.fcm.MyFirebaseMessagingService.ORDER_ID;
+
 
 public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOrdersInteractionListener {
     @Override
@@ -38,7 +40,7 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
                 Bundle extras = getIntent().getExtras();
                 if (extras != null) {
                     hideHamburgerIcon();
-                    String orderID = extras.getString("OrderId");
+                    String orderID = extras.getString(ORDER_ID);
                     Order lOrderDetails = new Order();
                     lOrderDetails.setOrderID(orderID);
                     replaceFragment(ViewFullOrderFragment.newInstance(lOrderDetails, ""), "ViewFullOrderFragment", false);

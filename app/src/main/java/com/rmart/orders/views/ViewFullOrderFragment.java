@@ -195,18 +195,17 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         tvTotalCharges = view.findViewById(R.id.total_charges);
         tvPaymentType = view.findViewById(R.id.payment_type);
         footerView = view.findViewById(R.id.bottom);
-        setValuesToUI();
 
     }
-    void setValuesToUI() {
+    /*void setValuesToUI() {
         orderIdValue.setText(mOrderObject.getReceiptNumber());
         dateValue.setText(mOrderObject.getOrderDate());
-    }
+    }*/
 
     void updateUI() {
         Resources res = getResources();
         if (orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_BY_RETAILER)|| orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.CANCEL_BY_CUSTOMER)) {
-            tvStatus.setText(getString(R.string.cancel_status) +orderProductList.getOrderInfo().getStatusName());
+            tvStatus.setText(getString(R.string.cancel_status) + orderProductList.getOrderInfo().getStatusName());
         } else {
             String text = String.format(res.getString(R.string.status_order), orderProductList.getOrderInfo().getStatusName());
             tvStatus.setText(text);
@@ -218,7 +217,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         String statusComments = String.format("%s : %s", getString(R.string.comments), statusCommentsReason);
         tvStatusComments.setText(statusComments);
         orderIdValue.setText(orderProductList.getOrderInfo().getReceiptNumber());
-        dateValue.setText(mOrderObject.getOrderDate().split(" ")[0]);
+        dateValue.setText(orderProductList.getOrderInfo().getOrderDate().split(" ")[0]);
 
         // vendor
         /*text = orderProductList.getVendorInfo().getFirstName()+" "+ orderProductList.getVendorInfo().getLastName();
@@ -241,21 +240,23 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         setFooter();
         ProductListAdapter productAdapter = new ProductListAdapter(requireActivity(), orderProductList.getProduct(), null);
         recyclerView.setAdapter(productAdapter);
+        // setValuesToUI();
     }
     private void setFooter() {
-        if(mOrderObject.getOrderStatusID().contains(Utils.OPEN_ORDER_STATUS)) {
+        String status = orderProductList.getOrderInfo().getStatus();
+        if(status.contains(Utils.OPEN_ORDER_STATUS)) {
             isOpenOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.ACCEPTED_ORDER_STATUS)) {
+        } else if(status.contains(Utils.ACCEPTED_ORDER_STATUS)) {
             isAcceptedOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.PACKED_ORDER_STATUS)) {
+        } else if(status.contains(Utils.PACKED_ORDER_STATUS)) {
             isPackedOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.SHIPPED_ORDER_STATUS)) {
+        } else if(status.contains(Utils.SHIPPED_ORDER_STATUS)) {
             isShippedOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.DELIVERED_ORDER_STATUS)) {
+        } else if(status.contains(Utils.DELIVERED_ORDER_STATUS)) {
             isDeliveredOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.CANCEL_BY_CUSTOMER)) {
+        } else if(status.contains(Utils.CANCEL_BY_CUSTOMER)) {
             isReturnedOrder();
-        } else if(mOrderObject.getOrderStatusID().contains(Utils.CANCEL_BY_RETAILER)) {
+        } else if(status.contains(Utils.CANCEL_BY_RETAILER)) {
             isCanceledOrder();
         }
         footerView.setVisibility(View.VISIBLE);
