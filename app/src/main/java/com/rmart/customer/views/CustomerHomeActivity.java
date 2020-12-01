@@ -173,12 +173,13 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
         }
     }
 
-    @Override
+    /*@Override
     protected void onPause() {
         super.onPause();
         timer = new Timer();
         LoggerInfo.printLog("Main", "Invoking logout timer");
         LogOutTimerTask logoutTimeTask = new LogOutTimerTask();
+        int time = 5 * 60 * 60;
         timer.schedule(logoutTimeTask, 6000000); // auto logout in 5 minutes
     }
 
@@ -203,5 +204,5 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
             startActivity(i);
             finish();
         }
-    }
+    }*/
 }

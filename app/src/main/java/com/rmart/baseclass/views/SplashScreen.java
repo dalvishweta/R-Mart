@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -57,10 +59,21 @@ public class SplashScreen extends BaseActivity {
         }*/
         ((ImageView)findViewById(R.id.splash_bg)).setImageResource(R.drawable.splashscreen);
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
+        /*FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, instanceIdResult -> {
             deviceToken = instanceIdResult.getToken();
             LoggerInfo.printLog("FCM Token", deviceToken);
-        }).addOnFailureListener(e -> checkLoginCache()).addOnCompleteListener(task -> checkLoginCache());
+        }).addOnFailureListener(e -> checkLoginCache()).addOnCompleteListener(task -> checkLoginCache()).addOnCanceledListener(this::checkLoginCache);*/
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        LoggerInfo.errorLog( "Fetching FCM registration token failed", task.getException());
+                        checkLoginCache();
+                        return;
+                    }
+                    deviceToken = task.getResult();
+                    checkLoginCache();
+                }).addOnFailureListener(e -> checkLoginCache());
     }
 
     private void checkLoginCache() {

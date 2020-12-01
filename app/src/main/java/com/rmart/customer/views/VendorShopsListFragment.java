@@ -103,6 +103,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private SupportMapFragment mapsFragment;
     private LocationManager locationManager;
     private ImageView ivSearchField;
+    private Location currentLocation;
 
     public static VendorShopsListFragment getInstance() {
         return new VendorShopsListFragment();
@@ -555,14 +556,16 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     public void onMapReady(GoogleMap map) {
         this.googleMap = map;
         googleMap.clear();
-        LatLng latLng = new LatLng(latitude, longitude);
+        if (currentLocation != null) {
+            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
 
-        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
-        googleMap.addMarker(markerOptions);
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
+            googleMap.addMarker(markerOptions);
 
-        addCircleToMap();
+            addCircleToMap();
+        }
     }
 
     private void updateShopsListMap() {
@@ -595,11 +598,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
         task.addOnSuccessListener(location -> {
             if (location != null) {
-                //currentLocation = location;
-                // latitude = currentLocation.getLatitude();
-                // longitude = currentLocation.getLongitude();
-                // Toast.makeText(getContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
-                //SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.myMap);
+                currentLocation = location;
                 if (mapsFragment != null) {
                     mapsFragment.getMapAsync(this);
                 }
@@ -631,9 +630,9 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         } else {
             Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             if (locationGPS != null) {
-                latitude = locationGPS.getLatitude();
-                longitude = locationGPS.getLongitude();
-                //currentLocation = locationGPS;
+                //latitude = locationGPS.getLatitude();
+                //longitude = locationGPS.getLongitude();
+                currentLocation = locationGPS;
                 updateMap();
             } else {
                 MyLocation myLocation = new MyLocation(requireActivity());
@@ -647,8 +646,9 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         @Override
         public void gotLocation(Location location) {
             if (location != null) {
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
+                //latitude = location.getLatitude();
+                //longitude = location.getLongitude();
+                currentLocation = location;
                 updateMap();
             }
         }
@@ -661,12 +661,16 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     }
 
     private void addCircleToMap() {
-        googleMap.addCircle(new CircleOptions()
-                .center(new LatLng(latitude, longitude))
-                .radius(15000)
-                .strokeWidth(2)
-                .strokeColor(ContextCompat.getColor(requireActivity(), R.color.grey_color_five))
-                .fillColor(Color.argb(128, 0, 0, 0))
-                .clickable(true));
+        if (currentLocation != null) {
+            double lat = currentLocation.getLatitude();
+            double longi = currentLocation.getLongitude();
+            googleMap.addCircle(new CircleOptions()
+                    .center(new LatLng(lat, longi))
+                    .radius(15000)
+                    .strokeWidth(2)
+                    .strokeColor(ContextCompat.getColor(requireActivity(), R.color.grey_color_five))
+                    .fillColor(Color.argb(128, 0, 0, 0))
+                    .clickable(true));
+        }
     }
 }

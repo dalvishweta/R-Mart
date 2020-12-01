@@ -46,6 +46,7 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
                 addressResponse.setId(-1);
                 editAddressFragment = EditAddressFragment.newInstance(isAddNewAddress, addressResponse);
                 replaceFragment(editAddressFragment, EditAddressFragment.class.getName(), false);
+                toolbar.setVisibility(View.GONE);
             } else {
                 replaceFragment(ViewMyProfileFragment.newInstance(), ViewMyProfileFragment.class.getName(), false);
             }

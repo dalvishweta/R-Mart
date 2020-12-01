@@ -106,9 +106,13 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
         AppCompatButton btnAddNewAddressField = view.findViewById(R.id.btn_add_new_address);
         btnAddNewAddressField.setOnClickListener(v -> addNewAddressSelected());
         AppCompatButton btnSelectThisAddress = view.findViewById(R.id.btn_select_this_address);
+        if (myAddress == null) {
+            btnSelectThisAddress.setVisibility(View.GONE);
+        }
         btnSelectThisAddress.setOnClickListener(v -> selectThisAddressSelected());
         addressListField.setHasFixedSize(false);
         addressListField.setItemAnimator(new SlideInDownAnimator());
+
     }
 
     private final CallBackInterface callBackListener = pObject -> {
@@ -138,7 +142,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     private void selectThisAddressSelected() {
         progressDialog.show();
         ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
-        profileService.updateAddress( myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
+        profileService.updateAddress(myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                 myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                 myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
                 myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), "", myAddress.getDeliveryCharges(),
@@ -166,7 +170,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
 
             @Override
             public void onFailure(@NotNull Call<AddressListResponse> call, @NotNull Throwable t) {
-                if(t instanceof SocketTimeoutException){
+                if (t instanceof SocketTimeoutException) {
                     showDialog("", getString(R.string.network_slow));
                 } else {
                     showDialog("", t.getMessage());

@@ -284,4 +284,14 @@ public class Utils {
         // matched the ReGex
         return m.matches();
     }
+
+    public String roundedFloatValue(float input) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        return df.format(input);
+    }
+
+    public String roundedDoubleValue(double input) {
+        DecimalFormat df = new DecimalFormat("0.00");
+        return df.format(input);
+    }
 }

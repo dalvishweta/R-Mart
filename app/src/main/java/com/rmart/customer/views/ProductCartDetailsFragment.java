@@ -418,7 +418,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
         tvTotalPriceField.setPaintFlags(tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         double quantityNoDetails = noOfQuantity * productUnitDetails.getUnitNumber();
-        String quantityDetails = String.format(Locale.getDefault(), "%f %s", quantityNoDetails, productUnitDetails.getShortUnitMeasure());
+        String quantityDetails = String.format(Locale.getDefault(), "%s %s", Utils.roundOffDoubleValue(quantityNoDetails), productUnitDetails.getShortUnitMeasure());
         tvQuantityField.setText(quantityDetails);
         tvNoOfQuantityField.setText(String.valueOf(noOfQuantity));
 

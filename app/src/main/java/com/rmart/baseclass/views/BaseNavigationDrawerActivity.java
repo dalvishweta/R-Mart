@@ -218,7 +218,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.badge_menu_drawer, menu);
         menuItem = menu.findItem(R.id.badge_menu);
-        ((MenuItem)menu.findItem(R.id.app_logo)).getActionView().setOnClickListener(view -> {
+        menu.findItem(R.id.app_logo).getActionView().setOnClickListener(view -> {
             MyProfile myProfile = MyProfile.getInstance();
             if (myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
                 Intent in = new Intent(this, CustomerHomeActivity.class);
