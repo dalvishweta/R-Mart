@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.rmart.R;
 import com.rmart.RMartApplication;
+import com.rmart.baseclass.CallBackInterface;
 import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.utilits.Utils;
@@ -42,13 +43,15 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
     private final ImageLoader imageLoader;
     private MyFilter myFilter;
     private List<CustomerProductDetailsModel> filteredListData;
+    private final CallBackInterface callBackListener;
 
-    public VendorProductTypesAdapter(Context context, List<CustomerProductDetailsModel> productsList) {
+    public VendorProductTypesAdapter(Context context, List<CustomerProductDetailsModel> productsList, CallBackInterface callBackListener) {
         layoutInflater = LayoutInflater.from(context);
         this.productsList = productsList;
         imageLoader = RMartApplication.getInstance().getImageLoader();
         filteredListData = new ArrayList<>();
         this.filteredListData.addAll(productsList);
+        this.callBackListener = callBackListener;
     }
 
     public void updateItems(List<CustomerProductDetailsModel> productsList) {
@@ -66,7 +69,8 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CustomerProductDetailsModel dataObject = productsList.get(position);
+        holder.itemView.setTag(position);
+        CustomerProductDetailsModel dataObject = filteredListData.get(position);
         String productImageUrl = dataObject.getProductImage();
         if (!TextUtils.isEmpty(productImageUrl)) {
             imageLoader.get(productImageUrl, new ImageLoader.ImageListener() {
@@ -153,21 +157,29 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
         }
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         CustomNetworkImageView ivProductImageField;
         TextView tvProductNameField;
         TextView tvProductDiscountField;
         TextView tvQuantityPriceDetailsField;
         LinearLayout progressBarLayout;
+        View itemView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            this.itemView = itemView;
             ivProductImageField = itemView.findViewById(R.id.iv_product_image_field);
             tvProductNameField = itemView.findViewById(R.id.tv_product_name_field);
             tvProductDiscountField = itemView.findViewById(R.id.tv_product_discount_field);
             tvQuantityPriceDetailsField = itemView.findViewById(R.id.tv_quantity_price_details_field);
             progressBarLayout = itemView.findViewById(R.id.progress_layout_field);
+
+            itemView.setOnClickListener(v -> {
+                int tag = (int) v.getTag();
+                CustomerProductDetailsModel selectedProductDetails = filteredListData.get(tag);
+                callBackListener.callBackReceived(selectedProductDetails);
+            });
         }
     }
 }

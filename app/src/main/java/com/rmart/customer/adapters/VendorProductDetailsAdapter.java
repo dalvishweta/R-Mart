@@ -30,12 +30,12 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class VendorProductDetailsAdapter extends RecyclerView.Adapter<VendorProductDetailsAdapter.ItemsViewHolder> implements Filterable {
 
-    private LayoutInflater layoutInflater;
+    private final LayoutInflater layoutInflater;
     private List<ProductBaseModel> vendorProductsList;
     private List<ProductBaseModel> filteredListData;
-    private Context context;
+    private final Context context;
     private MyFilter myFilter;
-    private CallBackInterface callBackListener;
+    private final CallBackInterface callBackListener;
 
     public VendorProductDetailsAdapter(Context context, List<ProductBaseModel> vendorProductsList, CallBackInterface callBackListener) {
         this.context = context;
@@ -66,19 +66,9 @@ public class VendorProductDetailsAdapter extends RecyclerView.Adapter<VendorProd
         holder.btnViewAllField.setTag(position);
         List<CustomerProductDetailsModel> productsList = dataObject.getProductsList();
         if (productsList != null && !productsList.isEmpty()) {
-            VendorProductTypesAdapter vendorProductTypesAdapter = new VendorProductTypesAdapter(context, dataObject.getProductsList());
+            VendorProductTypesAdapter vendorProductTypesAdapter = new VendorProductTypesAdapter(context, dataObject.getProductsList(),
+                    callBackListener);
             holder.productsTypesListField.setAdapter(vendorProductTypesAdapter);
-            holder.productsTypesListField.addOnItemTouchListener(new RecyclerTouchListener(context, position, holder.productsTypesListField, new RecyclerTouchListener.ClickListener() {
-                @Override
-                public void onClick(View view, int position) {
-                    callBackListener.callBackReceived(productsList.get(position));
-                }
-
-                @Override
-                public void onLongClick(View view, int position) {
-
-                }
-            }));
         }
     }
 

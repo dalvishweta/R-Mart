@@ -152,21 +152,11 @@ public class VendorSameProductsListScreen extends BaseFragment {
             }
         });
 
-        productsListField.addOnItemTouchListener(new RecyclerTouchListener(requireActivity(), "", productsListField, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                CustomerProductDetailsModel selectedProductDetails = productsList.get(position);
-                onCustomerHomeInteractionListener.gotoProductDescDetails(selectedProductDetails, vendorShopDetails);
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
-
         productsList = new ArrayList<>();
-        vendorProductsListAdapter = new VendorProductTypesAdapter(requireActivity(), productsList);
+        vendorProductsListAdapter = new VendorProductTypesAdapter(requireActivity(), productsList, pObject -> {
+            CustomerProductDetailsModel selectedProductDetails = (CustomerProductDetailsModel) pObject;
+            onCustomerHomeInteractionListener.gotoProductDescDetails(selectedProductDetails, vendorShopDetails);
+        });
         productsListField.setAdapter(vendorProductsListAdapter);
 
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
