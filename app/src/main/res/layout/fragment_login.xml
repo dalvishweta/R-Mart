@@ -41,6 +41,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="32dp"
         android:layout_marginRight="20dp"
+        android:paddingBottom="20dp"
         android:orientation="vertical"
         android:visibility="visible">
 
@@ -67,7 +68,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:hint="@string/mobile_number">
 
@@ -81,7 +82,8 @@
                 android:maxLines="1"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,7 +91,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:hint="@string/hint_password">
 
@@ -97,7 +99,6 @@
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:digits="@string/allow_digits_for_password"
                 android:inputType="textPassword"
                 android:maxLength="11"
@@ -111,7 +112,7 @@
             android:id="@+id/login"
             android:layout_width="match_parent"
             android:layout_height="@dimen/field_height"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/submit_button_bg"
             android:fontFamily="@font/montserrat_bold"
             android:padding="10dp"
@@ -136,7 +137,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:orientation="horizontal">
 
