@@ -3,9 +3,11 @@ package com.rmart.authentication.views;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,6 +59,33 @@ public class ForgotPasswordFragment extends LoginBaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+
+        try{
+           ImageView slice = view.findViewById(R.id.slice);
+            ImageView  app_logo = view.findViewById(R.id.app_logo);
+
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int height = displayMetrics.heightPixels;
+            int width = displayMetrics.widthPixels;
+            int sliceheight=(height*30)/100;
+            int app_logoheight=(height*15)/100;
+            slice.getLayoutParams().height = sliceheight;
+            app_logo.getLayoutParams().height = app_logoheight;
+            app_logo.getLayoutParams().width = app_logoheight;
+            //slice.setMaxHeight(sliceheight);
+            slice.requestLayout();
+            app_logo.requestLayout();
+
+
+
+        } catch (Exception e){
+
+
+
+        }
 
         etMobileNumber = view.findViewById(R.id.mobile_number);
         view.findViewById(R.id.forgot_password).setOnClickListener(v -> forgotPasswordSelected());

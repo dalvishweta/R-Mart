@@ -166,9 +166,14 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 FragmentManager fm = getActivity().getSupportFragmentManager();
+                for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+                    fm.popBackStack();
+                }
                 FragmentTransaction fragmentTransaction = fm.beginTransaction();
                 fragmentTransaction.replace(R.id.base_container, LoginFragment.newInstance("", ""), "login");
+
                 fragmentTransaction.commit();
             }
         });

@@ -37,6 +37,8 @@ import org.jetbrains.annotations.NotNull;
 import java.net.SocketTimeoutException;
 import java.util.Objects;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -135,7 +137,12 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
         } else if (view.getId() == R.id.forgot_password) {
             mListener.goToForgotPassword();
         } else  {
-            mListener.goToRegistration();
+
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.base_container, RegistrationFragment.getInstance(), RegistrationFragment.class.getName());
+            fragmentTransaction.addToBackStack( RegistrationFragment.class.getName());
+            fragmentTransaction.commit();
         }
     }
 
