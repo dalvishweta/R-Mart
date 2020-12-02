@@ -104,6 +104,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private LocationManager locationManager;
     private ImageView ivSearchField;
     private Location currentLocation;
+    private ArrayList<AddressResponse> addressList = new ArrayList<>();
 
     public static VendorShopsListFragment getInstance() {
         return new VendorShopsListFragment();
@@ -210,7 +211,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
 
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
-            ArrayList<AddressResponse> addressList = myProfile.getAddressResponses();
+            addressList = myProfile.getAddressResponses();
             if (addressList != null && !addressList.isEmpty()) {
                 if (addressList.size() == 1) {
                     AddressResponse addressResponse = addressList.get(0);
@@ -556,9 +557,30 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     public void onMapReady(GoogleMap map) {
         this.googleMap = map;
         googleMap.clear();
-        if (currentLocation != null) {
+        if (currentLocation != null && addressList.isEmpty()) {
             LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
 
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
+            googleMap.addMarker(markerOptions);
+
+            addCircleToMap();
+        } else if(!addressList.isEmpty()) {
+            if (addressList.size() == 1) {
+                AddressResponse addressResponse = addressList.get(0);
+                latitude = addressResponse.getLatitude();
+                longitude = addressResponse.getLongitude();
+            } else {
+                for (AddressResponse addressResponse : addressList) {
+                    if (myProfile.getPrimaryAddressId().equalsIgnoreCase(addressResponse.getId().toString())) {
+                        latitude = addressResponse.getLatitude();
+                        longitude = addressResponse.getLongitude();
+                        break;
+                    }
+                }
+            }
+            LatLng latLng = new LatLng(latitude, longitude);
             MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
@@ -666,6 +688,14 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             double longi = currentLocation.getLongitude();
             googleMap.addCircle(new CircleOptions()
                     .center(new LatLng(lat, longi))
+                    .radius(15000)
+                    .strokeWidth(2)
+                    .strokeColor(ContextCompat.getColor(requireActivity(), R.color.grey_color_five))
+                    .fillColor(Color.argb(128, 0, 0, 0))
+                    .clickable(true));
+        } else if(latitude != 0.0 && longitude != 0.0) {
+            googleMap.addCircle(new CircleOptions()
+                    .center(new LatLng(latitude, longitude))
                     .radius(15000)
                     .strokeWidth(2)
                     .strokeColor(ContextCompat.getColor(requireActivity(), R.color.grey_color_five))

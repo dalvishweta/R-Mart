@@ -45,6 +45,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     private ArrayList<AddressResponse> addressList = new ArrayList<>();
     private RecyclerView addressListField;
     private AddressResponse myAddress;
+    private AppCompatButton btnSelectThisAddress;
 
     public static ChangeAddressFragment getInstance() {
         ChangeAddressFragment changeAddressFragment = new ChangeAddressFragment();
@@ -84,8 +85,13 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
                         break;
                     }
                 }
-                changeAddressAdapter = new ChangeAddressAdapter(requireActivity(), addressList, callBackListener);
-                addressListField.setAdapter(changeAddressAdapter);
+                if(!addressList.isEmpty()) {
+                    btnSelectThisAddress.setVisibility(View.VISIBLE);
+                    changeAddressAdapter = new ChangeAddressAdapter(requireActivity(), addressList, callBackListener);
+                    addressListField.setAdapter(changeAddressAdapter);
+                } else {
+                    btnSelectThisAddress.setVisibility(View.GONE);
+                }
             }
         }
     }
@@ -105,10 +111,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
         addressListField = view.findViewById(R.id.addresses_list_field);
         AppCompatButton btnAddNewAddressField = view.findViewById(R.id.btn_add_new_address);
         btnAddNewAddressField.setOnClickListener(v -> addNewAddressSelected());
-        AppCompatButton btnSelectThisAddress = view.findViewById(R.id.btn_select_this_address);
-        if (myAddress == null) {
-            btnSelectThisAddress.setVisibility(View.GONE);
-        }
+        btnSelectThisAddress = view.findViewById(R.id.btn_select_this_address);
         btnSelectThisAddress.setOnClickListener(v -> selectThisAddressSelected());
         addressListField.setHasFixedSize(false);
         addressListField.setItemAnimator(new SlideInDownAnimator());
