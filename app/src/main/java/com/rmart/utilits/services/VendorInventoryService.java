@@ -2,16 +2,10 @@ package com.rmart.utilits.services;
 
 import com.google.gson.JsonObject;
 import com.rmart.BuildConfig;
-import com.rmart.inventory.models.Product;
-import com.rmart.inventory.views.AddProductToInventory;
-import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.utilits.pojos.AddProductToInventoryResponse;
-import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.pojos.ProductListResponse;
-import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.pojos.ShowProductResponse;
-
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

@@ -30,7 +30,7 @@ import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

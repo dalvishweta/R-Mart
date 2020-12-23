@@ -3,6 +3,7 @@ package com.rmart.utilits.pojos;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rmart.customer.models.RSAKeyResponseDetails;
+import com.rmart.utilits.BaseResponse;
 
 public class LoginResponse extends BaseResponse {
 

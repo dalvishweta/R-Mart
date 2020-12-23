@@ -14,13 +14,9 @@ import com.rmart.customer.models.ShopWiseWishListResponseModel;
 import com.rmart.customer.models.ShoppingCartResponse;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.customer.models.WishListResponseModel;
-import com.rmart.customer_order.models.OrderAgainProductModel;
-import com.rmart.utilits.pojos.BaseResponse;
-import com.rmart.utilits.pojos.orders.Product;
+import com.rmart.utilits.BaseResponse;
 
 import org.json.JSONArray;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

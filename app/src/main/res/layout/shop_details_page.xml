@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="shopDetails"
+            type="com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel" />
+    </data>
+
+<RelativeLayout
+    android:id="@+id/shop_details"
+    android:layout_width="match_parent"
+    app:shopimage="@{shopDetails.shopImage}"
+    android:background="@color/white"
+    android:layout_height="200dp">
+    <ImageView
+        android:layout_width="match_parent"
+        android:elevation="-10dp"
+        android:scaleType="fitXY"
+        android:layout_height="match_parent"
+        android:id="@+id/shopiamge"
+
+        />
+    <ImageView
+        android:id="@+id/loader"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/loader_newrelease"
+        android:background="@null"
+        android:elevation="2dp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:paddingBottom="10dp"
+        android:background="@drawable/back_background"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Vishal Kirana Stores"
+            android:text="@{shopDetails.shopName}"
+            android:fontFamily="@font/roboto_regular"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="3"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Vishal Kirana Stores"
+                    android:text="@{shopDetails.shopAddress}"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="2"
+                android:gravity="bottom|right"
+                android:paddingRight="10dp"
+
+                android:layout_below="@+id/iv_favourite_image"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_message_field"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/green_color_rounded_circle"
+                    android:contentDescription="@string/app_name"
+                    android:padding="4dp"
+                    android:layout_margin="5dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/message"
+                    android:layout_marginLeft="10dp"
+                    />
+
+                <ImageView
+                    android:id="@+id/iv_call_field"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/sky_blue_color_rounded_circle"
+                    android:padding="4dp"
+                    android:layout_margin="5dp"
+                    android:scaleType="centerInside"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/phone" />
+
+                <ImageView
+                    android:id="@+id/iv_share_field"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/round_share"
+                    android:padding="4dp"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/ic_baseline_share_24"
+                    android:scaleType="centerInside"
+                    android:layout_marginTop="10dp"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>
+</layout>

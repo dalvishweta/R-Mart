@@ -2,9 +2,8 @@ package com.rmart.customer.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.rmart.inventory.models.UnitObject;
-import com.rmart.utilits.pojos.BaseResponse;
-import com.rmart.utilits.pojos.ShowProductResponse;
+import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.utilits.BaseResponse;
 
 import java.io.Serializable;
 import java.util.List;

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colorPrimary">
+    android:background="@color/white">
 
     <include layout="@layout/navigation_header" />
 
@@ -41,70 +41,85 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/retailer_orders"
                     style="@style/nv_item_view"
-                    android:drawableStart="@drawable/orders"
-                    android:text="@string/my_orders" />
+                    android:drawableTint="@color/black"
+                    android:text="@string/my_orders"
+                    android:drawableLeft="@drawable/ic_order" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/retailer_inventory"
                     style="@style/nv_item_view"
-                    android:drawableStart="@drawable/inventory_nv"
-                    android:text="@string/inventory" />
+                    android:text="@string/inventory"
+                    android:drawableTint="@color/black"
+                    android:drawableLeft="@drawable/inventory_nv" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/customer_shopping"
                     style="@style/nv_item_view"
-                    android:drawableStart="@drawable/inventory_nv"
+                    android:drawableLeft="@drawable/ic_shopping_bag_icon"
                     android:text="@string/shopping" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/customer_orders"
                     style="@style/nv_item_view"
-                    android:drawableStart="@drawable/inventory_nv"
+                    android:drawableLeft="@drawable/ic_order"
                     android:text="@string/my_orders" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/my_favourites_list"
+                    android:drawableTint="@color/black"
                     style="@style/nv_item_view"
-                    android:drawableStart="@drawable/inventory_nv"
+                    android:drawableLeft="@drawable/ic_favourite"
                     android:text="@string/my_favourites" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/my_wish_list"
                     style="@style/nv_item_view"
-                    android:drawableStart="@drawable/inventory_nv"
+                    android:drawableTint="@color/black"
+
+                    android:drawableLeft="@drawable/ic_shopping_bag_wishlist"
                     android:text="@string/my_wish_list" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/my_wallet"
                     style="@style/nv_item_view"
-                    android:drawableStart="@drawable/password_nv"
+                    android:drawableTint="@color/black"
+                    android:drawableLeft="@drawable/password_nv"
                     android:visibility="gone"
                     android:text="@string/my_wallet" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/my_khata"
+                    android:drawableTint="@color/black"
                     style="@style/nv_item_view"
-                    android:drawableStart="@drawable/password_nv"
+                    android:drawableLeft="@drawable/password_nv"
                     android:visibility="gone"
                     android:text="@string/my_khata" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/support"
                     style="@style/nv_item_view"
-                    android:drawableStart="@drawable/password_nv"
+                    android:drawableTint="@color/black"
+                    android:drawableLeft="@drawable/password_nv"
                     android:visibility="gone"
                     android:text="@string/support" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/change_password"
+                    android:drawableTint="@color/black"
                     style="@style/nv_item_view"
-                    android:drawableStart="@drawable/password_nv"
+                    android:drawableLeft="@drawable/password_nv"
                     android:text="@string/change_password" />
-
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/share_app"
+                    android:drawableTint="@color/black"
+                    style="@style/nv_item_view"
+                    android:drawableLeft="@drawable/ic_outline_share_24"
+                    android:text="@string/share" />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/logout"
                     style="@style/nv_item_view"
-                    android:drawableStart="@drawable/logout_nv"
+                    android:drawableTint="@color/black"
+                    android:drawableLeft="@drawable/logout_nv"
                     android:text="@string/logout" />
             </LinearLayout>
         </ScrollView>

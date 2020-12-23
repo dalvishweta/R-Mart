@@ -143,44 +143,48 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     }
 
     private void selectThisAddressSelected() {
-        progressDialog.show();
-        ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
-        profileService.updateAddress(myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
-                myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
-                myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
-                myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), "", myAddress.getDeliveryCharges(),
-                myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(), myAddress.getId().toString()).enqueue(new Callback<AddressListResponse>() {
-            @Override
-            public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
-                if (response.isSuccessful()) {
-                    AddressListResponse data = response.body();
-                    if (data != null) {
-                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                            showDialog(data.getMsg(), pObject -> {
-                                MyProfile.getInstance().setPrimaryAddressId(myAddress.getId().toString());
-                                MyProfile.getInstance().setAddressResponses(addressList);
-                                Objects.requireNonNull(requireActivity()).onBackPressed();
-                            });
+        if(myAddress!=null) {
+            progressDialog.show();
+            ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
+            profileService.updateAddress(myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
+                    myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
+                    myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
+                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), "", myAddress.getDeliveryCharges(),
+                    myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(), myAddress.getId().toString()).enqueue(new Callback<AddressListResponse>() {
+                @Override
+                public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
+                    if (response.isSuccessful()) {
+                        AddressListResponse data = response.body();
+                        if (data != null) {
+                            if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                showDialog(data.getMsg(), pObject -> {
+                                    MyProfile.getInstance().setPrimaryAddressId(myAddress.getId().toString());
+                                    MyProfile.getInstance().setAddressResponses(addressList);
+                                    Objects.requireNonNull(requireActivity()).onBackPressed();
+                                });
+                            } else {
+                                showDialog(data.getMsg());
+                            }
                         } else {
-                            showDialog(data.getMsg());
+                            showDialog(getString(R.string.no_information_available));
                         }
-                    } else {
-                        showDialog(getString(R.string.no_information_available));
                     }
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
-            }
 
-            @Override
-            public void onFailure(@NotNull Call<AddressListResponse> call, @NotNull Throwable t) {
-                if (t instanceof SocketTimeoutException) {
-                    showDialog("", getString(R.string.network_slow));
-                } else {
-                    showDialog("", t.getMessage());
+                @Override
+                public void onFailure(@NotNull Call<AddressListResponse> call, @NotNull Throwable t) {
+                    if (t instanceof SocketTimeoutException) {
+                        showDialog("", getString(R.string.network_slow));
+                    } else {
+                        showDialog("", t.getMessage());
+                    }
+                    progressDialog.dismiss();
                 }
-                progressDialog.dismiss();
-            }
-        });
+            });
+        } else {
+            showDialog("", "Please Select Address");
+        }
     }
 
     private void addNewAddressSelected() {

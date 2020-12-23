@@ -85,9 +85,9 @@ public class RetrofitClientInstance {
                 final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
                 HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
                 logging.level(HttpLoggingInterceptor.Level.BODY);
-
+                String test = auth.replace("\n","");
                 Interceptor basicAuth = chain -> {
-                    String test = auth.replace("\n","");
+                    //String test = auth.replace("\n","");
                     Request request = chain.request()
                             .newBuilder()
                             .addHeader("Content-Type","application/x-www-form-urlencoded")

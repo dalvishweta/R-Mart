@@ -1,7 +1,6 @@
 package com.rmart.utilits.services;
 
 import com.rmart.BuildConfig;
-import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.ChangePasswordResponse;
 import com.rmart.utilits.pojos.ForgotPasswordResponse;
 import com.rmart.utilits.pojos.LoginResponse;
@@ -9,8 +8,6 @@ import com.rmart.utilits.pojos.RegistrationResponse;
 import com.rmart.utilits.pojos.ResendOTPResponse;
 import com.rmart.utilits.pojos.ResponseUpdateProfile;
 import com.rmart.utilits.pojos.ValidateOTP;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

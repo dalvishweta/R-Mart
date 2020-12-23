@@ -4,14 +4,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.appcompat.app.ActionBar;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerProductDetailsModel;
-import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.ShoppingCartResponseDetails;

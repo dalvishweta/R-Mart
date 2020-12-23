@@ -2,6 +2,7 @@ package com.rmart.inventory.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -11,11 +12,19 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.text.HtmlCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.signature.ObjectKey;
 import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.inventory.views.viewholders.ProductViewHolder;
@@ -137,32 +146,54 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
             holder.itemImg.setVisibility(View.VISIBLE);
             holder.itemImg.setBackgroundResource(android.R.drawable.ic_dialog_alert);
         }*/
-        holder.itemImg.setVisibility(View.GONE);
-        holder.progressLayoutField.setVisibility(View.VISIBLE);
 
-        if (!TextUtils.isEmpty(imageUrl)) {
-            imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    Bitmap bitmap = response.getBitmap();
-                    if (bitmap != null) {
-                        holder.itemImg.setLocalImageBitmap(bitmap);
-                    }
-                    holder.itemImg.setVisibility(View.VISIBLE);
-                }
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    holder.progressLayoutField.setVisibility(View.GONE);
-                    holder.itemImg.setVisibility(View.VISIBLE);
-                    holder.itemImg.setBackgroundResource(android.R.drawable.ic_dialog_alert);
-                }
-            });
-        } else {
-            holder.progressLayoutField.setVisibility(View.GONE);
-            holder.itemImg.setVisibility(View.VISIBLE);
-            holder.itemImg.setBackgroundResource(android.R.drawable.ic_dialog_alert);
-        }
+        holder.selectedgreeting.setVisibility(View.VISIBLE);
+        Glide.with(holder.imageView.getContext()).load(imageUrl) .listener(new RequestListener<Drawable>() {
+
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                holder.selectedgreeting.setVisibility(View.GONE);
+
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                holder.selectedgreeting.setVisibility(View.GONE);
+                return false;
+            }
+        }).dontAnimate().
+                diskCacheStrategy(DiskCacheStrategy.ALL).
+                signature(new ObjectKey(imageUrl!=null?imageUrl:"")).
+                error(android.R.drawable.ic_dialog_alert).thumbnail(0.5f).into(holder.imageView);
+
+//        holder.itemImg.setVisibility(View.GONE);
+//        holder.progressLayoutField.setVisibility(View.VISIBLE);
+//
+//        if (!TextUtils.isEmpty(imageUrl)) {
+//            imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
+//                @Override
+//                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+//                    Bitmap bitmap = response.getBitmap();
+//                    if (bitmap != null) {
+//                        holder.itemImg.setLocalImageBitmap(bitmap);
+//                    }
+//                    holder.itemImg.setVisibility(View.VISIBLE);
+//                }
+//
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    holder.progressLayoutField.setVisibility(View.GONE);
+//                    holder.itemImg.setVisibility(View.VISIBLE);
+ //              holder.itemImg.setBackgroundResource(android.R.drawable.ic_dialog_alert);
+//                }
+//            });
+//        } else {
+//            holder.progressLayoutField.setVisibility(View.GONE);
+//            holder.itemImg.setVisibility(View.VISIBLE);
+//            holder.itemImg.setBackgroundResource(android.R.drawable.ic_dialog_alert);
+//        }
     }
 
     @Override

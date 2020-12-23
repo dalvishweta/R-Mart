@@ -9,45 +9,30 @@
     android:background="@drawable/item_product_bg"
     android:weightSum="3">
 
+
+
     <RelativeLayout
-        android:id="@+id/item_img_layout"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
-
-        <LinearLayout
-            android:id="@+id/progress_layout_field"
-            android:layout_width="125dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_centerHorizontal="true"
-            android:orientation="vertical">
-
-            <com.rmart.baseclass.views.ProgressBarCircular
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center" />
-
-            <TextView
-                style="@style/text_style_small_bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@string/loading"
-                android:textColor="@color/colorPrimary" />
-
-        </LinearLayout>
-
-        <com.rmart.utilits.custom_views.CustomNetworkImageView
-            android:id="@+id/item_img"
-            android:layout_width="125dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:contentDescription="@string/app_name"
+        android:layout_height="100dp"
+        android:id="@+id/img_designlistlayout"
+       >
+        <ImageView
+            android:id="@+id/imageview"
+            android:layout_width="match_parent"
             android:scaleType="fitXY"
-            android:visibility="gone" />
+            android:layout_height="match_parent"
 
+
+            />
+        <ImageView
+            android:id="@+id/selectedgreeting"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/loader_newrelease"
+            android:background="@null"
+            android:elevation="2dp"
+            />
     </RelativeLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -55,7 +40,7 @@
         style="@style/item_product_offer" />
 
     <LinearLayout
-        android:layout_below="@+id/item_img_layout"
+        android:layout_below="@+id/img_designlistlayout"
         android:translationZ="90dp"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"

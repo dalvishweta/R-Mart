@@ -2,7 +2,7 @@ package com.rmart.customer;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.rmart.customer.models.CustomerProductDetailsModel;
-import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.ShoppingCartResponseDetails;

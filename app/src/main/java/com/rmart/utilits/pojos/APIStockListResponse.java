@@ -2,6 +2,7 @@ package com.rmart.utilits.pojos;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rmart.utilits.BaseResponse;
 
 import java.io.Serializable;
 import java.util.ArrayList;

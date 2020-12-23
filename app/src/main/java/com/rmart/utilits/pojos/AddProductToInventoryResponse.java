@@ -1,4 +1,6 @@
 package com.rmart.utilits.pojos;
 
-public class AddProductToInventoryResponse extends BaseResponse{
+import com.rmart.utilits.BaseResponse;
+
+public class AddProductToInventoryResponse extends BaseResponse {
 }

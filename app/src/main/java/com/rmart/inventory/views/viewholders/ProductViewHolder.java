@@ -1,6 +1,7 @@
 package com.rmart.inventory.views.viewholders;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -11,9 +12,8 @@ import com.rmart.utilits.custom_views.CustomNetworkImageView;
 
 public class ProductViewHolder extends RecyclerView.ViewHolder {
     public AppCompatTextView tvItemTitle, tvUnitValue, tvFinalCost, tvActual, tvOffer, availableUnits;
-    public CustomNetworkImageView itemImg;
     public LinearLayout unitView;
-    public LinearLayout progressLayoutField;
+    public ImageView imageView,selectedgreeting;
     public ProductViewHolder(View listItem) {
         super(listItem);
         tvItemTitle = listItem.findViewById(R.id.title);
@@ -23,7 +23,8 @@ public class ProductViewHolder extends RecyclerView.ViewHolder {
         tvOffer = listItem.findViewById(R.id.offer);
         unitView = listItem.findViewById(R.id.row2);
         availableUnits = listItem.findViewById(R.id.available_units);
-        itemImg = listItem.findViewById(R.id.item_img);
-        progressLayoutField = listItem.findViewById(R.id.progress_layout_field);
+        imageView = listItem.findViewById(R.id.imageview);
+        selectedgreeting = listItem.findViewById(R.id.selectedgreeting);
+
     }
 }

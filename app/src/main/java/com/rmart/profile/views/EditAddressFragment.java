@@ -1,55 +1,51 @@
 package com.rmart.profile.views;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatTextView;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.google.android.gms.maps.model.LatLng;
 import com.rmart.BuildConfig;
 import com.rmart.R;
-import com.rmart.RMartApplication;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.views.CustomerHomeActivity;
+import com.rmart.databinding.FragmentAddAddressBinding;
 import com.rmart.mapview.MapsFragment;
+import com.rmart.mapview.OnLocationUpdateListner;
 import com.rmart.orders.views.OrdersActivity;
-import com.rmart.profile.model.MyAddress;
 import com.rmart.profile.model.MyProfile;
-import com.rmart.profile.viewmodels.AddressViewModel;
-import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.profile.viewmodel.EditAdreesViewModel;
 import com.rmart.utilits.InputFilterIntMinMax;
-import com.rmart.utilits.InputFilterMinMax;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.custom_views.CustomNetworkImageView;
 import com.rmart.utilits.custom_views.CustomTimePicker;
 import com.rmart.utilits.pojos.AddressListResponse;
 import com.rmart.utilits.pojos.AddressResponse;
-import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.services.ProfileService;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -59,8 +55,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
+import androidx.lifecycle.ViewModelProviders;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,37 +66,23 @@ import retrofit2.Response;
 import static android.app.Activity.RESULT_OK;
 
 public class EditAddressFragment extends BaseFragment implements View.OnClickListener {
-
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String AADHAR_FRONT_IMAGE = "aadhar_front_image";
     private static final String AADHAR_BACK_IMAGE = "aadhar_back_image";
     private static final String PANCARD_IMAGE = "pancard_image";
     private static final String SHOP_IMAGE = "shop_image";
-    private AppCompatEditText tvShopName, tvPANNumber, tvGSTNumber, tvShopAct, tvStreetAddress, tvCity, tvShopNO, tvDeliveryRadius, tvPinCode, tvState;
-    private LinearLayout mRetailerView;
+    FragmentAddAddressBinding binding;
     private AddressResponse myAddress;
-    private AppCompatEditText tvAadharNoField, etvDeliveryCharges, etvMinimumOrder, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
-    private AppCompatTextView tvClosingTIme, tvOpeningTIme;
-    private CustomNetworkImageView ivAadharFrontImageField, ivAadharBackImageField, ivPanCardImageField, ivShopImageField;
-    private String aadharFrontImageUrl;
-    private String aadharBackImageUrl;
-    private String panCardImageUrl;
-    private String shopImageUrl;
-    private boolean isAddNewAddress;
+    private boolean isAddNewAddress,isImageLoading;
     private int selectedPhotoType = -1;
     private double latitude;
     private double longitude;
     private MapsFragment mapsFragment;
-    private LinearLayout aadharFrontImageProgressLayout;
-    private LinearLayout aadharBackImageProgressLayout;
-    private LinearLayout panCardProgressLayout;
-    private LinearLayout shopImageProgressLayout;
+    private EditAdreesViewModel editAdreesViewModel;
 
     public EditAddressFragment() {
-        // Required empty public constructor
     }
-
     public static EditAddressFragment newInstance(boolean isAddNewAddress, AddressResponse myAddress) {
         EditAddressFragment fragment = new EditAddressFragment();
         Bundle args = new Bundle();
@@ -107,7 +91,6 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,105 +99,326 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             isAddNewAddress = getArguments().getBoolean(ARG_PARAM1);
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         LoggerInfo.printLog("Fragment", "EditAddressFragment");
-        AddressViewModel addressViewModel = new ViewModelProvider(Objects.requireNonNull(requireActivity())).get(AddressViewModel.class);
-        addressViewModel.setMyAddressMutableLiveData(new MyAddress());
-        addressViewModel.getMyAddressMutableLiveData().observe(requireActivity(), myAddress -> {
 
-        });
-        return inflater.inflate(R.layout.fragment_add_address, container, false);
+
+        binding= DataBindingUtil.inflate(inflater, R.layout.fragment_add_address, container, false);
+
+            editAdreesViewModel = ViewModelProviders.of(getActivity()).get(EditAdreesViewModel.class);
+
+        binding.setLifecycleOwner(this);
+        binding.setMyAddress(editAdreesViewModel);
+        editAdreesViewModel.addressResponseMutableLiveData.setValue(myAddress);
+
+        textWatchers();
+
+        return binding.getRoot();
     }
+    private void textWatchers() {
+        binding.shopName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorShopNameStringMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.shopNo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorShopNoStringMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.shopAct.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorShopActStringMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.gstNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorgstNoStringMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.deliveryRadius.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorgstDeliveryRadiusMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.deliveryCharges.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorgstDeliveryChargesMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.minimumOrder.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorgstMinimumOrderMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.openTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorgstOpenTimeMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.closeTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorgstCloseTimeMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.deliveryDaysBeforeTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorgstBeforeCloseMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.deliveryDaysAfterTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorgstsfterCloseMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.tvAadharNumberNoField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorAadharNoMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.panNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorPanNumberMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.streetAddress.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorStreetAdressMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.city.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorCityMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.district.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorDistrictMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.state.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorStateMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.pinCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorPinCodeMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mRetailerView = view.findViewById(R.id.retailer_view);
-        tvShopName = view.findViewById(R.id.shop_name);
-        tvPANNumber = view.findViewById(R.id.pan_number);
-        /*tvPANNumber.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-
-            }
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                          int arg3) {
-            }
-            @Override
-            public void afterTextChanged(Editable et) {
-                String s=et.toString();
-                if(!s.equals(s.toUpperCase()))
-                {
-                    s=s.toUpperCase();
-                    tvPANNumber.setText(s);
-                    tvPANNumber.setSelection(tvPANNumber.length()); //fix reverse texting
-                }
-            }
-        });*/
-        tvGSTNumber = view.findViewById(R.id.gst_number);
-        tvShopAct = view.findViewById(R.id.shop_act);
-        tvStreetAddress = view.findViewById(R.id.street_address);
-        tvShopNO = view.findViewById(R.id.shop_no);
-        tvDeliveryRadius = view.findViewById(R.id.delivery_radius);
-        tvDeliveryRadius.setFilters(new InputFilter[]{new InputFilterIntMinMax(1, 99)});
-        tvPinCode = view.findViewById(R.id.pin_code);
-        tvState = view.findViewById(R.id.state);
-        tvCity = view.findViewById(R.id.city);
-        tvAadharNoField = view.findViewById(R.id.tv_aadhar_number_no_field);
-        ivAadharFrontImageField = view.findViewById(R.id.iv_aadhar_front_image_field);
-        ivAadharBackImageField = view.findViewById(R.id.iv_aadhar_back_image_field);
-        ivPanCardImageField = view.findViewById(R.id.iv_pan_card_image_field);
-        ivShopImageField = view.findViewById(R.id.iv_shop_image_field);
-        aadharFrontImageProgressLayout = view.findViewById(R.id.aadhar_front_image_progress_layout_field);
-        aadharBackImageProgressLayout = view.findViewById(R.id.aadhar_back_image_progress_layout_field);
-        panCardProgressLayout = view.findViewById(R.id.pan_card_image_progress_layout_field);
-        shopImageProgressLayout = view.findViewById(R.id.shop_image_progress_layout_field);
-
-        etvDeliveryCharges = view.findViewById(R.id.delivery_charges);
-        etvMinimumOrder = view.findViewById(R.id.minimum_order);
-        tvOpeningTIme = view.findViewById(R.id.open_time);
-        tvClosingTIme = view.findViewById(R.id.close_time);
-
-        tvDeliveryDaysAfterTime = view.findViewById(R.id.delivery_days_after_time);
-        tvDeliveryDaysBeforeTime = view.findViewById(R.id.delivery_days_before_time);
-
+        binding.deliveryRadius.setFilters(new InputFilter[]{new InputFilterIntMinMax(1, 99)});
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (myAddress != null) {
             latitude = myAddress.getLatitude();
             longitude = myAddress.getLongitude();
         }
-
-        ScrollView scrollView = view.findViewById(R.id.scroll_view);
-        scrollView.requestDisallowInterceptTouchEvent(true);
-        LinearLayout mapLayoutField = view.findViewById(R.id.map_layout_field);
-
-        /*mapLayoutField.setOnTouchListener((v, event) -> {
-            int action = event.getAction();
-            switch (action) {
-                case MotionEvent.ACTION_DOWN:
-                    // Disallow ScrollView to intercept touch events
-                    .
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    break;
-
-                case MotionEvent.ACTION_UP:
-                    // Allow ScrollView to intercept touch events.
-                    v.getParent().requestDisallowInterceptTouchEvent(false);
-                    break;
-            }
-
-            // Handle ListView touch events.
-            v.onTouchEvent(event);
-            return true;
-        });*/
+        binding.scrollView.requestDisallowInterceptTouchEvent(true);
 
         if (myAddress != null) {
             if (myAddress.getId() == -1) {
@@ -230,168 +434,116 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
         fragmentTransaction.replace(R.id.map_layout_field, mapsFragment, MapsFragment.class.getName());
         fragmentTransaction.commit();
-
-        view.findViewById(R.id.add_address).setOnClickListener(this);
-        view.findViewById(R.id.shop_image_layout_field).setOnClickListener(this);
-        view.findViewById(R.id.pan_card_layout_field).setOnClickListener(this);
-        view.findViewById(R.id.aadhar_back_layout_field).setOnClickListener(this);
-        view.findViewById(R.id.aadhar_front_layout_field).setOnClickListener(this);
-
-        tvOpeningTIme.setOnClickListener(this);
-        tvClosingTIme.setOnClickListener(this);
+        mapsFragment.setLocationUpdateListner(new OnLocationUpdateListner() {
+            @Override
+            public void onLocationUpdate(LatLng latLng) {
+                setAdress( latLng);
+            }
+        });
+        binding.addAddress.setOnClickListener(this);
+        binding.shopImageLayoutField.setOnClickListener(this);
+        binding.panCardLayoutField.setOnClickListener(this);
+        binding.aadharBackLayoutField.setOnClickListener(this);
+        binding.aadharFrontLayoutField.setOnClickListener(this);
+        binding.openTime.setOnClickListener(this);
+        binding.closeTime.setOnClickListener(this);
 
         updateUI();
+        try {
+            if (TextUtils.isEmpty(editAdreesViewModel.shopImageUrl.getValue())) {
+
+              //  updateImageUI(new URI(editAdreesViewModel.shopImageUrl.getValue()), SHOP_IMAGE);
+            }
+        } catch (Exception e){
+
+        }
 
     }
+    private void setAdress(LatLng latLng){
+        Geocoder geocoder;
+        List<Address> addresses = null;
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
 
+        try {
+
+            //addresses = geocoder.getFromLocation(latitude, langitude, 5); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+            String line1 = "",lines2 = "";
+            try {
+                addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 5);
+                line1 = addresses.get(0).getAddressLine(0);
+                lines2 = addresses.get(0).getFeatureName();
+            }catch (Exception e ){
+                Toast.makeText(getActivity(),"Point6",Toast.LENGTH_LONG).show();
+            }
+            try {
+                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+
+                String city = addresses.get(0).getLocality();
+
+
+
+
+                binding.city.setText(city);
+                binding.streetAddress.setText(address);
+                binding.pinCode.setText(addresses.get(0).getPostalCode());
+                binding.state.setText(addresses.get(0).getAdminArea());
+
+            } catch (Exception e){
+                Toast.makeText(getActivity(),"POint 1",Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+
+        }
+
+
+
+    }
     @Override
     public void onResume() {
         super.onResume();
         requireActivity().setTitle(myAddress.getId() == -1 ? getString(R.string.add_address) : getString(R.string.update_address));
     }
-
     private void updateUI() {
         if (myAddress.getId() != -1) {
-            tvShopName.setText(myAddress.getShopName());
-            tvPANNumber.setText(myAddress.getPan_no());
-            tvGSTNumber.setText(myAddress.getGstInNo());
-            tvShopAct.setText(myAddress.getShopACT());
-            tvStreetAddress.setText(myAddress.getAddress());
-            tvShopNO.setText(myAddress.getStore_number());
-            tvState.setText(myAddress.getState());
-            tvPinCode.setText(myAddress.getPinCode());
-            tvDeliveryRadius.setText(myAddress.getDeliveryRadius());
-            tvCity.setText(myAddress.getCity());
-            tvAadharNoField.setText(myAddress.getAadhaarCardNo());
-
-            etvDeliveryCharges.setText(myAddress.getDeliveryCharges());
-            etvMinimumOrder.setText(myAddress.getMinimumOrder());
-            tvOpeningTIme.setText(myAddress.getOpeningTime());
-            tvClosingTIme.setText(myAddress.getClosingTime());
-            tvDeliveryDaysAfterTime.setText(myAddress.getDeliveryDaysAfterTime());
-            tvDeliveryDaysBeforeTime.setText(myAddress.getDeliveryDaysBeforeTime());
-
-            ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
+            binding.shopName.setText(myAddress.getShopName());
+            binding.panNumber.setText(myAddress.getPan_no());
+            binding.gstNumber.setText(myAddress.getGstInNo());
+            binding.shopAct.setText(myAddress.getShopACT());
+            binding.streetAddress.setText(myAddress.getAddress());
+            binding.shopNo.setText(myAddress.getStore_number());
+            binding.state.setText(myAddress.getState());
+            binding.pinCode.setText(myAddress.getPinCode());
+            binding.deliveryRadius.setText(myAddress.getDeliveryRadius());
+            binding.city.setText(myAddress.getCity());
+            binding.tvAadharNumberNoField.setText(myAddress.getAadhaarCardNo());
+            binding.deliveryCharges.setText(myAddress.getDeliveryCharges());
+            binding.minimumOrder.setText(myAddress.getMinimumOrder());
+            binding.openTime.setText(myAddress.getOpeningTime());
+            binding.closeTime.setText(myAddress.getClosingTime());
+            binding.deliveryDaysAfterTime.setText(myAddress.getDeliveryDaysAfterTime());
+            binding.deliveryDaysBeforeTime.setText(myAddress.getDeliveryDaysBeforeTime());
 
             Location location = new Location("");
             location.setLatitude(myAddress.getLatitude());
             location.setLongitude(myAddress.getLongitude());
             mapsFragment.setLocation(location);
-
-            String lAadharFrontImageUrl = myAddress.getAadharFrontImage();
-            if (!TextUtils.isEmpty(lAadharFrontImageUrl)) {
-                imageLoader.get(lAadharFrontImageUrl, new ImageLoader.ImageListener() {
-                    @Override
-                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        aadharFrontImageUrl = lAadharFrontImageUrl;
-                        Bitmap bitmap = response.getBitmap();
-                        if (bitmap != null) {
-                            ivAadharFrontImageField.setLocalImageBitmap(bitmap);
-                        }
-                        ivAadharFrontImageField.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        aadharFrontImageProgressLayout.setVisibility(View.GONE);
-                        ivAadharFrontImageField.setVisibility(View.VISIBLE);
-                    }
-                });
-            } else {
-                aadharFrontImageProgressLayout.setVisibility(View.GONE);
-                ivAadharFrontImageField.setVisibility(View.VISIBLE);
-            }
-            String lAadharBackImageUrl = myAddress.getAadharBackImage();
-            if (!TextUtils.isEmpty(lAadharBackImageUrl)) {
-                imageLoader.get(lAadharBackImageUrl, new ImageLoader.ImageListener() {
-                    @Override
-                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        aadharBackImageUrl = lAadharBackImageUrl;
-                        Bitmap bitmap = response.getBitmap();
-                        if (bitmap != null) {
-                            ivAadharBackImageField.setLocalImageBitmap(bitmap);
-                        }
-                        ivAadharBackImageField.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        aadharBackImageProgressLayout.setVisibility(View.GONE);
-                        ivAadharBackImageField.setVisibility(View.VISIBLE);
-                    }
-                });
-            } else {
-                aadharBackImageProgressLayout.setVisibility(View.GONE);
-                ivAadharBackImageField.setVisibility(View.VISIBLE);
-            }
-            String lPanCardImageUrl = myAddress.getPanCardImage();
-            if (!TextUtils.isEmpty(lPanCardImageUrl)) {
-                imageLoader.get(lPanCardImageUrl, new ImageLoader.ImageListener() {
-                    @Override
-                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        panCardImageUrl = lPanCardImageUrl;
-                        Bitmap bitmap = response.getBitmap();
-                        if (bitmap != null) {
-                            ivPanCardImageField.setLocalImageBitmap(bitmap);
-                        }
-                        ivPanCardImageField.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        panCardProgressLayout.setVisibility(View.GONE);
-                        ivPanCardImageField.setVisibility(View.VISIBLE);
-                    }
-                });
-            } else {
-                panCardProgressLayout.setVisibility(View.GONE);
-                ivPanCardImageField.setVisibility(View.VISIBLE);
-            }
-            String lShopImageUrl = myAddress.getShopImage();
-            if (!TextUtils.isEmpty(lShopImageUrl)) {
-                HttpsTrustManager.allowAllSSL();
-                imageLoader.get(lShopImageUrl, new ImageLoader.ImageListener() {
-                    @Override
-                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        shopImageUrl = lShopImageUrl;
-                        Bitmap bitmap = response.getBitmap();
-                        if (bitmap != null) {
-                            ivShopImageField.setLocalImageBitmap(bitmap);
-                        }
-                        ivShopImageField.setVisibility(View.VISIBLE);
-                    }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        shopImageProgressLayout.setVisibility(View.GONE);
-                        ivShopImageField.setVisibility(View.VISIBLE);
-                    }
-                });
-            } else {
-                shopImageProgressLayout.setVisibility(View.GONE);
-                ivShopImageField.setVisibility(View.VISIBLE);
-            }
         } else {
-            shopImageProgressLayout.setVisibility(View.GONE);
-            aadharBackImageProgressLayout.setVisibility(View.GONE);
-            aadharFrontImageProgressLayout.setVisibility(View.GONE);
-            panCardProgressLayout.setVisibility(View.GONE);
-            ivShopImageField.setVisibility(View.VISIBLE);
-            ivAadharBackImageField.setVisibility(View.VISIBLE);
-            ivAadharFrontImageField.setVisibility(View.VISIBLE);
-            ivPanCardImageField.setVisibility(View.VISIBLE);
+
         }
         if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
-            mRetailerView.setVisibility(View.VISIBLE);
+            binding.retailerView.setVisibility(View.VISIBLE);
             if (myAddress.getId() != -1) {
-                tvStreetAddress.setText(myAddress.getAddress());
+                binding.streetAddress.setText(myAddress.getAddress());
             }
         } else {
-            mRetailerView.setVisibility(View.GONE);
+            binding.retailerView.setVisibility(View.GONE);
         }
-        //setMapView(false, "profile");
+        editAdreesViewModel.loadImage(binding.shopImageLayoutField, myAddress.getShopImage(), R.id.iv_shop_image_field, R.id.selectedgreeting, R.drawable.ic_shop, url -> editAdreesViewModel.shopImageUrl.setValue(url));
+        editAdreesViewModel.loadImage(binding.aadharFrontLayoutField, myAddress.getAadharFrontImage(), R.id.adharcard_front_image_field, R.id.adharcard_loader, R.drawable.ic_aadhar_front, url -> editAdreesViewModel.aadharFrontImageUrl.setValue(url));
+        editAdreesViewModel.loadImage(binding.aadharBackLayoutField, myAddress.getAadharBackImage(), R.id.adharcard_back_image_field, R.id.adharcard_back_loader, R.drawable.ic_aadhar_back, url -> editAdreesViewModel.aadharBackImageUrl.setValue(url));
+        editAdreesViewModel.loadImage(binding.panCardLayoutField, myAddress.getPanCardImage(), R.id.pan_card_image_field, R.id.pan_card_loader, R.drawable.ic_pan, url -> editAdreesViewModel.aadharBackImageUrl.setValue(url));
     }
-
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
@@ -402,34 +554,35 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                 break;
             case R.id.aadhar_front_layout_field:
                 selectedPhotoType = 0;
+                isImageLoading=true;
                 capturePhotoSelected();
                 break;
             case R.id.aadhar_back_layout_field:
                 selectedPhotoType = 1;
+                isImageLoading=true;
                 capturePhotoSelected();
                 break;
             case R.id.pan_card_layout_field:
                 selectedPhotoType = 2;
+                isImageLoading=true;
                 capturePhotoSelected();
                 break;
             case R.id.shop_image_layout_field:
                 selectedPhotoType = 3;
+                isImageLoading=true;
                 capturePhotoSelected();
                 break;
             case R.id.open_time:
             case R.id.close_time:
-                new CustomTimePicker((AppCompatTextView) view, getActivity());
+                new CustomTimePicker((EditText) view, getActivity());
                 break;
             default:
                 break;
         }
     }
-
     private void capturePhotoSelected() {
-        CropImage.activity()
-                .start(requireActivity(), this);
+        CropImage.activity().start(requireActivity(), this);
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -440,6 +593,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                         Uri profileImageUri = result.getUri();
                         if (profileImageUri != null) {
                             showConfirmDialog(profileImageUri);
+
                         }
                     } catch (Exception ex) {
                         showDialog("", ex.getMessage());
@@ -452,28 +606,26 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             }
         }
     }
-
     private void showConfirmDialog(Uri profileImageUri) {
         showConfirmationDialog(getString(R.string.image_saving_confirmation_alert), pObject -> {
             progressDialog.show();
             if (selectedPhotoType == 0) {
-                aadharFrontImageUrl = profileImageUri.getPath();
+                editAdreesViewModel.aadharFrontImageUrl.setValue(profileImageUri.getPath());
                 updateImageDetails(profileImageUri, AADHAR_FRONT_IMAGE);
             } else if (selectedPhotoType == 1) {
-                aadharBackImageUrl = profileImageUri.getPath();
+                editAdreesViewModel.aadharBackImageUrl.setValue(profileImageUri.getPath());
                 updateImageDetails(profileImageUri, AADHAR_BACK_IMAGE);
             } else if (selectedPhotoType == 2) {
-                panCardImageUrl = profileImageUri.getPath();
+                editAdreesViewModel.panCardImageUrl.setValue(profileImageUri.getPath());
                 updateImageDetails(profileImageUri, PANCARD_IMAGE);
             } else if (selectedPhotoType == 3) {
-                shopImageUrl = profileImageUri.getPath();
+                editAdreesViewModel.shopImageUrl.setValue(profileImageUri.getPath());
                 updateImageDetails(profileImageUri, SHOP_IMAGE);
             } else {
                 progressDialog.dismiss();
             }
         });
     }
-
     private void updateImageDetails(Uri photoImagePath, String imageType) {
         if (Utils.isNetworkConnected(requireActivity())) {
             String clientID = "2";
@@ -493,6 +645,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                                 if (body != null) {
                                     showDialog(body.getMsg());
                                     updateImageUI(photoImagePath, imageType);
+                                    isImageLoading=false;
                                 } else {
                                     showDialog(getString(R.string.image_upload_error));
                                 }
@@ -519,19 +672,24 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             progressDialog.dismiss();
         }
     }
-
     private void updateImageUI(Uri profileImageUri, String imageType) {
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), profileImageUri);
             if (bitmap != null) {
                 if (imageType.equalsIgnoreCase(SHOP_IMAGE)) {
-                    ivShopImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                    binding.ivShopImageField.setImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                    binding.shopImageLayoutField.setBackground(getResources().getDrawable(R.drawable.image_border));
+
                 } else if (imageType.equalsIgnoreCase(AADHAR_FRONT_IMAGE)) {
-                    ivAadharFrontImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                    binding.adharcardFrontImageField.setImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                    binding.aadharFrontLayoutField.setBackground(getResources().getDrawable(R.drawable.image_border));
                 } else if (imageType.equalsIgnoreCase(AADHAR_BACK_IMAGE)) {
-                    ivAadharBackImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                    binding.adharcardBackImageField.setImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                    binding.aadharBackLayoutField.setBackground(getResources().getDrawable(R.drawable.image_border));
+
                 } else {
-                    ivPanCardImageField.setLocalImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                    binding.panCardImageField.setImageBitmap(Utils.getCompressBitmapImage(bitmap));
+                    binding.panCardLayoutField.setBackground(getResources().getDrawable(R.drawable.image_border));
                 }
             }
         } catch (Exception ex) {
@@ -540,7 +698,6 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
         }
     }
-
     private String getEncodedImage(Bitmap bitmap) {
         try {
             if (bitmap != null) {
@@ -554,251 +711,318 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         }
         return "";
     }
-
     private void addAddressSelected() {
-        String aadharNo = "";
-        if (mRetailerView.getVisibility() == View.VISIBLE) {
-            String shopName = Objects.requireNonNull(tvShopName.getText()).toString().trim();
-            if (TextUtils.isEmpty(shopName)) {
-                showDialog(getString(R.string.shop_name_required));
-                return;
-            }
+        boolean validation=true;
+        String aadharNo="";
+        if ( binding.retailerView.getVisibility() == View.VISIBLE) {
 
-            String actNumber = Objects.requireNonNull(tvShopAct.getText()).toString().trim();
+            boolean isAdharValid =true;
+            boolean isAdharNoValid =true;
+            boolean isAdharFrontImageValid =true;
+            boolean isAdharBackImageValid =true;
+            boolean isPanValid =true;
+            boolean isShopActValid =true;
+            String actNumber = Objects.requireNonNull(binding.shopAct.getText()).toString().trim();
             if (TextUtils.isEmpty(actNumber)) {
-                showDialog(getString(R.string.act_number_required));
-                return;
+                isShopActValid =false;
+            } else if (actNumber.length() != 12) {
+                //showDialog(getString(R.string.valid_act_number_required));
+                isShopActValid =false;
             }
-            if (actNumber.length() != 12) {
-                showDialog(getString(R.string.valid_act_number_required));
-                return;
-            }
-            if (TextUtils.isEmpty(shopImageUrl)) {
-                showDialog(getString(R.string.shop_image_required));
-                return;
-            }
-
-            String shopNO = Objects.requireNonNull(tvShopNO.getText()).toString().trim();
-            if (TextUtils.isEmpty(shopNO)) {
-                showDialog(getString(R.string.shop_no_required));
-                return;
-            }
-
-            String deliveryRadius = Objects.requireNonNull(tvDeliveryRadius.getText()).toString().trim();
-            if (TextUtils.isEmpty(deliveryRadius)) {
-                showDialog(getString(R.string.delivery_radius_required));
-                return;
-            }
-            if (deliveryRadius.equals("0")) {
-                showDialog(getString(R.string.delivery_radius_required));
-                return;
-            }
-
-            String deliveryCharges = Objects.requireNonNull(etvDeliveryCharges.getText()).toString().trim();
-            if (TextUtils.isEmpty(deliveryCharges)) {
-                showDialog(getString(R.string.delivery_charges_required));
-                return;
-            }
-
-            String minimumOrder = Objects.requireNonNull(etvMinimumOrder.getText()).toString().trim();
-            if (TextUtils.isEmpty(minimumOrder)) {
-                showDialog(getString(R.string.minimum_charges_required));
-                return;
-            }
-
-            String openingTime = Objects.requireNonNull(tvOpeningTIme.getText()).toString().trim();
-            if (TextUtils.isEmpty(openingTime)) {
-                showDialog(getString(R.string.opening_time_required));
-                return;
-            }
-
-            String closingTime = Objects.requireNonNull(tvClosingTIme.getText()).toString().trim();
-            if (TextUtils.isEmpty(closingTime)) {
-                showDialog(getString(R.string.closing_time_required));
-                return;
-            }
-
-            String deliveryDaysBeforeTime = Objects.requireNonNull(tvDeliveryDaysBeforeTime.getText()).toString().trim();
-            if (TextUtils.isEmpty(deliveryDaysBeforeTime)) {
-                showDialog(getString(R.string.delivery_days_before_time));
-                return;
-            }
-
-
-            String deliveryDaysAfterTime = Objects.requireNonNull(tvDeliveryDaysAfterTime.getText()).toString().trim();
-            if (TextUtils.isEmpty(deliveryDaysAfterTime)) {
-                showDialog(getString(R.string.delivery_days_after_time));
-                return;
-            }
-
-            aadharNo = Objects.requireNonNull(tvAadharNoField.getText()).toString().trim();
+            aadharNo  = Objects.requireNonNull(binding.tvAadharNumberNoField.getText()).toString().trim();
             if (TextUtils.isEmpty(aadharNo)) {
-                showDialog(getString(R.string.enter_your_aadhar_number));
-                return;
-            }
-            if (aadharNo.length() != 12) {
-                showDialog(getString(R.string.aadhar_number_error));
-                return;
-            }
+                ///showDialog(getString(R.string.enter_your_aadhar_number));
+                isAdharValid = false;
+                isAdharNoValid = false;
+            } else if (aadharNo.length() != 12) {
+                //showDialog(getString(R.string.aadhar_number_error));
+                isAdharValid =false;
+                isAdharNoValid =false;
+            } else {
+                if (TextUtils.isEmpty(editAdreesViewModel.aadharFrontImageUrl.getValue())) {
+                //showDialog(getString(R.string.aadhar_front_image_required));
+                binding.aadharFrontLayoutField.setBackground(getResources().getDrawable(R.drawable.error_image_border));
+                isAdharValid =false;
+                isAdharFrontImageValid =false;
+                }
+                    if (TextUtils.isEmpty(editAdreesViewModel.aadharBackImageUrl.getValue())) {
+                    //showDialog(getString(R.string.aadhar_back_image_required));
+                    binding.aadharBackLayoutField.setBackground(getResources().getDrawable(R.drawable.error_image_border));
+                    isAdharBackImageValid =false;
 
-            if (TextUtils.isEmpty(aadharFrontImageUrl)) {
-                showDialog(getString(R.string.aadhar_front_image_required));
-                return;
+                    isAdharValid =false;
+                }
             }
-            if (TextUtils.isEmpty(aadharBackImageUrl)) {
-                showDialog(getString(R.string.aadhar_back_image_required));
-                return;
-            }
-            String panCardNo = Objects.requireNonNull(tvPANNumber.getText()).toString().trim();
+            String panCardNo = Objects.requireNonNull(binding.panNumber.getText()).toString().trim();
             panCardNo = panCardNo.toUpperCase();
             if (TextUtils.isEmpty(panCardNo)) {
-                showDialog(getString(R.string.enter_your_pan_number));
-                return;
-            }
-            boolean data = Utils.isValidPanCardNo(panCardNo);
-            if (!data) {
-                showDialog(getString(R.string.invalid_PAN));
-                return;
-            }
-            if (TextUtils.isEmpty(panCardImageUrl)) {
-                showDialog(getString(R.string.pancard_image_required));
-                return;
+                //showDialog(getString(R.string.enter_your_pan_number));
+                isPanValid =false;
+            } else {
+                boolean data = Utils.isValidPanCardNo(panCardNo);
+                if (!data) {
+                   // showDialog(getString(R.string.invalid_PAN));
+                    isPanValid = false;
+                } else        if (TextUtils.isEmpty(editAdreesViewModel.panCardImageUrl.getValue())) {
+                   // showDialog(getString(R.string.pancard_image_required));
+                    binding.panCardLayoutField.setBackground(getResources().getDrawable(R.drawable.error_image_border));
+
+                    isPanValid = false;
+                }
             }
 
-            String streetAddress = Objects.requireNonNull(tvStreetAddress.getText()).toString().trim();
+            if( !isPanValid && !isAdharValid && !isShopActValid) {
+                //showDialog("Please Enter any one KYC Document Number");
+                if(!isPanValid) {
+                    editAdreesViewModel.errorPanNumberMutableLiveData.setValue("Please Enter any one KYC Document Number");
+                }
+                if(!isAdharValid){
+                    if(!isAdharNoValid) {
+                        editAdreesViewModel.errorAadharNoMutableLiveData.setValue("Please Enter any one KYC Document Number");
+                    }
+                }
+                if(!isShopActValid){
+                    editAdreesViewModel.errorShopActStringMutableLiveData.setValue("Please Enter any one KYC Document Number");
+                }
+                validation = false;
+
+            } else {
+                editAdreesViewModel.errorShopActStringMutableLiveData.setValue(null);
+                editAdreesViewModel.errorAadharNoMutableLiveData.setValue(null);
+                editAdreesViewModel.errorPanNumberMutableLiveData.setValue(null);
+
+            }
+
+            String shopName = Objects.requireNonNull(binding.shopName.getText()).toString().trim();
+            if (TextUtils.isEmpty(shopName)) {
+                editAdreesViewModel.errorShopNameStringMutableLiveData.setValue(getString(R.string.shop_name_required));
+                //showDialog(getString(R.string.shop_name_required));
+                validation =false;
+            }
+
+            if (TextUtils.isEmpty(editAdreesViewModel.shopImageUrl.getValue())) {
+                //showDialog(getString(R.string.shop_image_required));
+                binding.shopImageLayoutField.setBackground(getResources().getDrawable(R.drawable.error_image_border));
+                validation =false;
+            }
+
+            String shopNO = Objects.requireNonNull(binding.shopNo.getText()).toString().trim();
+            if (TextUtils.isEmpty(shopNO)) {
+                //showDialog(getString(R.string.shop_no_required));
+                editAdreesViewModel.errorShopNoStringMutableLiveData.setValue(getString(R.string.shop_no_required));
+                validation =false;
+            }
+
+            String deliveryRadius = Objects.requireNonNull(binding.deliveryRadius.getText()).toString().trim();
+            if (TextUtils.isEmpty(deliveryRadius)) {
+                //showDialog(getString(R.string.delivery_radius_required));
+                editAdreesViewModel.errorgstDeliveryRadiusMutableLiveData.setValue(getString(R.string.delivery_radius_required));
+
+                validation =false;
+            } else if (deliveryRadius.equals("0")) {
+                //showDialog(getString(R.string.delivery_radius_required));
+                editAdreesViewModel.errorgstDeliveryRadiusMutableLiveData.setValue(getString(R.string.delivery_radius_required));
+
+                validation =false;
+            }
+
+            String deliveryCharges = Objects.requireNonNull(binding.deliveryCharges.getText()).toString().trim();
+            if (TextUtils.isEmpty(deliveryCharges)) {
+               // showDialog(getString(R.string.delivery_charges_required));
+                editAdreesViewModel.errorgstDeliveryChargesMutableLiveData.setValue(getString(R.string.delivery_charges_required));
+
+                validation =false;
+            }
+
+            String minimumOrder = Objects.requireNonNull(binding.minimumOrder.getText()).toString().trim();
+            if (TextUtils.isEmpty(minimumOrder)) {
+                editAdreesViewModel.errorgstMinimumOrderMutableLiveData.setValue(getString(R.string.minimum_charges_required));
+                validation =false;
+            }
+
+            String openingTime = Objects.requireNonNull(binding.openTime.getText()).toString().trim();
+            if (TextUtils.isEmpty(openingTime)) {
+               // showDialog(getString(R.string.opening_time_required));
+                editAdreesViewModel.errorgstOpenTimeMutableLiveData.setValue(getString(R.string.opening_time_required));
+                validation =false;
+            }
+
+            String closingTime = Objects.requireNonNull(binding.closeTime.getText()).toString().trim();
+            if (TextUtils.isEmpty(closingTime)) {
+//                showDialog(getString(R.string.closing_time_required));
+                editAdreesViewModel.errorgstCloseTimeMutableLiveData.setValue(getString(R.string.closing_time_required));
+
+                validation =false;
+            }
+
+            String deliveryDaysBeforeTime = Objects.requireNonNull(binding.deliveryDaysBeforeTime.getText()).toString().trim();
+            if (TextUtils.isEmpty(deliveryDaysBeforeTime)) {
+//                showDialog(getString(R.string.delivery_days_before_time));
+                editAdreesViewModel.errorgstBeforeCloseMutableLiveData.setValue(getString(R.string.delivery_days_before_time));
+
+                validation =false;
+            }
+
+
+            String deliveryDaysAfterTime = Objects.requireNonNull(binding.deliveryDaysAfterTime.getText()).toString().trim();
+            if (TextUtils.isEmpty(deliveryDaysAfterTime)) {
+//                showDialog(getString(R.string.delivery_days_after_time));
+                editAdreesViewModel.errorgstsfterCloseMutableLiveData.setValue(getString(R.string.delivery_days_after_time));
+
+                validation =false;
+            }
+            String streetAddress = Objects.requireNonNull(binding.streetAddress.getText()).toString().trim();
             if (TextUtils.isEmpty(streetAddress)) {
-                showDialog(getString(R.string.street_address_required));
-                return;
+//                showDialog(getString(R.string.street_address_required));
+                editAdreesViewModel.errorStreetAdressMutableLiveData.setValue(getString(R.string.street_address_required));
+
+                validation =false;
             }
 
-            String city = Objects.requireNonNull(tvCity.getText()).toString().trim();
+            String city = Objects.requireNonNull(binding.city.getText()).toString().trim();
             if (TextUtils.isEmpty(city)) {
-                showDialog(getString(R.string.city_required));
-                return;
+//                showDialog(getString(R.string.city_required));
+                editAdreesViewModel.errorCityMutableLiveData.setValue(getString(R.string.city_required));
+
+                validation =false;
             }
         } else {
-            String streetAddress = Objects.requireNonNull(tvStreetAddress.getText()).toString().trim();
+            String streetAddress = Objects.requireNonNull(binding.streetAddress.getText()).toString().trim();
             if (TextUtils.isEmpty(streetAddress)) {
-                showDialog(getString(R.string.street_address_required));
-                return;
+//                showDialog(getString(R.string.street_address_required));
+                editAdreesViewModel.errorStreetAdressMutableLiveData.setValue(getString(R.string.street_address_required));
+
+                validation =false;
             }
 
-            String city = Objects.requireNonNull(tvCity.getText()).toString().trim();
+            String city = Objects.requireNonNull(binding.city.getText()).toString().trim();
             if (TextUtils.isEmpty(city)) {
-                showDialog(getString(R.string.city_required));
-                return;
+//                showDialog(getString(R.string.city_required));
+                editAdreesViewModel.errorCityMutableLiveData.setValue(getString(R.string.city_required));
+
+                validation =false;
             }
 
-            String state = Objects.requireNonNull(tvState.getText()).toString().trim();
+            String state = Objects.requireNonNull(binding.state.getText()).toString().trim();
             if (TextUtils.isEmpty(state)) {
-                showDialog(getString(R.string.state_address_required));
-                return;
+//                showDialog(getString(R.string.state_address_required));
+                editAdreesViewModel.errorStateMutableLiveData.setValue(getString(R.string.state_address_required));
+
+                validation =false;
             }
         }
 
-        String zipCode = Objects.requireNonNull(tvPinCode.getText()).toString().trim();
+        String zipCode = Objects.requireNonNull(binding.pinCode.getText()).toString().trim();
         if (TextUtils.isEmpty(zipCode)) {
-            showDialog(getString(R.string.pin_code_required));
-            return;
-        }
-        if(zipCode.length() != 6 || !Utils.isValidPinCode(zipCode)) {
-            showDialog(getString(R.string.invalid_pin_code));
-            return;
+//            showDialog(getString(R.string.pin_code_required));
+            editAdreesViewModel.errorPinCodeMutableLiveData.setValue(getString(R.string.pin_code_required));
+
+            validation = false;
+        } else  if(zipCode.length() != 6 || !Utils.isValidPinCode(zipCode)) {
+//            showDialog(getString(R.string.invalid_pin_code));
+            editAdreesViewModel.errorPinCodeMutableLiveData.setValue(getString(R.string.invalid_pin_code));
+
+            validation =false;
         }
         if(!Utils.isNetworkConnected(requireActivity())) {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
-            return;
+            validation =false;
         }
-        progressDialog.show();
-        if (myAddress.getId() == -1) {
-            getAddressData();
-            ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
-            profileService.addAddress(myAddress.getShopACT(), myAddress.getMinimumOrder() ,myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
-                    myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
-                    myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
-                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, aadharNo, myAddress.getDeliveryCharges(),
-                    myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime()).enqueue(new Callback<AddressListResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
-                    if (response.isSuccessful()) {
-                        AddressListResponse data = response.body();
-                        if (data != null) {
-                            if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                showDialog(getString(R.string.address_is_added), pObject -> {
-                                    List<AddressResponse> addressesList = data.getResponse();
-                                    int size = addressesList.size();
-                                    if (size > 0) {
-                                        AddressResponse lastAddressDetails = addressesList.get(size - 1);
-                                        MyProfile.getInstance().setPrimaryAddressId(lastAddressDetails.getId().toString());
-                                        MyProfile.getInstance().setAddressResponses(data.getResponse());
-                                        if (isAddNewAddress) {
-                                            gotoCustomerHomeScreen();
+
+        if(validation) {
+            progressDialog.show();
+            if (myAddress.getId() == -1) {
+                getAddressData();
+                ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
+                profileService.addAddress(myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
+                        myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
+                        myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
+                        myAddress.getDeliveryRadius(), Utils.CLIENT_ID, aadharNo, myAddress.getDeliveryCharges(),
+                        myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime()).enqueue(new Callback<AddressListResponse>() {
+                    @Override
+                    public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
+                        if (response.isSuccessful()) {
+                            AddressListResponse data = response.body();
+                            if (data != null) {
+                                if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                    showDialog(getString(R.string.address_is_added), pObject -> {
+                                        List<AddressResponse> addressesList = data.getResponse();
+                                        int size = addressesList.size();
+                                        if (size > 0) {
+                                            AddressResponse lastAddressDetails = addressesList.get(size - 1);
+                                            MyProfile.getInstance().setPrimaryAddressId(lastAddressDetails.getId().toString());
+                                            MyProfile.getInstance().setAddressResponses(data.getResponse());
+                                            if (isAddNewAddress) {
+                                                gotoCustomerHomeScreen();
+                                            }
                                         }
-                                    }
-                                    Objects.requireNonNull(requireActivity()).onBackPressed();
-                                });
+                                        Objects.requireNonNull(requireActivity()).onBackPressed();
+                                    });
+                                } else {
+                                    myAddress = null;
+                                    showDialog("", data.getMsg());
+                                }
                             } else {
-                                myAddress = null;
-                                showDialog("", data.getMsg());
+                                showDialog(getString(R.string.no_information_available));
                             }
-                        } else {
-                            showDialog(getString(R.string.no_information_available));
                         }
+                        progressDialog.dismiss();
                     }
-                    progressDialog.dismiss();
-                }
 
-                @Override
-                public void onFailure(@NotNull Call<AddressListResponse> call, @NotNull Throwable t) {
-                    if(t instanceof SocketTimeoutException){
-                        showDialog("", getString(R.string.network_slow));
-                    } else {
-                        showDialog("", t.getMessage());
+                    @Override
+                    public void onFailure(@NotNull Call<AddressListResponse> call, @NotNull Throwable t) {
+                        if (t instanceof SocketTimeoutException) {
+                            showDialog("", getString(R.string.network_slow));
+                        } else {
+                            showDialog("", t.getMessage());
+                        }
+                        progressDialog.dismiss();
                     }
-                    progressDialog.dismiss();
-                }
-            });
-        } else {
-            getAddressData();
-            ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
-            profileService.updateAddress( myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
-                    myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
-                    myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
-                    myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), aadharNo, myAddress.getDeliveryCharges(),
-                    myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(), myAddress.getId().toString()).enqueue(new Callback<AddressListResponse>() {
-                @Override
-                public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
-                    if (response.isSuccessful()) {
-                        AddressListResponse data = response.body();
-                        if (data != null) {
-                            if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                showDialog(data.getMsg(), pObject -> {
-                                    MyProfile.getInstance().setAddressResponses(data.getResponse());
-                                    Objects.requireNonNull(requireActivity()).onBackPressed();
-                                });
+                });
+            } else {
+                getAddressData();
+                ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
+                profileService.updateAddress(myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
+                        myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
+                        myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
+                        myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), aadharNo, myAddress.getDeliveryCharges(),
+                        myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(), myAddress.getId().toString()).enqueue(new Callback<AddressListResponse>() {
+                    @Override
+                    public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
+                        if (response.isSuccessful()) {
+                            AddressListResponse data = response.body();
+                            if (data != null) {
+                                if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                    showDialog(data.getMsg(), pObject -> {
+                                        MyProfile.getInstance().setAddressResponses(data.getResponse());
+                                        Objects.requireNonNull(requireActivity()).onBackPressed();
+                                    });
+                                } else {
+                                    showDialog(data.getMsg());
+                                }
                             } else {
-                                showDialog(data.getMsg());
+                                showDialog(getString(R.string.no_information_available));
                             }
-                        } else {
-                            showDialog(getString(R.string.no_information_available));
                         }
+                        progressDialog.dismiss();
                     }
-                    progressDialog.dismiss();
-                }
 
-                @Override
-                public void onFailure(@NotNull Call<AddressListResponse> call, @NotNull Throwable t) {
-                    if(t instanceof SocketTimeoutException){
-                        showDialog("", getString(R.string.network_slow));
-                    } else {
-                        showDialog("", t.getMessage());
+                    @Override
+                    public void onFailure(@NotNull Call<AddressListResponse> call, @NotNull Throwable t) {
+                        if (t instanceof SocketTimeoutException) {
+                            showDialog("", getString(R.string.network_slow));
+                        } else {
+                            showDialog("", t.getMessage());
+                        }
+                        progressDialog.dismiss();
                     }
-                    progressDialog.dismiss();
-                }
-            });
-        }
+                });
+            }
+        } else
+            {
+               return;
+            }
     }
-
     private void gotoCustomerHomeScreen() {
         MyProfile myProfile = MyProfile.getInstance();
         Intent intent;
@@ -816,32 +1040,30 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             }
         }
     }
-
     private void getAddressData() {
         myAddress.setLongitude(longitude);
         myAddress.setLatitude(latitude);
-        myAddress.setShopName(Objects.requireNonNull(tvShopName.getText()).toString());
-        myAddress.setPan_no(Objects.requireNonNull(tvPANNumber.getText()).toString());
-        myAddress.setGstInNo(Objects.requireNonNull(tvGSTNumber.getText()).toString());
-        myAddress.setShopACT(Objects.requireNonNull(tvShopAct.getText()).toString());
-        myAddress.setStore_number(Objects.requireNonNull(tvShopNO.getText()).toString());
-        myAddress.setAddress(Objects.requireNonNull(tvStreetAddress.getText()).toString());
-        myAddress.setCity(Objects.requireNonNull(tvCity.getText()).toString());
-        myAddress.setState(Objects.requireNonNull(tvState.getText()).toString());
-        myAddress.setDeliveryRadius(Objects.requireNonNull(tvDeliveryRadius.getText()).toString());
-        myAddress.setPinCode(Objects.requireNonNull(tvPinCode.getText()).toString());
+        myAddress.setShopName(Objects.requireNonNull(binding.shopName.getText()).toString());
+        myAddress.setPan_no(Objects.requireNonNull(binding.panNumber.getText()).toString());
+        myAddress.setGstInNo(Objects.requireNonNull(binding.gstNumber.getText()).toString());
+        myAddress.setShopACT(Objects.requireNonNull(binding.shopAct.getText()).toString());
+        myAddress.setStore_number(Objects.requireNonNull(binding.shopNo.getText()).toString());
+        myAddress.setAddress(Objects.requireNonNull(binding.streetAddress.getText()).toString());
+        myAddress.setCity(Objects.requireNonNull(binding.city.getText()).toString());
+        myAddress.setState(Objects.requireNonNull(binding.state.getText()).toString());
+        myAddress.setDeliveryRadius(Objects.requireNonNull(binding.deliveryRadius.getText()).toString());
+        myAddress.setPinCode(Objects.requireNonNull(binding.pinCode.getText()).toString());
 
-        myAddress.setDeliveryCharges(Objects.requireNonNull(etvDeliveryCharges.getText()).toString());
-        myAddress.setMinimumOrder(Objects.requireNonNull(etvMinimumOrder.getText()).toString());
+        myAddress.setDeliveryCharges(Objects.requireNonNull(binding.deliveryCharges.getText()).toString());
+        myAddress.setMinimumOrder(Objects.requireNonNull(binding.minimumOrder.getText()).toString());
 
-        myAddress.setOpeningTime(Objects.requireNonNull(tvOpeningTIme.getText()).toString());
-        myAddress.setClosingTime(Objects.requireNonNull(tvClosingTIme.getText()).toString());
+        myAddress.setOpeningTime(Objects.requireNonNull(binding.openTime.getText()).toString());
+        myAddress.setClosingTime(Objects.requireNonNull(binding.closeTime.getText()).toString());
 
-        myAddress.setDeliveryDaysAfterTime(Objects.requireNonNull(tvDeliveryDaysAfterTime.getText()).toString());
-        myAddress.setDeliveryDaysBeforeTime(Objects.requireNonNull(tvDeliveryDaysBeforeTime.getText()).toString());
+        myAddress.setDeliveryDaysAfterTime(Objects.requireNonNull(binding.deliveryDaysAfterTime.getText()).toString());
+        myAddress.setDeliveryDaysBeforeTime(Objects.requireNonNull(binding.deliveryDaysBeforeTime.getText()).toString());
 
     }
-
     public void updateLocationDetails(LatLng latLng) {
         latitude = latLng.latitude;
         longitude = latLng.longitude;

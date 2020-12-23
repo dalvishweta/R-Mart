@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.profile.model.MyProfile;
-import com.rmart.profile.viewmodels.AddressViewModel;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressViewHolder> {
     private View.OnClickListener listener;

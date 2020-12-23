@@ -1,9 +1,8 @@
 package com.rmart.utilits.pojos;
 
-import android.net.Uri;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rmart.utilits.BaseResponse;
 
 import java.io.Serializable;
 

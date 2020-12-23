@@ -5,20 +5,17 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerProductDetailsModel;
-import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
 import com.rmart.mapview.MapsFragment;
 import com.rmart.profile.model.MyProfile;
-import com.rmart.profile.viewmodels.AddressViewModel;
 import com.rmart.utilits.pojos.AddressResponse;
 
 public class MyProfileActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
@@ -37,7 +34,6 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
             isAddNewAddress = extras.getBoolean("IsNewAddress", false);
         }
 
-        new ViewModelProvider(this).get(AddressViewModel.class);
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
             String primaryAddressId = myProfile.getPrimaryAddressId();
@@ -103,7 +99,10 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
     @Override
     public void getMapGeoCoordinates(LatLng latLng) {
         editAddressFragment.updateLocationDetails(latLng);
+
+
     }
+
 
     @Override
     public void showBadge(boolean b) {

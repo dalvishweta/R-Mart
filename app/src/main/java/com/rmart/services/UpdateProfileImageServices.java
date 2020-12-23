@@ -16,7 +16,7 @@ import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.services.ProfileService;
 
 import org.jetbrains.annotations.NotNull;

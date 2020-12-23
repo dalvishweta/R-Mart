@@ -33,9 +33,6 @@ import com.rmart.utilits.custom_views.CustomNetworkImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Satya Seshu on 10/09/20.
- */
 public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProductTypesAdapter.ViewHolder> implements Filterable {
 
     private final LayoutInflater layoutInflater;
@@ -100,30 +97,35 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
 
         List<CustomerProductsDetailsUnitModel>  unitsList = dataObject.getUnits();
         if(unitsList != null && !unitsList.isEmpty()) {
-            CustomerProductsDetailsUnitModel unitModelDetails = unitsList.get(0);
-            String quantityDetails = String.format("%s %s", unitModelDetails.getUnitNumber(), unitModelDetails.getShortUnitMeasure());
-            String sellingPrice = String.format("Rs.%s", Utils.roundOffDoubleValue(unitModelDetails.getSellingPrice(), "0.00"));
-            String unitPriceDetails = Utils.roundOffDoubleValue(unitModelDetails.getUnitPrice(), "0.0");
-            int productDiscount = unitModelDetails.getProductDiscount();
-            String productDiscountDetails = productDiscount + "% \n Off";
-            holder.tvProductDiscountField.setText(productDiscountDetails);
 
-            String quantityPriceDetails = String.format("%s  %s  %s", quantityDetails, sellingPrice, unitPriceDetails);
-            SpannableString quantityPriceDetailsSpannable = new SpannableString(quantityPriceDetails);
-            quantityPriceDetailsSpannable.setSpan(new StyleSpan(Typeface.BOLD), quantityPriceDetails.indexOf(sellingPrice),
-                    quantityPriceDetails.indexOf(sellingPrice) + sellingPrice.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            for (int i = unitsList.size()-1;i>=0;i-- ) {
 
-            quantityPriceDetailsSpannable.setSpan(new StrikethroughSpan(), quantityPriceDetails.indexOf(unitPriceDetails),
-                    quantityPriceDetails.indexOf(unitPriceDetails) + unitPriceDetails.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.tvQuantityPriceDetailsField.setText(quantityPriceDetailsSpannable);
+                CustomerProductsDetailsUnitModel unitModelDetails = unitsList.get(i);
+                String quantityDetails = String.format("%s %s", unitModelDetails.getUnitNumber(), unitModelDetails.getShortUnitMeasure());
+                String sellingPrice = String.format("Rs.%s", Utils.roundOffDoubleValue(unitModelDetails.getSellingPrice(), "0.00"));
+                String unitPriceDetails = Utils.roundOffDoubleValue(unitModelDetails.getUnitPrice(), "0.00");
+
+                int productDiscount = unitModelDetails.getProductDiscount();
+                String productDiscountDetails = productDiscount + "% \n Off";
+                holder.tvProductDiscountField.setText(productDiscountDetails);
+                String quantityPriceDetails = String.format("%s  %s  %s", quantityDetails, sellingPrice, unitPriceDetails);
+                SpannableString quantityPriceDetailsSpannable = new SpannableString(quantityPriceDetails);
+                quantityPriceDetailsSpannable.setSpan(new StyleSpan(Typeface.BOLD), quantityPriceDetails.indexOf(sellingPrice),
+                        quantityPriceDetails.indexOf(sellingPrice) + sellingPrice.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                quantityPriceDetailsSpannable.setSpan(new StrikethroughSpan(), quantityPriceDetails.indexOf(unitPriceDetails),
+                        quantityPriceDetails.indexOf(unitPriceDetails) + unitPriceDetails.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                holder.tvQuantityPriceDetailsField.setText(quantityPriceDetailsSpannable);
+                if(productDiscount>0){
+                    break;
+                }
+            }
         }
     }
-
     @Override
     public int getItemCount() {
-        return productsList.size();
+        return filteredListData.size();
     }
-
     @Override
     public Filter getFilter() {
         if (myFilter == null) {
@@ -131,9 +133,7 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
         }
         return myFilter;
     }
-
     private class MyFilter extends Filter {
-
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
@@ -158,14 +158,12 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-
         CustomNetworkImageView ivProductImageField;
         TextView tvProductNameField;
         TextView tvProductDiscountField;
         TextView tvQuantityPriceDetailsField;
         LinearLayout progressBarLayout;
         View itemView;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView;
@@ -174,7 +172,6 @@ public class VendorProductTypesAdapter extends RecyclerView.Adapter<VendorProduc
             tvProductDiscountField = itemView.findViewById(R.id.tv_product_discount_field);
             tvQuantityPriceDetailsField = itemView.findViewById(R.id.tv_quantity_price_details_field);
             progressBarLayout = itemView.findViewById(R.id.progress_layout_field);
-
             itemView.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
                 CustomerProductDetailsModel selectedProductDetails = filteredListData.get(tag);

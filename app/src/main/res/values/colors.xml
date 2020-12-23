@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#1EB138</color>
-    <color name="colorPrimaryDark">#1EB138</color>
+    <color name="colorPrimaryDark">#416C1D</color>
     <color name="colorAccent">#FF6161</color>
     <color name="black">#333333</color>
     <color name="button_bg">#FF9702</color>
@@ -16,6 +16,7 @@
     <color name="item_sub_title_color">#6E6E6E</color>
     <color name="item_bg">#D3F2F8</color>
     <color name="item_bg_footer">#F9E4E4</color>
+    <color name="logoPrimary">#9C27B0</color>
     <color name="item_product_bg">#F9F9F9</color>
     <color name="item_product_border">#E1E1E1</color>
     <color name="inventory_header_bg">#E5E5E5</color>

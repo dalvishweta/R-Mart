@@ -22,14 +22,13 @@ import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.VendorProductTypesAdapter;
 import com.rmart.customer.models.CustomerProductDetailsModel;
-import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.CommonUtils;
 import com.rmart.utilits.GridSpacesItemDecoration;
 import com.rmart.utilits.LoggerInfo;
-import com.rmart.utilits.RecyclerTouchListener;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.services.CustomerProductsService;
@@ -238,7 +237,9 @@ public class VendorSameProductsListScreen extends BaseFragment {
                 @Override
                 public void onResponse(@NotNull Call<VendorProductDetailsResponse> call, @NotNull Response<VendorProductDetailsResponse> response) {
                     progressDialog.dismiss();
+                    if(currentPage == 0){
                     resetVendorProductDetails();
+                    }
                     if (response.isSuccessful()) {
                         VendorProductDetailsResponse body = response.body();
                         if (body != null) {
@@ -246,6 +247,7 @@ public class VendorSameProductsListScreen extends BaseFragment {
                                 List<CustomerProductDetailsModel> productDataList = body.getVendorProductDataResponse().getProductsListData();
                                 if (productDataList != null && !productDataList.isEmpty()) {
                                     productsList.addAll(productDataList);
+
                                 }
                                 updateAdapter(body.getMsg());
                             } else {
@@ -257,6 +259,7 @@ public class VendorSameProductsListScreen extends BaseFragment {
                     } else {
                         showDialog(response.message());
                     }
+                    isLoading =false;
                 }
 
                 @Override
@@ -267,9 +270,11 @@ public class VendorSameProductsListScreen extends BaseFragment {
                         showDialog("", t.getMessage());
                     }
                     progressDialog.dismiss();
+                    isLoading =false;
                 }
             });
         } else {
+            isLoading =false;
             showCloseDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
     }

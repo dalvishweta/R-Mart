@@ -493,6 +493,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                     if (uri != null) {
                         InputStream imageStream = requireActivity().getContentResolver().openInputStream(uri);
                         bitmap = BitmapFactory.decodeStream(imageStream);
+                        bitmap = Bitmap.createScaledBitmap(bitmap, 900, 900, true);
+
                         imageURLResponse.setImageRawData(getEncodedImage(bitmap));
                         lUpdateImagesList.add(imageURLResponse);
                     }

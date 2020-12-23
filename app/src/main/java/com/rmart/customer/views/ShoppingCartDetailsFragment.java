@@ -23,7 +23,7 @@ import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.ConfirmOrdersAdapter;
 import com.rmart.customer.models.AddProductToWishListResponse;
 import com.rmart.customer.models.ContentModel;
-import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductInCartDetailsModel;
 import com.rmart.customer.models.ProductInCartResponse;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
@@ -33,7 +33,7 @@ import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;

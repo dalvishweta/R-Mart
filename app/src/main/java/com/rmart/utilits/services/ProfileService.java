@@ -2,7 +2,7 @@ package com.rmart.utilits.services;
 
 import com.rmart.BuildConfig;
 import com.rmart.utilits.pojos.AddressListResponse;
-import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.pojos.LoginResponse;
 
 import retrofit2.Call;

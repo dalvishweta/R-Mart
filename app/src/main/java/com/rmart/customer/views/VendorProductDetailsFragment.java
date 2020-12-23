@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.VolleyError;
@@ -33,7 +32,7 @@ import com.rmart.customer.adapters.VendorProductDetailsAdapter;
 import com.rmart.customer.models.AddShopToWishListResponse;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductDetailsModel;
-import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.profile.model.MyProfile;
@@ -42,7 +41,7 @@ import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.custom_views.CustomNetworkImageView;
-import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -59,13 +58,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class VendorProductDetailsFragment extends BaseFragment {
-
     private static final String ARG_PARAM1 = "param1";
-
     public VendorProductDetailsFragment() {
-        // Required empty public constructor
     }
-
     private AppCompatEditText etProductsSearchField;
     private int currentPage = 0;
     private String searchProductName = "";
@@ -81,7 +76,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
     private boolean isWishListShop = false;
     private LinearLayout progressLayoutField;
     private ImageView ivSearchField;
-
     public static VendorProductDetailsFragment getInstance(CustomerProductsShopDetailsModel productsShopDetailsModel) {
         VendorProductDetailsFragment fragment = new VendorProductDetailsFragment();
         Bundle args = new Bundle();
@@ -89,7 +83,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +90,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
             productsShopDetailsModel = (CustomerProductsShopDetailsModel) getArguments().getSerializable(ARG_PARAM1);
         }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -105,7 +97,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
         LoggerInfo.printLog("Fragment", "VendorProductDetailsFragment");
         return inflater.inflate(R.layout.fragment_vendor_product_details, container, false);
     }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -113,25 +104,21 @@ public class VendorProductDetailsFragment extends BaseFragment {
             onCustomerHomeInteractionListener = (OnCustomerHomeInteractionListener) context;
         }
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loadUIComponents(view);
         CommonUtils.dismissAllDialogs(requireActivity().getSupportFragmentManager());
     }
-
     @Override
     public void onResume() {
         super.onResume();
         updateToolBar();
     }
-
     public void updateToolBar() {
         requireActivity().setTitle(productsShopDetailsModel.getShopName());
         ((CustomerHomeActivity) (requireActivity())).showCartIcon();
     }
-
     private void loadUIComponents(View view) {
         RecyclerView productsListField = view.findViewById(R.id.products_list_field);
         productsListField.setHasFixedSize(false);
@@ -185,21 +172,17 @@ public class VendorProductDetailsFragment extends BaseFragment {
         view.findViewById(R.id.iv_message_field).setOnClickListener(v -> messageSelected());
         etProductsSearchField.setText("");
     }
-
     private void callSelected() {
         Utils.openDialPad(requireActivity(), productsShopDetailsModel.getShopMobileNo());
     }
-
     private void messageSelected() {
         Utils.openGmailWindow(requireActivity(), productsShopDetailsModel.getEmailId());
     }
-
     private void resetVendorProductDetails() {
         vendorProductsList.clear();
         vendorProductDetailsAdapter.updateItems(vendorProductsList);
         vendorProductDetailsAdapter.notifyDataSetChanged();
     }
-
     private final CallBackInterface callBackListener = pObject -> {
         if (Utils.isNetworkConnected(requireActivity())) {
             if (pObject instanceof CustomerProductDetailsModel) {
@@ -222,7 +205,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
     };
-
     private void getVendorProductDetails() {
         if (Utils.isNetworkConnected(requireActivity())) {
             //productCategoryId = -1;
@@ -278,7 +260,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
     }
-
     private void showCloseDialog(String title, String message) {
         progressLayoutField.setVisibility(View.GONE);
         Activity activity = getActivity();
@@ -288,7 +269,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
             }
         }
     }
-
     private void updateAdapter(List<CustomerProductDetailsModel> productDataList) {
         if(productDataList != null && !productDataList.isEmpty()) {
             LinkedHashMap<ProductBaseModel, List<CustomerProductDetailsModel>> linkedMapDetails = groupDataIntoHashMap(productDataList);
@@ -304,7 +284,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
         vendorProductDetailsAdapter.updateItems(vendorProductsList);
         vendorProductDetailsAdapter.notifyDataSetChanged();
     }
-
     private LinkedHashMap<ProductBaseModel, List<CustomerProductDetailsModel>> groupDataIntoHashMap(List<CustomerProductDetailsModel> productDataList) {
         LinkedHashMap<ProductBaseModel, List<CustomerProductDetailsModel>> groupedHashMap = new LinkedHashMap<>();
         for(CustomerProductDetailsModel element : productDataList) {
@@ -324,7 +303,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
         }
         return groupedHashMap;
     }
-
     private void updateShopImageUI(String shopImageUrl) {
         if (!TextUtils.isEmpty(shopImageUrl)) {
             progressLayoutField.setVisibility(View.VISIBLE);
@@ -357,7 +335,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
             tvViewAddressField.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black));
         }
     }
-
     private void updateShopDetailsUI() {
         requireActivity().setTitle(productsShopDetailsModel.getShopName());
         Object lShopImageObject = productsShopDetailsModel.getShopImage();
@@ -374,7 +351,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
         tvViewAddressField.setText(productsShopDetailsModel.getShopAddress());
         tvPhoneNoField.setText(productsShopDetailsModel.getShopMobileNo());
     }
-
     private void performSearch() {
         searchProductName = Objects.requireNonNull(etProductsSearchField.getText()).toString().trim();
         if (searchProductName.length() == 0) {
@@ -394,7 +370,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
             vendorProductDetailsAdapter.getFilter().filter(searchProductName);
         }
     }
-
     private void deleteShopFromWishList() {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
@@ -442,7 +417,6 @@ public class VendorProductDetailsFragment extends BaseFragment {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
     }
-
     private void addShopFromWishList() {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();

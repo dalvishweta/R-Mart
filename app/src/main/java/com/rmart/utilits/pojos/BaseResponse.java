@@ -31,3 +31,4 @@ public class BaseResponse implements Serializable {
         this.msg = msg;
     }
 }
+
