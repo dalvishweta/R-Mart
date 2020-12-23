@@ -3,17 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/searchLayout"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="5dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
+
         android:layout_marginBottom="5dp"
         android:background="@drawable/grey_rounded_borders_bg"
         android:minHeight="40dp">
@@ -22,9 +23,8 @@
             android:id="@+id/iv_search_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:layout_marginEnd="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/search" />
 
@@ -32,25 +32,81 @@
             android:id="@+id/edt_product_search_field"
             style="@style/text_style_medium_normal"
             android:layout_width="match_parent"
+            android:layout_toRightOf="@+id/iv_search_field"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_toStartOf="@id/iv_search_field"
             android:background="@android:color/transparent"
             android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"
             android:hint="@string/search_for_shop"
             android:inputType="textCapSentences"
             android:lines="1"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
+            android:layout_marginLeft="5dp"
             android:textColor="@color/black"
-            android:textColorHint="@color/blue_color"
-            android:textSize="16sp" />
+            android:textColorHint="@color/gray"
+            android:textSize="16sp"
+            android:layout_marginRight="10dp"
+             />
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/erorolayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_above="@id/changeAddressLayout"
+        android:layout_below="@id/searchLayout">
+        <ImageView
+            android:id="@+id/app_logo"
+            android:layout_width="170dp"
+            android:layout_gravity="center"
+            android:layout_height="170dp"
+            android:scaleType="fitXY"
+            android:layout_marginTop="80dp"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/slwo_internet_icon1"
+            />
+        <TextView
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/buy_now_color"
+            android:gravity="center"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_width="match_parent"
+            android:text="Ooops!"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/errormessage"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="@dimen/text_regular_size"
+            android:textColor="@color/item_sub_title_color"
+            android:fontFamily="@font/montserrat_regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_tryagain"
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:paddingLeft="30sp"
+            android:paddingRight="30sp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/submit_button_bg"
+            android:layout_height="@dimen/field_height"
+            android:textSize="@dimen/text_regular_size"
+            android:layout_marginTop="20dp"
+            android:text="@string/try_again" />
+
+    </LinearLayout>
     <RelativeLayout
         android:id="@+id/map_or_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="visible"
         android:layout_above="@id/changeAddressLayout"
         android:layout_below="@id/searchLayout">
 
@@ -58,15 +114,18 @@
             android:id="@+id/swipe_refresh_layout_field"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp">
+
+            android:layout_marginTop="5dp"
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/products_list_field"
+                android:background="#DADADA"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <RelativeLayout
@@ -92,6 +151,7 @@
         android:layout_alignBottom="@id/map_or_list_view"
         android:layout_centerHorizontal="true"
         android:gravity="center"
+        android:visibility="gone"
         android:orientation="horizontal"
         android:padding="16dp">
 
@@ -126,7 +186,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/grey_color_five"
+        android:background="@color/white"
         android:minHeight="60dp">
 
         <Button
@@ -140,7 +200,9 @@
             android:background="@android:color/transparent"
             android:text="@string/change"
             android:textAllCaps="false"
-            android:textColor="@color/change_text_color" />
+            android:textColor="@color/change_text_color"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp" />
 
         <TextView
             android:id="@+id/tv_showing_results_based_on"
@@ -154,7 +216,9 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:text="@string/showing_results_based_on"
-            android:textColor="@color/grey_color_two" />
+            android:textColor="@color/grey_color_two"
+            android:layout_marginLeft="10dp"
+            android:layout_toLeftOf="@id/btn_change_address_field" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_address_field"
@@ -163,10 +227,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_showing_results_based_on"
             android:layout_marginStart="10dp"
-            android:layout_toStartOf="@id/btn_change_address_field"
             android:gravity="center_vertical"
             android:minHeight="40dp"
             android:paddingStart="5dp"
-            android:paddingEnd="5dp" />
+            android:paddingEnd="5dp"
+            android:layout_toLeftOf="@id/btn_change_address_field"
+            android:layout_marginLeft="10dp" />
     </RelativeLayout>
 </RelativeLayout>

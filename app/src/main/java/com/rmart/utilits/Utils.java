@@ -1,5 +1,7 @@
 package com.rmart.utilits;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,15 +15,21 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.Uri;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import androidx.core.content.FileProvider;
 
 public class Utils {
 
@@ -294,4 +302,36 @@ public class Utils {
         DecimalFormat df = new DecimalFormat("0.00");
         return df.format(input);
     }
+
+    public static void shareImage(Bitmap bm, String fileName,Activity activity,String message) {
+        final String dirPath = Environment.getExternalStorageDirectory().toString() + "/" + fileName ;;
+        try {
+            File file = creatfile("tmp", "scrrenshort", ".png");
+            FileOutputStream fOut = new FileOutputStream(file,false);
+            bm.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+            fOut.flush();
+            fOut.close();
+            SharingHelper.shareImage(file,activity,message);
+        } catch (Exception e) {
+            Toast.makeText(activity,"Point2"+e.toString(),Toast.LENGTH_LONG).show();
+        }
+    }
+    public static File creatfile(String folder, String name, String type) {
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory("fd"), folder);
+        //Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+
+        File file;
+        file = new File(mediaStorageDir.getPath() + File.separator + "" + name +type);
+
+        return file;
+
+
+    }
+
+
 }

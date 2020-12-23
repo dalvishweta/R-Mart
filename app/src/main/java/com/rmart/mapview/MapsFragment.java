@@ -49,10 +49,14 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     private Location currentLocation;
     private String isFrom;
     private OnCustomerHomeInteractionListener mListener;
-
+    private OnLocationUpdateListner onLocationUpdateListner;
     private boolean isMapClickable = false;
     // private MyProfile myProfile;
 
+
+    public void setLocationUpdateListner(OnLocationUpdateListner onLocationUpdateListner) {
+        this.onLocationUpdateListner = onLocationUpdateListner;
+    }
     public static MapsFragment newInstance(boolean isEditable, boolean isClickable, double latitude, double longitude) {
         MapsFragment fragment = new MapsFragment();
         Bundle args = new Bundle();
@@ -225,6 +229,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
         currentLocation.setLatitude(latLng.latitude);
         currentLocation.setLongitude(latLng.longitude);
         mListener.getMapGeoCoordinates(latLng);
+        onLocationUpdateListner.onLocationUpdate(latLng);
     }
 
     @Override
@@ -248,6 +253,7 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             googleMap.addMarker(markerOptions);
             mListener.getMapGeoCoordinates(latLng);
+            onLocationUpdateListner.onLocationUpdate(latLng);
         }
     }
 

@@ -37,6 +37,7 @@ public class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         /*if(!internetConnectionAvailable()) {
             try {
                 AlertDialog.Builder builder =new AlertDialog.Builder(requireActivity());
@@ -56,9 +57,9 @@ public class BaseFragment extends Fragment {
                 Log.d("Exception", "Exception: " + e.getMessage());
             }
         }*/
+
         if(!Utils.isNetworkConnected(requireActivity())) {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text), pObject -> {
-
             });
         }
     }

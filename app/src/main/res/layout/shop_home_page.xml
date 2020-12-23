@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+   >
+    <data>
+        <import type="android.view.View">
+
+        </import>
+        <variable
+            name="result"
+            type="com.rmart.customer.shops.home.model.Results" />
+    </data>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/message"
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:textSize="15dp"
+            android:text="@{result.name}"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:textColor="@color/black"
+            />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fastScrollEnabled="true"
+            android:gravity="start"
+            android:background="#E1E1E1"
+            android:id="@+id/category"
+            android:verticalScrollbarPosition="right"/>
+    </LinearLayout>
+</layout>

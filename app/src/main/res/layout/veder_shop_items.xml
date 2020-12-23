@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <data>
+
+            <variable
+                name="shopdata"
+                type="com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel" />
+
+
+            </data>
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="5dp"
+    android:layout_margin="5dp"
+    app:cardElevation="15dp"
+    android:id="@+id/topview"
+  >
+    <LinearLayout
+        android:orientation="vertical"
+        app:background="@drawable/shop_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+       >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_weight="8"
+            app:imageUrl="@{shopdata}"
+            android:id="@+id/img_designlistlayout"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/imageview"
+                android:layout_width="match_parent"
+                android:scaleType="fitXY"
+                android:layout_height="200dp"
+
+
+                />
+            <ImageView
+                android:id="@+id/selectedgreeting"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/loader_newrelease"
+                android:background="@null"
+                android:elevation="2dp"
+                />
+        </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp"
+
+        android:background="@color/white"
+        android:weightSum="3"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Vishal Kirana Stores"
+                android:text="@{shopdata.shopName}"
+                android:fontFamily="@font/roboto_regular"
+                android:textStyle="bold"
+
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@{shopdata.shopAddress.trim()}"
+                android:hint="Vishal Kirana Stores, Chatrapati Shivaji Maharaj Nagar Gangapur "
+                android:textColor="@color/black"
+
+                android:textSize="12sp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:text='@{"Contact:"+shopdata.shopMobileNo}'
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_weight="2"
+            android:background="@color/white"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_favourite_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="5dp"
+                android:layout_alignParentEnd="true"
+                android:src='@{shopdata.shopWishListStatus==1?@drawable/heart_active:@drawable/heart}'
+                android:padding="5dp"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:layout_below="@+id/iv_favourite_image"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/iv_message_field"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/green_color_rounded_circle"
+                android:contentDescription="@string/app_name"
+                android:padding="4dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/message"
+                android:layout_marginLeft="10dp"
+                 />
+
+            <ImageView
+                android:id="@+id/iv_call_field"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/sky_blue_color_rounded_circle"
+                android:padding="4dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerInside"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/phone" />
+
+            <ImageView
+                android:id="@+id/iv_share_field"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/round_share"
+                android:padding="4dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_baseline_share_24"
+                android:scaleType="centerInside"
+                android:layout_marginTop="10dp"
+             />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
+
+</androidx.cardview.widget.CardView>
+</layout>

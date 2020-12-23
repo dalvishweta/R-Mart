@@ -1,12 +1,14 @@
 package com.rmart.authentication.views;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.http.SslError;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -107,8 +109,24 @@ public class PaymentFragment extends BaseFragment {
 
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError er) {
-                handler.proceed();
+                //handler.proceed();
                 // Ignore SSL certificate errors
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("The Loading Web Page is not SSL certified");
+                builder.setPositiveButton("continue", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handler.proceed();
+                    }
+                });
+                builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handler.cancel();
+                    }
+                });
+                final AlertDialog dialog = builder.create();
+                dialog.show();
             }
 
             public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {

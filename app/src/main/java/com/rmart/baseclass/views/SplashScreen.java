@@ -51,6 +51,10 @@ public class SplashScreen extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
+
+
         setContentView(R.layout.activity_splash_screen);
         /*if (BuildConfig.FLAVOR.equalsIgnoreCase(Utils.CUSTOMER)) {
             ((ImageView)findViewById(R.id.splash_bg)).setImageResource(R.drawable.splashscreen);

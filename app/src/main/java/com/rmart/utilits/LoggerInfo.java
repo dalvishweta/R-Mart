@@ -8,10 +8,10 @@ import android.util.Log;
 public class LoggerInfo {
 
     public static void printLog(String from, Object message) {
-        Log.d("RokadMart", String.format("%s  %s", from, message));
+        //Log.d("RokadMart", String.format("%s  %s", from, message));
     }
 
     public static void errorLog(String from, Object message) {
-        Log.e("RokadMart", "from " + from + " message " + message);
+       // Log.e("RokadMart", "from " + from + " message " + message);
     }
 }

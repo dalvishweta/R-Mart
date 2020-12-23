@@ -30,7 +30,7 @@ import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.APIStockResponse;
 import com.rmart.utilits.pojos.AddressResponse;
-import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.pojos.ImageURLResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 import com.rmart.utilits.pojos.ShowProductResponse;
@@ -43,8 +43,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;

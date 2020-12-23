@@ -13,7 +13,7 @@ import com.rmart.customer.models.CustomerOrderPaymentInfoDetails;
 import com.rmart.customer.models.CustomerOrderPersonalDetails;
 import com.rmart.customer.models.CustomerOrderProductOrderedDetails;
 import com.rmart.customer.models.CustomerOrderedResponseModel;
-import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer_order.adapters.ProductListAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;

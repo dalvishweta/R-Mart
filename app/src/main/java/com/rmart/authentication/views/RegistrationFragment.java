@@ -21,7 +21,6 @@ import com.rmart.R;
 import com.rmart.customer.adapters.CustomSpinnerAdapter;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.BaseResponse;
 import com.rmart.utilits.pojos.RegistrationFeeStructure;
 import com.rmart.utilits.pojos.RegistrationResponse;
 import com.rmart.utilits.services.AuthenticationService;

@@ -1,4 +1,4 @@
-package com.rmart.customer.views;
+package com.rmart.customer.shops.list.fragments;
 
 import android.Manifest;
 import android.content.Context;
@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.core.app.ActivityCompat;
@@ -38,6 +40,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -48,11 +51,13 @@ import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
-import com.rmart.customer.adapters.VendorShopsListAdapter;
+import com.rmart.customer.shops.list.adapters.VendorShopsListAdapterNew;
 import com.rmart.customer.models.AddShopToWishListResponse;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsResponse;
-import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.views.CustomerHomeActivity;
+import com.rmart.customer.views.CustomerHomeFragment;
 import com.rmart.mapview.MyLocation;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.CommonUtils;
@@ -60,7 +65,7 @@ import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.AddressResponse;
-import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -88,7 +93,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private int PAGE_SIZE = 20;
     private int totalShopsCount = 0;
     private String searchShopName = "";
-    private VendorShopsListAdapter vendorShopsListAdapter;
+    private VendorShopsListAdapterNew vendorShopsListAdapter;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private MyProfile myProfile;
     private CustomerProductsShopDetailsModel selectedShopDetails;
@@ -104,8 +109,14 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private LocationManager locationManager;
     private ImageView ivSearchField;
     private Location currentLocation;
-    private ArrayList<AddressResponse> addressList = new ArrayList<>();
+    private TextView errormessage;
+    private RelativeLayout map_or_list_view,changeAddressLayout;
+    private AppCompatButton btnTryAgain;
 
+    LinearLayout erorolayout;
+    private ArrayList<AddressResponse> addressList = new ArrayList<>();
+    RadioGroup mapViewOrListViewRadioGroup;
+    RelativeLayout searchLayout;
     public static VendorShopsListFragment getInstance() {
         return new VendorShopsListFragment();
     }
@@ -137,25 +148,31 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private void loadUIComponents(View view) {
         locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
         myProfile = MyProfile.getInstance();
-
+        map_or_list_view = view.findViewById(R.id.map_or_list_view);
+        changeAddressLayout = view.findViewById(R.id.changeAddressLayout);
+        btnTryAgain = view.findViewById(R.id.btn_tryagain);
+        searchLayout = view.findViewById(R.id.searchLayout);
+        errormessage = view.findViewById(R.id.errormessage);
         RecyclerView vendorShopsListField = view.findViewById(R.id.products_list_field);
         tvAddressField = view.findViewById(R.id.tv_address_field);
+        erorolayout = view.findViewById(R.id.erorolayout);
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
         ivSearchField = view.findViewById(R.id.iv_search_field);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_field);
         swipeRefreshLayout.setRefreshing(false);
-
+        btnTryAgain.setOnClickListener(view1 -> {
+            resetShopsList();
+            getShopsList();
+        });
         ivSearchField.setOnClickListener(v -> {
             etProductsSearchField.setText("");
             searchShopName = "";
             CommonUtils.closeVirtualKeyboard(requireActivity(), ivSearchField);
         });
-
         swipeRefreshLayout.setOnRefreshListener(() -> {
             resetShopsList();
             getShopsList();
         });
-
         etProductsSearchField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -181,7 +198,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
             }
-
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -197,18 +213,12 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 }
             }
         });
-
         shopsList = new ArrayList<>();
-
         DividerItemDecoration divider = new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(requireActivity(), R.drawable.recycler_decoration_divider)));
-        vendorShopsListField.addItemDecoration(divider);
-
-        vendorShopsListAdapter = new VendorShopsListAdapter(requireActivity(), shopsList, callBackListener);
+        vendorShopsListAdapter = new VendorShopsListAdapterNew(requireActivity(), shopsList, callBackListener);
         vendorShopsListField.setAdapter(vendorShopsListAdapter);
-
         view.findViewById(R.id.btn_change_address_field).setOnClickListener(v -> changeAddressSelected());
-
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
             addressList = myProfile.getAddressResponses();
@@ -230,17 +240,12 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 }
             }
         }
-
-
         mapsFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapsFragment != null) {
             mapsFragment.getMapAsync(this);
         }
-
         RelativeLayout mapLayout = view.findViewById(R.id.map_layout_field);
 
-        //AppCompatRadioButton listViewRadio = view.findViewById(R.id.list_view_radio_button);
-        //listViewRadio.setChecked(true);
         if (selectedRadioButton != null) {
             String selectedText = selectedRadioButton.getText().toString();
             if(!TextUtils.isEmpty(selectedText)) {
@@ -259,7 +264,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 }
             }
         }
-        RadioGroup mapViewOrListViewRadioGroup = view.findViewById(R.id.map_view_or_list_view_radio_group);
+        mapViewOrListViewRadioGroup = view.findViewById(R.id.map_view_or_list_view_radio_group);
 
         mapViewOrListViewRadioGroup.setOnCheckedChangeListener((radioGroup, radioButtonID) -> {
             selectedRadioButton = radioGroup.findViewById(radioButtonID);
@@ -323,6 +328,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             }
         }
     };
+
 
     private void callSelected(String shopMobileNo) {
         Utils.openDialPad(requireActivity(), shopMobileNo);
@@ -503,8 +509,25 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                             showDialog(getString(R.string.no_products_error));
                             displayDefaultMapLocation();
                         }
+                        if(currentPage==0) {
+                            erorolayout.setVisibility(View.GONE);
+                            map_or_list_view.setVisibility(View.VISIBLE);
+                            searchLayout.setVisibility(View.VISIBLE);
+                            changeAddressLayout.setVisibility(View.VISIBLE);
+                            mapViewOrListViewRadioGroup.setVisibility(View.VISIBLE);
+                        }
+
                     } else {
-                        showDialog(response.message());
+
+                        if(currentPage==0) {
+                            map_or_list_view.setVisibility(View.GONE);
+                            searchLayout.setVisibility(View.GONE);
+                            changeAddressLayout.setVisibility(View.GONE);
+                            mapViewOrListViewRadioGroup.setVisibility(View.GONE);
+                            erorolayout.setVisibility(View.VISIBLE);
+                            errormessage.setText(response.message());
+                        }
+                        //showDialog(response.message());
                         displayDefaultMapLocation();
                     }
                 }
@@ -512,15 +535,37 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 @Override
                 public void onFailure(@NotNull Call<CustomerProductsResponse> call, @NotNull Throwable t) {
                     if(t instanceof SocketTimeoutException){
-                        showDialog("", getString(R.string.network_slow));
+                        //showDialog("", getString(R.string.network_slow));
+                        errormessage.setText(getString(R.string.network_slow));
                     } else {
-                        showDialog("", t.getMessage());
+                       // showDialog("", t.getMessage());
+                        errormessage.setText(t.getMessage());
                     }
+                    if(currentPage==0) {
+                        map_or_list_view.setVisibility(View.GONE);
+                        searchLayout.setVisibility(View.GONE);
+                        changeAddressLayout.setVisibility(View.GONE);
+                        mapViewOrListViewRadioGroup.setVisibility(View.GONE);
+
+                        erorolayout.setVisibility(View.VISIBLE);
+                    }
+
                     progressDialog.dismiss();
                     swipeRefreshLayout.setRefreshing(false);
                     displayDefaultMapLocation();
                 }
             });
+        } else {
+
+            if(currentPage==0) {
+                map_or_list_view.setVisibility(View.GONE);
+                searchLayout.setVisibility(View.GONE);
+                changeAddressLayout.setVisibility(View.GONE);
+                mapViewOrListViewRadioGroup.setVisibility(View.GONE);
+                errormessage.setText(getString(R.string.network_slow));
+                erorolayout.setVisibility(View.VISIBLE);
+            }
+
         }
     }
 
@@ -555,7 +600,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
 
     @Override
     public void onMapReady(GoogleMap map) {
-        this.googleMap = map;
+       this.googleMap = map;
         googleMap.clear();
         if (currentLocation != null && addressList.isEmpty()) {
             LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
@@ -564,6 +609,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
             googleMap.addMarker(markerOptions);
+
 
             addCircleToMap();
         } else if(!addressList.isEmpty()) {
@@ -597,7 +643,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 boolean isCoordinatesValid = isValidLatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
                 if (isCoordinatesValid) {
                     LatLng latLng = new LatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
-                    MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(shopDetailsModel.getShopName());
+                    MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(shopDetailsModel.getShopName()).icon(BitmapDescriptorFactory.fromResource(R.mipmap.shop));
                     //googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
                     //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
                     Marker marker = googleMap.addMarker(markerOptions);
@@ -680,6 +726,11 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         if (mapsFragment != null) {
             mapsFragment.getMapAsync(this);
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+
     }
 
     private void addCircleToMap() {

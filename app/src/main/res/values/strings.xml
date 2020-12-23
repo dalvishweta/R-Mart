@@ -126,12 +126,13 @@
     <string name="please_enter_your_last_name">Please enter your last name</string>
     <string name="please_enter_your_e_mail">Please enter your e-mail</string>
     <string name="retailer_details">RETAILER DETAILS</string>
-    <string name="enter_your_business_name">Enter your Business Name</string>
+    <string name="enter_your_business_name">Shop Name</string>
     <string name="enter_your_pan_number">Enter your PAN number</string>
     <string name="enter_your_gst_number">Enter your GST number</string>
     <string name="location_details">LOCATION DETAILS</string>
     <string name="street_address">Street Address</string>
-    <string name="shop_no">Shop No</string>
+    <string name="shop_no">Enter Shop Number </string>
+    <string name="shop_act_no">Enter Shop Act Number </string>
     <string name="land_mark">Land Mark</string>
     <string name="district">District</string>
     <string name="state">State</string>
@@ -249,7 +250,7 @@
     <string name="support">Support</string>
     <string name="version">Version</string>
     <string name="wish_list">Wish List</string>
-    <string name="vendor_name">Vendor Name</string>
+    <string name="vendor_name">Shop Name</string>
     <string name="remove">Remove</string>
     <string name="cart">Cart</string>
     <string name="make_payment">Make Payment</string>
@@ -273,7 +274,7 @@
     <string name="vendor_address">Vendor Address</string>
     <string name="first_name">First Name</string>
     <string name="currency">INR</string>
-    <string name="shop_image">Shop Image</string>
+    <string name="shop_image">Upload Shop Image</string>
     <string name="no_products_error">No products found in your inventory.</string>
     <string name="sorry">Sorry</string>
     <string name="opening_time">Opening Time</string>
@@ -372,4 +373,6 @@
     <string name="product_re_order">Product Re-Order</string>
     <string name="allow_digits_with_out_capital_letters">1234567890QWERTYUIOPASDFGHJKLZXCVBNM</string>
     <string name="no_address_found">No Address Found</string>
+    <string name="try_again">Try Again</string>
+    <string name="share">Share Shop</string>
 </resources>

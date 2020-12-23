@@ -26,7 +26,7 @@ public class ProductInCartDetailsModel implements Serializable {
     private Integer productUnitId;
     @SerializedName("unit_number")
     @Expose
-    private Integer unitNumber;
+    private String unitNumber;
     @SerializedName("total_product_cart_qty")
     @Expose
     private Integer totalProductCartQty;
@@ -91,11 +91,11 @@ public class ProductInCartDetailsModel implements Serializable {
         this.productUnitId = productUnitId;
     }
 
-    public Integer getUnitNumber() {
+    public String getUnitNumber() {
         return unitNumber;
     }
 
-    public void setUnitNumber(Integer unitNumber) {
+    public void setUnitNumber(String unitNumber) {
         this.unitNumber = unitNumber;
     }
 

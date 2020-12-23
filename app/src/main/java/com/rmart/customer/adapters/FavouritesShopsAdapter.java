@@ -20,9 +20,8 @@ import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
-import com.rmart.baseclass.views.ProgressBarCircular;
 import com.rmart.customer.models.ContentModel;
-import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.custom_views.CustomNetworkImageView;
 

@@ -31,7 +31,8 @@ import com.rmart.customer.models.AddProductToWishListResponse;
 import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
-import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.home.model.ProductData;
+import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductDetailsDescModel;
 import com.rmart.customer.models.ProductDetailsDescResponse;
 import com.rmart.inventory.adapters.ImageAdapter;
@@ -41,7 +42,7 @@ import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
-import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.pojos.ImageURLResponse;
 import com.rmart.utilits.services.CustomerProductsService;
 
@@ -62,7 +63,7 @@ import retrofit2.Response;
  */
 public class ProductCartDetailsFragment extends BaseFragment {
 
-    private CustomerProductDetailsModel vendorProductDataDetails;
+    private ProductData vendorProductDataDetails;
     private CustomerProductsShopDetailsModel vendorShopDetails;
     private ProductDetailsDescModel productDetailsDescModel;
 
@@ -95,13 +96,21 @@ public class ProductCartDetailsFragment extends BaseFragment {
         productCartDetailsFragment.setArguments(extras);
         return productCartDetailsFragment;
     }
+   public static ProductCartDetailsFragment getInstance2(ProductData vendorProductDataDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
+        ProductCartDetailsFragment productCartDetailsFragment = new ProductCartDetailsFragment();
+        Bundle extras = new Bundle();
+        extras.putSerializable("ProductCartDetails", vendorProductDataDetails);
+        extras.putSerializable("VendorShopDetails", vendorShopDetails);
+        productCartDetailsFragment.setArguments(extras);
+        return productCartDetailsFragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getArguments();
         if (extras != null) {
-            vendorProductDataDetails = (CustomerProductDetailsModel) extras.getSerializable("ProductCartDetails");
+            vendorProductDataDetails = (ProductData) extras.getSerializable("ProductCartDetails");
             vendorShopDetails = (CustomerProductsShopDetailsModel) extras.getSerializable("VendorShopDetails");
         }
     }
@@ -416,9 +425,14 @@ public class ProductCartDetailsFragment extends BaseFragment {
         Double totalPrice = noOfQuantity * productUnitDetails.getUnitPrice();
         tvTotalPriceField.setText(Utils.roundOffDoubleValue(totalPrice, "0.00"));
         tvTotalPriceField.setPaintFlags(tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        String quantityDetails ="";
+        String quantityNoDetails = "100X4";//productUnitDetails.getUnitNumber();
+        try {
+            quantityDetails = String.format(Locale.getDefault(), "%s %s", Utils.roundOffDoubleValue(Double.parseDouble(quantityNoDetails), "0.00"), productUnitDetails.getShortUnitMeasure());
+        } catch (Exception e){
+            quantityDetails = String.format(Locale.getDefault(), "%s %s", quantityNoDetails, productUnitDetails.getShortUnitMeasure());
+        }
 
-        double quantityNoDetails = noOfQuantity * productUnitDetails.getUnitNumber();
-        String quantityDetails = String.format(Locale.getDefault(), "%s %s", Utils.roundOffDoubleValue(quantityNoDetails, "0.0"), productUnitDetails.getShortUnitMeasure());
         tvQuantityField.setText(quantityDetails);
         tvNoOfQuantityField.setText(String.valueOf(noOfQuantity));
 

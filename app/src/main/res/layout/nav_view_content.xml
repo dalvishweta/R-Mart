@@ -4,7 +4,6 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
     <include
@@ -14,11 +13,10 @@
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:layout_marginTop="30dp"
-        android:fitsSystemWindows="true">
+        >
 
         <include layout="@layout/navigation_left_menu_items" />
     </com.google.android.material.navigation.NavigationView>

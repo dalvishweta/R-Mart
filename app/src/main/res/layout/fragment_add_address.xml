@@ -1,4 +1,11 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="myAddress"
+            type="com.rmart.profile.viewmodel.EditAdreesViewModel" />
+    </data>
+<ScrollView
     android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:background="@color/white"
@@ -8,259 +15,559 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <LinearLayout
             android:id="@+id/retailer_view"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <androidx.appcompat.widget.AppCompatTextView
-                android:visibility="gone"
-                android:text="@string/retailer_details"
                 style="@style/my_profile_title"
                 android:layout_width="match_parent"
+                android:layout_marginTop="0dp"
                 android:background="@color/colorPrimary"
-                android:layout_marginTop="0dp" />
-
-            <androidx.appcompat.widget.AppCompatEditText
+                android:text="@string/retailer_details"
+                android:visibility="gone" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/shop_name_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
                 android:hint="@string/enter_your_business_name"
-                android:id="@+id/shop_name"
-                android:drawableStart="@drawable/shop"
-                style="@style/my_profile_tv"
-                android:digits="@string/allow_digits"
-                android:inputType="text" />
-
-            <TextView
-                style="@style/text_style_medium_normal"
+                app:errorText='@{myAddress.errorShopNameStringMutableLiveData}'
+                >
+                <EditText
+                    android:id="@+id/shop_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="@string/allow_digits"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="10dp"
-                android:text="@string/shop_image"
-                android:textColor="@color/black" />
-
-            <include
-                layout="@layout/layout_shop_image_view"
-                android:layout_width="120dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="10dp"
-                android:layout_height="80dp" />
-
-
-            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_baseline_photo_camera_24"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/black"
+                    android:paddingLeft="10dp"
+                    android:text="@string/shop_image"
+                    android:textColor="@color/black" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/shop_image_layout_field"
+                    android:background="@drawable/image_border"
+                    android:layout_height="80dp">
+                    <ImageView
+                        android:id="@+id/iv_shop_image_field"
+                        android:layout_width="120dp"
+                        android:layout_margin="5dp"
+                        android:scaleType="fitXY"
+                        android:layout_height="80dp"
+                        />
+                    <ImageView
+                        android:id="@+id/selectedgreeting"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/loader_newrelease"
+                        android:background="@null"
+                        android:elevation="2dp"
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:id="@+id/shop_no_layout"
+                android:gravity="center"
+                app:errorText='@{myAddress.errorShopNoStringMutableLiveData}'
                 android:hint="@string/shop_no"
-                android:id="@+id/shop_no"
-                android:drawableStart="@drawable/ic_note"
-                style="@style/my_profile_tv"
-                android:digits="@string/allow_digits"
-                android:inputType="text" />
+                >
+                <EditText
+                    android:id="@+id/shop_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="@string/allow_digits"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:hint="@string/enter_shop_act_number"
-                android:id="@+id/shop_act"
-                android:drawableStart="@drawable/ic_note"
-                android:inputType="number"
-                style="@style/my_profile_tv"
-                android:maxLength="12"
-                android:textAllCaps="true" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:hint="@string/enter_your_gst_number"
-                android:id="@+id/gst_number"
-                android:drawableStart="@drawable/ic_note"
-                android:inputType="text"
-                style="@style/my_profile_tv"
-                android:maxLength="16"
-                android:textAllCaps="true"
-                android:digits="@string/allow_digits_with_out_space"/>
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:hint="@string/delivery_radius"
-                android:id="@+id/delivery_radius"
-                android:drawableStart="@drawable/ic_address"
-                style="@style/my_profile_tv"
-                android:digits="@string/allow_digits_for_numbers"
-                android:inputType="numberSigned"
-                android:maxLength="2" />
-
-            <LinearLayout
-                android:orientation="horizontal"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/shop_act_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp">
+                android:layout_marginLeft="10dp"
+                app:errorText='@{myAddress.errorShopActStringMutableLiveData}'
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:hint="@string/shop_act_no"
+                >
+                <EditText
+                    android:id="@+id/shop_act"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="12"
+                    android:textAllCaps="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:hint="@string/delivery_charge"
-                    android:id="@+id/delivery_charges"
-                    android:drawableStart="@drawable/ic_rupee"
-                    style="@style/upload_product_item_field"
-                    android:layout_weight="1.8"
-                    android:inputType="numberSigned"
-                    android:background="@drawable/curve_left_bg"
-                    android:layout_width="0dp"/>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                app:errorText='@{myAddress.errorgstNoStringMutableLiveData}'
+                android:hint="@string/enter_your_gst_number"
+                >
+                <EditText
+                    android:id="@+id/gst_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="@string/allow_digits_with_out_space"
+                    android:inputType="text"
+                    android:maxLength="16"
+                    android:textAllCaps="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/minimum_order"
-                    android:hint="@string/minimum_order"
-                    style="@style/upload_product_item_field"
-                    android:background="@drawable/curve_right_bg"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:hint="@string/delivery_radius"
+                app:errorText='@{myAddress.errorgstDeliveryRadiusMutableLiveData}'
+
+
+                >
+
+                <EditText
+                    android:id="@+id/delivery_radius"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="@string/allow_digits_for_numbers"
                     android:inputType="numberSigned"
-                    android:maxLength="4"
+                    android:maxLength="2" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
-                    android:layout_weight="1.2" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    app:errorText='@{myAddress.errorgstDeliveryChargesMutableLiveData}'
+                    android:hint="@string/delivery_charge">
+
+                    <EditText
+                        android:id="@+id/delivery_charges"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberSigned" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    app:errorText='@{myAddress.errorgstMinimumOrderMutableLiveData}'
+                    android:hint="@string/minimum_order">
+
+                    <EditText
+
+                        android:id="@+id/minimum_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="numberSigned"
+                        android:maxLength="4" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp">
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/open_time"
-                    android:hint="@string/opening_time"
-                    style="@style/upload_product_item_field"
-                    android:background="@drawable/curve_left_bg"
-                    android:layout_width="0dp"
-                    android:layout_weight="1" />
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/close_time"
-                    android:hint="@string/closing_time"
-                    style="@style/upload_product_item_field"
-                    android:background="@drawable/curve_right_bg"
-                    android:layout_width="0dp"
-                    android:layout_weight="1" />
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    app:errorText='@{myAddress.errorgstOpenTimeMutableLiveData}'
+                    android:hint="@string/opening_time">
+
+                    <EditText
+                        android:id="@+id/open_time"
+                        android:editable="false"
+                        android:focusable="false"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="05dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    app:errorText='@{myAddress.errorgstCloseTimeMutableLiveData}'
+                    android:hint="@string/closing_time">
+
+                    <EditText
+                        android:id="@+id/close_time"
+                        android:focusable="false"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <TextView
                 style="@style/text_style_medium_normal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/delivery_in_days_text"
                 android:textColor="@color/black" />
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp">
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/delivery_days_before_time"
-                    android:hint="@string/before_closing"
-                    style="@style/upload_product_item_field"
-                    android:background="@drawable/curve_left_bg"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:inputType="numberDecimal"
-                    android:digits="@string/allow_digits_for_numbers"
-                    android:layout_width="0dp"
-                    android:maxLength="1" />
+                    android:gravity="center"
+                    app:errorText='@{myAddress.errorgstBeforeCloseMutableLiveData}'
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/delivery_days_after_time"
-                    android:hint="@string/after_closing"
-                    style="@style/upload_product_item_field"
-                    android:background="@drawable/curve_right_bg"
-                    android:layout_width="0dp"
+                    android:hint="@string/before_closing">
+
+
+                    <EditText
+                        android:id="@+id/delivery_days_before_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:digits="@string/allow_digits_for_numbers"
+                        android:inputType="numberDecimal"
+
+                        android:maxLength="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="05dp"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:digits="@string/allow_digits_for_numbers"
-                    android:inputType="numberDecimal"
-                    android:maxLength="1" />
+                    android:gravity="center"
+                    app:errorText='@{myAddress.errorgstsfterCloseMutableLiveData}'
+                    android:hint="@string/after_closing">
+
+                    <EditText
+                        android:id="@+id/delivery_days_after_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:digits="@string/allow_digits_for_numbers"
+                        android:inputType="numberDecimal"
+                        android:maxLength="1" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/tv_aadhar_number_no_field"
-                style="@style/my_profile_tv"
-                android:drawableStart="@drawable/ic_note"
-                android:hint="@string/aadhar_number"
-                android:inputType="numberSigned"
-                android:maxLength="12" />
-
-            <include
-                layout="@layout/layout_aadhar_view"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
-                android:layout_marginStart="24dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_height="80dp" />
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                app:errorText='@{myAddress.errorAadharNoMutableLiveData}'
+                android:hint="@string/aadhar_number"
+                >
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:hint="@string/enter_your_pan_number"
-                android:id="@+id/pan_number"
-                style="@style/my_profile_tv"
-                android:drawableStart="@drawable/ic_note"
-                android:inputType="textCapCharacters"
-                android:digits="@string/allow_digits_with_out_capital_letters"
-                android:textAllCaps="true"
-                android:maxLength="10" />
+                <EditText
+                    android:id="@+id/tv_aadhar_number_no_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="numberSigned"
+                    android:maxLength="12" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <include
-                layout="@layout/layout_pan_card_image_view"
-                android:layout_width="wrap_content"
-                android:layout_marginStart="24dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:weightSum="2"
+                android:layout_height="80dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
-                android:layout_height="wrap_content" />
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="120dp"
+                    android:id="@+id/aadhar_front_layout_field"
+                    android:background="@drawable/image_border"
+                    android:layout_height="80dp">
+                    <ImageView
+                        android:id="@+id/adharcard_front_image_field"
+                        android:layout_width="120dp"
+                        android:layout_margin="5dp"
+                        android:scaleType="fitXY"
+                        android:layout_height="80dp"
+                        />
+                    <ImageView
+                        android:id="@+id/adharcard_loader"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/loader_newrelease"
+                        android:background="@null"
+                        android:elevation="2dp"
+                        />
+                </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="120dp"
+                        android:id="@+id/aadhar_back_layout_field"
+                        android:background="@drawable/image_border"
+                        android:layout_height="80dp">
+                        <ImageView
+                            android:id="@+id/adharcard_back_image_field"
+                            android:layout_width="120dp"
+                            android:layout_margin="5dp"
+                            android:scaleType="fitXY"
+                            android:layout_height="80dp"
+                            />
+                        <ImageView
+                            android:id="@+id/adharcard_back_loader"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/loader_newrelease"
+                            android:background="@null"
+                            android:elevation="2dp"
+                            />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                app:errorText='@{myAddress.errorPanNumberMutableLiveData}'
+                android:hint="@string/enter_your_pan_number">
+
+                <EditText
+                    android:id="@+id/pan_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:digits="@string/allow_digits_with_out_capital_letters"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="10"
+                    android:textAllCaps="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp" >
+                <RelativeLayout
+                    android:layout_width="120dp"
+                    android:id="@+id/pan_card_layout_field"
+                    android:background="@drawable/image_border"
+                    android:layout_height="80dp">
+                    <ImageView
+                        android:id="@+id/pan_card_image_field"
+                        android:layout_width="120dp"
+                        android:layout_margin="5dp"
+                        android:scaleType="fitXY"
+                        android:layout_height="80dp"
+                        />
+                    <ImageView
+                        android:id="@+id/pan_card_loader"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/loader_newrelease"
+                        android:background="@null"
+                        android:elevation="2dp"
+                        />
+                </RelativeLayout>
+            </LinearLayout>
         </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/street_address"
-            android:id="@+id/street_address"
-            android:drawableStart="@drawable/ic_address"
-            style="@style/my_profile_tv"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:inputType="text"
-            android:digits="@string/allow_digits_for_address"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/city"
-            android:id="@+id/city"
-            android:drawableStart="@drawable/ic_flag"
-            style="@style/my_profile_tv"
-            android:inputType="text"
-            android:digits="@string/allow_digits"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:visibility="gone"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            app:errorText='@{myAddress.errorStreetAdressMutableLiveData}'
+            android:hint="@string/street_address">
+            <EditText
+                android:id="@+id/street_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:digits="@string/allow_digits_for_address"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            app:errorText='@{myAddress.errorCityMutableLiveData}'
+            android:hint="@string/city">
+
+            <EditText
+                android:id="@+id/city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="@string/allow_digits"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
             android:hint="@string/district"
-            android:id="@+id/district"
-            android:drawableStart="@drawable/user"
-            style="@style/my_profile_tv"
-            android:inputType="text"
-            android:digits="@string/allow_digits"/>
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/state"
-            android:id="@+id/state"
-            android:drawableStart="@drawable/ic_flag"
-            style="@style/my_profile_tv"
-            android:inputType="text"
-            android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM !@#$%^+=|\&amp;*()_-"/>
+            app:errorText='@{myAddress.errorDistrictMutableLiveData}'
+            android:visibility="gone">
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:hint="@string/pin_code"
-            android:id="@+id/pin_code"
-            android:drawableStart="@drawable/ic_note"
-            style="@style/my_profile_tv"
-            android:maxLength="6"
-            android:inputType="number" />
+            <EditText
+                android:id="@+id/district"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="@string/allow_digits"
+                android:inputType="text"
+                android:visibility="gone" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            app:errorText='@{myAddress.errorStateMutableLiveData}'
 
+            android:hint="@string/state">
+
+            <EditText
+                android:id="@+id/state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM !@#$%^+=|\&amp;*()_-"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            app:errorText='@{myAddress.errorPinCodeMutableLiveData}'
+            android:hint="@string/pin_code">
+
+            <EditText
+                android:id="@+id/pin_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLength="6" />
+        </com.google.android.material.textfield.TextInputLayout>
         <LinearLayout
             android:id="@+id/map_layout_field"
             android:layout_width="match_parent"
-            android:layout_margin="20dp"
             android:layout_height="300dp"
+            android:layout_margin="20dp"
             android:orientation="vertical" />
-
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/add_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/submit_button_bg"
             android:text="@string/save_details"
-            android:background="@drawable/product_edit"
-            android:textColor="@color/white"
-            android:layout_margin="8dp" />
+            android:textColor="@color/white" />
     </LinearLayout>
-
 </ScrollView>
+</layout>

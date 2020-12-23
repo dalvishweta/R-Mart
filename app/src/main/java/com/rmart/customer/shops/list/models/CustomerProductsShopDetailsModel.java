@@ -1,7 +1,19 @@
-package com.rmart.customer.models;
+package com.rmart.customer.shops.list.models;
 
+import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rmart.R;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -9,7 +21,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.BindingAdapter;
 
 /**
  * Created by Satya Seshu on 08/09/20.
@@ -117,7 +131,7 @@ public class CustomerProductsShopDetailsModel implements Serializable {
         return shopImage;
     }
 
-    public void setShopImage(Object shopImage) {
+    public void setShopImage(String shopImage) {
         this.shopImage = shopImage;
     }
 
@@ -286,5 +300,31 @@ public class CustomerProductsShopDetailsModel implements Serializable {
         }
         CustomerProductsShopDetailsModel rhs = ((CustomerProductsShopDetailsModel) other);
         return new EqualsBuilder().append(shopId, rhs.shopId).isEquals();
+    }
+
+    @BindingAdapter("imageUrl")
+    public static void loadImage(View view, CustomerProductsShopDetailsModel data) {
+
+        ImageView imageview = view.findViewById(R.id.imageview);
+        ImageView selectedgreeting = view.findViewById(R.id.selectedgreeting);
+        selectedgreeting.setVisibility(View.VISIBLE);
+        Glide.with(view.getContext()).load(data.getShopImage()) .listener(new RequestListener<Drawable>() {
+
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                selectedgreeting.setVisibility(View.GONE);
+
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                selectedgreeting.setVisibility(View.GONE);
+                return false;
+            }
+        }).dontAnimate().
+                diskCacheStrategy(DiskCacheStrategy.ALL).
+                signature(new ObjectKey(data.getShopImage())).
+                error(R.mipmap.shop).thumbnail(0.5f).into(imageview);
     }
 }

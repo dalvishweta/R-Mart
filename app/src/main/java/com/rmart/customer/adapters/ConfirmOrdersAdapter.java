@@ -63,14 +63,14 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
         int totalProductCartQuantity = dataObject.getTotalProductCartQty();
         holder.tvNoOfQuantityField.setText(String.valueOf(totalProductCartQuantity));
 
-        int totalUnitNumbers = totalProductCartQuantity * dataObject.getUnitNumber();
-        String quantityDetails = String.format(Locale.getDefault(), "%d %s", totalUnitNumbers, dataObject.getShortUnitMeasure());
+       // Double totalUnitNumbers = totalProductCartQuantity * dataObject.getUnitNumber();
+       // String quantityDetails = String.format(Locale.getDefault(), "%s %s", Utils.roundOffDoubleValue(totalUnitNumbers, "0.00") , dataObject.getShortUnitMeasure());
         double totalSellingPrice = totalProductCartQuantity * dataObject.getPerProductSellingPrice();
         String sellingPrice = String.format("Rs. %s", Utils.roundOffDoubleValue(totalSellingPrice, "0.00"));
 
         Double totalUnitPrice = totalProductCartQuantity * dataObject.getPerProductUnitPrice();
-        String unitPriceDetails = Utils.roundOffDoubleValue(totalUnitPrice, "0.0");
-        String quantityPriceDetails = String.format("%s  %s  %s", quantityDetails, sellingPrice, unitPriceDetails);
+        String unitPriceDetails = Utils.roundOffDoubleValue(totalUnitPrice, "0.00");
+        String quantityPriceDetails = String.format("%s  %s",  sellingPrice, unitPriceDetails);
 
         SpannableString quantityPriceDetailsSpannable = new SpannableString(quantityPriceDetails);
         quantityPriceDetailsSpannable.setSpan(new StyleSpan(Typeface.BOLD), quantityPriceDetails.indexOf(sellingPrice),

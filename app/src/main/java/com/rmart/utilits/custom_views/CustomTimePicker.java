@@ -3,6 +3,7 @@ package com.rmart.utilits.custom_views;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
+import android.widget.EditText;
 
 import androidx.appcompat.widget.AppCompatTextView;
 
@@ -13,11 +14,11 @@ import java.util.Locale;
 
 public class CustomTimePicker {
 
-    public CustomTimePicker(AppCompatTextView tv, Context ctx) {
+    public CustomTimePicker(EditText tv, Context ctx) {
         setDate(tv, ctx);
     }
 
-    public void setDate(AppCompatTextView tvDateField, Context ctx) {
+    public void setDate(EditText tvDateField, Context ctx) {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minutes = calendar.get(Calendar.MINUTE);

@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.gson.Gson;
@@ -26,7 +25,7 @@ import com.google.gson.JsonParser;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductOrderedResponseModel;
 import com.rmart.customer.models.RSAKeyResponseDetails;
 import com.rmart.profile.model.MyProfile;

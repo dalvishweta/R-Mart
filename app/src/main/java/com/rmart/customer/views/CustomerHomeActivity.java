@@ -6,19 +6,18 @@ import android.view.View;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.rmart.R;
-import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerProductDetailsModel;
-import com.rmart.customer.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.home.fragments.ShopHomePage;
+import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
-import com.rmart.utilits.LoggerInfo;
+import com.rmart.customer.shops.list.fragments.VendorShopsListFragment;
 import com.rmart.utilits.pojos.AddressResponse;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class CustomerHomeActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
 
@@ -66,6 +65,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     public void gotoVendorProductDetails(CustomerProductsShopDetailsModel customerProductsModel) {
         showCartIcon();
         replaceFragment(VendorProductDetailsFragment.getInstance(customerProductsModel), VendorProductDetailsFragment.class.getName(), true);
+        //replaceFragment(ShopHomePage.newInstance(customerProductsModel), VendorProductDetailsFragment.class.getName(), true);
     }
 
     @Override
@@ -173,36 +173,4 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
         }
     }
 
-    /*@Override
-    protected void onPause() {
-        super.onPause();
-        timer = new Timer();
-        LoggerInfo.printLog("Main", "Invoking logout timer");
-        LogOutTimerTask logoutTimeTask = new LogOutTimerTask();
-        int time = 5 * 60 * 60;
-        timer.schedule(logoutTimeTask, 6000000); // auto logout in 5 minutes
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (timer != null) {
-            timer.cancel();
-            timer = null;
-            LoggerInfo.printLog("Main", "cancel timer");
-        }
-    }
-
-    private class LogOutTimerTask extends TimerTask {
-
-        @Override
-        public void run() {
-            //redirect user to login screen
-            LoggerInfo.printLog("LogOutTimerTask", "run method");
-            Intent i = new Intent(CustomerHomeActivity.this, AuthenticationActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(i);
-            finish();
-        }
-    }*/
 }

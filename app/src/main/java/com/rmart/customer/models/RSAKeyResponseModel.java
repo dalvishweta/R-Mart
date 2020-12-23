@@ -2,7 +2,7 @@ package com.rmart.customer.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.rmart.utilits.pojos.BaseResponse;
+import com.rmart.utilits.BaseResponse;
 
 /**
  * Created by Satya Seshu on 27/09/20.
