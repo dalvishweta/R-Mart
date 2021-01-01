@@ -23,6 +23,8 @@ public class EditAdreesViewModel extends ViewModel {
     }
     public MutableLiveData<AddressResponse> addressResponseMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<String>  errorShopNameStringMutableLiveData= new MutableLiveData<>();
+    public MutableLiveData<String>  errorBanckAccountStringMutableLiveData= new MutableLiveData<>();
+    public MutableLiveData<String>  errorBanckIFSCStringMutableLiveData= new MutableLiveData<>();
     public MutableLiveData<String> errorShopNoStringMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<String> errorShopActStringMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<String> errorgstDeliveryRadiusMutableLiveData = new MutableLiveData<>();
@@ -63,6 +65,7 @@ public class EditAdreesViewModel extends ViewModel {
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                         imageview.setImageBitmap(resource);
                         selectedgreeting.setVisibility(View.GONE);
+                        onLoad.onLoadImage(data);
 
 
                     }

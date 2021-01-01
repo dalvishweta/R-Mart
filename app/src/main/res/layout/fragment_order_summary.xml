@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".customer.order.summary.OrderSummaryFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded_corners_edit_text_bg"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:text="Delivery Type"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_below="@+id/header"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:background="@drawable/selected_backgound"
+            android:layout_below="@+id/header"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_marginTop="3dp"
+                android:layout_width="60dp"
+                android:src="@mipmap/shop_icon"
+                android:layout_height="50dp"
+                />
+            <TextView
+                android:layout_below="@+id/title"
+                android:layout_width="match_parent"
+                android:text="Pick From \nShop/Store"
+                android:textSize="10dp"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toLeftOf="@+id/change"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:background="@drawable/rounded_corners_edit_text_bg"
+            android:layout_below="@+id/header"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="3dp"
+
+                android:src="@mipmap/dilivery_boy"
+                />
+            <TextView
+                android:layout_below="@+id/title"
+                android:layout_width="match_parent"
+                android:text="Pick From \nShop/Store"
+                android:textSize="10dp"
+                android:gravity="center"
+                android:layout_margin="2dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toLeftOf="@+id/change"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded_corners_edit_text_bg"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:text="Delivery at :"
+
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_height="wrap_content"/>
+
+
+
+        <TextView
+            android:layout_below="@+id/title"
+            android:layout_width="match_parent"
+            android:text="plot no 87, Lxmi Colony,\n near jay bhavani nagar,\n cidco, N-2, Aurangabad,\n 9975294782"
+            android:textSize="14dp"
+            android:lines="4"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/change"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Change"
+            android:padding="5dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/selected_backgound"
+            android:textSize="14dp"
+            android:id="@+id/change"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/buy_now_color"
+            android:layout_height="wrap_content"/>
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded_corners_edit_text_bg"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Order After 9 pm will be delivered by 11 on following day. Order before 10 am will be delivered by 2 pm  on the same day"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="6"
+        android:background="@drawable/promocode_background"
+        android:padding="10dp"
+        android:layout_margin="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_width="50dp"
+            android:src="@drawable/ic_coupon"
+            android:layout_height="50dp"
+            />
+
+        <TextView
+            android:layout_weight="4"
+            android:layout_width="wrap_content"
+            android:text="Apply a Promo Code"
+            android:textSize="18dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Apply"
+            android:layout_weight="1"
+            android:textSize="18dp"
+            android:padding="15dp"
+            android:textStyle="bold"
+            android:gravity="center_vertical"
+            android:textColor="@color/buy_now_color"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded_corners_edit_text_bg"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/paymentmethodlabel"
+            android:layout_width="match_parent"
+            android:text="Payment Method"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_below="@+id/paymentmethodlabel"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:weightSum="4"
+            android:background="@drawable/selected_backgound"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Cash on Delivery"
+                android:textSize="14dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_weight="3"
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:src="@drawable/ic_cash_on_delivery"
+                android:layout_height="30dp"
+
+                />
+
+
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:weightSum="4"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/rounded_corners_edit_text_bg"
+                android:padding="10dp"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Pay Online Now"
+                    android:textSize="14dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:layout_weight="3"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/ic_debit_card"
+                    android:layout_height="30dp"
+
+                    />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</LinearLayout>

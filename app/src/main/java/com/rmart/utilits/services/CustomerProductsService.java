@@ -98,8 +98,13 @@ public interface CustomerProductsService {
 
     @POST(BuildConfig.VENDORS_SAVE_PLACE_ORDER)
     @FormUrlEncoded
-    Call<ProductOrderedResponseModel> savePlaceToOrder(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("user_address_id") String userAddressId,
-                                                       @Field("customer_id") String customerId, @Field("shop_id") int shop_id, @Field("mode_of_payment_id") int modeOfPaymentId);
+    Call<ProductOrderedResponseModel> savePlaceToOrder(@Field("client_id") String clientId,
+                                                       @Field("vendor_id") int vendorId,
+                                                       @Field("user_address_id") String userAddressId,
+                                                       @Field("customer_id") String customerId,
+                                                       @Field("shop_id") int shop_id,
+                                                       @Field("mode_of_payment_id") int modeOfPaymentId,
+                                                       @Field("delivery_method") String deliveryMethod);
 
     @POST(BuildConfig.ADD_SHOP_TO_WISH_LIST)
     @FormUrlEncoded
@@ -118,7 +123,7 @@ public interface CustomerProductsService {
     @POST(BuildConfig.SHOW_CART_ORDER_DETAILS)
     @FormUrlEncoded
     Call<CustomerOrderedResponseModel> showCartOrderDetails(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("shop_id") int shop_id,
-                                                            @Field("user_address_id") String user_address_id, @Field("customer_id") String customerId);
+                                                            @Field("user_address_id") String user_address_id, @Field("customer_id") String customerId, @Field("delivery_method") String delivery_method);
 
     @POST(BuildConfig.ADD_RE_ORDER_TO_CART)
     @FormUrlEncoded

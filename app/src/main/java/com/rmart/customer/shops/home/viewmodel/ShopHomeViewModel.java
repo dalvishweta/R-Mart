@@ -109,7 +109,7 @@ public class ShopHomeViewModel extends ViewModel {
         }).dontAnimate().
                 diskCacheStrategy(DiskCacheStrategy.ALL).
                 signature(new ObjectKey(data.productImage)).
-                error(R.mipmap.shop).thumbnail(0.5f).into(imageview);
+                error(R.mipmap.default_product_image).thumbnail(0.5f).into(imageview);
     }
 
 }

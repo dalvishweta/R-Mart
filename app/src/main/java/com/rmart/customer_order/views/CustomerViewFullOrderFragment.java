@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
+import com.rmart.customer.views.CustomerOrderDetailsFragment;
 import com.rmart.customer_order.adapters.ProductListAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
@@ -50,7 +51,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     private Order mOrderObject;
     private AppCompatButton mLeftButton, mRightButton;
     private AppCompatTextView tvStatus, dateValue, vendorName, vendorNumber, vendorAddress, orderIdValue, tvAmount,
-            tvDeliveryCharges, tvTotalCharges, tvPaymentType, customerName, customerNumber, customerAddress;
+            tvDeliveryCharges, tvTotalCharges, tvPaymentType, customerName, customerNumber, customerAddress,deliveryAdresslabel,customer_pickup;
     private CustomerOrderProductList orderProductList;
     private RecyclerView recyclerView;
     private LinearLayout deliveryBoyInfo, footer;
@@ -149,6 +150,8 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         mRightButton.setOnClickListener(this);
 
         tvStatusComments = view.findViewById(R.id.status_comments);
+        deliveryAdresslabel = view.findViewById(R.id.deliveryAdresslabel);
+        customer_pickup = view.findViewById(R.id.customer_pickup);
 
         view.findViewById(R.id.accept_order).setVisibility(View.GONE);
 
@@ -206,6 +209,16 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
             dateValue.setText(orderDate);
         }
 
+        if(orderProductList.getOrderInfo().deliveryMethod!=null && orderProductList.getOrderInfo().deliveryMethod.equalsIgnoreCase(CustomerOrderDetailsFragment.PICKUP)) {
+            deliveryAdresslabel.setVisibility(View.GONE);
+            customerAddress.setVisibility(View.GONE);
+            customer_pickup.setVisibility(View.VISIBLE);
+
+        } else {
+            deliveryAdresslabel.setVisibility(View.VISIBLE);
+            customerAddress.setVisibility(View.VISIBLE);
+            customer_pickup.setVisibility(View.GONE);
+        }
         if (orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.OPEN_ORDER_STATUS) ||
                 orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.ACCEPTED_ORDER_STATUS) ||
                 orderProductList.getOrderInfo().getStatus().equalsIgnoreCase(Utils.PACKED_ORDER_STATUS)) {

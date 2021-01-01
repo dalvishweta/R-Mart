@@ -12,7 +12,6 @@
     android:layout_width="match_parent"
     android:layout_height="270dp"
     app:cardCornerRadius="5dp"
-    android:layout_margin="5dp"
     app:cardElevation="15dp"
     android:id="@+id/topview"
   >
@@ -33,7 +32,7 @@
                     android:id="@+id/imageview"
                     android:layout_width="match_parent"
                     android:scaleType="fitXY"
-                    android:layout_height="200dp"
+                    android:layout_height="180dp"
                     />
                 <ImageView
                     android:id="@+id/selectedgreeting"
@@ -113,6 +112,8 @@
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     />
+
+
                 <TextView
                     android:id="@+id/selling_price2"
                     android:layout_width="match_parent"
@@ -140,7 +141,6 @@
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="right"
                     android:layout_weight="1"
-
                     android:layout_marginRight="3dp"
                     android:textColor="@color/black"
                     android:textSize="12sp"

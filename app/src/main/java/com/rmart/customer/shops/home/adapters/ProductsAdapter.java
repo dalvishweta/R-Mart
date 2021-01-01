@@ -17,6 +17,7 @@ import com.rmart.customer.shops.home.listner.OnClickListner;
 import com.rmart.customer.shops.home.model.Category;
 import com.rmart.customer.shops.home.model.ProductData;
 import com.rmart.customer.shops.home.model.Results;
+import com.rmart.databinding.LoadMoreItemBinding;
 import com.rmart.databinding.ProductItemsBinding;
 import com.rmart.databinding.ShopHomePageBinding;
 import com.rmart.databinding.ShopHomePageCategoryItemsBinding;
@@ -32,50 +33,74 @@ import static androidx.recyclerview.widget.LinearLayoutManager.*;
 
 public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    final public int VIEW_PRODUCT=112222;
+    final public int VIEW_LOADING=223233;
 
-
-    ArrayList<ProductData> productData = new ArrayList<>();
+   public ArrayList<ProductData> productData = new ArrayList<>();
     Activity context;
+    boolean isHomePageList,isLoading;
     OnClickListner onClickListner;
 
-    public ProductsAdapter(Activity context, ArrayList<ProductData> categories,OnClickListner onClickListner) {
+    public ProductsAdapter(Activity context, ArrayList<ProductData> productDatas,OnClickListner onClickListner,boolean isHomePageList) {
         this.context = context;
+        this.isHomePageList = isHomePageList;
         this.onClickListner = onClickListner;
-        this.productData.addAll(categories);
+        this.productData =(productDatas);
+    }
+    public void addProducts(ArrayList<ProductData> productDatas){
+        this.productData.addAll(productDatas);
+        notifyDataSetChanged();
     }
 
+    public void setLoading(boolean loading) {
+        isLoading = loading;
+        notifyItemChanged(productData.size());
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        if(isLoading && productData.size()==position) {
+            return VIEW_LOADING;
+        }
+        return VIEW_PRODUCT;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        ProductItemsBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.product_items, parent, false);
-        CategoryHolder vh = new CategoryHolder(binding); // pass the view to View Holder
-        return vh;
+        if(viewType==VIEW_LOADING) {
+            LoadMoreItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.load_more_item, parent, false);
+            LoadingHolder vh = new LoadingHolder(binding); // pass the view to View Holder
+            return vh;
+        }  else {
+            ProductItemsBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.product_items, parent, false);
+            ProductHolder vh = new ProductHolder(binding); // pass the view to View Holder
+            return vh;
+        }
 
-//
     }
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder2, int position) {
 
-        if(holder2 instanceof CategoryHolder) {
-            CategoryHolder myViewHolder=     (CategoryHolder ) holder2;
+        if(holder2 instanceof ProductHolder) {
+            ProductHolder myViewHolder=     (ProductHolder ) holder2;
             myViewHolder.bind(productData.get(position));
-
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int width = displayMetrics.widthPixels;
-            myViewHolder.binding.topview.getLayoutParams().width = (width/2)-5;
-
+            if(isHomePageList) {
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                int width = displayMetrics.widthPixels;
+                myViewHolder.binding.topview.getLayoutParams().width = (width / 2) - 15;
+            }
             List<CustomerProductsDetailsUnitModel>  units = productData.get(position).getUnits();
             if(units!=null){
 
                 for (int i = units.size()-1;i>=0;i-- ) {
 
                     CustomerProductsDetailsUnitModel unitModel =  units.get(i);
-                    unitModel.getUnitNumber();
-                    unitModel.getProductUnitQuantity();
-                    myViewHolder.binding.offerlabel.setText(String.format("Rs. %s", unitModel.getProductDiscount(), "0.00")+"%");
+
+                    myViewHolder.binding.offerlabel.setText(String.format("%s", unitModel.getProductDiscount(), "0.00")+"% Off");
                     myViewHolder.binding.unitPrice.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getUnitPrice(), "0.00")));
                     myViewHolder.binding.sellingPrice.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getSellingPrice(), "0.00")));
                     myViewHolder.binding.sellingPrice2.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getSellingPrice(), "0.00")));
@@ -106,14 +131,32 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
     @Override
     public int getItemCount() {
+        if(isLoading){
+            return productData.size()+1;
+        }
         return productData.size();
     }
 
-    public class CategoryHolder extends RecyclerView.ViewHolder {
+    public class ProductHolder extends RecyclerView.ViewHolder {
 
         ProductItemsBinding binding;
 
-        public CategoryHolder(ProductItemsBinding binding) {
+        public ProductHolder(ProductItemsBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+
+        }
+
+        public void bind(Object obj) {
+            binding.setVariable(BR.productdata, obj);
+            binding.executePendingBindings();
+        }
+    }
+    public class LoadingHolder extends RecyclerView.ViewHolder {
+
+        LoadMoreItemBinding binding;
+
+        public LoadingHolder(LoadMoreItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 

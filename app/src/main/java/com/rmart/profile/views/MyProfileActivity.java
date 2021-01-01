@@ -99,8 +99,6 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
     @Override
     public void getMapGeoCoordinates(LatLng latLng) {
         editAddressFragment.updateLocationDetails(latLng);
-
-
     }
 
 

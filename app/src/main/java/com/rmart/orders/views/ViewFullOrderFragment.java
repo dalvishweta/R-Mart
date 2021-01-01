@@ -42,6 +42,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.rmart.customer.views.CustomerOrderDetailsFragment.PICKUP;
+
 public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnClickListener {
 
     private static final String ARG_PARAM1 = "param1";
@@ -50,7 +52,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private Order mOrderObject;
     private AppCompatButton mCancelOrderBtn, mAcceptOrderBtn;
     private AppCompatTextView tvStatus, customerName, customerAddress, customerNumber, dateValue, orderIdValue, tvAmount, tvDeliveryCharges, tvTotalCharges, tvPaymentType,
-            deliveryBoyName, deliveryBoyNumber;
+            deliveryBoyName, deliveryBoyNumber,deliveryAdresslabel,customer_address,customer_pickup;
     private CustomerOrderProductList orderProductList = new CustomerOrderProductList();
     private RecyclerView recyclerView;
     private LinearLayout deliveryBoyInfo, footerView;
@@ -153,6 +155,9 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         mAcceptOrderBtn = view.findViewById(R.id.accept_order);
         mAcceptOrderBtn.setOnClickListener(this);
         tvStatusComments = view.findViewById(R.id.status_comments);
+        deliveryAdresslabel = view.findViewById(R.id.deliveryAdresslabel);
+        customer_address = view.findViewById(R.id.customer_address);
+        customer_pickup = view.findViewById(R.id.customer_pickup);
 
         // Customer Info
         customerName = view.findViewById(R.id.customer_name);
@@ -240,6 +245,19 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         setFooter();
         ProductListAdapter productAdapter = new ProductListAdapter(requireActivity(), orderProductList.getProduct(), null);
         recyclerView.setAdapter(productAdapter);
+        if(orderProductList.getOrderInfo().deliveryMethod!=null&&orderProductList.getOrderInfo().deliveryMethod.equalsIgnoreCase(PICKUP)){
+
+            deliveryAdresslabel.setVisibility(View.VISIBLE);
+            customer_address.setVisibility(View.GONE);
+            customer_pickup.setVisibility(View.VISIBLE);
+            customer_pickup.setText("Customer will Pick From Shop");
+
+        } else {
+            deliveryAdresslabel.setVisibility(View.VISIBLE);
+            customer_address.setVisibility(View.VISIBLE);
+            customer_pickup.setVisibility(View.GONE);
+        }
+
         // setValuesToUI();
     }
     private void setFooter() {

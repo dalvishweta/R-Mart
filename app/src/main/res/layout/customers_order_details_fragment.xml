@@ -68,8 +68,21 @@
                     android:id="@+id/customer_number"
                     style="@style/order_full_view_content" />
 
+
+                <CheckBox
+                    android:id="@+id/checkBox1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-5dp"
+                    android:text="I will Pick Up from shop"
+                    android:textColor="@color/gray"
+
+                     />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/order_full_view_title"
+                    android:id="@+id/labelDelevery"
+
                     android:text="@string/delivery_address" />
 
                 <androidx.appcompat.widget.AppCompatTextView

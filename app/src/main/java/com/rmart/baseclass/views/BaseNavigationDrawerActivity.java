@@ -193,7 +193,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             }).dontAnimate().
                     diskCacheStrategy(DiskCacheStrategy.ALL).
                     signature(new ObjectKey(imageUrl)).
-                    error(R.mipmap.shop).thumbnail(0.5f).into(ivProfileImageField);
+                    error(R.mipmap.applogo).thumbnail(0.5f).into(ivProfileImageField);
 
 
             /*myProfile.getCartCount().observe(this, count -> {

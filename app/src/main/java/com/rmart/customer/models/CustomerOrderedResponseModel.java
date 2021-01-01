@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class CustomerOrderedResponseModel extends BaseResponse {
 
+
     @SerializedName("data")
     @Expose
     private CustomerOrderedDataResponseModel customerOrderedDataResponseModel;
@@ -25,6 +26,9 @@ public class CustomerOrderedResponseModel extends BaseResponse {
 
     public static class CustomerOrderedDataResponseModel {
 
+        @SerializedName("delivery_method")
+        @Expose
+        public String deliveryMethod;
         @SerializedName("customer_detail")
         @Expose
         private CustomerOrderPersonalDetails customerOrderPersonalDetails;

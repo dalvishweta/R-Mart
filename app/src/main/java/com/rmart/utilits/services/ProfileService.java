@@ -35,7 +35,13 @@ public interface ProfileService {
             @Field("opening_time") String openingTime,
             @Field("closing_time") String closingTime,
             @Field("delivery_days_after_time") String deliveryDaysAfterTime,
-            @Field("delivery_days_before_time") String deliveryDaysBeforeTime);
+            @Field("delivery_days_before_time") String deliveryDaysBeforeTime,
+            @Field("business_type") String businessType,
+            @Field("shop_type_id") String shopTypeId,
+            @Field("bank_name") String bankName,
+            @Field("ifsc_code") String ifscCode,
+            @Field("branch_name") String branchName,
+            @Field("bank_acc_no") String bankAccNo);
 
     @FormUrlEncoded
     @POST(BuildConfig.UPDATE_ADDRESS)
@@ -63,7 +69,13 @@ public interface ProfileService {
             @Field("closing_time") String closingTime,
             @Field("delivery_days_after_time") String deliveryDaysAfterTime,
             @Field("delivery_days_before_time") String deliveryDaysBeforeTime,
-            @Field("primary_add_id") String primary_add_id);
+            @Field("primary_add_id") String primary_add_id,
+            @Field("business_type") String businessType,
+            @Field("shop_type_id") String shopTypeId,
+            @Field("bank_name") String bankName,
+            @Field("ifsc_code") String ifscCode,
+            @Field("branch_name") String branchName,
+            @Field("bank_acc_no") String bankAccNo);
 
 
 

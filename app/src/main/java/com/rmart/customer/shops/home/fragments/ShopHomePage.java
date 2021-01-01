@@ -24,8 +24,10 @@ import com.rmart.customer.shops.home.model.Results;
 import com.rmart.customer.shops.home.model.ShopHomePageResponce;
 import com.rmart.customer.shops.home.viewmodel.ShopHomeViewModel;
 import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.products.fragments.ProductListFragment;
 import com.rmart.customer.views.ProductCartDetailsFragment;
 import com.rmart.databinding.FragmentShopHomePageBinding;
+import com.rmart.utilits.GridSpacesItemDecoration;
 
 import java.util.ArrayList;
 
@@ -64,11 +66,18 @@ public class ShopHomePage extends BaseFragment {
         binding.setShopDetails(productsShopDetailsModel);
         binding.setLifecycleOwner(this);
         shopHomeViewModel.loadShopHomePage(productsShopDetailsModel);
+
+
         shopHomeViewModel.shopHomePageResponceMutableLiveData.observeForever(shopHomePageResponce -> {
             ShopHomeAdapter shopHomeAdapter = new ShopHomeAdapter(getActivity(), shopHomePageResponce.results, productsShopDetailsModel, new OnClickListner() {
                 @Override
                 public void onCategorySelected(Category category) {
-                    Toast.makeText(getContext(),""+category.categoryName,Toast.LENGTH_LONG).show();
+                    ProductListFragment baseFragment=  ProductListFragment.newInstance(productsShopDetailsModel,category );
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    fragmentTransaction.replace(R.id.base_container, baseFragment, ProductCartDetailsFragment.class.getName());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
                 }
                 @Override
                 public void onProductSelected(ProductData productData) {

@@ -572,11 +572,15 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private void displayDefaultMapLocation() {
         boolean isCoordinatesValid = isValidLatLng(latitude, longitude);
         if (isCoordinatesValid) {
-            LatLng latLng = new LatLng(latitude, longitude);
-            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-            googleMap.addMarker(markerOptions);
+            try {
+                LatLng latLng = new LatLng(latitude, longitude);
+                MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                googleMap.addMarker(markerOptions);
+            } catch (Exception e){
+
+            }
         }
     }
 
@@ -643,7 +647,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 boolean isCoordinatesValid = isValidLatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
                 if (isCoordinatesValid) {
                     LatLng latLng = new LatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
-                    MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(shopDetailsModel.getShopName()).icon(BitmapDescriptorFactory.fromResource(R.mipmap.shop));
+                    MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(shopDetailsModel.getShopName()).icon(BitmapDescriptorFactory.fromResource(R.mipmap.google_map_icon2));
                     //googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
                     //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
                     Marker marker = googleMap.addMarker(markerOptions);

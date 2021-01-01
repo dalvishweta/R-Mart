@@ -128,6 +128,10 @@
     <string name="retailer_details">RETAILER DETAILS</string>
     <string name="enter_your_business_name">Shop Name</string>
     <string name="enter_your_pan_number">Enter your PAN number</string>
+    <string name="enter_your_bank_acc_no">Enter your Bank Acc No.</string>
+    <string name="enter_your_bank_acc_name">Enter your Bank Name.</string>
+    <string name="enter_your_bank_ifsc_code">Enter your IFSC Code</string>
+    <string name="enter_your_bank_branch">Enter Bank Branch Name</string>
     <string name="enter_your_gst_number">Enter your GST number</string>
     <string name="location_details">LOCATION DETAILS</string>
     <string name="street_address">Street Address</string>
@@ -152,6 +156,7 @@
     <string name="after_discount">After discount: %.2f</string>
     <string name="delivery_in">Delivery in</string>
     <string name="delivery_in_days_text">Delivery in days</string>
+    <string name="banck_details_text">Banck Details</string>
     <string name="delivery_in_days">Delivery in %1$s days</string>
     <string name="delivery_in_1_day">Delivery in 1 day</string>
     <string name="delivery_in_same_day">Delivery on the same day.</string>
@@ -241,6 +246,8 @@
 
     <string name="delivery_charges_required">Delivery charges required.</string>
     <string name="shop_name_required">Shop Name Required</string>
+    <string name="bank_account_required">Bank Account Required</string>
+    <string name="bank_ifsc_required">Bank IFSC Code Required</string>
     <string name="gst_number_required">GST Number Required</string>
 
     <string name="enter_your_kyc_number">Enter your KYC Number</string>

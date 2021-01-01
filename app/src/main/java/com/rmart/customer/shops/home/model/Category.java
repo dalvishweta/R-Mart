@@ -27,13 +27,19 @@ public class Category  implements Serializable {
     @SerializedName("category_ids")
     public String categoryIds ="";
     @SerializedName("parent_category_id")
-    public String parentCategoryId ="";
+    public String parentCategoryId ;
+    @SerializedName("subcategory_id")
+    public String subcategory_id;
     @SerializedName("parent_image")
     public String parentImage ="";
     @SerializedName("category_desc")
     public String categoryDesc ="";
     @SerializedName("category_name")
     public String categoryName ="";
+
+    public Category(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     @BindingAdapter("imageUrl")
     public static void loadImage(View view, Category data) {
@@ -58,6 +64,6 @@ public class Category  implements Serializable {
         }).dontAnimate().
                 diskCacheStrategy(DiskCacheStrategy.ALL).
                 signature(new ObjectKey(data.parentImage==null?"":data.parentImage)).
-                error(R.mipmap.shop).thumbnail(0.5f).into(imageview);
+                error(R.mipmap.applogo).thumbnail(0.5f).into(imageview);
     }
 }

@@ -10,10 +10,12 @@ import com.rmart.BR;
 import com.rmart.R;
 import com.rmart.customer.shops.home.fragments.ShopHomePage;
 import com.rmart.customer.shops.home.listner.OnClickListner;
+import com.rmart.customer.shops.home.model.Category;
 import com.rmart.customer.shops.home.model.Results;
 import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.databinding.ShopDetailsPageBinding;
 import com.rmart.databinding.ShopHomePageBinding;
+import com.rmart.utilits.GridSpacesItemDecoration;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +29,7 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     final int VIEW_MENU=1111;
     final int VIEW_SHOP=333311;
+    public ArrayList<Category> category;
     ArrayList<Results> results = new ArrayList<Results>();
     Activity context;
     OnClickListner onClickListner;
@@ -69,14 +72,30 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             Results rs = results.get(position-1);
             myViewHolder.bind(rs);
             if(rs.type.equalsIgnoreCase("category")){
+                category = rs.category;
                 CategoryAdapter categoryAdapter = new  CategoryAdapter(context,rs.category,onClickListner);
                 myViewHolder.binding.category.setLayoutManager(new LinearLayoutManager(context, HORIZONTAL,false));
                 myViewHolder.binding.category.setAdapter(categoryAdapter);
+
+
             } else if(rs.type.equalsIgnoreCase("product_data")) {
-                ProductsAdapter productsAdapter = new  ProductsAdapter(context,rs.productData,onClickListner);
+                ProductsAdapter productsAdapter = new  ProductsAdapter(context,rs.productData,onClickListner,true);
                 myViewHolder.binding.category.setLayoutManager(new LinearLayoutManager(context, HORIZONTAL,false));
                 myViewHolder.binding.category.setAdapter(productsAdapter);
+                myViewHolder.binding.category.addItemDecoration(new GridSpacesItemDecoration(10));
             }
+            myViewHolder.binding.viewall.setOnClickListener(view -> {
+
+                for (Category categorye:category ) {
+                    if(categorye.parentCategoryName.equalsIgnoreCase(rs.name)){
+                        onClickListner.onCategorySelected(categorye);
+                        break;
+                    }
+                }
+
+            });
+
+
         }
     }
     @Override

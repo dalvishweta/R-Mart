@@ -33,6 +33,14 @@ public class CustomerProductsShopDetailsModel implements Serializable {
     @SerializedName("shop_mobile_no")
     @Expose
     private String shopMobileNo;
+
+    public String getBusiness_type() {
+        return business_type;
+    }
+
+    @SerializedName("business_type")
+    @Expose
+    private String business_type;
     @SerializedName("vendor_id")
     @Expose
     private Integer vendorId;
@@ -102,6 +110,9 @@ public class CustomerProductsShopDetailsModel implements Serializable {
     @SerializedName("delivery_charges")
     @Expose
     private Integer deliveryCharges;
+    @SerializedName("delivery_method")
+    @Expose
+    public String deliveryMethod;
 
     public Integer getDeliveryCharges() {
         return deliveryCharges;
@@ -325,6 +336,6 @@ public class CustomerProductsShopDetailsModel implements Serializable {
         }).dontAnimate().
                 diskCacheStrategy(DiskCacheStrategy.ALL).
                 signature(new ObjectKey(data.getShopImage())).
-                error(R.mipmap.shop).thumbnail(0.5f).into(imageview);
+                error(R.mipmap.applogo).thumbnail(0.5f).into(imageview);
     }
 }

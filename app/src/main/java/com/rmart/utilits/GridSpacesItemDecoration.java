@@ -22,11 +22,9 @@ public class GridSpacesItemDecoration extends RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect, view, parent, state);
         outRect.left = space;
         outRect.right = space;
-        /*outRect.bottom = space;
-        if (parent.getChildLayoutPosition(view) == 0) {
-            outRect.top = space;
-        } else {
-            outRect.top = 0;
-        }*/
+        outRect.bottom = space;
+        outRect.top = space;
+
+
     }
 }

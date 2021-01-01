@@ -172,10 +172,16 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/order_full_view_title"
+                    android:id="@+id/deliveryAdresslabel"
                     android:text="@string/delivery_address" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/customer_address"
+                    style="@style/order_full_view_content" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/customer_pickup"
+                    android:visibility="gone"
+                    android:text="I will Pickup from Store"
                     style="@style/order_full_view_content" />
             </LinearLayout>
 

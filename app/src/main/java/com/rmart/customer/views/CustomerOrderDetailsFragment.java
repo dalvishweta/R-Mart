@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
@@ -43,7 +45,8 @@ import retrofit2.Response;
  * Created by Satya Seshu on 22/09/20.
  */
 public class CustomerOrderDetailsFragment extends BaseFragment {
-
+    public static final String DELIVERY ="Delivery";
+    public static final String PICKUP ="Pickup";
     private CustomerProductsShopDetailsModel vendorShoppingCartDetails;
     private AppCompatButton btnProceedToBuyField;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
@@ -54,6 +57,8 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
     private AppCompatTextView tvCustomerNumber;
     private AppCompatTextView tvCustomerAddress;
     private RecyclerView productsListField;
+    AppCompatTextView deliveryAddress,customerAddress;
+    CheckBox checkBoxPickUPFromShop;
 
     public static CustomerOrderDetailsFragment getInstance(CustomerProductsShopDetailsModel vendorShopDetails) {
         CustomerOrderDetailsFragment fragment = new CustomerOrderDetailsFragment();
@@ -93,13 +98,17 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         loadUIComponents(view);
 
+        showCartOrderDetails(DELIVERY);
+    }
+
+    private void showCartOrderDetails(String menthod) {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
             MyProfile myProfile = MyProfile.getInstance();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<CustomerOrderedResponseModel> call = customerProductsService.showCartOrderDetails(clientID, vendorShoppingCartDetails.getVendorId(), vendorShoppingCartDetails.getShopId(),
-                    myProfile.getPrimaryAddressId(), myProfile.getUserID());
+                    myProfile.getPrimaryAddressId(), myProfile.getUserID(),menthod);
             call.enqueue(new Callback<CustomerOrderedResponseModel>() {
                 @Override
                 public void onResponse(@NotNull Call<CustomerOrderedResponseModel> call, @NotNull Response<CustomerOrderedResponseModel> response) {
@@ -108,7 +117,7 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
                         CustomerOrderedResponseModel body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                updateUI(body.getCustomerOrderedDataResponseModel());
+                                updateUI(body);
                             } else {
                                 showCloseDialog(body.getMsg());
                             }
@@ -146,6 +155,9 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
         AppCompatTextView tvVendorName = view.findViewById(R.id.vendor_name);
         AppCompatTextView tvVendorNumber = view.findViewById(R.id.vendor_number);
         AppCompatTextView tvVendorAddress = view.findViewById(R.id.vendor_address);
+        deliveryAddress = view.findViewById(R.id.labelDelevery);
+        customerAddress = view.findViewById(R.id.customer_address);
+        checkBoxPickUPFromShop = view.findViewById(R.id.checkBox1);
 
         tvVendorName.setText(vendorShoppingCartDetails.getShopName());
         tvVendorNumber.setText(vendorShoppingCartDetails.getShopMobileNo());
@@ -171,13 +183,17 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
 
         btnProceedToBuyField = view.findViewById(R.id.btn_proceed_to_buy_field);
         btnProceedToBuyField.setOnClickListener(v -> proceedToBuySelected());
+
+
+
     }
 
     private void proceedToBuySelected() {
         onCustomerHomeInteractionListener.gotoPaymentOptionsScreen(vendorShoppingCartDetails);
     }
 
-    private void updateUI(CustomerOrderedResponseModel.CustomerOrderedDataResponseModel customerOrderedDataResponse) {
+    private void updateUI( CustomerOrderedResponseModel customerOrderedResponseModel ) {
+         CustomerOrderedResponseModel.CustomerOrderedDataResponseModel customerOrderedDataResponse= customerOrderedResponseModel.getCustomerOrderedDataResponseModel();
         btnProceedToBuyField.setVisibility(View.VISIBLE);
         CustomerOrderPersonalDetails customerOrderPersonalDetails = customerOrderedDataResponse.getCustomerOrderPersonalDetails();
         if (customerOrderPersonalDetails != null) {
@@ -201,5 +217,26 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
             ProductListAdapter productListAdapter = new ProductListAdapter(requireActivity(), lUpdatedProductsList);
             productsListField.setAdapter(productListAdapter);
         }
+        checkBoxPickUPFromShop.setOnCheckedChangeListener(null);
+        vendorShoppingCartDetails.deliveryMethod=customerOrderedDataResponse.deliveryMethod;
+
+        checkBoxPickUPFromShop.setChecked(customerOrderedDataResponse.deliveryMethod.equalsIgnoreCase(DELIVERY)?false:true);
+        if(customerOrderedDataResponse.deliveryMethod.equalsIgnoreCase(DELIVERY)) {
+            customerAddress.setVisibility(View.VISIBLE);
+            deliveryAddress.setVisibility(View.VISIBLE);
+        } else {
+
+            customerAddress.setVisibility(View.GONE);
+            deliveryAddress.setVisibility(View.GONE);
+        }
+        checkBoxPickUPFromShop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                showCartOrderDetails(b?PICKUP:DELIVERY);
+            }
+        });
+
+
     }
 }

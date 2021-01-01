@@ -1,5 +1,4 @@
 package com.rmart.profile.views;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,15 +17,14 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import com.google.android.gms.maps.model.LatLng;
 import com.rmart.BuildConfig;
 import com.rmart.R;
@@ -36,7 +34,12 @@ import com.rmart.databinding.FragmentAddAddressBinding;
 import com.rmart.mapview.MapsFragment;
 import com.rmart.mapview.OnLocationUpdateListner;
 import com.rmart.orders.views.OrdersActivity;
+import com.rmart.profile.adapters.CustomAdapter;
+import com.rmart.profile.model.BusinessType;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.profile.model.ShopType;
+import com.rmart.profile.model.ShopTypeResponce;
+import com.rmart.profile.repositories.ProfileRepository;
 import com.rmart.profile.viewmodel.EditAdreesViewModel;
 import com.rmart.utilits.InputFilterIntMinMax;
 import com.rmart.utilits.LoggerInfo;
@@ -48,9 +51,7 @@ import com.rmart.utilits.pojos.AddressResponse;
 import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.services.ProfileService;
 import com.theartofdev.edmodo.cropper.CropImage;
-
 import org.jetbrains.annotations.NotNull;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.SocketTimeoutException;
@@ -58,13 +59,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Field;
 
 import static android.app.Activity.RESULT_OK;
-
 public class EditAddressFragment extends BaseFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -78,9 +80,9 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
     private int selectedPhotoType = -1;
     private double latitude;
     private double longitude;
+    private ShopTypeResponce shopTypeResponce;
     private MapsFragment mapsFragment;
     private EditAdreesViewModel editAdreesViewModel;
-
     public EditAddressFragment() {
     }
     public static EditAddressFragment newInstance(boolean isAddNewAddress, AddressResponse myAddress) {
@@ -106,14 +108,13 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
 
         binding= DataBindingUtil.inflate(inflater, R.layout.fragment_add_address, container, false);
-
-            editAdreesViewModel = ViewModelProviders.of(getActivity()).get(EditAdreesViewModel.class);
-
+        editAdreesViewModel = ViewModelProviders.of(getActivity()).get(EditAdreesViewModel.class);
         binding.setLifecycleOwner(this);
         binding.setMyAddress(editAdreesViewModel);
         editAdreesViewModel.addressResponseMutableLiveData.setValue(myAddress);
 
         textWatchers();
+
 
         return binding.getRoot();
     }
@@ -406,6 +407,38 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
             }
         });
+        binding.bankAccNo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorBanckAccountStringMutableLiveData.setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        binding.bankIfsc.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editAdreesViewModel.errorBanckIFSCStringMutableLiveData .setValue(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -431,15 +464,50 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             myAddress.setId(-1);
             mapsFragment = MapsFragment.newInstance(true, true, 0.0, 0.0);
         }
+        ProfileRepository.getVenderProducts().observeForever(shopTypeResponce -> {
 
+            if(shopTypeResponce.getStatus()==200){
+                this.shopTypeResponce=shopTypeResponce;
+                BusinessType businessType = new BusinessType();
+                businessType.name="Select Business Type";
+                shopTypeResponce.results.businessTypes.add(0,businessType);
+
+                ShopType shopType = new ShopType();
+                shopType.shop_type_name="Select Shop Type";
+                shopTypeResponce.results.shopTypes.add(0,shopType);
+                try {
+                    CustomAdapter adaptercity = new CustomAdapter(getActivity(), R.layout.spinner_item, shopTypeResponce.results.businessTypes);
+                    binding.businessType.setAdapter(adaptercity);
+                    for (BusinessType businessType1: shopTypeResponce.results.businessTypes) {
+                        if(businessType1.name.equalsIgnoreCase(myAddress.getBusinessType())) {
+                            int i = shopTypeResponce.results.businessTypes.indexOf(businessType1);
+                            binding.businessType.setSelection(i);
+                        }
+                    }
+
+                } catch (Exception e){
+
+                }
+                try {
+                    CustomAdapter adaptercity = new CustomAdapter(getActivity(), R.layout.spinner_item, shopTypeResponce.results.shopTypes);
+                    binding.shopType.setAdapter(adaptercity);
+
+                    for (ShopType businessType1: shopTypeResponce.results.shopTypes) {
+                        if(businessType1.shop_type_name.equalsIgnoreCase(myAddress.getShopTypeName())) {
+                            int i = shopTypeResponce.results.shopTypes.indexOf(businessType1);
+                            binding.shopType.setSelection(i);
+                        }
+                    }
+                } catch (Exception e){
+
+                }
+
+            }
+
+        });
         fragmentTransaction.replace(R.id.map_layout_field, mapsFragment, MapsFragment.class.getName());
         fragmentTransaction.commit();
-        mapsFragment.setLocationUpdateListner(new OnLocationUpdateListner() {
-            @Override
-            public void onLocationUpdate(LatLng latLng) {
-                setAdress( latLng);
-            }
-        });
+        mapsFragment.setLocationUpdateListner(latLng -> setAdress( latLng));
         binding.addAddress.setOnClickListener(this);
         binding.shopImageLayoutField.setOnClickListener(this);
         binding.panCardLayoutField.setOnClickListener(this);
@@ -457,6 +525,31 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         } catch (Exception e){
 
         }
+        binding.shopType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                binding.shopTypeLayout.setBackground(getResources().getDrawable(R.drawable.grey_rounded_borders_bg));
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        binding.businessType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                binding.shopBusinessLayout.setBackground(getResources().getDrawable(R.drawable.grey_rounded_borders_bg));
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
     }
     private void setAdress(LatLng latLng){
@@ -523,13 +616,17 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             binding.closeTime.setText(myAddress.getClosingTime());
             binding.deliveryDaysAfterTime.setText(myAddress.getDeliveryDaysAfterTime());
             binding.deliveryDaysBeforeTime.setText(myAddress.getDeliveryDaysBeforeTime());
+            binding.bankAccNo.setText(myAddress.getBankAccNo());
+            binding.bankIfsc.setText(myAddress.getIfscCode());
+            binding.bankName.setText(myAddress.getBankName());
+            binding.bankBranch.setText(myAddress.getBranchName());
+
 
             Location location = new Location("");
             location.setLatitude(myAddress.getLatitude());
             location.setLongitude(myAddress.getLongitude());
             mapsFragment.setLocation(location);
         } else {
-
         }
         if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
             binding.retailerView.setVisibility(View.VISIBLE);
@@ -800,11 +897,42 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                 validation =false;
             }
 
+            String banckAccountno = Objects.requireNonNull(binding.bankAccNo.getText()).toString().trim();
+            if (TextUtils.isEmpty(banckAccountno)) {
+                editAdreesViewModel.errorBanckAccountStringMutableLiveData.setValue(getString(R.string.bank_account_required));
+                //showDialog(getString(R.string.shop_name_required));
+                validation =false;
+            }
+
+            String ifscCode = Objects.requireNonNull(binding.bankIfsc.getText()).toString().trim();
+            if (TextUtils.isEmpty(ifscCode)) {
+                editAdreesViewModel.errorBanckIFSCStringMutableLiveData.setValue(getString(R.string.bank_ifsc_required));
+                //showDialog(getString(R.string.shop_name_required));
+                validation =false;
+            }
+
+            if (binding.businessType.getSelectedItemPosition()==0) {
+                //editAdreesViewModel.errorBanckIFSCStringMutableLiveData.setValue(getString(R.string.bank_ifsc_required));
+                //showDialog(getString(R.string.shop_name_required));
+                binding.shopBusinessLayout.setBackground(getResources().getDrawable(R.drawable.error_image_border));
+
+                validation =false;
+            }
+            if (binding.shopType.getSelectedItemPosition()==0) {
+                //editAdreesViewModel.errorBanckIFSCStringMutableLiveData.setValue(getString(R.string.bank_ifsc_required));
+                //showDialog(getString(R.string.shop_name_required));
+                binding.shopTypeLayout.setBackground(getResources().getDrawable(R.drawable.error_image_border));
+
+                validation =false;
+            }
+
             if (TextUtils.isEmpty(editAdreesViewModel.shopImageUrl.getValue())) {
                 //showDialog(getString(R.string.shop_image_required));
                 binding.shopImageLayoutField.setBackground(getResources().getDrawable(R.drawable.error_image_border));
                 validation =false;
             }
+
+
 
             String shopNO = Objects.requireNonNull(binding.shopNo.getText()).toString().trim();
             if (TextUtils.isEmpty(shopNO)) {
@@ -933,12 +1061,14 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             progressDialog.show();
             if (myAddress.getId() == -1) {
                 getAddressData();
+
+
                 ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
                 profileService.addAddress(myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                         myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                         myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
                         myAddress.getDeliveryRadius(), Utils.CLIENT_ID, aadharNo, myAddress.getDeliveryCharges(),
-                        myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime()).enqueue(new Callback<AddressListResponse>() {
+                        myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(),myAddress.getBusinessType(),myAddress.getShopTypeId()+"",myAddress.getBankName(),myAddress.getIfscCode(),myAddress.getBranchName(),myAddress.getBankAccNo()).enqueue(new Callback<AddressListResponse>() {
                     @Override
                     public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
                         if (response.isSuccessful()) {
@@ -986,7 +1116,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                         myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                         myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
                         myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), aadharNo, myAddress.getDeliveryCharges(),
-                        myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(), myAddress.getId().toString()).enqueue(new Callback<AddressListResponse>() {
+                        myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(), myAddress.getId().toString(), myAddress.getBusinessType(),myAddress.getShopTypeId()+"",myAddress.getBankName(),myAddress.getIfscCode(),myAddress.getBranchName(),myAddress.getBankAccNo()).enqueue(new Callback<AddressListResponse>() {
                     @Override
                     public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
                         if (response.isSuccessful()) {
@@ -1062,6 +1192,16 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
         myAddress.setDeliveryDaysAfterTime(Objects.requireNonNull(binding.deliveryDaysAfterTime.getText()).toString());
         myAddress.setDeliveryDaysBeforeTime(Objects.requireNonNull(binding.deliveryDaysBeforeTime.getText()).toString());
+        myAddress.setBankAccNo(Objects.requireNonNull(binding.bankAccNo.getText().toString()));
+        myAddress.setIfscCode(Objects.requireNonNull(binding.bankIfsc.getText().toString()));
+        myAddress.setBranchName(Objects.requireNonNull(binding.bankBranch.getText().toString()));
+        myAddress.setBankName(Objects.requireNonNull(binding.bankName.getText().toString()));
+        if(this.shopTypeResponce!=null ) {
+            myAddress.setShopTypeId(shopTypeResponce.results.shopTypes.get((binding.shopType.getSelectedItemPosition())).shop_type_id);
+        }
+        if(this.shopTypeResponce!=null ) {
+            myAddress.setBusinessType(shopTypeResponce.results.businessTypes.get((binding.businessType.getSelectedItemPosition())).name);
+        }
 
     }
     public void updateLocationDetails(LatLng latLng) {

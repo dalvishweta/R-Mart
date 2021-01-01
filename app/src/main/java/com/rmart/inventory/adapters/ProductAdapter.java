@@ -166,7 +166,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
         }).dontAnimate().
                 diskCacheStrategy(DiskCacheStrategy.ALL).
                 signature(new ObjectKey(imageUrl!=null?imageUrl:"")).
-                error(android.R.drawable.ic_dialog_alert).thumbnail(0.5f).into(holder.imageView);
+                error(R.mipmap.default_product_image).thumbnail(0.5f).into(holder.imageView);
 
 //        holder.itemImg.setVisibility(View.GONE);
 //        holder.progressLayoutField.setVisibility(View.VISIBLE);

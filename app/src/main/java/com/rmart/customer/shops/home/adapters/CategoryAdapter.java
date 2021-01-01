@@ -30,7 +30,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     ArrayList<Integer> resources = new ArrayList<Integer>();
     int resourcescuruntposition = 0;
     OnClickListner onClickListner;
-    ArrayList<Category> categories = new ArrayList<>();
+    public ArrayList<Category> categories = new ArrayList<>();
     Activity context;
 
 
@@ -38,7 +38,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.context = context;
         this.onClickListner = onClickListner;
 
-        this.categories.addAll(categories);
+        this.categories = categories;
+
 
         resources.add(R.drawable.cat_background_1);
         resources.add(R.drawable.cat_background_2);
@@ -75,6 +76,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if(resources.size()<=resourcescuruntposition) {
                 resourcescuruntposition=0;
             }
+
             myViewHolder.binding.topview.setOnClickListener(view -> onClickListner.onCategorySelected(categories.get(position)));
         }
 

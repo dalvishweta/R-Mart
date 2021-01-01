@@ -64,8 +64,8 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     @Override
     public void gotoVendorProductDetails(CustomerProductsShopDetailsModel customerProductsModel) {
         showCartIcon();
-        replaceFragment(VendorProductDetailsFragment.getInstance(customerProductsModel), VendorProductDetailsFragment.class.getName(), true);
-        //replaceFragment(ShopHomePage.newInstance(customerProductsModel), VendorProductDetailsFragment.class.getName(), true);
+        //  replaceFragment(VendorProductDetailsFragment.getInstance(customerProductsModel), VendorProductDetailsFragment.class.getName(), true);
+        replaceFragment(ShopHomePage.newInstance(customerProductsModel), VendorProductDetailsFragment.class.getName(), true);
     }
 
     @Override

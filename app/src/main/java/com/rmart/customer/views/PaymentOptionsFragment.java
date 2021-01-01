@@ -160,7 +160,7 @@ public class PaymentOptionsFragment extends BaseFragment {
             String clientID = "2";
             MyProfile myProfile = MyProfile.getInstance();
             Call<ProductOrderedResponseModel> call = customerProductsService.savePlaceToOrder(clientID, vendorShopDetails.getVendorId(), myProfile.getPrimaryAddressId(),
-                    myProfile.getUserID(), vendorShopDetails.getShopId(), selectedPaymentType);
+                    myProfile.getUserID(), vendorShopDetails.getShopId(), selectedPaymentType,vendorShopDetails.deliveryMethod);
             call.enqueue(new Callback<ProductOrderedResponseModel>() {
                 @Override
                 public void onResponse(@NotNull Call<ProductOrderedResponseModel> call, @NotNull Response<ProductOrderedResponseModel> response) {

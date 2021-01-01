@@ -11,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
+import retrofit2.http.Field;
+
 public class AddressResponse extends BaseResponse implements Serializable {
 
     @SerializedName("id")
@@ -140,6 +142,85 @@ public class AddressResponse extends BaseResponse implements Serializable {
     @SerializedName("shop_image")
     @Expose
     private String shopImage;
+    @SerializedName("shop_type_id")
+    @Expose
+    private int shopTypeId;
+    @SerializedName("bank_name")
+    @Expose
+    private String bankName;
+    @SerializedName("ifsc_code")
+    @Expose
+    private String ifscCode;
+    @SerializedName("branch_name")
+    @Expose
+    private String branchName;
+
+    public String getBankAccNo() {
+        return bankAccNo;
+    }
+
+    public void setBankAccNo(String bankAccNo) {
+        this.bankAccNo = bankAccNo;
+    }
+
+    @SerializedName("bank_acc_no")
+    @Expose
+    private String bankAccNo;
+
+    public int getShopTypeId() {
+        return shopTypeId;
+    }
+
+    public void setShopTypeId(int shopTypeId) {
+        this.shopTypeId = shopTypeId;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getIfscCode() {
+        return ifscCode;
+    }
+
+    public void setIfscCode(String ifscCode) {
+        this.ifscCode = ifscCode;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public String getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(String businessType) {
+        this.businessType = businessType;
+    }
+
+    public String getShopTypeName() {
+        return shopTypeName;
+    }
+
+    public void setShopTypeName(String shopTypeName) {
+        this.shopTypeName = shopTypeName;
+    }
+
+    @SerializedName("business_type")
+    @Expose
+    private String businessType;
+    @SerializedName("shop_type_name")
+    @Expose
+    private String shopTypeName;
 
     private boolean isPrimaryAddress = false;
 

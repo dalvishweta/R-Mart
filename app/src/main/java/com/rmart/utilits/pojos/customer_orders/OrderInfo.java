@@ -39,6 +39,10 @@ public class OrderInfo implements Serializable {
     @Expose
     String createdDate;
 
+    @SerializedName("delivery_method")
+    @Expose
+    public String deliveryMethod;
+
     @SerializedName("delivery_status")
     @Expose
     String deliveryStatus;

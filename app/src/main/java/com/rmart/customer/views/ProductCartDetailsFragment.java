@@ -426,7 +426,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
         tvTotalPriceField.setText(Utils.roundOffDoubleValue(totalPrice, "0.00"));
         tvTotalPriceField.setPaintFlags(tvTotalPriceField.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         String quantityDetails ="";
-        String quantityNoDetails = "100X4";//productUnitDetails.getUnitNumber();
+        String quantityNoDetails = productUnitDetails.getUnitNumber();
         try {
             quantityDetails = String.format(Locale.getDefault(), "%s %s", Utils.roundOffDoubleValue(Double.parseDouble(quantityNoDetails), "0.00"), productUnitDetails.getShortUnitMeasure());
         } catch (Exception e){

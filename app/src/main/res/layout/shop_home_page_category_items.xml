@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <data>
-
+            <import type="android.view.View"/>
             <variable
                 name="category"
                 type="com.rmart.customer.shops.home.model.Category" />
@@ -33,6 +33,7 @@
             android:layout_weight="2"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="2dp"
+            android:visibility="@{category.parentImage==null?View.INVISIBLE:View.VISIBLE}"
             android:layout_marginBottom="2dp"
             app:imageUrl="@{category}"
             android:id="@+id/img_designlistlayout"
