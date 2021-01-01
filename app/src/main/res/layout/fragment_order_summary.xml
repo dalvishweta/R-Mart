@@ -107,9 +107,7 @@
             android:textColor="@color/black"
             android:fontFamily="@font/montserrat_semibold"
             android:layout_height="wrap_content"/>
-
-
-
+        
         <TextView
             android:layout_below="@+id/title"
             android:layout_width="match_parent"
