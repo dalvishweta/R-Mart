@@ -83,7 +83,7 @@ public class CustomerWishListActivity extends BaseNavigationDrawerActivity imple
     }
 
     @Override
-    public void gotoPaymentOptionsScreen(CustomerProductsShopDetailsModel vendorShopDetails) {
+    public void gotoPaymentOptionsScreen(CustomerProductsShopDetailsModel vendorShopDetails,int i) {
 
     }
 

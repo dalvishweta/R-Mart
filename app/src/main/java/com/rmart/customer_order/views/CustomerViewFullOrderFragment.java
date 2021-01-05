@@ -51,7 +51,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     private Order mOrderObject;
     private AppCompatButton mLeftButton, mRightButton;
     private AppCompatTextView tvStatus, dateValue, vendorName, vendorNumber, vendorAddress, orderIdValue, tvAmount,
-            tvDeliveryCharges, tvTotalCharges, tvPaymentType, customerName, customerNumber, customerAddress,deliveryAdresslabel,customer_pickup;
+            tvDeliveryCharges, discount,tvTotalCharges, tvPaymentType, customerName, customerNumber, customerAddress,deliveryAdresslabel,customer_pickup;
     private CustomerOrderProductList orderProductList;
     private RecyclerView recyclerView;
     private LinearLayout deliveryBoyInfo, footer;
@@ -179,6 +179,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         tvAmount = view.findViewById(R.id.amount);
         tvDeliveryCharges = view.findViewById(R.id.delivery_charges);
         tvTotalCharges = view.findViewById(R.id.total_charges);
+        discount = view.findViewById(R.id.discount);
         tvPaymentType = view.findViewById(R.id.payment_type);
         view.findViewById(R.id.custom_details_root).setVisibility(View.VISIBLE);
         vendorDetailsLayout = view.findViewById(R.id.vendor_details_root);
@@ -262,6 +263,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
             double deliveryCharges = orderInfo.getOrderCharges();
             tvDeliveryCharges.setText(Utils.roundOffDoubleValue(deliveryCharges, "0.00"));
             tvTotalCharges.setText(Utils.roundOffDoubleValue(orderInfo.getTotalAmt(), "0.00"));
+            discount.setText("-"+Utils.roundOffDoubleValue(orderInfo.getCoupon_value(), "0.00"));
             tvPaymentType.setText(orderInfo.getModeOfPayment());
         }
 

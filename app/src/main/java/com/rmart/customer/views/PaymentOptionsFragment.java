@@ -52,6 +52,7 @@ import retrofit2.Response;
 public class PaymentOptionsFragment extends BaseFragment {
 
     private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
     private ImageView ivCashOnDeliveryImageField;
     private ImageView ivInternetBankingImageField;
@@ -66,10 +67,11 @@ public class PaymentOptionsFragment extends BaseFragment {
         // Required empty public constructor
     }
 
-    public static PaymentOptionsFragment getInstance(CustomerProductsShopDetailsModel vendorShopDetails) {
+    public static PaymentOptionsFragment getInstance(CustomerProductsShopDetailsModel vendorShopDetails,int selectedPaymentType) {
         PaymentOptionsFragment fragment = new PaymentOptionsFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, vendorShopDetails);
+        args.putInt(ARG_PARAM2, selectedPaymentType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -79,6 +81,7 @@ public class PaymentOptionsFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             vendorShopDetails = (CustomerProductsShopDetailsModel) getArguments().getSerializable(ARG_PARAM1);
+            selectedPaymentType =  getArguments().getInt(ARG_PARAM2);
         }
     }
 
@@ -111,6 +114,7 @@ public class PaymentOptionsFragment extends BaseFragment {
             proceedSelected();
         }
         );
+        proceedSelected();
     }
 
     @Override

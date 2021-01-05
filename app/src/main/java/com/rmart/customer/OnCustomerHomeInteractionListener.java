@@ -16,7 +16,7 @@ public interface OnCustomerHomeInteractionListener {
 
     void gotoProductDescDetails(CustomerProductDetailsModel vendorProductDataDetails, CustomerProductsShopDetailsModel vendorShopDetails);
 
-    void gotoPaymentOptionsScreen(CustomerProductsShopDetailsModel vendorShopDetails);
+    void gotoPaymentOptionsScreen(CustomerProductsShopDetailsModel vendorShopDetails,int selectedPaymentType);
 
     void gotoShoppingCartScreen();
 

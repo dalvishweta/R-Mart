@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+
+        <import type="android.view.View"/>
+        <import type="com.rmart.utilits.Curruncy"/>
+        <variable
+            name="CustomerOrderProductOrderedDetails"
+            type="com.rmart.customer.models.CustomerOrderProductOrderedDetails" />
+    </data>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="7dp"
+    android:background="@drawable/product_bacgground"
+
+    android:padding="5dp"
+    >
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_margin="1dp"
+
+        app:imageUrl="@{CustomerOrderProductOrderedDetails.productImage}"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        />
+    <TextView
+        android:layout_toRightOf="@+id/image"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/product_name"
+        android:layout_width="match_parent"
+        android:text="@{CustomerOrderProductOrderedDetails.productName}"
+        android:textSize="12dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_semibold"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_toRightOf="@+id/image"
+        android:layout_below="@+id/product_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3"
+        android:orientation="horizontal">
+        <TextView
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:hint="Qnty: 2"
+            android:text='@{"Qnty:"+CustomerOrderProductOrderedDetails.totalProductCartQty}'
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:text='@{"Unit:"+CustomerOrderProductOrderedDetails.unitNumber+" "+CustomerOrderProductOrderedDetails.unitMeasure}'
+            android:textSize="12dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:padding="5dp"
+            android:layout_width="match_parent"
+            android:text='@{"Price :"+Curruncy.getCurruncy(CustomerOrderProductOrderedDetails.totalUnitPrice)}'
+            android:textSize="12dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</RelativeLayout>
+</layout>

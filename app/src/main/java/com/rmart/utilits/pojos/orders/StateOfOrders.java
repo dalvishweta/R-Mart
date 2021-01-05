@@ -83,6 +83,7 @@ public class StateOfOrders implements Serializable {
         switch (status) {
             case Utils.OPEN_ORDER_STATUS:
                 setPosition(0);
+                bgTop = R.drawable.item_shipped_top_bg;
                 break;
             case Utils.ACCEPTED_ORDER_STATUS:
                 setPosition(1);

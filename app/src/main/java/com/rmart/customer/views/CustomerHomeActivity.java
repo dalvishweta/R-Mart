@@ -9,6 +9,7 @@ import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerProductDetailsModel;
+import com.rmart.customer.order.summary.fragments.OrderSummaryFragment;
 import com.rmart.customer.shops.home.fragments.ShopHomePage;
 import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
@@ -105,7 +106,8 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     @Override
     public void gotoCompleteOrderDetailsScreen(CustomerProductsShopDetailsModel vendorShopDetails) {
         hideCartIcon();
-        replaceFragment(CustomerOrderDetailsFragment.getInstance(vendorShopDetails), PaymentOptionsFragment.class.getName(), true);
+       // replaceFragment(CustomerOrderDetailsFragment.getInstance(vendorShopDetails), PaymentOptionsFragment.class.getName(), true);
+        replaceFragment(OrderSummaryFragment.newInstance(vendorShopDetails), PaymentOptionsFragment.class.getName(), true);
     }
 
     @Override
@@ -139,9 +141,9 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     }
 
     @Override
-    public void gotoPaymentOptionsScreen(CustomerProductsShopDetailsModel vendorShopDetails) {
+    public void gotoPaymentOptionsScreen(CustomerProductsShopDetailsModel vendorShopDetails,int selectedPaymentType) {
         hideCartIcon();
-        replaceFragment(PaymentOptionsFragment.getInstance(vendorShopDetails), PaymentOptionsFragment.class.getName(), true);
+        replaceFragment(PaymentOptionsFragment.getInstance(vendorShopDetails,selectedPaymentType), PaymentOptionsFragment.class.getName(), true);
     }
 
     @Override

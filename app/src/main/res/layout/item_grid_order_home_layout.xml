@@ -3,9 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:layout_gravity="center"
     android:gravity="center"
+    android:background="@drawable/product_bacgground"
     android:layout_margin="8dp">
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/order_count"
@@ -16,18 +15,16 @@
         android:gravity="center"
         android:textColor="@color/black"
         android:layout_width="match_parent"
-        android:background="@drawable/item_packed_top_bg"
         android:layout_height="wrap_content" />
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/order_title"
         android:text="@string/packed_orders"
         android:textSize="16sp"
         android:padding="8dp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:fontFamily="@font/roboto_bold"
         android:layout_gravity="center"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:background="@drawable/item_packed_bottom_bg"
         android:layout_height="wrap_content" />
 </LinearLayout>

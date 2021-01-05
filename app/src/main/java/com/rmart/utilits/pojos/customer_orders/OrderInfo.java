@@ -15,6 +15,18 @@ public class OrderInfo implements Serializable {
     @Expose
     String orderID;
 
+    public String getDeliveryMethod() {
+        return deliveryMethod;
+    }
+
+    public double getCoupon_value() {
+        return coupon_value;
+    }
+
+    public String getCouponCode() {
+        return couponCode;
+    }
+
     @SerializedName("receipt_number")
     @Expose
     String receiptNumber;
@@ -50,6 +62,13 @@ public class OrderInfo implements Serializable {
     @SerializedName("order_charges")
     @Expose
     double orderCharges;
+
+    @SerializedName("coupon_value")
+    @Expose
+    double coupon_value;
+    @SerializedName("coupon_code")
+    @Expose
+    String couponCode;
 
     @SerializedName("total_amount")
     @Expose

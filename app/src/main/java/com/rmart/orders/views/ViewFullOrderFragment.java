@@ -61,7 +61,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     private Spinner deliveryBoySpinner;
     ArrayList<Object> reasonsList = new ArrayList<>();
     ArrayList<Object> deliveryBoyList = new ArrayList<>();
-    private TextView tvStatusComments;
+    private TextView tvStatusComments,discount;
     private String userID;
 
     public ViewFullOrderFragment() {
@@ -158,7 +158,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         deliveryAdresslabel = view.findViewById(R.id.deliveryAdresslabel);
         customer_address = view.findViewById(R.id.customer_address);
         customer_pickup = view.findViewById(R.id.customer_pickup);
-
+        discount = view.findViewById(R.id.discount);
         // Customer Info
         customerName = view.findViewById(R.id.customer_name);
         customerNumber = view.findViewById(R.id.customer_number);
@@ -241,6 +241,8 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         double deliveryCharges = orderProductList.getOrderInfo().getOrderCharges();
         tvDeliveryCharges.setText(Utils.roundOffDoubleValue(deliveryCharges, "0.00"));
         tvTotalCharges.setText(Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getTotalAmt(), "0.00"));
+        discount.setText("-"+Utils.roundOffDoubleValue(orderProductList.getOrderInfo().getCoupon_value(), "0.00"));
+
         tvPaymentType.setText(orderProductList.getOrderInfo().getModeOfPayment());
         setFooter();
         ProductListAdapter productAdapter = new ProductListAdapter(requireActivity(), orderProductList.getProduct(), null);

@@ -24,7 +24,29 @@ public class CustomerOrderPaymentInfoDetails implements Serializable {
     @Expose
     private double totalAmount;
 
-    /*@SerializedName("expected_date_of_delivery")
+
+    @SerializedName("coupon_discount_amount")
+    @Expose
+    private double siscountAmount;
+    @SerializedName("coupon_code_status")
+    @Expose
+    private boolean couponCodeStatus;
+    @SerializedName("coupon_code_message")
+    @Expose
+    private String couponMessage;
+
+    public double getSiscountAmount() {
+        return siscountAmount;
+    }
+
+    public boolean isCouponCodeStatus() {
+        return couponCodeStatus;
+    }
+
+    public String getCouponMessage() {
+        return couponMessage;
+    }
+/*@SerializedName("expected_date_of_delivery")
     @Expose
     private Integer expectedDateDelivery;*/
 

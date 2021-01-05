@@ -1,9 +1,14 @@
 package com.rmart.customer.models;
 
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+
+import androidx.databinding.BindingAdapter;
 
 /**
  * Created by Satya Seshu on 22/09/20.
@@ -152,5 +157,10 @@ public class CustomerOrderProductOrderedDetails implements Serializable {
 
     public void setVendorId(Integer vendorId) {
         this.vendorId = vendorId;
+    }
+
+    @BindingAdapter("imageUrl")
+    public static void loadImage(ImageView view, String url) {
+        Glide.with(view.getContext()).load(url).into(view);
     }
 }

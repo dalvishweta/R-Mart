@@ -95,6 +95,7 @@
     <string name="payment_info">Payment Info</string>
     <string name="mode_of_payment">Mode of Payment:</string>
     <string name="delivery_charges">Delivery Charges:</string>
+    <string name="discount_amount">Discount :</string>
     <string name="delivery_charge">Delivery Charges</string>
     <string name="order_amount">Order Amount:</string>
     <string name="quantity">Quantity:</string>

@@ -65,4 +65,5 @@ public class CustomerOrderedResponseModel extends BaseResponse {
             this.customerOrderProductDetailsList = customerOrderProductDetailsList;
         }
     }
+
 }

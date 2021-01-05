@@ -1,12 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.rmart.utilits.Curruncy"/>
+        <variable
+            name="OrderSumaryViewModel"
+            type="com.rmart.customer.order.summary.viewmodel.OrderSumaryViewModel" />
+        <variable
+            name="productAdapter"
+            type="com.rmart.customer.order.summary.adapters.ProductsAdapter" />
+
+
+    </data>
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".customer.order.summary.OrderSummaryFragment">
+    >
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/sumary_layout"
+        android:visibility="@{(OrderSumaryViewModel.iserror||OrderSumaryViewModel.isLoading)?View.GONE:View.VISIBLE}"
+        android:layout_above="@+id/bottomlayout"
+        android:layout_width="match_parent"
+        android:background="@color/item_order_list_bg"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded_corners_edit_text_bg"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/shoptitle"
+            android:layout_width="match_parent"
+            android:text="Shop Details"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/shopname"
+            android:layout_width="match_parent"
+            android:text="@{OrderSumaryViewModel.vendorShoppingCartDetails.shopName}"
+            android:layout_below="@+id/shoptitle"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/mobile_number"
+            android:layout_width="match_parent"
+            android:text="@{OrderSumaryViewModel.vendorShoppingCartDetails.shopMobileNo}"
+            android:layout_below="@+id/shopname"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_below="@+id/mobile_number"
+            android:layout_width="match_parent"
+            android:hint="plot no 87, Lxmi Colony, near jay bhavani nagar,cidco, N-2, Aurangabad,9975294782"
+            android:text="@{OrderSumaryViewModel.vendorShoppingCartDetails.shopAddress}"
+            android:textSize="14dp"
+            android:lines="2"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
 
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_margin="5dp"
@@ -21,7 +91,6 @@
             android:textColor="@color/black"
             android:fontFamily="@font/montserrat_semibold"
             android:layout_height="wrap_content"/>
-
     <LinearLayout
         android:layout_below="@+id/header"
         android:layout_width="match_parent"
@@ -30,11 +99,14 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:background="@drawable/selected_backgound"
+            android:id="@+id/pick_fromStore"
             android:layout_below="@+id/header"
             android:layout_width="100dp"
             android:gravity="center"
+            android:background='@{(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.deliveryMethod.equalsIgnoreCase("Delivery")) ? @drawable/rounded_corners_edit_text_bg:@drawable/selected_backgound}'
             android:orientation="vertical"
+            android:onClick="@{(v) -> OrderSumaryViewModel.onClick(v)}"
+
             android:layout_height="wrap_content">
             <ImageView
                 android:layout_marginTop="3dp"
@@ -56,10 +128,13 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <LinearLayout
-            android:background="@drawable/rounded_corners_edit_text_bg"
+            android:background='@{(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.deliveryMethod.equalsIgnoreCase("Pickup")) ? @drawable/rounded_corners_edit_text_bg:@drawable/selected_backgound}'
             android:layout_below="@+id/header"
             android:layout_width="100dp"
             android:gravity="center"
+            android:id="@+id/home_delivery"
+            android:onClick="@{(v) -> OrderSumaryViewModel.onClick(v)}"
+
             android:layout_marginLeft="10dp"
             android:orientation="vertical"
             android:layout_height="wrap_content">
@@ -73,7 +148,7 @@
             <TextView
                 android:layout_below="@+id/title"
                 android:layout_width="match_parent"
-                android:text="Pick From \nShop/Store"
+                android:text="Home \nDelivery"
                 android:textSize="10dp"
                 android:gravity="center"
                 android:layout_margin="2dp"
@@ -86,11 +161,6 @@
 
 
     </LinearLayout>
-
-
-
-
-
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -102,7 +172,6 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:text="Delivery at :"
-
             android:textSize="20dp"
             android:textColor="@color/black"
             android:fontFamily="@font/montserrat_semibold"
@@ -111,7 +180,8 @@
         <TextView
             android:layout_below="@+id/title"
             android:layout_width="match_parent"
-            android:text="plot no 87, Lxmi Colony,\n near jay bhavani nagar,\n cidco, N-2, Aurangabad,\n 9975294782"
+            android:hint="plot no 87, Lxmi Colony,\n near jay bhavani nagar,\n cidco, N-2, Aurangabad,\n 9975294782"
+            android:text='@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPersonalDetails.address+"\n"+OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPersonalDetails.mobileNumber}'
             android:textSize="14dp"
             android:lines="4"
             android:layout_marginRight="20dp"
@@ -126,6 +196,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/selected_backgound"
             android:textSize="14dp"
+            android:visibility="gone"
             android:id="@+id/change"
             android:layout_alignParentRight="true"
             android:textColor="@color/buy_now_color"
@@ -134,7 +205,6 @@
 
 
     </RelativeLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_margin="5dp"
@@ -154,12 +224,19 @@
         android:layout_width="match_parent"
         android:weightSum="6"
         android:background="@drawable/promocode_background"
-        android:padding="10dp"
         android:layout_margin="5dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:orientation="vertical"
+        android:padding="10dp"
+
         android:layout_height="wrap_content"
         >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="6"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
         <ImageView
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
@@ -168,26 +245,205 @@
             android:layout_height="50dp"
             />
 
-        <TextView
+        <EditText
             android:layout_weight="4"
             android:layout_width="wrap_content"
-            android:text="Apply a Promo Code"
+            android:hint="Apply a Promo Code"
             android:textSize="18dp"
+            android:text="@={OrderSumaryViewModel.DiscountCode}"
             android:gravity="center_vertical"
             android:textColor="@color/black"
+            tools:visibility="gone"
+            android:visibility="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.couponCodeStatus?View.GONE:View.VISIBLE}"
             android:layout_height="wrap_content"/>
 
         <TextView
+            android:layout_weight="4"
+            android:layout_width="wrap_content"
+            android:text="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.couponMessage}"
+            android:textSize="18dp"
+            android:visibility='@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.couponCodeStatus?View.VISIBLE:View.GONE}'
+            tools:visibility="gone"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"/>
+        <TextView
             android:layout_width="wrap_content"
             android:text="Apply"
+            android:id="@+id/btnpromocodeapply"
             android:layout_weight="1"
             android:textSize="18dp"
             android:padding="15dp"
+            android:visibility='@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.couponCodeStatus?View.GONE:View.VISIBLE}'
+            android:onClick="@{(v) -> OrderSumaryViewModel.onClick(v)}"
             android:textStyle="bold"
             android:gravity="center_vertical"
             android:textColor="@color/buy_now_color"
             android:layout_height="wrap_content"/>
+        >
+    </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:text="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.couponMessage}"
+            android:visibility='@{(OrderSumaryViewModel.DiscountCode.trim().length()>1 &amp;&amp; !OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.couponCodeStatus)?View.VISIBLE:View.GONE}'
+            android:textSize="12dp"
+            android:textColor="@color/red"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_corners_edit_text_bg"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Payment Information"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_below="@+id/paymentmethodlabel"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Expected Delivery Date"
+                android:textSize="14dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:text="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.expectedDateOfDelivery}"
+                android:textSize="14dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_below="@+id/paymentmethodlabel"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Order Amount"
+                android:textSize="14dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="14dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text='@{Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.orderAmount+"")}'
+
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/paymentmethodlabel"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Delivery Charge"
+                android:textSize="14dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:text='@{Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.deliveryCharges+"")}'
+                android:textSize="14dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_below="@+id/paymentmethodlabel"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Discount"
+                android:textSize="14dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:hint="2709"
+                android:text='@{Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.siscountAmount+"")}'
+                android:textSize="14dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_below="@+id/paymentmethodlabel"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Total Amount"
+                android:textSize="14dp"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:text='@{Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.totalAmount+"")}'
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -211,44 +467,49 @@
             android:orientation="horizontal"
             android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:weightSum="4"
-            android:background="@drawable/selected_backgound"
-            android:padding="10dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:text="Cash on Delivery"
-                android:textSize="14dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:textColor="@color/black"
-                android:layout_height="wrap_content"/>
-            <ImageView
-                android:layout_weight="3"
-                android:layout_gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:src="@drawable/ic_cash_on_delivery"
-                android:layout_height="30dp"
-
-                />
-
-
-        </LinearLayout>
-
             <LinearLayout
+                android:id="@+id/cash_on_delivery_layout_field"
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:weightSum="4"
+                android:background="@{OrderSumaryViewModel.selectedPaymentType==1?@drawable/selected_backgound:@drawable/rounded_corners_edit_text_bg}"
+                android:padding="10dp"
+                android:onClick="@{(v) -> OrderSumaryViewModel.onClick(v)}"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Cash on Delivery"
+                    android:textSize="14dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:layout_weight="3"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/ic_cash_on_delivery"
+                    android:layout_height="30dp"
+
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/netBancking"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:weightSum="4"
+                android:onClick="@{(v) -> OrderSumaryViewModel.onClick(v)}"
+                android:background="@{OrderSumaryViewModel.selectedPaymentType==2?@drawable/selected_backgound:@drawable/rounded_corners_edit_text_bg}"
+
                 android:gravity="center_vertical"
                 android:layout_marginLeft="5dp"
-                android:background="@drawable/rounded_corners_edit_text_bg"
                 android:padding="10dp"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
@@ -275,6 +536,136 @@
 
         </LinearLayout>
     </RelativeLayout>
+    <TextView
+        android:padding="10dp"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:text="Products Ordered"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_semibold"
+        android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/product_list_field"
+            android:adapter="@{productAdapter}"
+            android:layout_width="match_parent"
+            android:background="@color/item_order_list_bg"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/product_item_view" />
 
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
+        android:id="@+id/bottomlayout"
 
-</LinearLayout>
+        android:visibility="@{(OrderSumaryViewModel.iserror||OrderSumaryViewModel.isLoading)?View.GONE:View.VISIBLE}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/white"
+        >
+
+        <TextView
+            android:id="@+id/bilingtitle"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:text="Billing Details"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_below="@+id/bilingtitle"
+            android:layout_width="match_parent"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:text='@{"Total "+Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.totalAmount+"")}'
+            android:textSize="20dp"
+            android:textColor="@color/buy_now_color"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/placeorder"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="20dp"
+            android:onClick="@{(v) -> OrderSumaryViewModel.onClick(v)}"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_height="@dimen/field_height"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/submit_button_bg"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Place Order"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_regular_size" />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/erorolayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:visibility="gone"
+        android:visibility="@{(OrderSumaryViewModel.iserror)?View.VISIBLE:View.GONE}"
+        android:orientation="vertical"
+       >
+        <ImageView
+            android:id="@+id/app_logo"
+            android:layout_width="170dp"
+            android:layout_gravity="center"
+            android:layout_height="170dp"
+            android:scaleType="fitXY"
+            android:layout_marginTop="80dp"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/slwo_internet_icon1"
+            />
+        <TextView
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/buy_now_color"
+            android:gravity="center"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_width="match_parent"
+            android:text="Ooops!"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/errormessage"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="@dimen/text_regular_size"
+            android:textColor="@color/item_sub_title_color"
+            android:fontFamily="@font/montserrat_regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_tryagain"
+            android:layout_width="wrap_content"
+            android:textColor="@color/white"
+            android:paddingLeft="30sp"
+            android:paddingRight="30sp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/submit_button_bg"
+            android:layout_height="@dimen/field_height"
+            android:textSize="@dimen/text_regular_size"
+            android:layout_marginTop="20dp"
+            android:text="@string/try_again" />
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:visibility="@{OrderSumaryViewModel.isLoading?View.VISIBLE:View.GONE}"
+        android:id="@+id/progressBar1"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/searchLayout"
+
+        android:layout_height="wrap_content" />
+</RelativeLayout>
+
+</layout>

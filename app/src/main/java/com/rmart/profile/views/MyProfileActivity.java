@@ -153,7 +153,7 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
     }
 
     @Override
-    public void gotoPaymentOptionsScreen(CustomerProductsShopDetailsModel vendorShopDetails) {
+    public void gotoPaymentOptionsScreen(CustomerProductsShopDetailsModel vendorShopDetails,int i) {
 
     }
 

@@ -250,6 +250,21 @@
                         android:id="@+id/delivery_charges"
                         style="@style/order_full_view_payment" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/order_full_view_payment"
+                        android:text="@string/discount_amount" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/discount"
+                        style="@style/order_full_view_payment" />
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"

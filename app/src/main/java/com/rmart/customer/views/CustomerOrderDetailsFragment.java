@@ -189,7 +189,7 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
     }
 
     private void proceedToBuySelected() {
-        onCustomerHomeInteractionListener.gotoPaymentOptionsScreen(vendorShoppingCartDetails);
+        onCustomerHomeInteractionListener.gotoPaymentOptionsScreen(vendorShoppingCartDetails,-1);
     }
 
     private void updateUI( CustomerOrderedResponseModel customerOrderedResponseModel ) {
