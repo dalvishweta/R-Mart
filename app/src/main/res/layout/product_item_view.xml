@@ -65,7 +65,7 @@
         <TextView
             android:padding="5dp"
             android:layout_width="match_parent"
-            android:text='@{"Price :"+Curruncy.getCurruncy(CustomerOrderProductOrderedDetails.totalUnitPrice)}'
+            android:text='@{"Price :"+Curruncy.getCurruncy(CustomerOrderProductOrderedDetails.totalSellingPrice+"")}'
             android:textSize="12dp"
             android:layout_weight="1"
             android:fontFamily="@font/montserrat_semibold"

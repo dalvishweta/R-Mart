@@ -90,7 +90,6 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
                 }
             }
         });
-
         task.addOnFailureListener(exception -> {
             try {
                 if (exception instanceof ResolvableApiException) {

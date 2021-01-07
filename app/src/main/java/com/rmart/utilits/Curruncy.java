@@ -11,10 +11,10 @@ public class Curruncy {
         }
 
     }
-    public static String getDiscountCurruncy(String  amount){
+    public static String getDiscountCurruncy(String  amount) {
 
 
-        return "Rs. -" + String.format("%.2f",Double.parseDouble(amount));
+        return "Rs. " + String.format("%.2f",Double.parseDouble(amount));
 
 
     }

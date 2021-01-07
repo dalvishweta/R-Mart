@@ -36,18 +36,12 @@ public class OrderSummaryRepository {
                 if(t.getLocalizedMessage().equalsIgnoreCase("Unable to resolve host \""+ BuildConfig.BASE_URL+"\": No address associated with hostname"))
                 {
                     result.setMsg("Please Check Enternet Connection");
-
                 } else {
                     result.setMsg(t.getLocalizedMessage());
                 }
                 resultMutableLiveData.setValue(result);
-
-
             }
         });
         return resultMutableLiveData;
-
     }
-
-
 }

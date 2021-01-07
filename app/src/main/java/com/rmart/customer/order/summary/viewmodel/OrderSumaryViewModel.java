@@ -60,8 +60,13 @@ public class OrderSumaryViewModel extends ViewModel {
                 showOrderSummary(vendorShoppingCartDetails.getValue().getVendorId(), vendorShoppingCartDetails.getValue().getShopId(), myProfile.getPrimaryAddressId(), DELIVERY, DiscountCode.getValue());
             break;
             case R.id.btnpromocodeapply:
-                showOrderSummary(vendorShoppingCartDetails.getValue().getVendorId(), vendorShoppingCartDetails.getValue().getShopId(), myProfile.getPrimaryAddressId(), orderedSummaryResponseMutableLiveData.getValue().getCustomerOrderedDataResponseModel().deliveryMethod, DiscountCode.getValue());
-            break;
+                if(DiscountCode.getValue()!=null && !DiscountCode.getValue().equalsIgnoreCase("")) {
+                    showOrderSummary(vendorShoppingCartDetails.getValue().getVendorId(), vendorShoppingCartDetails.getValue().getShopId(), myProfile.getPrimaryAddressId(), orderedSummaryResponseMutableLiveData.getValue().getCustomerOrderedDataResponseModel().deliveryMethod, DiscountCode.getValue());
+                } else {
+
+                    Toast.makeText(view.getContext(),"Pease Enter Promocode",Toast.LENGTH_LONG).show();
+                }
+                break;
             case R.id.netBancking:
                 selectedPaymentType.setValue(2);
             break;
@@ -73,6 +78,7 @@ public class OrderSumaryViewModel extends ViewModel {
                 if(selectedPaymentType.getValue()!=null && selectedPaymentType.getValue()>0) {
                     FragmentManager fm = ((AppCompatActivity) view.getContext()).getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    vendorShoppingCartDetails.getValue().deliveryMethod=orderedSummaryResponseMutableLiveData.getValue().getCustomerOrderedDataResponseModel().deliveryMethod;
                     fragmentTransaction.replace(R.id.base_container, PaymentOptionsFragment.getInstance(vendorShoppingCartDetails.getValue(), selectedPaymentType.getValue()), PaymentOptionsFragment.class.getName());
                     fragmentTransaction.addToBackStack(PaymentOptionsFragment.class.getName());
                     fragmentTransaction.commit();

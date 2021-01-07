@@ -76,6 +76,7 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 CategoryAdapter categoryAdapter = new  CategoryAdapter(context,rs.category,onClickListner);
                 myViewHolder.binding.category.setLayoutManager(new LinearLayoutManager(context, HORIZONTAL,false));
                 myViewHolder.binding.category.setAdapter(categoryAdapter);
+                myViewHolder.binding.viewall.setVisibility(View.GONE);
 
 
             } else if(rs.type.equalsIgnoreCase("product_data")) {
@@ -83,16 +84,15 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 myViewHolder.binding.category.setLayoutManager(new LinearLayoutManager(context, HORIZONTAL,false));
                 myViewHolder.binding.category.setAdapter(productsAdapter);
                 myViewHolder.binding.category.addItemDecoration(new GridSpacesItemDecoration(10));
+                myViewHolder.binding.viewall.setVisibility(View.VISIBLE);
             }
             myViewHolder.binding.viewall.setOnClickListener(view -> {
-
                 for (Category categorye:category ) {
                     if(categorye.parentCategoryName.equalsIgnoreCase(rs.name)){
                         onClickListner.onCategorySelected(categorye);
                         break;
                     }
                 }
-
             });
 
 

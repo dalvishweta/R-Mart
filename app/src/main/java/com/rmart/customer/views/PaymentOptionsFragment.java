@@ -168,7 +168,7 @@ public class PaymentOptionsFragment extends BaseFragment {
             call.enqueue(new Callback<ProductOrderedResponseModel>() {
                 @Override
                 public void onResponse(@NotNull Call<ProductOrderedResponseModel> call, @NotNull Response<ProductOrderedResponseModel> response) {
-                    progressDialog.dismiss();
+
                     if (response.isSuccessful()) {
                         ProductOrderedResponseModel body = response.body();
                         if (body != null) {
@@ -192,6 +192,7 @@ public class PaymentOptionsFragment extends BaseFragment {
                     } else {
                         showDialog(getString(R.string.no_information_available));
                     }
+                    progressDialog.dismiss();
                 }
 
                 @Override

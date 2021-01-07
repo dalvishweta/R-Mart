@@ -263,7 +263,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
             double deliveryCharges = orderInfo.getOrderCharges();
             tvDeliveryCharges.setText(Utils.roundOffDoubleValue(deliveryCharges, "0.00"));
             tvTotalCharges.setText(Utils.roundOffDoubleValue(orderInfo.getTotalAmt(), "0.00"));
-            discount.setText("-"+Utils.roundOffDoubleValue(orderInfo.getCoupon_value(), "0.00"));
+            discount.setText(Utils.roundOffDoubleValue(orderInfo.getCoupon_value(), "0.00"));
             tvPaymentType.setText(orderInfo.getModeOfPayment());
         }
 
