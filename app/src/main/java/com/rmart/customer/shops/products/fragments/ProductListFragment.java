@@ -3,6 +3,7 @@ package com.rmart.customer.shops.products.fragments;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -47,6 +48,7 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
     String searchPrase,sub_category_id;
     int start_page=0;
     int total_product_count;
+    public AppCompatButton btn_tryagain;
     ProductListViewModel productListViewModel;
 
     public ProductListFragment() {
@@ -153,6 +155,15 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
                 productListViewModel.loadProductList(productsShopDetailsModel,category.parentCategoryId,searchPrase,"0",sub_category_id);
 
                 return false;
+            }
+        });
+
+        btn_tryagain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                productListViewModel.loadProductList(productsShopDetailsModel,category.parentCategoryId,searchPrase,start_page+"",sub_category_id);
+
             }
         });
 

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.rmart.R;
+import com.rmart.inventory.OnInventorySearchListener;
 import com.rmart.inventory.adapters.ProductAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
@@ -37,7 +38,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyProductsListFragment extends BaseInventoryFragment implements View.OnClickListener {
+public class MyProductsListFragment extends BaseInventoryFragment implements View.OnClickListener, OnInventorySearchListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -148,7 +149,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         mListener.showProductPreview(product, true);
     };
 
-    private void getProductList(String stockType) {
+    public void getProductList(String stockType) {
         if(!Utils.isNetworkConnected(requireActivity())) {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
             return;
@@ -245,4 +246,56 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
             mListener.addProductToInventory(Utils.PRODUCT, "");
         }
     }
+
+
+    @Override
+    public void getProductListt(String stock_typee) {
+        if(!Utils.isNetworkConnected(requireActivity())) {
+            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
+            return;
+        }
+        resetProductsList();
+        progressDialog.show();
+        vendorInventoryService.getProductList("50", MyProfile.getInstance().getMobileNumber(), "7").enqueue(new Callback<ProductListResponse>() {
+            @Override
+            public void onResponse(@NotNull Call<ProductListResponse> call, @NotNull Response<ProductListResponse> response) {
+                if (response.isSuccessful()) {
+                    ProductListResponse productsListResponse = response.body();
+                    if(productsListResponse != null) {
+
+                        if (productsListResponse.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            if (productsListResponse.getProductResponses().size() <= 0) {
+                                showDialog(getString(R.string.sorry), getString(R.string.no_products_error));
+                            } else {
+                                productsList = productsListResponse.getProductResponses();
+                                updateList();
+                            }
+                        } else {
+                            showDialog("", productsListResponse.getMsg());
+                        }
+                    } else {
+                        showDialog(getString(R.string.no_information_available));
+                    }
+                } else {
+                    showDialog("", response.message());
+                }
+                mSwipeRefreshLayout.setRefreshing(false);
+                progressDialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<ProductListResponse> call, @NotNull Throwable t) {
+                if(t instanceof SocketTimeoutException){
+                    showDialog("", getString(R.string.network_slow));
+                } else {
+                    showDialog("", t.getMessage());
+                }
+                progressDialog.dismiss();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+    }
+
+
 }

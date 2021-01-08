@@ -14,7 +14,8 @@
         name="shopDetails"
         type="com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel" />
 </data>
-<RelativeLayout
+  <RelativeLayout
+
     android:layout_width="match_parent"
     android:background="@color/colorPrimary"
     android:layout_height="match_parent">
@@ -61,6 +62,7 @@
             android:layout_marginRight="10dp"
             />
     </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/erorolayout"
         android:layout_width="match_parent"
@@ -137,5 +139,6 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
-</RelativeLayout>
+
+   </RelativeLayout>
 </layout>
