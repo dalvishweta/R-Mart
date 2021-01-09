@@ -14,6 +14,7 @@ import com.bumptech.glide.signature.ObjectKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rmart.R;
+import com.rmart.glied.GlideApp;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -319,7 +320,7 @@ public class CustomerProductsShopDetailsModel implements Serializable {
         ImageView imageview = view.findViewById(R.id.imageview);
         ImageView selectedgreeting = view.findViewById(R.id.selectedgreeting);
         selectedgreeting.setVisibility(View.VISIBLE);
-        Glide.with(view.getContext()).load(data.getShopImage()) .listener(new RequestListener<Drawable>() {
+        GlideApp.with(view.getContext()).load(data.getShopImage()) .listener(new RequestListener<Drawable>() {
 
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

@@ -27,6 +27,7 @@ import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.ObjectKey;
 import com.rmart.R;
 import com.rmart.RMartApplication;
+import com.rmart.glied.GlideApp;
 import com.rmart.inventory.views.viewholders.ProductViewHolder;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.ProductResponse;
@@ -149,7 +150,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> impl
 
 
         holder.selectedgreeting.setVisibility(View.VISIBLE);
-        Glide.with(holder.imageView.getContext()).load(imageUrl) .listener(new RequestListener<Drawable>() {
+        GlideApp.with(holder.imageView.getContext()).load(imageUrl) .listener(new RequestListener<Drawable>() {
 
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

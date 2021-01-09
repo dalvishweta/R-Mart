@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.textfield.TextInputLayout;
+import com.rmart.glied.GlideApp;
 import com.rmart.utilits.pojos.AddressResponse;
 
 import androidx.annotation.NonNull;
@@ -57,7 +58,7 @@ public class EditAdreesViewModel extends ViewModel {
         selectedgreeting.setVisibility(View.VISIBLE);
 
 
-        Glide.with(view.getContext())
+        GlideApp.with(view.getContext())
                 .asBitmap()
                 .load(data==null?"":data)
                 .into(new CustomTarget<Bitmap>() {
