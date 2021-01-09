@@ -25,6 +25,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.ObjectKey;
 import com.rmart.R;
+import com.rmart.glied.GlideApp;
 import com.rmart.orders.adapters.OrdersHomeAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.Permisions;
@@ -193,7 +194,7 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
                 }
             });
             loader.setVisibility(View.VISIBLE);
-            Glide.with(getContext()).load(addressResponse.getShopImage()).listener(new RequestListener<Drawable>() {
+            GlideApp.with(getContext()).load(addressResponse.getShopImage()).listener(new RequestListener<Drawable>() {
 
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

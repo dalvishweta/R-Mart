@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rmart.glied.GlideApp;
 
 import java.io.Serializable;
 
@@ -161,6 +162,6 @@ public class CustomerOrderProductOrderedDetails implements Serializable {
 
     @BindingAdapter("imageUrl")
     public static void loadImage(ImageView view, String url) {
-        Glide.with(view.getContext()).load(url).into(view);
+        GlideApp.with(view.getContext()).load(url).into(view);
     }
 }

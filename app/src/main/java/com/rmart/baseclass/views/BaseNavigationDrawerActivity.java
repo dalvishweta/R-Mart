@@ -45,6 +45,7 @@ import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer.views.CustomerWishListActivity;
 import com.rmart.customer.views.ShoppingCartFragment;
 import com.rmart.customer_order.views.CustomerOrdersActivity;
+import com.rmart.glied.GlideApp;
 import com.rmart.inventory.views.AddProductToInventory;
 import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.orders.views.OrdersActivity;
@@ -176,7 +177,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
             String imageUrl = myProfile.getProfileImage();
 
-            Glide.with(getApplicationContext()).load(imageUrl) .listener(new RequestListener<Drawable>() {
+            GlideApp.with(getApplicationContext()).load(imageUrl) .listener(new RequestListener<Drawable>() {
 
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -342,7 +343,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     MyProfile myProfile = MyProfile.getInstance();
 
                     if (Permisions.checkWriteExternlStoragePermission(this)) {
-                        Glide.with(this)
+                        GlideApp.with(this)
                                 .asBitmap()
                                 .load(myProfile.getAddressResponses().get(0).getShopImage())
                                 .into(new CustomTarget<Bitmap>() {

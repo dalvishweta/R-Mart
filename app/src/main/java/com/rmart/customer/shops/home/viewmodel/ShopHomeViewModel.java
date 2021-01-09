@@ -20,6 +20,7 @@ import com.rmart.customer.shops.home.model.ProductData;
 import com.rmart.customer.shops.home.model.ShopHomePageResponce;
 import com.rmart.customer.shops.home.repositories.ShopRepository;
 import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.glied.GlideApp;
 
 import java.util.ArrayList;
 
@@ -46,7 +47,7 @@ public class ShopHomeViewModel extends ViewModel {
 
         ImageView imageview = view.findViewById(R.id.shopiamge);
         ImageView selectedgreeting = view.findViewById(R.id.loader);
-        Glide.with(view.getContext())
+        GlideApp.with(view.getContext())
                 .asBitmap()
                 .load(data==null?"":data)
                 .into(new CustomTarget<Bitmap>() {
@@ -92,7 +93,7 @@ public class ShopHomeViewModel extends ViewModel {
         ImageView imageview = view.findViewById(R.id.imageview);
         ImageView selectedgreeting = view.findViewById(R.id.selectedgreeting);
         selectedgreeting.setVisibility(View.VISIBLE);
-        Glide.with(view.getContext()).load(data.productImage) .listener(new RequestListener<Drawable>() {
+        GlideApp.with(view.getContext()).load(data.productImage) .listener(new RequestListener<Drawable>() {
 
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
