@@ -27,6 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".retiler.inventory.brand.activities.BrandFilterActivity">
 
 
