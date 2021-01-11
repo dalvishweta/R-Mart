@@ -2,11 +2,13 @@ package com.rmart.retiler.inventory.brand.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.rmart.BR;
 import com.rmart.R;
 import com.rmart.databinding.BrandItemRowBinding;
+import com.rmart.retiler.inventory.brand.listner.OnClickListner;
 import com.rmart.retiler.inventory.brand.model.Brand;
 
 import java.util.ArrayList;
@@ -18,11 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 public class BrandListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     ArrayList<Brand> brands;
     Context context;
-
-   public   BrandListAdapter(Context context,ArrayList<Brand> brands)
+    OnClickListner onClickListner;
+   public   BrandListAdapter(Context context,ArrayList<Brand> brands,OnClickListner onClickListner)
    {
        this.brands=brands;
        this.context=context;
+       this.onClickListner=onClickListner;
 
    }
     @NonNull
@@ -43,8 +46,16 @@ public class BrandListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
        if(holder instanceof  BrandItemViewHolder) {
 
            BrandItemViewHolder brandItemViewHolder = (BrandItemViewHolder) holder;
-           Brand brand =brands.get(position);
+            final Brand brand =brands.get(position);
            brandItemViewHolder.bind(brand);
+           brandItemViewHolder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   if(onClickListner!=null) {
+                       onClickListner.onClick(brand);
+                   }
+               }
+           });
 
 
        }

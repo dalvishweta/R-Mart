@@ -30,12 +30,12 @@ public class BrandListRepository {
             @Override
             public void onFailure(Call<BrandListResponse> call, Throwable t) {
                 final BrandListResponse result = new BrandListResponse();
-                if(t.getLocalizedMessage().equalsIgnoreCase("Unable to resolve host \""+ BuildConfig.BASE_URL+"\": No address associated with hostname"))
+                if(t.getLocalizedMessage().contains("hostname"))
                 {
-                    result.setMsg("Please Check Enternet Connection");
+                    result.setMsg("Please Check Internet Connection");
 
                 } else {
-                    result.setMsg(t.getLocalizedMessage());
+                    result.setMsg(t.getMessage());
                 }
                 result.setStatus("Failure");
                 resultMutableLiveData.setValue(result);

@@ -12,9 +12,9 @@ import androidx.lifecycle.ViewModel;
 public class BrandViewModel extends ViewModel {
 
    public MutableLiveData<BrandListResponse> brandListResponseMutableLiveData = new MutableLiveData<>();
-    public void getBransList()
+    public void getBransList(String id)
     {
-        MutableLiveData<BrandListResponse> resultMutableLiveData= BrandListRepository.getBransList("0","5000",null);
+        MutableLiveData<BrandListResponse> resultMutableLiveData= BrandListRepository.getBransList("0","5000",id);
         resultMutableLiveData.observeForever(new Observer<BrandListResponse>() {
             @Override
             public void onChanged(BrandListResponse brandListResponse) {

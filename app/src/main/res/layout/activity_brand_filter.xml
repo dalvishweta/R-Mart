@@ -2,9 +2,15 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    >
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="brandViewModel"
+            type="com.rmart.retiler.inventory.brand.viewmodel.BrandViewModel" />
+    </data>
+
 
 <RelativeLayout
     android:layout_width="match_parent"
@@ -21,7 +27,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"
-
+        android:visibility="gone"
         android:layout_marginBottom="5dp"
         android:background="@drawable/grey_rounded_borders_bg"
         android:minHeight="40dp">
@@ -44,7 +50,7 @@
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
             android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"
-            android:hint="@string/search_for_shop"
+            android:hint="Search for Brand"
             android:inputType="textCapSentences"
             android:lines="1"
             android:layout_marginLeft="5dp"
@@ -60,7 +66,8 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical"
-        android:visibility="gone"
+        tools:visibility="gone"
+        android:visibility='@{brandViewModel.brandListResponseMutableLiveData.status.equalsIgnoreCase("Failure")?View.VISIBLE:View.GONE}'
         android:layout_below="@id/search_layout">
         <ImageView
             android:id="@+id/app_logo"
@@ -86,6 +93,7 @@
             android:gravity="center"
             android:layout_marginTop="10dp"
             android:textSize="@dimen/text_regular_size"
+            android:text="@{brandViewModel.brandListResponseMutableLiveData.msg}"
             android:textColor="@color/item_sub_title_color"
             android:fontFamily="@font/montserrat_regular"
             android:layout_width="match_parent"
@@ -114,6 +122,7 @@
         android:layout_below="@+id/search_layout"
         android:layout_marginTop="7dp"
         android:background="#DADADA"
+        android:visibility='@{brandViewModel.brandListResponseMutableLiveData.status.equalsIgnoreCase("Failure")?View.GONE:View.VISIBLE}'
         app:spanCount="3"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:visibility="visible" />

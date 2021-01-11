@@ -26,6 +26,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_weight="2"
+            app:imageUrl="@{brand}"
             android:layout_above="@+id/name"
             android:id="@+id/img_designlistlayout"
             android:layout_height="wrap_content">
