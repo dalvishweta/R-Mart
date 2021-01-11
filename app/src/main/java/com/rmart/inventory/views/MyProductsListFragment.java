@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.rmart.R;
+
 import com.rmart.inventory.adapters.ProductAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
@@ -148,7 +149,7 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         mListener.showProductPreview(product, true);
     };
 
-    private void getProductList(String stockType) {
+    public void getProductList(String stockType) {
         if(!Utils.isNetworkConnected(requireActivity())) {
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
             return;
@@ -245,4 +246,9 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
             mListener.addProductToInventory(Utils.PRODUCT, "");
         }
     }
+
+
+
+
+
 }
