@@ -1,9 +1,9 @@
-package com.rmart.retiler.inventory.Brand.repositories;
+package com.rmart.retiler.inventory.brand.repositories;
 
 import com.rmart.BuildConfig;
 
-import com.rmart.retiler.inventory.Brand.api.BrandListApi;
-import com.rmart.retiler.inventory.Brand.model.BrandListResponse;
+import com.rmart.retiler.inventory.brand.api.BrandListApi;
+import com.rmart.retiler.inventory.brand.model.BrandListResponse;
 import com.rmart.utilits.RetrofitClientInstance;
 
 import androidx.lifecycle.MutableLiveData;

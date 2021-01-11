@@ -1,8 +1,7 @@
-package com.rmart.retiler.inventory.Brand.api;
+package com.rmart.retiler.inventory.brand.api;
 
 import com.rmart.BuildConfig;
-import com.rmart.retiler.inventory.Brand.model.BrandListResponse;
-import com.rmart.retiler.inventory.category.model.CategoryListResponce;
+import com.rmart.retiler.inventory.brand.model.BrandListResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

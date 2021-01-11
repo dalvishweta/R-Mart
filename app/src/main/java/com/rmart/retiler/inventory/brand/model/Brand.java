@@ -1,4 +1,4 @@
-package com.rmart.retiler.inventory.Brand.model;
+package com.rmart.retiler.inventory.brand.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -15,4 +15,15 @@ public class Brand
     @Expose
     private String name;
 
+    public int getId() {
+        return id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

@@ -1,4 +1,4 @@
-package com.rmart.retiler.inventory.Brand.model;
+package com.rmart.retiler.inventory.brand.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -23,6 +23,31 @@ public class BrandListResponse extends BaseResponse {
     @SerializedName("type")
     @Expose
     private String type;
+
+    public String getCode() {
+        return Code;
+    }
+
+    public String getStartIndex() {
+        return startIndex;
+    }
+
+    public String getEndIndex() {
+        return endIndex;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public ArrayList<Brand> getBrand() {
+        return brand;
+    }
+
     @SerializedName("data")
     @Expose
     private ArrayList<Brand> brand;
