@@ -58,9 +58,9 @@ public class Utils {
 
     public static final String CLIENT_ID = "2";
     public static final String PRODUCT = "View by product";
-    public static final String BRAND = "View by brand";
-    public static final String CATEGORY = "View by category";
-    public static final String SUB_CATEGORY = "View by sub category";
+    public static final String BRAND = "Search by brand";
+    public static final String CATEGORY = "Search by category";
+    public static final String SUB_CATEGORY = "Search by sub category";
     public static final String SUB_CATEGORY_PRODUCT = "Sub category products";
     public static final String BRAND_PRODUCTS = "BRAND PRODUCTS";
     public static final int MIN_PASSWORD_LENGTH = 8;
