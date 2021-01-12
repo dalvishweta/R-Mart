@@ -59,6 +59,50 @@
             />
     </RelativeLayout>
     <LinearLayout
+        android:id="@+id/filter_text"
+        android:layout_below="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            tools:text="show Result for ">
+        </TextView>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:layout_marginTop="5dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="250 products"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                />
+
+            />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/filter"
+                android:gravity="right"
+                android:contentDescription="Filter"
+                android:layout_gravity="end"
+                android:layout_weight="1" />
+
+        </TableRow>
+
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
         android:id="@+id/erorr_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -66,7 +110,7 @@
         android:orientation="vertical"
         tools:visibility="gone"
         android:visibility='@{productViewModel.productListResponseMutableLiveData.status.equalsIgnoreCase("Failure")?View.VISIBLE:View.GONE}'
-        android:layout_below="@id/search_layout">
+        android:layout_below="@id/filter_text">
         <ImageView
             android:id="@+id/app_logo"
             android:layout_width="170dp"
@@ -117,7 +161,7 @@
         android:id="@+id/rv_brands"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/search_layout"
+        android:layout_below="@+id/filter_text"
         android:layout_marginTop="7dp"
         android:background="#DADADA"
         android:visibility='@{productViewModel.productListResponseMutableLiveData.status.equalsIgnoreCase("Failure")?View.GONE:View.VISIBLE}'
