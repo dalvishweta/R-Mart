@@ -24,7 +24,7 @@ public class ProductListActivity extends AppCompatActivity {
         //setContentView(R.layout.activity_brand_filter);
          binding = DataBindingUtil.setContentView(this,R.layout.activity_productlist_retailer);
         ProductViewModel productViewModel = ViewModelProviders.of(this).get(ProductViewModel.class);
-        productViewModel.getProductList("19","338","onion","0");
+        productViewModel.getProductList("0");
         binding.setProductViewModel(productViewModel);
         binding.setLifecycleOwner(this);
         binding.rvBrands.addItemDecoration(new GridSpacesItemDecoration(15));
@@ -35,7 +35,7 @@ public class ProductListActivity extends AppCompatActivity {
         productViewModel.productListResponseMutableLiveData.observeForever(new Observer<ProductListResponse>() {
             @Override
             public void onChanged(ProductListResponse productListResponse) {
-                binding.rvBrands.setAdapter(new ProductSearchListAdapter(ProductListActivity.this, productListResponse.getProduct()));
+             //   binding.rvBrands.setAdapter(new ProductSearchListAdapter(ProductListActivity.this, productListResponse.getProduct()));
 
             }
         });

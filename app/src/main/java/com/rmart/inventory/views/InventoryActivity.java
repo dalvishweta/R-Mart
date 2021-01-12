@@ -3,7 +3,6 @@ package com.rmart.inventory.views;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.rmart.R;
@@ -12,6 +11,7 @@ import com.rmart.inventory.OnInventoryClickedListener;
 import com.rmart.inventory.models.APIUnitMeasures;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.inventory.viewmodel.InventoryViewModel;
+import com.rmart.retiler.inventory.product.model.Product;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.APIStockResponse;

@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -22,6 +23,7 @@ import com.rmart.R;
 
 import com.rmart.inventory.adapters.ProductAdapter;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.retiler.inventory.product.activities.ProductList;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -243,7 +245,12 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.add_product) {
-            mListener.addProductToInventory(Utils.PRODUCT, "");
+
+                //mListener.addProductToInventory(Utils.PRODUCT, "");
+            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.base_container, ProductList.newInstance(), ProductList.class.getName());
+            fragmentTransaction.addToBackStack( ProductList.class.getName());
+            fragmentTransaction.commit();
         }
     }
 
