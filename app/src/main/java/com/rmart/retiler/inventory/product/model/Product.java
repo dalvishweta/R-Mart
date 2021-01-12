@@ -118,6 +118,7 @@ public class Product implements Serializable
     }
 
     public ArrayList<ProductImage> getImages() {
+
         return images;
     }
 

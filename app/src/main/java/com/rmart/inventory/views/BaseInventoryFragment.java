@@ -18,7 +18,7 @@ import com.rmart.inventory.viewmodel.InventoryViewModel;
 import java.util.Objects;
 
 public class BaseInventoryFragment extends BaseFragment {
-    OnInventoryClickedListener mListener;
+   public   OnInventoryClickedListener mListener;
     // InventoryViewModel inventoryViewModel;
 
     @Override

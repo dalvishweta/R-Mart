@@ -18,89 +18,6 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/search_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/grey_rounded_borders_bg"
-        android:minHeight="40dp">
-
-        <ImageView
-            android:id="@+id/iv_search_field"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/search" />
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edt_product_search_field"
-            style="@style/text_style_medium_normal"
-            android:layout_width="match_parent"
-            android:layout_toRightOf="@+id/iv_search_field"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@android:color/transparent"
-            android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"
-            android:hint="Search for product"
-            android:inputType="textCapSentences"
-            android:lines="1"
-            android:layout_marginLeft="5dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
-            android:textSize="16sp"
-            android:layout_marginRight="10dp"
-            />
-    </RelativeLayout>
-    <LinearLayout
-        android:id="@+id/filter_text"
-        android:layout_below="@+id/search_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            tools:text="show Result for ">
-        </TextView>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/gray"
-            android:layout_marginTop="5dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="250 products"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                />
-
-            />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/filter"
-                android:gravity="right"
-                android:contentDescription="Filter"
-                android:layout_gravity="end"
-                android:layout_weight="1" />
-
-        </TableRow>
-
-    </LinearLayout>
-
-
-
-
 
     <LinearLayout
         android:id="@+id/erorr_layout"
@@ -156,13 +73,107 @@
             android:text="@string/try_again" />
 
     </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/grey_rounded_borders_bg"
+        android:minHeight="40dp">
 
+        <ImageView
+            android:id="@+id/iv_search_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/search" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edt_product_search_field"
+            style="@style/text_style_medium_normal"
+            android:layout_width="match_parent"
+            android:layout_toRightOf="@+id/iv_search_field"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"
+            android:hint="Search for product"
+            android:inputType="textCapSentences"
+            android:lines="1"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/gray"
+            android:textSize="16sp"
+            android:layout_marginRight="10dp"
+            />
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/filter_text"
+        android:layout_below="@+id/search_layout"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:visibility="@{productViewModel.brandID!=null?View.VISIBLE:View.GONE}"
+            android:paddingBottom="5dp"
+            android:hint="show Result for+"
+            android:text='@{"show Result for"+productViewModel.brandID.name}'>
+        </TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:padding="5dp"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="250 products"
+                android:text='@{productViewModel.productListResponseMutableLiveData.total_count+" products "}'
+                android:textColor="@color/black"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="1"
+                />
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filter"
+                android:drawableRight="@drawable/filter"
+                android:background="@drawable/product_bacgground"
+                android:layout_marginRight="10dp"
+                android:drawablePadding="10dp"
+                android:padding="5dp"
+                android:textColor="@color/black"
+
+                />
+
+            />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_brands"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/filter_text"
-        android:layout_marginTop="7dp"
         android:background="#DADADA"
         android:visibility='@{productViewModel.productListResponseMutableLiveData.status.equalsIgnoreCase("Failure")?View.GONE:View.VISIBLE}'
         app:spanCount="3"
