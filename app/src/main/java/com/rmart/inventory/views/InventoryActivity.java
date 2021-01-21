@@ -1,5 +1,6 @@
 package com.rmart.inventory.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -11,6 +12,7 @@ import com.rmart.inventory.OnInventoryClickedListener;
 import com.rmart.inventory.models.APIUnitMeasures;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.inventory.viewmodel.InventoryViewModel;
+import com.rmart.retiler.product.OnUnitSaveListner;
 import com.rmart.retiler.inventory.product.model.Product;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.pojos.APIStockListResponse;
@@ -86,7 +88,13 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     @Override
     public void addUnit(UnitObject unitValue, APIUnitMeasures unitMeasurements, BaseInventoryFragment fragment, int requestID) {
         FragmentManager fm = getSupportFragmentManager();
-        AddUnitDialog addUnitDialog = AddUnitDialog.newInstance(unitValue,false, apiStockListResponse, unitMeasurements);
+        AddUnitDialog addUnitDialog = AddUnitDialog.newInstance(unitValue, false, apiStockListResponse,
+                unitMeasurements, new OnUnitSaveListner() {
+                    @Override
+                    public void onSaveUnit(int requestCode, Intent intent) {
+
+                    }
+                });
         addUnitDialog.setCancelable(false);
         addUnitDialog.setTargetFragment(fragment, requestID);
         addUnitDialog.show(fm, AddUnitDialog.class.getName());

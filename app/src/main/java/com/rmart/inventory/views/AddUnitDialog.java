@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
@@ -34,6 +36,8 @@ import com.rmart.inventory.adapters.CustomStringAdapter;
 import com.rmart.inventory.models.APIUnitMeasures;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.retiler.product.OnUnitSaveListner;
+import com.rmart.retiler.product.view.AddNewProductActivity;
 import com.rmart.utilits.InputFilterMinMax;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -64,22 +68,26 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM3 = "param3";
     private static final String ARG_PARAM4 = "param4";
-    private String current = "";
+    private final String current = "";
     private UnitObject unitObject;
     private AppCompatEditText discount, actualPrice, valueOfUnit, quantity;
     private AppCompatTextView finalPrice, displayUnit, quantityValue;
     // private InventoryViewModel inventoryViewModel;
-    private ArrayList<String> availableUnitsMeasurements = new ArrayList<>();
-    private ArrayList<String> productStatus = new ArrayList<>();
+    private final ArrayList<String> availableUnitsMeasurements = new ArrayList<>();
+    private final ArrayList<String> productStatus = new ArrayList<>();
     private ArrayList<APIStockResponse> apiStockResponses = new ArrayList<>();
     private APIUnitMeasures unitMeasurements;
+    private int requestCode = 0;
+    private static OnUnitSaveListner onUnitSaveListner;
 
     //SwitchCompat isActive;
     public AddUnitDialog() {
         // Required empty public constructor
     }
 
-    public static AddUnitDialog newInstance(UnitObject unitObject, boolean isEdit, APIStockListResponse stockListResponse, APIUnitMeasures unitMeasurements) {
+    public static AddUnitDialog newInstance(UnitObject unitObject, boolean isEdit,
+                                            APIStockListResponse stockListResponse, APIUnitMeasures unitMeasurements,
+                                            OnUnitSaveListner onUnitSaveListner) {
         // APIStockListResponse apiStockListResponse = stockListResponse;
         AddUnitDialog fragment = new AddUnitDialog();
         Bundle args = new Bundle();
@@ -88,7 +96,12 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         args.putSerializable(ARG_PARAM4, unitMeasurements);
         args.putBoolean(ARG_PARAM2, isEdit);
         fragment.setArguments(args);
+        AddUnitDialog.onUnitSaveListner = onUnitSaveListner;
         return fragment;
+    }
+
+    public void setRequestCode(int requestCode){
+        this.requestCode = requestCode;
     }
 
     @Override
@@ -170,7 +183,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                 unitObject.setActualCost(charSequence.toString());
+                unitObject.setActualCost(charSequence.toString());
                 String _discount = Objects.requireNonNull(discount.getText()).toString();
                 calculateFinalCost(charSequence.toString(), _discount);
             }
@@ -245,7 +258,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 else if(text.equalsIgnoreCase("dz")|| text.equalsIgnoreCase("pc")) {
                     valueOfUnit.setFilters(new InputFilter[]{new InputIntFilterMinMax(0,999999 )});
                     try{
-                      int value= Utils.getIntegerValueFromString(valueOfUnit.getText().toString().trim());
+                        int value= Utils.getIntegerValueFromString(valueOfUnit.getText().toString().trim());
                         valueOfUnit.setText(""+value);
                     } catch (Exception e){
 
@@ -325,12 +338,16 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         int quantityValueInt = Utils.getIntegerValueFromString(quantity.getText().toString().trim());
         Double totalQuantityDetails = quantityValueInt * valueOfUnitValue;
         if(quantityValueInt != 0) {
-            String actualCost = String.format("%.2f",totalQuantityDetails);
-            if(unitObject.getDisplayUnitValue().equalsIgnoreCase("dz")|| unitObject.getDisplayUnitValue().equalsIgnoreCase("pc")) {
-                 actualCost = String.format("%.0f", totalQuantityDetails);
+            try {
+                String actualCost = String.format("%.2f", totalQuantityDetails);
+                if (unitObject.getDisplayUnitValue().equalsIgnoreCase("dz") || unitObject.getDisplayUnitValue().equalsIgnoreCase("pc")) {
+                    actualCost = String.format("%.0f", totalQuantityDetails);
+                }
+                String temp = String.format(Locale.getDefault(), "%s %s", actualCost, unitObject.getDisplayUnitValue());
+                quantityValue.setText(temp);
+            }catch (Exception e){
+                Log.e("add", e.getMessage());
             }
-            String temp = String.format(Locale.getDefault(), "%s %s", actualCost, unitObject.getDisplayUnitValue());
-            quantityValue.setText(temp);
         } else {
             quantityValue.setText("");
         }
@@ -347,7 +364,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 double discountedPrice = price * data;
                 if (discountedPrice > 0) {
                     unitObject.setFinalCost(String.valueOf(Utils.roundOffDoubleValue(discountedPrice, "0.00")));
-                   // String __finalPrice = String.format(getString(R.string.after_discount), unitObject.getFinalCost());
+                    // String __finalPrice = String.format(getString(R.string.after_discount), unitObject.getFinalCost());
                     String actualCost = String.format(getString(R.string.after_discount),Double.parseDouble(unitObject.getFinalCost()));
                     finalPrice.setText(actualCost);
                 } else {
@@ -397,7 +414,16 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 Intent i = new Intent();
                 i.putExtra(UNIT_VALUE, unitObject);
                 //i.putExtra("IS_DELETED", false);
-                Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
+                try {
+                    Objects.requireNonNull(getTargetFragment()).onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, i);
+                }catch (Exception e){
+                    try {
+                        onUnitSaveListner.onSaveUnit(requestCode, i);
+                        onActivityResult(requestCode, Activity.RESULT_OK, i);
+                    }catch (Exception e1){
+                        Log.e("Error", e1.getMessage());
+                    }
+                }
                 closeDialog();
             }
         } else if (view.getId() == R.id.cancel) {

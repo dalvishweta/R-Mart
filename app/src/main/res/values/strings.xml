@@ -66,16 +66,18 @@
     <string name="product_expiry_title_value">12 Aug 2023</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
-    <string name="choose_category">Choose category</string>
-    <string name="choose_sub_category">Choose sub category</string>
+    <string name="choose_category">Choose Category *</string>
+    <string name="choose_sub_category">Choose Sub Category *</string>
     <string name="choose_product">Choose Product</string>
     <string name="product_brand">Product Brand</string>
     <string name="upload_product_images">Upload Product Images</string>
     <string name="product_video_link">Product Video Link</string>
-    <string name="add_units_text">Add Units</string>
+    <string name="add_units_">Add Units *</string>
+    <string name="add_units_text">Add Units </string>
     <string name="add_units">+ Add</string>
     <string name="delivery_days">Delivery Days</string>
-    <string name="expiry">Expiry</string>
+    <string name="expiry_">Expiry Date *</string>
+    <string name="expiry">Expiry </string>
     <string name="unit_info">Unit Info</string>
     <string name="units">Units</string>
     <string name="price">Price</string>
@@ -393,4 +395,6 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="ooops">Ooops!</string>
+    <string name="product_name_hint">Product Name *</string>
+    <string name="choose_brand">Choose Brand *</string>
 </resources>
