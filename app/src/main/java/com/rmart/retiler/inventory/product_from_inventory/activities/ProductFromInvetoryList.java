@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
+import com.rmart.databinding.ActivityProductlistFromInventoryRetailerBinding;
 import com.rmart.databinding.ActivityProductlistRetailerBinding;
 import com.rmart.inventory.views.BaseInventoryFragment;
 import com.rmart.retiler.inventory.brand.activities.BrandFilterActivity;
@@ -40,7 +41,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
     final int BRAND_REQUEST=3;
     int page=0;
     int total_product_count= 0;
-    ActivityProductlistRetailerBinding binding;
+    ActivityProductlistFromInventoryRetailerBinding binding;
     ProductFromInventoryViewModel productViewModel;
     public ProductFromInvetoryList() {
         // Required empty public constructor
@@ -67,6 +68,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         productViewModel = ViewModelProviders.of(this).get(ProductFromInventoryViewModel.class);
+        
         binding = DataBindingUtil.inflate(inflater, R.layout.activity_productlist_from_inventory_retailer, container, false);
         productViewModel.getProductList( page+"");
         binding.setProductViewModel(productViewModel);
