@@ -68,6 +68,12 @@ public class Utils {
 
     private static final String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})";
 
+    public interface ICustomProduct {
+        String CHOOSE_CATEGORY = "Choose Category";
+        String COOSE_SUB_CATEGORY = "Choose Sub Category";
+        String CHOOSE_BRAND = "Choose Brand";
+    }
+
     public static boolean isValidMobile(String phone) {
         String regex = "[0-9]+";
         Pattern p = Pattern.compile(regex);

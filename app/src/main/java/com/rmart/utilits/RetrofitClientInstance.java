@@ -119,6 +119,55 @@ public class RetrofitClientInstance {
         }
         return retrofit;
     }
+
+    public static Retrofit getRetrofitInstanceForAddProduct() {
+        Retrofit retrofit = null;
+        if (retrofit == null) {
+            try {
+
+                // Install the all-trusting trust manager
+                final SSLContext sslContext = SSLContext.getInstance("SSL");
+                sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+                // Create an ssl socket factory with our all-trusting manager
+                final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+                HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+                logging.level(HttpLoggingInterceptor.Level.BODY);
+                String test = auth.replace("\n","");
+                Interceptor basicAuth = chain -> {
+                    //String test = auth.replace("\n","");
+                    Request request = chain.request()
+                            .newBuilder()
+                            .addHeader("Content-Type","application/json")
+                            // .addHeader("X-API-KEY",BuildConfig.API_KEY)
+                            .addHeader("Authorization", test)
+                            .build();
+                    return chain.proceed(request);
+                };
+
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .sslSocketFactory(sslSocketFactory, (X509TrustManager)trustAllCerts[0])
+                        .addInterceptor(basicAuth)
+                        .addInterceptor(logging)
+                        .connectTimeout(120, TimeUnit.SECONDS)
+                        .readTimeout(120, TimeUnit.SECONDS)
+                        .build();
+
+                Gson gs = new GsonBuilder().setLenient().create();
+
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(BuildConfig.BASE_URL)
+                        .client(client)
+                        .addConverterFactory(GsonConverterFactory.create(gs))
+                        .build();
+            } catch (Exception e) {
+                Log.d("Exception", "Exception : "+e.getMessage());
+            }
+
+        }
+        return retrofit;
+    }
+
+
     private final static TrustManager[] trustAllCerts = new TrustManager[]{
             new X509TrustManager() {
                 @SuppressLint("TrustAllX509TrustManager")

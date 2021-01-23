@@ -1,5 +1,6 @@
 package com.rmart.inventory.views;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -7,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.inventory.adapters.ProductAdapter;
+import com.rmart.retiler.product.view.AddNewProductActivity;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -47,6 +51,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
     ProductAdapter productAdapter;
     private AppCompatTextView tvTotalCount;
     AppCompatButton addProduct;
+//    LinearLayout llAddCustomProduct;
     ArrayList<ProductResponse> products = new ArrayList<>();
     private String listType;
     private String id;
@@ -102,6 +107,10 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
         addProduct = view.findViewById(R.id.request_new_product);
         tvTotalCount = view.findViewById(R.id.category_count);
         addProduct.setOnClickListener(this);
+        /*TextView tvCustomProduct = view.findViewById(R.id.tv_product_type);
+        tvCustomProduct.setText("Custom Product");
+        llAddCustomProduct = view.findViewById(R.id.add_product);
+        llAddCustomProduct.setOnClickListener(this);*/
         productRecycleView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         productAdapter = new ProductAdapter(requireActivity(), products, productView -> {
             searchView.setQuery("", false);
@@ -420,7 +429,12 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
 
     @Override
     public void onClick(View view) {
-        mListener.requestToCreateProduct();
+        if (view == addProduct) {
+            mListener.requestToCreateProduct();
+        }/*else if (view == llAddCustomProduct){
+            Intent intent = new Intent(getContext(), AddNewProductActivity.class);
+            startActivity(intent);
+        }*/
     }
 
     private final SearchView.OnQueryTextListener searchQueryListener = new SearchView.OnQueryTextListener() {

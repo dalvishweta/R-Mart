@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +34,7 @@ import com.rmart.retiler.inventory.category.model.Category;
 import com.rmart.retiler.inventory.product.adapters.ProductSearchListAdapter;
 import com.rmart.retiler.inventory.product.model.ProductListResponse;
 import com.rmart.retiler.inventory.product.viewmodel.ProductViewModel;
+import com.rmart.retiler.product.view.AddNewProductActivity;
 import com.rmart.utilits.GridSpacesItemDecoration;
 import com.rmart.utilits.Utils;
 
@@ -77,6 +80,15 @@ public class ProductList extends BaseInventoryFragment {
         productViewModel.getProductList( page+"");
         binding.setProductViewModel(productViewModel);
         binding.setLifecycleOwner(this);
+        binding.addCustomProduct.tvProductType.setText("Custom Product");
+        binding.addCustomProduct.addProduct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AddNewProductActivity.class);
+                startActivity(intent);
+            }
+        });
+
         binding.rvBrands.addItemDecoration(new GridSpacesItemDecoration(15));
         binding.filter.setOnClickListener(new View.OnClickListener() {
             @Override
