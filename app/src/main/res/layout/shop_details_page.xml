@@ -112,13 +112,12 @@
                     android:id="@+id/iv_share_field"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:layout_margin="5dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/round_share"
                     android:padding="4dp"
-                    android:layout_margin="5dp"
-                    android:src="@drawable/ic_baseline_share_24"
                     android:scaleType="centerInside"
-                    android:layout_marginTop="10dp"
-                    />
+                    android:src="@drawable/ic_baseline_share_24" />
             </LinearLayout>
 
         </LinearLayout>

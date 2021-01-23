@@ -1,10 +1,17 @@
 package com.rmart.customer.views;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
@@ -18,7 +25,10 @@ import com.rmart.customer.models.ShoppingCartResponseDetails;
 import com.rmart.customer.shops.list.fragments.VendorShopsListFragment;
 import com.rmart.utilits.pojos.AddressResponse;
 
+import java.util.ArrayList;
 import java.util.Timer;
+
+import androidx.annotation.NonNull;
 
 public class CustomerHomeActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
 
@@ -30,7 +40,53 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_authentication);
         Bundle data = getIntent().getExtras();
-        vendorShopsListFragment = VendorShopsListFragment.getInstance();
+
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        Uri deepLink = null;
+                        String shopId="";
+                        String VenderID="";
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+
+                           String url = deepLink.getEncodedFragment();
+                          String[] str =  deepLink.getQuery().split("&");
+                          for (int i=0;i<str.length;i++){
+                           String[] key =  str[i].split("=");
+                              String parameter= key[0];
+                              String value = key[1];
+
+                              if(parameter.equalsIgnoreCase("shop_id")){
+                                  shopId = value;
+                              }
+                              if(parameter.equalsIgnoreCase("created_by")){ // vendor_id
+                                  VenderID=value;
+                              }
+;
+                            }
+
+                        }
+                        loadShopListFragment(data,VenderID,shopId);
+
+
+
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("error", "getDynamicLink:onFailure", e);
+                        loadShopListFragment(data,null,null);
+                    }
+     });
+
+    }
+
+    private void loadShopListFragment(Bundle data,String VenderID,String shopId) {
+        vendorShopsListFragment = VendorShopsListFragment.getInstance(VenderID,shopId);
         if (data != null) {
             //addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
             boolean isShoppingCart = data.getBoolean("ShoppingCart");

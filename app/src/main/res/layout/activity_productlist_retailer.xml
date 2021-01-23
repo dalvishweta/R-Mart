@@ -15,7 +15,7 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/white"
     android:orientation="vertical">
 
 
@@ -26,7 +26,7 @@
         android:background="@color/white"
         android:orientation="vertical"
         tools:visibility="gone"
-        android:visibility='@{(!productViewModel.isLoading||productViewModel.productListResponseMutableLiveData.status.equalsIgnoreCase("Failure"))?View.VISIBLE:View.GONE}'
+        android:visibility='@{(!productViewModel.isLoading &amp;&amp; productViewModel.productListResponseMutableLiveData.status.equalsIgnoreCase("Failure"))?View.VISIBLE:View.GONE}'
         android:layout_below="@id/filter_text">
         <ImageView
             android:id="@+id/app_logo"
@@ -74,7 +74,12 @@
 
     </LinearLayout>
     <RelativeLayout
+        android:layout_width="match_parent"
         android:id="@+id/search_layout"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -112,6 +117,7 @@
             android:textSize="16sp"
             android:layout_marginRight="10dp"
             />
+    </RelativeLayout>
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/filter_text"
@@ -157,7 +163,7 @@
             android:paddingBottom="5dp"
             android:textStyle="bold"
             android:hint="show Result for+"
-            android:text='@{(productViewModel.brandID!=null?" and ":"")+" "+productViewModel.categoryID.name}'>
+            android:text='@{(productViewModel.brandID!=null?" or ":"")+" "+productViewModel.categoryID.name}'>
         </TextView>
     </LinearLayout>
 

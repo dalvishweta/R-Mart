@@ -44,11 +44,11 @@
             android:name=".baseclass.views.SplashScreen"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
 
         </activity>
         <activity
@@ -103,10 +103,7 @@
             android:screenOrientation="portrait"
             android:label="Add New Product"
             android:theme="@style/AppThemeNoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <service
             android:name=".services.UpdateProductQuantityServices"

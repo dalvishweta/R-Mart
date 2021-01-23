@@ -2,6 +2,7 @@ package com.rmart.customer.shops.list.adapters;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,11 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.rmart.BR;
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
@@ -16,6 +22,7 @@ import com.rmart.baseclass.Constants;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.databinding.VederShopItemsBinding;
+import com.rmart.deeplinking.LinkGenerator;
 import com.rmart.utilits.Permisions;
 import com.rmart.utilits.Utils;
 
@@ -88,11 +95,14 @@ public class VendorShopsListAdapterNew extends RecyclerView.Adapter<VendorShopsL
                 } catch (Exception e){
                     Toast.makeText(     holder.binding.imageview.getContext(),"pont1",Toast.LENGTH_LONG).show();
                 }
-                final String appPackageName = context.getPackageName();
+
                 String message= "रोकड मार्ट आता आपल्या शहरामध्ये!!!\n" +
                         "आता "+dataModel.getShopName()+"शॉप रोकड मार्ट सोबत ऑनलाईन झाले आहे. \n" +
                         "नवीन ऑफर्स आणि शॉपिंग साठी खालील लिंक वर क्लिक करा आणि अँप डाउनलोड करा.\n" ;
-                Utils.shareImage(bitmap, "shop.png",context ,message+"https://play.google.com/store/apps/details?id=" + appPackageName);
+                String deeplink = "https://www.rokadmart.com/public/Home/index?shop_id="+dataModel.getShopId()+"&client_id=2&created_by="+dataModel.getVendorId();
+                LinkGenerator.shareLink(context,message,bitmap,deeplink);
+
+
             } else {
                 Permisions.requestWriteExternlStoragePermission(holder.binding.getRoot().getContext());
             }

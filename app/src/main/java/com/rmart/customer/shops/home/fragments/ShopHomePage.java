@@ -36,7 +36,6 @@ public class ShopHomePage extends BaseFragment {
     private CustomerProductsShopDetailsModel productsShopDetailsModel;
     private static final String ARG_SHOP = "shop_details";
     private ShopHomeViewModel shopHomeViewModel;
-    public AppCompatButton btn_tryagain;
 
     public ShopHomePage() {
         // Required empty public constructor
@@ -68,7 +67,7 @@ public class ShopHomePage extends BaseFragment {
         binding.setShopDetails(productsShopDetailsModel);
         binding.setLifecycleOwner(this);
         shopHomeViewModel.loadShopHomePage(productsShopDetailsModel);
-        btn_tryagain= getView().findViewById(R.id.btn_tryagain);
+
 
 
         shopHomeViewModel.shopHomePageResponceMutableLiveData.observeForever(shopHomePageResponce -> {
@@ -95,13 +94,7 @@ public class ShopHomePage extends BaseFragment {
             binding.setMyAdapter(shopHomeAdapter);
         });
 
-        btn_tryagain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                shopHomeViewModel.loadShopHomePage(productsShopDetailsModel);
-            }
-        });
+        binding.btnTryagain.setOnClickListener(view -> shopHomeViewModel.loadShopHomePage(productsShopDetailsModel));
 
         return binding.getRoot();
     }

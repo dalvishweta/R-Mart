@@ -1,13 +1,17 @@
 package com.rmart.customer.shops.home.adapters;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.rmart.BR;
 import com.rmart.R;
+import com.rmart.baseclass.Constants;
+import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.shops.home.fragments.ShopHomePage;
 import com.rmart.customer.shops.home.listner.OnClickListner;
 import com.rmart.customer.shops.home.model.Category;
@@ -15,7 +19,10 @@ import com.rmart.customer.shops.home.model.Results;
 import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.databinding.ShopDetailsPageBinding;
 import com.rmart.databinding.ShopHomePageBinding;
+import com.rmart.deeplinking.LinkGenerator;
 import com.rmart.utilits.GridSpacesItemDecoration;
+import com.rmart.utilits.Permisions;
+import com.rmart.utilits.Utils;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -53,7 +60,8 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 if(viewType==VIEW_SHOP) {
                     ShopDetailsPageBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.shop_details_page, parent, false);
-                    ShopHolder vh = new ShopHolder(binding); // pass the view to View Holder
+                    ShopHolder vh = new ShopHolder(binding);
+                    // pass the view to View Holder
                     return vh;
                 } else {
                     ShopHomePageBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.shop_home_page, parent, false);
@@ -66,6 +74,38 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if(holder2 instanceof ShopHolder) {
             ShopHolder myViewHolder=     (ShopHolder ) holder2;
             myViewHolder.bind(productsShopDetailsModel);
+            myViewHolder.binding.ivShareField.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (Permisions.checkWriteExternlStoragePermission((Activity) myViewHolder.binding.getRoot().getContext())) {
+                        Bitmap bitmap = null;
+                        try {
+                            myViewHolder.binding.shopiamge.setDrawingCacheEnabled(true);
+                            bitmap = Bitmap.createBitmap(myViewHolder.binding.shopiamge.getDrawingCache());
+                            myViewHolder.binding.shopiamge.setDrawingCacheEnabled(false);
+
+                        } catch (Exception e){
+                            Toast.makeText(     myViewHolder.binding.shopiamge.getContext(),"pont1",Toast.LENGTH_LONG).show();
+                        }
+
+                        String message= "रोकड मार्ट आता आपल्या शहरामध्ये!!!\n" +
+                                "आता "+productsShopDetailsModel.getShopName()+"शॉप रोकड मार्ट सोबत ऑनलाईन झाले आहे. \n" +
+                                "नवीन ऑफर्स आणि शॉपिंग साठी खालील लिंक वर क्लिक करा आणि अँप डाउनलोड करा.\n" ;
+                        String deeplink = "https://www.rokadmart.com/public/Home/index?shop_id="+productsShopDetailsModel.getShopId()+"&client_id=2&created_by="+productsShopDetailsModel.getVendorId();
+                        LinkGenerator.shareLink(context,message,bitmap,deeplink);
+
+
+                    } else {
+                        Permisions.requestWriteExternlStoragePermission(myViewHolder.binding.getRoot().getContext());
+                    }
+                }
+            });
+            myViewHolder.binding.ivCallField.setOnClickListener(view -> {
+                Utils.openDialPad(view.getContext(),productsShopDetailsModel.getShopMobileNo());
+            });
+            myViewHolder.binding.ivMessageField.setOnClickListener(view -> {
+                Utils.openGmailWindow(view.getContext(),productsShopDetailsModel.getEmailId());
+            });
         }
         if(holder2 instanceof MyViewHolder) {
             MyViewHolder myViewHolder=     (MyViewHolder ) holder2;

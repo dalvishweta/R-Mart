@@ -45,6 +45,7 @@ import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer.views.CustomerWishListActivity;
 import com.rmart.customer.views.ShoppingCartFragment;
 import com.rmart.customer_order.views.CustomerOrdersActivity;
+import com.rmart.deeplinking.LinkGenerator;
 import com.rmart.glied.GlideApp;
 import com.rmart.inventory.views.AddProductToInventory;
 import com.rmart.inventory.views.InventoryActivity;
@@ -352,9 +353,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
                                         String message= "रोकड मार्ट आता आपल्या शहरामध्ये!!!\n" +
                                                 "आता आमचे "+myProfile.getAddressResponses().get(0).getShopName()+" रोकड मार्ट सोबत ऑनलाईन झाले आहे. \n" +
-                                                "नवीन ऑफर्स आणि शॉपिंग साठी खालील लिंक वर क्लिक करा आणि अँप डाउनलोड करा.\n" +
-                                                " https://play.google.com/store/apps/details?id=com.rokad.mart.customerprod";
-                                        Utils.shareImage(resource, "shop.png",BaseNavigationDrawerActivity.this, message);
+                                                "नवीन ऑफर्स आणि शॉपिंग साठी खालील लिंक वर क्लिक करा आणि अँप डाउनलोड करा.\n";
+                                        String deeplink = "https://www.rokadmart.com/public/Home/index?shop_id="+myProfile.getAddressResponses().get(0).getId()+"&client_id=2&created_by="+myProfile.getAddressResponses().get(0).getCreatedBy();
+                                        LinkGenerator.shareLink(BaseNavigationDrawerActivity.this,message,resource,deeplink);
+
                                     }
 
                                     @Override

@@ -112,13 +112,20 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private TextView errormessage;
     private RelativeLayout map_or_list_view,changeAddressLayout;
     private AppCompatButton btnTryAgain;
+    String venderID, shopId;
 
     LinearLayout erorolayout;
     private ArrayList<AddressResponse> addressList = new ArrayList<>();
     RadioGroup mapViewOrListViewRadioGroup;
     RelativeLayout searchLayout;
-    public static VendorShopsListFragment getInstance() {
-        return new VendorShopsListFragment();
+    public static VendorShopsListFragment getInstance(String VenderID,String shopId) {
+        VendorShopsListFragment vendorShopsListFragment = new VendorShopsListFragment();
+
+        Bundle args = new Bundle();
+        args.putString("VenderID", VenderID);
+        args.putString("shopId", shopId);
+        vendorShopsListFragment.setArguments(args);
+        return vendorShopsListFragment;
     }
 
     @Nullable
@@ -128,6 +135,15 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         LoggerInfo.printLog("Fragment", "VendorShopsListFragment");
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(requireActivity()));
         return inflater.inflate(R.layout.fragment_vendor_list_view, container, false);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            venderID = getArguments().getString("VenderID");
+            shopId = getArguments().getString("shopId");
+        }
     }
 
     @Override
@@ -487,7 +503,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, myProfile.getUserID(), latitude, longitude).enqueue(new Callback<CustomerProductsResponse>() {
+            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, myProfile.getUserID(), latitude, longitude,venderID,shopId).enqueue(new Callback<CustomerProductsResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<CustomerProductsResponse> call, @NotNull Response<CustomerProductsResponse> response) {
                     progressDialog.dismiss();
@@ -500,6 +516,16 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                                 totalShopsCount = data.getCustomerShopsList().getShopTotalCount();
                                 List<CustomerProductsShopDetailsModel> customerProductsList = data.getCustomerShopsList().getCustomerShopsList();
                                 updateAdapter(customerProductsList);
+                                try {
+                                    if (customerProductsList != null && customerProductsList.get(0) != null && shopId != null && !shopId.equalsIgnoreCase("") && Integer.parseInt(shopId) == customerProductsList.get(0).getShopId()) {
+                                        callBackListener.callBackReceived(customerProductsList.get(0));
+                                        shopId = null;
+                                        venderID = null;
+                                    }
+                                } catch (Exception e ){
+
+                                }
+
                             } else {
                                 showDialog(data.getMsg());
                                 //displayDefaultMapLocation();

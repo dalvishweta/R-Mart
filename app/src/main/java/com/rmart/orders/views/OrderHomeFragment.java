@@ -25,6 +25,8 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.ObjectKey;
 import com.rmart.R;
+import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
+import com.rmart.deeplinking.LinkGenerator;
 import com.rmart.glied.GlideApp;
 import com.rmart.orders.adapters.OrdersHomeAdapter;
 import com.rmart.profile.model.MyProfile;
@@ -184,11 +186,12 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
                     } catch (Exception e) {
                         Toast.makeText(getContext(), "pont1", Toast.LENGTH_LONG).show();
                     }
-                    final String appPackageName = getContext().getPackageName();
-                    String message = "रोकड मार्ट आता आपल्या शहरामध्ये!!!\n" +
-                            "आता " + addressResponse.getShopName() + "शॉप रोकड मार्ट सोबत ऑनलाईन झाले आहे. \n" +
+
+                    String message= "रोकड मार्ट आता आपल्या शहरामध्ये!!!\n" +
+                            "आता आमचे "+addressResponse.getShopName()+" रोकड मार्ट सोबत ऑनलाईन झाले आहे. \n" +
                             "नवीन ऑफर्स आणि शॉपिंग साठी खालील लिंक वर क्लिक करा आणि अँप डाउनलोड करा.\n";
-                    Utils.shareImage(bitmap, "shop.png", (Activity) getContext(), message + "https://play.google.com/store/apps/details?id=" + appPackageName);
+                    String deeplink = "https://www.rokadmart.com/public/Home/index?shop_id="+addressResponse.getId()+"&client_id=2&created_by="+addressResponse.getCreatedBy();
+                    LinkGenerator.shareLink(getActivity(),message,bitmap,deeplink);
                 } else {
                     Permisions.requestWriteExternlStoragePermission(getContext());
                 }

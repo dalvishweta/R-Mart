@@ -43,19 +43,14 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
     private int PAGE_SIZE=20;
     private static final String ARG_SHOP = "shop_details";
     private static final String CATEGOERY = "categoery";
-    ProductsAdapter productsAdapter;
-    CategoryAdapter categoryAdapter;
-    String searchPrase,sub_category_id;
-    int start_page=0;
-    int total_product_count;
-    public AppCompatButton btn_tryagain;
-    ProductListViewModel productListViewModel;
-
+    private ProductsAdapter productsAdapter;
+    private CategoryAdapter categoryAdapter;
+    private String searchPrase,sub_category_id;
+    private int start_page=0;
+    private int total_product_count;
+    private ProductListViewModel productListViewModel;
     public ProductListFragment() {
-        // Required empty public constructor
     }
-
-
     // TODO: Rename and change types and number of parameters
     public static ProductListFragment newInstance(CustomerProductsShopDetailsModel customerProductsShopDetailsModel, Category category) {
         ProductListFragment fragment = new ProductListFragment();
@@ -158,7 +153,7 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
             }
         });
 
-        btn_tryagain.setOnClickListener(new View.OnClickListener() {
+        binding.btnTryagain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

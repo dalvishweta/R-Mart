@@ -134,11 +134,9 @@ public class Product implements Serializable
         ImageView selectedgreeting = view.findViewById(R.id.loadericon);
         selectedgreeting.setVisibility(View.VISIBLE);
         GlideApp.with(view.getContext()).load(data.productImage) .listener(new RequestListener<Drawable>() {
-
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                 selectedgreeting.setVisibility(View.GONE);
-
                 return false;
             }
 
