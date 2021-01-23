@@ -1,4 +1,4 @@
-package com.rmart.retiler.inventory.product.model;
+package com.rmart.retiler.inventory.product_from_library.model;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -17,7 +17,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rmart.R;
 import com.rmart.glied.GlideApp;
-import com.rmart.retiler.inventory.brand.model.Brand;
 
 
 import java.io.Serializable;

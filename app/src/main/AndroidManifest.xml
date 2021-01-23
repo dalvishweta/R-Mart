@@ -30,7 +30,10 @@
 
         <activity android:name=".retiler.inventory.brand.activities.BrandFilterActivity">
 
-
+        </activity>
+        <activity android:name=".retiler.inventory.product_from_library.activities.ProductListActivity">
+        </activity>
+        <activity android:name=".retiler.inventory.category.activities.CategoryFilterActivity">
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

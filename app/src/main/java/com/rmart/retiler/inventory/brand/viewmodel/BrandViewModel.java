@@ -1,7 +1,5 @@
 package com.rmart.retiler.inventory.brand.viewmodel;
 
-import com.rmart.retiler.inventory.brand.activities.BrandFilterActivity;
-import com.rmart.retiler.inventory.brand.adapters.BrandListAdapter;
 import com.rmart.retiler.inventory.brand.model.BrandListResponse;
 import com.rmart.retiler.inventory.brand.repositories.BrandListRepository;
 

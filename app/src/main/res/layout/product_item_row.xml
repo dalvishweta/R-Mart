@@ -8,7 +8,7 @@
     <data>
         <variable
             name="product"
-            type="com.rmart.retiler.inventory.product.model.Product" />
+            type="com.rmart.retiler.inventory.product_from_library.model.Product" />
     </data>
 
 <androidx.cardview.widget.CardView

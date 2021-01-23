@@ -1,15 +1,13 @@
-package com.rmart.retiler.inventory.product.viewmodel;
+package com.rmart.retiler.inventory.product_from_library.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.rmart.retiler.inventory.brand.model.Brand;
-import com.rmart.retiler.inventory.brand.model.BrandListResponse;
-import com.rmart.retiler.inventory.brand.repositories.BrandListRepository;
 import com.rmart.retiler.inventory.category.model.Category;
-import com.rmart.retiler.inventory.product.model.ProductListResponse;
-import com.rmart.retiler.inventory.product.repositories.ProductListRepository;
+import com.rmart.retiler.inventory.product_from_library.model.ProductListResponse;
+import com.rmart.retiler.inventory.product_from_library.repositories.ProductListRepository;
 
 public class ProductViewModel extends ViewModel {
     public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();

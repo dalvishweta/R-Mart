@@ -1,10 +1,10 @@
-package com.rmart.retiler.inventory.product.repositories;
+package com.rmart.retiler.inventory.product_from_library.repositories;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.rmart.BuildConfig;
-import com.rmart.retiler.inventory.product.api.ProductListSearchApi;
-import com.rmart.retiler.inventory.product.model.ProductListResponse;
+import com.rmart.retiler.inventory.product_from_library.api.ProductListSearchApi;
+import com.rmart.retiler.inventory.product_from_library.model.ProductListResponse;
 import com.rmart.utilits.RetrofitClientInstance;
 
 import retrofit2.Call;

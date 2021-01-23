@@ -94,7 +94,6 @@ public class ShopHomePage extends BaseFragment {
             binding.setMyAdapter(shopHomeAdapter);
         });
 
-        binding.btnTryagain.setOnClickListener(view -> shopHomeViewModel.loadShopHomePage(productsShopDetailsModel));
 
         return binding.getRoot();
     }
