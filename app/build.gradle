@@ -68,7 +68,7 @@ android {
         buildConfigField("String", "DELETE_PRODUCT_WISH_LIST", '"customer/VendorShop/deleteWishlist"')
         buildConfigField("String", "SHOW_CART_ORDER_DETAILS", '"customer/VendorShop/showCartOrderDetails"')
         buildConfigField("String", "TEXT_SHOW_CART_ORDER_DETAILS", '"customer/VendorShop/Testcheck_showCartOrderDetails"')
-
+        buildConfigField("String", "API_ADD_PRODUCT", '"Products/add_product"')
         buildConfigField("String", "UPDATE_KYC_IMAGE_DETAILS", '"updateprofile/onChangeKYCImages"')
         buildConfigField("String", "ADD_RE_ORDER_TO_CART", '"customer/VendorShop/addReOrderToCart"')
         buildConfigField("String", "SHOW_SHOP_FAV_DATA", '"customer/VendorShop/showShopFavData"')
@@ -149,8 +149,8 @@ android {
             dimension "rokard_mart"
             applicationIdSuffix ".customerprod"
             /*versionNameSuffix "-customer"*/
-            versionCode 3
-            versionName "1.0.0"
+            versionCode 5
+            versionName "2.0.0"
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"') //?command=initiateTransaction
             buildConfigField("String", "ROLE_ID", '"5"')
@@ -167,6 +167,8 @@ android {
         retailer_production {
             dimension "rokard_mart"
             applicationIdSuffix ".retailer"
+            versionCode 4
+            versionName "2.0.0"
             /*versionNameSuffix "-retailer"*/
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"')
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
@@ -217,7 +219,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
     implementation 'jp.wasabeef:recyclerview-animators:2.0.0'
-
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
@@ -227,10 +228,11 @@ dependencies {
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     implementation "io.reactivex.rxjava2:rxjava:$rxjava"
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid"
-
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.github.bumptech.glide:annotations:4.11.0'
     implementation "com.github.bumptech.glide:okhttp3-integration:4.11.0"
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation 'com.google.firebase:firebase-dynamic-links'
+    implementation 'com.google.firebase:firebase-analytics'
 
 }
