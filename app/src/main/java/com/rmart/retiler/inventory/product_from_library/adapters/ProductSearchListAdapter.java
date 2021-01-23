@@ -1,4 +1,4 @@
-package com.rmart.retiler.inventory.product.adapters;
+package com.rmart.retiler.inventory.product_from_library.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,13 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.BR;
 import com.rmart.R;
-import com.rmart.customer.shops.home.model.ProductData;
-import com.rmart.databinding.BrandItemRowBinding;
 import com.rmart.databinding.ProductItemRowBinding;
 import com.rmart.inventory.OnInventoryClickedListener;
-import com.rmart.inventory.views.ShowProductPreviewFragment;
-import com.rmart.retiler.inventory.product.model.Product;
-import com.rmart.retiler.inventory.product.model.ProductImage;
+import com.rmart.retiler.inventory.product_from_library.model.Product;
+import com.rmart.retiler.inventory.product_from_library.model.ProductImage;
 import com.rmart.utilits.pojos.ImageURLResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 

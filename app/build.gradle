@@ -33,6 +33,7 @@ android {
         buildConfigField('String', 'API_CATEGORY_LIST', '"lib/Category/category_list"')
         buildConfigField('String', 'API_BRAND_LIST', '"lib/Brand/brand_list"')
         buildConfigField('String', 'API_PRODUCTSEARCH_LIST', '"lib/Category/product_search_test"')
+        buildConfigField('String', 'API_PRODUCTSEARCH_FROM_INVENTORY_LIST', '"vendor/Product/product_list_search"')
 
         buildConfigField("String", 'UPDATE_PROFILE', '"updateprofile"')
 

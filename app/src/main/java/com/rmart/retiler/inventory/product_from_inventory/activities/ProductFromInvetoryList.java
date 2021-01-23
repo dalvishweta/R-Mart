@@ -1,4 +1,4 @@
-package com.rmart.retiler.inventory.product.activities;
+package com.rmart.retiler.inventory.product_from_inventory.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,54 +9,45 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.SearchView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.databinding.ActivityProductlistRetailerBinding;
 import com.rmart.inventory.views.BaseInventoryFragment;
-import com.rmart.inventory.views.MyProductsListFragment;
 import com.rmart.retiler.inventory.brand.activities.BrandFilterActivity;
 import com.rmart.retiler.inventory.brand.model.Brand;
 import com.rmart.retiler.inventory.category.activities.CategoryFilterActivity;
 import com.rmart.retiler.inventory.category.model.Category;
-import com.rmart.retiler.inventory.product.adapters.ProductSearchListAdapter;
-import com.rmart.retiler.inventory.product.model.ProductListResponse;
-import com.rmart.retiler.inventory.product.viewmodel.ProductViewModel;
-import com.rmart.retiler.product.view.AddNewProductActivity;
+
+import com.rmart.retiler.inventory.product_from_inventory.Model.productFromInventoryListResponse;
+import com.rmart.retiler.inventory.product_from_inventory.adapters.ProductFromInventorySearchListAdapter;
+import com.rmart.retiler.inventory.product_from_inventory.viewmodel.ProductFromInventoryViewModel;
 import com.rmart.utilits.GridSpacesItemDecoration;
 import com.rmart.utilits.Utils;
 
 import java.util.ArrayList;
 
-import static com.rmart.inventory.views.SelectProductFromInventory.REQUEST_FILTERED_DATA_ID;
-
-public class ProductList extends BaseInventoryFragment {
-
-    ActivityProductlistRetailerBinding binding;
-    ProductSearchListAdapter  productSearchListAdapter;
+public class ProductFromInvetoryList extends BaseInventoryFragment {
+    ProductFromInventorySearchListAdapter productSearchListAdapter;
     final int CATEGORY_REQUEST=2;
     final int BRAND_REQUEST=3;
     int page=0;
     int total_product_count= 0;
-    ProductViewModel productViewModel;
-    public ProductList() {
+    ActivityProductlistRetailerBinding binding;
+    ProductFromInventoryViewModel productViewModel;
+    public ProductFromInvetoryList() {
         // Required empty public constructor
     }
 
-    public static ProductList newInstance() {
-        ProductList fragment = new ProductList();
+    public static ProductFromInvetoryList newInstance() {
+        ProductFromInvetoryList fragment = new ProductFromInvetoryList();
 
         return fragment;
     }
@@ -75,20 +66,11 @@ public class ProductList extends BaseInventoryFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        productViewModel = ViewModelProviders.of(this).get(ProductViewModel.class);
-        binding = DataBindingUtil.inflate(inflater, R.layout.activity_productlist_retailer, container, false);
+        productViewModel = ViewModelProviders.of(this).get(ProductFromInventoryViewModel.class);
+        binding = DataBindingUtil.inflate(inflater, R.layout.activity_productlist_from_inventory_retailer, container, false);
         productViewModel.getProductList( page+"");
         binding.setProductViewModel(productViewModel);
         binding.setLifecycleOwner(this);
-        binding.addCustomProduct.tvProductType.setText("Custom Product");
-        binding.addCustomProduct.addProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), AddNewProductActivity.class);
-                startActivity(intent);
-            }
-        });
-
         binding.rvBrands.addItemDecoration(new GridSpacesItemDecoration(15));
         binding.filter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,12 +104,12 @@ public class ProductList extends BaseInventoryFragment {
                 });
             }
         });
-        productSearchListAdapter = new ProductSearchListAdapter(getActivity(),new ArrayList<>(),mListener);
+        productSearchListAdapter = new ProductFromInventorySearchListAdapter(getActivity(),new ArrayList<>(),mListener);
         binding.rvBrands.setAdapter(productSearchListAdapter);
         //
-        productViewModel.productListResponseMutableLiveData.observeForever(new Observer<ProductListResponse>() {
+        productViewModel.productListResponseMutableLiveData.observeForever(new Observer<productFromInventoryListResponse>() {
             @Override
-            public void onChanged(ProductListResponse productListResponse) {
+            public void onChanged(productFromInventoryListResponse productListResponse) {
                 try {
                     if(page==0) {
                         productSearchListAdapter.products.clear();

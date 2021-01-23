@@ -23,7 +23,7 @@ import com.rmart.R;
 
 import com.rmart.inventory.adapters.ProductAdapter;
 import com.rmart.profile.model.MyProfile;
-import com.rmart.retiler.inventory.product.activities.ProductList;
+import com.rmart.retiler.inventory.product_from_library.activities.ProductList;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;

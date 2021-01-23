@@ -13,7 +13,6 @@ import com.rmart.inventory.models.APIUnitMeasures;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.inventory.viewmodel.InventoryViewModel;
 import com.rmart.retiler.product.OnUnitSaveListner;
-import com.rmart.retiler.inventory.product.model.Product;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.APIStockResponse;

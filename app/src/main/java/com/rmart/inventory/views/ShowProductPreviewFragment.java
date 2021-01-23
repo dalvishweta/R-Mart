@@ -23,7 +23,6 @@ import com.rmart.baseclass.views.AutoScrollViewPager;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.inventory.adapters.ProductUnitAdapter;
 import com.rmart.profile.model.MyProfile;
-import com.rmart.retiler.inventory.product.model.Product;
 import com.rmart.utilits.DateUtilities;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;

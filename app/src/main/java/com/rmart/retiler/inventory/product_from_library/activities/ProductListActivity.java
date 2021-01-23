@@ -1,4 +1,4 @@
-package com.rmart.retiler.inventory.product.activities;
+package com.rmart.retiler.inventory.product_from_library.activities;
 
 import android.os.Bundle;
 
@@ -8,12 +8,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.rmart.R;
-import com.rmart.databinding.ActivityBrandFilterBinding;
 import com.rmart.databinding.ActivityProductlistRetailerBinding;
-import com.rmart.retiler.inventory.brand.viewmodel.BrandViewModel;
-import com.rmart.retiler.inventory.product.adapters.ProductSearchListAdapter;
-import com.rmart.retiler.inventory.product.model.ProductListResponse;
-import com.rmart.retiler.inventory.product.viewmodel.ProductViewModel;
+import com.rmart.retiler.inventory.product_from_library.model.ProductListResponse;
+import com.rmart.retiler.inventory.product_from_library.viewmodel.ProductViewModel;
 import com.rmart.utilits.GridSpacesItemDecoration;
 
 public class ProductListActivity extends AppCompatActivity {

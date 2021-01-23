@@ -1,4 +1,4 @@
-package com.rmart.retiler.inventory.product.model;
+package com.rmart.retiler.inventory.product_from_library.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
