@@ -27,6 +27,13 @@ public class Product implements Serializable
     @SerializedName("product_lib_id")
     @Expose
     private int productLibId;
+    @SerializedName("product_id")
+    @Expose
+    private int productId;
+    @SerializedName("product_cat_id")
+    @Expose
+    private int productCatId;
+
     @SerializedName("product_image")
     @Expose
     private String productImage;
@@ -36,6 +43,23 @@ public class Product implements Serializable
     @SerializedName("product_desc")
     @Expose
     private String productDesc;
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public int getProductCatId() {
+        return productCatId;
+    }
+
+    public void setProductCatId(int productCatId) {
+        this.productCatId = productCatId;
+    }
+
     @SerializedName("category_id")
     @Expose
     private int categoryId;

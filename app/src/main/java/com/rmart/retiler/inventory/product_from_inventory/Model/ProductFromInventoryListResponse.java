@@ -7,7 +7,7 @@ import com.rmart.utilits.BaseResponse;
 
 import java.util.ArrayList;
 
-public class productFromInventoryListResponse extends BaseResponse {
+public class ProductFromInventoryListResponse extends BaseResponse {
 
     @SerializedName("Code")
     @Expose

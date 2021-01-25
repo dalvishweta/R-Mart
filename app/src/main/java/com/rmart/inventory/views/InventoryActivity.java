@@ -12,6 +12,7 @@ import com.rmart.inventory.OnInventoryClickedListener;
 import com.rmart.inventory.models.APIUnitMeasures;
 import com.rmart.inventory.models.UnitObject;
 import com.rmart.inventory.viewmodel.InventoryViewModel;
+import com.rmart.retiler.inventory.product_from_inventory.activities.ProductFromInvetoryList;
 import com.rmart.retiler.product.OnUnitSaveListner;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.pojos.APIStockListResponse;
@@ -35,7 +36,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
         super.onCreate(savedInstanceState);
         // inventoryViewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
         getStockList();
-        addFragment(MyProductsListFragment.newInstance("", ""), MyProductsListFragment.class.getName(), false);
+        addFragment(ProductFromInvetoryList.newInstance(), ProductFromInvetoryList.class.getName(), false);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
 
     @Override
     public void showMyProducts() {
-        replaceFragment(MyProductsListFragment.newInstance("",""), MyProductsListFragment.class.getName(),true);
+        replaceFragment(ProductFromInvetoryList.newInstance(), ProductFromInvetoryList.class.getName(),true);
     }
 
     @Override
@@ -103,7 +104,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     public void goToHome() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        addFragment(MyProductsListFragment.newInstance("", ""), "MyProductsListFragment", false);
+        addFragment(ProductFromInvetoryList.newInstance(), "MyProductsListFragment", false);
     }
 
     @Override

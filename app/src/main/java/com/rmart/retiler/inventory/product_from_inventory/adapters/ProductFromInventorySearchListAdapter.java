@@ -61,6 +61,7 @@ public class ProductFromInventorySearchListAdapter extends RecyclerView.Adapter<
 
                    ProductResponse productResponse = new ProductResponse();
                    productResponse.setBrand(product.getBrandName());
+                   productResponse.setProductID(product.getProductId()+"");
                    productResponse.setBrandID(product.getBrandId()+"");
                    productResponse.setCategory(product.getCategoryName());
                    productResponse.setCategoryID(product.getCategoryId()+"");
@@ -79,7 +80,7 @@ public class ProductFromInventorySearchListAdapter extends RecyclerView.Adapter<
                    }
                    productResponse.setImageDataObject(imageURLResponses);
 
-                   mListener.updateProduct(productResponse, false);
+                   mListener.showProductPreview(productResponse, true);
 
                }
            });
