@@ -1,9 +1,9 @@
-package com.rmart.retiler.inventory.product_from_inventory.Model;
+package com.rmart.retiler.inventory.product_from_inventory.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class productImage {
+public class ProductImage {
 
     @SerializedName("image_id")
     @Expose

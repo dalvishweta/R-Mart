@@ -21,18 +21,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.databinding.ActivityProductlistFromInventoryRetailerBinding;
-import com.rmart.databinding.ActivityProductlistRetailerBinding;
 import com.rmart.inventory.views.BaseInventoryFragment;
 import com.rmart.retiler.inventory.brand.activities.BrandFilterActivity;
 import com.rmart.retiler.inventory.brand.model.Brand;
 import com.rmart.retiler.inventory.category.activities.CategoryFilterActivity;
 import com.rmart.retiler.inventory.category.model.Category;
 
-import com.rmart.retiler.inventory.product_from_inventory.Model.ProductFromInventoryListResponse;
+import com.rmart.retiler.inventory.product_from_inventory.model.ProductFromInventoryListResponse;
 import com.rmart.retiler.inventory.product_from_inventory.adapters.ProductFromInventorySearchListAdapter;
 import com.rmart.retiler.inventory.product_from_inventory.viewmodel.ProductFromInventoryViewModel;
 import com.rmart.retiler.inventory.product_from_library.activities.ProductList;
-import com.rmart.retiler.product.view.AddNewProductActivity;
 import com.rmart.utilits.GridSpacesItemDecoration;
 import com.rmart.utilits.Utils;
 
@@ -59,7 +57,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
     @Override
     public void onResume() {
         super.onResume();
-        requireActivity().setTitle(getString(R.string.my_product_list));
+        requireActivity().setTitle(getString(R.string.my_product_list_from_library));
     }
 
     @Override

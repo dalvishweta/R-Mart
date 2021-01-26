@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.BR;
 import com.rmart.R;
-import com.rmart.databinding.ProductItemRowBinding;
+import com.rmart.databinding.InventoryProductItemRowBinding;
 import com.rmart.inventory.OnInventoryClickedListener;
-import com.rmart.retiler.inventory.product_from_library.model.Product;
-import com.rmart.retiler.inventory.product_from_library.model.ProductImage;
+import com.rmart.retiler.inventory.product_from_inventory.model.Product;
+import com.rmart.retiler.inventory.product_from_inventory.model.ProductImage;
 import com.rmart.utilits.pojos.ImageURLResponse;
 import com.rmart.utilits.pojos.ProductResponse;
 
@@ -38,7 +38,7 @@ public class ProductFromInventorySearchListAdapter extends RecyclerView.Adapter<
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ProductItemRowBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.product_item_row, parent, false);
+        InventoryProductItemRowBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.inventory_product_item_row, parent, false);
 
         ProductItemViewHolder vh = new ProductItemViewHolder(binding); // pass the view to View Holder
         return vh;
@@ -64,11 +64,11 @@ public class ProductFromInventorySearchListAdapter extends RecyclerView.Adapter<
                    productResponse.setProductID(product.getProductId()+"");
                    productResponse.setBrandID(product.getBrandId()+"");
                    productResponse.setCategory(product.getCategoryName());
-                   productResponse.setCategoryID(product.getCategoryId()+"");
+                   productResponse.setCategoryID(product.getProductCatId()+"");
                    productResponse.setProductName(product.getProductName());
-                   productResponse.setProductImage(product.getProductImage());
-                   productResponse.setDescription(product.getProductDesc());
-                   productResponse.setProductLibID(product.getProductLibId()+"");
+                   productResponse.setProductImage(product.getDisplayImage());
+                   productResponse.setDescription(product.getProductDetails());
+                   productResponse.setProductLibID(product.getProductId()+"");
                    ArrayList<ImageURLResponse> imageURLResponses =new ArrayList<>();
                    for (ProductImage productImage:product.getImages()) {
                        ImageURLResponse imageURLResponse =  new ImageURLResponse();
@@ -98,9 +98,9 @@ public class ProductFromInventorySearchListAdapter extends RecyclerView.Adapter<
 
     public class ProductItemViewHolder extends RecyclerView.ViewHolder {
 
-        ProductItemRowBinding binding;
+        InventoryProductItemRowBinding binding;
 
-        public ProductItemViewHolder(ProductItemRowBinding binding) {
+        public ProductItemViewHolder(InventoryProductItemRowBinding binding) {
                 super(binding.getRoot());
                 this.binding = binding;
 

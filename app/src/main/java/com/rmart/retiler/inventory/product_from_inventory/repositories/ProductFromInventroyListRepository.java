@@ -3,7 +3,7 @@ package com.rmart.retiler.inventory.product_from_inventory.repositories;
 import androidx.lifecycle.MutableLiveData;
 
 import com.rmart.BuildConfig;
-import com.rmart.retiler.inventory.product_from_inventory.Model.ProductFromInventoryListResponse;
+import com.rmart.retiler.inventory.product_from_inventory.model.ProductFromInventoryListResponse;
 import com.rmart.retiler.inventory.product_from_inventory.api.ProductFromInventoryListSearchApi;
 import com.rmart.utilits.RetrofitClientInstance;
 

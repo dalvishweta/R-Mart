@@ -52,7 +52,9 @@
     <string name="total_categories">%1$d Categories</string>
     <string name="category_list">My Category list</string>
     <string name="sub_category_list">My sub category list</string>
-    <string name="my_product_list">My Products list</string>
+    <string name="my_product_list_from_library">My Products</string>
+    <string name="my_product_list_from_inventory">Inventory Products </string>
+    <string name="my_product_list">My Products List </string>
     <string name="total_products">%1$d %2$s Products</string>
     <string name="total_sub_categories">6 Sub Categories</string>
     <string name="product_name">Aashirvaad Atta</string>

@@ -353,7 +353,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
                                         String message= "रोकड मार्ट आता आपल्या शहरामध्ये!!!\n" +
                                                 "आता आमचे "+myProfile.getAddressResponses().get(0).getShopName()+" रोकड मार्ट सोबत ऑनलाईन झाले आहे. \n" +
-                                                "नवीन ऑफर्स आणि शॉपिंग साठी खालील लिंक वर क्लिक करा आणि अँप डाउनलोड करा.\n";
+                                                "नवीन ऑफर्स आणि शॉपिंग साठी खालील लिंक वर क्लिक करा आणि अँप डाउनलोड करा.\n"+ "RokadMart brings your nearest local store online."+myProfile.getAddressResponses().get(0).getShopName() +"  is now online.Buy all the products on RokadMart with home delivery ";
                                         String deeplink = "https://www.rokadmart.com/public/Home/index?shop_id="+myProfile.getAddressResponses().get(0).getId()+"&client_id=2&created_by="+myProfile.getAddressResponses().get(0).getCreatedBy();
                                         LinkGenerator.shareLink(BaseNavigationDrawerActivity.this,message,resource,deeplink);
 

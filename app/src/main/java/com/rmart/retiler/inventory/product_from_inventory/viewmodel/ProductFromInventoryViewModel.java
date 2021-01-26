@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.retiler.inventory.brand.model.Brand;
 import com.rmart.retiler.inventory.category.model.Category;
-import com.rmart.retiler.inventory.product_from_inventory.Model.ProductFromInventoryListResponse;
+import com.rmart.retiler.inventory.product_from_inventory.model.ProductFromInventoryListResponse;
 import com.rmart.retiler.inventory.product_from_inventory.repositories.ProductFromInventroyListRepository;
 
 
