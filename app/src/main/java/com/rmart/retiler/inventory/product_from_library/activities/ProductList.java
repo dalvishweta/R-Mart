@@ -57,7 +57,7 @@ public class ProductList extends BaseInventoryFragment {
     @Override
     public void onResume() {
         super.onResume();
-        requireActivity().setTitle(getString(R.string.my_product_list));
+        requireActivity().setTitle(getString(R.string.my_product_list_from_inventory));
     }
 
     @Override

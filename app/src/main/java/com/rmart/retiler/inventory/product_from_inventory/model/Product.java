@@ -1,7 +1,22 @@
-package com.rmart.retiler.inventory.product_from_inventory.Model;
+package com.rmart.retiler.inventory.product_from_inventory.model;
 
+import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.BindingAdapter;
+
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.signature.ObjectKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rmart.R;
+import com.rmart.glied.GlideApp;
 
 import java.util.List;
 
@@ -18,7 +33,7 @@ public class Product {
         private String productName;
         @SerializedName("product_details")
         @Expose
-        private Object productDetails;
+        private String productDetails;
         @SerializedName("display_image")
         @Expose
         private String displayImage;
@@ -33,7 +48,7 @@ public class Product {
         private String categoryName;
         @SerializedName("images")
         @Expose
-        private List<productImage> images = null;
+        private List<ProductImage> images = null;
 
         public int getProductId() {
             return productId;
@@ -59,11 +74,11 @@ public class Product {
             this.productName = productName;
         }
 
-        public Object getProductDetails() {
+        public String getProductDetails() {
             return productDetails;
         }
 
-        public void setProductDetails(Object productDetails) {
+        public void setProductDetails(String productDetails) {
             this.productDetails = productDetails;
         }
 
@@ -99,13 +114,39 @@ public class Product {
             this.categoryName = categoryName;
         }
 
-        public List<productImage> getImages() {
+        public List<ProductImage> getImages() {
             return images;
         }
 
-        public void setImages(List<productImage> images) {
+        public void setImages(List<ProductImage> images) {
             this.images = images;
         }
 
+
+    @BindingAdapter("imageUrl")
+    public static void loadImage(View view, Product data) {
+
+        ImageView imageview = view.findViewById(R.id.imageview);
+        ImageView selectedgreeting = view.findViewById(R.id.loadericon);
+        selectedgreeting.setVisibility(View.VISIBLE);
+        GlideApp.with(view.getContext()).load(data.displayImage) .listener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                selectedgreeting.setVisibility(View.GONE);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                selectedgreeting.setVisibility(View.GONE);
+                return false;
+            }
+        }).dontAnimate().
+                diskCacheStrategy(DiskCacheStrategy.ALL).
+                signature(new ObjectKey(data.displayImage==null?"":data.displayImage)).
+                error(R.mipmap.default_product_image).thumbnail(0.5f).into(imageview);
     }
+
+
+}
 

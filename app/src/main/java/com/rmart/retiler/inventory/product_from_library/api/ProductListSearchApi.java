@@ -13,5 +13,5 @@ public interface ProductListSearchApi {
 
     @POST(BuildConfig.API_PRODUCTSEARCH_LIST)
     @FormUrlEncoded
-    Call<ProductListResponse> getProductSearch(@Field("category_ids") String category_ids, @Field("brand_id") String brand_id, @Field("search_phrase") String search_phrase, @Field("page") String page);
+        Call<ProductListResponse> getProductSearch(@Field("category_ids") String category_ids, @Field("brand_id") String brand_id, @Field("search_phrase") String search_phrase, @Field("page") String page);
 }

@@ -189,7 +189,7 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
 
                     String message= "रोकड मार्ट आता आपल्या शहरामध्ये!!!\n" +
                             "आता आमचे "+addressResponse.getShopName()+" रोकड मार्ट सोबत ऑनलाईन झाले आहे. \n" +
-                            "नवीन ऑफर्स आणि शॉपिंग साठी खालील लिंक वर क्लिक करा आणि अँप डाउनलोड करा.\n";
+                            "नवीन ऑफर्स आणि शॉपिंग साठी खालील लिंक वर क्लिक करा आणि अँप डाउनलोड करा.\n"+ "RokadMart brings your nearest local store online."+addressResponse.getShopName() +"  is now online.Buy all the products on RokadMart with home delivery " ;
                     String deeplink = "https://www.rokadmart.com/public/Home/index?shop_id="+addressResponse.getId()+"&client_id=2&created_by="+addressResponse.getCreatedBy();
                     LinkGenerator.shareLink(getActivity(),message,bitmap,deeplink);
                 } else {

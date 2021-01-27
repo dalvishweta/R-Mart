@@ -1,8 +1,7 @@
-package com.rmart.retiler.inventory.product_from_inventory.Model;
+package com.rmart.retiler.inventory.product_from_inventory.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.rmart.retiler.inventory.product_from_library.model.Product;
 import com.rmart.utilits.BaseResponse;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class ProductFromInventoryListResponse extends BaseResponse {
 
     @SerializedName("data")
     @Expose
-    private ArrayList<com.rmart.retiler.inventory.product_from_library.model.Product> product;
+    private ArrayList<Product> product;
 
 
     public void setCode(String code) {
@@ -56,7 +55,7 @@ public class ProductFromInventoryListResponse extends BaseResponse {
         this.next_value = next_value;
     }
 
-    public void setProduct(ArrayList<com.rmart.retiler.inventory.product_from_library.model.Product> product) {
+    public void setProduct(ArrayList<Product> product) {
         this.product = product;
     }
 

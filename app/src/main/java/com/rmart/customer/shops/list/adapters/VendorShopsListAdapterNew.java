@@ -98,7 +98,7 @@ public class VendorShopsListAdapterNew extends RecyclerView.Adapter<VendorShopsL
 
                 String message= "रोकड मार्ट आता आपल्या शहरामध्ये!!!\n" +
                         "आता "+dataModel.getShopName()+"शॉप रोकड मार्ट सोबत ऑनलाईन झाले आहे. \n" +
-                        "नवीन ऑफर्स आणि शॉपिंग साठी खालील लिंक वर क्लिक करा आणि अँप डाउनलोड करा.\n" ;
+                        "नवीन ऑफर्स आणि शॉपिंग साठी खालील लिंक वर क्लिक करा आणि अँप डाउनलोड करा.\n"+ "RokadMart brings your nearest local store online."+dataModel.getShopName() +"  is now online.Buy all the products on RokadMart with home delivery " ;
                 String deeplink = "https://www.rokadmart.com/public/Home/index?shop_id="+dataModel.getShopId()+"&client_id=2&created_by="+dataModel.getVendorId();
                 LinkGenerator.shareLink(context,message,bitmap,deeplink);
 

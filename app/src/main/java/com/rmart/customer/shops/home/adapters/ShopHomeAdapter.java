@@ -90,7 +90,7 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                         String message= "रोकड मार्ट आता आपल्या शहरामध्ये!!!\n" +
                                 "आता "+productsShopDetailsModel.getShopName()+"शॉप रोकड मार्ट सोबत ऑनलाईन झाले आहे. \n" +
-                                "नवीन ऑफर्स आणि शॉपिंग साठी खालील लिंक वर क्लिक करा आणि अँप डाउनलोड करा.\n" ;
+                                "नवीन ऑफर्स आणि शॉपिंग साठी खालील लिंक वर क्लिक करा आणि अँप डाउनलोड करा.\n" + "RokadMart brings your nearest local store online."+productsShopDetailsModel.getShopName() +"  is now online.Buy all the products on RokadMart with home delivery " ;
                         String deeplink = "https://www.rokadmart.com/public/Home/index?shop_id="+productsShopDetailsModel.getShopId()+"&client_id=2&created_by="+productsShopDetailsModel.getVendorId();
                         LinkGenerator.shareLink(context,message,bitmap,deeplink);
 

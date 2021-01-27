@@ -1,7 +1,7 @@
 package com.rmart.retiler.inventory.product_from_inventory.api;
 
 import com.rmart.BuildConfig;
-import com.rmart.retiler.inventory.product_from_inventory.Model.ProductFromInventoryListResponse;
+import com.rmart.retiler.inventory.product_from_inventory.model.ProductFromInventoryListResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
