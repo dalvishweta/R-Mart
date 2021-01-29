@@ -19,6 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +38,7 @@ import com.rmart.mapview.OnLocationUpdateListner;
 import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.adapters.CustomAdapter;
 import com.rmart.profile.model.BusinessType;
+import com.rmart.profile.model.CreditDetails;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.model.ShopType;
 import com.rmart.profile.model.ShopTypeResponce;
@@ -76,11 +79,14 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
     private static final String SHOP_IMAGE = "shop_image";
     FragmentAddAddressBinding binding;
     private AddressResponse myAddress;
+    private boolean SellingToConsumer=false;
+    private boolean CreditOption=false;
     private boolean isAddNewAddress,isImageLoading;
     private int selectedPhotoType = -1;
     private double latitude;
     private double longitude;
     private ShopTypeResponce shopTypeResponce;
+    private CreditDetails creditDetails;
     private MapsFragment mapsFragment;
     private EditAdreesViewModel editAdreesViewModel;
     public EditAddressFragment() {
@@ -112,9 +118,32 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         binding.setLifecycleOwner(this);
         binding.setMyAddress(editAdreesViewModel);
         editAdreesViewModel.addressResponseMutableLiveData.setValue(myAddress);
+        creditDetails=new CreditDetails();
 
         textWatchers();
+       binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
+            public void onCheckedChanged(RadioGroup rg, int checkedId) {
+                for (int i = 0; i < rg.getChildCount(); i++) {
+                    RadioButton btn = (RadioButton) rg.getChildAt(i);
+                    if (btn.getId() == checkedId) {
+                        String text = (String) btn.getText();
+                        if(text.equalsIgnoreCase("yes")){
+                            SellingToConsumer=true;
+                            creditDetails.setSellingConsumer(true);
+                        }
+
+                        return;
+                    }
+                }
+            }
+        });
+
+           if(binding.switchon.isChecked()){
+               CreditOption=true;
+               creditDetails.setCreditoption(true);
+
+           }
 
         return binding.getRoot();
     }
@@ -482,6 +511,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                         if(businessType1.name.equalsIgnoreCase(myAddress.getBusinessType())) {
                             int i = shopTypeResponce.results.businessTypes.indexOf(businessType1);
                             binding.businessType.setSelection(i);
+
                         }
                     }
 
@@ -541,7 +571,15 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 binding.shopBusinessLayout.setBackground(getResources().getDrawable(R.drawable.grey_rounded_borders_bg));
+                if(i==2)
+                {
+                    binding.linOne.setVisibility(View.VISIBLE);
 
+                }else{
+                    binding.linOne.setVisibility(View.GONE);
+
+
+                }
             }
 
             @Override
@@ -1068,7 +1106,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                         myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                         myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
                         myAddress.getDeliveryRadius(), Utils.CLIENT_ID, aadharNo, myAddress.getDeliveryCharges(),
-                        myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(),myAddress.getBusinessType(),myAddress.getShopTypeId()+"",myAddress.getBankName(),myAddress.getIfscCode(),myAddress.getBranchName(),myAddress.getBankAccNo()).enqueue(new Callback<AddressListResponse>() {
+                        myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(),myAddress.getBusinessType(),myAddress.getShopTypeId()+"",myAddress.getBankName(),myAddress.getIfscCode(),myAddress.getBranchName(),myAddress.getBankAccNo(),CreditOption,SellingToConsumer).enqueue(new Callback<AddressListResponse>() {
                     @Override
                     public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
                         if (response.isSuccessful()) {

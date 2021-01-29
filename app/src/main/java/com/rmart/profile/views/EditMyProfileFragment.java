@@ -27,6 +27,7 @@ import com.rmart.baseclass.views.CircularNetworkImageView;
 import com.rmart.baseclass.views.ProgressBarCircular;
 import com.rmart.customer.adapters.CustomSpinnerAdapter;
 import com.rmart.inventory.adapters.CustomStringAdapter;
+import com.rmart.profile.model.CreditDetails;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.CommonUtils;
 import com.rmart.utilits.HttpsTrustManager;
@@ -64,7 +65,7 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
     private String selectedGender;
     // private MyProfileViewModel myProfileViewModel;
     private List<Object> gendersList = new ArrayList<>();
-
+    private CreditDetails creditDetails;
     private CircularNetworkImageView ivProfileImageField;
     private ProgressBarCircular profileCircularBar;
     private Bitmap profileImageBitmap;
@@ -117,7 +118,7 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
         gendersList.add("Male");
         gendersList.add("Female");
         gendersList.add("Other");
-
+        creditDetails = new CreditDetails();
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
@@ -269,7 +270,7 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
         ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
         profileService.updateProfile(MyProfile.getInstance().getMobileNumber(),
                 Objects.requireNonNull(tvFirstName.getText()).toString(), Objects.requireNonNull(tvLastName.getText()).toString(), MyProfile.getInstance().getUserID(),
-                selectedGender, email, MyProfile.getInstance().getPrimaryAddressId(), encodedImage).enqueue(new Callback<LoginResponse>() {
+                selectedGender, email, MyProfile.getInstance().getPrimaryAddressId(), encodedImage,creditDetails.getCreditoption(),creditDetails.SellingConsumer).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
                 try {
