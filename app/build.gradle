@@ -49,16 +49,17 @@ android {
         buildConfigField("String", 'API_CATEGORIES', '"Categories"')
         /* customer api services */
         buildConfigField("String", "CUSTOMER_SHOPS_LIST", '"customer/VendorShop/getShopList"')
+        buildConfigField("String", "CUSTOMER_ALL_SHOPS_PRODUCT", '"lib/Product/all_product_search"')
         buildConfigField("String", "CUSTOMER_SHOPS_HOME_PAGE", '"customer/VendorShop/shophomepage"')
         buildConfigField("String", "VENDOR_PRODUCT_DETAILS", '"customer/VendorShop/getCatProductList"')
         buildConfigField("String", "VENDOR_PRODUCTS_LIST", '"customer/VendorShop/getCatProductList"')
-        buildConfigField("String", "VENDOR_PRODUCTS_LISTS", '"customer/VendorShop/shophomepageproductlist"')
+        buildConfigField("String", "VENDOR_PRODUCTS_LISTS", '"customer/VendorShop/shophomepageproductlistbyretailer"')
         buildConfigField("String", "VENDOR_PRODUCT_DETAILS", '"customer/VendorShop/getProductDetails"')
         buildConfigField("String", "VENDOR_SHOW_ADD_TO_CART", '"customer/VendorShop/showAddToCart"')
         buildConfigField("String", "VENDOR_DELETE_ADD_TO_CART", '"customer/VendorShop/deleteAddToCart"')
         buildConfigField("String", "VENDOR_MOVE_TO_WISH_LIST", '"customer/VendorShop/addToWishlist"')
         buildConfigField("String", "GET_SHOPPING_CART_LIST", '"customer/VendorShop/addToWishlist"')
-        buildConfigField("String", "VENDOR_ADD_TO_CART", '"customer/VendorShop/addToCart"')
+        buildConfigField("String", "VENDOR_ADD_TO_CART", '"customer/VendorShop/addToCartsaler"')
         buildConfigField("String", "VENDOR_REMOVE_FROM_CART", '"customer/VendorShop/deleteAddToCart"')
         buildConfigField("String", "VENDORS_SHOW_SHOP_WISE_CART", '"customer/VendorShop/showShopWiseCart"')
         buildConfigField("String", "VENDORS_SHOW_WISH_LIST_CART", '"customer/VendorShop/showWishlistData"')
@@ -69,12 +70,11 @@ android {
         buildConfigField("String", "DELETE_PRODUCT_WISH_LIST", '"customer/VendorShop/deleteWishlist"')
         buildConfigField("String", "SHOW_CART_ORDER_DETAILS", '"customer/VendorShop/showCartOrderDetails"')
         buildConfigField("String", "TEXT_SHOW_CART_ORDER_DETAILS", '"customer/VendorShop/Testcheck_showCartOrderDetails"')
-        buildConfigField("String", "API_ADD_PRODUCT", '"Products/add_product"')
+        buildConfigField("String", "API_ADD_PRODUCT", '"products/add_product_Test"')
         buildConfigField("String", "UPDATE_KYC_IMAGE_DETAILS", '"updateprofile/onChangeKYCImages"')
         buildConfigField("String", "ADD_RE_ORDER_TO_CART", '"customer/VendorShop/addReOrderToCart"')
         buildConfigField("String", "SHOW_SHOP_FAV_DATA", '"customer/VendorShop/showShopFavData"')
         //showShopFavData
-        /*Vendor inventory services*/
         buildConfigField("String", 'VENDOR_INVENTORY_ADD_PRODUCT', '"vendor/product/add_product"')
         buildConfigField("String", 'VENDOR_INVENTORY_EDIT_PRODUCT', '"vendor/product/edit_product"')
         buildConfigField("String", 'VENDOR_INVENTORY_DELETE_PRODUCT', '"vendor/product/delete_product"')
@@ -87,7 +87,7 @@ android {
         buildConfigField("String", 'VENDOR_ORDER_PRODUCTS', '"vendor/order/viewOrderById"')
         buildConfigField("String", 'VENDOR_UPDATE_ORDER', '"vendor/order/updateOrder"')
         /*Customer order services*/
-        buildConfigField("String", 'CUSTOMER_VIEW_ORDER_BY_ID', '"customer/order/viewOrderById"')
+        buildConfigField("String", 'CUSTOMER_VIEW_ORDER_BY_ID', '"customer/order/viewOrderByRetailerId"')
         buildConfigField("String", 'CUSTOMER_VIEW_ALL_ORDERS', '"customer/order/ordersList"')
         buildConfigField("String", 'CUSTOMER_REORDER_PRODUCTS', '"customer/order/checkOrder"')
         buildConfigField("String", "DELERY_BOY_LIST",'"Deliveryboys"')
@@ -150,8 +150,8 @@ android {
             dimension "rokard_mart"
             applicationIdSuffix ".customerprod"
             /*versionNameSuffix "-customer"*/
-            versionCode 5
-            versionName "2.0.0"
+            versionCode 6
+            versionName "2.1.0"
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"') //?command=initiateTransaction
             buildConfigField("String", "ROLE_ID", '"5"')
@@ -168,8 +168,8 @@ android {
         retailer_production {
             dimension "rokard_mart"
             applicationIdSuffix ".retailer"
-            versionCode 4
-            versionName "2.0.0"
+            versionCode 5
+            versionName "2.1.0"
             /*versionNameSuffix "-retailer"*/
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"')
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
@@ -199,6 +199,8 @@ dependencies {
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
     implementation 'androidx.navigation:navigation-fragment:2.3.2'
     implementation 'androidx.navigation:navigation-ui:2.3.2'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -235,5 +237,4 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.google.firebase:firebase-dynamic-links'
     implementation 'com.google.firebase:firebase-analytics'
-
 }
