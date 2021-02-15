@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="searchProduct"
+            type="com.rmart.customer.shops.home.model.ProductData" />
+    </data>
+
+    <RelativeLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/title"
+            android:padding="6dp"
+            android:layout_width="match_parent"
+            android:textSize="15dp"
+            android:text="Search Product"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            />
+
+    <RelativeLayout
+        android:layout_below="@+id/title"
+        android:id="@+id/row"
+        android:background='@drawable/bg_row'
+        android:layout_width="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_height="wrap_content"
+        >
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_weight="2"
+            android:layout_centerVertical="true"
+            app:imageUrl="@{searchProduct}"
+            android:layout_margin="5dp"
+            android:id="@+id/img_designlistlayout"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/imageview"
+                android:layout_width="70dp"
+                android:scaleType="fitXY"
+                android:layout_height="70dp"
+                />
+            <ImageView
+                android:id="@+id/selectedgreeting"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/loader_newrelease"
+                android:background="@null"
+                android:elevation="2dp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_toRightOf="@+id/img_designlistlayout"
+            android:layout_toLeftOf="@+id/offerlabel"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="Everest Kasturi Methi"
+                android:maxLines="1"
+                android:layout_marginTop="5dp"
+                android:minLines="1"
+                android:text="@{searchProduct.productName}"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+            <TextView
+                android:layout_below="@+id/product_name"
+                android:id="@+id/product_unit"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="Unit: 15 ltr"
+                android:maxLines="1"
+                android:minLines="1"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/selling_price"
+                android:layout_below="@+id/product_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:hint="Rs. 2000 "
+                android:maxLines="1"
+                android:layout_marginTop="5dp"
+
+                android:minLines="1"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+            <TextView
+                android:id="@+id/unit_price"
+                android:layout_below="@+id/product_unit"
+                android:layout_toRightOf="@+id/selling_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:hint="Rs. 2000 "
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:maxLines="1"
+                android:minLines="1"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+
+
+        <TextView
+            android:id="@+id/offerlabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="20 % off"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentRight="true"
+            android:background="@color/theme_color_two"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="12sp"
+            />
+
+    </RelativeLayout>
+    </RelativeLayout>
+</layout>

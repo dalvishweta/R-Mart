@@ -21,7 +21,7 @@ import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.models.ContentModel;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.custom_views.CustomNetworkImageView;
 
@@ -33,18 +33,18 @@ import java.util.List;
 public class FavouritesShopsAdapter extends RecyclerView.Adapter<FavouritesShopsAdapter.ViewHolder> {
 
     private final LayoutInflater layoutInflater;
-    private List<CustomerProductsShopDetailsModel> listData;
+    private List<ShopDetailsModel> listData;
     private final CallBackInterface callBackListener;
     private final ImageLoader imageLoader;
 
-    public FavouritesShopsAdapter(Context context, List<CustomerProductsShopDetailsModel> listData, CallBackInterface callBackListener) {
+    public FavouritesShopsAdapter(Context context, List<ShopDetailsModel> listData, CallBackInterface callBackListener) {
         layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
         this.callBackListener = callBackListener;
         imageLoader = RMartApplication.getInstance().getImageLoader();
     }
 
-    public void updateItems(List<CustomerProductsShopDetailsModel> listData) {
+    public void updateItems(List<ShopDetailsModel> listData) {
         this.listData = listData;
     }
 
@@ -58,7 +58,7 @@ public class FavouritesShopsAdapter extends RecyclerView.Adapter<FavouritesShops
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        CustomerProductsShopDetailsModel favouritesListData = listData.get(position);
+        ShopDetailsModel favouritesListData = listData.get(position);
 
         holder.tvShopNameField.setText(favouritesListData.getShopName());
         holder.tvViewAddressField.setText(favouritesListData.getShopAddress());
@@ -120,7 +120,7 @@ public class FavouritesShopsAdapter extends RecyclerView.Adapter<FavouritesShops
 
             btnRemoveField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
-                CustomerProductsShopDetailsModel selectedShop = listData.get(tag);
+                ShopDetailsModel selectedShop = listData.get(tag);
                 ContentModel contentModel = new ContentModel();
                 contentModel.setStatus(Constants.TAG_REMOVE);
                 contentModel.setValue(selectedShop);
@@ -128,7 +128,7 @@ public class FavouritesShopsAdapter extends RecyclerView.Adapter<FavouritesShops
             });
             shopDetailsLayoutField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
-                CustomerProductsShopDetailsModel selectedShop = listData.get(tag);
+                ShopDetailsModel selectedShop = listData.get(tag);
                 ContentModel contentModel = new ContentModel();
                 contentModel.setStatus(Constants.TAG_DETAILS);
                 contentModel.setValue(selectedShop);

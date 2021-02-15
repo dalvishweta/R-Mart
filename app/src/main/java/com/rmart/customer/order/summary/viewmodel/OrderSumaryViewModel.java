@@ -1,14 +1,12 @@
 package com.rmart.customer.order.summary.viewmodel;
 
-import android.app.Activity;
 import android.view.View;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.rmart.R;
 import com.rmart.customer.order.summary.model.OrderedSummaryResponse;
 import com.rmart.customer.order.summary.repository.OrderSummaryRepository;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.customer.views.PaymentOptionsFragment;
 import com.rmart.profile.model.MyProfile;
 
@@ -26,7 +24,7 @@ public class OrderSumaryViewModel extends ViewModel {
     public MutableLiveData<Integer> selectedPaymentType = new MutableLiveData<>();
     public MutableLiveData<String> DiscountCode = new MutableLiveData<>();
     public MutableLiveData<OrderedSummaryResponse> orderedSummaryResponseMutableLiveData = new MutableLiveData<>();
-    public MutableLiveData<CustomerProductsShopDetailsModel> vendorShoppingCartDetails = new MutableLiveData<>();
+    public MutableLiveData<ShopDetailsModel> vendorShoppingCartDetails = new MutableLiveData<>();
 
 
     public void showOrderSummary(int vendorId, int shop_id, String user_address_id, String delivery_method,String coupon_code){

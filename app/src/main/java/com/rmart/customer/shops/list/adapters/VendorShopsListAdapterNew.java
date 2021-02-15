@@ -2,7 +2,6 @@ package com.rmart.customer.shops.list.adapters;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +9,12 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.dynamiclinks.DynamicLink;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.rmart.BR;
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.models.ContentModel;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.databinding.VederShopItemsBinding;
 import com.rmart.deeplinking.LinkGenerator;
 import com.rmart.utilits.Permisions;
@@ -35,13 +29,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class VendorShopsListAdapterNew extends RecyclerView.Adapter<VendorShopsListAdapterNew.MyViewHolder> implements Filterable {
 
-    private List<CustomerProductsShopDetailsModel> productList;
-    private List<CustomerProductsShopDetailsModel> filteredListData;
+    private List<ShopDetailsModel> productList;
+    private List<ShopDetailsModel> filteredListData;
     private final CallBackInterface callBackListener;
     Activity context;
     private VendorShopsListAdapterNew.MyFilter myFilter;
 
-    public VendorShopsListAdapterNew(Activity context, List<CustomerProductsShopDetailsModel> productList, CallBackInterface callBackListener) {
+    public VendorShopsListAdapterNew(Activity context, List<ShopDetailsModel> productList, CallBackInterface callBackListener) {
         this.productList = productList;
         this.context = context;
         filteredListData = new ArrayList<>();
@@ -49,7 +43,7 @@ public class VendorShopsListAdapterNew extends RecyclerView.Adapter<VendorShopsL
         this.callBackListener = callBackListener;
     }
 
-    public void updateItems(List<CustomerProductsShopDetailsModel> listData) {
+    public void updateItems(List<ShopDetailsModel> listData) {
         this.productList = listData;
         this.filteredListData.clear();
         this.filteredListData.addAll(productList);
@@ -68,7 +62,7 @@ public class VendorShopsListAdapterNew extends RecyclerView.Adapter<VendorShopsL
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        final CustomerProductsShopDetailsModel dataModel = filteredListData.get(position);
+        final ShopDetailsModel dataModel = filteredListData.get(position);
         holder.binding.getRoot().setOnClickListener(view -> {
             callBackListener.callBackReceived(dataModel);
         });
@@ -151,7 +145,7 @@ public class VendorShopsListAdapterNew extends RecyclerView.Adapter<VendorShopsL
             FilterResults results = new FilterResults();
             if (constraint != null && constraint.length() > 0) {
                 filteredListData.clear();
-                for (CustomerProductsShopDetailsModel customerProductsModel : productList) {
+                for (ShopDetailsModel customerProductsModel : productList) {
                     if (customerProductsModel.getShopName().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         filteredListData.add(customerProductsModel);
                     }
@@ -164,7 +158,7 @@ public class VendorShopsListAdapterNew extends RecyclerView.Adapter<VendorShopsL
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            filteredListData = (List<CustomerProductsShopDetailsModel>) results.values;
+            filteredListData = (List<ShopDetailsModel>) results.values;
             notifyDataSetChanged();
         }
     }

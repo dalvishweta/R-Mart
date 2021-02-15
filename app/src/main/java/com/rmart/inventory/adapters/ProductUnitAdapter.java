@@ -69,6 +69,8 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
         } else {
             holder.tvIUnitState.setTextColor(holder.itemView.getContext().getColor(R.color.gray));
         }
+        holder.bussiness_type.setText(unit.getBuisness_type().equalsIgnoreCase("C")?"Customer":"Retailer");            ;
+
     }
 
     @Override
@@ -77,7 +79,7 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
     }
 
     public class ProductUnitViewHolder extends RecyclerView.ViewHolder {
-        public AppCompatTextView tvIUnitState, tvUnitValue, tvFinalCost, tvActual, tvOffer;
+        public AppCompatTextView tvIUnitState,bussiness_type, tvUnitValue, tvFinalCost, tvActual, tvOffer;
         public AppCompatImageButton edit;
 
         public ProductUnitViewHolder(View listItem) {
@@ -85,6 +87,7 @@ public class ProductUnitAdapter extends RecyclerView.Adapter<ProductUnitAdapter.
             tvUnitValue = listItem.findViewById(R.id.sub_title_1);
             tvFinalCost = listItem.findViewById(R.id.sub_title_2);
             tvActual = listItem.findViewById(R.id.sub_title_3);
+            bussiness_type = listItem.findViewById(R.id.bussiness_type);
             tvOffer = listItem.findViewById(R.id.offer);
             tvIUnitState = listItem.findViewById(R.id.unit_status);
             edit = listItem.findViewById(R.id.unit_edit);

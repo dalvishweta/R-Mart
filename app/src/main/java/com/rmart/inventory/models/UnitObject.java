@@ -52,6 +52,14 @@ public class UnitObject implements Serializable {
     @Expose
     String unit_number;
 
+
+    public void setBuisness_type(String buisness_type) {
+        this.buisness_type = buisness_type;
+    }
+
+    @SerializedName("buisness_type")
+    @Expose
+    String buisness_type;
     /*@SerializedName("short_name")
     @Expose
     String shortName;*/
@@ -61,6 +69,11 @@ public class UnitObject implements Serializable {
     int minDiscount;
     int maxDiscount;
     String unitType;
+
+    public String getBuisness_type() {
+        return buisness_type;
+    }
+
     String unitMeasure;
     long timeStamp = -1;
     boolean isProductUpdated = false;
@@ -85,6 +98,8 @@ public class UnitObject implements Serializable {
         this.maxDiscount  = unitObject.maxDiscount;
         this.unitType  = unitObject.unitType;
         this.unitMeasure  = unitObject.unitMeasure;
+        this.unitMeasure  = unitObject.unitMeasure;
+        this.buisness_type  = unitObject.buisness_type;
     }
     /*public String getID() {
         return ID;

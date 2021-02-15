@@ -171,6 +171,7 @@ public class AddNewProductActivity extends AppCompatActivity implements BaseInte
         binding.btnSaveProduct.setOnClickListener(this);
         binding.tvExpiry.setOnClickListener(this);
         binding.tvAddUnit.setOnClickListener(this);
+        binding.tvAddUnitRetailer.setOnClickListener(this);
         binding.tvChooseCategory.setOnClickListener(this);
         binding.tvChooseSubCategory.setOnClickListener(this);
         binding.tvProductBrand.setOnClickListener(this);
@@ -186,18 +187,15 @@ public class AddNewProductActivity extends AppCompatActivity implements BaseInte
     }
 
     private void setObservers() {
-        addNewProductViewModel.categoryListResponse.observeForever(new Observer<CategoryListResponse>() {
-            @Override
-            public void onChanged(CategoryListResponse categoryListResponse) {
-                if (progressDialog != null && progressDialog.isShowing())
-                    progressDialog.dismiss();
-                Log.d(TAG, "categoryListResponse : " + categoryListResponse.toString());
-                if (categoryListResponse.getCategories() != null && categoryListResponse.getCount() > 0) {
-                    categoryHashSet.addAll(categoryListResponse.getCategories());
-                    Log.e(TAG, "categoryHashSet : " + categoryHashSet);
-                    setCategorySpinner();
-                } else Log.e(TAG, "Categories list is empty");
-            }
+        addNewProductViewModel.categoryListResponse.observeForever(categoryListResponse -> {
+            if (progressDialog != null && progressDialog.isShowing())
+                progressDialog.dismiss();
+            Log.d(TAG, "categoryListResponse : " + categoryListResponse.toString());
+            if (categoryListResponse.getCategories() != null && categoryListResponse.getCount() > 0) {
+                categoryHashSet.addAll(categoryListResponse.getCategories());
+                Log.e(TAG, "categoryHashSet : " + categoryHashSet);
+                setCategorySpinner();
+            } else Log.e(TAG, "Categories list is empty");
         });
         addNewProductViewModel.subCategoryListResponse.observe(this, new Observer<SubCategoryListResponse>() {
             @Override
@@ -481,8 +479,16 @@ public class AddNewProductActivity extends AppCompatActivity implements BaseInte
                 UnitObject newObject = new UnitObject();
                 newObject.setProductUnitID("");
                 newObject.setProductUpdated(false);
-                showAddUnitDialog(INT_ADD_UNIT, newObject);
+                showAddUnitDialog(INT_ADD_UNIT, newObject,AddUnitDialog.UNIT_FOR_CUSTOMER );
                 break;
+
+            case R.id.tv_add_unit_retailer:
+                UnitObject newObject2 = new UnitObject();
+                newObject2.setProductUnitID("");
+                newObject2.setProductUpdated(false);
+                showAddUnitDialog(INT_ADD_UNIT, newObject2,AddUnitDialog.UNITFORRETAILER );
+                break;
+
 
             case R.id.tv_choose_category :
                 if (categoryList != null && categoryList.size() > 0) {
@@ -513,12 +519,12 @@ public class AddNewProductActivity extends AppCompatActivity implements BaseInte
         }
     }
 
-    private void showAddUnitDialog(int requestCode, UnitObject unitObject) {
+    private void showAddUnitDialog(int requestCode, UnitObject unitObject,int businessfor) {
         unitBaseAdapter = new ProductUnitAdapter(unitsList, callBackListener, true);
         binding.rvUnitBaseList.setLayoutManager(new LinearLayoutManager(context));
         binding.rvUnitBaseList.setAdapter(unitBaseAdapter);
         AddUnitDialog addUnitDialog = AddUnitDialog.newInstance(unitObject, false, apiStockListResponse,
-                new APIUnitMeasures(unitMeasurements), this);
+                new APIUnitMeasures(unitMeasurements),businessfor,this);
         addUnitDialog.setCancelable(false);
         addUnitDialog.setRequestCode(requestCode);
         addUnitDialog.show(getSupportFragmentManager(), AddUnitDialog.class.getName());
@@ -570,7 +576,7 @@ public class AddNewProductActivity extends AppCompatActivity implements BaseInte
                 photoUploadSelected();
             } else if (status.equalsIgnoreCase(Constants.TAG_EDIT_UNIT)) {
                 UnitObject unitObject = (UnitObject) value;
-                showAddUnitDialog(INT_UPDATE_UNIT, unitObject);
+                showAddUnitDialog(INT_UPDATE_UNIT, unitObject,unitObject.getBuisness_type().equalsIgnoreCase("C")?AddUnitDialog.UNIT_FOR_CUSTOMER:AddUnitDialog.UNITFORRETAILER );
                 // deleteUnits((UnitObject) value);
             }
         }
@@ -857,6 +863,7 @@ public class AddNewProductActivity extends AppCompatActivity implements BaseInte
                     object.addProperty("position", unit.getPosition());
                     object.addProperty("product_unit_id", unit.getProductUnitID());
                     object.addProperty("quantity", unit.getQuantity());
+                    object.addProperty("buisness_type", unit.getBuisness_type());
                     object.addProperty("stock_id", unit.getStockID());
 //                    if (selectedStockIds.trim().equalsIgnoreCase(""))
                     selectedStockIds = unit.getStockID();

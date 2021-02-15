@@ -141,6 +141,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.my_favourites_list).setOnClickListener(this);
         findViewById(R.id.my_wish_list).setOnClickListener(this);
         findViewById(R.id.share_app).setOnClickListener(this);
+        findViewById(R.id.wholesaler).setOnClickListener(this);
         ivProfileImageField = findViewById(R.id.iv_user_profile_image);
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
@@ -152,6 +153,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                         findViewById(R.id.retailer_inventory).setVisibility(View.GONE);
                         findViewById(R.id.retailer_orders).setVisibility(View.GONE);
                         findViewById(R.id.share_app).setVisibility(View.GONE);
+                        findViewById(R.id.wholesaler).setVisibility(View.GONE);
                         break;
 
                     case Utils.RETAILER_ID:
@@ -160,6 +162,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                         findViewById(R.id.my_wish_list).setVisibility(View.GONE);
                         findViewById(R.id.my_favourites_list).setVisibility(View.GONE);
                         findViewById(R.id.my_wallet).setVisibility(View.GONE);
+                        findViewById(R.id.wholesaler).setVisibility(View.VISIBLE);
                         break;
                     case Utils.DELIVERY_ID:
                         findViewById(R.id.retailer_inventory).setVisibility(View.GONE);
@@ -169,6 +172,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                         findViewById(R.id.my_favourites_list).setVisibility(View.GONE);
                         findViewById(R.id.my_wallet).setVisibility(View.GONE);
                         findViewById(R.id.share_app).setVisibility(View.GONE);
+                        findViewById(R.id.wholesaler).setVisibility(View.GONE);
 
                         break;
                     default:
@@ -339,6 +343,12 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     /*intent = new Intent(this, CustomerWishListActivity.class);
                     startActivity(intent);*/
                     gotoWisListScreen();
+                    break;
+                case R.id.wholesaler:
+                    showCartIcon();
+                    intent = new Intent(BaseNavigationDrawerActivity.this, CustomerHomeActivity.class);
+                    startActivity(intent);
+
                     break;
                 case R.id.share_app:
                     MyProfile myProfile = MyProfile.getInstance();

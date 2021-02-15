@@ -10,6 +10,7 @@ import androidx.core.app.JobIntentService;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.ProductInCartDetailsModel;
+import com.rmart.customer.shops.products.api.Products;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -49,10 +50,10 @@ public class UpdateProductQuantityServices extends JobIntentService {
 
     private void updateProductQuantityDetails() {
         if(Utils.isNetworkConnected(this)) {
-            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
             String clientID = "2";
             Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, productInCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                    productInCartDetails.getProductUnitId(), productInCartDetails.getTotalProductCartQty(), event);
+                    productInCartDetails.getProductUnitId(), productInCartDetails.getTotalProductCartQty(), event,MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<AddToCartResponseDetails>() {
                 @Override
                 public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {

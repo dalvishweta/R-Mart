@@ -7,7 +7,7 @@
 
             <variable
                 name="shopdata"
-                type="com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel" />
+                type="com.rmart.customer.shops.list.models.ShopDetailsModel" />
 
 
             </data>

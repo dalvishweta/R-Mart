@@ -134,7 +134,12 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if(isLoading){
             return productData.size()+1;
         }
-        return productData.size();
+        if(productData!=null){
+            return productData.size();
+        } else {
+            return 0;
+        }
+
     }
 
     public class ProductHolder extends RecyclerView.ViewHolder {

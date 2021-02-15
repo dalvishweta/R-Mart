@@ -19,6 +19,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:textSize="20sp"
+        android:id="@+id/title"
         android:textColor="@color/black"
         android:fontFamily="@font/roboto_medium"
         android:text="@string/unit_info"
@@ -159,6 +160,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_product_field_bg">
 

@@ -14,7 +14,7 @@ public interface OnInventoryClickedListener {
     void updateProduct(ProductResponse product, boolean isEdit);
     void addProductToInventory(String listType, String id);
     void requestToCreateProduct();
-    void addUnit(UnitObject unitValue, APIUnitMeasures unitMeasurements, BaseInventoryFragment fragment, int requestID);
+    void addUnit(UnitObject unitValue, APIUnitMeasures unitMeasurements, BaseInventoryFragment fragment, int requestID,int unit_for);
     void goToHome();
     void requestNewProduct(BaseInventoryFragment fragment, int requestID);
     void applyFilter(BaseInventoryFragment fragment, int requestFilteredDataId);

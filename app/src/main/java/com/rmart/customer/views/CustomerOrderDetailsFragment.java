@@ -15,7 +15,7 @@ import com.rmart.customer.models.CustomerOrderPaymentInfoDetails;
 import com.rmart.customer.models.CustomerOrderPersonalDetails;
 import com.rmart.customer.models.CustomerOrderProductOrderedDetails;
 import com.rmart.customer.models.CustomerOrderedResponseModel;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.customer_order.adapters.ProductListAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
@@ -47,7 +47,7 @@ import retrofit2.Response;
 public class CustomerOrderDetailsFragment extends BaseFragment {
     public static final String DELIVERY ="Delivery";
     public static final String PICKUP ="Pickup";
-    private CustomerProductsShopDetailsModel vendorShoppingCartDetails;
+    private ShopDetailsModel vendorShoppingCartDetails;
     private AppCompatButton btnProceedToBuyField;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private AppCompatTextView tvAmount, tvExpectedDateDelivery;
@@ -60,7 +60,7 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
     AppCompatTextView deliveryAddress,customerAddress;
     CheckBox checkBoxPickUPFromShop;
 
-    public static CustomerOrderDetailsFragment getInstance(CustomerProductsShopDetailsModel vendorShopDetails) {
+    public static CustomerOrderDetailsFragment getInstance(ShopDetailsModel vendorShopDetails) {
         CustomerOrderDetailsFragment fragment = new CustomerOrderDetailsFragment();
         Bundle extras = new Bundle();
         extras.putSerializable("VendorShopDetails", vendorShopDetails);
@@ -81,7 +81,7 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle extras = getArguments();
         if (extras != null) {
-            vendorShoppingCartDetails = (CustomerProductsShopDetailsModel) extras.getSerializable("VendorShopDetails");
+            vendorShoppingCartDetails = (ShopDetailsModel) extras.getSerializable("VendorShopDetails");
         }
     }
 

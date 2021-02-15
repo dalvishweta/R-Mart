@@ -32,7 +32,7 @@ import com.rmart.customer.adapters.VendorProductDetailsAdapter;
 import com.rmart.customer.models.AddShopToWishListResponse;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductDetailsModel;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.profile.model.MyProfile;
@@ -64,7 +64,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
     private AppCompatEditText etProductsSearchField;
     private int currentPage = 0;
     private String searchProductName = "";
-    private CustomerProductsShopDetailsModel productsShopDetailsModel;
+    private ShopDetailsModel productsShopDetailsModel;
     private TextView tvShopNameField;
     private TextView tvPhoneNoField;
     private TextView tvViewAddressField;
@@ -76,7 +76,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
     private boolean isWishListShop = false;
     private LinearLayout progressLayoutField;
     private ImageView ivSearchField;
-    public static VendorProductDetailsFragment getInstance(CustomerProductsShopDetailsModel productsShopDetailsModel) {
+    public static VendorProductDetailsFragment getInstance(ShopDetailsModel productsShopDetailsModel) {
         VendorProductDetailsFragment fragment = new VendorProductDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, productsShopDetailsModel);
@@ -87,7 +87,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            productsShopDetailsModel = (CustomerProductsShopDetailsModel) getArguments().getSerializable(ARG_PARAM1);
+            productsShopDetailsModel = (ShopDetailsModel) getArguments().getSerializable(ARG_PARAM1);
         }
     }
     @Override
@@ -376,7 +376,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<BaseResponse> call = customerProductsService.deleteShopFromWishList(clientID, productsShopDetailsModel.getVendorId(), productsShopDetailsModel.getShopId(),
-                    MyProfile.getInstance().getUserID());
+                    MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
@@ -423,7 +423,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<AddShopToWishListResponse> call = customerProductsService.addShopToWishList(clientID, productsShopDetailsModel.getVendorId(),
-                    productsShopDetailsModel.getShopId(), MyProfile.getInstance().getUserID());
+                    productsShopDetailsModel.getShopId(), MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<AddShopToWishListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AddShopToWishListResponse> call, @NotNull Response<AddShopToWishListResponse> response) {

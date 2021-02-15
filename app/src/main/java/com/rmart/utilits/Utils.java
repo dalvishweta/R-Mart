@@ -75,30 +75,36 @@ public class Utils {
     }
 
     public static boolean isValidMobile(String phone) {
-        String regex = "[0-9]+";
-        Pattern p = Pattern.compile(regex);
+        try {
+            String regex = "[0-9]+";
+            Pattern p = Pattern.compile(regex);
 
-        // If the string is empty
-        // return false
-        Matcher m = p.matcher(phone);
+            // If the string is empty
+            // return false
+            Matcher m = p.matcher(phone);
 
-        int i = Integer.parseInt(String.valueOf(phone.charAt(0)));
-        int i1 = Integer.parseInt(String.valueOf(phone.charAt(0)));
-        if (m.matches() && phone.length() == 10 && Integer.parseInt(String.valueOf(phone.charAt(0))) > 5 && Integer.parseInt(String.valueOf(phone.charAt(0))) < 10) {
-            return android.util.Patterns.PHONE.matcher(phone).matches();
+            int i = Integer.parseInt(String.valueOf(phone.charAt(0)));
+            int i1 = Integer.parseInt(String.valueOf(phone.charAt(0)));
+            if (m.matches() && phone.length() == 10 && Integer.parseInt(String.valueOf(phone.charAt(0))) > 5 && Integer.parseInt(String.valueOf(phone.charAt(0))) < 10) {
+                return android.util.Patterns.PHONE.matcher(phone).matches();
+            }
+            return false;
+        } catch (Exception e){
+            return false;
+
         }
-        return false;
     }
 
     public static Boolean isNetworkConnected(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        Network network = connectivityManager.getActiveNetwork();
-        NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(network);
-        if(capabilities != null) {
-            return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(
-                    NetworkCapabilities.TRANSPORT_CELLULAR);
+        try {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+            return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+
+        } catch (Exception e){
+            return false;
+
         }
-        return false;
     }
 
     public static boolean isValidWord(String word) {

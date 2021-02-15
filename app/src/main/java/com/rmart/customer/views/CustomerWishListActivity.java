@@ -9,7 +9,8 @@ import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerProductDetailsModel;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.home.model.ProductData;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
@@ -73,17 +74,17 @@ public class CustomerWishListActivity extends BaseNavigationDrawerActivity imple
     }
 
     @Override
-    public void gotoVendorProductDetails(CustomerProductsShopDetailsModel customerProductsModel) {
+    public void gotoVendorProductDetails(ShopDetailsModel customerProductsModel, ProductData productData) {
 
     }
 
     @Override
-    public void gotoProductDescDetails(CustomerProductDetailsModel vendorProductDataDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
+    public void gotoProductDescDetails(CustomerProductDetailsModel vendorProductDataDetails, ShopDetailsModel vendorShopDetails) {
 
     }
 
     @Override
-    public void gotoPaymentOptionsScreen(CustomerProductsShopDetailsModel vendorShopDetails,int i) {
+    public void gotoPaymentOptionsScreen(ShopDetailsModel vendorShopDetails, int i) {
 
     }
 
@@ -98,7 +99,7 @@ public class CustomerWishListActivity extends BaseNavigationDrawerActivity imple
     }
 
     @Override
-    public void gotoVendorSameProductListScreen(ProductBaseModel productCategoryDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
+    public void gotoVendorSameProductListScreen(ProductBaseModel productCategoryDetails, ShopDetailsModel vendorShopDetails) {
 
     }
 
@@ -108,12 +109,12 @@ public class CustomerWishListActivity extends BaseNavigationDrawerActivity imple
     }
 
     @Override
-    public void updateShopWishListStatus(CustomerProductsShopDetailsModel vendorShopDetails) {
+    public void updateShopWishListStatus(ShopDetailsModel vendorShopDetails) {
 
     }
 
     @Override
-    public void gotoCompleteOrderDetailsScreen(CustomerProductsShopDetailsModel vendorShopDetails) {
+    public void gotoCompleteOrderDetailsScreen(ShopDetailsModel vendorShopDetails) {
 
     }
 

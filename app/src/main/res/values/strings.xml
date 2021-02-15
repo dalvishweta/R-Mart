@@ -52,8 +52,8 @@
     <string name="total_categories">%1$d Categories</string>
     <string name="category_list">My Category list</string>
     <string name="sub_category_list">My sub category list</string>
-    <string name="my_product_list_from_library">My Products</string>
-    <string name="my_product_list_from_inventory">Inventory Products </string>
+    <string name="my_product_list_from_library">Product Inventory</string>
+    <string name="my_product_list_from_inventory">Product Library</string>
     <string name="my_product_list">My Products List </string>
     <string name="total_products">%1$d %2$s Products</string>
     <string name="total_sub_categories">6 Sub Categories</string>
@@ -76,7 +76,7 @@
     <string name="product_video_link">Product Video Link</string>
     <string name="add_units_">Add Units *</string>
     <string name="add_units_text">Add Units </string>
-    <string name="add_units">+ Add</string>
+    <string name="add_units">+ For Customer</string>
     <string name="delivery_days">Delivery Days</string>
     <string name="expiry_">Expiry Date *</string>
     <string name="expiry">Expiry </string>
@@ -197,7 +197,7 @@
     <string name="display_unit">1KG</string>
     <string name="no_information_available">No Information Available</string>
     <string name="view_address">View Address</string>
-    <string name="search_for_shop">Search For shop</string>
+    <string name="search_for_shop">Search for Product</string>
     <string name="showing_results_based_on">Showing Results based on</string>
     <string name="change">Change</string>
     <string name="uid">uid</string>
@@ -348,7 +348,7 @@
     <string name="error_min_password">Please enter minimum of 8 characters</string>
     <string name="product_discard_alert">Are you sure wants to discard your Changes?</string>
     <string name="cart_is_empty">Cart is empty</string>
-    <string name="allow_digits">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM </string>
+    <string name="allow_digits">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM -_,@#*/!$~()\&amp;</string>
     <string name="allow_digits_for_numbers">1234567890</string>
     <string name="allow_name">qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM </string>
     <string name="allow_number_digits">1234567890</string>
@@ -399,4 +399,10 @@
     <string name="ooops">Ooops!</string>
     <string name="product_name_hint">Product Name *</string>
     <string name="choose_brand">Choose Brand *</string>
+    <string name="himt_productname">Fortune Refined Soyabine Oil(15ltr)</string>
+    <string name="brandname">Fortune</string>
+    <string name="lable_staock">Stock Status:</string>
+    <string name="available">Available</string>
+    <string name="Label_before_closing_time">Before Closing Time</string>
+    <string name="Label_aftere_closing_time">Sfter Closing Time</string>
 </resources>

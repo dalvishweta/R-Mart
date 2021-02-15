@@ -24,7 +24,13 @@ public class ProductFromInventroyListRepository {
             @Override
             public void onResponse(Call<ProductFromInventoryListResponse> call, Response<ProductFromInventoryListResponse> response) {
                 ProductFromInventoryListResponse data = response.body();
-                resultMutableLiveData.setValue(data);
+                if(!data.getCode().equalsIgnoreCase("200")) {
+                    if(Integer.parseInt(page)==0) {
+                        resultMutableLiveData.setValue(data);
+                    }
+                } else {
+                    resultMutableLiveData.setValue(data);
+                }
             }
 
             @Override

@@ -21,9 +21,10 @@ import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.ConfirmOrdersAdapter;
-import com.rmart.customer.models.AddProductToWishListResponse;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
+import com.rmart.customer.shops.products.api.Products;
+import com.rmart.customer.shops.products.model.AddProductToWishListResponse;
 import com.rmart.customer.models.ContentModel;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductInCartDetailsModel;
 import com.rmart.customer.models.ProductInCartResponse;
 import com.rmart.customer.models.ShoppingCartResponseDetails;
@@ -64,7 +65,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
     private ProductInCartDetailsModel selectedProductInCartDetails;
     private AppCompatButton btnProceedToBuyField;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
-    private CustomerProductsShopDetailsModel vendorShopDetails;
+    private ShopDetailsModel vendorShopDetails;
 
     public ShoppingCartDetailsFragment() {
         // Required empty public constructor
@@ -149,7 +150,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
             /*if(productId != -1) {
 
             }*/
-            Call<ProductInCartResponse> call = customerProductsService.getVendorShowCartList(clientID, vendorShoppingCartDetails.getVendorId(), MyProfile.getInstance().getUserID());
+            Call<ProductInCartResponse> call = customerProductsService.getVendorShowCartList(clientID, vendorShoppingCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<ProductInCartResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<ProductInCartResponse> call, @NotNull Response<ProductInCartResponse> response) {
@@ -228,7 +229,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
     private void moveToWishSelected() {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
-            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
             String clientID = "2";
             Call<AddProductToWishListResponse> call = customerProductsService.moveToWishList(clientID, selectedProductInCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),
                     selectedProductInCartDetails.getProductId());
@@ -268,7 +269,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<ProductInCartResponse> call = customerProductsService.deleteProductDetails(clientID, selectedProductInCartDetails.getCartId());
+            Call<ProductInCartResponse> call = customerProductsService.deleteProductDetails(clientID, selectedProductInCartDetails.getCartId(),MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<ProductInCartResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<ProductInCartResponse> call, @NotNull Response<ProductInCartResponse> response) {

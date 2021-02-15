@@ -3,7 +3,6 @@ package com.rmart.customer.order.summary.fragments;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -17,12 +16,8 @@ import com.rmart.customer.models.CustomerOrderProductOrderedDetails;
 import com.rmart.customer.order.summary.adapters.ProductsAdapter;
 import com.rmart.customer.order.summary.model.OrderedSummaryResponse;
 import com.rmart.customer.order.summary.viewmodel.OrderSumaryViewModel;
-import com.rmart.customer.shops.home.adapters.CategoryAdapter;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
-import com.rmart.customer.shops.products.viewmodel.ProductListViewModel;
-import com.rmart.customer.views.CustomerOrderDetailsFragment;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.databinding.FragmentOrderSummaryBinding;
-import com.rmart.databinding.FragmentProductListBinding;
 import com.rmart.profile.model.MyProfile;
 
 import java.util.ArrayList;
@@ -32,7 +27,7 @@ import static com.rmart.customer.order.summary.viewmodel.OrderSumaryViewModel.DE
 public class OrderSummaryFragment extends BaseFragment {
 
 
-    private CustomerProductsShopDetailsModel vendorShoppingCartDetails;
+    private ShopDetailsModel vendorShoppingCartDetails;
 
 
     public OrderSummaryFragment() {
@@ -40,7 +35,7 @@ public class OrderSummaryFragment extends BaseFragment {
     }
 
 
-    public static OrderSummaryFragment newInstance(CustomerProductsShopDetailsModel vendorShopDetails) {
+    public static OrderSummaryFragment newInstance(ShopDetailsModel vendorShopDetails) {
         OrderSummaryFragment fragment = new OrderSummaryFragment();
         Bundle extras = new Bundle();
         extras.putSerializable("VendorShopDetails", vendorShopDetails);
@@ -54,7 +49,7 @@ public class OrderSummaryFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         Bundle extras = getArguments();
         if (extras != null) {
-            vendorShoppingCartDetails = (CustomerProductsShopDetailsModel) extras.getSerializable("VendorShopDetails");
+            vendorShoppingCartDetails = (ShopDetailsModel) extras.getSerializable("VendorShopDetails");
         }
     }
 
@@ -73,9 +68,15 @@ public class OrderSummaryFragment extends BaseFragment {
         orderSumaryViewModel.orderedSummaryResponseMutableLiveData.observeForever(new Observer<OrderedSummaryResponse>() {
             @Override
             public void onChanged(OrderedSummaryResponse orderedSummaryResponse) {
+                if(orderedSummaryResponse.getStatus().equalsIgnoreCase("success")) {
+                    if(orderedSummaryResponse.getCustomerOrderedDataResponseModel()!=null) {
 
-                ProductsAdapter categoryAdapter = new ProductsAdapter(getActivity(), (ArrayList<CustomerOrderProductOrderedDetails>) orderedSummaryResponse.getCustomerOrderedDataResponseModel().getCustomerOrderProductDetailsList());
-                binding.setProductAdapter(categoryAdapter);
+                        ProductsAdapter categoryAdapter = new ProductsAdapter(getActivity(), (ArrayList<CustomerOrderProductOrderedDetails>) orderedSummaryResponse.getCustomerOrderedDataResponseModel().getCustomerOrderProductDetailsList());
+                        binding.setProductAdapter(categoryAdapter);
+                    }
+                }  else {
+
+                }
             }
         });
 

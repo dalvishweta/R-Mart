@@ -21,7 +21,7 @@ public class ProductFromInventoryViewModel extends ViewModel {
     public void getProductList(String page)
     {
         isLoading.setValue(true);
-        MutableLiveData<ProductFromInventoryListResponse> resultMutableLiveData= ProductFromInventroyListRepository.getProductList(categoryID.getValue()!=null?categoryID.getValue().getId()+"":null, MyProfile.getInstance().getMobileNumber(),brandID.getValue()!=null?brandID.getValue().getId()+"":null,searchPhrase.getValue(),page);
+        MutableLiveData<ProductFromInventoryListResponse> resultMutableLiveData= ProductFromInventroyListRepository.getProductList(categoryID.getValue()!=null?categoryID.getValue().getId()+"":null, MyProfile.getInstance()!=null?MyProfile.getInstance().getMobileNumber():null,brandID.getValue()!=null?brandID.getValue().getId()+"":null,searchPhrase.getValue(),page);
         resultMutableLiveData.observeForever(new Observer<ProductFromInventoryListResponse>() {
             @Override
             public void onChanged(ProductFromInventoryListResponse productListResponse) {

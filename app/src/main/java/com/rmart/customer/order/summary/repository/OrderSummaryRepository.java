@@ -21,7 +21,7 @@ public class OrderSummaryRepository {
     public static MutableLiveData<OrderedSummaryResponse> showCartOrderDetails(int vendorId, int shop_id, String user_address_id, String delivery_method,String coupon_code){
         OrderSummaryApi orderSummaryApi = RetrofitClientInstance.getRetrofitInstance().create(OrderSummaryApi.class);
         final MutableLiveData<OrderedSummaryResponse> resultMutableLiveData = new MutableLiveData<>();
-        Call<OrderedSummaryResponse> call = orderSummaryApi.showCartOrderDetails(CLIENT_ID,vendorId,shop_id,user_address_id, MyProfile.getInstance().getUserID(),delivery_method,coupon_code);
+        Call<OrderedSummaryResponse> call = orderSummaryApi.showCartOrderDetails(CLIENT_ID,vendorId,shop_id,user_address_id, MyProfile.getInstance().getUserID(),delivery_method,coupon_code,MyProfile.getInstance().getRoleID());
         final OrderedSummaryResponse result = new OrderedSummaryResponse();
 
         call.enqueue(new Callback<OrderedSummaryResponse>() {

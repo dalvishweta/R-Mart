@@ -29,6 +29,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,11 +52,19 @@ import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
+import com.rmart.customer.shops.home.listner.OnClickListner;
+import com.rmart.customer.shops.home.listner.onProdcutClick;
+import com.rmart.customer.shops.home.model.Category;
+import com.rmart.customer.shops.home.model.ProductData;
+import com.rmart.customer.shops.list.adapters.AllProductsAdapter;
 import com.rmart.customer.shops.list.adapters.VendorShopsListAdapterNew;
 import com.rmart.customer.models.AddShopToWishListResponse;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.models.CustomerProductsResponse;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ProductSearchResponce;
+import com.rmart.customer.shops.list.models.SearchProducts;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
+import com.rmart.customer.shops.list.repositories.ProductRepository;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer.views.CustomerHomeFragment;
 import com.rmart.mapview.MyLocation;
@@ -87,7 +96,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
 
     private AppCompatEditText etProductsSearchField;
     private int currentPage = 0;
-    private List<CustomerProductsShopDetailsModel> shopsList;
+    private List<ShopDetailsModel> shopsList;
     private boolean isLoading = false;
     private boolean isLastPage = false;
     private int PAGE_SIZE = 20;
@@ -96,7 +105,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private VendorShopsListAdapterNew vendorShopsListAdapter;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
     private MyProfile myProfile;
-    private CustomerProductsShopDetailsModel selectedShopDetails;
+    private ShopDetailsModel selectedShopDetails;
     private double latitude = 0.0;
     private double longitude = 0.0;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -170,6 +179,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         searchLayout = view.findViewById(R.id.searchLayout);
         errormessage = view.findViewById(R.id.errormessage);
         RecyclerView vendorShopsListField = view.findViewById(R.id.products_list_field);
+        RecyclerView searchProductsListField = view.findViewById(R.id.search_products_list_field);
         tvAddressField = view.findViewById(R.id.tv_address_field);
         erorolayout = view.findViewById(R.id.erorolayout);
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
@@ -189,6 +199,21 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             resetShopsList();
             getShopsList();
         });
+        AllProductsAdapter allProductsAdapter  =new AllProductsAdapter(getActivity(), new ArrayList<>(), new onProdcutClick() {
+            @Override
+            public void onSelected(SearchProducts productData) {
+                ;
+                    ProductData productData1 = new ProductData();
+                    productData1.setProductId(productData.getProductId());
+                    productData1.setProductImage(productData.getDisplayImage());
+                    productData1.setParentCategoryId(productData.getProductCatId());
+                    productData1.setProductName(productData.getProductName());
+                    productData1.setUnits(productData.getProduct_unit());
+                    onCustomerHomeInteractionListener.gotoVendorProductDetails( productData.getShopDetailsModel(),productData1);
+
+            }
+        });
+
         etProductsSearchField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -202,9 +227,43 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
 
             @Override
             public void afterTextChanged(Editable s) {
-                performSearch();
+
+                if(etProductsSearchField.getText().toString().length()>0){
+                    searchProductsListField.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setVisibility(View.GONE);
+                    mapViewOrListViewRadioGroup.setVisibility(View.GONE);
+
+                    ProductRepository.searchProduct(0,latitude,longitude,etProductsSearchField.getText().toString()).observeForever(new Observer<ProductSearchResponce>() {
+                        @Override
+                        public void onChanged(ProductSearchResponce productSearchResponce) {
+
+                            if(productSearchResponce.getStatus().equalsIgnoreCase("Success")){
+                                allProductsAdapter.clear();
+                                allProductsAdapter.addProducts(productSearchResponce.data);
+
+                            }
+
+                        }
+                    });
+
+                } else {
+                    searchProductsListField.setVisibility(View.GONE);
+                    swipeRefreshLayout.setVisibility(View.VISIBLE);
+                    mapViewOrListViewRadioGroup.setVisibility(View.VISIBLE);
+
+                }
+
+
             }
         });
+
+
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireActivity());
+        searchProductsListField.setLayoutManager(layoutManager2);
+        searchProductsListField.setHasFixedSize(false);
+        searchProductsListField.setItemAnimator(new SlideInDownAnimator());
+        searchProductsListField.setAdapter(allProductsAdapter);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity());
         vendorShopsListField.setLayoutManager(layoutManager);
         vendorShopsListField.setHasFixedSize(false);
@@ -235,8 +294,15 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         vendorShopsListAdapter = new VendorShopsListAdapterNew(requireActivity(), shopsList, callBackListener);
         vendorShopsListField.setAdapter(vendorShopsListAdapter);
         view.findViewById(R.id.btn_change_address_field).setOnClickListener(v -> changeAddressSelected());
+        
         MyProfile myProfile = MyProfile.getInstance();
+        
         if (myProfile != null) {
+            if(myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)){
+                view.findViewById(R.id.btn_change_address_field).setVisibility(View.VISIBLE);
+            } else {
+                view.findViewById(R.id.btn_change_address_field).setVisibility(View.GONE);
+            }
             addressList = myProfile.getAddressResponses();
             if (addressList != null && !addressList.isEmpty()) {
                 if (addressList.size() == 1) {
@@ -321,7 +387,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         requireActivity().setTitle(getString(R.string.shops_list));
     }
 
-    public void updateShopWishListStatus(CustomerProductsShopDetailsModel vendorShopDetails) {
+    public void updateShopWishListStatus(ShopDetailsModel vendorShopDetails) {
         int index = shopsList.indexOf(vendorShopDetails);
         if (index > -1) {
             vendorShopsListAdapter.notifyItemChanged(index);
@@ -329,8 +395,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     }
 
     private final CallBackInterface callBackListener = pObject -> {
-        if (pObject instanceof CustomerProductsShopDetailsModel) {
-            onCustomerHomeInteractionListener.gotoVendorProductDetails((CustomerProductsShopDetailsModel) pObject);
+        if (pObject instanceof ShopDetailsModel) {
+            onCustomerHomeInteractionListener.gotoVendorProductDetails((ShopDetailsModel) pObject,null);
         } else if (pObject instanceof ContentModel) {
             ContentModel contentModel = (ContentModel) pObject;
             String status = contentModel.getStatus();
@@ -339,13 +405,11 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             } else if (status.equalsIgnoreCase(Constants.TAG_MESSAGE)) {
                 messageSelected((String) contentModel.getValue());
             } else if (status.equalsIgnoreCase(Constants.TAG_SHOP_FAVOURITE)) {
-                selectedShopDetails = (CustomerProductsShopDetailsModel) contentModel.getValue();
+                selectedShopDetails = (ShopDetailsModel) contentModel.getValue();
                 shopFavouriteSelected();
             }
         }
     };
-
-
     private void callSelected(String shopMobileNo) {
         Utils.openDialPad(requireActivity(), shopMobileNo);
     }
@@ -366,7 +430,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<BaseResponse> call = customerProductsService.deleteShopFromWishList(clientID, selectedShopDetails.getVendorId(), selectedShopDetails.getShopId(),
-                    MyProfile.getInstance().getUserID());
+                    MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
@@ -420,7 +484,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<AddShopToWishListResponse> call = customerProductsService.addShopToWishList(clientID, selectedShopDetails.getVendorId(),
-                    selectedShopDetails.getShopId(), MyProfile.getInstance().getUserID());
+                    selectedShopDetails.getShopId(), MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<AddShopToWishListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AddShopToWishListResponse> call, @NotNull Response<AddShopToWishListResponse> response) {
@@ -465,25 +529,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         onCustomerHomeInteractionListener.gotoChangeAddress();
     }
 
-    private void performSearch() {
-        searchShopName = Objects.requireNonNull(etProductsSearchField.getText()).toString().trim();
-        if (searchShopName.length() == 0) {
-            if(shopsList.isEmpty()) {
-                getShopsList();
-            } else {
-                vendorShopsListAdapter.updateItems(shopsList);
-                vendorShopsListAdapter.notifyDataSetChanged();
-            }
-            ivSearchField.setImageResource(R.drawable.search);
-        } else if (searchShopName.length() == 3) {
-            ivSearchField.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-            currentPage = 0;
-            getShopsList();
-        } else {
-            ivSearchField.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
-            vendorShopsListAdapter.getFilter().filter(searchShopName);
-        }
-    }
+
 
     private void loadMoreItems() {
         isLoading = true;
@@ -503,7 +549,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, myProfile.getUserID(), latitude, longitude,venderID,shopId).enqueue(new Callback<CustomerProductsResponse>() {
+
+            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, myProfile.getUserID(), latitude, longitude,venderID,shopId,MyProfile.getInstance().getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)?"Customer":"Retailer").enqueue(new Callback<CustomerProductsResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<CustomerProductsResponse> call, @NotNull Response<CustomerProductsResponse> response) {
                     progressDialog.dismiss();
@@ -514,7 +561,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase("success")) {
                                 totalShopsCount = data.getCustomerShopsList().getShopTotalCount();
-                                List<CustomerProductsShopDetailsModel> customerProductsList = data.getCustomerShopsList().getCustomerShopsList();
+                                List<ShopDetailsModel> customerProductsList = data.getCustomerShopsList().getCustomerShopsList();
                                 updateAdapter(customerProductsList);
                                 try {
                                     if (customerProductsList != null && customerProductsList.get(0) != null && shopId != null && !shopId.equalsIgnoreCase("") && Integer.parseInt(shopId) == customerProductsList.get(0).getShopId()) {
@@ -529,7 +576,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                             } else {
                                 showDialog(data.getMsg());
                                 //displayDefaultMapLocation();
-                                getLocation();
+                                //getLocation();
                             }
                         } else {
                             showDialog(getString(R.string.no_products_error));
@@ -610,7 +657,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         }
     }
 
-    private void updateAdapter(List<CustomerProductsShopDetailsModel> customerShopsList) {
+    private void updateAdapter(List<ShopDetailsModel> customerShopsList) {
         shopsList.addAll(customerShopsList);
         updateShopsListMap();
         vendorShopsListAdapter.updateItems(customerShopsList);
@@ -669,7 +716,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private void updateShopsListMap() {
         if (googleMap == null) return;
         if(!shopsList.isEmpty()) {
-            for (CustomerProductsShopDetailsModel shopDetailsModel : shopsList) {
+            for (ShopDetailsModel shopDetailsModel : shopsList) {
                 boolean isCoordinatesValid = isValidLatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
                 if (isCoordinatesValid) {
                     LatLng latLng = new LatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());

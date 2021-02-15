@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+   >
+    <data>
+        <variable
+            name="customerProductsDetailsUnitModel"
+            type="com.rmart.customer.models.CustomerProductsDetailsUnitModel" />
+    </data>
+    <RelativeLayout
+        android:background='@{customerProductsDetailsUnitModel.selected?@drawable/bg_row:@drawable/bg_selected}'
+        android:layout_width="wrap_content"
+        android:layout_margin="2dp"
+        android:padding="4dp"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor = '@{customerProductsDetailsUnitModel.selected?@color/black:@color/colorPrimary}'
+            android:textStyle="normal"
+            android:fontFamily="@font/roboto_light"
+            android:hint="@string/brandname"
+            android:text='@{customerProductsDetailsUnitModel.unitNumber+" "+customerProductsDetailsUnitModel.unitMeasure}'
+            android:textColorHint="@color/black"
+            />
+    </RelativeLayout>
+</layout>

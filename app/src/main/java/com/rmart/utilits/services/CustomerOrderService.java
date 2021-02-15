@@ -21,13 +21,12 @@ public interface CustomerOrderService {
     @POST(BuildConfig.CUSTOMER_VIEW_ORDER_BY_ID)
     @FormUrlEncoded
     Call<CustomerOrderProductResponse> viewOrderById(@Field("order_id") String orderID,
-                                                     @Field("customer_mobile") String customerMobile);
-
+                                                     @Field("customer_mobile") String customerMobile,@Field("role_id") String roleID);
     @POST(BuildConfig.CUSTOMER_VIEW_ORDER_BY_ID)
     @FormUrlEncoded
     Call<OrderProductListResponse> updateOrderStatus(@Field("order_id")String orderID,
                                                      @Field("user_id") String id,
-                                                     @Field("status") String newOrderStatus);
+                                                     @Field("status") String newOrderStatus,@Field("role_id") String roleID);
 
     @POST(BuildConfig.CUSTOMER_REORDER_PRODUCTS)
     @FormUrlEncoded

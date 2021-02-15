@@ -1,4 +1,4 @@
-package com.rmart.customer.models;
+package com.rmart.customer.shops.products.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

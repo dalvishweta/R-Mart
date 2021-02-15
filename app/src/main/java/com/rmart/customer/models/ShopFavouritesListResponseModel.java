@@ -2,7 +2,7 @@ package com.rmart.customer.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.utilits.BaseResponse;
 
 import java.util.List;
@@ -28,13 +28,13 @@ public class ShopFavouritesListResponseModel extends BaseResponse {
 
         @SerializedName("customer_fav_shop_data")
         @Expose
-        private List<CustomerProductsShopDetailsModel>  customerProductsShopDetails;
+        private List<ShopDetailsModel>  customerProductsShopDetails;
 
-        public List<CustomerProductsShopDetailsModel> getCustomerProductsShopDetails() {
+        public List<ShopDetailsModel> getCustomerProductsShopDetails() {
             return customerProductsShopDetails;
         }
 
-        public void setCustomerProductsShopDetails(List<CustomerProductsShopDetailsModel> customerProductsShopDetails) {
+        public void setCustomerProductsShopDetails(List<ShopDetailsModel> customerProductsShopDetails) {
             this.customerProductsShopDetails = customerProductsShopDetails;
         }
     }

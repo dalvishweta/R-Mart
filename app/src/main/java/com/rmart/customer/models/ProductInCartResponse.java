@@ -2,7 +2,7 @@ package com.rmart.customer.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.utilits.BaseResponse;
 
 import java.io.Serializable;
@@ -36,7 +36,7 @@ public class ProductInCartResponse extends BaseResponse implements Serializable 
         private Integer totalCartCount;
         @SerializedName("shop_data")
         @Expose
-        private CustomerProductsShopDetailsModel vendorShopDetails;
+        private ShopDetailsModel vendorShopDetails;
 
         public List<ProductInCartDetailsModel> getProductInCartDetailsList() {
             return productInCartDetailsList;
@@ -54,11 +54,11 @@ public class ProductInCartResponse extends BaseResponse implements Serializable 
             this.totalCartCount = totalCartCount;
         }
 
-        public CustomerProductsShopDetailsModel getVendorShopDetails() {
+        public ShopDetailsModel getVendorShopDetails() {
             return vendorShopDetails;
         }
 
-        public void setVendorShopDetails(CustomerProductsShopDetailsModel vendorShopDetails) {
+        public void setVendorShopDetails(ShopDetailsModel vendorShopDetails) {
             this.vendorShopDetails = vendorShopDetails;
         }
     }

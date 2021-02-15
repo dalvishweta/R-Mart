@@ -25,7 +25,7 @@ import com.google.gson.JsonParser;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.customer.models.ProductOrderedResponseModel;
 import com.rmart.customer.models.RSAKeyResponseDetails;
 import com.rmart.profile.model.MyProfile;
@@ -58,7 +58,7 @@ public class PaymentOptionsFragment extends BaseFragment {
     private ImageView ivInternetBankingImageField;
     private ImageView ivMyWalletImageField;
     private int selectedPaymentType = -1;
-    private CustomerProductsShopDetailsModel vendorShopDetails;
+    private ShopDetailsModel vendorShopDetails;
     private RSAKeyResponseDetails rsaKeyResponseDetails;
     private WebView webview;
     private LinearLayout paymentOptionsLayoutField;
@@ -67,7 +67,7 @@ public class PaymentOptionsFragment extends BaseFragment {
         // Required empty public constructor
     }
 
-    public static PaymentOptionsFragment getInstance(CustomerProductsShopDetailsModel vendorShopDetails,int selectedPaymentType) {
+    public static PaymentOptionsFragment getInstance(ShopDetailsModel vendorShopDetails, int selectedPaymentType) {
         PaymentOptionsFragment fragment = new PaymentOptionsFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, vendorShopDetails);
@@ -80,7 +80,7 @@ public class PaymentOptionsFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            vendorShopDetails = (CustomerProductsShopDetailsModel) getArguments().getSerializable(ARG_PARAM1);
+            vendorShopDetails = (ShopDetailsModel) getArguments().getSerializable(ARG_PARAM1);
             selectedPaymentType =  getArguments().getInt(ARG_PARAM2);
         }
     }
@@ -164,7 +164,7 @@ public class PaymentOptionsFragment extends BaseFragment {
             String clientID = "2";
             MyProfile myProfile = MyProfile.getInstance();
             Call<ProductOrderedResponseModel> call = customerProductsService.savePlaceToOrder(clientID, vendorShopDetails.getVendorId(), myProfile.getPrimaryAddressId(),
-                    myProfile.getUserID(), vendorShopDetails.getShopId(), selectedPaymentType,vendorShopDetails.deliveryMethod);
+                    myProfile.getUserID(), vendorShopDetails.getShopId(), selectedPaymentType,vendorShopDetails.deliveryMethod,MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<ProductOrderedResponseModel>() {
                 @Override
                 public void onResponse(@NotNull Call<ProductOrderedResponseModel> call, @NotNull Response<ProductOrderedResponseModel> response) {

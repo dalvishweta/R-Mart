@@ -27,14 +27,15 @@ import com.rmart.baseclass.views.AutoScrollViewPager;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.CustomSpinnerAdapter;
-import com.rmart.customer.models.AddProductToWishListResponse;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
+import com.rmart.customer.shops.products.model.AddProductToWishListResponse;
 import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.shops.home.model.ProductData;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
 import com.rmart.customer.models.ProductDetailsDescModel;
-import com.rmart.customer.models.ProductDetailsDescResponse;
+import com.rmart.customer.shops.products.model.ProductDetailsDescResponse;
+import com.rmart.customer.shops.products.api.Products;
 import com.rmart.inventory.adapters.ImageAdapter;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.DateUtilities;
@@ -44,7 +45,6 @@ import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.pojos.ImageURLResponse;
-import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -64,7 +64,7 @@ import retrofit2.Response;
 public class ProductCartDetailsFragment extends BaseFragment {
 
     private ProductData vendorProductDataDetails;
-    private CustomerProductsShopDetailsModel vendorShopDetails;
+    private ShopDetailsModel vendorShopDetails;
     private ProductDetailsDescModel productDetailsDescModel;
 
     private ImageView ivFavouriteImageField;
@@ -88,7 +88,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
     private AppCompatTextView tvProductRegionalName, tvProductExpiry, tvDeliveryDaysBeforeTime, tvDeliveryDaysAfterTime, tvOpeningTime, tvClosingTime;
 
-    static ProductCartDetailsFragment getInstance(CustomerProductDetailsModel vendorProductDataDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
+    static ProductCartDetailsFragment getInstance(CustomerProductDetailsModel vendorProductDataDetails, ShopDetailsModel vendorShopDetails) {
         ProductCartDetailsFragment productCartDetailsFragment = new ProductCartDetailsFragment();
         Bundle extras = new Bundle();
         extras.putSerializable("ProductCartDetails", vendorProductDataDetails);
@@ -96,7 +96,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
         productCartDetailsFragment.setArguments(extras);
         return productCartDetailsFragment;
     }
-   public static ProductCartDetailsFragment getInstance2(ProductData vendorProductDataDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
+   public static ProductCartDetailsFragment getInstance2(ProductData vendorProductDataDetails, ShopDetailsModel vendorShopDetails) {
         ProductCartDetailsFragment productCartDetailsFragment = new ProductCartDetailsFragment();
         Bundle extras = new Bundle();
         extras.putSerializable("ProductCartDetails", vendorProductDataDetails);
@@ -111,7 +111,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
         Bundle extras = getArguments();
         if (extras != null) {
             vendorProductDataDetails = (ProductData) extras.getSerializable("ProductCartDetails");
-            vendorShopDetails = (CustomerProductsShopDetailsModel) extras.getSerializable("VendorShopDetails");
+            vendorShopDetails = (ShopDetailsModel) extras.getSerializable("VendorShopDetails");
         }
     }
 
@@ -150,7 +150,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
 
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
-            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
             String clientID = "2";
             Call<ProductDetailsDescResponse> call = customerProductsService.getVendorProductDetails(clientID, vendorShopDetails.getVendorId(), vendorShopDetails.getShopId(),
                     vendorProductDataDetails.getProductId(), MyProfile.getInstance().getUserID());
@@ -449,10 +449,10 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private void addToCartSelected() {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
-            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
             String clientID = "2";
             Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                    productUnitDetails.getProductUnitId(), noOfQuantity, "");
+                    productUnitDetails.getProductUnitId(), noOfQuantity, "",MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<AddToCartResponseDetails>() {
                 @Override
                 public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
@@ -505,7 +505,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private void deleteProductFromWishList() {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
-            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
             String clientID = "2";
             Call<BaseResponse> call = customerProductsService.deleteProductFromWishList(clientID, productDetailsDescModel.getWishListId());
             call.enqueue(new Callback<BaseResponse>() {
@@ -550,7 +550,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
     private void addProductToWishList() {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
-            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
             String clientID = "2";
             Call<AddProductToWishListResponse> call = customerProductsService.moveToWishList(clientID, vendorShopDetails.getVendorId(),
                     MyProfile.getInstance().getUserID(), productDetailsDescModel.getProductId());

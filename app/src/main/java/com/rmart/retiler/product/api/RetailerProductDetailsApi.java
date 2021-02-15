@@ -39,6 +39,7 @@ public interface RetailerProductDetailsApi {
     Call<BrandListResponse> getBrandList(@Field("start_index") String startIndex, @Field("end_index") String endIndex, @Field("brand_id") String brandId);
 
 //https://martapi.rokad.in/api/Products/add_product
+ //   https://it.rokad.in/api/products/add_product_Test
     @POST(BuildConfig.API_ADD_PRODUCT)
     @Headers({
             "Accept: application/json",

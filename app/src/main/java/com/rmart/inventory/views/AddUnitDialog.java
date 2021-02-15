@@ -68,6 +68,9 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM3 = "param3";
     private static final String ARG_PARAM4 = "param4";
+    private static final String ARG_UNIT_FOR = "param5";
+    public static final int UNITFORRETAILER = 122222;
+    public static final int UNIT_FOR_CUSTOMER = 2287383;
     private final String current = "";
     private UnitObject unitObject;
     private AppCompatEditText discount, actualPrice, valueOfUnit, quantity;
@@ -78,15 +81,14 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
     private ArrayList<APIStockResponse> apiStockResponses = new ArrayList<>();
     private APIUnitMeasures unitMeasurements;
     private int requestCode = 0;
+    private int unitforvalue = 0;
     private static OnUnitSaveListner onUnitSaveListner;
-
     //SwitchCompat isActive;
     public AddUnitDialog() {
         // Required empty public constructor
     }
-
     public static AddUnitDialog newInstance(UnitObject unitObject, boolean isEdit,
-                                            APIStockListResponse stockListResponse, APIUnitMeasures unitMeasurements,
+                                            APIStockListResponse stockListResponse, APIUnitMeasures unitMeasurements,int unitFor,
                                             OnUnitSaveListner onUnitSaveListner) {
         // APIStockListResponse apiStockListResponse = stockListResponse;
         AddUnitDialog fragment = new AddUnitDialog();
@@ -94,21 +96,21 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         args.putSerializable(ARG_PARAM1, unitObject);
         args.putSerializable(ARG_PARAM3, stockListResponse);
         args.putSerializable(ARG_PARAM4, unitMeasurements);
+        args.putInt(ARG_UNIT_FOR, unitFor);
         args.putBoolean(ARG_PARAM2, isEdit);
         fragment.setArguments(args);
         AddUnitDialog.onUnitSaveListner = onUnitSaveListner;
         return fragment;
     }
-
     public void setRequestCode(int requestCode){
         this.requestCode = requestCode;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             unitObject = (UnitObject) getArguments().getSerializable(ARG_PARAM1);
+            unitforvalue = getArguments().getInt(ARG_UNIT_FOR);
             APIStockListResponse apiStockListResponse = (APIStockListResponse) getArguments().getSerializable(ARG_PARAM3);
             unitMeasurements = (APIUnitMeasures) getArguments().getSerializable(ARG_PARAM4);
             if (apiStockListResponse != null) {
@@ -125,7 +127,6 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         }
         // inventoryViewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
     }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -134,8 +135,6 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         Objects.requireNonNull(getDialog().getWindow()).setAttributes(params);
     }
-
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -156,7 +155,6 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         loadUIComponents(view);
         return dialog;
     }
-
     private void loadUIComponents(View view) {
         discount = view.findViewById(R.id.discount);
         view.findViewById(R.id.close).setOnClickListener(this);
@@ -166,6 +164,9 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
         valueOfUnit = view.findViewById(R.id.value_of_unit);
         view.findViewById(R.id.save).setOnClickListener(this);
         view.findViewById(R.id.cancel).setOnClickListener(this);
+        AppCompatTextView appCompatTextView = view.findViewById(R.id.title);
+        String label= unitforvalue==UNITFORRETAILER? "Retailer Unit Info":"Consumer Unit Info";
+        appCompatTextView.setText(label);
 
         /*discount.setText("0");
         actualPrice.setText("0");
@@ -325,14 +326,12 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             view.findViewById(R.id.cancel).setVisibility(View.GONE);
         }
     }
-
     private void updateDisplayValue() {
         unitObject.setUnit_number(Objects.requireNonNull(valueOfUnit.getText()).toString());
         unitObject.setDisplayUnitValue(unitObject.getDisplayUnitValue()); // unitObject.getUnitNumber() + " " +
         String displayUnitValue = String.format("%s %s", unitObject.getUnitNumber(), unitObject.getDisplayUnitValue());
         displayUnit.setText(displayUnitValue);
     }
-
     private void updateQuantityDetails() {
         Double valueOfUnitValue = Utils.getDoubleValueFromString(valueOfUnit.getText().toString().trim());
         int quantityValueInt = Utils.getIntegerValueFromString(quantity.getText().toString().trim());
@@ -352,7 +351,6 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             quantityValue.setText("");
         }
     }
-
     private void calculateFinalCost(String _price, String _discount) {
         try {
             Double price = Utils.getDoubleValueFromString(_price);
@@ -382,7 +380,6 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
 
         }
     }
-
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.save) {
@@ -410,6 +407,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
                 unitObject.setQuantity(_quantity);
                 unitObject.setActualCost(_actualPrice);
                 unitObject.setDiscount(_discount);
+                unitObject.setBuisness_type(unitforvalue==UNITFORRETAILER?"R":"C");
                 calculateFinalCost(_actualPrice, _discount);
                 Intent i = new Intent();
                 i.putExtra(UNIT_VALUE, unitObject);
@@ -518,7 +516,6 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             // LoggerInfo.errorLog("show dialog exception", e.getMessage());
         }
     }
-
     protected void showDialog(String title, String msg) {
         try {
             AlertDialog.Builder builder = new
@@ -542,8 +539,6 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             // LoggerInfo.errorLog("show dialog exception", e.getMessage());
         }
     }
-
-
     private void closeDialog() {
         Dialog dialog = getDialog();
         if(dialog != null && dialog.isShowing()) {

@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -19,7 +18,7 @@ import com.rmart.R;
 import com.rmart.customer.shops.home.model.ProductData;
 import com.rmart.customer.shops.home.model.ShopHomePageResponce;
 import com.rmart.customer.shops.home.repositories.ShopRepository;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.glied.GlideApp;
 
 import java.util.ArrayList;
@@ -28,7 +27,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 public class ShopHomeViewModel extends ViewModel {
@@ -76,7 +74,7 @@ public class ShopHomeViewModel extends ViewModel {
 
     }
 
-    public void loadShopHomePage(CustomerProductsShopDetailsModel productsShopDetailsModel){
+    public void loadShopHomePage(ShopDetailsModel productsShopDetailsModel){
         isLoading.setValue(true);
         ShopRepository.getShopHomePage(productsShopDetailsModel.getVendorId(),productsShopDetailsModel.getShopId()).observeForever(hotelResult -> {
             shopHomePageResponceMutableLiveData.setValue(hotelResult);
@@ -89,28 +87,29 @@ public class ShopHomeViewModel extends ViewModel {
     }
     @BindingAdapter("imageUrl")
     public static void loadImage(View view, ProductData data) {
+        if(data!=null) {
+            ImageView imageview = view.findViewById(R.id.imageview);
+            ImageView selectedgreeting = view.findViewById(R.id.selectedgreeting);
+            selectedgreeting.setVisibility(View.VISIBLE);
+            GlideApp.with(view.getContext()).load(data.productImage).listener(new RequestListener<Drawable>() {
 
-        ImageView imageview = view.findViewById(R.id.imageview);
-        ImageView selectedgreeting = view.findViewById(R.id.selectedgreeting);
-        selectedgreeting.setVisibility(View.VISIBLE);
-        GlideApp.with(view.getContext()).load(data.productImage) .listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    selectedgreeting.setVisibility(View.GONE);
 
-            @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                selectedgreeting.setVisibility(View.GONE);
+                    return false;
+                }
 
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                selectedgreeting.setVisibility(View.GONE);
-                return false;
-            }
-        }).dontAnimate().
-                diskCacheStrategy(DiskCacheStrategy.ALL).
-                signature(new ObjectKey(data.productImage)).
-                error(R.mipmap.default_product_image).thumbnail(0.5f).into(imageview);
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    selectedgreeting.setVisibility(View.GONE);
+                    return false;
+                }
+            }).dontAnimate().
+                    diskCacheStrategy(DiskCacheStrategy.ALL).
+                    signature(new ObjectKey(data.productImage)).
+                    error(R.mipmap.default_product_image).thumbnail(0.5f).into(imageview);
+        }
     }
 
 }

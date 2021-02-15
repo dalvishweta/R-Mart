@@ -126,7 +126,8 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 photoUploadSelected();
             } else if (status.equalsIgnoreCase(Constants.TAG_EDIT_UNIT)) {
                 UnitObject unitObject = (UnitObject) value;
-                mListener.addUnit(unitObject, new APIUnitMeasures(unitMeasurements), this, INT_UPDATE_UNIT);
+
+                mListener.addUnit(unitObject, new APIUnitMeasures(unitMeasurements), this, INT_UPDATE_UNIT,( unitObject.getBuisness_type().equalsIgnoreCase("R"))?AddUnitDialog.UNITFORRETAILER:AddUnitDialog.UNIT_FOR_CUSTOMER);
                 // deleteUnits((UnitObject) value);
             }/* else if (status.equalsIgnoreCase(Constants.TAG_EDIT_UNIT)) {
                 mListener.addUnit((UnitObject) value,new APIUnitMeasures(unitMeasurements), this, INT_UPDATE_UNIT);
@@ -267,6 +268,7 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         }
         save.setOnClickListener(this);
         view.findViewById(R.id.add_unit).setOnClickListener(this);
+        view.findViewById(R.id.add_unit_retailer).setOnClickListener(this);
 
         imagesList = new ArrayList<>();
         if (mClonedProduct != null) {
@@ -322,7 +324,13 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
                 UnitObject newObject = new UnitObject();
                 newObject.setProductUnitID("");
                 newObject.setProductUpdated(false);
-                mListener.addUnit(newObject, new APIUnitMeasures(unitMeasurements), this, INT_ADD_UNIT);
+                mListener.addUnit(newObject, new APIUnitMeasures(unitMeasurements), this, INT_ADD_UNIT,AddUnitDialog.UNIT_FOR_CUSTOMER);
+                break;
+                case R.id.add_unit_retailer:
+                UnitObject newObject2 = new UnitObject();
+                newObject2.setProductUnitID("");
+                newObject2.setProductUpdated(false);
+                mListener.addUnit(newObject2, new APIUnitMeasures(unitMeasurements), this, INT_ADD_UNIT,AddUnitDialog.UNITFORRETAILER);
                 break;
             case R.id.save:
                 saveSelected();

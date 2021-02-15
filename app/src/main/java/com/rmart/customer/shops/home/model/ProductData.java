@@ -4,9 +4,10 @@ import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.Utils;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ProductData extends BaseResponse {
+public class ProductData extends BaseResponse  {
 
     @SerializedName("product_name")
     public String productName;

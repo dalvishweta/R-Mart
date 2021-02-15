@@ -1,7 +1,8 @@
-package com.rmart.customer.models;
+package com.rmart.customer.shops.products.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rmart.customer.models.ProductDetailsDescModel;
 import com.rmart.utilits.BaseResponse;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.io.Serializable;
  * Created by Satya Seshu on 13/09/20.
  */
 public class ProductDetailsDescResponse extends BaseResponse implements Serializable {
+
 
     @SerializedName("data")
     @Expose

@@ -4,7 +4,6 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -29,7 +28,7 @@ import androidx.databinding.BindingAdapter;
 /**
  * Created by Satya Seshu on 08/09/20.
  */
-public class CustomerProductsShopDetailsModel implements Serializable {
+public class ShopDetailsModel implements Serializable {
 
     @SerializedName("shop_mobile_no")
     @Expose
@@ -307,15 +306,15 @@ public class CustomerProductsShopDetailsModel implements Serializable {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof CustomerProductsShopDetailsModel)) {
+        if (!(other instanceof ShopDetailsModel)) {
             return false;
         }
-        CustomerProductsShopDetailsModel rhs = ((CustomerProductsShopDetailsModel) other);
+        ShopDetailsModel rhs = ((ShopDetailsModel) other);
         return new EqualsBuilder().append(shopId, rhs.shopId).isEquals();
     }
 
     @BindingAdapter("imageUrl")
-    public static void loadImage(View view, CustomerProductsShopDetailsModel data) {
+    public static void loadImage(View view, ShopDetailsModel data) {
 
         ImageView imageview = view.findViewById(R.id.imageview);
         ImageView selectedgreeting = view.findViewById(R.id.selectedgreeting);

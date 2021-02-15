@@ -19,7 +19,7 @@ import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.FavouritesShopsAdapter;
 import com.rmart.customer.models.ContentModel;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.customer.models.ShopFavouritesListResponseModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
@@ -44,7 +44,7 @@ import retrofit2.Response;
  */
 public class CustomerFavouritesFragment extends BaseFragment {
 
-    private List<CustomerProductsShopDetailsModel> favoritesShopsList;
+    private List<ShopDetailsModel> favoritesShopsList;
     private FavouritesShopsAdapter favouritesShopsAdapter;
     private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
 
@@ -102,7 +102,7 @@ public class CustomerFavouritesFragment extends BaseFragment {
         if(pObject instanceof ContentModel) {
             ContentModel contentModel = (ContentModel) pObject;
             String status = contentModel.getStatus();
-            CustomerProductsShopDetailsModel selectedShopDetails = (CustomerProductsShopDetailsModel) contentModel.getValue();
+            ShopDetailsModel selectedShopDetails = (ShopDetailsModel) contentModel.getValue();
             if(status.equalsIgnoreCase(Constants.TAG_REMOVE)) {
                 showConfirmationDialog(getString(R.string.favourite_shop_details_delete_alert), pObject1 -> {
                     if (pObject1 == Constants.TAG_SUCCESS) {
@@ -110,18 +110,18 @@ public class CustomerFavouritesFragment extends BaseFragment {
                     }
                 });
             } else if(status.equalsIgnoreCase(Constants.TAG_DETAILS)) {
-                onCustomerHomeInteractionListener.gotoVendorProductDetails(selectedShopDetails);
+                onCustomerHomeInteractionListener.gotoVendorProductDetails(selectedShopDetails,null);
             }
         }
     };
 
-    private void deleteShopFromWishList(CustomerProductsShopDetailsModel selectedShopDetails) {
+    private void deleteShopFromWishList(ShopDetailsModel selectedShopDetails) {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<BaseResponse> call = customerProductsService.deleteShopFromWishList(clientID, selectedShopDetails.getVendorId(), selectedShopDetails.getShopId(),
-                    MyProfile.getInstance().getUserID());
+                    MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
@@ -159,7 +159,7 @@ public class CustomerFavouritesFragment extends BaseFragment {
         }
     }
 
-    private void updatedDeletedAdapter(CustomerProductsShopDetailsModel selectedShopDetails) {
+    private void updatedDeletedAdapter(ShopDetailsModel selectedShopDetails) {
         int index = favoritesShopsList.indexOf(selectedShopDetails);
         if (index > -1) {
             favoritesShopsList.remove(selectedShopDetails);
@@ -186,7 +186,7 @@ public class CustomerFavouritesFragment extends BaseFragment {
                         ShopFavouritesListResponseModel body = response.body();
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
-                                List<CustomerProductsShopDetailsModel> shopWiseCartList = body.getShopFavouritesListDataResponse().getCustomerProductsShopDetails();
+                                List<ShopDetailsModel> shopWiseCartList = body.getShopFavouritesListDataResponse().getCustomerProductsShopDetails();
                                 if (shopWiseCartList != null && !shopWiseCartList.isEmpty()) {
                                     favoritesShopsList.addAll(shopWiseCartList);
                                     updateAdapter();

@@ -70,7 +70,12 @@
                     style="@style/nv_item_view"
                     android:drawableLeft="@drawable/ic_favourite"
                     android:text="@string/my_favourites" />
-
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/wholesaler"
+                    android:drawableTint="@color/black"
+                    style="@style/nv_item_view"
+                    android:drawableLeft="@drawable/ic_favourite"
+                    android:text="Wholesalers" />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/my_wish_list"
                     style="@style/nv_item_view"

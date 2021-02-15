@@ -22,7 +22,7 @@ import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.adapters.VendorProductTypesAdapter;
 import com.rmart.customer.models.CustomerProductDetailsModel;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.customer.models.ProductBaseModel;
 import com.rmart.customer.models.VendorProductDetailsResponse;
 import com.rmart.profile.model.MyProfile;
@@ -50,7 +50,7 @@ public class VendorSameProductsListScreen extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
 
     private ProductBaseModel productCategoryDetails;
-    private CustomerProductsShopDetailsModel vendorShopDetails;
+    private ShopDetailsModel vendorShopDetails;
     private int currentPage = 0;
     private String searchProductName = "";
     private List<CustomerProductDetailsModel> productsList;
@@ -65,7 +65,7 @@ public class VendorSameProductsListScreen extends BaseFragment {
         // Required empty public constructor
     }
 
-    public static VendorSameProductsListScreen getInstance(ProductBaseModel productCategoryDetails, CustomerProductsShopDetailsModel vendorShopDetails) {
+    public static VendorSameProductsListScreen getInstance(ProductBaseModel productCategoryDetails, ShopDetailsModel vendorShopDetails) {
         VendorSameProductsListScreen fragment = new VendorSameProductsListScreen();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, productCategoryDetails);
@@ -79,7 +79,7 @@ public class VendorSameProductsListScreen extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             productCategoryDetails = (ProductBaseModel) getArguments().getSerializable(ARG_PARAM1);
-            vendorShopDetails = (CustomerProductsShopDetailsModel) getArguments().getSerializable(ARG_PARAM2);
+            vendorShopDetails = (ShopDetailsModel) getArguments().getSerializable(ARG_PARAM2);
         }
     }
 

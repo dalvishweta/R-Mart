@@ -10,13 +10,13 @@ import android.widget.Toast;
 
 import com.rmart.BR;
 import com.rmart.R;
-import com.rmart.baseclass.Constants;
-import com.rmart.customer.models.ContentModel;
-import com.rmart.customer.shops.home.fragments.ShopHomePage;
+import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.shops.home.listner.OnClickListner;
 import com.rmart.customer.shops.home.model.Category;
+import com.rmart.customer.shops.home.model.ProductData;
 import com.rmart.customer.shops.home.model.Results;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
+import com.rmart.databinding.SearchShopProductRowItemDeatilsBinding;
 import com.rmart.databinding.ShopDetailsPageBinding;
 import com.rmart.databinding.ShopHomePageBinding;
 import com.rmart.deeplinking.LinkGenerator;
@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static androidx.recyclerview.widget.LinearLayoutManager.*;
 
@@ -36,16 +37,19 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     final int VIEW_MENU=1111;
     final int VIEW_SHOP=333311;
+    final int VIEW_SEARCH_PRODUCT=333334411;
     public ArrayList<Category> category;
     ArrayList<Results> results = new ArrayList<Results>();
     Activity context;
     OnClickListner onClickListner;
-    CustomerProductsShopDetailsModel productsShopDetailsModel;
+    ShopDetailsModel productsShopDetailsModel;
+    ProductData productData2;
 
-    public ShopHomeAdapter(Activity context, ArrayList<Results> results, CustomerProductsShopDetailsModel productsShopDetailsModel,OnClickListner onClickListner) {
+    public ShopHomeAdapter(Activity context, ArrayList<Results> results, ShopDetailsModel productsShopDetailsModel,ProductData productData, OnClickListner onClickListner) {
         this.context = context;
         this.productsShopDetailsModel = productsShopDetailsModel;
         this.results=results;
+        this.productData2=productData;
         this.onClickListner=onClickListner;
     }
     @Override
@@ -53,6 +57,11 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if( position==0){
             return VIEW_SHOP;
         } else {
+            if(productData2!=null){
+                if( position==1){
+                    return VIEW_SEARCH_PRODUCT;
+                }
+            }
             return VIEW_MENU;
         }
     }
@@ -63,7 +72,12 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     ShopHolder vh = new ShopHolder(binding);
                     // pass the view to View Holder
                     return vh;
-                } else {
+                } else if (viewType==VIEW_SEARCH_PRODUCT){
+                    SearchShopProductRowItemDeatilsBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.search_shop_product_row_item_deatils, parent, false);
+                    return  new SearchHolder(binding);
+                }
+
+                else {
                     ShopHomePageBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.shop_home_page, parent, false);
                     MyViewHolder vh = new MyViewHolder(binding); // pass the view to View Holder
                     return vh;
@@ -109,7 +123,7 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         if(holder2 instanceof MyViewHolder) {
             MyViewHolder myViewHolder=     (MyViewHolder ) holder2;
-            Results rs = results.get(position-1);
+            Results rs  = productData2!=null?results.get(position-2):results.get(position-1);
             myViewHolder.bind(rs);
             if(rs.type.equalsIgnoreCase("category")){
                 category = rs.category;
@@ -127,19 +141,66 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 myViewHolder.binding.viewall.setVisibility(View.VISIBLE);
             }
             myViewHolder.binding.viewall.setOnClickListener(view -> {
-                for (Category categorye:category ) {
-                    if(categorye.parentCategoryName.equalsIgnoreCase(rs.name)){
-                        onClickListner.onCategorySelected(categorye);
-                        break;
+                if(category!=null) {
+                    for (Category categorye : category) {
+                        if (categorye.parentCategoryName.equalsIgnoreCase(rs.name)) {
+                            onClickListner.onCategorySelected(categorye);
+                            break;
+                        }
                     }
                 }
             });
 
 
         }
+        if(holder2 instanceof SearchHolder) {
+            ((SearchHolder) holder2).binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onClickListner.onProductSelected(productData2);
+                }
+            });
+            SearchHolder myViewHolder = ((SearchHolder) holder2);
+            ((SearchHolder) holder2).binding.setSearchProduct(productData2);
+            List<CustomerProductsDetailsUnitModel> units = productData2.getUnits();
+            if(units!=null) {
+
+                for (int i = units.size() - 1; i >= 0; i--) {
+
+                    CustomerProductsDetailsUnitModel unitModel = units.get(i);
+                    myViewHolder.binding.offerlabel.setText(String.format("%s", unitModel.getProductDiscount(), "0.00")+"% Off");
+                    myViewHolder.binding.unitPrice.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getUnitPrice(), "0.00")));
+                    myViewHolder.binding.sellingPrice.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getSellingPrice(), "0.00")));
+                    myViewHolder.binding.unitPrice.setPaintFlags(myViewHolder.binding.unitPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    myViewHolder.binding.productUnit.setText(unitModel.getProductUnitQuantity()+" "+unitModel.getShortUnitMeasure());
+                    if(unitModel.getUnitPrice() -unitModel.getSellingPrice()==0 ){
+                        myViewHolder.binding.offerlabel.setVisibility(View.GONE);
+                        myViewHolder.binding.unitPrice.setVisibility(View.GONE);
+                    } else {
+                        myViewHolder.binding.offerlabel.setVisibility(View.VISIBLE);
+                        myViewHolder.binding.unitPrice.setVisibility(View.VISIBLE);
+                    }
+
+                    if(unitModel.getProductDiscount()>0) {
+                        myViewHolder.binding.offerlabel.setVisibility(View.VISIBLE);
+                        break;
+                    } else {
+
+                        myViewHolder.binding.offerlabel.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+
+
+        }
     }
     @Override
     public int getItemCount() {
+        if(productData2!=null)
+        {
+            return results.size()+2;
+        }
         return results.size()+1;
     }
 
@@ -171,6 +232,20 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             binding.executePendingBindings();
         }
     }
+    public class SearchHolder extends RecyclerView.ViewHolder {
 
+        SearchShopProductRowItemDeatilsBinding binding;
+
+        public SearchHolder(SearchShopProductRowItemDeatilsBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+
+        }
+
+        public void bind(Object obj) {
+            binding.setVariable(BR.shopDetails, obj);
+            binding.executePendingBindings();
+        }
+    }
 
 }

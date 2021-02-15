@@ -86,10 +86,10 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
     }
 
     @Override
-    public void addUnit(UnitObject unitValue, APIUnitMeasures unitMeasurements, BaseInventoryFragment fragment, int requestID) {
+    public void addUnit(UnitObject unitValue, APIUnitMeasures unitMeasurements, BaseInventoryFragment fragment, int requestID,int unit_for) {
         FragmentManager fm = getSupportFragmentManager();
         AddUnitDialog addUnitDialog = AddUnitDialog.newInstance(unitValue, false, apiStockListResponse,
-                unitMeasurements, new OnUnitSaveListner() {
+                unitMeasurements, unit_for,new OnUnitSaveListner() {
                     @Override
                     public void onSaveUnit(int requestCode, Intent intent) {
 

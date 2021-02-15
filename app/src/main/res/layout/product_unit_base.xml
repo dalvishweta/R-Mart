@@ -61,6 +61,17 @@
             android:textSize="14sp" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/bussiness_type"
+            style="@style/product_unit_cost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14sp" />
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/unit_status"
             style="@style/product_unit_cost"
             android:layout_width="match_parent"

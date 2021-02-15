@@ -12,7 +12,10 @@
         type="com.rmart.customer.shops.home.viewmodel.ShopHomeViewModel" />
     <variable
         name="shopDetails"
-        type="com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel" />
+        type="com.rmart.customer.shops.list.models.ShopDetailsModel" />
+    <variable
+        name="productData"
+        type="com.rmart.customer.shops.home.model.ProductData" />
 </data>
   <RelativeLayout
 
@@ -124,13 +127,16 @@
         android:id="@+id/progressBar1"
         android:layout_width="match_parent"
         android:layout_below="@+id/searchLayout"
-
         android:layout_height="wrap_content" />
+
+
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/products_list_field"
         android:background="#E1E1E1"
-        android:layout_below="@+id/searchLayout"
+        android:layout_below="@+id/progressBar1"
         android:layout_width="match_parent"
         android:adapter="@{myAdapter}"
         tools:visibility="visible"

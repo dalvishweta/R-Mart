@@ -5,7 +5,7 @@
         <import type="android.view.View"/>
         <variable
             name="shopDetails"
-            type="com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel" />
+            type="com.rmart.customer.shops.list.models.ShopDetailsModel" />
     </data>
 
 <RelativeLayout

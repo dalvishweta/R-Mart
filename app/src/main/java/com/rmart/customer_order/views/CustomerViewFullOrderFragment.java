@@ -89,8 +89,14 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     private void getServerData() {
         if(Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
+            String mobile="";
+            if(MyProfile.getInstance()!=null) {
+                mobile= MyProfile.getInstance().getMobileNumber();
+            } else {
+
+            }
             CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
-            customerOrderService.viewOrderById(mOrderObject.getOrderID(), MyProfile.getInstance().getMobileNumber()).enqueue(new Callback<CustomerOrderProductResponse>() {
+            customerOrderService.viewOrderById(mOrderObject.getOrderID(),mobile,MyProfile.getInstance().getRoleID() ).enqueue(new Callback<CustomerOrderProductResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Response<CustomerOrderProductResponse> response) {
                     if (response.isSuccessful()) {
@@ -317,14 +323,18 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
             @Override
             public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
                 if (response.isSuccessful()) {
-                    UpdatedOrderStatus data = response.body();
-                    assert data != null;
-                    if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                        showDialog(data.getStatus(), getString(R.string.order_cancelled), ((dialogInterface, i) -> {
-                            requireActivity().onBackPressed();
-                        }));
-                    } else {
-                        showDialog(data.getMsg());
+                    try {
+                        UpdatedOrderStatus data = response.body();
+                        assert data != null;
+                        if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                            showDialog(data.getStatus(), getString(R.string.order_cancelled), ((dialogInterface, i) -> {
+                                requireActivity().onBackPressed();
+                            }));
+                        } else {
+                            showDialog(data.getMsg());
+                        }
+                    } catch (Exception e){
+
                     }
                 }
                 progressDialog.dismiss();
@@ -342,29 +352,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         });
     }
 
-    /*void updateToCancel() {
-        viewModel.setCanceledOrders(mOrderObject);
-    }
-    void updateToAccepted() {
-        viewModel.setAcceptedOrders(mOrderObject);
-    }
-    void updateToPacked() {
-        viewModel.setPackedOrders(mOrderObject);
-        // Objects.requireNonNull(viewModel.getPackedOrders().getValue()).getOrderObjects().add(mOrderObject);
-    }
-    void updateToShipped() {
-        viewModel.setShippedOrders(mOrderObject);
-        // Objects.requireNonNull(viewModel.getShippedOrders().getValue()).getOrderObjects().add(mOrderObject);
-    }
-    void updateToDelivered() {
 
-        viewModel.setDeliveredOrders(mOrderObject);
-        //Objects.requireNonNull(viewModel.getDeliveredOrders().getValue()).getOrderObjects().add(mOrderObject);
-    }
-    void updateToReturned() {
-        viewModel.setReturnedOrders(mOrderObject);
-        //Objects.requireNonNull(viewModel.getReturnedOrders().getValue()).getOrderObjects().add(mOrderObject);
-    }*/
 
     void isOpenOrder() {
         mLeftButton.setBackgroundResource(R.drawable.btn_bg_canceled);

@@ -18,7 +18,7 @@ public class ShopRepository {
 
         Shops shope = RetrofitClientInstance.getRetrofitInstance().create(Shops.class);
         final MutableLiveData<ShopHomePageResponce> resultMutableLiveData = new MutableLiveData<>();
-        Call<ShopHomePageResponce> call = shope.getShopHomePage(CLIENT_ID,vendorId,shop_id, MyProfile.getInstance().getUserID());
+        Call<ShopHomePageResponce> call = shope.getShopHomePage(CLIENT_ID,vendorId,shop_id, MyProfile.getInstance()!=null?MyProfile.getInstance().getUserID():"");
         final ShopHomePageResponce result = new ShopHomePageResponce();
 
         call.enqueue(new Callback<ShopHomePageResponce>() {

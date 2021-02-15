@@ -22,7 +22,7 @@ import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.models.ContentModel;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.utilits.custom_views.CustomNetworkImageView;
 
 import java.util.ArrayList;
@@ -33,14 +33,14 @@ import java.util.List;
  */
 public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsListAdapter.ViewHolder> implements Filterable {
 
-    private List<CustomerProductsShopDetailsModel> productList;
+    private List<ShopDetailsModel> productList;
     private final LayoutInflater layoutInflater;
-    private List<CustomerProductsShopDetailsModel> filteredListData;
+    private List<ShopDetailsModel> filteredListData;
     private MyFilter myFilter;
     private final ImageLoader imageLoader;
     private final CallBackInterface callBackListener;
 
-    public VendorShopsListAdapter(Context context, List<CustomerProductsShopDetailsModel> productList, CallBackInterface callBackListener) {
+    public VendorShopsListAdapter(Context context, List<ShopDetailsModel> productList, CallBackInterface callBackListener) {
         this.productList = productList;
         layoutInflater = LayoutInflater.from(context);
         filteredListData = new ArrayList<>();
@@ -49,7 +49,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
         this.callBackListener = callBackListener;
     }
 
-    public void updateItems(List<CustomerProductsShopDetailsModel> listData) {
+    public void updateItems(List<ShopDetailsModel> listData) {
         this.productList = listData;
         this.filteredListData.clear();
         this.filteredListData.addAll(productList);
@@ -64,7 +64,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CustomerProductsShopDetailsModel shopDetails = productList.get(position);
+        ShopDetailsModel shopDetails = productList.get(position);
         holder.tvShopNameField.setText(shopDetails.getShopName());
         holder.tvPhoneNoField.setText(shopDetails.getShopMobileNo());
         holder.tvViewAddressField.setText(shopDetails.getShopAddress());
@@ -152,12 +152,12 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
             progressBarLayout = itemView.findViewById(R.id.progress_layout_field);
             ivShopImageField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
-                CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);
+                ShopDetailsModel selectedDetails = productList.get(tag);
                 callBackListener.callBackReceived(selectedDetails);
             });
             ivCallIconField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
-                CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);
+                ShopDetailsModel selectedDetails = productList.get(tag);
                 ContentModel contentModel = new ContentModel();
                 contentModel.setStatus(Constants.TAG_CALL);
                 contentModel.setValue(selectedDetails.getShopMobileNo());
@@ -165,7 +165,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
             });
             ivMessageField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
-                CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);
+                ShopDetailsModel selectedDetails = productList.get(tag);
                 ContentModel contentModel = new ContentModel();
                 contentModel.setStatus(Constants.TAG_MESSAGE);
                 contentModel.setValue(selectedDetails.getEmailId());
@@ -173,7 +173,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
             });
             ivFavouriteImageField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
-                CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);
+                ShopDetailsModel selectedDetails = productList.get(tag);
                 ContentModel contentModel = new ContentModel();
                 contentModel.setStatus(Constants.TAG_SHOP_FAVOURITE);
                 contentModel.setValue(selectedDetails);
@@ -181,7 +181,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
             });
             addressLayoutField.setOnClickListener(v -> {
                 int tag = (int) v.getTag();
-                CustomerProductsShopDetailsModel selectedDetails = productList.get(tag);
+                ShopDetailsModel selectedDetails = productList.get(tag);
                 callBackListener.callBackReceived(selectedDetails);
             });
         }
@@ -194,7 +194,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
             FilterResults results = new FilterResults();
             if (constraint != null && constraint.length() > 0) {
                 filteredListData.clear();
-                for (CustomerProductsShopDetailsModel customerProductsModel : productList) {
+                for (ShopDetailsModel customerProductsModel : productList) {
                     if (customerProductsModel.getShopName().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         filteredListData.add(customerProductsModel);
                     }
@@ -207,7 +207,7 @@ public class VendorShopsListAdapter extends RecyclerView.Adapter<VendorShopsList
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            filteredListData = (List<CustomerProductsShopDetailsModel>) results.values;
+            filteredListData = (List<ShopDetailsModel>) results.values;
             notifyDataSetChanged();
         }
     }

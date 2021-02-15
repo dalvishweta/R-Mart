@@ -24,6 +24,7 @@ import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.models.ShopWiseWishListResponseDetails;
 import com.rmart.customer.models.WishListResponseDetails;
 import com.rmart.customer.models.WishListResponseModel;
+import com.rmart.customer.shops.products.api.Products;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.GridSpacesItemDecoration;
 import com.rmart.utilits.LoggerInfo;
@@ -255,10 +256,10 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
             int productUnitQuantity = productUnitDetails.getProductUnitQuantity();
             if (totalProductCartQty < productUnitQuantity) {
                 progressDialog.show();
-                CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+                Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
                 String clientID = "2";
                 Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                        productUnitDetails.getProductUnitId(), 1, "add");
+                        productUnitDetails.getProductUnitId(), 1, "add",MyProfile.getInstance().getRoleID());
                 call.enqueue(new Callback<AddToCartResponseDetails>() {
                     @Override
                     public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {
@@ -307,7 +308,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
     private void removeFromCartSelected(WishListResponseDetails shopWiseWishListResponseDetails) {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
-            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
+            Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
             String clientID = "2";
             Call<BaseResponse> call = customerProductsService.deleteProductFromWishList(clientID, shopWiseWishListResponseDetails.getWishListId());
             call.enqueue(new Callback<BaseResponse>() {

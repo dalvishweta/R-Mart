@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class CustomerProductsDetailsUnitModel implements Serializable {
 
+    public boolean selected = false;
     @SerializedName("product_unit_id")
     @Expose
     private Integer productUnitId;

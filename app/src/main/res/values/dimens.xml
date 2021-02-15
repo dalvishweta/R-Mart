@@ -9,9 +9,8 @@
     <dimen name="text_regular_size">16sp</dimen>
     <dimen name="item_icon_corner_radius">16dp</dimen>
     <dimen name="text_title">20sp</dimen>
-
     <dimen name="radio_button_conner_radius">5dp</dimen>
     <dimen name="radio_button_stroke_border">1dp</dimen>
-    <dimen name="customer_product_bg">250dp</dimen>
+    <dimen name="customer_product_bg">300dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 </resources>

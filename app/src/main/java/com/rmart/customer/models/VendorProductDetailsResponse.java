@@ -2,7 +2,7 @@ package com.rmart.customer.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.rmart.customer.shops.list.models.CustomerProductsShopDetailsModel;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.utilits.BaseResponse;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class VendorProductDetailsResponse extends BaseResponse {
         private List<CustomerProductDetailsModel> productsListData = null;
         @SerializedName("shop_data")
         @Expose
-        private CustomerProductsShopDetailsModel vendorShopDetails;
+        private ShopDetailsModel vendorShopDetails;
 
         public List<CustomerProductDetailsModel> getProductsListData() {
             return productsListData;
@@ -40,11 +40,11 @@ public class VendorProductDetailsResponse extends BaseResponse {
             this.productsListData = productsListData;
         }
 
-        public CustomerProductsShopDetailsModel getVendorShopDetails() {
+        public ShopDetailsModel getVendorShopDetails() {
             return vendorShopDetails;
         }
 
-        public void setVendorShopDetails(CustomerProductsShopDetailsModel vendorShopDetails) {
+        public void setVendorShopDetails(ShopDetailsModel vendorShopDetails) {
             this.vendorShopDetails = vendorShopDetails;
         }
     }
