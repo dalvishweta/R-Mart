@@ -24,13 +24,15 @@ import com.rmart.utilits.GridSpacesItemDecoration;
 public class BrandFilterActivity extends AppCompatActivity {
     ActivityBrandFilterBinding binding;
     private String brandID = null;
+    String vendor_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_brand_filter);
+        vendor_id =getIntent().getStringExtra("venderID");
         binding = DataBindingUtil.setContentView(this,R.layout.activity_brand_filter);
         BrandViewModel brandViewModel = ViewModelProviders.of(this).get(BrandViewModel.class);
-        brandViewModel.getBransList(null);
+        brandViewModel.getBransList(null,vendor_id);
         binding.setBrandViewModel(brandViewModel);
         binding.setLifecycleOwner(this);
 

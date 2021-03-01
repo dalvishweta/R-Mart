@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.R;
 import com.rmart.databinding.ActivityProductlistFromInventoryRetailerBinding;
 import com.rmart.inventory.views.BaseInventoryFragment;
+import com.rmart.profile.model.MyProfile;
 import com.rmart.retiler.inventory.brand.activities.BrandFilterActivity;
 import com.rmart.retiler.inventory.brand.model.Brand;
 import com.rmart.retiler.inventory.category.activities.CategoryFilterActivity;
@@ -87,10 +88,13 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
 
                     if(item.getTitle().toString().equalsIgnoreCase(Utils.CATEGORY)){
                         Intent intent=new Intent(getContext(), CategoryFilterActivity.class);
+                        MyProfile profile = MyProfile.getInstance();
+                        intent.putExtra("venderID", MyProfile.getInstance().getUserID());
                         startActivityForResult(intent, CATEGORY_REQUEST);
                     }
                     if(item.getTitle().toString().equalsIgnoreCase(Utils.BRAND)) {
                         Intent intent=new Intent(getContext(), BrandFilterActivity.class);
+                        intent.putExtra("venderID", MyProfile.getInstance().getUserID());
                         startActivityForResult(intent, BRAND_REQUEST);
 
                     }
@@ -110,6 +114,13 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
         productSearchListAdapter = new ProductFromInventorySearchListAdapter(getActivity(),new ArrayList<>(),mListener);
         binding.rvBrands.setAdapter(productSearchListAdapter);
         //
+
+        binding.btnTryagain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                productViewModel.getProductList( page+"");
+            }
+        });
 
         binding.addCustomProduct.addProduct.setOnClickListener(new View.OnClickListener() {
             @Override

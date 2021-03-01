@@ -363,7 +363,7 @@ public class SelectProductFromInventory extends BaseInventoryFragment implements
                 return;
             }
             progressDialog.show();
-            apiService.getBrandList("0", "100").enqueue(new Callback<APIProductListResponse>() {
+            apiService.getBrandList("0", "100",null).enqueue(new Callback<APIProductListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<APIProductListResponse> call, @NotNull Response<APIProductListResponse> response) {
                     if (response.isSuccessful()) {

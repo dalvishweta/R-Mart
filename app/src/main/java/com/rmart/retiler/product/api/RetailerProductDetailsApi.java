@@ -36,7 +36,7 @@ public interface RetailerProductDetailsApi {
 
     @POST(BuildConfig.API_BRAND_LIST)
     @FormUrlEncoded
-    Call<BrandListResponse> getBrandList(@Field("start_index") String startIndex, @Field("end_index") String endIndex, @Field("brand_id") String brandId);
+    Call<BrandListResponse> getBrandList(@Field("start_index") String startIndex, @Field("end_index") String endIndex, @Field("brand_id") String brandId,@Field("vendor_id") String vendor_id);
 
 //https://martapi.rokad.in/api/Products/add_product
  //   https://it.rokad.in/api/products/add_product_Test

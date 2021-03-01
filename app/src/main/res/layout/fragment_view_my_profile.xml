@@ -108,6 +108,12 @@
                             android:drawableStart="@drawable/shop"
                             style="@style/my_profile_tv"
                             android:inputType="text" />
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:hint="@string/enter_your_business_name"
+                            android:id="@+id/business_type"
+                            android:drawableStart="@drawable/shop"
+                            style="@style/my_profile_tv"
+                            android:inputType="text" />
 
                         <include
                             layout="@layout/layout_shop_image_view"

@@ -122,7 +122,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private RelativeLayout map_or_list_view,changeAddressLayout;
     private AppCompatButton btnTryAgain;
     String venderID, shopId;
-
+    View view;
     LinearLayout erorolayout;
     private ArrayList<AddressResponse> addressList = new ArrayList<>();
     RadioGroup mapViewOrListViewRadioGroup;
@@ -166,11 +166,11 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        loadUIComponents(view);
+        this.view = view;
+        loadUIComponents();
     }
 
-    private void loadUIComponents(View view) {
+    private void loadUIComponents() {
         locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
         myProfile = MyProfile.getInstance();
         map_or_list_view = view.findViewById(R.id.map_or_list_view);
@@ -294,34 +294,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         vendorShopsListAdapter = new VendorShopsListAdapterNew(requireActivity(), shopsList, callBackListener);
         vendorShopsListField.setAdapter(vendorShopsListAdapter);
         view.findViewById(R.id.btn_change_address_field).setOnClickListener(v -> changeAddressSelected());
-        
-        MyProfile myProfile = MyProfile.getInstance();
-        
-        if (myProfile != null) {
-            if(myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)){
-                view.findViewById(R.id.btn_change_address_field).setVisibility(View.VISIBLE);
-            } else {
-                view.findViewById(R.id.btn_change_address_field).setVisibility(View.GONE);
-            }
-            addressList = myProfile.getAddressResponses();
-            if (addressList != null && !addressList.isEmpty()) {
-                if (addressList.size() == 1) {
-                    AddressResponse addressResponse = addressList.get(0);
-                    latitude = addressResponse.getLatitude();
-                    longitude = addressResponse.getLongitude();
-                    tvAddressField.setText(addressResponse.getAddress());
-                } else {
-                    for (AddressResponse addressResponse : addressList) {
-                        if (myProfile.getPrimaryAddressId().equalsIgnoreCase(addressResponse.getId().toString())) {
-                            latitude = addressResponse.getLatitude();
-                            longitude = addressResponse.getLongitude();
-                            tvAddressField.setText(addressResponse.getAddress());
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+
+        mapAddress();
         mapsFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapsFragment != null) {
             mapsFragment.getMapAsync(this);
@@ -363,10 +337,41 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         getShopsList();
     }
 
+    private void mapAddress() {
+        MyProfile myProfile = MyProfile.getInstance();
+
+        if (myProfile != null) {
+            if(myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)){
+                view.findViewById(R.id.btn_change_address_field).setVisibility(View.VISIBLE);
+            } else {
+                view.findViewById(R.id.btn_change_address_field).setVisibility(View.GONE);
+            }
+            addressList = myProfile.getAddressResponses();
+            if (addressList != null && !addressList.isEmpty()) {
+                if (addressList.size() == 1) {
+                    AddressResponse addressResponse = addressList.get(0);
+                    latitude = addressResponse.getLatitude();
+                    longitude = addressResponse.getLongitude();
+                    tvAddressField.setText(addressResponse.getAddress());
+                } else {
+                    for (AddressResponse addressResponse : addressList) {
+                        if (myProfile.getPrimaryAddressId().equalsIgnoreCase(addressResponse.getId().toString())) {
+                            latitude = addressResponse.getLatitude();
+                            longitude = addressResponse.getLongitude();
+                            tvAddressField.setText(addressResponse.getAddress());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
         updateToolBar();
+        mapAddress();
     }
 
     public void updateToolBar() {

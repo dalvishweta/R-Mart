@@ -60,7 +60,7 @@ public class ProductsRepository {
         Products shope = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
         final MutableLiveData<ProductDetailsDescResponse> resultMutableLiveData = new MutableLiveData<>();
         final ProductDetailsDescResponse result = new ProductDetailsDescResponse();
-        Call<ProductDetailsDescResponse> call = shope.getVendorProductDetails(clientID,venderID,shopID,productID,customerID);
+        Call<ProductDetailsDescResponse> call = shope.getVendorProductDetails(clientID,venderID,shopID,productID,customerID,MyProfile.getInstance().getRoleID());
         call.enqueue(new Callback<ProductDetailsDescResponse>() {
             @Override
             public void onResponse(Call<ProductDetailsDescResponse> call, Response<ProductDetailsDescResponse> response) {
@@ -148,7 +148,7 @@ public class ProductsRepository {
         final MutableLiveData<AddProductToWishListResponse> resultMutableLiveData = new MutableLiveData<>();
 
         Call<AddProductToWishListResponse> call = customerProductsService.moveToWishList("2", venderID,
-                MyProfile.getInstance().getUserID(), productID);
+                MyProfile.getInstance().getUserID(), productID,MyProfile.getInstance().getRoleID());
 
         call.enqueue(new Callback<AddProductToWishListResponse>() {
             @Override

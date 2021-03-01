@@ -344,6 +344,33 @@ public class Utils {
 
 
     }
+    public static boolean
+    isValidIFSCode(String str)
+    {
+        // Regex to check valid IFSC Code.
+        String regex
+                = "^[A-Z]{4}0[A-Z0-9]{6}$";
+
+        // Compile the ReGex
+        Pattern p
+                = Pattern.compile(regex);
+
+        // If the string is empty
+        // return false
+        if (str == null) {
+            return false;
+        }
+
+        // Pattern class contains matcher()
+        // method to find matching between
+        // the given string and
+        // the regular expression.
+        Matcher m = p.matcher(str);
+
+        // Return if the string
+        // matched the ReGex
+        return m.matches();
+    }
 
 
 }

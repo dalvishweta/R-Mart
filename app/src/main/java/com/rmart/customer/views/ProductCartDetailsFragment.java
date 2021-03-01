@@ -153,7 +153,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
             Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
             String clientID = "2";
             Call<ProductDetailsDescResponse> call = customerProductsService.getVendorProductDetails(clientID, vendorShopDetails.getVendorId(), vendorShopDetails.getShopId(),
-                    vendorProductDataDetails.getProductId(), MyProfile.getInstance().getUserID());
+                    vendorProductDataDetails.getProductId(), MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<ProductDetailsDescResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<ProductDetailsDescResponse> call, @NotNull Response<ProductDetailsDescResponse> response) {
@@ -553,7 +553,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
             Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
             String clientID = "2";
             Call<AddProductToWishListResponse> call = customerProductsService.moveToWishList(clientID, vendorShopDetails.getVendorId(),
-                    MyProfile.getInstance().getUserID(), productDetailsDescModel.getProductId());
+                    MyProfile.getInstance().getUserID(), productDetailsDescModel.getProductId(),MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<AddProductToWishListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AddProductToWishListResponse> call, @NotNull Response<AddProductToWishListResponse> response) {

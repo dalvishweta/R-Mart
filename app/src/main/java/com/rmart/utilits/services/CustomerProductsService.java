@@ -67,12 +67,12 @@ public interface CustomerProductsService {
 
     @POST(BuildConfig.VENDORS_SHOW_SHOP_WISE_CART)
     @FormUrlEncoded
-    Call<ShoppingCartResponse> getShoppingCartList(@Field("client_id") String clientId, @Field("customer_id") String customerId);
+    Call<ShoppingCartResponse> getShoppingCartList(@Field("client_id") String clientId, @Field("customer_id") String customerId, @Field("role_id") String roleID);
 
 
     @POST(BuildConfig.VENDORS_SHOW_SHOP_WISE_WISH_LIST_CART)
     @FormUrlEncoded
-    Call<ShopWiseWishListResponseModel> getShowShopWiseWishListData(@Field("client_id") String clientId, @Field("customer_id") String customerId);
+    Call<ShopWiseWishListResponseModel> getShowShopWiseWishListData(@Field("client_id") String clientId, @Field("customer_id") String customerId, @Field("role_id") String roleID);
 
     @POST(BuildConfig.VENDOR_REMOVE_FROM_CART)
     @FormUrlEncoded
@@ -116,6 +116,6 @@ public interface CustomerProductsService {
 
     @POST(BuildConfig.SHOW_SHOP_FAV_DATA)
     @FormUrlEncoded
-    Call<ShopFavouritesListResponseModel> getShowShopFavouritesList(@Field("client_id") String clientId, @Field("customer_id") String customerId, @Field("start_page") Integer startPage);
+    Call<ShopFavouritesListResponseModel> getShowShopFavouritesList(@Field("client_id") String clientId, @Field("customer_id") String customerId, @Field("start_page") Integer startPage, @Field("role_id") String role_id);
 
 }

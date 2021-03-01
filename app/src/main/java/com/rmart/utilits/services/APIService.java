@@ -60,6 +60,6 @@ public interface APIService {
     @POST(BuildConfig.API_BRAND_LIST)
     @FormUrlEncoded
     Call<APIProductListResponse> getBrandList(@Field("start_index") String startIndex,
-                                                    @Field("end_index") String endIndex);
+                                                    @Field("end_index") String endIndex,@Field("vendor_id") String vendor_id);
 
 }

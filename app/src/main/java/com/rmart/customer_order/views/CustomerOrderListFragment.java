@@ -74,7 +74,7 @@ public class CustomerOrderListFragment extends BaseOrderFragment implements View
         }
         progressDialog.show();
         CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
-        customerOrderService.getStateOfOrder(startIndex, MyProfile.getInstance().getMobileNumber()).enqueue(new Callback<OrdersByStatus>() {
+        customerOrderService.getStateOfOrder(startIndex, MyProfile.getInstance().getMobileNumber(),MyProfile.getInstance().getRoleID()).enqueue(new Callback<OrdersByStatus>() {
             @Override
             public void onResponse(@NotNull Call<OrdersByStatus> call, @NotNull Response<OrdersByStatus> response) {
                 if (response.isSuccessful()) {

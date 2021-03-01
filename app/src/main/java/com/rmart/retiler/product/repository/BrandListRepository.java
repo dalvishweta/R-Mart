@@ -17,7 +17,7 @@ public class BrandListRepository {
         RetailerProductDetailsApi brandListApi = RetrofitClientInstance.getRetrofitInstance().create(RetailerProductDetailsApi.class);
         final MutableLiveData<BrandListResponse> resultMutableLiveData = new MutableLiveData<>();
 
-        Call<BrandListResponse> call = brandListApi.getBrandList(request.getStartIndex(), request.getEndIndex(), request.getBrandId());
+        Call<BrandListResponse> call = brandListApi.getBrandList(request.getStartIndex(), request.getEndIndex(), request.getBrandId(),request.getVenderID());
 
         call.enqueue(new Callback<BrandListResponse>() {
             @Override

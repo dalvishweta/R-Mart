@@ -13,12 +13,12 @@ import retrofit2.Response;
 
 public class BrandListRepository {
 
-    public static MutableLiveData<BrandListResponse> getBransList(String startIndex, String endIndex, String categoryID){
+    public static MutableLiveData<BrandListResponse> getBransList(String startIndex, String endIndex, String categoryID, String venderID){
 
         BrandListApi brandListApi = RetrofitClientInstance.getRetrofitInstance().create(BrandListApi.class);
         final MutableLiveData<BrandListResponse> resultMutableLiveData = new MutableLiveData<>();
 
-        Call<BrandListResponse> call = brandListApi.getBrandList(startIndex,endIndex,categoryID);
+        Call<BrandListResponse> call = brandListApi.getBrandList(startIndex,endIndex,categoryID,venderID);
 
         call.enqueue(new Callback<BrandListResponse>() {
             @Override

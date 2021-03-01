@@ -338,7 +338,7 @@ public class AddNewProductActivity extends AppCompatActivity implements BaseInte
     }
 
     private void sendBrandRequestToServer(String brandId) {
-        addNewProductViewModel.getAllBrands(new BrandListRequest(brandId, "0", "100"));
+        addNewProductViewModel.getAllBrands(new BrandListRequest(brandId, "0", "100",null));
     }
 
     private void sendRequestToGetStockList() {

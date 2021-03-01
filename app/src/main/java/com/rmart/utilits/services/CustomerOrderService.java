@@ -16,7 +16,7 @@ public interface CustomerOrderService {
     @POST(BuildConfig.CUSTOMER_VIEW_ALL_ORDERS)
     @FormUrlEncoded
     Call<OrdersByStatus> getStateOfOrder(@Field("start_index") String startIndex,
-                                         @Field("customer_mobile") String customerMobile);
+                                         @Field("customer_mobile") String customerMobile,@Field("role_id") String roleID);
 
     @POST(BuildConfig.CUSTOMER_VIEW_ORDER_BY_ID)
     @FormUrlEncoded

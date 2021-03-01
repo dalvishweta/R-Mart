@@ -263,7 +263,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         });
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
-            if (myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
+            //if (myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
                 View actionView = menuItem.getActionView();
                 tvCartCountField = actionView.findViewById(R.id.tv_cart_count_field);
                 if (MyProfile.getInstance() != null) {
@@ -277,15 +277,19 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                         tvCartCountField.setVisibility(View.VISIBLE);
                         UpdateCartCountDetails.updateCartCountDetails.onNext(cartCount);
                     } else {
-                        tvCartCountField.setVisibility(View.GONE);
+                        //tvCartCountField.setVisibility(View.VISIBLE);
                         //menuItem.setVisible(false);
                     }
                 }
                 actionView.setOnClickListener(v -> {
                     if(cartCount > 0) {
                         cartSelected();
+                    } else {
+                        Toast.makeText(this,"Cart is empty ",Toast.LENGTH_LONG).show();
                     }
                 });
+
+            if (myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
             } else {
                 menuItem.setVisible(false);
             }

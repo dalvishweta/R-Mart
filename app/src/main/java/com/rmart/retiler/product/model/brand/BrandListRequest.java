@@ -4,11 +4,21 @@ public class BrandListRequest {
     String brandId;
     String startIndex;
     String endIndex;
+    String venderID;
 
-    public BrandListRequest(String brandId, String startIndex, String endIndex) {
+    public String getVenderID() {
+        return venderID;
+    }
+
+    public void setVenderID(String venderID) {
+        this.venderID = venderID;
+    }
+
+    public BrandListRequest(String brandId, String startIndex, String endIndex, String venderID) {
         this.brandId = brandId;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
+        this.venderID = venderID;
     }
 
     public String getBrandId() {

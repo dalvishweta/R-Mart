@@ -25,7 +25,7 @@ public interface Products {
     @POST(BuildConfig.VENDOR_PRODUCT_DETAILS)
     @FormUrlEncoded
     Call<ProductDetailsDescResponse> getVendorProductDetails(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("shop_id") int shopId,
-                                                             @Field("product_id") int productId, @Field("customer_id") String customerId);
+                                                             @Field("product_id") int productId, @Field("customer_id") String customerId, @Field("role_id") String roleID);
     @POST(BuildConfig.DELETE_PRODUCT_WISH_LIST)
     @FormUrlEncoded
     Call<BaseResponse> deleteProductFromWishList(@Field("client_id") String clientId, @Field("wishlist_id") String wishListId);
@@ -33,7 +33,7 @@ public interface Products {
     @POST(BuildConfig.VENDOR_MOVE_TO_WISH_LIST)
     @FormUrlEncoded
     Call<AddProductToWishListResponse> moveToWishList(@Field("client_id") String clientId, @Field("vendor_id") int vendorId, @Field("customer_id") String customerId,
-                                                      @Field("product_id") int productId);
+                                                      @Field("product_id") int productId, @Field("role_id") String roleID);
 
     @POST(BuildConfig.VENDOR_ADD_TO_CART)
     @FormUrlEncoded
@@ -43,7 +43,7 @@ public interface Products {
     @POST(BuildConfig.CUSTOMER_ALL_SHOPS_PRODUCT)
     @FormUrlEncoded
     Call<ProductSearchResponce> searchProduct(@Field("page") int page, @Field("client_id") String clientId, @Field("latitude") Double latitude, @Field("longitude") Double longitude,
-                                              @Field("search_phrase") String search_phrase);
+                                              @Field("search_phrase") String search_phrase,@Field("role_id") String roleID);
 
 
 }

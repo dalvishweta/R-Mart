@@ -18,15 +18,21 @@ public class ShopRepository {
 
         Shops shope = RetrofitClientInstance.getRetrofitInstance().create(Shops.class);
         final MutableLiveData<ShopHomePageResponce> resultMutableLiveData = new MutableLiveData<>();
-        Call<ShopHomePageResponce> call = shope.getShopHomePage(CLIENT_ID,vendorId,shop_id, MyProfile.getInstance()!=null?MyProfile.getInstance().getUserID():"");
+        String type = MyProfile.getInstance().getRoleID();
+        Call<ShopHomePageResponce> call = shope.getShopHomePage(CLIENT_ID,vendorId,shop_id, MyProfile.getInstance()!=null?MyProfile.getInstance().getUserID():"",type);
         final ShopHomePageResponce result = new ShopHomePageResponce();
 
         call.enqueue(new Callback<ShopHomePageResponce>() {
             @Override
             public void onResponse(Call<ShopHomePageResponce> call, Response<ShopHomePageResponce> response) {
                 ShopHomePageResponce data = response.body();
-                resultMutableLiveData.setValue(data);
+                if(data!=null) {
+                    resultMutableLiveData.setValue(data);
 
+                } else {
+                    result.setMsg("Somthing error");
+                    result.setStatus(400);
+                }
             }
 
             @Override

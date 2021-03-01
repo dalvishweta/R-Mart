@@ -13,5 +13,5 @@ public interface CategoryListApi {
 
     @POST(BuildConfig.API_CATEGORY_LIST)
     @FormUrlEncoded
-    Call<CategoryListResponce> getCategoryList(@Field("start_index") String startIndex, @Field("end_index") String endIndex, @Field("category_id") String categoryId);
+    Call<CategoryListResponce> getCategoryList(@Field("start_index") String startIndex, @Field("end_index") String endIndex, @Field("category_id") String categoryId, @Field("vendor_id") String vendor_id);
 }

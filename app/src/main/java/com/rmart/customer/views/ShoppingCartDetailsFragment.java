@@ -232,7 +232,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
             Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
             String clientID = "2";
             Call<AddProductToWishListResponse> call = customerProductsService.moveToWishList(clientID, selectedProductInCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                    selectedProductInCartDetails.getProductId());
+                    selectedProductInCartDetails.getProductId(),MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<AddProductToWishListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AddProductToWishListResponse> call, @NotNull Response<AddProductToWishListResponse> response) {

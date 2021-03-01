@@ -48,7 +48,7 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
 
     private AppCompatTextView tvFirstName, tvLastName, tvMobileNumber, tvEmail, tvGender, deliveryCharge, minimumCharge,
             tvOpeningTIme, tvClosingTIme, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
-    private AppCompatTextView tvShopName, tvShopACT,tvPANNumber, tvGSTNumber, tvStreetAddress,tvCity, tvShopNO, tvDeliveryRadius, tvState, tvPINCode, tvAadharNoField;
+    private AppCompatTextView tvShopName,tvBusinessType, tvShopACT,tvPANNumber, tvGSTNumber, tvStreetAddress,tvCity, tvShopNO, tvDeliveryRadius, tvState, tvPINCode, tvAadharNoField;
     private RecyclerView recyclerView;
     // MyProfileViewModel myProfileViewModel;
     private AddressResponse addressResponse;
@@ -142,6 +142,7 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
         view.findViewById(R.id.retailer_view).setVisibility(View.VISIBLE);
         view.findViewById(R.id.edit_retailer).setOnClickListener(this);
         tvShopName = view.findViewById(R.id.shop_name);
+        tvBusinessType = view.findViewById(R.id.business_type);
         tvShopACT = view.findViewById(R.id.shop_act);
         tvPANNumber = view.findViewById(R.id.pan_number);
         tvGSTNumber = view.findViewById(R.id.gst_number);
@@ -178,6 +179,8 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
             if (addressResponseList != null && !addressResponseList.isEmpty()) {
                 addressResponse = addressResponseList.get(0);
                 tvShopName.setText(addressResponse.getShopName());
+                tvBusinessType.setText(addressResponse.getBusinessType());
+
                 tvShopACT.setText(addressResponse.getShopACT());
                 tvPANNumber.setText(addressResponse.getPan_no());
                 tvGSTNumber.setText(addressResponse.getGstInNo());

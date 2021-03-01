@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -91,6 +92,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
     private EditAdreesViewModel editAdreesViewModel;
     public EditAddressFragment() {
     }
+
     public static EditAddressFragment newInstance(boolean isAddNewAddress, AddressResponse myAddress) {
         EditAddressFragment fragment = new EditAddressFragment();
         Bundle args = new Bundle();
@@ -121,7 +123,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         creditDetails=new CreditDetails();
 
         textWatchers();
-       binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             public void onCheckedChanged(RadioGroup rg, int checkedId) {
                 for (int i = 0; i < rg.getChildCount(); i++) {
@@ -473,7 +475,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.deliveryRadius.setFilters(new InputFilter[]{new InputFilterIntMinMax(1, 99)});
+        binding.deliveryRadius.setFilters(new InputFilter[]{new InputFilterIntMinMax(1, 999)});
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (myAddress != null) {
@@ -909,15 +911,15 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             if( !isPanValid && !isAdharValid && !isShopActValid) {
                 //showDialog("Please Enter any one KYC Document Number");
                 if(!isPanValid) {
-                    editAdreesViewModel.errorPanNumberMutableLiveData.setValue("Please Enter any one KYC Document Number");
+                    editAdreesViewModel.errorPanNumberMutableLiveData.setValue("Please Enter valid PAN Number (Optional KYC Document)");
                 }
                 if(!isAdharValid){
                     if(!isAdharNoValid) {
-                        editAdreesViewModel.errorAadharNoMutableLiveData.setValue("Please Enter any one KYC Document Number");
+                        editAdreesViewModel.errorAadharNoMutableLiveData.setValue("Please Enter valid Aadhar Number (Optional KYC Document)");
                     }
                 }
                 if(!isShopActValid){
-                    editAdreesViewModel.errorShopActStringMutableLiveData.setValue("Please Enter any one KYC Document Number");
+                    editAdreesViewModel.errorShopActStringMutableLiveData.setValue("Please Enter valid Shop Act Number(Optional KYC Document)");
                 }
                 validation = false;
 
@@ -936,17 +938,21 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             }
 
             String banckAccountno = Objects.requireNonNull(binding.bankAccNo.getText()).toString().trim();
-            if (TextUtils.isEmpty(banckAccountno)) {
-                editAdreesViewModel.errorBanckAccountStringMutableLiveData.setValue(getString(R.string.bank_account_required));
-                //showDialog(getString(R.string.shop_name_required));
-                validation =false;
+            if (!TextUtils.isEmpty(banckAccountno)) {
+                if(banckAccountno.length()<9 && banckAccountno.length()>18) {
+                    editAdreesViewModel.errorBanckAccountStringMutableLiveData.setValue(getString(R.string.bank_account_required));
+                    //showDialog(getString(R.string.shop_name_required));
+                    validation = false;
+                }
             }
 
             String ifscCode = Objects.requireNonNull(binding.bankIfsc.getText()).toString().trim();
-            if (TextUtils.isEmpty(ifscCode)) {
-                editAdreesViewModel.errorBanckIFSCStringMutableLiveData.setValue(getString(R.string.bank_ifsc_required));
-                //showDialog(getString(R.string.shop_name_required));
-                validation =false;
+            if (!TextUtils.isEmpty(ifscCode)) {
+                if(Utils.isValidIFSCode(ifscCode)) {
+                    editAdreesViewModel.errorBanckIFSCStringMutableLiveData.setValue(getString(R.string.bank_ifsc_required));
+                    //showDialog(getString(R.string.shop_name_required));
+                    validation = false;
+                }
             }
 
             if (binding.businessType.getSelectedItemPosition()==0) {

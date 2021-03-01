@@ -133,7 +133,7 @@ public class ShoppingCartFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<ShoppingCartResponse> call = customerProductsService.getShoppingCartList(clientID, MyProfile.getInstance().getUserID());
+            Call<ShoppingCartResponse> call = customerProductsService.getShoppingCartList(clientID, MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<ShoppingCartResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<ShoppingCartResponse> call, @NotNull Response<ShoppingCartResponse> response) {

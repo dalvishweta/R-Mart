@@ -161,7 +161,7 @@
     <string name="after_discount">After discount: %.2f</string>
     <string name="delivery_in">Delivery in</string>
     <string name="delivery_in_days_text">Delivery in days</string>
-    <string name="banck_details_text">Banck Details</string>
+    <string name="banck_details_text">Bank Details</string>
     <string name="delivery_in_days">Delivery in %1$s days</string>
     <string name="delivery_in_1_day">Delivery in 1 day</string>
     <string name="delivery_in_same_day">Delivery on the same day.</string>

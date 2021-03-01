@@ -12,11 +12,11 @@ import retrofit2.Response;
 
 public class CategoryListRepository {
 
-    public static MutableLiveData<CategoryListResponce> getVenderProducts(String startIndex, String endIndex, String categoryID){
+    public static MutableLiveData<CategoryListResponce> getVenderProducts(String startIndex, String endIndex, String categoryID,String vendor_id){
 
         CategoryListApi categoryListApi = RetrofitClientInstance.getRetrofitInstance().create(CategoryListApi.class);
         final MutableLiveData<CategoryListResponce> resultMutableLiveData = new MutableLiveData<>();
-        Call<CategoryListResponce> call = categoryListApi.getCategoryList(startIndex,endIndex,categoryID);
+        Call<CategoryListResponce> call = categoryListApi.getCategoryList(startIndex,endIndex,categoryID, vendor_id);
 
         call.enqueue(new Callback<CategoryListResponce>() {
             @Override

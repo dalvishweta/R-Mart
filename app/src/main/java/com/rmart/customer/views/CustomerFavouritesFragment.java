@@ -177,7 +177,7 @@ public class CustomerFavouritesFragment extends BaseFragment {
             favoritesShopsList.clear();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<ShopFavouritesListResponseModel> call = customerProductsService.getShowShopFavouritesList(clientID, MyProfile.getInstance().getUserID(), 0);
+            Call<ShopFavouritesListResponseModel> call = customerProductsService.getShowShopFavouritesList(clientID, MyProfile.getInstance().getUserID(), 0,MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<ShopFavouritesListResponseModel>() {
                 @Override
                 public void onResponse(@NotNull Call<ShopFavouritesListResponseModel> call, @NotNull Response<ShopFavouritesListResponseModel> response) {

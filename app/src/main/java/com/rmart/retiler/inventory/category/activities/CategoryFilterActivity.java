@@ -21,13 +21,16 @@ public class CategoryFilterActivity extends AppCompatActivity {
     ActivityCategoryFilterBinding binding;
     private Category categoryID = null;
     CategoryViewModel categoryViewModel;
+    String vendor_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_brand_filter);
+
+        vendor_id =getIntent().getStringExtra("venderID");
         binding = DataBindingUtil.setContentView(this,R.layout.activity_category_filter);
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
-        categoryViewModel.getCategoryList(null);
+        categoryViewModel.getCategoryList(null,vendor_id);
         binding.setCategoryViewModel(categoryViewModel);
         binding.setLifecycleOwner(this);
 
@@ -44,7 +47,7 @@ public class CategoryFilterActivity extends AppCompatActivity {
                             finish();
                         } else {
                             categoryID = category;
-                            categoryViewModel.getCategoryList(category.getId()+"");
+                            categoryViewModel.getCategoryList(category.getId()+"",vendor_id);
                         }
 
                 }));
@@ -62,7 +65,7 @@ public class CategoryFilterActivity extends AppCompatActivity {
 
         if(categoryID!=null){
             categoryID=null;
-            categoryViewModel.getCategoryList(null);
+            categoryViewModel.getCategoryList(null,vendor_id);
 
         } else {
             super.onBackPressed();

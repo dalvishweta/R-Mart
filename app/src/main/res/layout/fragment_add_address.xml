@@ -52,7 +52,7 @@
                 android:id="@+id/shop_business_Layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/grey_rounded_borders_bg">
@@ -112,7 +112,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Activate Creadit Option For Retailers."
+                    android:text="Activate Credit Option For Retailers."
                     android:textColor="@color/black"
                     android:layout_marginTop="5dp"
                     android:layout_marginLeft="10dp"></TextView>
@@ -288,7 +288,7 @@
                     android:layout_height="wrap_content"
                     android:digits="@string/allow_digits_for_numbers"
                     android:inputType="numberSigned"
-                    android:maxLength="2" />
+                    android:maxLength="3" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -466,7 +466,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:weightSum="2"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
@@ -474,12 +474,24 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_weight="1"
+                    android:orientation="vertical"
                     android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_above="@+id/adharcard_front_image_field"
+                        style="@style/text_style_medium_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Front Image"
+                        android:textColor="@color/black" />
                 <RelativeLayout
                     android:layout_width="120dp"
+                    android:layout_marginTop="5dp"
                     android:id="@+id/aadhar_front_layout_field"
                     android:background="@drawable/image_border"
                     android:layout_height="80dp">
+
+
+
                     <ImageView
                         android:id="@+id/adharcard_front_image_field"
                         android:layout_width="120dp"
@@ -501,10 +513,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content">
+                    android:orientation="vertical"
 
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_above="@+id/adharcard_front_image_field"
+                        style="@style/text_style_medium_normal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Back Image"
+                        android:textColor="@color/black" />
                     <RelativeLayout
                         android:layout_width="120dp"
+                        android:layout_marginTop="5dp"
+
                         android:id="@+id/aadhar_back_layout_field"
                         android:background="@drawable/image_border"
                         android:layout_height="80dp">
@@ -551,10 +573,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:orientation="vertical"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp" >
+                <TextView
+                    android:layout_above="@+id/adharcard_front_image_field"
+                    style="@style/text_style_medium_normal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pan Card Image"
+                    android:textColor="@color/black" />
                 <RelativeLayout
                     android:layout_width="120dp"
+                    android:layout_marginTop="5dp"
                     android:id="@+id/pan_card_layout_field"
                     android:background="@drawable/image_border"
                     android:layout_height="80dp">
@@ -602,6 +633,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
+                    android:maxLength="18"
                     android:textAllCaps="true" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
