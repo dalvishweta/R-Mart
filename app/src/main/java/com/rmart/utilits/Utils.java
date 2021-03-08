@@ -1,7 +1,6 @@
 package com.rmart.utilits;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,8 +11,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
 import android.net.Uri;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -28,8 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import androidx.core.content.FileProvider;
 
 public class Utils {
 
@@ -83,16 +78,15 @@ public class Utils {
             // return false
             Matcher m = p.matcher(phone);
 
-            int i = Integer.parseInt(String.valueOf(phone.charAt(0)));
-            int i1 = Integer.parseInt(String.valueOf(phone.charAt(0)));
+            // int i = Integer.parseInt(String.valueOf(phone.charAt(0)));
+            // int i1 = Integer.parseInt(String.valueOf(phone.charAt(0)));
             if (m.matches() && phone.length() == 10 && Integer.parseInt(String.valueOf(phone.charAt(0))) > 5 && Integer.parseInt(String.valueOf(phone.charAt(0))) < 10) {
                 return android.util.Patterns.PHONE.matcher(phone).matches();
             }
-            return false;
-        } catch (Exception e){
-            return false;
-
+        }catch (Exception e){
+            e.printStackTrace();
         }
+        return false;
     }
 
     public static Boolean isNetworkConnected(Context context) {

@@ -1,7 +1,6 @@
 package com.rmart.baseclass.views;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -23,11 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -38,14 +33,15 @@ import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.material.navigation.NavigationView;
 import com.rmart.R;
-import com.rmart.RMartApplication;
 import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer.views.CustomerWishListActivity;
 import com.rmart.customer.views.ShoppingCartFragment;
 import com.rmart.customer_order.views.CustomerOrdersActivity;
+import com.rmart.customerservice.mobile.views.MobileRechargeActivity;
 import com.rmart.deeplinking.LinkGenerator;
+import com.rmart.electricity.ActivityElectricity;
 import com.rmart.glied.GlideApp;
 import com.rmart.inventory.views.AddProductToInventory;
 import com.rmart.inventory.views.InventoryActivity;
@@ -53,7 +49,6 @@ import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
 import com.rmart.utilits.CommonUtils;
-import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.Permisions;
 import com.rmart.utilits.RokadMartCache;
@@ -142,6 +137,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.my_wish_list).setOnClickListener(this);
         findViewById(R.id.share_app).setOnClickListener(this);
         findViewById(R.id.wholesaler).setOnClickListener(this);
+        findViewById(R.id.ele_service).setOnClickListener(this);
+        findViewById(R.id.mobile_service).setOnClickListener(this);
+
         ivProfileImageField = findViewById(R.id.iv_user_profile_image);
         MyProfile myProfile = MyProfile.getInstance();
         if (myProfile != null) {
@@ -353,6 +351,14 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     intent = new Intent(BaseNavigationDrawerActivity.this, CustomerHomeActivity.class);
                     startActivity(intent);
 
+                    break;
+                case R.id.ele_service:
+                    intent = new Intent(this, ActivityElectricity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.mobile_service:
+                    intent = new Intent(this, MobileRechargeActivity.class);
+                    startActivity(intent);
                     break;
                 case R.id.share_app:
                     MyProfile myProfile = MyProfile.getInstance();

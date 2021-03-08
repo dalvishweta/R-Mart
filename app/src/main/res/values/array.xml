@@ -15,4 +15,43 @@
         <item>Few items are not available.</item>
         <item>Others</item>
     </string-array>
+    <string-array name="states">
+        <item>@string/spinner_prompt</item>
+        <item>Andhra Pradesh Telangana</item>
+        <item>Assam</item>
+        <item>Bihar Jharkhand</item>
+        <item>Chennai</item>
+        <item>Delhi NCR</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu Kashmir</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Kolkata</item>
+        <item>Madhya Pradesh Chhattisgarh</item>
+        <item>Maharashtra Goa</item>
+        <item>Mumbai</item>
+        <item>North East</item>
+        <item>Orissa</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Tamil Nadu</item>
+        <item>UP East</item>
+        <item>UP West</item>
+        <item>Uttaranchal</item>
+        <item>West Bengal</item>
+    </string-array>
+    <string-array name="dth">
+        <item>@string/spinner_dth</item>
+        <item>Airtel dth</item>
+        <item>Big TV</item>
+        <item>Dish TV</item>
+        <item>Tata Sky</item>
+        <item>Videocon</item>
+        <item>Sun Direct</item>
+
+    </string-array>
+
+
 </resources>

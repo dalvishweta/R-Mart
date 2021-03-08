@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<ScrollView
+    android:layout_width="match_parent"
+    android:padding="16dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
+        tools:context="com.rokad.mobile_recharge.views.RechargeHomeFragment">
+
+        <Spinner
+            android:id="@+id/sppiner_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_marginTop="40dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_below="@id/sppiner_service"
+            android:id="@+id/mobile_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/mobile_recharge_num"
+                android:hint="@string/mobile_number"
+                android:digits="0123456789"
+                android:maxLength="10"
+                android:inputType="phone"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_below="@id/mobile_hint"
+            android:id="@+id/vc_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/vc_num"
+                android:hint="@string/vc_number"
+                android:digits="0123456789"
+                android:maxLength="15"
+                android:inputType="phone"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recharge_type_group"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_below="@id/vc_hint">
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/recharge_type_prepaid"
+                android:layout_weight="1"
+                android:enabled="true"
+                android:text="@string/prepaid_radio_btn"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"/>
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/recharge_type_postpaid"
+                android:layout_weight="1"
+                android:text="@string/postpaid_radio_btn"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"/>
+
+        </RadioGroup>
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="4dp"
+            style="@style/Widget.AppCompat.Spinner"
+            android:entries="@array/dth"
+            android:prompt="@string/spinner_dth"
+            android:id="@+id/operator_select"
+            android:spinnerMode="dropdown"
+            android:layout_below="@id/recharge_type_group"
+            />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="4dp"
+            style="@style/Widget.AppCompat.Spinner"
+            android:entries="@array/states"
+            android:prompt="@string/spinner_prompt"
+            android:id="@+id/state_select"
+            android:spinnerMode="dropdown"
+            android:layout_below="@id/operator_select"
+            />
+        <!--<androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mobile_hint"
+            android:id="@+id/service_provider_header"
+            android:layout_margin="12dp"
+            android:text="@string/service_provider_header"
+            android:textSize="22sp"
+            android:layout_marginTop="16dp"/>-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/subscriber_list_item"
+            android:layout_below="@id/state_select"
+            android:visibility="gone"
+            android:id="@+id/services_list"/>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/no_service_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/state_select"
+            android:layout_marginTop="36dp"
+            android:layout_marginBottom="12dp"
+            android:textColor="@color/colorPrimaryDark2"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:text="@string/recharge_type_msg"
+            android:textSize="22sp" />
+
+        <LinearLayout
+            android:id="@+id/amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:weightSum="4"
+            android:visibility="invisible"
+            android:layout_below="@id/services_list">
+            <!--<EditText
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/recharge_amount"
+                android:hint="@string/mobile_recharge_amount"
+                android:background="@color/screen_bg"
+                android:inputType="number"/>-->
+            <!--<com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:id="@+id/amount_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/recharge_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/screen_bg"
+                    android:hint="@string/mobile_recharge_amount"
+                    android:inputType="number"
+                    android:maxLength="3" />
+
+            </com.google.android.material.textfield.TextInputLayout>-->
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:id="@+id/amount_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recharge_amount"
+                    android:hint="@string/recharge_amount_txt"
+                    android:maxLength="5"
+                    android:inputType="number"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/see_plans"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="end"
+                android:layout_gravity="center"
+                android:textColor="@android:color/holo_blue_dark"
+                android:layout_height="wrap_content"
+                android:text="@string/see_recharge_plans"/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/mobile_recharge_nxt_btn"
+            android:layout_below="@id/amount"
+            android:layout_marginTop="40dp"
+            android:text="@string/next"
+            android:visibility="gone"
+            style="@style/button_color"/>
+
+    </RelativeLayout>
+
+</ScrollView>
+
+</RelativeLayout>

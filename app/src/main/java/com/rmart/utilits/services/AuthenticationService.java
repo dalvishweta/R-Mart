@@ -1,6 +1,7 @@
 package com.rmart.utilits.services;
 
 import com.rmart.BuildConfig;
+import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.pojos.ChangePasswordResponse;
 import com.rmart.utilits.pojos.ForgotPasswordResponse;
 import com.rmart.utilits.pojos.LoginResponse;
@@ -40,6 +41,15 @@ public interface AuthenticationService {
                                             @Field("password") String password,
                                             @Field("roll") String roll_no,
                                             @Field("client_id") String client_id);
+    @FormUrlEncoded
+    @POST(BuildConfig.registration_rokad)
+    Call<BaseResponse> registrationRokad(@Field("first_name") String fName,
+                                    @Field("last_name") String lName,
+                                    @Field("mobno") String mobile,
+                                    @Field("email") String email,
+                                    @Field("password") String password,
+                                         @Field("confirm_password") String confirm_password,
+                                         @Field("user_id") String user_id);
 
     @FormUrlEncoded
     @POST(BuildConfig.VALIDATE_OTP)

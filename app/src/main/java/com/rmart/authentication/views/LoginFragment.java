@@ -1,10 +1,12 @@
 package com.rmart.authentication.views;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.LoginDetailsModel;
 import com.rmart.fcm.MyFirebaseMessagingService;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.RokadMartCache;
@@ -37,8 +40,6 @@ import org.jetbrains.annotations.NotNull;
 import java.net.SocketTimeoutException;
 import java.util.Objects;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,6 +53,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     private String mPassword;
     private AppCompatEditText etPassword, etMobileNumber;
     private String deviceToken;
+    ProfileResponse profileResponse;
     private ImageView slice,app_logo;
     public LoginFragment() {
         // Required empty public constructor
@@ -133,6 +135,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                 showDialog(getString(R.string.error_password));
             } else {
                 checkCredentials();
+
             }
         } else if (view.getId() == R.id.forgot_password) {
             mListener.goToForgotPassword();
@@ -163,7 +166,9 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                         LoginDetailsModel loginDetailsModel = new LoginDetailsModel();
                                         loginDetailsModel.setMobileNumber(mMobileNumber);
                                         loginDetailsModel.setPassword(mPassword);
-                                        ProfileResponse profileResponse = data.getLoginData();
+                                         profileResponse = data.getLoginData();
+                                        checkRegistration(profileResponse,mMobileNumber,"12345678");
+
                                         MyProfile.setInstance(profileResponse);
                                         //MyProfile.getInstance().setCartCount(profileResponse.getTotalCartCount());
                                         UpdateCartCountDetails.updateCartCountDetails.onNext(profileResponse.getTotalCartCount());
@@ -172,6 +177,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                         } else {
                                             switch (data.getLoginData().getRoleID()) {
                                                 case Utils.CUSTOMER_ID:
+
                                                     RokadMartCache.putData(Constants.CACHE_CUSTOMER_DETAILS, requireActivity(), loginDetailsModel);
                                                     mListener.goToCustomerHomeActivity();
                                                     SharedPreferences sharedPref = Objects.requireNonNull(requireActivity()).getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
@@ -189,6 +195,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                                     break;
                                             }
                                         }
+
                                         // mListener.goToProfileActivity();
                                         Objects.requireNonNull(requireActivity()).onBackPressed();
                                     } catch (Exception e) {
@@ -281,4 +288,52 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
             showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
         }
     }
+
+    private void checkRegistration(ProfileResponse profileResponse, String mMobileNumber, String mPassword) {
+        if (Utils.isNetworkConnected(getContext())) {
+
+                ProgressDialog progressBar = new ProgressDialog(getActivity(), R.style.mySpinnerTheme);
+                progressBar.setCancelable(false);
+                progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+                progressBar.show();
+
+                AuthenticationService getUserDataService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(AuthenticationService.class);
+                Call<BaseResponse> user = getUserDataService.registrationRokad(profileResponse.getFirstName(),profileResponse.getLastName(),mMobileNumber,profileResponse.getEmail(), mPassword,mPassword,profileResponse.getUserID());//("", "");
+                user.enqueue(new Callback<BaseResponse>() {
+                    @Override
+                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                        Log.d("onResponse", "onResponse: Login Fragment");
+                        if (response.body() != null && response.body().getStatus().equalsIgnoreCase("success")) {
+
+                            showDialog("success", response.body().getMsg());
+
+                        } else if (response.body() != null){
+                            showDialog("Sorry..", response.body().getMsg());
+                        } else {
+                            showDialog("Sorry..","Looks like server is not available at the moment. Please make sure your Internet Connectivity is stable" +
+                                    " and try again after some time.");
+                        }
+                        //progressBar.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseResponse> call, Throwable t) {
+                        // Log.d("onFailure", "onFailure: Login Fragment ");
+                        progressBar.dismiss();
+                        if(t instanceof SocketTimeoutException){
+                            showDialog(getString(R.string.time_out_title), getString(R.string.time_out_msg));
+                        } else {
+                            showDialog("Sorry..!!", getString(R.string.server_failed_case));
+//                            Toast.makeText(requireActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                        // showDialog("Sorry..", getString(R.string.internet_failed_login_case));
+                    }
+                });
+
+
+        } else {
+            showDialog("Sorry!!", getString(R.string.internet_check));
+        }
+    }
+
 }

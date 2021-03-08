@@ -2,14 +2,9 @@ package com.rmart.authentication.views;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +15,11 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -88,6 +88,7 @@ public class PaymentFragment extends BaseFragment {
         requireActivity().setTitle(R.string.title_payment);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -95,6 +96,7 @@ public class PaymentFragment extends BaseFragment {
         webview = view.findViewById(R.id.web_view);
         initWebView();
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void initWebView() {
         webview.getSettings().setJavaScriptEnabled(true);
         webview.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT"); // javaScriptInterface
@@ -129,6 +131,7 @@ public class PaymentFragment extends BaseFragment {
                 dialog.show();
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.M)
             public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
                 // Redirect to deprecated method, so you can use it in all SDK versions
                 showDialog("", rerr.getDescription().toString());
@@ -139,6 +142,7 @@ public class PaymentFragment extends BaseFragment {
         });
         loadWebView();
     }
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void loadWebView() {
         try {
             /* An instance of this class will be registered as a JavaScript interface */

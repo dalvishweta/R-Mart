@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/lin_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:layout_below="@+id/lin_one"
+        android:background="@drawable/shop_bg">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/status"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="Consumer Name: "/>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/consumer_name"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="Consumer Name: "/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/consumer_id"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="Consumer ID: "/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/DueAmount"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="Amount: "/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/OrderId"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="Order ID: "/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/DueDate"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="Due Date: "/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/BillDate"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="Bill Date: "/>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/pay_bill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/BillDate"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="center"
+            android:background="@color/colorPrimary"
+            android:text="ok"
+            android:textColor="@color/white"
+            android:layout_marginBottom="20dp"
+            android:padding="10dp"/>
+    </LinearLayout>
+
+
+</RelativeLayout>
