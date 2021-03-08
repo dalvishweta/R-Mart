@@ -26,6 +26,8 @@ android {
         buildConfigField("String", 'FEGISTRATION_FEE', '"Login/regPayAmt"')
         buildConfigField("String", "REGISTRATION", '"reg"')
         buildConfigField("String", "LOGIN", '"login"')
+        buildConfigField("String", "MOBILE_APPLICATION", "\"Y\"")
+        buildConfigField("String", "MOBILE_VERSION_ID", "\"1.1\"")
         /* Profile */
         buildConfigField('String', 'PROFILE_UPDATE', '"login/updateprofile"')
         buildConfigField('String', 'API_PRODUCT_LIST', '"lib/product/product_list"')
@@ -91,6 +93,24 @@ android {
         buildConfigField("String", 'CUSTOMER_VIEW_ALL_ORDERS', '"customer/order/ordersList"')
         buildConfigField("String", 'CUSTOMER_REORDER_PRODUCTS', '"customer/order/checkOrder"')
         buildConfigField("String", "DELERY_BOY_LIST",'"Deliveryboys"')
+
+        buildConfigField("String", "AUTH_USERNAME_ROKAD", '"9960703227"')
+        buildConfigField("String", "AUTH_PASSWORD_ROKAD", '"Trimax@123"')
+        buildConfigField("String", "BASE_URL_ROKAD", '"https://rokad.in/"')
+        //elescctricity
+        buildConfigField("String", "electicity_operator", '"rest_server/Electricityservice/getOperator"')
+        buildConfigField("String", "electricity_fetch_bill", '"rest_server/Electricityservice/fetchBill"')
+        buildConfigField("String", "electricity_pay_bill", '"rest_server/Electricityservice/billPayment"')
+        buildConfigField("String", "electricity_rsa_key", '"customer/VendorShop/RokadmartPGinitiate"')
+        buildConfigField("String", "RECHARGE", '"rest_server/Tsoapi/recharge/"')
+        buildConfigField("String", "GET_PLANS", '"rest_server/mplan/getDataPlans"')
+        buildConfigField("String", "HISTORY", '"rest_server/Tsoapi/last_transactions_prepaid/"')
+        buildConfigField("String", "Mobile_recharge", '"rest_server/Venus_mart_api/mobrecharge"')
+
+
+        //registration
+        buildConfigField("String", "registration_rokad", '"rest_server/login_api/registration"')
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
@@ -121,6 +141,8 @@ android {
             buildConfigField("String", "LOGIN_PASSWORD", '"1qQ@1234"')
             buildConfigField("boolean", "IS_DELIVERY", "false")
             buildConfigField("boolean", "IS_RETAILER", "false")
+            buildConfigField("String", "BASE_URL_ROKAD", '"https://rokad.in/"')
+
         }
         retailer {
             dimension "rokard_mart"
@@ -163,6 +185,8 @@ android {
             //buildConfigField("String", "LOGIN_PASSWORD", '"Aaa@1111"')
             buildConfigField("boolean", "IS_DELIVERY", "false")
             buildConfigField("boolean", "IS_RETAILER", "false")
+            buildConfigField("String", "BASE_URL_ROKAD", '"https://rokad.in/"')
+
 
         }
         retailer_production {
