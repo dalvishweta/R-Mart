@@ -121,6 +121,18 @@
                     android:drawableLeft="@drawable/ic_outline_share_24"
                     android:text="@string/share" />
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/ele_service"
+                    style="@style/nv_item_view"
+                    android:drawableTint="@color/black"
+                    android:drawableLeft="@drawable/ic_baseline_arrow_forward_ios_24"
+                    android:text="@string/Electricity_service" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/mobile_service"
+                    style="@style/nv_item_view"
+                    android:drawableTint="@color/black"
+                    android:drawableLeft="@drawable/ic_baseline_shopping_bag_24"
+                    android:text="@string/mobile_service" />
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/logout"
                     style="@style/nv_item_view"
                     android:drawableTint="@color/black"

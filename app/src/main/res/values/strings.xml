@@ -25,6 +25,14 @@
     <string name="forgot_password">Forgot password</string>
     <string name="full_name">Full Name</string>
     <string name="last_name">Last Name</string>
+    <string name="time_out_title">Time out error</string>
+    <string name="time_out_msg">Check your network connection and try again.</string>
+    <string name="internet_failed_login_case">Please recheck your credentials entered, your stable internet connection and try again</string>
+    <string name="server_failed_case"> Looks like something has gone wrong. Please try logging back in sometime.</string>
+    <string name="invalid_mobile_number_alert">Please enter valid phone number.</string>
+    <string name="phone_number_check_msg">Please enter a valid phone number</string>
+    <string name="internet_check">Please check your Internet Connection.</string>
+    <string name="invalid_password_alert">Please enter valid password.</string>
     <string name="error_full_name">Please enter first name minimum of 3 characters</string>
     <string name="hint_conform_password">Confirm Password</string>
     <string name="hint_conform_new_password">Confirm new password</string>
@@ -52,8 +60,8 @@
     <string name="total_categories">%1$d Categories</string>
     <string name="category_list">My Category list</string>
     <string name="sub_category_list">My sub category list</string>
-    <string name="my_product_list_from_library">Product Inventory</string>
-    <string name="my_product_list_from_inventory">Product Library</string>
+    <string name="my_product_list_from_library">My Products</string>
+    <string name="my_product_list_from_inventory">Inventory Products </string>
     <string name="my_product_list">My Products List </string>
     <string name="total_products">%1$d %2$s Products</string>
     <string name="total_sub_categories">6 Sub Categories</string>
@@ -123,6 +131,8 @@
     <string name="my_orders">My Orders</string>
     <string name="inventory">My Inventory</string>
     <string name="logout">Logout</string>
+    <string name="Electricity_service">Electricity</string>
+    <string name="mobile_service">Mobile Recharge</string>
     <string name="verify_customer">Verify Customer</string>
     <string name="please_enter_received_amount">Please enter received amount.</string>
     <string name="received_amount_error">Received amount: %1$s and the Order amount: %2$s is not equal.\n Please check and re-enter again.</string>
@@ -279,6 +289,7 @@
     <string name="check_available_products">Check available products</string>
     <string name="image_saving_confirmation_alert">Do you want to save the image?</string>
     <string name="mobile_number">Mobile Number</string>
+    <string name="vc_number">Please Enter Consumer VC Number</string>
     <string name="email">Email Id</string>
     <string name="preference_file_key" />
     <string name="address_is_added">Address is added</string>
@@ -393,16 +404,37 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+    <string name="see_recharge_plans">See Plans</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="ooops">Ooops!</string>
     <string name="product_name_hint">Product Name *</string>
     <string name="choose_brand">Choose Brand *</string>
-    <string name="himt_productname">Fortune Refined Soyabine Oil(15ltr)</string>
-    <string name="brandname">Fortune</string>
-    <string name="lable_staock">Stock Status:</string>
-    <string name="available">Available</string>
-    <string name="Label_before_closing_time">Before Closing Time</string>
-    <string name="Label_aftere_closing_time">Sfter Closing Time</string>
+
+
+
+    <string name="prepaid_radio_btn">Prepaid Mobile</string>
+    <string name="postpaid_radio_btn">Postpaid Mobile</string>
+    <string name="mobile_operator_check_msg">Please select the Operator.</string>
+    <string name="recharge_type_chk_msg">Please select Prepaid or Postpaid</string>
+    <string name="recharge_type_msg">Please choose Prepaid or Postpaid Recharge Type..!!</string>
+    <string name="spinner_prompt">Select Location</string>
+    <string name="spinner_dth">Select Operator</string>
+    <string name="recharge_amount_txt">Recharge Amount</string>
+    <string name="repeat_transaction_recharge">Repeat Transaction</string>
+    <string name="gst_on_service_charge">GST on Service Charge</string>
+    <string name="total_amount_txt">Total Amount</string>
+    <string name="service_charge_txt">Service Charge</string>
+    <string name="valid_recharge_amt_check_msg">Please Enter Valid amount</string>
+    <string name="make_payment_btn">Make Payment</string>
+    <string name="add_money_to_the_wallet_btn">Add Money to the Wallet</string>
+    <string name="himt_productname">product name</string>
+    <string name="available">available</string>
+    <string name="Label_aftere_closing_time">close</string>
+    <string name="brandname">brand name</string>
+    <string name="Label_before_closing_time">open</string>
+    <string name="lable_staock">stock</string>
+
+
 </resources>

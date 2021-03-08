@@ -5,4 +5,7 @@
     <string name="role_id">5</string>
     <string name="error_role_login">You are trying to login in Customer Application. Please check your mobile number.</string>
     <string name="preference_file_key">customer</string>
+    <string name="himt_productname">product name</string>
+    <string name="available">available</string>
+
 </resources>
