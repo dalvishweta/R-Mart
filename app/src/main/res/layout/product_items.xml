@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
         <data>
             <import type="android.view.View"/>
         <variable
@@ -10,7 +10,7 @@
         </data>
 <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
-    android:layout_height="270dp"
+    android:layout_height="wrap_content"
     app:cardCornerRadius="5dp"
     app:cardElevation="15dp"
     android:id="@+id/topview"
@@ -32,7 +32,7 @@
                     android:id="@+id/imageview"
                     android:layout_width="match_parent"
                     android:scaleType="fitXY"
-                    android:layout_height="180dp"
+                    android:layout_height="100dp"
                     />
                 <ImageView
                     android:id="@+id/selectedgreeting"
@@ -62,7 +62,9 @@
                 <RelativeLayout
                   android:id="@+id/outofstock"
                   android:layout_width="match_parent"
-                  android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                  android:layout_height="wrap_content"
+                    tools:visibility="gone"
                     android:visibility="@{productdata.stock_status_id==3?View.VISIBLE:View.GONE}"
                   android:background="#99ffffff">
                   <TextView
@@ -79,9 +81,6 @@
                       android:textSize="12sp" />
 
               </RelativeLayout>
-
-
-
           <LinearLayout
                 android:orientation="vertical"
                 android:layout_below="@+id/img_designlistlayout"
@@ -95,8 +94,8 @@
                   android:fontFamily="@font/roboto_regular"
                   android:gravity="center"
                   android:hint="Everest Kasturi Methi"
-                  android:maxLines="2"
-                  android:minLines="2"
+                  android:maxLines="1"
+                  android:ellipsize="end"
                   android:text="@{productdata.productName}"
                   android:textColor="@color/black"
                   android:textSize="12sp" />
@@ -159,14 +158,68 @@
                     android:textSize="12sp"
                     />
             </LinearLayout>
+              <Spinner
+                  android:layout_marginTop="4dp"
+                  android:id="@+id/quantity_spinner_field"
+                  android:layout_width="wrap_content"
+                  android:layout_gravity="center"
+                  android:layout_height="wrap_content"
+                  android:layout_centerVertical="true"
+                  android:minHeight="20dp" />
+              <LinearLayout
+                  android:layout_marginTop="4dp"
+                  android:layout_width="wrap_content"
+                  android:layout_height="30dp"
+                  android:visibility="@{productdata.noOfQuantity>0?View.VISIBLE:View.GONE}"
+                  android:layout_gravity="center"
+                  android:orientation="horizontal">
 
+                  <androidx.appcompat.widget.AppCompatButton
+                      android:id="@+id/btn_minus_field"
+                      android:layout_width="30dp"
+                      android:layout_height="30dp"
+                      android:layout_gravity="center"
+                      android:background="@drawable/btn_backgroud"
+                      android:gravity="center"
+                      android:text="@string/minus"
+                      android:textSize="20dp"
+                      android:textColor="@color/white" />
+
+                  <TextView
+                      android:id="@+id/tv_no_of_quantity_field"
+                      android:layout_width="30dp"
+                      android:layout_height="30dp"
+                      android:textSize="10sp"
+                      android:text='@{productdata.noOfQuantity+""}'
+                      android:layout_gravity="center"
+                      android:background="@color/grey_color_five"
+                      android:gravity="center"
+                      android:textColor="@color/black" />
+
+                  <androidx.appcompat.widget.AppCompatButton
+                      android:id="@+id/btn_add_field"
+                      android:layout_width="30dp"
+                      android:layout_height="30dp"
+                      android:textSize="20dp"
+                      android:background="@drawable/btn_backgroud"
+                      android:text="@string/plus"
+                      android:textColor="@color/white" />
+              </LinearLayout>
+
+              <TextView
+                  android:id="@+id/addtocart"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@color/green"
+                  android:textColor="@color/white"
+                  android:gravity="center"
+                  android:visibility="@{productdata.noOfQuantity>0?View.GONE:View.VISIBLE}"
+                  android:layout_marginTop="5dp"
+                    android:padding="2dp"
+                  android:text="Add To Card"
+                  />
         </LinearLayout>
-
         </RelativeLayout>
-
-
-
-
 
 </androidx.cardview.widget.CardView>
 </layout>

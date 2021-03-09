@@ -114,7 +114,13 @@
             android:text="@string/try_again" />
 
     </LinearLayout>
+    <ProgressBar
+        android:visibility="@{brandViewModel.isLoading?View.VISIBLE:View.GONE}"
+        android:id="@+id/progressBar1"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/search_layout"
 
+        android:layout_height="wrap_content" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_brands"
         android:layout_width="match_parent"

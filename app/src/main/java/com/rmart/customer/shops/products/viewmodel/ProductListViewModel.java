@@ -13,9 +13,9 @@ public class ProductListViewModel extends ViewModel {
     public MutableLiveData<ProductsResponce> shopHomePageResponceMutableLiveData = new MutableLiveData<>();
 
 
-    public void loadProductList(ShopDetailsModel productsShopDetailsModel, String categoeryid, String searchPrase, String start_page, String sub_category_id){
+    public void loadProductList(ShopDetailsModel productsShopDetailsModel, String categoeryid, String searchPrase, String start_page, String sub_category_id,String productstype){
         isLoading.setValue(true);
-        ProductsRepository.getVenderProducts(productsShopDetailsModel.getVendorId(),productsShopDetailsModel.getShopId(), categoeryid, searchPrase,start_page, sub_category_id).observeForever(productResult -> {
+        ProductsRepository.getVenderProducts(productsShopDetailsModel.getVendorId(),productsShopDetailsModel.getShopId(), categoeryid, searchPrase,start_page, sub_category_id,productstype).observeForever(productResult -> {
             shopHomePageResponceMutableLiveData.setValue(productResult);
             isLoading.postValue(false);
         });

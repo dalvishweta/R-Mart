@@ -123,21 +123,30 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         creditDetails=new CreditDetails();
 
         textWatchers();
+
+
+        binding.radioyes.setChecked(MyProfile.getInstance().getWholeselar());
+        binding.radiono.setChecked(!MyProfile.getInstance().getWholeselar());
+        boolean  b= MyProfile.getInstance().getCredit_option();
+        binding.switchon.setChecked(b);
+
         binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
             public void onCheckedChanged(RadioGroup rg, int checkedId) {
-                for (int i = 0; i < rg.getChildCount(); i++) {
-                    RadioButton btn = (RadioButton) rg.getChildAt(i);
-                    if (btn.getId() == checkedId) {
-                        String text = (String) btn.getText();
-                        if(text.equalsIgnoreCase("yes")){
+
+
+                    switch (checkedId){
+
+                        case R.id.radioyes:
                             SellingToConsumer=true;
                             creditDetails.setSellingConsumer(true);
-                        }
-
-                        return;
+                            break;
+                        case R.id.radiono:
+                            SellingToConsumer=false;
+                            creditDetails.setSellingConsumer(false);
+                            break;
                     }
-                }
+
             }
         });
 
@@ -145,7 +154,12 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                CreditOption=true;
                creditDetails.setCreditoption(true);
 
+
+           } else {
+               CreditOption=false;
+               creditDetails.setCreditoption(false);
            }
+
 
         return binding.getRoot();
     }
@@ -1084,6 +1098,15 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             }
         }
 
+        if(binding.switchon.isChecked()){
+            CreditOption=true;
+            creditDetails.setCreditoption(true);
+
+
+        } else {
+            CreditOption=false;
+            creditDetails.setCreditoption(false);
+        }
         String zipCode = Objects.requireNonNull(binding.pinCode.getText()).toString().trim();
         if (TextUtils.isEmpty(zipCode)) {
 //            showDialog(getString(R.string.pin_code_required));
@@ -1124,6 +1147,8 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                                         int size = addressesList.size();
                                         if (size > 0) {
                                             AddressResponse lastAddressDetails = addressesList.get(size - 1);
+                                            MyProfile.getInstance().setCredit_option(CreditOption);
+                                            MyProfile.getInstance().setWholeselar(SellingToConsumer);
                                             MyProfile.getInstance().setPrimaryAddressId(lastAddressDetails.getId().toString());
                                             MyProfile.getInstance().setAddressResponses(data.getResponse());
                                             if (isAddNewAddress) {
@@ -1160,7 +1185,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                         myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                         myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
                         myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), aadharNo, myAddress.getDeliveryCharges(),
-                        myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(), myAddress.getId().toString(), myAddress.getBusinessType(),myAddress.getShopTypeId()+"",myAddress.getBankName(),myAddress.getIfscCode(),myAddress.getBranchName(),myAddress.getBankAccNo()).enqueue(new Callback<AddressListResponse>() {
+                        myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(), myAddress.getId().toString(), myAddress.getBusinessType(),myAddress.getShopTypeId()+"",myAddress.getBankName(),myAddress.getIfscCode(),myAddress.getBranchName(),myAddress.getBankAccNo(),CreditOption,SellingToConsumer).enqueue(new Callback<AddressListResponse>() {
                     @Override
                     public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
                         if (response.isSuccessful()) {
@@ -1169,6 +1194,8 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                                 if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                     showDialog(data.getMsg(), pObject -> {
                                         MyProfile.getInstance().setAddressResponses(data.getResponse());
+                                        MyProfile.getInstance().setCredit_option(CreditOption);
+                                        MyProfile.getInstance().setWholeselar(SellingToConsumer);
                                         Objects.requireNonNull(requireActivity()).onBackPressed();
                                     });
                                 } else {

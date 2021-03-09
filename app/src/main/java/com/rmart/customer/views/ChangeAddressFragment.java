@@ -150,7 +150,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
                     myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
                     myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
                     myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), "", myAddress.getDeliveryCharges(),
-                    myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(), myAddress.getId().toString(),myAddress.getBusinessType(),myAddress.getShopTypeId()+"",myAddress.getBankName(),myAddress.getIfscCode(),myAddress.getBranchName(),myAddress.getBankAccNo()).enqueue(new Callback<AddressListResponse>() {
+                    myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(), myAddress.getId().toString(),myAddress.getBusinessType(),myAddress.getShopTypeId()+"",myAddress.getBankName(),myAddress.getIfscCode(),myAddress.getBranchName(),myAddress.getBankAccNo(),false,false).enqueue(new Callback<AddressListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AddressListResponse> call, @NotNull Response<AddressListResponse> response) {
                     if (response.isSuccessful()) {

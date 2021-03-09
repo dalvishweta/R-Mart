@@ -24,11 +24,11 @@ import static com.rmart.utilits.Utils.CLIENT_ID;
 
 public class ProductsRepository {
 
-    public static MutableLiveData<ProductsResponce> getVenderProducts(int vendorId, int shop_id, String categoeryid, String searchPrase,String start_page,String sub_category_id){
+    public static MutableLiveData<ProductsResponce> getVenderProducts(int vendorId, int shop_id, String categoeryid, String searchPrase,String start_page,String sub_category_id,String productstype){
 
         Products shope = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
         final MutableLiveData<ProductsResponce> resultMutableLiveData = new MutableLiveData<>();
-        Call<ProductsResponce> call = shope.getVenderProducts(CLIENT_ID,vendorId,shop_id, MyProfile.getInstance().getUserID(),categoeryid,searchPrase,start_page,sub_category_id,MyProfile.getInstance().getRoleID());
+        Call<ProductsResponce> call = shope.getVenderProducts(CLIENT_ID,vendorId,shop_id, MyProfile.getInstance().getUserID(),categoeryid,searchPrase,start_page,sub_category_id,MyProfile.getInstance().getRoleID(),productstype);
         final ProductsResponce result = new ProductsResponce();
 
         call.enqueue(new Callback<ProductsResponce>() {
@@ -43,7 +43,6 @@ public class ProductsRepository {
                 if(t.getLocalizedMessage().equalsIgnoreCase("Unable to resolve host \""+ BuildConfig.BASE_URL+"\": No address associated with hostname"))
                 {
                     result.setMsg("Please Check Enternet Connection");
-
                 } else {
                     result.setMsg(t.getLocalizedMessage());
                 }

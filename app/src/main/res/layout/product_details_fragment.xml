@@ -734,8 +734,6 @@
             android:visibility="@{productDetailsViewModel.isLoading?View.VISIBLE:View.GONE}"
             android:id="@+id/progressBar1"
             android:layout_width="match_parent"
-            android:layout_below="@+id/searchLayout"
-
             android:layout_height="wrap_content" />
     </RelativeLayout>
 

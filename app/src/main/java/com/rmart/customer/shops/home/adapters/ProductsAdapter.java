@@ -8,22 +8,32 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.rmart.BR;
 import com.rmart.R;
+import com.rmart.customer.adapters.CustomSpinnerAdapter;
+import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.shops.home.fragments.ShopHomePage;
 import com.rmart.customer.shops.home.listner.OnClickListner;
 import com.rmart.customer.shops.home.model.Category;
 import com.rmart.customer.shops.home.model.ProductData;
 import com.rmart.customer.shops.home.model.Results;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
+import com.rmart.customer.shops.products.repositories.ProductsRepository;
 import com.rmart.databinding.LoadMoreItemBinding;
 import com.rmart.databinding.ProductItemsBinding;
 import com.rmart.databinding.ShopHomePageBinding;
 import com.rmart.databinding.ShopHomePageCategoryItemsBinding;
+import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -40,10 +50,12 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     Activity context;
     boolean isHomePageList,isLoading;
     OnClickListner onClickListner;
+    ShopDetailsModel vendorShopDetails;
 
-    public ProductsAdapter(Activity context, ArrayList<ProductData> productDatas,OnClickListner onClickListner,boolean isHomePageList) {
+    public ProductsAdapter(Activity context, ArrayList<ProductData> productDatas,OnClickListner onClickListner,boolean isHomePageList,ShopDetailsModel vendorShopDetails) {
         this.context = context;
         this.isHomePageList = isHomePageList;
+        this.vendorShopDetails = vendorShopDetails;
         this.onClickListner = onClickListner;
         this.productData =(productDatas);
     }
@@ -94,41 +106,113 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 myViewHolder.binding.topview.getLayoutParams().width = (width / 2) - 15;
             }
             List<CustomerProductsDetailsUnitModel>  units = productData.get(position).getUnits();
-            if(units!=null){
 
-                for (int i = units.size()-1;i>=0;i-- ) {
 
-                    CustomerProductsDetailsUnitModel unitModel =  units.get(i);
-
-                    myViewHolder.binding.offerlabel.setText(String.format("%s", unitModel.getProductDiscount(), "0.00")+"% Off");
-                    myViewHolder.binding.unitPrice.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getUnitPrice(), "0.00")));
-                    myViewHolder.binding.sellingPrice.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getSellingPrice(), "0.00")));
-                    myViewHolder.binding.sellingPrice2.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getSellingPrice(), "0.00")));
-                    myViewHolder.binding.unitPrice.setPaintFlags(myViewHolder.binding.unitPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-                    if(unitModel.getUnitPrice() -unitModel.getSellingPrice()==0 ){
-                       myViewHolder.binding.priceOffer.setVisibility(View.GONE);
-                       myViewHolder.binding.sellingPrice2.setVisibility(View.VISIBLE);
-                    } else {
-                       myViewHolder.binding.priceOffer.setVisibility(View.VISIBLE);
-                       myViewHolder.binding.sellingPrice2.setVisibility(View.GONE);
+                myViewHolder.binding.quantitySpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        Object lSelectedItem = myViewHolder.binding.quantitySpinnerField.getSelectedItem();
+                        if (lSelectedItem instanceof CustomerProductsDetailsUnitModel) {
+                            CustomerProductsDetailsUnitModel productUnitDetails = (CustomerProductsDetailsUnitModel) lSelectedItem;
+                            setUnit(myViewHolder, productUnitDetails);
+                        }
                     }
 
-                    if(unitModel.getProductDiscount()>0) {
-                        myViewHolder.binding.offerlabel.setVisibility(View.VISIBLE);
-                        break;
-                    } else {
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
 
-                        myViewHolder.binding.offerlabel.setVisibility(View.GONE);
+                    }
+                });
+
+                if (units != null && !units.isEmpty()) {
+                    ArrayList<Object> updatedUnitsList = new ArrayList<>(units);
+                    CustomSpinnerAdapter unitsAdapter = new CustomSpinnerAdapter(context, updatedUnitsList);
+                    myViewHolder.binding.quantitySpinnerField.setAdapter(unitsAdapter);
+                }
+
+
+
+
+            myViewHolder.binding.outofstock.getLayoutParams().height = myViewHolder.binding.topview.getLayoutParams().height;
+            myViewHolder.binding.topview.setOnClickListener(view -> onClickListner.onProductSelected(productData.get(position)));
+            myViewHolder.binding.addtocart.setOnClickListener(view -> {
+                productData.get(position).noOfQuantity.setValue(1);
+                notifyItemChanged(position);
+                Object lSelectedItem = myViewHolder.binding.quantitySpinnerField.getSelectedItem();
+                addtocart((CustomerProductsDetailsUnitModel)lSelectedItem,productData.get(position),position,1);
+            });
+            myViewHolder.binding.btnAddField.setOnClickListener(view -> {
+                productData.get(position).noOfQuantity.setValue(productData.get(position).noOfQuantity.getValue()+1);
+                notifyItemChanged(position);
+                Object lSelectedItem = myViewHolder.binding.quantitySpinnerField.getSelectedItem();
+                addtocart((CustomerProductsDetailsUnitModel)lSelectedItem,productData.get(position),position,1);
+            });
+            myViewHolder.binding.btnMinusField.setOnClickListener(view -> {
+                productData.get(position).noOfQuantity.setValue(productData.get(position).noOfQuantity.getValue()-1);
+                notifyItemChanged(position);
+                Object lSelectedItem = myViewHolder.binding.quantitySpinnerField.getSelectedItem();
+                addtocart((CustomerProductsDetailsUnitModel)lSelectedItem,productData.get(position),position,2);
+            });
+        }
+    }
+
+    public void addtocart(CustomerProductsDetailsUnitModel unitModel,ProductData productData2,int position,int type){
+
+        ProductsRepository.addToCart(vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),unitModel.getProductUnitId(),productData2.noOfQuantity.getValue(),"").observeForever(new Observer<AddToCartResponseDetails>() {
+            @Override
+            public void onChanged(AddToCartResponseDetails addToCartResponseDetails) {
+                if (addToCartResponseDetails.getStatus().equalsIgnoreCase("success")) {
+                    AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = addToCartResponseDetails.getAddToCartDataResponse();
+                    if (addToCartDataResponse != null) {
+                        Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
+                        UpdateCartCountDetails.updateCartCountDetails.onNext(totalCartCount);
+
+                    } else {
+                        if(type==1) {
+                            productData.get(position).noOfQuantity.setValue(productData.get(position).noOfQuantity.getValue() - 1);
+                            notifyItemChanged(position);
+                        }else{
+                            productData.get(position).noOfQuantity.setValue(productData.get(position).noOfQuantity.getValue() +1);
+                            notifyItemChanged(position);
+                        }
                     }
 
+
+
+                }else {
 
                 }
             }
-            myViewHolder.binding.outofstock.getLayoutParams().height = myViewHolder.binding.topview.getLayoutParams().height;
-            myViewHolder.binding.topview.setOnClickListener(view -> onClickListner.onProductSelected(productData.get(position)));
-        }
+        });
     }
+    private void setUnit(ProductHolder myViewHolder, CustomerProductsDetailsUnitModel unitModel) {
+
+
+            myViewHolder.binding.offerlabel.setText(String.format("%s", unitModel.getProductDiscount(), "0.00")+"% Off");
+            myViewHolder.binding.unitPrice.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getUnitPrice(), "0.00")));
+            myViewHolder.binding.sellingPrice.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getSellingPrice(), "0.00")));
+            myViewHolder.binding.sellingPrice2.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getSellingPrice(), "0.00")));
+            myViewHolder.binding.unitPrice.setPaintFlags(myViewHolder.binding.unitPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+            if(unitModel.getUnitPrice() -unitModel.getSellingPrice()==0 ){
+               myViewHolder.binding.priceOffer.setVisibility(View.GONE);
+               myViewHolder.binding.sellingPrice2.setVisibility(View.VISIBLE);
+            } else {
+               myViewHolder.binding.priceOffer.setVisibility(View.VISIBLE);
+               myViewHolder.binding.sellingPrice2.setVisibility(View.GONE);
+            }
+
+            if(unitModel.getProductDiscount()>0) {
+                myViewHolder.binding.offerlabel.setVisibility(View.VISIBLE);
+            } else {
+
+                myViewHolder.binding.offerlabel.setVisibility(View.GONE);
+            }
+
+
+
+    }
+
     @Override
     public int getItemCount() {
         if(isLoading){

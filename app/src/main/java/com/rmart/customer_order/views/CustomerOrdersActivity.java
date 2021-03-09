@@ -2,11 +2,7 @@ package com.rmart.customer_order.views;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.fragment.app.Fragment;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;

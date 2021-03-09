@@ -30,6 +30,17 @@ public class MyProfile {
     private String profileImage;
     private String roleID;
     private String deliveryInDays;
+    private Boolean wholeselar;
+
+    public Boolean getWholeselar() {
+        return wholeselar;
+    }
+
+    public Boolean getCredit_option() {
+        return credit_option;
+    }
+
+    private Boolean credit_option;
     private String primaryAddressId;
     private ArrayList<AddressResponse> addressResponses;
     private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
@@ -39,9 +50,19 @@ public class MyProfile {
         return myProfile;
     }
 
+    public void setWholeselar(Boolean wholeselar) {
+        this.wholeselar = wholeselar;
+    }
+
+    public void setCredit_option(Boolean credit_option) {
+        this.credit_option = credit_option;
+    }
+
     public static void setInstance(ProfileResponse profileResponse) {
         myProfile = new MyProfile();
         myProfile.userID = profileResponse.getUserID();
+        myProfile.credit_option = profileResponse.getCredit_option();
+        myProfile.wholeselar = profileResponse.getWholeselar();
         myProfile.firstName = profileResponse.getFirstName();
         myProfile.lastName = profileResponse.getLastName();
         myProfile.gender = profileResponse.getGender();

@@ -42,7 +42,7 @@
                     android:id="@+id/retailer_orders"
                     style="@style/nv_item_view"
                     android:drawableTint="@color/black"
-                    android:text="@string/my_orders"
+                    android:text="Dashbord"
                     android:drawableLeft="@drawable/ic_order" />
 
                 <androidx.appcompat.widget.AppCompatTextView

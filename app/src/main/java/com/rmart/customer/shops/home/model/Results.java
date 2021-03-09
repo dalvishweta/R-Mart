@@ -10,6 +10,8 @@ public class Results {
     public String type;
     @SerializedName("name")
     public String name;
+    @SerializedName("viewmore")
+    public String viewmore;
     @SerializedName("category")
     public ArrayList<Category> category;
     @SerializedName("product_data")

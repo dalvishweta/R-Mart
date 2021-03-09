@@ -52,10 +52,10 @@ android {
         /* customer api services */
         buildConfigField("String", "CUSTOMER_SHOPS_LIST", '"customer/VendorShop/getShopList"')
         buildConfigField("String", "CUSTOMER_ALL_SHOPS_PRODUCT", '"lib/Product/all_product_search"')
-        buildConfigField("String", "CUSTOMER_SHOPS_HOME_PAGE", '"customer/VendorShop/shophomepage"')
+        buildConfigField("String", "CUSTOMER_SHOPS_HOME_PAGE", '"customer/VendorShop/new_shophomepage"')
         buildConfigField("String", "VENDOR_PRODUCT_DETAILS", '"customer/VendorShop/getCatProductList"')
         buildConfigField("String", "VENDOR_PRODUCTS_LIST", '"customer/VendorShop/getCatProductList"')
-        buildConfigField("String", "VENDOR_PRODUCTS_LISTS", '"customer/VendorShop/shophomepageproductlistbyretailer"')
+        buildConfigField("String", "VENDOR_PRODUCTS_LISTS", '"customer/VendorShop/new_shophomepageproductlist"')
         buildConfigField("String", "VENDOR_PRODUCT_DETAILS", '"customer/VendorShop/getProductDetails"')
         buildConfigField("String", "VENDOR_SHOW_ADD_TO_CART", '"customer/VendorShop/showAddToCart"')
         buildConfigField("String", "VENDOR_DELETE_ADD_TO_CART", '"customer/VendorShop/deleteAddToCart"')

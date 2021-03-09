@@ -37,20 +37,22 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
     private int PAGE_SIZE=20;
     private static final String ARG_SHOP = "shop_details";
     private static final String CATEGOERY = "categoery";
+    private static final String VIEWALL = "viewss";
     private ProductsAdapter productsAdapter;
     private CategoryAdapter categoryAdapter;
-    private String searchPrase,sub_category_id;
+    private String searchPrase,sub_category_id,viewall;
     private int start_page=0;
     private int total_product_count;
     private ProductListViewModel productListViewModel;
     public ProductListFragment() {
     }
     // TODO: Rename and change types and number of parameters
-    public static ProductListFragment newInstance(ShopDetailsModel shopDetailsModel, Category category) {
+    public static ProductListFragment newInstance(ShopDetailsModel shopDetailsModel, Category category,String viewmore) {
         ProductListFragment fragment = new ProductListFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_SHOP, shopDetailsModel);
         args.putSerializable(CATEGOERY, category);
+        args.putString(VIEWALL, viewmore);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,6 +63,7 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
         if (getArguments() != null) {
             productsShopDetailsModel = (ShopDetailsModel) getArguments().getSerializable(ARG_SHOP);
             category = (Category) getArguments().getSerializable(CATEGOERY);
+            viewall = getArguments().getString(VIEWALL);
         }
     }
 
@@ -76,8 +79,8 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
         binding.setLifecycleOwner(this);
         GridLayoutManager layoutManager = (GridLayoutManager) binding.productsListField.getLayoutManager();
         binding.productsListField.addItemDecoration(new GridSpacesItemDecoration(20));
-        productListViewModel.loadProductList(productsShopDetailsModel,category.parentCategoryId,searchPrase,start_page+"",sub_category_id);
-        productsAdapter = new  ProductsAdapter(getActivity(),new ArrayList<>(),this,false);
+        productListViewModel.loadProductList(productsShopDetailsModel,category!=null?category.parentCategoryId:null,searchPrase,start_page+"",sub_category_id,viewall);
+        productsAdapter = new  ProductsAdapter(getActivity(),new ArrayList<>(),this,false,productsShopDetailsModel);
         binding.setProductsAdapter(productsAdapter);
 
         productListViewModel.shopHomePageResponceMutableLiveData.observeForever(productsResponce -> {
@@ -115,7 +118,7 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
                 int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
                 if (!productListViewModel.isLoading.getValue()) {
                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= productsAdapter.productData.size() && total_product_count>productsAdapter.productData.size()) {
-                            productListViewModel.loadProductList(productsShopDetailsModel,category.parentCategoryId,searchPrase,(productsAdapter.productData.size())+"",sub_category_id);
+                            productListViewModel.loadProductList(productsShopDetailsModel,category.parentCategoryId,searchPrase,(productsAdapter.productData.size())+"",sub_category_id,viewall);
 
                     }
                 }
@@ -141,7 +144,7 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
                 sub_category_id=null;
                 productsAdapter.productData.clear();
                 productsAdapter.notifyDataSetChanged();
-                productListViewModel.loadProductList(productsShopDetailsModel,category.parentCategoryId,searchPrase,"0",sub_category_id);
+                productListViewModel.loadProductList(productsShopDetailsModel,category.parentCategoryId,searchPrase,"0",sub_category_id,viewall);
 
                 return false;
             }
@@ -151,7 +154,7 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
             @Override
             public void onClick(View view) {
 
-                productListViewModel.loadProductList(productsShopDetailsModel,category.parentCategoryId,searchPrase,start_page+"",sub_category_id);
+                productListViewModel.loadProductList(productsShopDetailsModel,category.parentCategoryId,searchPrase,start_page+"",sub_category_id,viewall);
 
             }
         });
@@ -164,7 +167,12 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
         productsAdapter.productData.clear();
         productsAdapter.notifyDataSetChanged();
         sub_category_id=category2.subcategory_id;
-        productListViewModel.loadProductList(productsShopDetailsModel,category.parentCategoryId,searchPrase,"0",sub_category_id);
+        productListViewModel.loadProductList(productsShopDetailsModel,category.parentCategoryId,searchPrase,"0",sub_category_id,viewall);
+    }
+
+    @Override
+    public void onViewSelected(String viewmoreType) {
+
     }
 
     @Override

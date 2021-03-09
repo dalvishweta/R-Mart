@@ -3,6 +3,7 @@ package com.rmart.retiler.inventory.category.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.rmart.R;
 import com.rmart.databinding.ActivityCategoryFilterBinding;
@@ -33,7 +34,12 @@ public class CategoryFilterActivity extends AppCompatActivity {
         categoryViewModel.getCategoryList(null,vendor_id);
         binding.setCategoryViewModel(categoryViewModel);
         binding.setLifecycleOwner(this);
-
+        binding.btnTryagain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                categoryViewModel.getCategoryList(null,vendor_id);
+            }
+        });
         binding.rvBrands.addItemDecoration(new GridSpacesItemDecoration(15));
         categoryViewModel.categoryListResponceMutableLiveData.observeForever(new Observer<CategoryListResponce>() {
             @Override

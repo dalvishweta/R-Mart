@@ -48,6 +48,20 @@ public class ProfileResponse implements Serializable {
     @SerializedName("role_id")
     @Expose
     String roleID;
+    @SerializedName("credit_option")
+    @Expose
+    Boolean credit_option;
+    @SerializedName("wholeselar")
+    @Expose
+    Boolean wholeselar;
+
+    public Boolean getWholeselar() {
+        return wholeselar;
+    }
+
+    public Boolean getCredit_option() {
+        return credit_option;
+    }
 
     @SerializedName("primary_add_id")
     @Expose

@@ -48,7 +48,7 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
 
     private AppCompatTextView tvFirstName, tvLastName, tvMobileNumber, tvEmail, tvGender, deliveryCharge, minimumCharge,
             tvOpeningTIme, tvClosingTIme, tvDeliveryDaysAfterTime, tvDeliveryDaysBeforeTime;
-    private AppCompatTextView tvShopName,tvBusinessType, tvShopACT,tvPANNumber, tvGSTNumber, tvStreetAddress,tvCity, tvShopNO, tvDeliveryRadius, tvState, tvPINCode, tvAadharNoField;
+    private AppCompatTextView tvShopName,sellRetailers,creditoption,tvBusinessType, tvShopACT,tvPANNumber, tvGSTNumber, tvStreetAddress,tvCity, tvShopNO, tvDeliveryRadius, tvState, tvPINCode, tvAadharNoField;
     private RecyclerView recyclerView;
     // MyProfileViewModel myProfileViewModel;
     private AddressResponse addressResponse;
@@ -98,6 +98,8 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
         tvMobileNumber = view.findViewById(R.id.mobile_number);
         tvEmail = view.findViewById(R.id.email);
         tvGender = view.findViewById(R.id.gender);
+        sellRetailers = view.findViewById(R.id.SellRetailers);
+        creditoption = view.findViewById(R.id.creditoption);
 
         SupportMapFragment mapsFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
@@ -180,6 +182,16 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                 addressResponse = addressResponseList.get(0);
                 tvShopName.setText(addressResponse.getShopName());
                 tvBusinessType.setText(addressResponse.getBusinessType());
+                if(addressResponse.getBusinessType().equalsIgnoreCase("Wholeseller")){
+                    sellRetailers.setVisibility(View.VISIBLE);
+                    String msg =  MyProfile.getInstance().getWholeselar()?"You are selling to customer":"You are not selling to customer";
+                    sellRetailers.setText(msg);
+                    String msg2 =  MyProfile.getInstance().getCredit_option()?"You are selling Credit":"You are not selling on Credit";
+                    creditoption.setText(msg2);
+                }
+                else {
+                    sellRetailers.setVisibility(View.GONE);
+                }
 
                 tvShopACT.setText(addressResponse.getShopACT());
                 tvPANNumber.setText(addressResponse.getPan_no());

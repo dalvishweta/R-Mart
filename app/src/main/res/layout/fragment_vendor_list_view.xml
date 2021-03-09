@@ -54,8 +54,7 @@
         android:background="@color/white"
         android:orientation="vertical"
         android:visibility="gone"
-        android:layout_above="@id/changeAddressLayout"
-        android:layout_below="@id/searchLayout">
+        android:layout_below="@id/changeAddressLayout">
         <ImageView
             android:id="@+id/app_logo"
             android:layout_width="170dp"
@@ -104,18 +103,12 @@
     <RelativeLayout
         android:id="@+id/map_or_list_view"
         android:layout_width="match_parent"
+
         android:layout_height="match_parent"
         android:visibility="visible"
-        android:layout_above="@id/changeAddressLayout"
-        android:layout_below="@id/searchLayout">
+        android:layout_below="@id/changeAddressLayout">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout_field"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:visibility="gone"
-            android:layout_marginTop="5dp"
-            >
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/products_list_field"
@@ -125,7 +118,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_products_list_field"
@@ -184,57 +177,74 @@
             android:text="@string/list_view"
             android:textColor="@drawable/txt_segmented" />
     </RadioGroup>
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="horizontal"
         android:id="@+id/changeAddressLayout"
         android:layout_width="match_parent"
+        android:weightSum="3"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center"
+        android:background="#DADADA"
+        android:layout_below="@id/searchLayout"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:minHeight="60dp">
 
+        >
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+
+            <TextView
+                android:text="For Area : "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:text="Amravati"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:id="@+id/tv_address_field"
+                android:maxLength="20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+
+            <TextView
+                android:text="256 : "
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:text="Shops"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </LinearLayout>
         <Button
+            android:layout_weight="1"
             android:id="@+id/btn_change_address_field"
             style="@style/text_style_medium_bold"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
             android:background="@android:color/transparent"
             android:text="@string/change"
             android:textAllCaps="false"
+
             android:textColor="@color/change_text_color"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp" />
+             />
 
-        <TextView
-            android:id="@+id/tv_showing_results_based_on"
-            style="@style/text_style_medium_normal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_toStartOf="@id/btn_change_address_field"
-            android:gravity="center_vertical"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="@string/showing_results_based_on"
-            android:textColor="@color/grey_color_two"
-            android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@id/btn_change_address_field" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_address_field"
-            style="@style/text_style_medium_bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_showing_results_based_on"
-            android:layout_marginStart="10dp"
-            android:gravity="center_vertical"
-            android:minHeight="40dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:layout_toLeftOf="@id/btn_change_address_field"
-            android:layout_marginLeft="10dp" />
-    </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

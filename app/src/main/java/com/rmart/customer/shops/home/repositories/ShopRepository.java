@@ -32,6 +32,7 @@ public class ShopRepository {
                 } else {
                     result.setMsg("Somthing error");
                     result.setStatus(400);
+                    resultMutableLiveData.setValue(result);
                 }
             }
 

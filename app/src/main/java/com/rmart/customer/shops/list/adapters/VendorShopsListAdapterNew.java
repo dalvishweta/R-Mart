@@ -15,6 +15,8 @@ import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.shops.list.models.ShopDetailsModel;
+import com.rmart.databinding.ShopItemRowBinding;
+import com.rmart.databinding.ShopItemRowBindingImpl;
 import com.rmart.databinding.VederShopItemsBinding;
 import com.rmart.deeplinking.LinkGenerator;
 import com.rmart.utilits.Permisions;
@@ -51,9 +53,9 @@ public class VendorShopsListAdapterNew extends RecyclerView.Adapter<VendorShopsL
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        VederShopItemsBinding binding = DataBindingUtil.inflate(
+        ShopItemRowBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.veder_shop_items, parent, false);
+                R.layout.shop_item_row, parent, false);
 
         MyViewHolder vh = new MyViewHolder(binding); // pass the view to View Holder
         return vh;
@@ -126,14 +128,14 @@ public class VendorShopsListAdapterNew extends RecyclerView.Adapter<VendorShopsL
             super(itemView);
         }
 
-         VederShopItemsBinding binding;
-        public MyViewHolder(VederShopItemsBinding binding) {
+        ShopItemRowBinding binding;
+        public MyViewHolder(ShopItemRowBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 
         }
         public void bind(Object obj) {
-            binding.setVariable(BR.shopdata, obj);
+            binding.setVariable(BR.shopdata , obj);
            binding.executePendingBindings();
         }
     }

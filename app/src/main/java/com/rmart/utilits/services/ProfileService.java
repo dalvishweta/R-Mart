@@ -77,7 +77,10 @@ public interface ProfileService {
             @Field("bank_name") String bankName,
             @Field("ifsc_code") String ifscCode,
             @Field("branch_name") String branchName,
-            @Field("bank_acc_no") String bankAccNo);
+            @Field("bank_acc_no") String bankAccNo,
+    @Field("credit_enable") boolean CreditEnable,
+    @Field("enabel_whl") boolean EnabelWhl
+    );
 
 
 
@@ -90,9 +93,8 @@ public interface ProfileService {
                                        @Field("gender") String gender,
                                        @Field("email") String email,
                                        @Field("primary_add_id") String primary_add_id,
-                                       @Field("image") String profileImage,
-                                       @Field("credit_enable") boolean CreditEnable,
-                                       @Field("enabel_whl") boolean EnabelWhl);
+                                       @Field("image") String profileImage
+                                       );
 
     @POST(BuildConfig.UPDATE_KYC_IMAGE_DETAILS)
     @FormUrlEncoded

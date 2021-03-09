@@ -103,6 +103,21 @@ public class ShopDetailsModel implements Serializable {
     @SerializedName("closing_time")
     @Expose
     private String closingTime;
+    @SerializedName("distance")
+    @Expose
+    private String distance;
+    @SerializedName("order_count")
+    @Expose
+    private String order_count;
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public String getOrder_count() {
+        return order_count;
+    }
+
     @SerializedName("opening_time")
     @Expose
     private String openingTime;

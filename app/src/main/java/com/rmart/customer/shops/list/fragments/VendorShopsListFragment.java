@@ -108,7 +108,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private ShopDetailsModel selectedShopDetails;
     private double latitude = 0.0;
     private double longitude = 0.0;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    //private SwipeRefreshLayout swipeRefreshLayout;
     private GoogleMap googleMap;
     private TextView tvAddressField;
     private Circle currentCircle = null;
@@ -119,7 +119,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private ImageView ivSearchField;
     private Location currentLocation;
     private TextView errormessage;
-    private RelativeLayout map_or_list_view,changeAddressLayout;
+    private RelativeLayout map_or_list_view;
+    LinearLayout changeAddressLayout;
     private AppCompatButton btnTryAgain;
     String venderID, shopId;
     View view;
@@ -184,8 +185,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         erorolayout = view.findViewById(R.id.erorolayout);
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
         ivSearchField = view.findViewById(R.id.iv_search_field);
-        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_field);
-        swipeRefreshLayout.setRefreshing(false);
+//        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_field);
+//
         btnTryAgain.setOnClickListener(view1 -> {
             resetShopsList();
             getShopsList();
@@ -195,10 +196,10 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
             searchShopName = "";
             CommonUtils.closeVirtualKeyboard(requireActivity(), ivSearchField);
         });
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            resetShopsList();
-            getShopsList();
-        });
+//        swipeRefreshLayout.setOnRefreshListener(() -> {
+//            resetShopsList();
+//            getShopsList();
+//        });
         AllProductsAdapter allProductsAdapter  =new AllProductsAdapter(getActivity(), new ArrayList<>(), new onProdcutClick() {
             @Override
             public void onSelected(SearchProducts productData) {
@@ -230,7 +231,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
 
                 if(etProductsSearchField.getText().toString().length()>0){
                     searchProductsListField.setVisibility(View.VISIBLE);
-                    swipeRefreshLayout.setVisibility(View.GONE);
+                    vendorShopsListField.setVisibility(View.GONE);
                     mapViewOrListViewRadioGroup.setVisibility(View.GONE);
 
                     ProductRepository.searchProduct(0,latitude,longitude,etProductsSearchField.getText().toString()).observeForever(new Observer<ProductSearchResponce>() {
@@ -248,7 +249,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
 
                 } else {
                     searchProductsListField.setVisibility(View.GONE);
-                    swipeRefreshLayout.setVisibility(View.VISIBLE);
+                    vendorShopsListField.setVisibility(View.VISIBLE);
                     mapViewOrListViewRadioGroup.setVisibility(View.VISIBLE);
 
                 }
@@ -560,7 +561,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 public void onResponse(@NotNull Call<CustomerProductsResponse> call, @NotNull Response<CustomerProductsResponse> response) {
                     progressDialog.dismiss();
                     resetShopsList();
-                    swipeRefreshLayout.setRefreshing(false);
+                 //   swipeRefreshLayout.setRefreshing(false);
                     if (response.isSuccessful()) {
                         CustomerProductsResponse data = response.body();
                         if (data != null) {
@@ -629,7 +630,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                     }
 
                     progressDialog.dismiss();
-                    swipeRefreshLayout.setRefreshing(false);
+                 //   swipeRefreshLayout.setRefreshing(false);
                     displayDefaultMapLocation();
                 }
             });

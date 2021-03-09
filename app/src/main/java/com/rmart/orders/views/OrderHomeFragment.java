@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -25,7 +24,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.ObjectKey;
 import com.rmart.R;
-import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.deeplinking.LinkGenerator;
 import com.rmart.glied.GlideApp;
 import com.rmart.orders.adapters.OrdersHomeAdapter;

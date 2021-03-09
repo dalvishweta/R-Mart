@@ -114,7 +114,26 @@
                             android:drawableStart="@drawable/shop"
                             style="@style/my_profile_tv"
                             android:inputType="text" />
-
+                        <TextView
+                            android:id="@+id/SellRetailers"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="25dp"
+                            android:paddingTop="10dp"
+                            android:textColor="@color/black"
+                            style="@style/text_style_medium_normal"
+                            android:layout_marginTop="5dp"
+                            android:text="Are you selling to Consumer?" />
+                        <TextView
+                            android:id="@+id/creditoption"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="25dp"
+                            android:paddingTop="10dp"
+                            android:textColor="@color/black"
+                            style="@style/text_style_medium_normal"
+                            android:layout_marginTop="5dp"
+                            android:text="Are you selling to Consumer?" />
                         <include
                             layout="@layout/layout_shop_image_view"
                             android:layout_width="120dp"

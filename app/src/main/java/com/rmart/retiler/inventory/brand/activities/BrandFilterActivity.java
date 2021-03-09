@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.rmart.R;
 import com.rmart.customer.shops.home.viewmodel.ShopHomeViewModel;
@@ -35,7 +36,12 @@ public class BrandFilterActivity extends AppCompatActivity {
         brandViewModel.getBransList(null,vendor_id);
         binding.setBrandViewModel(brandViewModel);
         binding.setLifecycleOwner(this);
-
+        binding.btnTryagain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                brandViewModel.getBransList(null,vendor_id);
+            }
+        });
         binding.rvBrands.addItemDecoration(new GridSpacesItemDecoration(15));
         brandViewModel.brandListResponseMutableLiveData.observeForever(new Observer<BrandListResponse>() {
             @Override

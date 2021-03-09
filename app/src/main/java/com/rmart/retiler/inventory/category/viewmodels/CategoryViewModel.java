@@ -10,10 +10,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 public class CategoryViewModel extends ViewModel {
+    public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
    public MutableLiveData<CategoryListResponce> categoryListResponceMutableLiveData = new MutableLiveData<>();
     public void getCategoryList(String id,String vendor_id)
-    {
-        CategoryListRepository.getVenderProducts("0", "5000",id, vendor_id).observeForever(brandListResponse -> categoryListResponceMutableLiveData.setValue(brandListResponse));
+    {   isLoading.setValue(true);
+        CategoryListRepository.getVenderProducts("0", "5000",id, vendor_id).observeForever( brandListResponse -> {
+                    categoryListResponceMutableLiveData.setValue(brandListResponse);
+                     isLoading.setValue(false);
+
+                }
+
+        );
     }
 }

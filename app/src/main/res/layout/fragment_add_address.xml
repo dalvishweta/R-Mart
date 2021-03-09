@@ -131,13 +131,7 @@
                         android:layout_height="wrap_content"
                         android:text="ON/OFF" />
 
-                    <Switch
-                        android:id="@+id/switchoff"
-                        android:layout_width="78dp"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:checked="true"
-                        android:text="OFF" />
+
 
                 </TableRow>
 

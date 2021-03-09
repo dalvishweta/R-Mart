@@ -121,7 +121,7 @@
             android:adapter="@{productsAdapter}"
             android:visibility='@{productsViewModel.shopHomePageResponceMutableLiveData.status!=200?View.GONE:View.VISIBLE}'
             android:layout_height="match_parent"
-            app:spanCount="2"
+            app:spanCount="3"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             />
     </RelativeLayout>

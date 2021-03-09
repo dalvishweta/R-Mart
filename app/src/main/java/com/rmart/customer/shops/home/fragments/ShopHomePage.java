@@ -65,20 +65,37 @@ public class ShopHomePage extends BaseFragment {
         binding.setLifecycleOwner(this);
         shopHomeViewModel.loadShopHomePage(productsShopDetailsModel);
 
+        binding.btnTryagain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shopHomeViewModel.loadShopHomePage(productsShopDetailsModel);
 
+            }
+        });
 
         shopHomeViewModel.shopHomePageResponceMutableLiveData.observeForever(shopHomePageResponce -> {
 
             ShopHomeAdapter shopHomeAdapter = new ShopHomeAdapter(getActivity(), shopHomePageResponce.results, productsShopDetailsModel, productData,new OnClickListner() {
                 @Override
                 public void onCategorySelected(Category category) {
-                    ProductListFragment baseFragment=  ProductListFragment.newInstance(productsShopDetailsModel,category );
+                    ProductListFragment baseFragment=  ProductListFragment.newInstance(productsShopDetailsModel,category,null );
                     FragmentManager fm = getActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fm.beginTransaction();
                     fragmentTransaction.replace(R.id.base_container, baseFragment, ProductCartDetailsFragment.class.getName());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }
+
+                @Override
+                public void onViewSelected(String viewmoreType) {
+                    ProductListFragment baseFragment=  ProductListFragment.newInstance(productsShopDetailsModel,null,viewmoreType );
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                    fragmentTransaction.replace(R.id.base_container, baseFragment, ProductCartDetailsFragment.class.getName());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+
                 @Override
                 public void onProductSelected(ProductData productData) {
                     ProductDetailsFragment baseFragment=  ProductDetailsFragment.getInstance2(productData,productsShopDetailsModel );

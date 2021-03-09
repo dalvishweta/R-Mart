@@ -7,6 +7,8 @@ import com.rmart.utilits.Utils;
 import java.io.Serializable;
 import java.util.List;
 
+import androidx.lifecycle.MutableLiveData;
+
 public class ProductData extends BaseResponse  {
 
     @SerializedName("product_name")
@@ -27,6 +29,9 @@ public class ProductData extends BaseResponse  {
     public String productExpiryDate;
     @SerializedName("units")
     public List<CustomerProductsDetailsUnitModel> units = null;
+
+    public MutableLiveData<Integer> noOfQuantity = new MutableLiveData<>();
+
 
     private boolean isHeader = false;
 

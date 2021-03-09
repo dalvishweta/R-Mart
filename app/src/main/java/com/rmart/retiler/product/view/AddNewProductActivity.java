@@ -780,10 +780,10 @@ public class AddNewProductActivity extends AppCompatActivity implements BaseInte
             binding.llBrand.setBackground(getDrawable(R.drawable.edit_product_field_bg_error));
         } else binding.llBrand.setBackground(getDrawable(R.drawable.edit_product_field_bg));
 
-        if (selectedExpiryDate.trim().equalsIgnoreCase("")) {
-            result = false;
-            binding.tvExpiry.setBackground(getDrawable(R.drawable.edit_product_field_bg_error));
-        } else binding.tvExpiry.setBackground(getDrawable(R.drawable.edit_product_field_bg));
+//        if (selectedExpiryDate.trim().equalsIgnoreCase("")) {
+//            result = false;
+//            binding.tvExpiry.setBackground(getDrawable(R.drawable.edit_product_field_bg_error));
+//        } else binding.tvExpiry.setBackground(getDrawable(R.drawable.edit_product_field_bg));
 
         Log.e(TAG, "Unit list : " + unitsList);
 

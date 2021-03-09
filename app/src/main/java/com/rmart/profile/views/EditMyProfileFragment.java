@@ -268,7 +268,7 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
         ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
         profileService.updateProfile(MyProfile.getInstance().getMobileNumber(),
                 Objects.requireNonNull(tvFirstName.getText()).toString(), Objects.requireNonNull(tvLastName.getText()).toString(), MyProfile.getInstance().getUserID(),
-                selectedGender, email, MyProfile.getInstance().getPrimaryAddressId(), encodedImage,creditDetails.getCreditoption(),creditDetails.SellingConsumer).enqueue(new Callback<LoginResponse>() {
+                selectedGender, email, MyProfile.getInstance().getPrimaryAddressId(), encodedImage).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
                 try {

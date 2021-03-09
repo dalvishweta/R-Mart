@@ -252,19 +252,15 @@
     <string name="aadhar_back_image_required">Please Upload Aadhar Back Image</string>
     <string name="pancard_no">Pancard No</string>
     <string name="pancard_image_required">Please Upload PanCard Image</string>
-
     <string name="opening_time_required">Opening time is required.</string>
     <string name="closing_time_required">Closing time is required.</string>
-
     <string name="delivery_days_after_time_required">Delivery days after time is required.</string>
     <string name="delivery_days_before_time_required">Delivery days before time is required.</string>
-
     <string name="delivery_charges_required">Delivery charges required.</string>
     <string name="shop_name_required">Shop Name Required</string>
     <string name="bank_account_required">Bank Account Required</string>
     <string name="bank_ifsc_required">Bank IFSC Code Required</string>
     <string name="gst_number_required">GST Number Required</string>
-
     <string name="enter_your_kyc_number">Enter your KYC Number</string>
     <string name="my_wish_list">My Wish List</string>
     <string name="change_address">Change Address</string>
@@ -362,6 +358,7 @@
     <string name="allow_digits">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM -_,@#*/!$~()\&amp;</string>
     <string name="allow_digits_for_numbers">1234567890</string>
     <string name="allow_name">qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM </string>
+    <string name="allow_name_product">qwertyuioplkjhgfdsazxcvbnm QWERTYUIOPLKJHGFDSAZXCVBNM 1234567890 ():;".,,/\|</string>
     <string name="allow_number_digits">1234567890</string>
     <string name="allow_digits_with_out_space">qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM</string>
     <string name="allow_digits_for_address">qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM -_,@#*/!$~()\&amp;</string>
@@ -430,11 +427,13 @@
     <string name="make_payment_btn">Make Payment</string>
     <string name="add_money_to_the_wallet_btn">Add Money to the Wallet</string>
     <string name="himt_productname">product name</string>
-    <string name="available">available</string>
-    <string name="Label_aftere_closing_time">close</string>
     <string name="brandname">brand name</string>
-    <string name="Label_before_closing_time">open</string>
-    <string name="lable_staock">stock</string>
+
+
+    <string name="lable_staock">Stock Status:</string>
+    <string name="available">Available</string>
+    <string name="Label_before_closing_time">Before Closing Time</string>
+    <string name="Label_aftere_closing_time">Sfter Closing Time</string>
 
 
 </resources>
