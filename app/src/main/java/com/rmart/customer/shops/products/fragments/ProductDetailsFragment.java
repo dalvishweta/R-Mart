@@ -76,19 +76,18 @@ public class ProductDetailsFragment extends Fragment {
         mViewModel.vendorProductDataDetails.setValue(vendorProductDataDetails);
         mViewModel.vendorShopDetails.setValue(vendorShopDetails);
         binding.setProductDetailsViewModel(mViewModel);
-        mViewModel.noOfQuantity.setValue(1);
         binding.setLifecycleOwner(this);
         binding.btnMinusField.setOnClickListener(v -> {
-            if (mViewModel.noOfQuantity.getValue() > 1) {
-                mViewModel.noOfQuantity.setValue(mViewModel.noOfQuantity.getValue()-1);
-               // updateQuantityDetails();
+            if (mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty() > 1) {
+                mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().setTotalProductCartQty((mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty()-1));
             }
         });
 
         binding.btnAddField.setOnClickListener(v -> {
 
-            if (mViewModel.noOfQuantity.getValue() < mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().getProductUnitQuantity()) {
-                mViewModel.noOfQuantity.setValue(mViewModel.noOfQuantity.getValue()+1);
+            if (mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty() < mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().getProductUnitQuantity()) {
+                mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().setTotalProductCartQty((mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty()+1));
+
                 //updateQuantityDetails();
             }
         });

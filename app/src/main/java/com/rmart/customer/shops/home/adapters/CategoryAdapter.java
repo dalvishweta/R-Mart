@@ -14,6 +14,7 @@ import com.rmart.customer.shops.home.fragments.ShopHomePage;
 import com.rmart.customer.shops.home.listner.OnClickListner;
 import com.rmart.customer.shops.home.model.Category;
 import com.rmart.customer.shops.home.model.Results;
+import com.rmart.databinding.CategoryListItemRowBinding;
 import com.rmart.databinding.ShopHomePageBinding;
 import com.rmart.databinding.ShopHomePageCategoryItemsBinding;
 
@@ -26,40 +27,37 @@ import java.util.Random;
 import static androidx.recyclerview.widget.LinearLayoutManager.*;
 
 public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    ArrayList<Integer> resources = new ArrayList<Integer>();
-    int resourcescuruntposition = 0;
+    public static int HOMEPAGECATEGORY=222;
+    public static int PRODUCTLISTPAGECATEGORY=22332;
     OnClickListner onClickListner;
     public ArrayList<Category> categories = new ArrayList<>();
     Activity context;
+    private int viewType;
+    private  int selectedposition=0;
 
-
-    public CategoryAdapter(Activity context, ArrayList<Category> categories,OnClickListner onClickListner) {
+    public CategoryAdapter(Activity context, ArrayList<Category> categories,OnClickListner onClickListner,int viewType) {
         this.context = context;
         this.onClickListner = onClickListner;
 
         this.categories = categories;
-
-
-        resources.add(R.drawable.cat_background_1);
-        resources.add(R.drawable.cat_background_2);
-        resources.add(R.drawable.cat_background_3);
-        resources.add(R.drawable.cat_background_4);
-        resources.add(R.drawable.cat_background_5);
-        resources.add(R.drawable.cat_background_6);
-        resources.add(R.drawable.cat_background_0);
-
-
+        this.viewType = viewType;
 
     }
+
 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        ShopHomePageCategoryItemsBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.shop_home_page_category_items, parent, false);
-        CategoryHolder vh = new CategoryHolder(binding); // pass the view to View Holder
-        return vh;
+        if(this.viewType==HOMEPAGECATEGORY) {
+            CategoryListItemRowBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.category_list_item_row, parent, false);
+            CategoryHomeHolder vh = new CategoryHomeHolder(binding); // pass the view to View Holder
+            return vh;
+        } else  {
+            ShopHomePageCategoryItemsBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.shop_home_page_category_items, parent, false);
+            CategoryHolder vh = new CategoryHolder(binding); // pass the view to View Holder
+            return vh;
+        }
 
 //
     }
@@ -70,14 +68,20 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if(holder2 instanceof CategoryHolder) {
             CategoryHolder myViewHolder=     (CategoryHolder ) holder2;
             myViewHolder.bind(categories.get(position));
+            myViewHolder.binding.topview.setOnClickListener(view -> {
+                onClickListner.onCategorySelected(categories.get(position));
+            });
+            if(selectedposition==position){
+                ((CategoryHolder) holder2).binding.root.setBackground(context.getResources().getDrawable(R.drawable.cat_background_0));
+                ((CategoryHolder) holder2).binding.name.setTextColor(context.getResources().getColor(R.color.white));
+            }else {
+                ((CategoryHolder) holder2).binding.root.setBackground(context.getResources().getDrawable(R.drawable.cat_background_1));
+                ((CategoryHolder) holder2).binding.name.setTextColor(context.getResources().getColor(R.color.black));
 
-            ((CategoryHolder) holder2).binding.root.setBackground(context.getResources().getDrawable(resources.get(resourcescuruntposition)));
-            resourcescuruntposition++;
-            if(resources.size()<=resourcescuruntposition) {
-                resourcescuruntposition=0;
             }
-
-            myViewHolder.binding.topview.setOnClickListener(view -> onClickListner.onCategorySelected(categories.get(position)));
+        } else {
+            CategoryHomeHolder myViewHolder=     (CategoryHomeHolder ) holder2;
+            myViewHolder.bind(categories.get(position));
         }
 
 
@@ -98,6 +102,21 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ShopHomePageCategoryItemsBinding binding;
 
         public CategoryHolder(ShopHomePageCategoryItemsBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+
+        }
+
+        public void bind(Object obj) {
+            binding.setVariable(BR.category, obj);
+            binding.executePendingBindings();
+        }
+    }
+    public class CategoryHomeHolder extends RecyclerView.ViewHolder {
+
+        CategoryListItemRowBinding binding;
+
+        public CategoryHomeHolder(CategoryListItemRowBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 

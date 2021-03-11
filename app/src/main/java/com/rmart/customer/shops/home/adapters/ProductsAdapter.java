@@ -103,7 +103,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 DisplayMetrics displayMetrics = new DisplayMetrics();
                 context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                 int width = displayMetrics.widthPixels;
-                myViewHolder.binding.topview.getLayoutParams().width = (width / 2) - 15;
+                myViewHolder.binding.topview.getLayoutParams().width = (width / 3) - 15;
             }
             List<CustomerProductsDetailsUnitModel>  units = productData.get(position).getUnits();
 
@@ -136,20 +136,17 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             myViewHolder.binding.outofstock.getLayoutParams().height = myViewHolder.binding.topview.getLayoutParams().height;
             myViewHolder.binding.topview.setOnClickListener(view -> onClickListner.onProductSelected(productData.get(position)));
             myViewHolder.binding.addtocart.setOnClickListener(view -> {
-                productData.get(position).noOfQuantity.setValue(1);
-                notifyItemChanged(position);
+
                 Object lSelectedItem = myViewHolder.binding.quantitySpinnerField.getSelectedItem();
                 addtocart((CustomerProductsDetailsUnitModel)lSelectedItem,productData.get(position),position,1);
             });
             myViewHolder.binding.btnAddField.setOnClickListener(view -> {
-                productData.get(position).noOfQuantity.setValue(productData.get(position).noOfQuantity.getValue()+1);
-                notifyItemChanged(position);
+
                 Object lSelectedItem = myViewHolder.binding.quantitySpinnerField.getSelectedItem();
                 addtocart((CustomerProductsDetailsUnitModel)lSelectedItem,productData.get(position),position,1);
             });
             myViewHolder.binding.btnMinusField.setOnClickListener(view -> {
-                productData.get(position).noOfQuantity.setValue(productData.get(position).noOfQuantity.getValue()-1);
-                notifyItemChanged(position);
+
                 Object lSelectedItem = myViewHolder.binding.quantitySpinnerField.getSelectedItem();
                 addtocart((CustomerProductsDetailsUnitModel)lSelectedItem,productData.get(position),position,2);
             });
@@ -158,7 +155,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void addtocart(CustomerProductsDetailsUnitModel unitModel,ProductData productData2,int position,int type){
 
-        ProductsRepository.addToCart(vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),unitModel.getProductUnitId(),productData2.noOfQuantity.getValue(),"").observeForever(new Observer<AddToCartResponseDetails>() {
+        if(type==1) {
+
+            unitModel.setTotalProductCartQty(unitModel.getTotalProductCartQty() + 1);
+        }else{
+            unitModel.setTotalProductCartQty(unitModel.getTotalProductCartQty() - 1);
+        }
+        ProductsRepository.addToCart(vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),unitModel.getProductUnitId(),unitModel.getTotalProductCartQty(),"").observeForever(new Observer<AddToCartResponseDetails>() {
             @Override
             public void onChanged(AddToCartResponseDetails addToCartResponseDetails) {
                 if (addToCartResponseDetails.getStatus().equalsIgnoreCase("success")) {
@@ -166,20 +169,24 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     if (addToCartDataResponse != null) {
                         Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
                         UpdateCartCountDetails.updateCartCountDetails.onNext(totalCartCount);
+                        notifyItemChanged(position);
+
 
                     } else {
                         if(type==1) {
-                            productData.get(position).noOfQuantity.setValue(productData.get(position).noOfQuantity.getValue() - 1);
+                            unitModel.setTotalProductCartQty(unitModel.getTotalProductCartQty() -1);
                             notifyItemChanged(position);
                         }else{
-                            productData.get(position).noOfQuantity.setValue(productData.get(position).noOfQuantity.getValue() +1);
+                            unitModel.setTotalProductCartQty(unitModel.getTotalProductCartQty() + 1);
                             notifyItemChanged(position);
                         }
                     }
+                    Toast.makeText(context,addToCartResponseDetails.getMsg(),Toast.LENGTH_LONG).show();
 
 
 
                 }else {
+                    Toast.makeText(context,addToCartResponseDetails.getMsg(),Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -208,7 +215,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                 myViewHolder.binding.offerlabel.setVisibility(View.GONE);
             }
-
+            myViewHolder.binding.addtocart.setVisibility(unitModel.getTotalProductCartQty()>0?View.GONE:View.VISIBLE);
+            myViewHolder.binding.llQty.setVisibility(unitModel.getTotalProductCartQty()>0?View.VISIBLE:View.GONE);
+            myViewHolder.binding.tvNoOfQuantityField.setText(unitModel.getTotalProductCartQty()+"");
 
 
     }

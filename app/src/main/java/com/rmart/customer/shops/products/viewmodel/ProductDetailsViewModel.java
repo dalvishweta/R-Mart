@@ -24,7 +24,7 @@ import androidx.lifecycle.ViewModel;
 public class ProductDetailsViewModel extends ViewModel {
     // TODO: Implement the ViewModel
     public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    public MutableLiveData<Integer> noOfQuantity = new MutableLiveData<>();
+//    public MutableLiveData<Integer> noOfQuantity = new MutableLiveData<>();
     public MutableLiveData<ShopDetailsModel> vendorShopDetails = new MutableLiveData<>();
     public MutableLiveData<ProductData> vendorProductDataDetails = new MutableLiveData<>();
     public MutableLiveData<CustomerProductsDetailsUnitModel> customerProductsDetailsUnitModelMutableLiveData = new MutableLiveData<>();
@@ -36,8 +36,11 @@ public class ProductDetailsViewModel extends ViewModel {
                 vendorProductDataDetails.getValue().getProductId(), MyProfile.getInstance().getUserID()).observeForever(new Observer<ProductDetailsDescResponse>() {
             @Override
             public void onChanged(ProductDetailsDescResponse productDetailsDescResponse) {
-                List<CustomerProductsDetailsUnitModel> units =productDetailsDescResponse.getProductDetailsDescProductDataModel().getProductDetailsDescModel().getUnits();
-                productDetailsDescResponseMutableLiveData.setValue(productDetailsDescResponse);
+                if(productDetailsDescResponse!=null) {
+                    List<CustomerProductsDetailsUnitModel> units = productDetailsDescResponse.getProductDetailsDescProductDataModel().getProductDetailsDescModel().getUnits();
+                    productDetailsDescResponseMutableLiveData.setValue(productDetailsDescResponse);
+                    isLoading.postValue(false);
+                }
                 isLoading.postValue(false);
             }
         });
@@ -70,7 +73,7 @@ public class ProductDetailsViewModel extends ViewModel {
 
 
     void  addToCart(View view){
-        ProductsRepository.addToCart(vendorShopDetails.getValue().getVendorId(),MyProfile.getInstance().getUserID(),customerProductsDetailsUnitModelMutableLiveData.getValue().getProductUnitId(),noOfQuantity.getValue(),"").observeForever(new Observer<AddToCartResponseDetails>() {
+        ProductsRepository.addToCart(vendorShopDetails.getValue().getVendorId(),MyProfile.getInstance().getUserID(),customerProductsDetailsUnitModelMutableLiveData.getValue().getProductUnitId(),customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty(),"").observeForever(new Observer<AddToCartResponseDetails>() {
             @Override
             public void onChanged(AddToCartResponseDetails addToCartResponseDetails) {
                 if (addToCartResponseDetails.getStatus().equalsIgnoreCase("success")) {

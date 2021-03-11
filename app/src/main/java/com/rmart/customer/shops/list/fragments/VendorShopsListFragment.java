@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -82,6 +84,7 @@ import org.jetbrains.annotations.NotNull;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
@@ -92,7 +95,7 @@ import retrofit2.Response;
 /**
  * Created by Satya Seshu on 07/09/20.
  */
-public class VendorShopsListFragment extends CustomerHomeFragment implements OnMapReadyCallback {
+public class VendorShopsListFragment extends CustomerHomeFragment {
 
     private AppCompatEditText etProductsSearchField;
     private int currentPage = 0;
@@ -109,15 +112,8 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     private double latitude = 0.0;
     private double longitude = 0.0;
     //private SwipeRefreshLayout swipeRefreshLayout;
-    private GoogleMap googleMap;
     private TextView tvAddressField;
-    private Circle currentCircle = null;
-    private AppCompatRadioButton selectedRadioButton = null;
-    private FusedLocationProviderClient fusedLocationProviderClient;
-    private SupportMapFragment mapsFragment;
-    private LocationManager locationManager;
     private ImageView ivSearchField;
-    private Location currentLocation;
     private TextView errormessage;
     private RelativeLayout map_or_list_view;
     LinearLayout changeAddressLayout;
@@ -126,7 +122,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     View view;
     LinearLayout erorolayout;
     private ArrayList<AddressResponse> addressList = new ArrayList<>();
-    RadioGroup mapViewOrListViewRadioGroup;
     RelativeLayout searchLayout;
     public static VendorShopsListFragment getInstance(String VenderID,String shopId) {
         VendorShopsListFragment vendorShopsListFragment = new VendorShopsListFragment();
@@ -143,7 +138,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         LoggerInfo.printLog("Fragment", "VendorShopsListFragment");
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(requireActivity()));
         return inflater.inflate(R.layout.fragment_vendor_list_view, container, false);
     }
 
@@ -172,7 +166,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
     }
 
     private void loadUIComponents() {
-        locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
         myProfile = MyProfile.getInstance();
         map_or_list_view = view.findViewById(R.id.map_or_list_view);
         changeAddressLayout = view.findViewById(R.id.changeAddressLayout);
@@ -232,7 +225,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 if(etProductsSearchField.getText().toString().length()>0){
                     searchProductsListField.setVisibility(View.VISIBLE);
                     vendorShopsListField.setVisibility(View.GONE);
-                    mapViewOrListViewRadioGroup.setVisibility(View.GONE);
 
                     ProductRepository.searchProduct(0,latitude,longitude,etProductsSearchField.getText().toString()).observeForever(new Observer<ProductSearchResponce>() {
                         @Override
@@ -250,7 +242,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 } else {
                     searchProductsListField.setVisibility(View.GONE);
                     vendorShopsListField.setVisibility(View.VISIBLE);
-                    mapViewOrListViewRadioGroup.setVisibility(View.VISIBLE);
 
                 }
 
@@ -297,43 +288,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         view.findViewById(R.id.btn_change_address_field).setOnClickListener(v -> changeAddressSelected());
 
         mapAddress();
-        mapsFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        if (mapsFragment != null) {
-            mapsFragment.getMapAsync(this);
-        }
-        RelativeLayout mapLayout = view.findViewById(R.id.map_layout_field);
-
-        if (selectedRadioButton != null) {
-            String selectedText = selectedRadioButton.getText().toString();
-            if(!TextUtils.isEmpty(selectedText)) {
-                AppCompatRadioButton mapViewRadio = view.findViewById(R.id.map_view_radio_button);
-                AppCompatRadioButton listViewRadio = view.findViewById(R.id.list_view_radio_button);
-                if (selectedText.equalsIgnoreCase(getString(R.string.map_view))) {
-                    listViewRadio.setChecked(false);
-                    mapViewRadio.setChecked(true);
-                    mapLayout.setVisibility(View.VISIBLE);
-                    vendorShopsListField.setVisibility(View.GONE);
-                } else {
-                    mapViewRadio.setChecked(false);
-                    listViewRadio.setChecked(true);
-                    mapLayout.setVisibility(View.GONE);
-                    vendorShopsListField.setVisibility(View.VISIBLE);
-                }
-            }
-        }
-        mapViewOrListViewRadioGroup = view.findViewById(R.id.map_view_or_list_view_radio_group);
-
-        mapViewOrListViewRadioGroup.setOnCheckedChangeListener((radioGroup, radioButtonID) -> {
-            selectedRadioButton = radioGroup.findViewById(radioButtonID);
-            String selectedText = selectedRadioButton.getText().toString();
-            if (selectedText.equalsIgnoreCase(getString(R.string.map_view))) {
-                mapLayout.setVisibility(View.VISIBLE);
-                vendorShopsListField.setVisibility(View.GONE);
-            } else {
-                mapLayout.setVisibility(View.GONE);
-                vendorShopsListField.setVisibility(View.VISIBLE);
-            }
-        });
 
         getShopsList();
     }
@@ -364,6 +318,18 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                         }
                     }
                 }
+
+                try {
+                    Geocoder   geocoder = new Geocoder(getActivity(), Locale.getDefault());
+                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 5);
+                    tvAddressField.setText(addresses.get(0).getLocality());
+
+                } catch (Exception e){
+
+                }
+
+
+
             }
         }
     }
@@ -586,14 +552,12 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                             }
                         } else {
                             showDialog(getString(R.string.no_products_error));
-                            displayDefaultMapLocation();
                         }
                         if(currentPage==0) {
                             erorolayout.setVisibility(View.GONE);
                             map_or_list_view.setVisibility(View.VISIBLE);
                             searchLayout.setVisibility(View.VISIBLE);
                             changeAddressLayout.setVisibility(View.VISIBLE);
-                            mapViewOrListViewRadioGroup.setVisibility(View.VISIBLE);
                         }
 
                     } else {
@@ -602,12 +566,10 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                             map_or_list_view.setVisibility(View.GONE);
                             searchLayout.setVisibility(View.GONE);
                             changeAddressLayout.setVisibility(View.GONE);
-                            mapViewOrListViewRadioGroup.setVisibility(View.GONE);
                             erorolayout.setVisibility(View.VISIBLE);
                             errormessage.setText(response.message());
                         }
                         //showDialog(response.message());
-                        displayDefaultMapLocation();
                     }
                 }
 
@@ -624,14 +586,12 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                         map_or_list_view.setVisibility(View.GONE);
                         searchLayout.setVisibility(View.GONE);
                         changeAddressLayout.setVisibility(View.GONE);
-                        mapViewOrListViewRadioGroup.setVisibility(View.GONE);
 
                         erorolayout.setVisibility(View.VISIBLE);
                     }
 
                     progressDialog.dismiss();
                  //   swipeRefreshLayout.setRefreshing(false);
-                    displayDefaultMapLocation();
                 }
             });
         } else {
@@ -640,7 +600,6 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
                 map_or_list_view.setVisibility(View.GONE);
                 searchLayout.setVisibility(View.GONE);
                 changeAddressLayout.setVisibility(View.GONE);
-                mapViewOrListViewRadioGroup.setVisibility(View.GONE);
                 errormessage.setText(getString(R.string.network_slow));
                 erorolayout.setVisibility(View.VISIBLE);
             }
@@ -648,24 +607,9 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         }
     }
 
-    private void displayDefaultMapLocation() {
-        boolean isCoordinatesValid = isValidLatLng(latitude, longitude);
-        if (isCoordinatesValid) {
-            try {
-                LatLng latLng = new LatLng(latitude, longitude);
-                MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                googleMap.addMarker(markerOptions);
-            } catch (Exception e){
-
-            }
-        }
-    }
 
     private void updateAdapter(List<ShopDetailsModel> customerShopsList) {
         shopsList.addAll(customerShopsList);
-        updateShopsListMap();
         vendorShopsListAdapter.updateItems(customerShopsList);
         vendorShopsListAdapter.notifyDataSetChanged();
         if (shopsList.size() >= totalShopsCount) {
@@ -681,160 +625,17 @@ public class VendorShopsListFragment extends CustomerHomeFragment implements OnM
         } else return !(lng < -180) && !(lng > 180);
     }
 
-    @Override
-    public void onMapReady(GoogleMap map) {
-       this.googleMap = map;
-        googleMap.clear();
-        if (currentLocation != null && addressList.isEmpty()) {
-            LatLng latLng = new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-
-            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
-            googleMap.addMarker(markerOptions);
 
 
-            addCircleToMap();
-        } else if(!addressList.isEmpty()) {
-            if (addressList.size() == 1) {
-                AddressResponse addressResponse = addressList.get(0);
-                latitude = addressResponse.getLatitude();
-                longitude = addressResponse.getLongitude();
-            } else {
-                for (AddressResponse addressResponse : addressList) {
-                    if (myProfile.getPrimaryAddressId().equalsIgnoreCase(addressResponse.getId().toString())) {
-                        latitude = addressResponse.getLatitude();
-                        longitude = addressResponse.getLongitude();
-                        break;
-                    }
-                }
-            }
-            LatLng latLng = new LatLng(latitude, longitude);
-            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(tvAddressField.getText().toString());
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
-            googleMap.addMarker(markerOptions);
 
-            addCircleToMap();
-        }
-    }
 
-    private void updateShopsListMap() {
-        if (googleMap == null) return;
-        if(!shopsList.isEmpty()) {
-            for (ShopDetailsModel shopDetailsModel : shopsList) {
-                boolean isCoordinatesValid = isValidLatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
-                if (isCoordinatesValid) {
-                    LatLng latLng = new LatLng(shopDetailsModel.getShopLatitude(), shopDetailsModel.getShopLongitude());
-                    MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(shopDetailsModel.getShopName()).icon(BitmapDescriptorFactory.fromResource(R.mipmap.google_map_icon2));
-                    //googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
-                    //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
-                    Marker marker = googleMap.addMarker(markerOptions);
-                    marker.showInfoWindow();
-                }
-            }
-        } else {
-            fetchLocation();
-        }
-    }
 
-    private void fetchLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                Objects.requireNonNull(requireActivity()), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Objects.requireNonNull(requireActivity()), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
-            return;
-        }
 
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
-        task.addOnSuccessListener(location -> {
-            if (location != null) {
-                currentLocation = location;
-                if (mapsFragment != null) {
-                    mapsFragment.getMapAsync(this);
-                }
-            } else {
-                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    onGPS();
-                } else {
-                    getLocation();
-                }
-            }
-        });
-    }
-
-    private void onGPS() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-        builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", (dialog, which) -> {
-            startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 100);
-            //
-        }).setNegativeButton("No", (dialog, which) -> dialog.cancel());
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
-
-    private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(
-                requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
-        } else {
-            Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (locationGPS != null) {
-                //latitude = locationGPS.getLatitude();
-                //longitude = locationGPS.getLongitude();
-                currentLocation = locationGPS;
-                updateMap();
-            } else {
-                MyLocation myLocation = new MyLocation(requireActivity());
-                myLocation.getLocation(locationResult);
-            }
-        }
-    }
-
-    public MyLocation.LocationResult locationResult = new MyLocation.LocationResult() {
-
-        @Override
-        public void gotLocation(Location location) {
-            if (location != null) {
-                //latitude = location.getLatitude();
-                //longitude = location.getLongitude();
-                currentLocation = location;
-                updateMap();
-            }
-        }
-    };
-
-    private void updateMap() {
-        if (mapsFragment != null) {
-            mapsFragment.getMapAsync(this);
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
 
     }
 
-    private void addCircleToMap() {
-        if (currentLocation != null) {
-            double lat = currentLocation.getLatitude();
-            double longi = currentLocation.getLongitude();
-            googleMap.addCircle(new CircleOptions()
-                    .center(new LatLng(lat, longi))
-                    .radius(15000)
-                    .strokeWidth(2)
-                    .strokeColor(ContextCompat.getColor(requireActivity(), R.color.grey_color_five))
-                    .fillColor(Color.argb(128, 0, 0, 0))
-                    .clickable(true));
-        } else if(latitude != 0.0 && longitude != 0.0) {
-            googleMap.addCircle(new CircleOptions()
-                    .center(new LatLng(latitude, longitude))
-                    .radius(15000)
-                    .strokeWidth(2)
-                    .strokeColor(ContextCompat.getColor(requireActivity(), R.color.grey_color_five))
-                    .fillColor(Color.argb(128, 0, 0, 0))
-                    .clickable(true));
-        }
-    }
+
 }

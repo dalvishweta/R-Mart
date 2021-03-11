@@ -121,46 +121,38 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         binding.setMyAddress(editAdreesViewModel);
         editAdreesViewModel.addressResponseMutableLiveData.setValue(myAddress);
         creditDetails=new CreditDetails();
-
         textWatchers();
+        if(MyProfile.getInstance().getRoleID()==MyProfile.RETAILER) {
+            binding.radioyes.setChecked(MyProfile.getInstance().getWholeselar());
+            binding.radiono.setChecked(!MyProfile.getInstance().getWholeselar());
+            boolean b = MyProfile.getInstance().getCredit_option();
+            binding.switchon.setChecked(b);
+            binding.radioGroup.setOnCheckedChangeListener((rg, checkedId) -> {
 
 
-        binding.radioyes.setChecked(MyProfile.getInstance().getWholeselar());
-        binding.radiono.setChecked(!MyProfile.getInstance().getWholeselar());
-        boolean  b= MyProfile.getInstance().getCredit_option();
-        binding.switchon.setChecked(b);
+                switch (checkedId) {
 
-        binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    case R.id.radioyes:
+                        SellingToConsumer = true;
+                        creditDetails.setSellingConsumer(true);
+                        break;
+                    case R.id.radiono:
+                        SellingToConsumer = false;
+                        creditDetails.setSellingConsumer(false);
+                        break;
+                }
 
-            public void onCheckedChanged(RadioGroup rg, int checkedId) {
+            });
+            if (binding.switchon.isChecked()) {
+                CreditOption = true;
+                creditDetails.setCreditoption(true);
 
 
-                    switch (checkedId){
-
-                        case R.id.radioyes:
-                            SellingToConsumer=true;
-                            creditDetails.setSellingConsumer(true);
-                            break;
-                        case R.id.radiono:
-                            SellingToConsumer=false;
-                            creditDetails.setSellingConsumer(false);
-                            break;
-                    }
-
+            } else {
+                CreditOption = false;
+                creditDetails.setCreditoption(false);
             }
-        });
-
-           if(binding.switchon.isChecked()){
-               CreditOption=true;
-               creditDetails.setCreditoption(true);
-
-
-           } else {
-               CreditOption=false;
-               creditDetails.setCreditoption(false);
-           }
-
-
+        }
         return binding.getRoot();
     }
     private void textWatchers() {

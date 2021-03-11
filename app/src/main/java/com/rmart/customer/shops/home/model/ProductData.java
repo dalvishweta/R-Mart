@@ -30,7 +30,6 @@ public class ProductData extends BaseResponse  {
     @SerializedName("units")
     public List<CustomerProductsDetailsUnitModel> units = null;
 
-    public MutableLiveData<Integer> noOfQuantity = new MutableLiveData<>();
 
 
     private boolean isHeader = false;

@@ -45,18 +45,18 @@
                     />
                 <TextView
                     android:id="@+id/offerlabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="25dp"
                     android:layout_height="wrap_content"
                     android:hint="20 % off"
-                    android:layout_marginTop="20dp"
                     android:layout_alignParentRight="true"
                     android:background="@color/theme_color_two"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
-                    android:padding="5dp"
+                    android:padding="1dp"
+                    android:layout_marginRight="10dp"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     />
         </RelativeLayout>
                 <RelativeLayout
@@ -98,18 +98,18 @@
                   android:ellipsize="end"
                   android:text="@{productdata.productName}"
                   android:textColor="@color/black"
-                  android:textSize="12sp" />
+                  android:textSize="10sp" />
 
               <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Local Name"
-                    android:visibility="@{productdata.product_regional_name==null?View.GONE:View.VISIBLE}"
+                    android:visibility="@{productdata.product_regional_name==null?View.GONE:View.INVISIBLE}"
                     android:text="@{productdata.product_regional_name}"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center"
                     android:textColor="@color/black"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     />
 
 
@@ -124,7 +124,7 @@
                     android:layout_weight="1"
                     android:textStyle="bold"
                     android:textColor="@color/black"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     />
             <LinearLayout
                 android:id="@+id/price_offer"
@@ -142,7 +142,7 @@
                     android:layout_weight="1"
                     android:layout_marginRight="3dp"
                     android:textColor="@color/black"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     />
                 <TextView
                     android:id="@+id/selling_price"
@@ -155,7 +155,7 @@
                     android:textStyle="bold"
                     android:layout_weight="1"
                     android:textColor="@color/black"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     />
             </LinearLayout>
               <Spinner
@@ -167,10 +167,10 @@
                   android:layout_centerVertical="true"
                   android:minHeight="20dp" />
               <LinearLayout
+                  android:id="@+id/llQty"
                   android:layout_marginTop="4dp"
                   android:layout_width="wrap_content"
                   android:layout_height="30dp"
-                  android:visibility="@{productdata.noOfQuantity>0?View.VISIBLE:View.GONE}"
                   android:layout_gravity="center"
                   android:orientation="horizontal">
 
@@ -190,7 +190,6 @@
                       android:layout_width="30dp"
                       android:layout_height="30dp"
                       android:textSize="10sp"
-                      android:text='@{productdata.noOfQuantity+""}'
                       android:layout_gravity="center"
                       android:background="@color/grey_color_five"
                       android:gravity="center"
@@ -213,10 +212,9 @@
                   android:background="@color/green"
                   android:textColor="@color/white"
                   android:gravity="center"
-                  android:visibility="@{productdata.noOfQuantity>0?View.GONE:View.VISIBLE}"
                   android:layout_marginTop="5dp"
                     android:padding="2dp"
-                  android:text="Add To Card"
+                  android:text="Add To Cart"
                   />
         </LinearLayout>
         </RelativeLayout>

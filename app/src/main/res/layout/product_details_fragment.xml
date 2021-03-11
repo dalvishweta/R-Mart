@@ -11,7 +11,8 @@
 
         <variable
             name="productDetailsViewModel"
-            type="com.rmart.customer.shops.products.viewmodel.ProductDetailsViewModel" />
+            type="com.rmart.customer.shops.products.viewmodel.ProductDetailsViewModel"
+            />
     </data>
 
     <RelativeLayout
@@ -173,7 +174,7 @@
                             android:textStyle="bold"
                             android:textSize="10dp"
                             android:fontFamily="@font/roboto_bold"
-                            android:text='@{"Total Selling Price:"+Curruncy.getCurruncy(productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.sellingPrice * productDetailsViewModel.noOfQuantity+"")}'
+                            android:text='@{"Total Selling Price:"+Curruncy.getCurruncy(productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.sellingPrice * productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.totalProductCartQty+"")}'
                             android:textColorHint="@color/black"
                             />
                         <TextView
@@ -186,7 +187,7 @@
                             android:textSize="10dp"
                             android:layout_weight="1"
                             android:fontFamily="@font/roboto_bold"
-                            android:text='@{"Total Actual Price:"+Curruncy.getCurruncy(productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.unitPrice * productDetailsViewModel.noOfQuantity+"")}'
+                            android:text='@{"Total Actual Price:"+Curruncy.getCurruncy(productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.unitPrice * productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.totalProductCartQty+"")}'
                             android:textColorHint="@color/black"
                             android:visibility='@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.productDiscount==0?View.GONE:View.VISIBLE}'
                             />
@@ -251,6 +252,7 @@
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:textSize="10dp"
+
                     android:fontFamily="@font/roboto_light"
                     android:text="Units"
                     android:textColorHint="@color/black"
@@ -292,7 +294,7 @@
                         style="@style/text_style_medium_normal"
                         android:layout_width="40dp"
                         android:layout_height="35dp"
-                        android:text='@{productDetailsViewModel.noOfQuantity+""}'
+                        android:text='@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.totalProductCartQty+""}'
                         android:layout_gravity="center"
                         android:background="@color/grey_color_five"
                         android:gravity="center"
@@ -317,6 +319,7 @@
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:padding="10dp"
+                    android:visibility="gone"
                     android:weightSum="3"
                     android:layout_height="wrap_content">
 
@@ -656,6 +659,7 @@
                 android:background="@drawable/buy_now_background_bg"
                 android:text="@string/add_to_cart"
                 android:textAllCaps="false"
+
                 android:textColor="@color/white" />
 
             <androidx.appcompat.widget.AppCompatButton

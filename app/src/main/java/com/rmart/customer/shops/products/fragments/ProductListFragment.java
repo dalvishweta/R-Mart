@@ -87,7 +87,7 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
             if( productsResponce.getStatus()==200) {
                 if (categoryAdapter == null) {
                     productsResponce.results.category.add(0, new Category("All"));
-                    categoryAdapter = new CategoryAdapter(getActivity(), productsResponce.results.category, this);
+                    categoryAdapter = new CategoryAdapter(getActivity(), productsResponce.results.category, this,CategoryAdapter.PRODUCTLISTPAGECATEGORY);
                     binding.setCategoryAdapter(categoryAdapter);
                 }
                 productsAdapter.addProducts(productsResponce.results.productData);

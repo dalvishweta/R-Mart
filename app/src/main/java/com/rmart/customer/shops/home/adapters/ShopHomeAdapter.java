@@ -25,6 +25,7 @@ import com.rmart.utilits.Permisions;
 import com.rmart.utilits.Utils;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -127,8 +128,9 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             myViewHolder.bind(rs);
             if(rs.type.equalsIgnoreCase("category")){
                 category = rs.category;
-                CategoryAdapter categoryAdapter = new  CategoryAdapter(context,rs.category,onClickListner);
-                myViewHolder.binding.category.setLayoutManager(new LinearLayoutManager(context, HORIZONTAL,false));
+                CategoryAdapter categoryAdapter = new  CategoryAdapter(context,rs.category,onClickListner,CategoryAdapter.HOMEPAGECATEGORY);
+
+                myViewHolder.binding.category.setLayoutManager(new GridLayoutManager(context, 3));
                 myViewHolder.binding.category.setAdapter(categoryAdapter);
                 myViewHolder.binding.viewall.setVisibility(View.GONE);
 
