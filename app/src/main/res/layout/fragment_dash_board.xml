@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    >
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="myAdapter"
+            type="com.rmart.customer.shops.home.adapters.ShopHomeAdapter" />
+        <variable
+            name="shopViewModel"
+            type="com.rmart.customer.shops.home.viewmodel.ShopHomeViewModel" />
+        <variable
+            name="shopDetails"
+            type="com.rmart.customer.shops.list.models.ShopDetailsModel" />
+        <variable
+            name="productData"
+            type="com.rmart.customer.shops.home.model.ProductData" />
+    </data>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:id="@+id/lt_slider"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.rmart.utilits.WrapContentHeightViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <com.landepatil.vishal.CircleIndicator2
+            android:id="@+id/indicator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="visible"
+            app:maxdots="5"
+            custom:non_active_dot="@drawable/ic_dot_gray_24dp"
+            custom:active_dot="@drawable/ic_dot_blue_24dp"
+          />
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
+</layout>

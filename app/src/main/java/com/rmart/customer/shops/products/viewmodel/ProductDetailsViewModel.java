@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModel;
 public class ProductDetailsViewModel extends ViewModel {
     // TODO: Implement the ViewModel
     public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    public MutableLiveData<Boolean> iserror = new MutableLiveData<>();
 //    public MutableLiveData<Integer> noOfQuantity = new MutableLiveData<>();
     public MutableLiveData<ShopDetailsModel> vendorShopDetails = new MutableLiveData<>();
     public MutableLiveData<ProductData> vendorProductDataDetails = new MutableLiveData<>();
@@ -37,9 +38,17 @@ public class ProductDetailsViewModel extends ViewModel {
             @Override
             public void onChanged(ProductDetailsDescResponse productDetailsDescResponse) {
                 if(productDetailsDescResponse!=null) {
+                    if(productDetailsDescResponse.getStatus().equalsIgnoreCase("success")){
+                        iserror.postValue(false);
+
+                    } else {
+                        iserror.postValue(true);
+
+                    }
                     List<CustomerProductsDetailsUnitModel> units = productDetailsDescResponse.getProductDetailsDescProductDataModel().getProductDetailsDescModel().getUnits();
                     productDetailsDescResponseMutableLiveData.setValue(productDetailsDescResponse);
-                    isLoading.postValue(false);
+                } else {
+                    iserror.postValue(true);
                 }
                 isLoading.postValue(false);
             }
@@ -60,7 +69,7 @@ public class ProductDetailsViewModel extends ViewModel {
                      break;
                 case R.id.btn_add_to_cart_field:
 
-                    addToCart(view);
+                    addToCart(view,1);
                     break;
 
 
@@ -72,8 +81,8 @@ public class ProductDetailsViewModel extends ViewModel {
     }
 
 
-    void  addToCart(View view){
-        ProductsRepository.addToCart(vendorShopDetails.getValue().getVendorId(),MyProfile.getInstance().getUserID(),customerProductsDetailsUnitModelMutableLiveData.getValue().getProductUnitId(),customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty(),"").observeForever(new Observer<AddToCartResponseDetails>() {
+   public void  addToCart(View view,int type){
+        ProductsRepository.addToCart(vendorShopDetails.getValue().getVendorId(),MyProfile.getInstance().getUserID(),customerProductsDetailsUnitModelMutableLiveData.getValue().getProductUnitId(),customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty()+1,"").observeForever(new Observer<AddToCartResponseDetails>() {
             @Override
             public void onChanged(AddToCartResponseDetails addToCartResponseDetails) {
                 if (addToCartResponseDetails.getStatus().equalsIgnoreCase("success")) {
@@ -81,6 +90,14 @@ public class ProductDetailsViewModel extends ViewModel {
                     if (addToCartDataResponse != null) {
                         Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
                         UpdateCartCountDetails.updateCartCountDetails.onNext(totalCartCount);
+                        CustomerProductsDetailsUnitModel a =customerProductsDetailsUnitModelMutableLiveData.getValue();
+                        if(type==1) {
+                            a.setTotalProductCartQty(customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty() + 1);
+                        } else {
+                            a.setTotalProductCartQty(customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty() - 1);
+
+                        }
+                        customerProductsDetailsUnitModelMutableLiveData.postValue(a);
 
                     } else {
                     }

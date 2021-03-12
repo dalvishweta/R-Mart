@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/buttons_layout_field"
             android:layout_marginBottom="5dp"
-            android:visibility='@{(productDetailsViewModel.isLoading||productDetailsViewModel.productDetailsDescResponseMutableLiveData.status.equalsIgnoreCase("success"))?View.VISIBLE:View.GONE}'
+            android:visibility='@{productDetailsViewModel.isLoading?View.GONE:View.VISIBLE}'
             android:scrollbars="none">
 
             <LinearLayout
@@ -276,6 +276,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
+                    android:visibility="@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.totalProductCartQty>0?View.VISIBLE:View.GONE}"
+
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatButton
@@ -655,11 +657,11 @@
                 android:layout_weight="1"
                 android:layout_marginRight="5dp"
                 android:maxLines="2"
+                android:visibility="@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.totalProductCartQty==0?View.VISIBLE:View.GONE}"
                 android:onClick="@{(v) -> productDetailsViewModel.onClick(v)}"
                 android:background="@drawable/buy_now_background_bg"
                 android:text="@string/add_to_cart"
                 android:textAllCaps="false"
-
                 android:textColor="@color/white" />
 
             <androidx.appcompat.widget.AppCompatButton
@@ -685,7 +687,7 @@
             android:layout_height="match_parent"
             android:background="@color/white"
             android:orientation="vertical"
-            android:visibility='@{(productDetailsViewModel.isLoading||productDetailsViewModel.productDetailsDescResponseMutableLiveData.status.equalsIgnoreCase("success"))?View.GONE:View.VISIBLE}'
+            android:visibility='@{productDetailsViewModel.iserror?View.VISIBLE:View.GONE}'
             >
             <ImageView
                 android:id="@+id/app_logo"

@@ -5,8 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import androidx.lifecycle.MutableLiveData;
-
 /**
  * Created by Satya Seshu on 08/09/20.
  */
@@ -121,7 +119,8 @@ public class CustomerProductsDetailsUnitModel implements Serializable {
         return totalProductCartQty;
     }
 
-    public void setTotalProductCartQty(Integer totalProductCartQty) {
+    public String setTotalProductCartQty(Integer totalProductCartQty) {
         this.totalProductCartQty = totalProductCartQty;
+        return null;
     }
 }

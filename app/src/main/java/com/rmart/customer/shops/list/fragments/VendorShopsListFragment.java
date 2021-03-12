@@ -248,14 +248,11 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
 
             }
         });
-
-
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(requireActivity());
         searchProductsListField.setLayoutManager(layoutManager2);
         searchProductsListField.setHasFixedSize(false);
         searchProductsListField.setItemAnimator(new SlideInDownAnimator());
         searchProductsListField.setAdapter(allProductsAdapter);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity());
         vendorShopsListField.setLayoutManager(layoutManager);
         vendorShopsListField.setHasFixedSize(false);

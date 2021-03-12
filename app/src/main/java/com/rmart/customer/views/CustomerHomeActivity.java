@@ -14,6 +14,7 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
+import com.rmart.customer.dashboard.fragments.DashBoardFragment;
 import com.rmart.customer.models.CustomerProductDetailsModel;
 import com.rmart.customer.order.summary.fragments.OrderSummaryFragment;
 import com.rmart.customer.shops.home.fragments.ShopHomePage;
@@ -79,6 +80,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
                     public void onFailure(@NonNull Exception e) {
                         Log.w("error", "getDynamicLink:onFailure", e);
                         loadShopListFragment(data,null,null);
+
                     }
      });
 
@@ -86,6 +88,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
 
     private void loadShopListFragment(Bundle data,String VenderID,String shopId) {
         vendorShopsListFragment = VendorShopsListFragment.getInstance(VenderID,shopId);
+       // DashBoardFragment  vendorShopsListFragment =  DashBoardFragment.newInstance();
         if (data != null) {
             //addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
             boolean isShoppingCart = data.getBoolean("ShoppingCart");

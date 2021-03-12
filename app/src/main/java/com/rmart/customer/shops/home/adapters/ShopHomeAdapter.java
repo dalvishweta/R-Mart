@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.rmart.BR;
 import com.rmart.R;
+import com.rmart.customer.dashboard.adapters.SliderAdapter;
+import com.rmart.customer.dashboard.model.SliderImages;
 import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.shops.home.listner.OnClickListner;
 import com.rmart.customer.shops.home.model.Category;
@@ -19,6 +21,8 @@ import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.databinding.SearchShopProductRowItemDeatilsBinding;
 import com.rmart.databinding.ShopDetailsPageBinding;
 import com.rmart.databinding.ShopHomePageBinding;
+import com.rmart.databinding.SliderBinding;
+import com.rmart.databinding.SliderBindingImpl;
 import com.rmart.deeplinking.LinkGenerator;
 import com.rmart.utilits.GridSpacesItemDecoration;
 import com.rmart.utilits.Permisions;
@@ -38,6 +42,8 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     final int VIEW_MENU=1111;
     final int VIEW_SHOP=333311;
+    final int VIEW_SLIDER=33333311;
+    final int VIEW_ADD=33333311;
     final int VIEW_SEARCH_PRODUCT=333334411;
     public ArrayList<Category> category;
     ArrayList<Results> results = new ArrayList<Results>();
@@ -55,8 +61,10 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
     @Override
     public int getItemViewType(int position) {
-        if( position==0){
-            return VIEW_SHOP;
+        if( results.get(position).type.equalsIgnoreCase("benner")){
+            return VIEW_SLIDER;
+        } else if( results.get(position).type.equalsIgnoreCase("addvertise")){
+            return VIEW_MENU;
         } else {
             if(productData2!=null){
                 if( position==1){
@@ -73,7 +81,14 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     ShopHolder vh = new ShopHolder(binding);
                     // pass the view to View Holder
                     return vh;
-                } else if (viewType==VIEW_SEARCH_PRODUCT){
+                } else if(viewType==VIEW_SLIDER) {
+                    SliderBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.slider, parent, false);
+                    SliderHolder vh = new SliderHolder(binding);
+                    // pass the view to View Holder
+                    return vh;
+                }
+
+                else if (viewType==VIEW_SEARCH_PRODUCT){
                     SearchShopProductRowItemDeatilsBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.search_shop_product_row_item_deatils, parent, false);
                     return  new SearchHolder(binding);
                 }
@@ -122,9 +137,18 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 Utils.openGmailWindow(view.getContext(),productsShopDetailsModel.getEmailId());
             });
         }
+
+        if(holder2 instanceof SliderHolder) {
+
+            SliderHolder holder = (SliderHolder) holder2;
+
+            SliderAdapter imageSliderAdapter = new SliderAdapter(context,results.get(position).banner );
+            holder.binding.pager.setAdapter(imageSliderAdapter);
+            holder.binding.indicator.setViewPager(holder.binding.pager);
+        }
         if(holder2 instanceof MyViewHolder) {
             MyViewHolder myViewHolder=     (MyViewHolder ) holder2;
-            Results rs  = productData2!=null?results.get(position-2):results.get(position-1);
+            Results rs  = productData2!=null?results.get(position-1):results.get(position);
             myViewHolder.bind(rs);
             if(rs.type.equalsIgnoreCase("category")){
                 category = rs.category;
@@ -142,11 +166,25 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 myViewHolder.binding.category.addItemDecoration(new GridSpacesItemDecoration(10));
                 myViewHolder.binding.viewall.setVisibility(View.VISIBLE);
             }
-            myViewHolder.binding.viewall.setOnClickListener(view -> {
-                if(rs.viewmore!=null) {
-                    onClickListner.onViewSelected(rs.viewmore);
-                }
-            });
+            else  if(rs.type.equalsIgnoreCase("addvertise")){
+
+
+                AdverTiseAdapter productsAdapter = new  AdverTiseAdapter(context,rs.advertiseImages);
+                myViewHolder.binding.category.setLayoutManager(new LinearLayoutManager(context, HORIZONTAL,false));
+                myViewHolder.binding.category.setAdapter(productsAdapter);
+                myViewHolder.binding.category.addItemDecoration(new GridSpacesItemDecoration(10));
+
+            }
+            if(rs.viewmore!=null) {
+                myViewHolder.binding.viewall.setVisibility(View.VISIBLE);
+                myViewHolder.binding.viewall.setOnClickListener(view -> {
+                    if (rs.viewmore != null) {
+                        onClickListner.onViewSelected(rs.viewmore);
+                    }
+                });
+            } else {
+                myViewHolder.binding.viewall.setVisibility(View.GONE);
+            }
 
 
         }
@@ -196,9 +234,9 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public int getItemCount() {
         if(productData2!=null)
         {
-            return results.size()+2;
+            return results.size()+1;
         }
-        return results.size()+1;
+        return results.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -219,6 +257,21 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ShopDetailsPageBinding binding;
 
         public ShopHolder(ShopDetailsPageBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+
+        }
+
+        public void bind(Object obj) {
+            binding.setVariable(BR.shopDetails, obj);
+            binding.executePendingBindings();
+        }
+    }
+    public class SliderHolder extends RecyclerView.ViewHolder {
+
+        SliderBinding binding;
+
+        public SliderHolder(SliderBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
 
