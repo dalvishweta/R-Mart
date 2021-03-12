@@ -1,11 +1,12 @@
 package com.rmart.customer.shops.home.repositories;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.rmart.customer.shops.home.api.Shops;
 import com.rmart.customer.shops.home.model.ShopHomePageResponce;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 
-import androidx.lifecycle.MutableLiveData;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,11 +27,11 @@ public class ShopRepository {
             @Override
             public void onResponse(Call<ShopHomePageResponce> call, Response<ShopHomePageResponce> response) {
                 ShopHomePageResponce data = response.body();
-                if(data!=null) {
+                if(data.results!=null) {
                     resultMutableLiveData.setValue(data);
 
                 } else {
-                    result.setMsg("Somthing error");
+                    result.setMsg(data.getMsg());
                     result.setStatus(400);
                     resultMutableLiveData.setValue(result);
                 }

@@ -405,7 +405,7 @@ public class RechargeHomeFragment extends BaseFragment implements View.OnClickLi
                     else if(amount.isEmpty() || Integer.parseInt(amount) <= 9) {
                         showDialog("Sorry!!", getString(R.string.valid_recharge_amt_check_msg));
                     }
-                    else if(vc_num.getText().toString().isEmpty() || Integer.parseInt(vc_num.getText().toString()) <= 9) {
+                    else if(vc_num.getText().toString().isEmpty()) {
                         showDialog("Sorry!!", "please Enter Valid Consumer Number");
                     }else{
                         mListener.getMobileRechargeModule().setMobileNumber(vc_num.getText().toString());
