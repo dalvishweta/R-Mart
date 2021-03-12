@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -230,6 +231,8 @@ public class ProductCartDetailsFragment extends BaseFragment {
             if (noOfQuantity > 1) {
                 noOfQuantity--;
                 updateQuantityDetails();
+                Toast.makeText(getContext(),"noOfQuantity"+noOfQuantity,Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -237,6 +240,8 @@ public class ProductCartDetailsFragment extends BaseFragment {
             if (noOfQuantity < productUnitDetails.getProductUnitQuantity()) {
                 noOfQuantity++;
                 updateQuantityDetails();
+                Toast.makeText(getContext(),"noOfQuantity"+noOfQuantity,Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -420,7 +425,10 @@ public class ProductCartDetailsFragment extends BaseFragment {
     }
     private void updateUnitPriceDetails() {
         double sellingPriceValue = noOfQuantity * productUnitDetails.getSellingPrice();
+        Toast.makeText(getContext(),"selling prize"+sellingPriceValue,Toast.LENGTH_LONG).show();
         String sellingPrice = String.format("Rs. %s", Utils.roundOffDoubleValue(sellingPriceValue, "0.00"));
+        Toast.makeText(getContext(),"selling prize"+sellingPriceValue,Toast.LENGTH_LONG).show();
+
         tvSellingPriceField.setText(sellingPrice);
         Double totalPrice = noOfQuantity * productUnitDetails.getUnitPrice();
         tvTotalPriceField.setText(Utils.roundOffDoubleValue(totalPrice, "0.00"));

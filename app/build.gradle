@@ -61,7 +61,9 @@ android {
         buildConfigField("String", "VENDOR_DELETE_ADD_TO_CART", '"customer/VendorShop/deleteAddToCart"')
         buildConfigField("String", "VENDOR_MOVE_TO_WISH_LIST", '"customer/VendorShop/addToWishlist"')
         buildConfigField("String", "GET_SHOPPING_CART_LIST", '"customer/VendorShop/addToWishlist"')
-        buildConfigField("String", "VENDOR_ADD_TO_CART", '"customer/VendorShop/addToCartsaler"')
+       // buildConfigField("String", "VENDOR_ADD_TO_CART", '"customer/VendorShop/addToCartsaler"')
+         buildConfigField("String", "VENDOR_ADD_TO_CART", '"customer/VendorShop/new_addToCart"')
+
         buildConfigField("String", "VENDOR_REMOVE_FROM_CART", '"customer/VendorShop/deleteAddToCart"')
         buildConfigField("String", "VENDORS_SHOW_SHOP_WISE_CART", '"customer/VendorShop/showShopWiseCart"')
         buildConfigField("String", "VENDORS_SHOW_WISH_LIST_CART", '"customer/VendorShop/showWishlistData"')
