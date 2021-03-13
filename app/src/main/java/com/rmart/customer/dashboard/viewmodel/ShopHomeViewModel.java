@@ -1,11 +1,11 @@
-package com.rmart.customer.shops_new.home.viewmodel;
+package com.rmart.customer.dashboard.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.rmart.customer.shops.list.models.ShopDetailsModel;
-import com.rmart.customer.shops_new.home.model.ShopHomePageResponce;
-import com.rmart.customer.shops_new.home.repositories.ShopRepository;
+import com.rmart.customer.dashboard.model.ShopHomePageResponce;
+import com.rmart.customer.dashboard.repositories.ShopRepository;
 
 public class ShopHomeViewModel extends ViewModel {
 

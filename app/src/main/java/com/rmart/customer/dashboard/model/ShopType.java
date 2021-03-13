@@ -1,11 +1,11 @@
-package com.rmart.customer.shops_new.home.model;
+package com.rmart.customer.dashboard.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class BigShopType implements Serializable {
+public class ShopType implements Serializable {
 
     @SerializedName("name")
     @Expose

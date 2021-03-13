@@ -1,9 +1,9 @@
-package com.rmart.customer.shops_new.home.repositories;
+package com.rmart.customer.dashboard.repositories;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.rmart.customer.shops_new.home.api.Shops;
-import com.rmart.customer.shops_new.home.model.ShopHomePageResponce;
+import com.rmart.customer.dashboard.api.Shops;
+import com.rmart.customer.dashboard.model.ShopHomePageResponce;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 

@@ -79,19 +79,14 @@ public class ProductDetailsFragment extends Fragment {
         binding.setLifecycleOwner(this);
         binding.btnMinusField.setOnClickListener(v -> {
             if (mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty() > 1) {
-
                 mViewModel.addToCart(binding.btnMinusField,0);
-               // mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().setTotalProductCartQty((mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty()-1));
             }
         });
 
         binding.btnAddField.setOnClickListener(v -> {
 
             if (mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty() < mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().getProductUnitQuantity()) {
-                //mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().setTotalProductCartQty((mViewModel.customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty()+1));
                 mViewModel.addToCart(binding.btnMinusField,1);
-
-                //updateQuantityDetails();
             }
         });
         return binding.getRoot();

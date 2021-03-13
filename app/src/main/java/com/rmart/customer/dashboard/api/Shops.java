@@ -1,7 +1,7 @@
-package com.rmart.customer.shops_new.home.api;
+package com.rmart.customer.dashboard.api;
 
 import com.rmart.BuildConfig;
-import com.rmart.customer.shops_new.home.model.ShopHomePageResponce;
+import com.rmart.customer.dashboard.model.ShopHomePageResponce;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
