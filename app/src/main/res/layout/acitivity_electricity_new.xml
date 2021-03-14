@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Electricity_service"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="24sp"/>
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/inventory_header_bg">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/preview_bill"
+                    android:layout_marginRight="10dp"
+                    ></ImageView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Preview bill Sample"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="5dp"
+                    ></TextView>
+            </LinearLayout>
+
+            <LinearLayout
+            android:id="@+id/lin_one"
+             android:layout_width="match_parent"
+             android:layout_height="400dp"
+             android:orientation="vertical"
+             android:background="@color/white"
+             android:layout_marginLeft="10dp"
+             android:layout_marginRight="10dp"
+             android:layout_marginTop="60dp">
+                <Spinner
+                    android:id="@+id/sppiner_opertor"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"/>
+
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Consumer Number"
+                 android:padding="10dp"
+                 android:textStyle="bold"
+                 android:textSize="18sp"
+                 android:layout_marginTop="20dp">
+             </TextView>
+
+             <androidx.appcompat.widget.AppCompatEditText
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:hint="Please Enter Consumer Number"
+                 android:id="@+id/consumer_no_one"
+                 android:layout_marginTop="5dp"
+                 android:digits="0123456789"
+                 android:padding="15dp"
+                 android:inputType="phone"
+                 android:maxLength="15"
+                 android:layout_marginRight="8dp"
+                 android:layout_marginLeft="8dp"
+                 android:background="@drawable/layout_border_bg"
+                 />
+             <TextView
+                 android:id="@+id/bill_unit_one"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Bill Unit"
+                 android:layout_marginTop="10dp"
+                 android:textStyle="bold"
+                 android:textSize="18sp"
+                 android:padding="10dp">
+             </TextView>
+
+             <androidx.appcompat.widget.AppCompatEditText
+                 android:id="@+id/bill_unit_two"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:hint="Please Enter Bill Unit"
+                 android:digits="0123456789"
+                 android:inputType="phone"
+                 android:maxLength="10"
+                 android:padding="15dp"
+                 android:background="@drawable/layout_border_bg"
+                 android:layout_marginTop="5dp"
+                 android:layout_marginRight="8dp"
+                 android:layout_marginLeft="8dp"/>
+             <TextView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Customer Mobile Number"
+                 android:layout_marginTop="10dp"
+                 android:textStyle="bold"
+                 android:textSize="18sp"
+                 android:padding="10dp">
+             </TextView>
+
+             <androidx.appcompat.widget.AppCompatEditText
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:hint="Please Enter Mobile Number"
+                 android:id="@+id/mobile_two"
+                 android:digits="0123456789"
+                 android:inputType="phone"
+                 android:maxLength="10"
+                 android:padding="15dp"
+                 android:layout_marginTop="5dp"
+                 android:background="@drawable/layout_border_bg"
+                 android:layout_marginRight="8dp"
+                 android:layout_marginLeft="8dp" />
+
+         </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lin_two"
+               android:layout_below="@+id/lin_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:src="@mipmap/ic_launcher">/</ImageView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="@string/electricity_note"></TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lin_three"
+               android:layout_below="@+id/lin_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/fetch_bill"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/submit_button_bg"
+                    android:text="CONFIRM AND PAY"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="@color/white"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
