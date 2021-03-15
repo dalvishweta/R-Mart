@@ -1,5 +1,6 @@
 package com.rmart.electricity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,7 +25,7 @@ import retrofit2.Response;
 
 public class FetchBill extends BaseActivity {
 
-    public AppCompatTextView consumer_name,consumer_id,DueAmount,OrderId,DueDate,BillDate,merchant_ref;
+    public AppCompatTextView consumer_name,consumer_id,DueAmount,OrderId,DueDate,BillDate,merchant_ref,amount_bx,Date_bx,con_no,service_name;
     public AppCompatButton fetch_bill,pay_bill;
     ElecticityService eleService;
     data ob;
@@ -43,10 +44,11 @@ public class FetchBill extends BaseActivity {
     protected ProgressDialog progressBar;
     String stastus_bill="";
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fetch_bill);
+        setContentView(R.layout.activity_fetchbill_new);
         consumer_name=findViewById(R.id.consumer_name);
         consumer_id=findViewById(R.id.consumer_id);
         DueAmount=findViewById(R.id.DueAmount);
@@ -55,8 +57,11 @@ public class FetchBill extends BaseActivity {
         OrderId=findViewById(R.id.OrderId);
         pay_bill=findViewById(R.id.pay_bill);
         merchant_ref=findViewById(R.id.merchant_ref);
+        amount_bx=findViewById(R.id.amount_bx);
+        Date_bx=findViewById(R.id.Date_bx);
+        con_no=findViewById(R.id.con_no);
+        service_name=findViewById(R.id.service_name);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
         toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,13 +90,16 @@ public class FetchBill extends BaseActivity {
      billdate=ob.getBillDate();
      //Merchant_ref=ob.getMerTxnID();
        amt= String.valueOf(ob.getDueAmount());
-        consumer_name.setText("Consumer Name: "+name);
-         consumer_id.setText("Consumer Id: "+id);
-        DueAmount.setText("Consumer Amount: "+amt);
-        OrderId.setText("Order ID: "+orderid);
-        DueDate.setText("Due Date: "+duedate);
-        BillDate.setText("Bill Date: "+billdate);
-       // merchant_ref.setText("Merchant ref: "+Merchant_ref);
+        consumer_name.setText(name);
+         con_no.setText("Consumer Number: "+id);
+        DueAmount.setText("Rs. "+amt);
+        OrderId.setText(String.valueOf(orderid));
+        DueDate.setText(duedate);
+        amount_bx.setText("Rs.  "+amt);
+
+        Date_bx.setText(billdate);
+       // BillDate.setText("Bill Date: "+billdate);
+       // merchant_ref.setText(id);
 
 
 

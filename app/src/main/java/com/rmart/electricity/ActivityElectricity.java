@@ -9,15 +9,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
 
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.rmart.R;
 import com.rmart.profile.model.MyProfile;
@@ -35,8 +35,8 @@ public class ActivityElectricity extends AppCompatActivity {
 
     public Spinner sppiner_opertor;
     protected ProgressDialog progressBar;
-    public TextInputEditText bill_unit_two,consumer_no_one,mobile_two;
-      public TextInputLayout bill_unit_one;
+    public AppCompatEditText bill_unit_two,consumer_no_one,mobile_two;
+      public TextView bill_unit_one;
     public LinearLayout lin_two,lin_one;
     String Consumer_name="";
     String order_id="";
@@ -50,14 +50,12 @@ public class ActivityElectricity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_electricity);
-
+        setContentView(R.layout.acitivity_electricity_new);
         bill_unit_two= findViewById(R.id.bill_unit_two);
         bill_unit_one= findViewById(R.id.bill_unit_one);
         consumer_no_one= findViewById(R.id.consumer_no_one);
         mobile_two= findViewById(R.id.mobile_two);
         sppiner_opertor=findViewById(R.id.sppiner_opertor);
-
         fetch_bill=findViewById(R.id.fetch_bill);
         lin_two=findViewById(R.id.lin_two);
         lin_one=findViewById(R.id.lin_one);
@@ -77,16 +75,21 @@ public class ActivityElectricity extends AppCompatActivity {
                 if(sppiner_opertor.getSelectedItem().toString().equalsIgnoreCase("MSEDC Limited")){
                     SelectedValue="MSE";
                     bill_unit_one.setVisibility(View.VISIBLE);
+                    bill_unit_two.setVisibility(View.VISIBLE);
 
 
                 }else if(sppiner_opertor.getSelectedItem().toString().equalsIgnoreCase("Adani Electricity Mumbai Limited")){
                     SelectedValue="ADE";
                     bill_unit_one.setVisibility(View.GONE);
+                    bill_unit_two.setVisibility(View.GONE);
+
 
                 }
                else if(sppiner_opertor.getSelectedItem().toString().equalsIgnoreCase("Select operator")) {
                     SelectedValue = "op";
                     bill_unit_one.setVisibility(View.VISIBLE);
+                    bill_unit_two.setVisibility(View.VISIBLE);
+
                 }
                 // Toast.makeText(ActivityElectricity.this, sppiner_opertor.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
 

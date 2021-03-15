@@ -431,8 +431,11 @@
 
     <string name="lable_staock">Stock Status:</string>
     <string name="available">Available</string>
+    <string name="Rs">Rs. 2330</string>
     <string name="Label_before_closing_time">Before Closing Time</string>
     <string name="Label_aftere_closing_time">Sfter Closing Time</string>
+    <string name="electricity_note">Paying this bill allow rokadmart to fetch your current and future bill so that you can view and pay them
+</string>
 
 
 </resources>
