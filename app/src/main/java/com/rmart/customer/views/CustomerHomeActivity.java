@@ -32,7 +32,7 @@ import androidx.annotation.NonNull;
 
 public class CustomerHomeActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
 
-    private VendorShopsListFragment vendorShopsListFragment;
+    //private VendorShopsListFragment vendorShopsListFragment;
     private Timer timer;
 
     @Override
@@ -87,8 +87,8 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
     }
 
     private void loadShopListFragment(Bundle data,String VenderID,String shopId) {
-        vendorShopsListFragment = VendorShopsListFragment.getInstance(VenderID,shopId);
-       // DashBoardFragment  vendorShopsListFragment =  DashBoardFragment.newInstance();
+        //vendorShopsListFragment = VendorShopsListFragment.getInstance(VenderID,shopId);
+         DashBoardFragment  vendorShopsListFragment =  DashBoardFragment.newInstance();
         if (data != null) {
             //addFragment(ShoppingCartFragment.getInstance(), ShoppingCartFragment.class.getName(), true);
             boolean isShoppingCart = data.getBoolean("ShoppingCart");
@@ -100,7 +100,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
             }
         } else {
             if(!vendorShopsListFragment.isAdded()) {
-                replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);
+                replaceFragment(vendorShopsListFragment, DashBoardFragment.class.getName(), false);
             }
         }
     }
@@ -159,7 +159,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
 
     @Override
     public void updateShopWishListStatus(ShopDetailsModel vendorShopDetails) {
-        vendorShopsListFragment.updateShopWishListStatus(vendorShopDetails);
+       // vendorShopsListFragment.updateShopWishListStatus(vendorShopDetails);
     }
 
     @Override
@@ -228,9 +228,9 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
                 replaceFragment(CustomerFavouritesFragment.getInstance(), CustomerFavouritesFragment.class.getName(), true);
             }
         } else {
-            if(vendorShopsListFragment!=null && !vendorShopsListFragment.isAdded()) {
-                replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);
-            }
+//            if(vendorShopsListFragment!=null && !vendorShopsListFragment.isAdded()) {
+//                replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);
+//            }
         }
     }
 

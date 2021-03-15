@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="ServiceOffer"
+            type="com.rmart.customer.dashboard.model.ServiceOffer" />
+
+
+    </data>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/root"
+        android:layout_width="100dp"
+        android:layout_height="120dp"
+        app:cardElevation="15dp"
+        app:cardBackgroundColor="@color/white"
+        >
+
+        <LinearLayout
+
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:visibility="visible"
+
+                android:layout_marginBottom="2dp"
+                app:imageUrl="@{ServiceOffer}"
+                android:id="@+id/img_designlistlayout"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageview"
+                    android:layout_width="match_parent"
+                    android:layout_centerInParent="true"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter" />
+
+                <ImageView
+                    android:id="@+id/selectedgreeting"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/loader_newrelease"
+                    android:background="@null"
+                    android:elevation="2dp"
+                    />
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Recharge and pay  Bills"
+                android:text="@{ServiceOffer.name}"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:minLines="2"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

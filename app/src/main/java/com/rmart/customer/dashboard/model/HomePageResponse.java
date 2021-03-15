@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class BaseResponse implements Serializable {
+public class HomePageResponse implements Serializable {
 
     @SerializedName("status")
     @Expose
@@ -16,7 +16,7 @@ public class BaseResponse implements Serializable {
     private String msg;
     @SerializedName("data")
     @Expose
-    private List<ShopHomePageResponce> data = null;
+    private List<HomePageData> data = null;
     @SerializedName("request_id")
     @Expose
     private int requestId;
@@ -37,11 +37,11 @@ public class BaseResponse implements Serializable {
         this.msg = msg;
     }
 
-    public List<ShopHomePageResponce> getData() {
+    public List<HomePageData> getData() {
         return data;
     }
 
-    public void setData(List<ShopHomePageResponce> data) {
+    public void setData(List<HomePageData> data) {
         this.data = data;
     }
 

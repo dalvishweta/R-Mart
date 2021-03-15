@@ -3,34 +3,36 @@ package com.rmart.customer.dashboard.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ShopHomePageResponce  extends BaseResponse {
+
+public class HomePageData {
 
     @SerializedName("type")
     @Expose
     private String type;
     @SerializedName("name")
     @Expose
-    private Object name;
+    private String name;
     @SerializedName("viewmore")
     @Expose
-    private Object viewmore;
+    private String viewmore;
     @SerializedName("sliders")
     @Expose
-    private List<Slider> sliders = null;
+    private ArrayList<SliderImages> sliders = null;
     @SerializedName("service")
     @Expose
-    private List<ServiceOffer> service = null;
+    private ArrayList<ServiceOffer> service = null;
     @SerializedName("bigShopType")
     @Expose
-    private List<BigShopType> bigShopType = null;
+    private ArrayList<BigShopType> bigShopType = null;
     @SerializedName("ShopTypes")
     @Expose
-    private List<ShopType> shopTypes = null;
+    private ArrayList<ShopType> shopTypes = null;
     @SerializedName("offers")
     @Expose
-    private List<Offer> offers = null;
+    private ArrayList<Offer> offers = null;
 
     public String getType() {
         return type;
@@ -40,59 +42,59 @@ public class ShopHomePageResponce  extends BaseResponse {
         this.type = type;
     }
 
-    public Object getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(Object name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public Object getViewmore() {
+    public String getViewmore() {
         return viewmore;
     }
 
-    public void setViewmore(Object viewmore) {
+    public void setViewmore(String viewmore) {
         this.viewmore = viewmore;
     }
 
-    public List<Slider> getSliders() {
+    public ArrayList<SliderImages> getSliders() {
         return sliders;
     }
 
-    public void setSliders(List<Slider> sliders) {
+    public void setSliders(ArrayList<SliderImages> sliders) {
         this.sliders = sliders;
     }
 
-    public List<ServiceOffer> getService() {
+    public ArrayList<ServiceOffer> getService() {
         return service;
     }
 
-    public void setService(List<ServiceOffer> serviceOffer) {
+    public void setService(ArrayList<ServiceOffer> serviceOffer) {
         this.service = serviceOffer;
     }
 
-    public List<BigShopType> getBigShopType() {
+    public ArrayList<BigShopType> getBigShopType() {
         return bigShopType;
     }
 
-    public void setBigShopType(List<BigShopType> bigShopType) {
+    public void setBigShopType(ArrayList<BigShopType> bigShopType) {
         this.bigShopType = bigShopType;
     }
 
-    public List<ShopType> getShopTypes() {
+    public ArrayList<ShopType> getShopTypes() {
         return shopTypes;
     }
 
-    public void setShopTypes(List<ShopType> shopTypes) {
+    public void setShopTypes(ArrayList<ShopType> shopTypes) {
         this.shopTypes = shopTypes;
     }
 
-    public List<Offer> getOffers() {
+    public ArrayList<Offer> getOffers() {
         return offers;
     }
 
-    public void setOffers(List<Offer> offers) {
+    public void setOffers(ArrayList<Offer> offers) {
         this.offers = offers;
     }
 

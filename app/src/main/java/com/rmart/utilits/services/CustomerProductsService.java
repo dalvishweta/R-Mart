@@ -30,7 +30,7 @@ public interface CustomerProductsService {
     @POST(BuildConfig.CUSTOMER_SHOPS_LIST)
     @FormUrlEncoded
     Call<CustomerProductsResponse> getCustomerShopsList(@Field("client_id") String clientId, @Field("start_page") int currentPage, @Field("search_param") String searchShopName,
-                                                        @Field("customer_id") String customerId, @Field("latitude") double latitude, @Field("longitude") double longitude, @Field("vendor_id") String vendor_id, @Field("shop_id") String shop_id, @Field("user_type") String user_type);
+                                                        @Field("customer_id") String customerId, @Field("latitude") double latitude, @Field("longitude") double longitude, @Field("vendor_id") String vendor_id, @Field("shop_id") String shop_id, @Field("user_type") String user_type, @Field("shop_type_id") String shop_type_id);
 
 
     @POST(BuildConfig.VENDOR_PRODUCTS_LIST)

@@ -1,22 +1,31 @@
 package com.rmart.customer.dashboard.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.customer.dashboard.adapters.SliderAdapter;
-import com.rmart.customer.dashboard.model.SliderImages;
+import com.rmart.customer.dashboard.adapters.HomeAdapter;
+import com.rmart.customer.dashboard.model.BigShopType;
+import com.rmart.customer.dashboard.model.ServiceOffer;
+import com.rmart.customer.dashboard.model.ShopType;
+import com.rmart.customer.dashboard.viewmodel.HomeViewModel;
+import com.rmart.customer.dashboard.listners.OnClick;
+import com.rmart.customer.shops.list.fragments.VendorShopsListFragment;
+import com.rmart.customerservice.mobile.views.MobileRechargeActivity;
 import com.rmart.databinding.FragmentDashBoardBinding;
-import com.rmart.databinding.FragmentShopHomePageBinding;
-
-import java.util.ArrayList;
+import com.rmart.electricity.ActivityElectricity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,15 +62,69 @@ public class DashBoardFragment extends BaseFragment {
 
        FragmentDashBoardBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dash_board, container, false);
 
-        ArrayList<SliderImages> sliderImages = new ArrayList<>();
+        HomeViewModel mViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        binding.setHomeViewModel(mViewModel);
+        binding.setLifecycleOwner(this);
+        mViewModel.loadShopHomePage();
+        mViewModel.shopHomePageResponceMutableLiveData.observeForever(homePageResponse -> {
+            HomeAdapter homeAdapter = new HomeAdapter(getActivity(), new OnClick() {
 
-//        SliderImages sliderImages1 = new SliderImages("i","test","description","https://cdn.dnaindia.com/sites/default/files/styles/full/public/2020/05/21/901916-swiggy-vs-zomato.png","","","","1");
-//        sliderImages.add(sliderImages1);
-//        sliderImages.add(sliderImages1);
-//        SliderAdapter  imageSliderAdapter = new SliderAdapter(getActivity(),sliderImages );
-//        binding.pager.setAdapter(imageSliderAdapter);
-//        binding.indicator.setViewPager(binding.pager);
+                @Override
+                public void onServiceClick(ServiceOffer serviceOffer) {
+                    if(serviceOffer.getServiceCaption().equalsIgnoreCase("mobile-recharge")){
+                        Intent intent = new Intent(getContext(), MobileRechargeActivity.class);
+                        startActivity(intent);
+                    }
+                    if(serviceOffer.getServiceCaption().equalsIgnoreCase("dth-recharge")){
+//                        Intent intent = new Intent(getContext(), ActivityElectricity.class);
+//                        startActivity(intent);
+                        Toast.makeText(getContext(),"Comming Soon",Toast.LENGTH_LONG).show();
+                    }
+                    if(serviceOffer.getServiceCaption().equalsIgnoreCase("light-bill")){
+                        Intent intent = new Intent(getContext(), ActivityElectricity.class);
+                        startActivity(intent);
+                    }
+                    if(serviceOffer.getServiceCaption().equalsIgnoreCase("travel-booking")){
+//                        Intent intent = new Intent(getContext(), ActivityElectricity.class);
+//                        startActivity(intent);
+                        Toast.makeText(getContext(),"Comming Soon",Toast.LENGTH_LONG).show();
+                    }
+
+
+
+                }
+
+                @Override
+                public void onShopClick(ShopType serviceOffer) {
+                    openShopList(serviceOffer.getClick());
+
+                }
+
+                @Override
+                public void onBigShopClick(BigShopType bigShopType) {
+
+                    if(bigShopType.getName().equalsIgnoreCase("Hand crafted shop")) {
+                        Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_LONG).show();
+                    } else {
+                        openShopList(null);
+                    }
+
+
+
+                }
+            },homePageResponse.getData());
+            binding.setMyAdapter(homeAdapter);
+        });
 
        return binding.getRoot();
+    }
+
+    private void openShopList(String serviceOffer) {
+        VendorShopsListFragment vendorShopsListFragment =  VendorShopsListFragment.getInstance(serviceOffer);
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(R.id.base_container, vendorShopsListFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

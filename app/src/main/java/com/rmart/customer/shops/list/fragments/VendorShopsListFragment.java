@@ -54,6 +54,7 @@ import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
+import com.rmart.customer.dashboard.model.ShopType;
 import com.rmart.customer.shops.home.listner.OnClickListner;
 import com.rmart.customer.shops.home.listner.onProdcutClick;
 import com.rmart.customer.shops.home.model.Category;
@@ -118,17 +119,17 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     private RelativeLayout map_or_list_view;
     LinearLayout changeAddressLayout;
     private AppCompatButton btnTryAgain;
-    String venderID, shopId;
+    String ShopTypeID;
     View view;
     LinearLayout erorolayout;
     private ArrayList<AddressResponse> addressList = new ArrayList<>();
     RelativeLayout searchLayout;
-    public static VendorShopsListFragment getInstance(String VenderID,String shopId) {
+    public static VendorShopsListFragment getInstance(String ShopTypeID) {
         VendorShopsListFragment vendorShopsListFragment = new VendorShopsListFragment();
 
         Bundle args = new Bundle();
-        args.putString("VenderID", VenderID);
-        args.putString("shopId", shopId);
+
+        args.putString("ShopTypeID", ShopTypeID);
         vendorShopsListFragment.setArguments(args);
         return vendorShopsListFragment;
     }
@@ -145,8 +146,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            venderID = getArguments().getString("VenderID");
-            shopId = getArguments().getString("shopId");
+            ShopTypeID = getArguments().getString("ShopTypeID");
         }
     }
 
@@ -519,7 +519,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
 
-            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, myProfile.getUserID(), latitude, longitude,venderID,shopId,MyProfile.getInstance().getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)?"Customer":"Retailer").enqueue(new Callback<CustomerProductsResponse>() {
+            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, myProfile.getUserID(), latitude, longitude,null,null,MyProfile.getInstance().getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)?"Customer":"Retailer",ShopTypeID).enqueue(new Callback<CustomerProductsResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<CustomerProductsResponse> call, @NotNull Response<CustomerProductsResponse> response) {
                     progressDialog.dismiss();
@@ -533,11 +533,11 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                                 List<ShopDetailsModel> customerProductsList = data.getCustomerShopsList().getCustomerShopsList();
                                 updateAdapter(customerProductsList);
                                 try {
-                                    if (customerProductsList != null && customerProductsList.get(0) != null && shopId != null && !shopId.equalsIgnoreCase("") && Integer.parseInt(shopId) == customerProductsList.get(0).getShopId()) {
-                                        callBackListener.callBackReceived(customerProductsList.get(0));
-                                        shopId = null;
-                                        venderID = null;
-                                    }
+//                                    if (customerProductsList != null && customerProductsList.get(0) != null && shopId != null && !shopId.equalsIgnoreCase("") && Integer.parseInt(shopId) == customerProductsList.get(0).getShopId()) {
+//                                        callBackListener.callBackReceived(customerProductsList.get(0));
+//                                        shopId = null;
+//                                        venderID = null;
+//                                    }
                                 } catch (Exception e ){
 
                                 }
