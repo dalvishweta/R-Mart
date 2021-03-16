@@ -18,38 +18,39 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/buttons_layout_field"
-            android:layout_marginBottom="5dp"
-            android:visibility='@{productDetailsViewModel.isLoading?View.GONE:View.VISIBLE}'
-            android:scrollbars="none">
+            android:layout_marginBottom="17dp"
+            android:scrollbars="none"
+            android:visibility='@{productDetailsViewModel.isLoading?View.GONE:View.VISIBLE}'>
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/view_pager_base"
                     android:layout_width="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:layout_height="@dimen/customer_product_bg"
-                    android:layout_alignParentTop="true">
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true">
 
                     <com.rmart.baseclass.views.AutoScrollViewPager
                         android:id="@+id/view_pager"
                         android:layout_width="match_parent"
-                        android:background="@color/grey_color_five"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:background="@color/grey_color_five" />
 
                     <com.google.android.material.tabs.TabLayout
-                        android:layout_marginTop="20dp"
                         android:id="@+id/product_images_dot_indicator_field"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
+                        android:layout_marginTop="20dp"
                         android:background="@android:color/transparent"
                         android:minHeight="40dp"
                         app:tabBackground="@drawable/product_images_indicator_selector"
@@ -63,581 +64,564 @@
                         android:layout_alignParentLeft="true"
                         android:layout_marginStart="20dp"
                         android:layout_marginLeft="20dp"
-                        android:onClick="@{(v) -> productDetailsViewModel.onClick(v)}"
                         android:layout_marginTop="20dp"
                         android:contentDescription="@string/app_name"
+                        android:onClick="@{(v) -> productDetailsViewModel.onClick(v)}"
                         android:src='@{productDetailsViewModel.productDetailsDescResponseMutableLiveData.productDetailsDescProductDataModel.productDetailsDescModel.wishList?@drawable/heart_active:@drawable/heart}' />
+
                     <TextView
                         android:id="@+id/offerlabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text='@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.productDiscount+" % off"}'
-                        android:layout_marginTop="20dp"
                         android:layout_alignParentRight="true"
+                        android:layout_marginTop="20dp"
                         android:background="@color/theme_color_two"
                         android:fontFamily="@font/roboto_regular"
                         android:gravity="center"
                         android:padding="5dp"
+                        android:text='@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.productDiscount+" % off"}'
                         android:textColor="@color/white"
-                        android:visibility='@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.productDiscount==0?View.GONE:View.VISIBLE}'
-
                         android:textColorHint="@color/white"
+
                         android:textSize="12sp"
-                        />
+                        android:visibility='@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.productDiscount==0?View.GONE:View.VISIBLE}' />
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:background="@color/grey_color_two"
-                    android:layout_height="1dp"/>
+                    android:layout_height="1dp"
+                    android:background="@color/grey_color_two" />
+
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:padding="10dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:textSize="10dp"
                         android:fontFamily="@font/roboto_black"
                         android:hint="@string/himt_productname"
+                        android:singleLine="true"
                         android:text='@{productDetailsViewModel.productDetailsDescResponseMutableLiveData.productDetailsDescProductDataModel.productDetailsDescModel.productName}'
+                        android:textColor="@color/black"
                         android:textColorHint="@color/black"
-                        />
+                        android:textSize="10dp"
+                        android:textStyle="bold" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textSize="10dp"
-                        android:textColor="@color/black"
-                        android:textStyle="normal"
                         android:fontFamily="@font/roboto_light"
                         android:hint="@string/brandname"
+                        android:singleLine="true"
                         android:text='@{productDetailsViewModel.productDetailsDescResponseMutableLiveData.productDetailsDescProductDataModel.productDetailsDescModel.brandName}'
-
+                        android:textColor="@color/black"
                         android:textColorHint="@color/black"
-                        />
+                        android:textSize="10dp"
+
+                        android:textStyle="normal" />
+
                     <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:weightSum="2"
-                    android:layout_height="wrap_content">
-                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:layout_weight="1"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-
-                        android:textSize="10dp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:text='@{"Selling Price:"+Curruncy.getCurruncy(productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.sellingPrice+"")}'
-                        android:textColorHint="@color/black"
-                        />
-                    <TextView
-                        android:id="@+id/actualprice"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textStyle="normal"
-                        android:textSize="10dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/roboto_bold"
-                        android:text='@{"Actual Price:"+Curruncy.getCurruncy(productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.unitPrice+"")}'
-                        android:textColorHint="@color/black"
-                        android:visibility='@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.productDiscount==0?View.GONE:View.VISIBLE}'
-                        />
-
-                    </LinearLayout>
-                    <LinearLayout
                         android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:weightSum="2"
-                        android:layout_height="wrap_content">
+                        android:weightSum="2">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:ellipsize="end"
                             android:layout_weight="1"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:textSize="10dp"
+                            android:ellipsize="end"
                             android:fontFamily="@font/roboto_bold"
+                            android:singleLine="true"
+                            android:text='@{"Selling Price:"+Curruncy.getCurruncy(productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.sellingPrice+"")}'
+
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black"
+                            android:textSize="10dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/actualprice"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/roboto_bold"
+                            android:singleLine="true"
+                            android:text='@{"Actual Price:"+Curruncy.getCurruncy(productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.unitPrice+"")}'
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black"
+                            android:textSize="10dp"
+                            android:textStyle="normal"
+                            android:visibility='@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.productDiscount==0?View.GONE:View.VISIBLE}' />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/roboto_bold"
+                            android:singleLine="true"
+                            android:visibility="@{(productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.sellingPrice * productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.totalProductCartQty)==0?View.GONE:View.VISIBLE}"
                             android:text='@{"Total Selling Price:"+Curruncy.getCurruncy(productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.sellingPrice * productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.totalProductCartQty+"")}'
+                            android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            />
+                            android:textSize="10dp"
+                            android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textStyle="normal"
-                            android:textSize="10dp"
                             android:layout_weight="1"
+                            android:ellipsize="end"
                             android:fontFamily="@font/roboto_bold"
+                            android:singleLine="true"
                             android:text='@{"Total Actual Price:"+Curruncy.getCurruncy(productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.unitPrice * productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.totalProductCartQty+"")}'
+                            android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            android:visibility='@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.productDiscount==0?View.GONE:View.VISIBLE}'
-                            />
+                            android:textSize="10dp"
+                            android:textStyle="normal"
+                            android:visibility='@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.productDiscount==0?View.GONE:View.VISIBLE}' />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:visibility="gone"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textSize="10dp"
-                            android:textStyle="normal"
                             android:fontFamily="@font/roboto_light"
+                            android:singleLine="true"
                             android:text="@string/lable_staock"
+                            android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            />
+                            android:textSize="10dp"
+                            android:textStyle="normal" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="10dp"
-                            android:textStyle="normal"
                             android:fontFamily="@font/roboto_light"
                             android:hint="@string/available"
+                            android:singleLine="true"
+                            android:textColor="@color/colorPrimary"
                             android:textColorHint="@color/colorPrimary"
-                            />
+                            android:textSize="10dp"
+                            android:textStyle="normal" />
 
                     </LinearLayout>
 
 
-
-
-
-
-
-
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
-                    android:background="@color/grey_color_two"
-                    android:layout_height="1dp"/>
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:padding="10dp"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="10dp"
-
-                    android:fontFamily="@font/roboto_light"
-                    android:text="Units"
-                    android:textColorHint="@color/black"
-                    />
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_weight="2"
-                    android:layout_marginRight="5dp"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    android:adapter="@{unitAdapter}"
-                    />
+                    android:layout_height="1dp"
+                    android:background="@color/grey_color_two" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:visibility="@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.totalProductCartQty>0?View.VISIBLE:View.GONE}"
-
-                    android:orientation="horizontal">
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btn_minus_field"
-                        style="@style/text_style_extra_medium_normal"
-                        android:layout_width="40dp"
-                        android:layout_height="35dp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/left_side_grey_corners_bg"
-                        android:gravity="center"
-                        android:text="@string/minus"
-                        android:textColor="@color/black" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <TextView
-                        android:id="@+id/tv_no_of_quantity_field"
-                        style="@style/text_style_medium_normal"
-                        android:layout_width="40dp"
-                        android:layout_height="35dp"
-                        android:text='@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.totalProductCartQty+""}'
-                        android:layout_gravity="center"
-                        android:background="@color/grey_color_five"
-                        android:gravity="center"
-                        android:textColor="@color/black" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/roboto_light"
+                        android:singleLine="true"
+                        android:text="Units"
+                        android:textColor="@color/black"
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btn_add_field"
-                        style="@style/text_style_extra_medium_normal"
-                        android:layout_width="40dp"
-                        android:layout_height="35dp"
-                        android:background="@drawable/right_side_grey_corners_bg"
-                        android:text="@string/plus"
-                        android:textColor="@color/black" />
+                        android:textColorHint="@color/black"
+                        android:textSize="10dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="2"
+                            android:adapter="@{unitAdapter}"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:orientation="horizontal"
+
+                            android:visibility="@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.totalProductCartQty>0?View.VISIBLE:View.GONE}">
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/btn_minus_field"
+                                style="@style/text_style_extra_medium_normal"
+                                android:layout_width="40dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/left_side_grey_corners_bg"
+                                android:gravity="center"
+                                android:text="@string/minus"
+                                android:textColor="@color/black" />
+
+                            <TextView
+                                android:id="@+id/tv_no_of_quantity_field"
+                                style="@style/text_style_medium_normal"
+                                android:layout_width="40dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:background="@color/grey_color_five"
+                                android:gravity="center"
+                                android:text='@{productDetailsViewModel.customerProductsDetailsUnitModelMutableLiveData.totalProductCartQty+""}'
+                                android:textColor="@color/black" />
+
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/btn_add_field"
+                                style="@style/text_style_extra_medium_normal"
+                                android:layout_width="40dp"
+                                android:layout_height="35dp"
+                                android:background="@drawable/right_side_grey_corners_bg"
+                                android:text="@string/plus"
+                                android:textColor="@color/black" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
-                    android:background="@color/grey_color_two"
-                    android:layout_height="1dp"/>
+                    android:layout_height="1dp"
+                    android:background="@color/grey_color_two" />
+
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:padding="10dp"
                     android:visibility="gone"
-                    android:weightSum="3"
-                    android:layout_height="wrap_content">
+                    android:weightSum="3">
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_height="wrap_content">
+                        android:orientation="vertical">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:textSize="10dp"
                             android:fontFamily="@font/roboto_black"
+                            android:singleLine="true"
                             android:text="Expiry Date"
+                            android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            />
+                            android:textSize="10dp"
+                            android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textStyle="normal"
                             android:fontFamily="@font/roboto_light"
                             android:hint="DD/MM/YY"
-                            android:textSize="10dp"
+                            android:singleLine="true"
                             android:text='@{productDetailsViewModel.productDetailsDescResponseMutableLiveData.productDetailsDescProductDataModel.productDetailsDescModel.productExpiryDate}'
-
+                            android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            />
+                            android:textSize="10dp"
+
+                            android:textStyle="normal" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textSize="10dp"
                             android:fontFamily="@font/roboto_black"
+                            android:singleLine="true"
                             android:text="@string/Label_before_closing_time"
-                            />
+                            android:textColor="@color/black"
+                            android:textSize="10dp" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textStyle="normal"
                             android:fontFamily="@font/roboto_light"
                             android:hint="Delivery in 1 Day"
-                            android:textSize="10dp"
+                            android:singleLine="true"
                             android:text='@{productDetailsViewModel.vendorShopDetails.deliveryDaysBeforeTime}'
+                            android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            />
+                            android:textSize="10dp"
+                            android:textStyle="normal" />
 
 
                     </LinearLayout>
+
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:paddingLeft="5dp"
-                        android:layout_height="wrap_content">
+                        android:orientation="vertical"
+                        android:paddingLeft="5dp">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
                             android:fontFamily="@font/roboto_black"
+                            android:singleLine="true"
                             android:text="Opening Time"
-                            android:textSize="10dp"
+                            android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            />
+                            android:textSize="10dp"
+                            android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textStyle="normal"
                             android:fontFamily="@font/roboto_light"
                             android:hint="10:00 AM"
-                            android:textSize="10dp"
+                            android:singleLine="true"
                             android:text='@{productDetailsViewModel.vendorShopDetails.openingTime}'
-
+                            android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            />
+                            android:textSize="10dp"
+
+                            android:textStyle="normal" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
                             android:fontFamily="@font/roboto_black"
+                            android:singleLine="true"
                             android:text="@string/Label_aftere_closing_time"
-                            android:textSize="10dp"
-                            />
+                            android:textColor="@color/black"
+                            android:textSize="10dp" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textStyle="normal"
                             android:fontFamily="@font/roboto_light"
                             android:hint="Delivery in 2 Day"
+                            android:singleLine="true"
                             android:text='@{productDetailsViewModel.vendorShopDetails.deliveryDaysAfterTime}'
-                            android:textSize="10dp"
+                            android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            />
+                            android:textSize="10dp"
+                            android:textStyle="normal" />
 
 
                     </LinearLayout>
+
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:layout_height="wrap_content">
+                        android:orientation="vertical">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
                             android:fontFamily="@font/roboto_black"
+                            android:singleLine="true"
                             android:text="Closing Time"
-                            android:textSize="10dp"
+                            android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            />
+                            android:textSize="10dp"
+                            android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textStyle="normal"
                             android:fontFamily="@font/roboto_light"
-                            android:textSize="10dp"
                             android:hint="10:10 AM"
+                            android:singleLine="true"
                             android:text='@{productDetailsViewModel.vendorShopDetails.closingTime}'
-
+                            android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            />
+                            android:textSize="10dp"
 
+                            android:textStyle="normal" />
 
 
                     </LinearLayout>
-
-
-
-
-
-
-
 
 
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
-                    android:background="@color/grey_color_two"
-                    android:layout_height="1dp"/>
+                    android:layout_height="1dp"
+                    android:background="@color/grey_color_two" />
+
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:padding="10dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textSize="10dp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
                         android:fontFamily="@font/roboto_black"
+                        android:singleLine="true"
                         android:text="Product Information"
+                        android:textColor="@color/black"
                         android:textColorHint="@color/black"
-                        />
+                        android:textSize="10dp"
+                        android:textStyle="bold" />
 
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:weightSum="2"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:layout_height="wrap_content">
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:singleLine="true"
-                            android:textSize="10dp"
                             android:layout_weight="1.2"
-                            android:textColor="@color/black"
                             android:fontFamily="@font/roboto_black"
+                            android:singleLine="true"
                             android:text="Product Regional Name"
-                            />
+                            android:textColor="@color/black"
+                            android:textSize="10dp" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:singleLine="true"
                             android:layout_weight="0.8"
-                            android:textColor="@color/black"
-                            android:textStyle="normal"
-                            android:textSize="10dp"
+                            android:ellipsize="end"
                             android:fontFamily="@font/roboto_light"
                             android:hint="@string/himt_productname"
+                            android:singleLine="true"
                             android:text='@{productDetailsViewModel.productDetailsDescResponseMutableLiveData.productDetailsDescProductDataModel.productDetailsDescModel.productRegionalName}'
+                            android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            />
-
-
+                            android:textSize="10dp"
+                            android:textStyle="normal" />
 
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:weightSum="2"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_height="wrap_content">
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:singleLine="true"
-                            android:textSize="10dp"
                             android:layout_weight="1.2"
-                            android:textColor="@color/black"
                             android:fontFamily="@font/roboto_black"
+                            android:singleLine="true"
                             android:text="Brand Name"
-                            />
+                            android:textColor="@color/black"
+                            android:textSize="10dp" />
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:singleLine="true"
                             android:layout_weight="0.8"
-                            android:textColor="@color/black"
-                            android:textStyle="normal"
+                            android:ellipsize="end"
                             android:fontFamily="@font/roboto_light"
                             android:hint="Fortune"
-                            android:textSize="10dp"
+                            android:singleLine="true"
                             android:text='@{productDetailsViewModel.productDetailsDescResponseMutableLiveData.productDetailsDescProductDataModel.productDetailsDescModel.brandName}'
+                            android:textColor="@color/black"
                             android:textColorHint="@color/black"
-                            />
-
-
+                            android:textSize="10dp"
+                            android:textStyle="normal" />
 
 
                     </LinearLayout>
 
 
-
-
-
-
-
-
-
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
-                    android:background="@color/grey_color_two"
-                    android:layout_height="1dp"/>
+                    android:layout_height="1dp"
+                    android:background="@color/grey_color_two" />
+
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:padding="10dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="10dp"
                         android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
                         android:fontFamily="@font/roboto_black"
+                        android:singleLine="true"
                         android:text="Product Description"
+                        android:textColor="@color/black"
                         android:textColorHint="@color/black"
-                        />
-
+                        android:textSize="10dp"
+                        android:textStyle="bold" />
 
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:textStyle="normal"
-                        android:textSize="10dp"
                         android:fontFamily="@font/roboto_light"
                         android:text='@{productDetailsViewModel.productDetailsDescResponseMutableLiveData.productDetailsDescProductDataModel.productDetailsDescModel.productDetails}'
+                        android:textColor="@color/black"
                         android:textColorHint="@color/black"
-                        />
-
-
+                        android:textSize="10dp"
+                        android:textStyle="normal" />
 
 
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
-                    android:background="@color/grey_color_two"
-                    android:layout_height="1dp"/>
+                    android:layout_height="1dp"
+                    android:background="@color/grey_color_two" />
             </LinearLayout>
 
 
         </ScrollView>
+
         <LinearLayout
             android:id="@+id/buttons_layout_field"
             android:layout_width="match_parent"

@@ -249,11 +249,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
     implementation 'jp.wasabeef:recyclerview-animators:2.0.0'
-    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.android.volley:volley:1.2.0'
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.4.0'
     implementation 'com.google.firebase:firebase-analytics'
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     implementation "io.reactivex.rxjava2:rxjava:$rxjava"
@@ -265,6 +265,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-dynamic-links'
     implementation 'com.google.firebase:firebase-analytics'
     implementation project(':CircleIndicatore')
-
 
 }

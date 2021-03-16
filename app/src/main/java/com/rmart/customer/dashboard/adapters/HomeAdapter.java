@@ -63,7 +63,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             HomePageItemRowBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.home_page_item_row, parent, false);
             HomePageHolder vh = new HomePageHolder(binding);
 
-            // pass the view to View Holder
             return vh;
         }
     }
