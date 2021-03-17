@@ -24,7 +24,7 @@ public class MobileRecharge {
     private String stateName;
     private String paymentType = "cash";
     private int selectedSubscriber = -1;
-
+    private String vcNumber = "";
     public MobileRecharge() {
         this.prepaidSubscriberList = new ArrayList<>();
         prepaidSubscriberMap = new HashMap<>();
@@ -181,6 +181,14 @@ public class MobileRecharge {
 
     public String getPreOperator() {
         return preOperator;
+    }
+
+    public String getVcNumber() {
+        return vcNumber;
+    }
+
+    public void setVcNumber(String vcNumber) {
+        this.vcNumber = vcNumber;
     }
 
     public void setPreOperator(String preOperator) {

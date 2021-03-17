@@ -18,20 +18,28 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customerservice.mobile.api.MobileRechargeService;
 import com.rmart.customerservice.mobile.interfaces.OnMobileRechargeListener;
+import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
 import com.rmart.customerservice.mobile.models.MobileRecharge;
 import com.rmart.customerservice.mobile.models.ResponseMobileRecharge;
 import com.rmart.customerservice.mobile.models.RokadPaymentRequest;
 import com.rmart.electricity.ElecticityService;
+import com.rmart.electricity.ElectricityCcavenue;
 import com.rmart.electricity.rsakeyResponse;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,7 +56,7 @@ public class MakePaymentFragment extends BaseFragment implements View.OnClickLis
     private OnMobileRechargeListener mListener;
     private Call<ResponseMobileRecharge> user;
     ElecticityService eleService;
-
+    RokadPaymentRequest rp;
     public MakePaymentFragment() {
         // Required empty public constructor
     }
@@ -256,38 +264,48 @@ public class MakePaymentFragment extends BaseFragment implements View.OnClickLis
                                     RokadPaymentRequest rp = new RokadPaymentRequest();
                                     rp.setCustomerNumber("");
                                     rp.setMobileNumber((mdata.getMobileNumber()));
-                                    rp.setPostOperator(mdata.getMobileOperator());
-                                    rp.setPreOperator(mdata.getPreOperator());
-                                    rp.setRechargeAmount((mdata.getRechargeAmount()));                                    rp.setServicetype(1);
-                                    rp.setRechargetype((mdata.getRechargeType()));
+                                    rp.setPostOperator(mdata.getPreOperator());
+                                    rp.setPreOperator("");
+                                    rp.setRechargeAmount((mdata.getRechargeAmount()));
+                                    rp.setServicetype(1);
+                                    rp.setRechargetype("2");
                                     rp.setPreOperatorDth("");
-                                    rp.setRechargetype((mdata.getRechargeType()));
+                                    rp.setLocation(mdata.getStateName());
+                                    rp.setRechargeTypeRegular("1");
                                     ii.putExtra("details",rp);
+                                   // CcavenueRequestData(rp);
+
                                 }else if(mdata.getRecType().equals(getResources().getString(R.string.prepaid_radio_btn))){
-                                    RokadPaymentRequest rp = new RokadPaymentRequest();
+                                    rp = new RokadPaymentRequest();
                                     rp.setCustomerNumber("");
                                     rp.setMobileNumber((mdata.getMobileNumber()));
-                                    rp.setPostOperator(mdata.getMobileOperator());
-                                    rp.setPreOperator(mdata.getPreOperator());
-                                    rp.setRechargeAmount((mdata.getRechargeAmount()));                                    rp.setServicetype(1);
-                                    rp.setRechargetype((mdata.getRechargeType()));
-                                    rp.setPreOperatorDth("");
-                                    rp.setRechargetype((mdata.getRechargeType()));
-                                    ii.putExtra("details",rp);
-                                }else {
-                                    RokadPaymentRequest rp = new RokadPaymentRequest();
-                                    rp.setCustomerNumber(mdata.getMobileNumber());
-                                    rp.setMobileNumber((mdata.getMobileNumber()));
-                                    rp.setPostOperator(mdata.getMobileOperator());
+                                    rp.setPostOperator("");
                                     rp.setPreOperator(mdata.getPreOperator());
                                     rp.setRechargeAmount((mdata.getRechargeAmount()));
-                                    rp.setServicetype(2);
+                                    rp.setServicetype(1);
                                     rp.setRechargetype((mdata.getRechargeType()));
-                                    rp.setPreOperatorDth("2");
-                                    rp.setRechargeType((mdata.getRechargeType()));
+                                    rp.setPreOperatorDth("");
+                                    rp.setLocation(mdata.getStateName());
+                                    rp.setRechargeTypeRegular("1");
                                     ii.putExtra("details",rp);
+                                    //CcavenueRequestData(rp);
                                 }
+                                else {
+                                   rp = new RokadPaymentRequest();
+                                    rp.setVc_number(mdata.getVcNumber());
+                                    rp.setMobileNumber("");
+                                    rp.setPostOperator("");
+                                    rp.setPreOperator("");
+                                    rp.setRechargeAmount((mdata.getRechargeAmount()));
+                                    rp.setServicetype(2);
+                                    rp.setRechargetype("");
+                                    rp.setPreOperatorDth(mdata.getPreOperator());
+                                    rp.setRechargeTypeRegular("1");
+                                    rp.setLocation(mdata.getStateName());
+                                    ii.putExtra("details",rp);
+                                   // CcavenueRequestData(rp);
 
+                                }
 
                                 startActivity(ii);
 
@@ -307,5 +325,75 @@ public class MakePaymentFragment extends BaseFragment implements View.OnClickLis
         }
 
     }
+    public void CcavenueRequestData( RokadPaymentRequest paymentrp){
+
+        if (Utils.isNetworkConnected(getActivity())) {
+
+            ProgressDialog progressBar = new ProgressDialog(getActivity(), R.style.mySpinnerTheme);
+            progressBar.setCancelable(false);
+            progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            progressBar.show();
+
+
+            ArrayList<String> ccabledata = new ArrayList<>();
+            ccabledata.add("[{\"amount\":\"160.00\",\"bank_ref_no\":\"1614605172164\",\"billing_address\":\"Ffg\",\"billing_city\":\"Ttt\",\"billing_country\":\"India\",\"billing_email\":\"shwetadalvi9@gmail.com\",\"billing_name\":\"Shweta Dalvi\",\"billing_state\":\"Tt\",\"billing_tel\":\"8446399429\",\"billing_zip\":\"Rtt\",\"card_name\":\"AvenuesTest\",\"client_id\":\"2\",\"created_by\":\"0\",\"delivery_address\":\"Ffg\",\"delivery_city\":\"Ttt\",\"delivery_country\":\"India\",\"delivery_name\":\"Shweta Dalvi\",\"delivery_state\":\"Tt\",\"delivery_tel\":\"8446399429\",\"delivery_zip\":\"Rtt\",\"discount_value\":\"0.0\",\"failure_message\":\"\",\"mer_amount\":\"160.00\",\"message\":\"Thank you for shopping with us. Your transaction is successful.\",\"messageheading\":\"Transaction Successful\",\"order_id\":\"924\",\"order_status\":\"Success\",\"payment_mode\":\"Net Banking\",\"response_code\":\"0\",\"service_id\":7,\"service_order_id\":1031860,\"status_code\":\"null\",\"status_message\":\"Y\",\"tracking_id\":\"310006951692\",\"trans_date\":\"2021-03-01 18:56:59\"");
+
+            Gson gson = new Gson();
+            JsonElement element = gson.toJsonTree(ccabledata, new TypeToken<List<ElectricityCcavenue>>() {
+            }.getType());
+
+            if (!element.isJsonArray()) {
+                // fail appropriately
+                throw new NullPointerException();
+            }
+            JsonArray ccavenuejsonArray = element.getAsJsonArray();
+            MobileRechargeService mService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(MobileRechargeService.class);
+            mService.VRecharge(paymentrp.getServicetype(),paymentrp.getPreOperatorDth(),paymentrp.getVc_number(),
+                    paymentrp.getRechargetype(),paymentrp.getPreOperator(),paymentrp.getPostOperator(),paymentrp.getLocation(),
+                    paymentrp.getMobileNumber(),paymentrp.getRechargeTypeRegular(),paymentrp.getRechargeAmount(),MyProfile.getInstance().getUserID(),ccavenuejsonArray.toString())
+                    .enqueue(new Callback<MRechargeBaseClass>() {
+                        @Override
+                        public void onResponse(Call<MRechargeBaseClass> call, Response<MRechargeBaseClass> response) {
+
+                            progressBar.cancel();
+                            MRechargeBaseClass datap = response.body();
+                            if (datap.getStatus().equalsIgnoreCase("success")) {
+                                 Toast.makeText(getActivity(), "Payment success"+datap, Toast.LENGTH_LONG).show();
+
+                                //setData(data);
+                               // openDialog1(datap.getData());
+
+                            } else {
+                                showDialog("", datap.getMsg());
+                                //Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
+                                Intent ii = new Intent(getActivity(), MobileRechargeActivity.class);
+                                startActivity(ii);
+                               // finishAffinity();
+                            }
+
+                            progressBar.cancel();
+                        }
+
+                        @Override
+                        public void onFailure(Call<MRechargeBaseClass> call, Throwable t) {
+                            // Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
+                            showDialog("", t.getMessage());
+                            progressBar.cancel();
+                            // Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
+                            Intent ii = new Intent(getActivity(), MobileRechargeActivity.class);
+                            startActivity(ii);
+                            //finishAffinity();
+                        }
+                    });
+
+        }else{
+            showDialog("Sorry!!", getString(R.string.error_internet));
+            Intent ii = new Intent(getActivity(), MobileRechargeActivity.class);
+            startActivity(ii);
+           // finishAffinity();
+        }
+
+    }
+
 
 }

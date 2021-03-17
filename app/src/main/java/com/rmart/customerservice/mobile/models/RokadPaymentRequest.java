@@ -34,13 +34,25 @@ public class RokadPaymentRequest implements Serializable {
         @SerializedName("recharge_amount")
         @Expose
         private String rechargeAmount;
-        @SerializedName("recharge_type")
+
+    @SerializedName("recharge_type")
         @Expose
-        private String rechargeType;
+        private String rechargeTypeRegular;
         @SerializedName("user_id")
         @Expose
         private int userId;
+        @SerializedName("customer_number")
+        @Expose
+        private String vc_number;
 
+
+    public String getVc_number() {
+        return vc_number;
+    }
+
+    public void setVc_number(String vc_number) {
+        this.vc_number = vc_number;
+    }
         public int getServicetype() {
             return servicetype;
         }
@@ -113,12 +125,12 @@ public class RokadPaymentRequest implements Serializable {
             this.rechargeAmount = rechargeAmount;
         }
 
-        public String getRechargeType() {
-            return rechargeType;
+        public String getRechargeTypeRegular() {
+            return rechargeTypeRegular;
         }
 
-        public void setRechargeType(String rechargeType) {
-            this.rechargeType = rechargeType;
+        public void setRechargeTypeRegular(String rechargeType) {
+            this.rechargeTypeRegular = rechargeType;
         }
 
         public int getUserId() {
