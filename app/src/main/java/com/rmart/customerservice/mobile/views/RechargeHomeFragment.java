@@ -324,7 +324,7 @@ public class RechargeHomeFragment extends BaseFragment implements View.OnClickLi
                     racType = getResources().getString(R.string.prepaid_radio_btn);
                     seePlans.setVisibility(View.VISIBLE);
                     mListener.getMobileRechargeModule().setPlanType("Prepaid Mobile");
-                    mListener.getMobileRechargeModule().setRechargeType("0");
+                    mListener.getMobileRechargeModule().setRechargeType("1");
                     saveInstanceBundle.putInt("recharge_type_id",R.id.recharge_type_prepaid);
                     displayPrepaidSubscriberList();
                 break;
@@ -370,7 +370,7 @@ public class RechargeHomeFragment extends BaseFragment implements View.OnClickLi
 
                         if(racType.equals(getString(R.string.prepaid_radio_btn))){
                             mListener.getMobileRechargeModule().setPlanType("Prepaid Mobile");
-                            mListener.getMobileRechargeModule().setRechargeType("0");
+                            mListener.getMobileRechargeModule().setRechargeType("1");
                         } else if (racType.equals(getString(R.string.postpaid_radio_btn))){
                             mListener.getMobileRechargeModule().setRechargeType("1");
                             mListener.getMobileRechargeModule().setPlanType("Postpaid Mobile");
@@ -408,11 +408,10 @@ public class RechargeHomeFragment extends BaseFragment implements View.OnClickLi
                     else if(vc_num.getText().toString().isEmpty()) {
                         showDialog("Sorry!!", "please Enter Valid Consumer Number");
                     }else{
-                        mListener.getMobileRechargeModule().setMobileNumber(vc_num.getText().toString());
+                        mListener.getMobileRechargeModule().setVcNumber(vc_num.getText().toString());
                         mListener.getMobileRechargeModule().setRechargeAmount(amount);
                         mListener.getMobileRechargeModule().setRechargeType("2");;
                         mListener.getMobileRechargeModule().setRecType("DTH");
-                        mListener.getMobileRechargeModule().setPreOperator("DTH");
                         mListener.getMobileRechargeModule().setStateName(String.valueOf(stateSelector.getSelectedItem()));
                         mListener.getMobileRechargeModule().setMobileOperator(operator_select.getSelectedItem().toString());
                        String key= getoperatorCode(operator_select.getSelectedItem().toString());

@@ -89,6 +89,6 @@ public interface MobileRechargeService {
             @Field("recharge_type") String recharge_type,
             @Field("recharge_amount") String recharge_amount, //TODO: pass 0 for top-up and 1 for any chosen plan
             @Field("user_id") String user_id,
-            @Field("ccavenue_data") String ccavenue_data);
+            @Field("ccavenuedata") String ccavenue_data);
 
 }
