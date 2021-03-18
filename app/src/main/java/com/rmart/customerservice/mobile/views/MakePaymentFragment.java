@@ -30,7 +30,7 @@ import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
 import com.rmart.customerservice.mobile.models.MobileRecharge;
 import com.rmart.customerservice.mobile.models.ResponseMobileRecharge;
 import com.rmart.customerservice.mobile.models.RokadPaymentRequest;
-import com.rmart.electricity.ElecticityService;
+import com.rmart.electricity.api.ElecticityService;
 import com.rmart.electricity.ElectricityCcavenue;
 import com.rmart.electricity.rsakeyResponse;
 import com.rmart.profile.model.MyProfile;

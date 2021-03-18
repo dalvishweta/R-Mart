@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#416C1D</color>
     <color name="colorAccent">#FF6161</color>
     <color name="black">#333333</color>
+    <color name="black2">#000000</color>
     <color name="button_bg">#FF9702</color>
     <color name="edit_text_hint">#707070</color>
     <color name="white">#ffffffff</color>
@@ -63,5 +64,6 @@
     <color name="red">#ff0000</color>
     <color name="yello">#E3CF22</color>
     <color name="tab_normal_color">#FEEBFE</color>
+    <color name="backgrounndgray">#E1E1E1</color>
 
 </resources>

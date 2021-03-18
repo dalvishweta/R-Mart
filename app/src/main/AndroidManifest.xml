@@ -13,8 +13,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".RMartApplication"
@@ -29,14 +28,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".electricity.activities.ElectricityActivity"
+            android:theme="@style/AppTheme2"
+            >
 
-        <activity android:name=".retiler.inventory.brand.activities.BrandFilterActivity">
-
         </activity>
-        <activity android:name=".retiler.inventory.product_from_library.activities.ProductListActivity">
-        </activity>
-        <activity android:name=".retiler.inventory.category.activities.CategoryFilterActivity">
-        </activity>
+        <activity android:name=".retiler.inventory.brand.activities.BrandFilterActivity"></activity>
+        <activity android:name=".retiler.inventory.product_from_library.activities.ProductListActivity"></activity>
+        <activity android:name=".retiler.inventory.category.activities.CategoryFilterActivity"></activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -54,7 +54,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".profile.views.MyProfileActivity"
@@ -103,28 +102,26 @@
             android:name=".customer.views.PlayVideosView"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
-
-        <activity android:name=".retiler.product.view.AddNewProductActivity"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".retiler.product.view.AddNewProductActivity"
             android:label="Add New Product"
-            android:theme="@style/AppThemeNoActionBar">
-
-        </activity>
-        <activity android:name=".electricity.ActivityElectricity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar"></activity>
+        <activity
+            android:name=".electricity.ActivityElectricity"
             android:label="@string/Electricity_service"
-            android:theme="@style/AppThemeNoActionBar">
-        </activity>
-        <activity android:name=".electricity.FetchBill"
             android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar"></activity>
+        <activity
+            android:name=".electricity.FetchBill"
             android:label="@string/Electricity_service"
-            android:theme="@style/AppThemeNoActionBar">
-        </activity>
-        <activity android:name=".electricity.PaymentActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar"></activity>
+        <activity
+            android:name=".electricity.PaymentActivity"
             android:label="@string/Electricity_service"
-            android:theme="@style/AppThemeNoActionBar">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBar"></activity>
         <activity
             android:name=".customerservice.mobile.views.MobileRechargeActivity"
             android:configChanges="orientation"
@@ -135,6 +132,7 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
+
         <service
             android:name=".services.UpdateProductQuantityServices"
             android:exported="false"

@@ -20,7 +20,6 @@ public class ShopRepository {
 
         Shops shope = RetrofitClientInstance.getRetrofitInstance().create(Shops.class);
         final MutableLiveData<HomePageResponse> resultMutableLiveData = new MutableLiveData<>();
-        String type = MyProfile.getInstance().getRoleID();
         Call<HomePageResponse> call = shope.getShopHomePageNEW(CLIENT_ID);
         final HomePageResponse result = new HomePageResponse();
 

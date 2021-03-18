@@ -34,6 +34,7 @@ import com.google.gson.reflect.TypeToken;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomLoadingDialog;
+import com.rmart.electricity.api.ElecticityService;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -246,7 +247,7 @@ public class PaymentActivity extends AppCompatActivity {
                 throw new NullPointerException();
             }
            JsonArray ccavenuejsonArray = element.getAsJsonArray();
-            ElecticityService  eleService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(ElecticityService.class);
+            ElecticityService eleService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(ElecticityService.class);
             eleService.electicitybillProcess(MyProfile.getInstance().getUserID(), operator,String.valueOf(ob.getConsumerID()),bill_unit,
                    mobile_number,String.valueOf(ob.getDueAmount()),ob.getConsumerName(),String.valueOf(ob.getOrderId()),ccavenuejsonArray.toString())
                     .enqueue(new Callback<paybill>() {

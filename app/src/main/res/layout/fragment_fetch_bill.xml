@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="FetchElectricityBillViewModule"
+            type="com.rmart.electricity.fetchbill.module.FetchElectricityBillViewModule" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgrounndgray"
+        android:orientation="vertical"
+        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+
+            app:title="@{FetchElectricityBillViewModule.operatorMutableLiveData.name}"
+            app:titleTextColor="@color/white">
+
+
+
+
+        </androidx.appcompat.widget.Toolbar>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="15dp"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="5dp"
+            app:cardBackgroundColor="@color/white"
+            >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@mipmap/light_bill_preview"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/preview_bill_sample"
+                android:textSize="20sp"
+                android:fontFamily="@font/roboto_light"
+
+                android:textColor="@color/black2"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp" />
+        </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="15dp"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="5dp"
+        app:cardBackgroundColor="@color/white"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/consummerno_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:hint="@string/enter_consumer_number"
+            app:errorText="@{FetchElectricityBillViewModule.errorCumsumerNumber}"
+
+            >
+
+            <EditText
+                android:id="@+id/consummerno"
+                android:layout_width="match_parent"
+                android:layout_height="61dp"
+                android:inputType="text"
+                android:onTextChanged="@{FetchElectricityBillViewModule.onCumsumerNumberTextChanged}"
+                android:text="@={FetchElectricityBillViewModule.cumsumerNumber}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/bill_unit_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="15dp"
+            android:visibility='@{FetchElectricityBillViewModule.operatorMutableLiveData.slug.equalsIgnoreCase("ADE")?View.GONE:View.VISIBLE}'
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:hint="@string/enter_bill_units"
+            app:errorText="@{FetchElectricityBillViewModule.errorUnits}"
+
+
+            >
+            <EditText
+                android:id="@+id/bill_unit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={FetchElectricityBillViewModule.units}"
+                android:onTextChanged="@{FetchElectricityBillViewModule.onUnitsTextChanged}"
+
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/mobile_number_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:hint="@string/enter_customer_mobile_number"
+            app:errorText="@{FetchElectricityBillViewModule.errorMobilenumber}"
+
+            >
+            <EditText
+                android:id="@+id/mobile_number"
+                android:layout_width="match_parent"
+                android:digits="@string/only_numbers"
+                android:layout_height="wrap_content"
+                android:onTextChanged="@{FetchElectricityBillViewModule.onMobilenumberTextChanged}"
+
+                android:text="@={FetchElectricityBillViewModule.mobilenumber}"
+                android:maxLength="10"
+                android:inputType="number" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="15dp"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="5dp"
+            app:cardBackgroundColor="@color/white"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_launcher"
+                     />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/electricity_note"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/black2"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <ProgressBar
+            android:visibility="@{FetchElectricityBillViewModule.isLoading?View.VISIBLE:View.GONE}"
+            android:id="@+id/progressBar1"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/searchLayout"
+            android:layout_height="wrap_content" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/fetch_bill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{FetchElectricityBillViewModule.isLoading?View.GONE:View.VISIBLE}"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:background="@drawable/submit_button_bg"
+            android:onClick="@{(v) -> FetchElectricityBillViewModule.onClick(v)}"
+            android:text="@string/confirm_38_pay"
+            android:textColor="@color/white"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            />
+    </LinearLayout>
+</layout>

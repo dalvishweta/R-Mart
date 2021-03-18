@@ -20,6 +20,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 
 import com.google.gson.Gson;
 import com.rmart.R;
+import com.rmart.electricity.api.ElecticityService;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -34,14 +35,9 @@ import retrofit2.Response;
 public class ActivityElectricity extends AppCompatActivity {
 
     public Spinner sppiner_opertor;
-    protected ProgressDialog progressBar;
     public AppCompatEditText bill_unit_two,consumer_no_one,mobile_two;
       public TextView bill_unit_one;
     public LinearLayout lin_two,lin_one;
-    String Consumer_name="";
-    String order_id="";
-    String amount="";
-    String  bill_unit_value="";
     public AppCompatButton fetch_bill,pay_bill;
     ElecticityService eleService;
     public String SelectedValue="";
@@ -153,7 +149,6 @@ public class ActivityElectricity extends AppCompatActivity {
                                                     intent.putExtra("selected_value", SelectedValue);
                                                     intent.putExtra("mobile_no", mobile_two.getText().toString());
                                                     intent.putExtra("bill_unit", bill_unit_two.getText().toString());
-
                                                     startActivity(intent);
                                                 } else {
                                                     Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
@@ -178,13 +173,7 @@ public class ActivityElectricity extends AppCompatActivity {
                                                         e.printStackTrace();
                                                     }
 
-                                               /* if (error..getBillUnit() != null) {
-                                                    showDialog("", error.getBillUnit());
-                                                } else if (error.getConsumerID()!=null) {
-                                                    showDialog("",error.getConsumerID());
-                                                } else if (error.getMobileNumbe() != null) {
-                                                    showDialog("", error.getMobileNumbe());
-                                                }*/
+
 
                                                 }
 
@@ -253,7 +242,6 @@ public class ActivityElectricity extends AppCompatActivity {
                                                     intent.putExtra("selected_value", SelectedValue);
                                                     intent.putExtra("mobile_no", mobile_two.getText().toString());
                                                     intent.putExtra("bill_unit", bill_unit_two.getText().toString());
-
                                                     startActivity(intent);
                                                 } else {
                                                     Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
@@ -327,21 +315,7 @@ public class ActivityElectricity extends AppCompatActivity {
 
     }
 
-/*
-    private void setData(ElecProcessPOJO data) {
 
-        consumer_name.setText(data.getData().getConsumerName());
-        // consumer_id.setText(data.getData().getConsumerID());
-        DueAmount.setText(data.getData().getDueAmount());
-        OrderId.setText(data.getData().getOrderId());
-        DueDate.setText(data.getData().getDueDate());
-        BillDate.setText(data.getData().getBillDate());
-        Consumer_name=data.getData().getConsumerName();
-        amount=String.valueOf(data.getData().getDueAmount());
-        order_id=data.getData().getOrderId();
-
-    }
-*/
 
     public void showDialog(String title, String msg) {
         try {

@@ -81,6 +81,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         } else {
             CategoryHomeHolder myViewHolder=     (CategoryHomeHolder ) holder2;
+            myViewHolder.binding.topview.setOnClickListener(view -> {
+                onClickListner.onCategorySelected(categories.get(position));
+            });
             myViewHolder.bind(categories.get(position));
         }
 

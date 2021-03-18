@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseActivity;
+import com.rmart.electricity.api.ElecticityService;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;

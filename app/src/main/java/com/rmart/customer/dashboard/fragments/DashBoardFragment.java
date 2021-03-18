@@ -26,6 +26,7 @@ import com.rmart.customer.shops.list.fragments.VendorShopsListFragment;
 import com.rmart.customerservice.mobile.views.MobileRechargeActivity;
 import com.rmart.databinding.FragmentDashBoardBinding;
 import com.rmart.electricity.ActivityElectricity;
+import com.rmart.electricity.activities.ElectricityActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -81,7 +82,7 @@ public class DashBoardFragment extends BaseFragment {
                         Toast.makeText(getContext(),"Comming Soon",Toast.LENGTH_LONG).show();
                     }
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("light-bill")){
-                        Intent intent = new Intent(getContext(), ActivityElectricity.class);
+                        Intent intent = new Intent(getContext(), ElectricityActivity.class);
                         startActivity(intent);
                     }
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("travel-booking")){

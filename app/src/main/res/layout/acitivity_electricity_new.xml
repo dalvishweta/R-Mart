@@ -56,95 +56,95 @@
             </LinearLayout>
 
             <LinearLayout
-            android:id="@+id/lin_one"
-             android:layout_width="match_parent"
-             android:layout_height="400dp"
-             android:orientation="vertical"
-             android:background="@color/white"
-             android:layout_marginLeft="10dp"
-             android:layout_marginRight="10dp"
-             android:layout_marginTop="60dp">
+                android:id="@+id/lin_one"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
                 <Spinner
                     android:id="@+id/sppiner_opertor"
                     android:layout_width="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"/>
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="10dp" />
 
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="Consumer Number"
-                 android:padding="10dp"
-                 android:textStyle="bold"
-                 android:textSize="18sp"
-                 android:layout_marginTop="20dp">
-             </TextView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:padding="10dp"
+                    android:text="Consumer Number"
+                    android:textSize="18sp"
+                    android:textStyle="bold"></TextView>
 
-             <androidx.appcompat.widget.AppCompatEditText
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:hint="Please Enter Consumer Number"
-                 android:id="@+id/consumer_no_one"
-                 android:layout_marginTop="5dp"
-                 android:digits="0123456789"
-                 android:padding="15dp"
-                 android:inputType="phone"
-                 android:maxLength="15"
-                 android:layout_marginRight="8dp"
-                 android:layout_marginLeft="8dp"
-                 android:background="@drawable/layout_border_bg"
-                 />
-             <TextView
-                 android:id="@+id/bill_unit_one"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="Bill Unit"
-                 android:layout_marginTop="10dp"
-                 android:textStyle="bold"
-                 android:textSize="18sp"
-                 android:padding="10dp">
-             </TextView>
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/consumer_no_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/layout_border_bg"
+                    android:digits="0123456789"
+                    android:hint="Please Enter Consumer Number"
+                    android:inputType="phone"
+                    android:maxLength="15"
+                    android:padding="15dp" />
 
-             <androidx.appcompat.widget.AppCompatEditText
-                 android:id="@+id/bill_unit_two"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:hint="Please Enter Bill Unit"
-                 android:digits="0123456789"
-                 android:inputType="phone"
-                 android:maxLength="10"
-                 android:padding="15dp"
-                 android:background="@drawable/layout_border_bg"
-                 android:layout_marginTop="5dp"
-                 android:layout_marginRight="8dp"
-                 android:layout_marginLeft="8dp"/>
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="Customer Mobile Number"
-                 android:layout_marginTop="10dp"
-                 android:textStyle="bold"
-                 android:textSize="18sp"
-                 android:padding="10dp">
-             </TextView>
+                <TextView
+                    android:id="@+id/bill_unit_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:text="Bill Unit"
+                    android:textSize="18sp"
+                    android:textStyle="bold"></TextView>
 
-             <androidx.appcompat.widget.AppCompatEditText
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:hint="Please Enter Mobile Number"
-                 android:id="@+id/mobile_two"
-                 android:digits="0123456789"
-                 android:inputType="phone"
-                 android:maxLength="10"
-                 android:padding="15dp"
-                 android:layout_marginTop="5dp"
-                 android:background="@drawable/layout_border_bg"
-                 android:layout_marginRight="8dp"
-                 android:layout_marginLeft="8dp" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/bill_unit_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/layout_border_bg"
+                    android:digits="0123456789"
+                    android:hint="Please Enter Bill Unit"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:padding="15dp" />
 
-         </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:text="Customer Mobile Number"
+                    android:textSize="18sp"
+                    android:textStyle="bold"></TextView>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/mobile_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/layout_border_bg"
+                    android:digits="0123456789"
+                    android:hint="Please Enter Mobile Number"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:padding="15dp" />
+
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/lin_two"
                android:layout_below="@+id/lin_one"
