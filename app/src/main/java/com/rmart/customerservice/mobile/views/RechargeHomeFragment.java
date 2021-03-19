@@ -193,8 +193,11 @@ public class RechargeHomeFragment extends BaseFragment implements View.OnClickLi
     }
 
     private void selectService() {
-        String[] arraySpinner = new String[] {
+       /* String[] arraySpinner = new String[] {
                 "Select Service type", "Mobile Recharge", "DTH"
+        };*/
+        String[] arraySpinner = new String[] {
+              "Mobile Recharge"
         };
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_item, arraySpinner);

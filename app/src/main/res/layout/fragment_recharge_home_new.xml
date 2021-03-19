@@ -81,7 +81,11 @@
             android:layout_height="wrap_content">
         </androidx.recyclerview.widget.RecyclerView>
 
-
+        <ProgressBar
+            android:layout_centerInParent="true"
+            android:id="@+id/simpleProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/mobile_recharge_nxt_btn"
             android:layout_marginTop="40dp"

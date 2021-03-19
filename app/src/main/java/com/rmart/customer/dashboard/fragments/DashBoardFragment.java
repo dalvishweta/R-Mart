@@ -22,7 +22,7 @@ import com.rmart.customer.dashboard.model.ServiceOffer;
 import com.rmart.customer.dashboard.model.ShopType;
 import com.rmart.customer.dashboard.viewmodel.HomeViewModel;
 import com.rmart.customer.shops.list.fragments.VendorShopsListFragment;
-import com.rmart.customerservice.mobile.views.Activity_SelectNumber;
+import com.rmart.customerservice.mobile.views.MobileRechargeActivity;
 import com.rmart.databinding.FragmentDashBoardBinding;
 import com.rmart.electricity.activities.ElectricityActivity;
 
@@ -71,7 +71,7 @@ public class DashBoardFragment extends BaseFragment {
                 @Override
                 public void onServiceClick(ServiceOffer serviceOffer) {
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("mobile-recharge")){
-                        Intent intent = new Intent(getContext(), Activity_SelectNumber.class);
+                        Intent intent = new Intent(getContext(), MobileRechargeActivity.class);
                         startActivity(intent);
                     }
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("dth-recharge")){
