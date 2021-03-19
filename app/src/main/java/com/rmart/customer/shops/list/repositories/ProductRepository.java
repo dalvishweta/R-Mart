@@ -25,18 +25,25 @@ public class ProductRepository {
             @Override
             public void onResponse(Call<ProductSearchResponce> call, Response<ProductSearchResponce> response) {
                 ProductSearchResponce data = response.body();
-                resultMutableLiveData.setValue(data);
+                if(data!=null) {
+                    resultMutableLiveData.setValue(data);
+                }else {
+                    result.setMsg("Please Try After Some Time");
+                    result.setStatus("faild");
+                    resultMutableLiveData.setValue(result);
+                }
 
             }
 
             @Override
             public void onFailure(Call<ProductSearchResponce> call, Throwable t) {
                 if(t.getLocalizedMessage().equalsIgnoreCase("Unable to resolve host \"hungryindia.co.in\": No address associated with hostname"))
-                { result.setMsg("Please Check Enternet Connection");
+                { result.setMsg("Please Check Internet Connection");
 
                 } else {
                     result.setMsg(t.getLocalizedMessage());
                 }
+                result.setStatus("failed");
                 resultMutableLiveData.setValue(result);
 
 

@@ -443,6 +443,11 @@
     <string name="enter_bill_units">Enter Bill Units</string>
     <string name="enter_customer_mobile_number">Enter Customer Mobile Number</string>
     <string name="confirm_38_pay"><![CDATA[CONFIRM & PAY]]></string>
+    <string name="bill_details">Bill Details</string>
+    <string name="msedc_mahavitaran">MSEDC Mahavitaran</string>
+    <string name="consumer_number_9893398373783">Consumer Number : 9893398373783</string>
+    <string name="label_customer_name">Customer Name</string>
+    <string name="vishal_landepatil">: Vishal Landepatil</string>
 
 
 </resources>

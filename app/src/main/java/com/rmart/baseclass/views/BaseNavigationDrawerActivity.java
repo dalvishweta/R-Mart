@@ -144,8 +144,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.my_wish_list).setOnClickListener(this);
         findViewById(R.id.share_app).setOnClickListener(this);
         findViewById(R.id.wholesaler).setOnClickListener(this);
-        findViewById(R.id.ele_service).setOnClickListener(this);
-        findViewById(R.id.mobile_service).setOnClickListener(this);
+
 
         ivProfileImageField = findViewById(R.id.iv_user_profile_image);
         MyProfile myProfile = MyProfile.getInstance();
@@ -359,14 +358,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     startActivity(intent);
 
                     break;
-                case R.id.ele_service:
-                    intent = new Intent(this, ActivityElectricity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.mobile_service:
-                    intent = new Intent(this, MobileRechargeActivity.class);
-                    startActivity(intent);
-                    break;
+
                 case R.id.share_app:
                     MyProfile myProfile = MyProfile.getInstance();
 

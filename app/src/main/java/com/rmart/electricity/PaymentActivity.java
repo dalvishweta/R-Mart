@@ -34,7 +34,9 @@ import com.google.gson.reflect.TypeToken;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomLoadingDialog;
+import com.rmart.electricity.activities.ElectricityActivity;
 import com.rmart.electricity.api.ElecticityService;
+import com.rmart.electricity.fetchbill.model.BillDetails;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -50,15 +52,12 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 public class PaymentActivity extends AppCompatActivity {
     protected Dialog progressDialog;
     private WebView webview;
     CCavenueres ccavenue_data;
     String mobile_number,bill_unit,operator;
-    private String mobile_no,bill_unitt,name,id,amt,orderid,duedate,billdate,Merchant_ref;
-
-    data ob;
+    BillDetails ob;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,10 +67,10 @@ public class PaymentActivity extends AppCompatActivity {
         progressDialog = CustomLoadingDialog.getInstance(this);
 
         Intent ii =getIntent();
-      mobile_number=ii.getStringExtra("mobile_number");
+        mobile_number=ii.getStringExtra("mobile_number");
         bill_unit=ii.getStringExtra("bill_unit");
         operator=ii.getStringExtra("operator");
-       ob = (data) getIntent().getSerializableExtra("cust_details");
+       ob = (BillDetails) getIntent().getSerializableExtra("cust_details");
 
         ccavenue_data = (CCavenueres) getIntent().getSerializableExtra("rsakeyresonse");
         initWebView();
@@ -178,14 +177,12 @@ public class PaymentActivity extends AppCompatActivity {
             Gson g = new Gson();
             ElectricityCcavenue ccAvenueResponse = g.fromJson(html, ElectricityCcavenue.class);
             if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
-               // showDialog(ccAvenueResponse.getMessageheading(),"");
                 CcavenueRequestData(ccAvenueResponse);
             }else{
                 showDialog(getString(R.string.message), ccAvenueResponse.getMessage());
-                Intent ii = new Intent(PaymentActivity.this, ActivityElectricity.class);
+                Intent ii = new Intent(PaymentActivity.this, ElectricityActivity.class);
                 startActivity(ii);
                 finishAffinity();
-
             }
         }
 
@@ -213,7 +210,7 @@ public class PaymentActivity extends AppCompatActivity {
             builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Intent ii = new Intent(PaymentActivity.this, ActivityElectricity.class);
+                    Intent ii = new Intent(PaymentActivity.this, ElectricityActivity.class);
                     startActivity(ii);
                     finishAffinity();
                 }
@@ -265,7 +262,7 @@ public class PaymentActivity extends AppCompatActivity {
                             } else {
                                 showDialog("", datap.getMsg());
                                 //Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
-                                Intent ii = new Intent(PaymentActivity.this, ActivityElectricity.class);
+                                Intent ii = new Intent(PaymentActivity.this, ElectricityActivity.class);
                                 startActivity(ii);
                                 finishAffinity();
                             }
@@ -278,7 +275,7 @@ public class PaymentActivity extends AppCompatActivity {
                             // Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
                             showDialog("", t.getMessage());
                             progressBar.cancel();
-                            Intent ii = new Intent(PaymentActivity.this, ActivityElectricity.class);
+                            Intent ii = new Intent(PaymentActivity.this, ElectricityActivity.class);
                             startActivity(ii);
                             finishAffinity();
                             // Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
@@ -318,13 +315,10 @@ public class PaymentActivity extends AppCompatActivity {
             BillDatee.setText("Bill Date: " +  data.getData().getBillDate());
 
 
-            pay_bill.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent ii = new Intent(PaymentActivity.this, ActivityElectricity.class);
-                    startActivity(ii);
-                    finishAffinity();
-                }
+            pay_bill.setOnClickListener(v -> {
+                Intent ii = new Intent(PaymentActivity.this, ElectricityActivity.class);
+                startActivity(ii);
+                finishAffinity();
             });
 
 

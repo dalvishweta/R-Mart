@@ -21,6 +21,8 @@ import androidx.appcompat.widget.AppCompatEditText;
 import com.google.gson.Gson;
 import com.rmart.R;
 import com.rmart.electricity.api.ElecticityService;
+import com.rmart.electricity.fetchbill.model.ElecProcessPOJO;
+import com.rmart.electricity.fetchbill.model.BillDetails;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -155,7 +157,7 @@ public class ActivityElectricity extends AppCompatActivity {
 
                                                 }
                                             } else {
-                                                com.rmart.electricity.data error =data.getData();
+                                                BillDetails error =data.getData();
                                                 if(error!=null){
                                                     Gson gson = new Gson();
                                                     String myJson = gson.toJson(error);
@@ -248,7 +250,7 @@ public class ActivityElectricity extends AppCompatActivity {
 
                                                 }
                                             } else {
-                                                com.rmart.electricity.data error =data.getData();
+                                                BillDetails error =data.getData();
                                                 if(error!=null){
                                                     Gson gson = new Gson();
                                                     String myJson = gson.toJson(error);

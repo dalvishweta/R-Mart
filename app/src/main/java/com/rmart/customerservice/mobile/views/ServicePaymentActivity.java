@@ -44,7 +44,7 @@ import com.rmart.customerservice.mobile.models.mPlans.RechargePlans;
 import com.rmart.customerservice.mobile.models.mPlans.Records;
 import com.rmart.electricity.CCavenueres;
 import com.rmart.electricity.ElectricityCcavenue;
-import com.rmart.electricity.data;
+import com.rmart.electricity.fetchbill.model.BillDetails;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -71,7 +71,7 @@ public class ServicePaymentActivity extends AppCompatActivity implements OnMobil
     private String mobile_no,bill_unitt,name,id,amt,orderid,duedate,billdate,Merchant_ref;
     Context context;
 
-    data ob;
+    BillDetails ob;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

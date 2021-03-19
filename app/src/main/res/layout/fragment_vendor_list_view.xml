@@ -157,7 +157,7 @@
                 android:layout_height="wrap_content"
                 />
             <TextView
-                android:text="Amravati"
+                android:hint="Amravati"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:id="@+id/tv_address_field"
@@ -167,15 +167,15 @@
                 />
 
 
-                <TextView
-                    android:text="256 : "
-                    android:layout_marginLeft="10dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
-                <TextView
+            <TextView
+                android:id="@+id/shop_count"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <TextView
                     android:text="Shops"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

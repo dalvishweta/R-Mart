@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseActivity;
 import com.rmart.electricity.api.ElecticityService;
+import com.rmart.electricity.fetchbill.model.BillDetails;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -29,15 +30,15 @@ public class FetchBill extends BaseActivity {
     public AppCompatTextView consumer_name,consumer_id,DueAmount,OrderId,DueDate,BillDate,merchant_ref,amount_bx,Date_bx,con_no,service_name;
     public AppCompatButton fetch_bill,pay_bill;
     ElecticityService eleService;
-    data ob;
+    BillDetails ob;
      String Selected_value;
     private String mobile_no;
     private String bill_unit;
     private String name;
     private String id;
     private String amt;
-    private Integer orderid;
-    private Integer serviceid;
+    private String orderid;
+    private String serviceid;
 
     private String duedate;
     private String billdate;
@@ -82,7 +83,7 @@ public class FetchBill extends BaseActivity {
             bill_unit= ii.getStringExtra("bill_unit");
         }
 
-       ob = (data) getIntent().getSerializableExtra("myjson");
+       ob = (BillDetails) getIntent().getSerializableExtra("myjson");
      name=ob.getConsumerName();
      id= String.valueOf(ob.getConsumerID());
      orderid=ob.getOrderId();
@@ -111,8 +112,6 @@ public class FetchBill extends BaseActivity {
 
 
                 if (Utils.isNetworkConnected(FetchBill.this)) {
-
-
                     ProgressDialog progressBar = new ProgressDialog(FetchBill.this, R.style.mySpinnerTheme);
                     progressBar.setCancelable(false);
                     progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);

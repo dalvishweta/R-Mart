@@ -23,8 +23,9 @@
             android:gravity="center"
             android:textSize="12sp"
             android:textColor = '@{customerProductsDetailsUnitModel.selected?@color/black:@color/colorPrimary}'
-            android:textStyle="normal"
-            android:fontFamily="@font/roboto_light"
+            android:textStyle="bold"
+
+            android:fontFamily="@font/roboto_bold"
             android:hint="@string/brandname"
             android:text='@{customerProductsDetailsUnitModel.unitNumber+" "+customerProductsDetailsUnitModel.unitMeasure}'
             android:textColorHint="@color/black"

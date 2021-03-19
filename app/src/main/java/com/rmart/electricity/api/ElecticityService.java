@@ -2,7 +2,7 @@ package com.rmart.electricity.api;
 
 
 import com.rmart.BuildConfig;
-import com.rmart.electricity.ElecProcessPOJO;
+import com.rmart.electricity.fetchbill.model.ElecProcessPOJO;
 import com.rmart.electricity.paybill;
 import com.rmart.electricity.rsakeyResponse;
 

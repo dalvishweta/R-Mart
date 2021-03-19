@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.rmart.R;
 import com.rmart.databinding.FragmentSelectOperatorBinding;
@@ -62,7 +63,25 @@ public class SelectOperatorFragment extends Fragment {
                         .commit();
             }
         });
+        binding.back.setOnClickListener(view -> getActivity().onBackPressed());
         binding.setMyAdapter(homeAdapter);
+
+
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // filter recycler view when query submitted
+                homeAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                // filter recycler view when text is changed
+                homeAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
         return binding.getRoot();
     }
 }

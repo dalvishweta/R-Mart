@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.rmart.utilits.Curruncy"/>
+        <variable
+            name="BillDetailsModule"
+            type="com.rmart.electricity.billdetails.modules.BillDetailsModule" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgrounndgray"
+        android:orientation="vertical"
+        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            app:title="@{BillDetailsModule.operatorMutableLiveData.name}"
+            app:titleTextColor="@color/white">
+
+
+
+
+        </androidx.appcompat.widget.Toolbar>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/top_corner_background"
+
+            >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/bill_details"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="10dp"
+                    android:fontFamily="@font/roboto_light"
+                    android:textColor="@color/black2"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/bottom_cornner_radius"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="70dp"
+                    android:src="@mipmap/mahavitran"
+                    android:layout_margin="10dp"
+                    android:layout_height="70dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        tools:text="@string/msedc_mahavitaran"
+                        android:text="@{BillDetailsModule.operatorMutableLiveData.name}"
+                        android:layout_width="match_parent"
+                        android:textSize="16sp"
+                        android:padding="5dp"
+                        android:textColor="@color/black2"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/roboto_light"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        tools:text="@string/consumer_number_9893398373783"
+                        android:text='@{BillDetailsModule.billDetailsMutableLiveData.consumerID+""}'
+                        android:layout_width="match_parent"
+                        android:textSize="14sp"
+                        android:padding="5dp"
+                        android:textColor="@color/black2"
+                        android:fontFamily="@font/roboto_light"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp">
+
+                <TextView
+                    android:text="@string/label_customer_name"
+                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:layout_weight="2"
+                    android:textColor="@color/black2"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    tools:text="@string/vishal_landepatil"
+                    android:text='@{": "+BillDetailsModule.billDetailsMutableLiveData.consumerName}'
+
+                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black2"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp">
+
+                <TextView
+                    android:text="Order ID"
+                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:layout_weight="2"
+                    android:textColor="@color/black2"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    tools:text=": 1000000383"
+                    android:text='@{": "+BillDetailsModule.billDetailsMutableLiveData.orderId}'
+
+                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black2"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp">
+
+                <TextView
+                    android:text="Merchant Ref no"
+                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:layout_weight="2"
+                    android:textColor="@color/black2"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    tools:text=": HHD838666e88ee8"
+                    android:text='@{": "+BillDetailsModule.billDetailsMutableLiveData.merTxnID}'
+
+                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black2"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp">
+
+                <TextView
+                    android:text="Early Pay Amount"
+                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:layout_weight="2"
+                    android:textColor="@color/black2"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    tools:text=": Rs. 384664.00"
+                    android:text='@{": "+Curruncy.getCurruncy(BillDetailsModule.billDetailsMutableLiveData.dueAmount+"")}'
+
+                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1"
+                    android:textColor="@color/black2"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp">
+
+                <TextView
+                    android:text="Early Pay Date"
+                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:layout_weight="2"
+                    android:textColor="@color/black2"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    tools:text=": 10-Feb-2020"
+                    android:text='@{": "+BillDetailsModule.billDetailsMutableLiveData.billDate}'
+                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black2"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:padding="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp">
+
+                <TextView
+                    android:text="Due Date "
+                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:layout_weight="2"
+                    android:textColor="@color/black2"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    tools:text=": 10-Feb-2020"
+                    android:text='@{": "+BillDetailsModule.billDetailsMutableLiveData.dueDate}'
+
+                    android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black2"
+                    android:fontFamily="@font/roboto_light"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:weightSum="2"
+                android:padding="5dp"
+                android:gravity="center"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="15dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bacgground_payment"
+                >
+
+                <TextView
+                    tools:text="₹ 2.1300.00"
+                    android:text='@{Curruncy.getCurruncy(BillDetailsModule.billDetailsMutableLiveData.dueAmount+"")}'
+                    android:layout_width="match_parent"
+                    android:textSize="18sp"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/roboto_medium"
+                    android:layout_height="wrap_content"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:background="@color/gray"
+                    android:layout_height="match_parent"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                   >
+
+                    <TextView
+                        android:text="Due Date"
+                        android:layout_width="match_parent"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/roboto_light"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        tools:text="10-Feb-2020"
+                        android:text='@{": "+BillDetailsModule.billDetailsMutableLiveData.dueDate}'
+
+                        android:layout_width="match_parent"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/roboto_light"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:gravity="center"
+            android:paddingRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:textSize="14dp"
+            android:fontFamily="@font/roboto_light"
+            android:textColor="@color/red"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp" />
+        <ProgressBar
+            android:visibility="@{BillDetailsModule.isLoading?View.VISIBLE:View.GONE}"
+            android:id="@+id/progressBar1"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/searchLayout"
+            android:layout_height="wrap_content" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/fetch_bill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{BillDetailsModule.isLoading?View.GONE:View.VISIBLE}"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:background="@drawable/submit_button_bg"
+            android:onClick="@{(v) -> BillDetailsModule.onClick(v)}"
+            android:text="@string/confirm_38_pay"
+            android:textColor="@color/white"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            />
+    </LinearLayout>
+</layout>

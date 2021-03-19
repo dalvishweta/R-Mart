@@ -113,7 +113,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     private double latitude = 0.0;
     private double longitude = 0.0;
     //private SwipeRefreshLayout swipeRefreshLayout;
-    private TextView tvAddressField;
+    private TextView tvAddressField,shopCount;
     private ImageView ivSearchField;
     private TextView errormessage;
     private RelativeLayout map_or_list_view;
@@ -175,6 +175,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
         RecyclerView vendorShopsListField = view.findViewById(R.id.products_list_field);
         RecyclerView searchProductsListField = view.findViewById(R.id.search_products_list_field);
         tvAddressField = view.findViewById(R.id.tv_address_field);
+        shopCount = view.findViewById(R.id.shop_count);
         erorolayout = view.findViewById(R.id.erorolayout);
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
         ivSearchField = view.findViewById(R.id.iv_search_field);
@@ -530,6 +531,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase("success")) {
                                 totalShopsCount = data.getCustomerShopsList().getShopTotalCount();
+                                shopCount.setText(totalShopsCount+":");
                                 List<ShopDetailsModel> customerProductsList = data.getCustomerShopsList().getCustomerShopsList();
                                 updateAdapter(customerProductsList);
                                 try {

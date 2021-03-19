@@ -1,4 +1,4 @@
-package com.rmart.electricity;
+package com.rmart.electricity.fetchbill.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -13,7 +13,7 @@ public class ElecProcessPOJO implements Serializable {
 
         @SerializedName("data")
         @Expose
-        private data data;
+        private BillDetails data;
         @SerializedName("msg")
         @Expose
         private String msg;
@@ -26,11 +26,11 @@ public class ElecProcessPOJO implements Serializable {
             this.status = status;
         }
 
-        public data getData() {
+        public BillDetails getData() {
             return data;
         }
 
-        public void setData(data data) {
+        public void setData(BillDetails data) {
             this.data = data;
         }
 

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import com.rmart.BR;
 import com.rmart.R;
@@ -13,13 +15,15 @@ import com.rmart.electricity.selectoperator.listner.OperatorListner;
 import com.rmart.electricity.selectoperator.model.Operator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class OperatorsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class OperatorsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements Filterable {
 
+    public ArrayList<Operator> allOperators = new ArrayList<>();
     public ArrayList<Operator> operators = new ArrayList<>();
     Activity context;
     OperatorListner onClick;
@@ -27,6 +31,7 @@ public class OperatorsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public OperatorsAdapter(Activity context, ArrayList<Operator> operators, OperatorListner onClick) {
         this.context = context;
         this.operators = operators;
+        this.allOperators = operators;
         this.onClick = onClick;
 
     }
@@ -76,6 +81,42 @@ public class OperatorsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
     }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    operators = allOperators;
+                } else {
+                    List<Operator> filteredList = new ArrayList<>();
+                    for (Operator row : allOperators) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.name.toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    operators = (ArrayList<Operator>) filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = operators;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                operators = (ArrayList<Operator>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
 
     public class OperatorsViewHolder extends RecyclerView.ViewHolder {
 

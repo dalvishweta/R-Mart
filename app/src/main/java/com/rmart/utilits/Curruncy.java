@@ -5,16 +5,16 @@ public class Curruncy {
 
         try {
 
-            return "Rs. " + String.format("%.2f", Double.parseDouble(amount));
+            return "₹. " + String.format("%.2f", Double.parseDouble(amount));
         }catch (Exception e){
-            return "Rs. 0.00";
+            return "₹. 0.00";
         }
 
     }
     public static String getDiscountCurruncy(String  amount) {
 
 
-        return "Rs. " + String.format("%.2f",Double.parseDouble(amount));
+        return "₹. " + String.format("%.2f",Double.parseDouble(amount));
 
 
     }

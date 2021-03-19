@@ -1,4 +1,4 @@
-package com.rmart.electricity;
+package com.rmart.electricity.fetchbill.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class data implements Serializable {
+public class BillDetails implements Serializable {
 
     @SerializedName("ResponseStatus")
     @Expose
@@ -16,19 +16,19 @@ public class data implements Serializable {
     private String description;
     @SerializedName("MerTxnID")
     @Expose
-    private List<Object> merTxnID = null;
+    private String merTxnID = null;
     @SerializedName("ConsumerID")
     @Expose
-    private long consumerID;
+    private String consumerID;
     @SerializedName("OrderId")
     @Expose
-    private Integer orderId;
+    private String orderId;
     @SerializedName("ConsumerName")
     @Expose
     private String consumerName;
     @SerializedName("DueAmount")
     @Expose
-    private Integer dueAmount;
+    private double dueAmount;
     @SerializedName("DueDate")
     @Expose
     private String dueDate;
@@ -37,12 +37,12 @@ public class data implements Serializable {
     private String billDate;
     @SerializedName("service_id")
     @Expose
-    private Integer serviceId;
+    private String serviceId;
     @SerializedName("service_name")
     @Expose
     private String serviceName;
 
-    public void setOrderId(Integer orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
@@ -50,7 +50,7 @@ public class data implements Serializable {
         this.dueAmount = dueAmount;
     }
 
-    public void setServiceId(Integer serviceId) {
+    public void setServiceId(String serviceId) {
         this.serviceId = serviceId;
     }
 
@@ -81,29 +81,27 @@ public class data implements Serializable {
         this.description = description;
     }
 
-    public List<Object> getMerTxnID() {
+    public String getMerTxnID() {
         return merTxnID;
     }
 
-    public void setMerTxnID(List<Object> merTxnID) {
+    public void setMerTxnID(String merTxnID) {
         this.merTxnID = merTxnID;
     }
 
-    public long getConsumerID() {
+    public String getConsumerID() {
         return consumerID;
     }
 
-    public void setConsumerID(long consumerID) {
+    public void setConsumerID(String consumerID) {
         this.consumerID = consumerID;
     }
 
-    public Integer getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
+
 
     public String getConsumerName() {
         return consumerName;
@@ -113,7 +111,7 @@ public class data implements Serializable {
         this.consumerName = consumerName;
     }
 
-    public int getDueAmount() {
+    public double getDueAmount() {
         return dueAmount;
     }
 
@@ -137,13 +135,11 @@ public class data implements Serializable {
         this.billDate = billDate;
     }
 
-    public int getServiceId() {
+    public String getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(int serviceId) {
-        this.serviceId = serviceId;
-    }
+
 
     public String getServiceName() {
         return serviceName;

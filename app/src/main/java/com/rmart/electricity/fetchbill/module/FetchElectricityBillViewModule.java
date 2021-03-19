@@ -1,12 +1,15 @@
 package com.rmart.electricity.fetchbill.module;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.rmart.electricity.ActivityElectricity;
-import com.rmart.electricity.ElecProcessPOJO;
+import com.rmart.R;
+import com.rmart.electricity.activities.ElectricityActivity;
+import com.rmart.electricity.billdetails.fragments.BillDetailsFragment;
+import com.rmart.electricity.fetchbill.fragments.FetchBillFragment;
+import com.rmart.electricity.fetchbill.model.ElecProcessPOJO;
 import com.rmart.electricity.FetchBill;
 import com.rmart.electricity.fetchbill.repositoris.FetchBillRepository;
 import com.rmart.electricity.selectoperator.model.Operator;
@@ -19,6 +22,7 @@ public class FetchElectricityBillViewModule extends ViewModel {
 
     public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     public MutableLiveData<Operator> operatorMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<ElecProcessPOJO> elecProcessPOJOMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<String> cumsumerNumber = new MutableLiveData<>();
     public MutableLiveData<String> errorCumsumerNumber = new MutableLiveData<>();
     public MutableLiveData<String> units = new MutableLiveData<>();
@@ -36,22 +40,21 @@ public class FetchElectricityBillViewModule extends ViewModel {
                 @Override
                 public void onChanged(ElecProcessPOJO elecProcessPOJO) {
 
-                    if (elecProcessPOJO!=null&& elecProcessPOJO.getStatus().equalsIgnoreCase("success")) {
+                    if (elecProcessPOJO!=null && elecProcessPOJO.getStatus().equalsIgnoreCase("success")) {
 
                         if (null != elecProcessPOJO.getData().getOrderId()) {
-                            Gson gson = new Gson();
-                            String myJson = gson.toJson(elecProcessPOJO.getData());
-                            Intent intent = new Intent(view.getContext(), FetchBill.class);
-                            intent.putExtra("myjson", elecProcessPOJO.getData());
-                            intent.putExtra("selected_value", operatorMutableLiveData.getValue().slug);
-                            intent.putExtra("mobile_no", mobilenumber.getValue());
-                            intent.putExtra("bill_unit", units.getValue());
-                            view.getContext().startActivity(intent);
+                           ((ElectricityActivity)view.getContext()).getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.frame_container, BillDetailsFragment.newInstance(mobilenumber.getValue(), units.getValue(),elecProcessPOJO.getData(),operatorMutableLiveData.getValue())).addToBackStack(null)
+                                    .commit();
                         } else {
-                            Toast.makeText(view.getContext(), "No bill data available", Toast.LENGTH_LONG).show();
-
+                            elecProcessPOJO.setStatus("error");
                         }
+                    } else {
+
+
                     }
+                    elecProcessPOJOMutableLiveData.postValue(elecProcessPOJO);
                     isLoading.setValue(false);
                 }
             });
