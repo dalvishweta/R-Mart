@@ -12,6 +12,8 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -34,14 +36,14 @@ public class Activity_SelectNumber extends AppCompatActivity {
     ArrayList<ContactDisply> selectUsers;
     private RecyclerView.LayoutManager layoutManager;
 
-
+    ProgressBar simpleProgressBar;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_recharge_home_new);
         mHandler = new Handler();
         selectUsers = new ArrayList<ContactDisply>();
-
+         simpleProgressBar=(ProgressBar)findViewById(R.id.simpleProgressBar);
         rvContacts = (RecyclerView) findViewById(R.id.select_contact);
         rvContacts.setHasFixedSize(true);
 
@@ -62,6 +64,7 @@ public class Activity_SelectNumber extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+        simpleProgressBar.setVisibility(View.VISIBLE);
 
         }
 
@@ -99,6 +102,7 @@ public class Activity_SelectNumber extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            simpleProgressBar.setVisibility(View.GONE);
             LayoutInflater inflater;
             inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             // sortContacts();
