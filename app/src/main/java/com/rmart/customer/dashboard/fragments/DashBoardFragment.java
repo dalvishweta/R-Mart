@@ -2,6 +2,10 @@ package com.rmart.customer.dashboard.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -9,23 +13,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.dashboard.adapters.HomeAdapter;
+import com.rmart.customer.dashboard.listners.OnClick;
 import com.rmart.customer.dashboard.model.BigShopType;
 import com.rmart.customer.dashboard.model.ServiceOffer;
 import com.rmart.customer.dashboard.model.ShopType;
 import com.rmart.customer.dashboard.viewmodel.HomeViewModel;
-import com.rmart.customer.dashboard.listners.OnClick;
 import com.rmart.customer.shops.list.fragments.VendorShopsListFragment;
-import com.rmart.customerservice.mobile.views.MobileRechargeActivity;
+import com.rmart.customerservice.mobile.views.Activity_SelectNumber;
 import com.rmart.databinding.FragmentDashBoardBinding;
-import com.rmart.electricity.ActivityElectricity;
 import com.rmart.electricity.activities.ElectricityActivity;
 
 /**
@@ -73,7 +71,7 @@ public class DashBoardFragment extends BaseFragment {
                 @Override
                 public void onServiceClick(ServiceOffer serviceOffer) {
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("mobile-recharge")){
-                        Intent intent = new Intent(getContext(), MobileRechargeActivity.class);
+                        Intent intent = new Intent(getContext(), Activity_SelectNumber.class);
                         startActivity(intent);
                     }
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("dth-recharge")){
