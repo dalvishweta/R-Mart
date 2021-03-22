@@ -21,7 +21,6 @@
             android:id="@+id/recharge_type_group"
             android:orientation="horizontal"
             android:weightSum="2"
-            android:visibility="gone"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp">
 
@@ -53,7 +52,7 @@
             android:layout_margin="16dp"
             android:layout_below="@+id/recharge_type_group"
             android:id="@+id/mobile_hint"
-            android:visibility="gone">
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -67,18 +66,28 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/_txt_recent_recharge"
+            android:layout_below="@+id/mobile_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recent Recharge">
+
+        </TextView>
+
        <androidx.recyclerview.widget.RecyclerView
            android:layout_below="@+id/mobile_hint"
            android:id="@+id/recent_recharge"
            android:layout_width="match_parent"
-           android:visibility="gone"
            android:layout_height="wrap_content">
        </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@+id/recent_recharge"
             android:id="@+id/select_contact"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
         </androidx.recyclerview.widget.RecyclerView>
 
         <ProgressBar
@@ -86,12 +95,7 @@
             android:id="@+id/simpleProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/mobile_recharge_nxt_btn"
-            android:layout_marginTop="40dp"
-            android:text="@string/next"
-            android:visibility="gone"
-            style="@style/button_color"/>
+
 
     </RelativeLayout>
 

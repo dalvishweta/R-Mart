@@ -52,6 +52,18 @@
         <item>Sun Direct</item>
 
     </string-array>
-
+    <string-array name="mobileopertor">
+        <item>Select Operator</item>
+        <item>jio</item>
+        <item>Airtel</item>
+        <item>Idea</item>
+        <item>docomo</item>
+        <item>BSNL</item>
+        <item>Aircel</item>
+        <item>Indicom"</item>
+        <item>docomo</item>
+        <item>Vodafone</item>
+        <item>Reliance GSM</item>
+    </string-array>
 
 </resources>

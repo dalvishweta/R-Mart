@@ -22,7 +22,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-
+    <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+    </style>
 
     <style name="button_color">
         <item name="android:layout_marginTop">20dp</item>

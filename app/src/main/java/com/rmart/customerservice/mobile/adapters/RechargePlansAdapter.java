@@ -38,7 +38,8 @@ public class RechargePlansAdapter extends RecyclerView.Adapter<RechargePlansAdap
     @Override
     public void onBindViewHolder(@NonNull PlanHolder holder, int position) {
         holder.desc.setText(mRechargePlanList.get(position).getDesc());
-        holder.planPrice.setText(String.valueOf(mRechargePlanList.get(position).getRs()));
+        String amt=String.valueOf(mRechargePlanList.get(position).getRs());
+        holder.planPrice.setText("\u20B9"+amt);
         holder.validity.setText(mRechargePlanList.get(position).getValidity());
         holder.lastUpdate.setText(mRechargePlanList.get(position).getLastUpdate());
         holder.mItemView.setTag(position);

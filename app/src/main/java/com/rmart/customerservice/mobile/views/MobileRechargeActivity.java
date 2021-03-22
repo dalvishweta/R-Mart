@@ -23,7 +23,7 @@ public class MobileRechargeActivity extends ServicesBaseActivity implements OnMo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_root_view);
         mobileRecharge.setUserID(MyProfile.getInstance().getUserID());
-        addFragment(MobileHomeFragment.newInstance("",""),"MobileHomeFragment",false);
+        addFragment(FragemtSelectPlan.newInstance("",""),"FragemtSelectPlan",false);
     }
 
     @Override

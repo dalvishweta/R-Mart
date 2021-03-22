@@ -3,9 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@drawable/top_corner_background"
     android:layout_marginBottom="16dp"
     android:layout_margin="8dp"
+
     android:elevation="4dp">
     <RelativeLayout
         android:padding="8dp"
@@ -15,46 +16,43 @@
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:id="@+id/top_up_plan_price"
-            android:text="180/-"
-            android:layout_centerVertical="true"
+            android:text="RS.180/-"
             android:gravity="center"
-            android:background="@drawable/button_round_edges"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:textStyle="bold|normal"
-            android:textSize="26sp"/>
+            android:textSize="20sp"/>
         <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
-            android:text="Choose"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:gravity="center"
-            android:background="@drawable/partial_rounded_edges"
-            android:textColor="@android:color/white"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/ic_baseline_arrow_forward_ios_24"
             android:id="@+id/select_plan"/>
         <LinearLayout
-            android:gravity="center"
             android:padding="8dp"
             android:layout_toRightOf="@+id/top_up_plan_price"
             android:layout_toLeftOf="@+id/select_plan"
             android:orientation="vertical"
+            android:layout_marginTop="10dp"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/desc"
                 android:text="Get Talktime of Rs. 7.47"
                 android:textSize="16sp"
                 android:gravity="center"
+
                 android:layout_gravity="center"
                 android:textColor="@color/black" />
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:id="@+id/validity"
                 android:text="validity: N/A"
                 android:textSize="16sp"
@@ -141,4 +139,5 @@
         </androidx.cardview.widget.CardView>-->
 
     </RelativeLayout>
+
 </androidx.cardview.widget.CardView>

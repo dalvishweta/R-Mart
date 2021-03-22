@@ -7,8 +7,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.customerservice.mobile.views.FragemtSelectPlan;
 import com.rmart.customerservice.mobile.views.MobileRechargeHistoryFragment;
-import com.rmart.customerservice.mobile.views.RechargeHomeFragment;
 
 import java.util.ArrayList;
 
@@ -21,7 +21,7 @@ public class MobileRechargePagerAdapter extends FragmentPagerAdapter {
         super(fm, behavior);
 
         fragments = new ArrayList<>();
-        fragments.add(RechargeHomeFragment.newInstance("",""));
+        fragments.add(FragemtSelectPlan.newInstance("",""));
         fragments.add(MobileRechargeHistoryFragment.newInstance("",""));
 
         fragTitles = new ArrayList<>();
