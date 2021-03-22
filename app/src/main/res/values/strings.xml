@@ -448,6 +448,6 @@
     <string name="consumer_number_9893398373783">Consumer Number : 9893398373783</string>
     <string name="label_customer_name">Customer Name</string>
     <string name="vishal_landepatil">: Vishal Landepatil</string>
-
-
+    <string name="enter_amount">Enter Recharge Amount</string>
+    <string name="Rs_symbol">\u20B9</string>
 </resources>

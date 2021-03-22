@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+        android:background="@color/white"
+    android:divider="@color/inventory_header_bg"
+    android:showDividers="middle">
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ellipsize="marquee"
+        android:textSize="14sp"
+        android:textColor="@color/black2"
+        android:padding="5dp"
+        android:fontFamily="@font/roboto_light" />
+
+</LinearLayout>
