@@ -49,7 +49,7 @@ public class MyCategoryListFragment extends BaseInventoryFragment {
     @Override
     public void onResume() {
         super.onResume();
-        Objects.requireNonNull(getActivity()).setTitle(getString(R.string.category_list));
+        requireActivity().setTitle(getString(R.string.category_list));
     }
 
     @Override
@@ -77,15 +77,16 @@ public class MyCategoryListFragment extends BaseInventoryFragment {
         tvTotalCount = view.findViewById(R.id.category_count);
         tvTotalCount.setText(String.format(getResources().getString(R.string.total_categories), Objects.requireNonNull(inventoryViewModel.getCategories().getValue()).keySet().size()));
         view.findViewById(R.id.sort).setOnClickListener(param -> {
-                    PopupMenu popup = new PopupMenu(Objects.requireNonNull(getActivity()), param);
+                    PopupMenu popup = new PopupMenu(requireActivity(), param);
                     //Inflating the Popup using xml file
                     popup.getMenuInflater().inflate(R.menu.inventory_view_category, popup.getMenu());
                     //registering popup with OnMenuItemClickListener
                     popup.setOnMenuItemClickListener(item -> {
-                        if (item.getItemId() == R.id.sort_category) {
-                            inventoryViewModel.setIsProductView(InventoryViewModel.CATEGORY);
-                            mListener.goToHome();
-                        } else if (item.getItemId() == R.id.sort_sub_category) {
+//                        if (item.getItemId() == R.id.sort_category) {
+//                            inventoryViewModel.setIsProductView(InventoryViewModel.CATEGORY);
+//                            mListener.goToHome();
+//                        } else
+                        if (item.getItemId() == R.id.sort_sub_category) {
                             inventoryViewModel.setIsProductView(InventoryViewModel.SUB_CATEGORY);
                             mListener.goToHome();
                         } else if (item.getItemId() == R.id.sort_product) {
@@ -106,3 +107,6 @@ public class MyCategoryListFragment extends BaseInventoryFragment {
     }
 
 }
+
+
+

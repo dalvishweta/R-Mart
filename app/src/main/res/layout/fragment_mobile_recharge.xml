@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="myAdapter"
+            type="com.rmart.customer.dashboard.adapters.HomeAdapter" />
+
+        <variable
+            name="MobileRechargeViewModel"
+            type="com.rmart.customerservice.mobile.viewmodels.MobileRechargeViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E8E9E8"
+        android:orientation="vertical">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            app:title="@string/mobile_recharge_title"
+            app:titleTextColor="@color/white"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/mobile_recharge_bg"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+                    <RadioGroup
+                        android:id="@+id/rg_service_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="horizontal">
+                        <RadioButton
+                            android:id="@+id/rb_prepaid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:padding="5dp"
+                            android:text="@string/prepaid"
+                            android:textColor="@color/black2"
+                            android:textStyle="bold" />
+
+                        <RadioButton
+                            android:id="@+id/rb_postpaid"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_medium"
+                            android:padding="5dp"
+                            android:text="@string/postpaid"
+                            android:textColor="@color/black2"
+                            android:textStyle="bold" />
+
+                    </RadioGroup>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/mobile_number_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:gravity="center"
+                        android:hint="@string/enter_your_mobile_number"
+
+                        >
+
+                        <EditText
+                            android:id="@+id/mobile_no"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="@string/allow_digits_for_numbers"
+                            android:fontFamily="@font/roboto_light"
+                            android:inputType="text"
+                            android:maxLength="10"
+                            tools:ignore="Autofill,LabelFor" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/top_cornner_without_cornner"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/recently_recharge"
+                        android:textColor="@color/black2"
+                        android:textStyle="bold">
+
+                    </TextView>
+
+
+                </LinearLayout>
+
+
+                <ProgressBar
+                    android:visibility="@{MobileRechargeViewModel.isLoading?View.VISIBLE:View.GONE}"
+                    android:id="@+id/progressBar1"
+                    tools:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_below="@+id/searchLayout"
+                    android:layout_height="wrap_content" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_recharge_history"
+                    android:layout_width="match_parent"
+                    android:visibility="@{MobileRechargeViewModel.isLoading?View.GONE:View.VISIBLE}"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    tools:itemCount="6"
+                    tools:listitem="@layout/mobile_history" />
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</layout>

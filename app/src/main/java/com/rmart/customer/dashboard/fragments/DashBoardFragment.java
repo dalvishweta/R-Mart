@@ -77,7 +77,7 @@ public class DashBoardFragment extends BaseFragment {
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("dth-recharge")){
 //                        Intent intent = new Intent(getContext(), ActivityElectricity.class);
 //                        startActivity(intent);
-                        Toast.makeText(getContext(),"Comming Soon",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_LONG).show();
                     }
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("light-bill")){
                         Intent intent = new Intent(getContext(), ElectricityActivity.class);

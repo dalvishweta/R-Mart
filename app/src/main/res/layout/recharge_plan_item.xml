@@ -28,7 +28,6 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:layout_marginTop="30dp"
-            android:background="@drawable/ic_baseline_arrow_forward_ios_24"
             android:id="@+id/select_plan"/>
         <LinearLayout
             android:padding="8dp"

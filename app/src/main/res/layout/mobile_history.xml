@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_margin="4dp"
+            android:src="@drawable/jio"
+            tools:ignore="ContentDescription">
+
+        </ImageView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_toEndOf="@+id/icon"
+            android:layout_toRightOf="@+id/icon"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="3dp"
+                android:textColor="@color/black2"
+                android:textSize="16sp"
+                tools:text="Pravin Prasad" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:paddingStart="@dimen/dp_3"
+                android:paddingLeft="@dimen/dp_3"
+                android:textColor="@color/black2"
+                android:textSize="14sp"
+                tools:ignore="RtlSymmetry"
+                tools:text="9975294782" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_regular"
+                android:paddingStart="@dimen/dp_3"
+                android:paddingLeft="@dimen/dp_3"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                tools:ignore="RtlSymmetry"
+                tools:text="Last Recharge:75 on 8 march 2021" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</layout>

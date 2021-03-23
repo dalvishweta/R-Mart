@@ -1,15 +1,16 @@
-package com.rmart.electricity.activities;
+package com.rmart.customerservice.mobile.activities;
+
+import android.os.Bundle;
+
+import com.rmart.R;
+import com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge;
+import com.rmart.electricity.selectoperator.fragments.SelectOperatorFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.os.Bundle;
-
-import com.rmart.R;
-import com.rmart.electricity.selectoperator.fragments.SelectOperatorFragment;
-
-public class ElectricityActivity extends AppCompatActivity {
+public class MobileRechargeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +18,7 @@ public class ElectricityActivity extends AppCompatActivity {
         setContentView(R.layout.activity_electricity2);
 
         final FragmentManager manager = getSupportFragmentManager();
-        loadFragment(new SelectOperatorFragment());
+        loadFragment(new FragmentMobileRecharge());
 
 
 
@@ -25,7 +26,8 @@ public class ElectricityActivity extends AppCompatActivity {
     private boolean loadFragment(Fragment fragment) {
         //switching fragment
         if (fragment != null) {
-            getSupportFragmentManager() .beginTransaction()
+            getSupportFragmentManager()
+                    .beginTransaction()
                     .replace(R.id.frame_container, fragment)
                     .commit();
             return true;

@@ -531,7 +531,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase("success")) {
                                 totalShopsCount = data.getCustomerShopsList().getShopTotalCount();
-                                shopCount.setText(totalShopsCount+":");
+                                shopCount.setText(":"+totalShopsCount);
                                 List<ShopDetailsModel> customerProductsList = data.getCustomerShopsList().getCustomerShopsList();
                                 updateAdapter(customerProductsList);
                                 try {

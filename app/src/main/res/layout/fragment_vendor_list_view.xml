@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorPrimary"
     android:orientation="vertical">
     <RelativeLayout
@@ -14,7 +13,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"
-
         android:layout_marginBottom="5dp"
         android:background="@drawable/grey_rounded_borders_bg"
         android:minHeight="40dp">
@@ -168,7 +166,7 @@
 
 
             <TextView
-                android:id="@+id/shop_count"
+                android:text="Shops"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="15dp"
@@ -176,14 +174,14 @@
                 android:textStyle="bold" />
 
             <TextView
-                    android:text="Shops"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    />
+                android:id="@+id/shop_count"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                 />
 
         </LinearLayout>
 
-        <Button
+        <TextView
             android:layout_weight="2"
             android:id="@+id/btn_change_address_field"
             style="@style/text_style_medium_bold"
@@ -191,8 +189,14 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:text="@string/change"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:textAllCaps="false"
-
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:drawableTint="@color/change_text_color"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@drawable/ic_baseline_edit_location_24"
             android:textColor="@color/change_text_color"
              />
 

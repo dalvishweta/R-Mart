@@ -17,7 +17,6 @@ import com.rmart.customer.models.ContentModel;
 import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.databinding.ShopItemRowBinding;
 import com.rmart.databinding.ShopItemRowBindingImpl;
-import com.rmart.databinding.VederShopItemsBinding;
 import com.rmart.deeplinking.LinkGenerator;
 import com.rmart.utilits.Permisions;
 import com.rmart.utilits.Utils;

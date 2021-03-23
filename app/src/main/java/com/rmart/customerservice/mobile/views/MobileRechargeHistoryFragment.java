@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.customerservice.mobile.adapters.RechargeHistoryRecyclerAdapter;
+import com.rmart.customerservice.mobile.adapters.RechargeHistoryAdapter;
 import com.rmart.customerservice.mobile.api.MobileRechargeService;
 import com.rmart.customerservice.mobile.interfaces.OnMobileRechargeListener;
 import com.rmart.customerservice.mobile.models.LastTransaction;
@@ -105,7 +105,7 @@ public class MobileRechargeHistoryFragment extends BaseFragment implements View.
                                 lastTransaction.setStateName(lastTransaction.getStateName());
                             }
 
-                            RechargeHistoryRecyclerAdapter recyclerAdapter = new RechargeHistoryRecyclerAdapter(response.body().getLastTransaction()
+                            RechargeHistoryAdapter recyclerAdapter = new RechargeHistoryAdapter(response.body().getLastTransaction()
                                     ,MobileRechargeHistoryFragment.this);
                             recyclerView.setAdapter(recyclerAdapter);
                         } else {

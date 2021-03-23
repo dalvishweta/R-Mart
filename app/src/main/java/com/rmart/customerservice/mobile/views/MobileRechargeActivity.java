@@ -23,7 +23,7 @@ public class MobileRechargeActivity extends ServicesBaseActivity implements OnMo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_root_view);
         mobileRecharge.setUserID(MyProfile.getInstance().getUserID());
-        addFragment(FragemtSelectPlan.newInstance("",""),"FragemtSelectPlan",false);
+        addFragment(RechargeHomeFragment.newInstance("",""),"FragemtSelectPlan",false);
     }
 
     @Override
@@ -40,8 +40,6 @@ public class MobileRechargeActivity extends ServicesBaseActivity implements OnMo
     public void goToMakePaymentFragment() {
         replaceFragment(MakePaymentFragment.newInstance("",""), "MakePaymentFragment", true);
     }
-
-
 
     @Override
     public void goToSeePlansFragment(List<RechargePlans> topup) {
