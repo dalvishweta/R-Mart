@@ -109,9 +109,6 @@ android {
         buildConfigField("String", "GET_PLANS", '"rest_server/mplan/getDataPlans"')
         buildConfigField("String", "HISTORY", '"rest_server/Venus_mart_api/getHistory"')
         buildConfigField("String", "Mobile_recharge", '"rest_server/Venus_mart_api/mobrecharge"')
-        buildConfigField("String", "PrePaidOperator", '"rest_server/Venus_mart_api/prepaid_op"')
-        buildConfigField("String", "PostPaidOperator", '"rest_server/Venus_mart_api/postpaid_op"')
-        buildConfigField("String", "DTHOperator", '"rest_server/Venus_mart_api/dth_op"')
 
 
         //registration
