@@ -103,7 +103,7 @@ public class AllProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     myViewHolder.binding.unitPrice.setPaintFlags(myViewHolder.binding.unitPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     myViewHolder.binding.productUnit.setText(unitModel.getProductUnitQuantity()+" "+unitModel.getShortUnitMeasure());
                     if(unitModel.getUnitPrice() -unitModel.getSellingPrice()==0 ){
-                        myViewHolder.binding.offerlabel.setVisibility(View.GONE);
+                        myViewHolder.binding.offerlabel.setVisibility(View.INVISIBLE);
                         myViewHolder.binding.unitPrice.setVisibility(View.GONE);
                     } else {
                         myViewHolder.binding.offerlabel.setVisibility(View.VISIBLE);
@@ -115,13 +115,13 @@ public class AllProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         break;
                     } else {
 
-                        myViewHolder.binding.offerlabel.setVisibility(View.GONE);
+                        myViewHolder.binding.offerlabel.setVisibility(View.INVISIBLE);
                     }
 
 
                 }
             } else {
-                myViewHolder.binding.offerlabel.setVisibility(View.GONE);
+                myViewHolder.binding.offerlabel.setVisibility(View.INVISIBLE);
                 myViewHolder.binding.unitPrice.setVisibility(View.GONE);
                 myViewHolder.binding.sellingPrice.setVisibility(View.GONE);
                 myViewHolder.binding.productUnit.setVisibility(View.GONE);

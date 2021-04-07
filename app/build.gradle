@@ -107,7 +107,7 @@ android {
         buildConfigField("String", "electricity_rsa_key", '"customer/VendorShop/RokadmartPGinitiate"')
         buildConfigField("String", "RECHARGE", '"rest_server/Tsoapi/recharge/"')
         buildConfigField("String", "GET_PLANS", '"rest_server/mplan/getDataPlans"')
-        buildConfigField("String", "HISTORY", '"rest_server/Tsoapi/last_transactions_prepaid/"')
+        buildConfigField("String", "HISTORY", '"rest_server/Venus_mart_api/getHistory"')
         buildConfigField("String", "Mobile_recharge", '"rest_server/Venus_mart_api/mobrecharge"')
 
 
@@ -175,8 +175,8 @@ android {
             dimension "rokard_mart"
             applicationIdSuffix ".customerprod"
             /*versionNameSuffix "-customer"*/
-            versionCode 6
-            versionName "2.1.0"
+            versionCode 7
+            versionName "2.2.0"
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"') //?command=initiateTransaction
             buildConfigField("String", "ROLE_ID", '"5"')

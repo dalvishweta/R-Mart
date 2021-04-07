@@ -17,7 +17,6 @@ public class MobileRechargeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electricity2);
 
-        final FragmentManager manager = getSupportFragmentManager();
         loadFragment(new FragmentMobileRecharge());
 
 

@@ -354,7 +354,7 @@ public class ProductCartDetailsFragment extends BaseFragment {
             List<CustomerProductsDetailsUnitModel> unitsList = productDetailsDescModel.getUnits();
             if (unitsList != null && !unitsList.isEmpty()) {
                 ArrayList<Object> updatedUnitsList = new ArrayList<>(unitsList);
-                CustomSpinnerAdapter unitsAdapter = new CustomSpinnerAdapter(requireActivity(), updatedUnitsList);
+                CustomSpinnerAdapter unitsAdapter = new CustomSpinnerAdapter(requireActivity(), updatedUnitsList,true);
                 quantitySpinnerField.setAdapter(unitsAdapter);
             }
             tvProductDescField.setText(productDetailsDescModel.getProductDetails());

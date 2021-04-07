@@ -304,7 +304,6 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                     public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                         Log.d("onResponse", "onResponse: Login Fragment");
                         if (response.body() != null && response.body().getStatus().equalsIgnoreCase("success")) {
-
                             showDialog("success", response.body().getMsg());
 
                         } else if (response.body() != null){

@@ -22,15 +22,10 @@ import com.rmart.customer.dashboard.model.ServiceOffer;
 import com.rmart.customer.dashboard.model.ShopType;
 import com.rmart.customer.dashboard.viewmodel.HomeViewModel;
 import com.rmart.customer.shops.list.fragments.VendorShopsListFragment;
-import com.rmart.customerservice.mobile.views.MobileRechargeActivity;
+import com.rmart.customerservice.mobile.activities.MobileRechargeActivity;
 import com.rmart.databinding.FragmentDashBoardBinding;
 import com.rmart.electricity.activities.ElectricityActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DashBoardFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DashBoardFragment extends BaseFragment {
 
     public DashBoardFragment() {
@@ -88,9 +83,6 @@ public class DashBoardFragment extends BaseFragment {
 //                        startActivity(intent);
                         Toast.makeText(getContext(),"Comming Soon",Toast.LENGTH_LONG).show();
                     }
-
-
-
                 }
 
                 @Override

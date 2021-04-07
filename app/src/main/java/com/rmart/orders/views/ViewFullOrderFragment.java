@@ -484,7 +484,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
                         ArrayList<ProfileResponse> _deliveryBoyList = data.getDeliveryBoys();
                         if (_deliveryBoyList.size() > 0) {
                             deliveryBoyList.addAll(_deliveryBoyList);
-                            deliveryBoyAdapter = new CustomSpinnerAdapter(requireActivity(), deliveryBoyList);
+                            deliveryBoyAdapter = new CustomSpinnerAdapter(requireActivity(), deliveryBoyList,true);
                             deliveryBoySpinner.setAdapter(deliveryBoyAdapter);
                         }
                     }

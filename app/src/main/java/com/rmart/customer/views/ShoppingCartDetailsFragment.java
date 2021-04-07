@@ -200,7 +200,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
     private void setAdapter() {
         if (!productInCartDetailsList.isEmpty()) {
             btnProceedToBuyField.setVisibility(View.VISIBLE);
-            confirmOrdersAdapter = new ConfirmOrdersAdapter(requireActivity(), productInCartDetailsList, callBackListener);
+            confirmOrdersAdapter = new ConfirmOrdersAdapter(vendorShoppingCartDetails,requireActivity(), productInCartDetailsList, callBackListener);
             productsListField.setAdapter(confirmOrdersAdapter);
         } else {
             showCloseDialog(getString(R.string.no_information_available));

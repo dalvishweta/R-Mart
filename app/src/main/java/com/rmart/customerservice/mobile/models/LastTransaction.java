@@ -3,6 +3,10 @@ package com.rmart.customerservice.mobile.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class LastTransaction {
     @SerializedName("type")
     @Expose
@@ -29,6 +33,20 @@ public class LastTransaction {
     String createdOn;
 
     public String getCreatedOn() {
+
+
+        try {
+            //"2021-03-15 21:50:05"
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+            Date newDate = format.parse(createdOn);
+            //8 march 2021
+            format = new SimpleDateFormat("dd MMM yyyy");
+            String date = format.format(newDate);
+            return date;
+        } catch (Exception e){
+            e.printStackTrace();
+
+        }
         return createdOn;
     }
 
@@ -101,6 +119,7 @@ public class LastTransaction {
     }
 
     public String getCreatedBy() {
+
         return createdBy;
     }
 

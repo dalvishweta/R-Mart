@@ -106,9 +106,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 myViewHolder.binding.topview.getLayoutParams().width = (width / 3) - 15;
             }
             List<CustomerProductsDetailsUnitModel>  units = productData.get(position).getUnits();
-
-
-                myViewHolder.binding.quantitySpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            myViewHolder.binding.quantitySpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         Object lSelectedItem = myViewHolder.binding.quantitySpinnerField.getSelectedItem();
@@ -123,25 +121,18 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                     }
                 });
-
-                if (units != null && !units.isEmpty()) {
+            if (units != null && !units.isEmpty()) {
                     ArrayList<Object> updatedUnitsList = new ArrayList<>(units);
-                    CustomSpinnerAdapter unitsAdapter = new CustomSpinnerAdapter(context, updatedUnitsList);
+                    CustomSpinnerAdapter unitsAdapter = new CustomSpinnerAdapter(context, updatedUnitsList,true);
                     myViewHolder.binding.quantitySpinnerField.setAdapter(unitsAdapter);
-                }
-
-
-
-
+             }
             myViewHolder.binding.outofstock.getLayoutParams().height = myViewHolder.binding.topview.getLayoutParams().height;
             myViewHolder.binding.topview.setOnClickListener(view -> onClickListner.onProductSelected(productData.get(position)));
             myViewHolder.binding.addtocart.setOnClickListener(view -> {
-
                 Object lSelectedItem = myViewHolder.binding.quantitySpinnerField.getSelectedItem();
                 addtocart((CustomerProductsDetailsUnitModel)lSelectedItem,productData.get(position),position,1);
             });
             myViewHolder.binding.btnAddField.setOnClickListener(view -> {
-
                 Object lSelectedItem = myViewHolder.binding.quantitySpinnerField.getSelectedItem();
                 addtocart((CustomerProductsDetailsUnitModel)lSelectedItem,productData.get(position),position,1);
             });
@@ -155,42 +146,45 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void addtocart(CustomerProductsDetailsUnitModel unitModel,ProductData productData2,int position,int type){
 
+        boolean perform= true;
         if(type==1) {
 
             unitModel.setTotalProductCartQty(unitModel.getTotalProductCartQty() + 1);
         }else{
-            unitModel.setTotalProductCartQty(unitModel.getTotalProductCartQty() - 1);
-        }
-        ProductsRepository.addToCart(vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),unitModel.getProductUnitId(),unitModel.getTotalProductCartQty(),"").observeForever(new Observer<AddToCartResponseDetails>() {
-            @Override
-            public void onChanged(AddToCartResponseDetails addToCartResponseDetails) {
-                if (addToCartResponseDetails.getStatus().equalsIgnoreCase("success")) {
-                    AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = addToCartResponseDetails.getAddToCartDataResponse();
-                    if (addToCartDataResponse != null) {
-                        Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
-                        UpdateCartCountDetails.updateCartCountDetails.onNext(totalCartCount);
-                        notifyItemChanged(position);
-
-
-                    } else {
-                        if(type==1) {
-                            unitModel.setTotalProductCartQty(unitModel.getTotalProductCartQty() -1);
-                            notifyItemChanged(position);
-                        }else{
-                            unitModel.setTotalProductCartQty(unitModel.getTotalProductCartQty() + 1);
-                            notifyItemChanged(position);
-                        }
-                    }
-                    Toast.makeText(context,addToCartResponseDetails.getMsg(),Toast.LENGTH_LONG).show();
-
-
-
-                }else {
-                    Toast.makeText(context,addToCartResponseDetails.getMsg(),Toast.LENGTH_LONG).show();
-
-                }
+            if(unitModel.getTotalProductCartQty()>0) {
+                unitModel.setTotalProductCartQty(unitModel.getTotalProductCartQty() - 1);
+            } else {
+                perform =false;
             }
-        });
+        }
+        if(perform) {
+            ProductsRepository.addToCart(vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(), unitModel.getProductUnitId(), unitModel.getTotalProductCartQty(), "").observeForever(new Observer<AddToCartResponseDetails>() {
+                @Override
+                public void onChanged(AddToCartResponseDetails addToCartResponseDetails) {
+                    if (addToCartResponseDetails.getStatus().equalsIgnoreCase("success")) {
+                        AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = addToCartResponseDetails.getAddToCartDataResponse();
+                        if (addToCartDataResponse != null) {
+                            Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
+                            UpdateCartCountDetails.updateCartCountDetails.onNext(totalCartCount);
+                            notifyItemChanged(position);
+
+
+                        } else {
+                            if (type == 1) {
+                                unitModel.setTotalProductCartQty(unitModel.getTotalProductCartQty() - 1);
+                                notifyItemChanged(position);
+                            } else {
+                                unitModel.setTotalProductCartQty(unitModel.getTotalProductCartQty() + 1);
+                                notifyItemChanged(position);
+                            }
+                        }
+                        Toast.makeText(context, addToCartResponseDetails.getMsg(), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(context, addToCartResponseDetails.getMsg(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
     private void setUnit(ProductHolder myViewHolder, CustomerProductsDetailsUnitModel unitModel) {
 
@@ -198,22 +192,14 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             myViewHolder.binding.offerlabel.setText(String.format("%s", unitModel.getProductDiscount(), "0.00")+"% Off");
             myViewHolder.binding.unitPrice.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getUnitPrice(), "0.00")));
             myViewHolder.binding.sellingPrice.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getSellingPrice(), "0.00")));
-            myViewHolder.binding.sellingPrice2.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getSellingPrice(), "0.00")));
+           // myViewHolder.binding.sellingPrice2.setText(String.format("Rs. %s", Utils.roundOffDoubleValue(unitModel.getSellingPrice(), "0.00")));
             myViewHolder.binding.unitPrice.setPaintFlags(myViewHolder.binding.unitPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-
-            if(unitModel.getUnitPrice() -unitModel.getSellingPrice()==0 ){
-               myViewHolder.binding.priceOffer.setVisibility(View.GONE);
-               myViewHolder.binding.sellingPrice2.setVisibility(View.VISIBLE);
-            } else {
-               myViewHolder.binding.priceOffer.setVisibility(View.VISIBLE);
-               myViewHolder.binding.sellingPrice2.setVisibility(View.GONE);
-            }
-
             if(unitModel.getProductDiscount()>0) {
                 myViewHolder.binding.offerlabel.setVisibility(View.VISIBLE);
+                myViewHolder.binding.unitPrice.setVisibility(View.VISIBLE);
             } else {
-
                 myViewHolder.binding.offerlabel.setVisibility(View.GONE);
+                myViewHolder.binding.unitPrice.setVisibility(View.GONE);
             }
             myViewHolder.binding.addtocart.setVisibility(unitModel.getTotalProductCartQty()>0?View.GONE:View.VISIBLE);
             myViewHolder.binding.llQty.setVisibility(unitModel.getTotalProductCartQty()>0?View.VISIBLE:View.GONE);

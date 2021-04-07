@@ -2,7 +2,13 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <data>
+        <import type="android.view.View"/>
+         <import type="com.rmart.utilits.Curruncy"/>
+        <variable
+            name="LastTransaction"
+            type="com.rmart.customerservice.mobile.models.LastTransaction" />
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,6 +42,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:padding="3dp"
                 android:textColor="@color/black2"
+                android:text="@{LastTransaction.operator}"
                 android:textSize="16sp"
                 tools:text="Pravin Prasad" />
 
@@ -48,6 +55,7 @@
                 android:textColor="@color/black2"
                 android:textSize="14sp"
                 tools:ignore="RtlSymmetry"
+                android:text="@{LastTransaction.rechargeOn}"
                 tools:text="9975294782" />
 
             <TextView
@@ -57,6 +65,7 @@
                 android:paddingStart="@dimen/dp_3"
                 android:paddingLeft="@dimen/dp_3"
                 android:textColor="@color/black"
+                android:text='@{"Last Recharge: "+Curruncy.getCurruncy(LastTransaction.lastTransactionAmount)+" on "+ LastTransaction.createdOn}'
                 android:textSize="12sp"
                 tools:ignore="RtlSymmetry"
                 tools:text="Last Recharge:75 on 8 march 2021" />

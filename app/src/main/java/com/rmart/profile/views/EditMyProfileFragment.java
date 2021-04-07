@@ -131,7 +131,7 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
             }
         });
 
-        CustomSpinnerAdapter customStringAdapter = new CustomSpinnerAdapter(requireActivity(), gendersList);
+        CustomSpinnerAdapter customStringAdapter = new CustomSpinnerAdapter(requireActivity(), gendersList,true);
         spinner.setAdapter(customStringAdapter);
         view.findViewById(R.id.submit).setOnClickListener(this);
         updateUI(Objects.requireNonNull(MyProfile.getInstance()));

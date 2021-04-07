@@ -34,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
-            android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"
             android:hint="@string/search_for_shop"
             android:inputType="textCapSentences"
             android:lines="1"

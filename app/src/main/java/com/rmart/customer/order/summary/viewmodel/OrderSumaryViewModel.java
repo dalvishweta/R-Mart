@@ -61,7 +61,6 @@ public class OrderSumaryViewModel extends ViewModel {
                 if(DiscountCode.getValue()!=null && !DiscountCode.getValue().equalsIgnoreCase("")) {
                     showOrderSummary(vendorShoppingCartDetails.getValue().getVendorId(), vendorShoppingCartDetails.getValue().getShopId(), myProfile.getPrimaryAddressId(), orderedSummaryResponseMutableLiveData.getValue().getCustomerOrderedDataResponseModel().deliveryMethod, DiscountCode.getValue());
                 } else {
-
                     Toast.makeText(view.getContext(),"Pease Enter Promocode",Toast.LENGTH_LONG).show();
                 }
                 break;
@@ -85,6 +84,8 @@ public class OrderSumaryViewModel extends ViewModel {
                 }
 
 
+                break;
+            case R.id.change:
                 break;
         }
         }

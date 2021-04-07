@@ -72,7 +72,7 @@ public interface MobileRechargeService {
 
     @POST(BuildConfig.HISTORY)
     @FormUrlEncoded
-    Call<ResponseGetHistory> getHistory(@Field("user_id") String userID );
+    Call<ResponseGetHistory> getHistory(@Field("user_id") String userID,@Field("service_id") String serviceID );
 
 
     @POST(BuildConfig.Mobile_recharge)

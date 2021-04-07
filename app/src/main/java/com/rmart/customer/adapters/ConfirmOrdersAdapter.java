@@ -1,5 +1,6 @@
 package com.rmart.customer.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.Spannable;
@@ -13,9 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -23,11 +29,25 @@ import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
+import com.rmart.baseclass.views.CustomLoadingDialog;
+import com.rmart.customer.models.AddToCartResponseDetails;
 import com.rmart.customer.models.ContentModel;
+import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.customer.models.ProductInCartDetailsModel;
+import com.rmart.customer.models.ProductInCartResponse;
+import com.rmart.customer.models.ShoppingCartResponseDetails;
+import com.rmart.customer.shops.home.model.ProductData;
+import com.rmart.customer.shops.products.repositories.ProductsRepository;
+import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.HttpsTrustManager;
+import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
+import com.rmart.utilits.services.CustomerProductsService;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,13 +57,16 @@ import java.util.Locale;
 public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdapter.ViewHolder> {
 
     private final LayoutInflater layoutInflater;
+    private ShoppingCartResponseDetails vendorShoppingCartDetails;
     private final List<ProductInCartDetailsModel> listData;
     private final CallBackInterface callBackListener;
     private final ImageLoader imageLoader;
-
-    public ConfirmOrdersAdapter(Context context, List<ProductInCartDetailsModel> listData, CallBackInterface callBackListener) {
+    Context context;
+    public ConfirmOrdersAdapter(ShoppingCartResponseDetails vendorShoppingCartDetails,Context context, List<ProductInCartDetailsModel> listData, CallBackInterface callBackListener) {
         layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
+        this.vendorShoppingCartDetails = vendorShoppingCartDetails;
+        this.context = context;
         this.callBackListener = callBackListener;
         imageLoader = RMartApplication.getInstance().getImageLoader();
     }
@@ -67,7 +90,6 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
        // String quantityDetails = String.format(Locale.getDefault(), "%s %s", Utils.roundOffDoubleValue(totalUnitNumbers, "0.00") , dataObject.getShortUnitMeasure());
         double totalSellingPrice = totalProductCartQuantity * dataObject.getPerProductSellingPrice();
         String sellingPrice = String.format("Rs. %s", Utils.roundOffDoubleValue(totalSellingPrice, "0.00"));
-
         Double totalUnitPrice = totalProductCartQuantity * dataObject.getPerProductUnitPrice();
         String unitPriceDetails = Utils.roundOffDoubleValue(totalUnitPrice, "0.00");
         String quantityPriceDetails = String.format("%s  %s",  sellingPrice, unitPriceDetails);
@@ -78,7 +100,12 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
 
         quantityPriceDetailsSpannable.setSpan(new StrikethroughSpan(), quantityPriceDetails.indexOf(unitPriceDetails),
                 quantityPriceDetails.indexOf(unitPriceDetails) + unitPriceDetails.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        holder.tvQuantityPriceDetailsField.setText(quantityPriceDetailsSpannable);
+
+        if(totalSellingPrice-totalUnitPrice==0){
+            holder.tvQuantityPriceDetailsField.setText(sellingPrice);
+        } else {
+            holder.tvQuantityPriceDetailsField.setText(quantityPriceDetailsSpannable);
+        }
 
         if (!TextUtils.isEmpty(productImageUrl)) {
             HttpsTrustManager.allowAllSSL();
@@ -105,25 +132,56 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
         });
         holder.btnMinusField.setTag(position);
         holder.btnMinusField.setOnClickListener(v -> {
-            int tag = (int) v.getTag();
-            ContentModel contentModel = new ContentModel();
-            contentModel.setStatus(Constants.TAG_MINUS);
-            contentModel.setValue(listData.get(tag));
-            callBackListener.callBackReceived(contentModel);
+            addtocart(dataObject, position,2);
         });
         holder.btnPlusField.setTag(position);
         holder.btnPlusField.setOnClickListener(v -> {
-            int tag = (int) v.getTag();
-            ContentModel contentModel = new ContentModel();
-            contentModel.setStatus(Constants.TAG_PLUS);
-            contentModel.setValue(listData.get(tag));
-            callBackListener.callBackReceived(contentModel);
+            addtocart(dataObject, position,1);
         });
     }
 
     @Override
     public int getItemCount() {
         return listData.size();
+    }
+    public void addtocart(ProductInCartDetailsModel  productInCartDetailsModel, int position,int type){
+
+        boolean perform= true;
+        if(type==1) {
+            productInCartDetailsModel.setTotalProductCartQty(productInCartDetailsModel.getTotalProductCartQty() + 1);
+        }else{
+            if(productInCartDetailsModel.getTotalProductCartQty()>1) {
+                productInCartDetailsModel.setTotalProductCartQty(productInCartDetailsModel.getTotalProductCartQty() - 1);
+            } else {
+                perform =false;
+            }
+        }
+        if(perform) {
+            ProductsRepository.addToCart(vendorShoppingCartDetails.getVendorId(), MyProfile.getInstance().getUserID(), productInCartDetailsModel.getProductUnitId(), productInCartDetailsModel.getTotalProductCartQty(), "").observeForever(new Observer<AddToCartResponseDetails>() {
+                @Override
+                public void onChanged(AddToCartResponseDetails addToCartResponseDetails) {
+                    if (addToCartResponseDetails.getStatus().equalsIgnoreCase("success")) {
+                        AddToCartResponseDetails.AddToCartDataResponse addToCartDataResponse = addToCartResponseDetails.getAddToCartDataResponse();
+                        if (addToCartDataResponse != null) {
+                            Integer totalCartCount = addToCartDataResponse.getTotalCartCount();
+                            UpdateCartCountDetails.updateCartCountDetails.onNext(totalCartCount);
+                            notifyItemChanged(position);
+                        } else {
+                            if (type == 1) {
+                                productInCartDetailsModel.setTotalProductCartQty(productInCartDetailsModel.getTotalProductCartQty() - 1);
+                                notifyItemChanged(position);
+                            } else {
+                                productInCartDetailsModel.setTotalProductCartQty(productInCartDetailsModel.getTotalProductCartQty() + 1);
+                                notifyItemChanged(position);
+                            }
+                        }
+                        Toast.makeText(context, addToCartResponseDetails.getMsg(), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(context, addToCartResponseDetails.getMsg(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

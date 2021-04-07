@@ -30,11 +30,9 @@ public class SelectOrderStatusView extends DialogFragment {
 
     private String selectedReason;
     private CallBackInterface callBackListener;
-
     public static SelectOrderStatusView getInstance() {
         return new SelectOrderStatusView();
     }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -49,11 +47,9 @@ public class SelectOrderStatusView extends DialogFragment {
             }
             return false;
         });
-
         loadUIComponents(view);
         return dialog;
     }
-
     private void loadUIComponents(View view) {
         Spinner selectSpinnerField = view.findViewById(R.id.select_reason_spinner_field);
         List<Object> reasonsList = new ArrayList<>();
@@ -63,7 +59,7 @@ public class SelectOrderStatusView extends DialogFragment {
             reasonsList.addAll(Arrays.asList(getResources().getStringArray(R.array.vendor_reasons_list)));
         }
         reasonsList.add(0, getString(R.string.select_reason));
-        CustomSpinnerAdapter reasonAdapter = new CustomSpinnerAdapter(requireActivity(), reasonsList);
+        CustomSpinnerAdapter reasonAdapter = new CustomSpinnerAdapter(requireActivity(), reasonsList,true);
         selectSpinnerField.setAdapter(reasonAdapter);
         selectSpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -76,16 +72,13 @@ public class SelectOrderStatusView extends DialogFragment {
 
             }
         });
-
         view.findViewById(R.id.btn_submit_field).setOnClickListener(v -> {
             submitSelected();
         });
     }
-
     public void setCallBackListener(CallBackInterface callBackListener) {
         this.callBackListener = callBackListener;
     }
-
     private void submitSelected() {
         if (selectedReason.equalsIgnoreCase(getString(R.string.select_reason))) {
             showDialog(getString(R.string.select_reason));
@@ -94,7 +87,6 @@ public class SelectOrderStatusView extends DialogFragment {
             closeDialog();
         }
     }
-
     private void showDialog(String msg) {
         try {
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity(), R.style.AlertDialog);
@@ -107,10 +99,8 @@ public class SelectOrderStatusView extends DialogFragment {
                 alertDialog.show();
             }
         } catch (Exception e) {
-
         }
     }
-
     private void closeDialog() {
         Dialog dialog = getDialog();
         if (dialog != null) {

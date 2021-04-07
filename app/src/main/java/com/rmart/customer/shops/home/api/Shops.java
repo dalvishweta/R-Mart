@@ -2,7 +2,6 @@ package com.rmart.customer.shops.home.api;
 
 import com.rmart.BuildConfig;
 import com.rmart.customer.shops.home.model.ShopHomePageResponce;
-
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.GET;

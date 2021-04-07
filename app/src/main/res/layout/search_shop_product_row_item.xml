@@ -118,6 +118,7 @@
             android:fontFamily="@font/roboto_regular"
             android:gravity="center"
             android:padding="5dp"
+
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="12sp"

@@ -148,7 +148,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             }
         });
 
-        CustomSpinnerAdapter customStringAdapter = new CustomSpinnerAdapter(requireActivity(), gendersList);
+        CustomSpinnerAdapter customStringAdapter = new CustomSpinnerAdapter(requireActivity(), gendersList,false);
         genderSpinnerField.setAdapter(customStringAdapter);
 
         LinearLayout paymentBase = view.findViewById(R.id.payment_base);

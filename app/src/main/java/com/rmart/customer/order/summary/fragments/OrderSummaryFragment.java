@@ -1,7 +1,9 @@
 package com.rmart.customer.order.summary.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.models.CustomerOrderProductOrderedDetails;
 import com.rmart.customer.order.summary.adapters.ProductsAdapter;
 import com.rmart.customer.order.summary.model.OrderedSummaryResponse;
@@ -26,6 +29,7 @@ import static com.rmart.customer.order.summary.viewmodel.OrderSumaryViewModel.DE
 
 public class OrderSummaryFragment extends BaseFragment {
 
+    private OnCustomerHomeInteractionListener onCustomerHomeInteractionListener;
 
     private ShopDetailsModel vendorShoppingCartDetails;
 
@@ -79,8 +83,21 @@ public class OrderSummaryFragment extends BaseFragment {
                 }
             }
         });
+        binding.change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCustomerHomeInteractionListener.gotoChangeAddress();
+            }
+        });
 
 
         return binding.getRoot();
+    }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof OnCustomerHomeInteractionListener) {
+            onCustomerHomeInteractionListener = (OnCustomerHomeInteractionListener) context;
+        }
     }
 }

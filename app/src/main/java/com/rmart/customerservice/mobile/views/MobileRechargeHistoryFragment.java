@@ -21,6 +21,7 @@ import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customerservice.mobile.adapters.RechargeHistoryAdapter;
 import com.rmart.customerservice.mobile.api.MobileRechargeService;
 import com.rmart.customerservice.mobile.interfaces.OnMobileRechargeListener;
+import com.rmart.customerservice.mobile.listners.HistoryClickListner;
 import com.rmart.customerservice.mobile.models.LastTransaction;
 import com.rmart.customerservice.mobile.models.ResponseGetHistory;
 import com.rmart.customerservice.mobile.models.SubscriberModule;
@@ -88,7 +89,7 @@ public class MobileRechargeHistoryFragment extends BaseFragment implements View.
     public void loadRechargeHistory(){
         progressSpinner.setVisibility(View.VISIBLE);
         MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstance().create(MobileRechargeService.class);
-        mobileRechargeService.getHistory(MyProfile.getInstance().getUserID()).enqueue(new Callback<ResponseGetHistory>() {
+        mobileRechargeService.getHistory(MyProfile.getInstance().getUserID(),"25").enqueue(new Callback<ResponseGetHistory>() {
             @Override
             public void onResponse(Call<ResponseGetHistory> call, Response<ResponseGetHistory> response) {
                 progressSpinner.setVisibility(View.GONE);
@@ -106,7 +107,23 @@ public class MobileRechargeHistoryFragment extends BaseFragment implements View.
                             }
 
                             RechargeHistoryAdapter recyclerAdapter = new RechargeHistoryAdapter(response.body().getLastTransaction()
-                                    ,MobileRechargeHistoryFragment.this);
+                                    , new HistoryClickListner() {
+                                @Override
+                                public void onSelect(LastTransaction data) {
+
+                                    SubscriberModule operator = mListener.getMobileRechargeModule().getPrepaidSubscriber(data.getOperator());
+                                    mListener.getMobileRechargeModule().setMobileNumber(data.getRechargeOn());
+                                    mListener.getMobileRechargeModule().setPlanType("Prepaid Mobile");
+                                    mListener.getMobileRechargeModule().setRechargeType("0");
+                                    mListener.getMobileRechargeModule().setStateName(data.getStateName());
+                                    mListener.getMobileRechargeModule().setPreOperator(operator.getKey());
+                                    mListener.getMobileRechargeModule().setImage(operator.getImage());
+                                    mListener.getMobileRechargeModule().setMobileOperator(operator.getName());
+                                    mListener.getMobileRechargeModule().setRechargeAmount(data.getLastTransactionAmount());
+                                    mListener.getMobileRechargeModule().setUserID(MyProfile.getInstance().getUserID());
+                                    mListener.goToMakePaymentFragment();
+                                }
+                            });
                             recyclerView.setAdapter(recyclerAdapter);
                         } else {
                             showDialog("", response.message());
@@ -168,17 +185,6 @@ public class MobileRechargeHistoryFragment extends BaseFragment implements View.
 
     @Override
     public void onClick(View view) {
-        LastTransaction data = (LastTransaction) view.getTag();
-        SubscriberModule operator = mListener.getMobileRechargeModule().getPrepaidSubscriber(data.getOperator());
-        mListener.getMobileRechargeModule().setMobileNumber(data.getRechargeOn());
-        mListener.getMobileRechargeModule().setPlanType("Prepaid Mobile");
-        mListener.getMobileRechargeModule().setRechargeType("0");
-        mListener.getMobileRechargeModule().setStateName(data.getStateName());
-        mListener.getMobileRechargeModule().setPreOperator(operator.getKey());
-        mListener.getMobileRechargeModule().setImage(operator.getImage());
-        mListener.getMobileRechargeModule().setMobileOperator(operator.getName());
-        mListener.getMobileRechargeModule().setRechargeAmount(data.getLastTransactionAmount());
-        mListener.getMobileRechargeModule().setUserID(MyProfile.getInstance().getUserID());
-        mListener.goToMakePaymentFragment();
+
     }
 }

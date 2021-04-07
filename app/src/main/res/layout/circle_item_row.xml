@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+ >
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.rmart.utilits.Curruncy"/>
+        <variable
+            name="Circles"
+            type="com.rmart.customerservice.mobile.circle.model.Circle" />
+    </data>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_toRightOf="@+id/icon"
+        android:id="@+id/name"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{Circles.name}"
+        android:textColor="@color/black2"
+        android:textSize="14sp"
+        android:padding="10dp"
+ />
+
+    <View
+        android:layout_below="@+id/name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:background="@color/black"
+        android:layout_height="1dp" />
+</RelativeLayout>
+</layout>

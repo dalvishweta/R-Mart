@@ -7,7 +7,7 @@ import com.rmart.utilits.BaseResponse;
 public class ResponseGetHistory extends BaseResponse {
     @SerializedName("data")
     @Expose
-    LastTransaction[] lastTransaction;
+    public LastTransaction[] lastTransaction;
 
     public LastTransaction[] getLastTransaction() {
         return lastTransaction;

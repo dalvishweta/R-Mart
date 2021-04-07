@@ -29,10 +29,10 @@ public class MobileRechargeRepository {
 
     public static MutableLiveData<ResponseGetHistory> getHistory() {
 
-        MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstance().create(MobileRechargeService.class);
+        MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstanceRokad().create(MobileRechargeService.class);
         final MutableLiveData<ResponseGetHistory> resultMutableLiveData = new MutableLiveData<>();
-        String type = MyProfile.getInstance().getRoleID();
-        Call<ResponseGetHistory> call = mobileRechargeService.getHistory(MyProfile.getInstance().getUserID());
+        MyProfile.getInstance().getUserID();
+        Call<ResponseGetHistory> call = mobileRechargeService.getHistory("8614","25");
         final ResponseGetHistory result = new ResponseGetHistory();
 
         call.enqueue(new Callback<ResponseGetHistory>() {

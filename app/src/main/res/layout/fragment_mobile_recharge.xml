@@ -9,8 +9,8 @@
     <data>
         <import type="android.view.View"/>
         <variable
-            name="myAdapter"
-            type="com.rmart.customer.dashboard.adapters.HomeAdapter" />
+            name="rechargeHistoryAdapter"
+            type="com.rmart.customerservice.mobile.adapters.RechargeHistoryAdapter" />
 
         <variable
             name="MobileRechargeViewModel"
@@ -23,6 +23,7 @@
         android:background="#E8E9E8"
         android:orientation="vertical">
         <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
@@ -37,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <LinearLayout
+                    android:id="@+id/mobile_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -57,6 +59,7 @@
                             android:fontFamily="@font/roboto_medium"
                             android:padding="5dp"
                             android:text="@string/prepaid"
+                            android:checked="true"
                             android:textColor="@color/black2"
                             android:textStyle="bold" />
 
@@ -72,30 +75,19 @@
 
                     </RadioGroup>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/mobile_number_layout"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="center"
-                        android:hint="@string/enter_your_mobile_number"
 
-                        >
 
-                        <EditText
+                        <TextView
                             android:id="@+id/mobile_no"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:digits="@string/allow_digits_for_numbers"
                             android:fontFamily="@font/roboto_light"
                             android:inputType="text"
+                            android:padding="10dp"
+                            android:background="@drawable/grey_rounded_borders_bg"
+                            android:hint="@string/enter_your_mobile_number"
                             android:maxLength="10"
                             tools:ignore="Autofill,LabelFor" />
-                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </LinearLayout>
@@ -128,15 +120,15 @@
                     android:id="@+id/progressBar1"
                     tools:visibility="gone"
                     android:layout_width="match_parent"
-                    android:layout_below="@+id/searchLayout"
                     android:layout_height="wrap_content" />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_recharge_history"
                     android:layout_width="match_parent"
-                    android:visibility="@{MobileRechargeViewModel.isLoading?View.GONE:View.VISIBLE}"
+                    android:adapter="@{rechargeHistoryAdapter}"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="6"
                     tools:listitem="@layout/mobile_history" />
             </LinearLayout>

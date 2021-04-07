@@ -455,5 +455,8 @@
     <string name="enter_your_mobile_number">Enter Your Mobile Number</string>
     <string name="recently_recharge">Recently Recharge</string>
     <string name="mobile_recharge_title"><![CDATA[Recharge & Bill Payment]]></string>
+    <string name="mobile_recharge_title2"><![CDATA[Select & Recharge Plan ]]></string>
+    <string name="new_number">New Number</string>
+    <string name="disclaimer_we_support_most_typees_of_recharges_but_please_check_with_your_operator_before_you_proceed">Disclaimer: We support most typees of recharges, but please check with your operator before you proceed</string>
 
 </resources>

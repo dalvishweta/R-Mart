@@ -14,11 +14,11 @@ public class MobileRechargeViewModel extends ViewModel {
     public MutableLiveData<ResponseGetHistory> responseGetHistoryMutableLiveData = new MutableLiveData<>();
 
 
-    public void loadShopHomePage(){
+    public void getHistory(){
         isLoading.setValue(true);
         MobileRechargeRepository.getHistory().observeForever(responseGetHistory -> {
-            responseGetHistoryMutableLiveData.postValue(responseGetHistory);
-            isLoading.postValue(false);
+            responseGetHistoryMutableLiveData.setValue(responseGetHistory);
+            isLoading.setValue(false);
         });
 
 

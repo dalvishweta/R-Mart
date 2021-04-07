@@ -13,6 +13,7 @@ import com.rmart.R;
 import com.rmart.customer.shops.home.fragments.ShopHomePage;
 import com.rmart.customer.shops.home.listner.OnClickListner;
 import com.rmart.customer.shops.home.model.Category;
+import com.rmart.customer.shops.home.model.ProductData;
 import com.rmart.customer.shops.home.model.Results;
 import com.rmart.databinding.CategoryListItemRowBinding;
 import com.rmart.databinding.ShopHomePageBinding;
@@ -43,7 +44,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.viewType = viewType;
 
     }
-
+    public void addCatrgory(ArrayList<Category> productDatas){
+        this.categories = productDatas;
+        notifyDataSetChanged();
+    }
 
 
     @Override
@@ -70,6 +74,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             myViewHolder.bind(categories.get(position));
             myViewHolder.binding.topview.setOnClickListener(view -> {
                 onClickListner.onCategorySelected(categories.get(position));
+                int previous = selectedposition;
+                selectedposition=position;
+                notifyItemChanged(previous);
+                notifyItemChanged(selectedposition);
             });
             if(selectedposition==position){
                 ((CategoryHolder) holder2).binding.root.setBackground(context.getResources().getDrawable(R.drawable.cat_background_0));

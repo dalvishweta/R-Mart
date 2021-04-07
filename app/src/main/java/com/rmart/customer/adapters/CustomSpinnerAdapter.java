@@ -26,12 +26,13 @@ public class CustomSpinnerAdapter extends BaseAdapter {
     private boolean changeTextColor = false;
     private int whiteColor;
     private int blackColor;
-
-    public CustomSpinnerAdapter(Context context, List<Object> listData) {
+    private boolean type;
+    public CustomSpinnerAdapter(Context context, List<Object> listData,boolean type) {
         layoutInflater = LayoutInflater.from(context);
         this.listData = listData;
         whiteColor = ContextCompat.getColor(context, R.color.white);
         blackColor = ContextCompat.getColor(context, R.color.black);
+        this.type=type;
     }
 
     public void changeTextColor() {
@@ -58,7 +59,11 @@ public class CustomSpinnerAdapter extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = layoutInflater.inflate(R.layout.custom_text_view, viewGroup, false);
+            if(!type) {
+                convertView = layoutInflater.inflate(R.layout.custom_text_view, viewGroup, false);
+            } else {
+                convertView = layoutInflater.inflate(R.layout.layout_spinerr_item_row, viewGroup, false);
+            }
             holder.tvTextField = convertView.findViewById(R.id.tv_custom_text_field);
             convertView.setTag(holder);
         } else {

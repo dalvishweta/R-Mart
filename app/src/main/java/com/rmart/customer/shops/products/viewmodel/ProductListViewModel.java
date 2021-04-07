@@ -18,6 +18,17 @@ public class ProductListViewModel extends ViewModel {
         ProductsRepository.getVenderProducts(productsShopDetailsModel.getVendorId(),productsShopDetailsModel.getShopId(), categoeryid, searchPrase,start_page, sub_category_id,productstype).observeForever(productResult -> {
             shopHomePageResponceMutableLiveData.setValue(productResult);
             isLoading.postValue(false);
+            try {
+                if (shopHomePageResponceMutableLiveData.getValue().results.productData.size() == 0) {
+                    ProductsResponce productsResponceMutableLiveData= shopHomePageResponceMutableLiveData.getValue();
+                    productsResponceMutableLiveData.setStatus(300);
+                    productsResponceMutableLiveData.setMsg("Product Not Available");
+                    shopHomePageResponceMutableLiveData.setValue(productsResponceMutableLiveData);
+
+                }
+            }catch (Exception e){
+
+            }
         });
 
 

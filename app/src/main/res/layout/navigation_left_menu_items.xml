@@ -68,6 +68,7 @@
                     android:id="@+id/my_favourites_list"
                     android:drawableTint="@color/black"
                     style="@style/nv_item_view"
+                    android:visibility="gone"
                     android:drawableLeft="@drawable/ic_favourite"
                     android:text="@string/my_favourites" />
                 <androidx.appcompat.widget.AppCompatTextView

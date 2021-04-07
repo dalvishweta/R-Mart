@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.BR;
 import com.rmart.R;
 import com.rmart.customer.dashboard.adapters.HomeAdapter;
+import com.rmart.customerservice.mobile.listners.HistoryClickListner;
 import com.rmart.customerservice.mobile.models.LastTransaction;
 import com.rmart.databinding.MobileHistoryBinding;
 import com.rmart.databinding.ServicesBinding;
@@ -21,10 +22,10 @@ import com.rmart.databinding.ServicesBinding;
 public class RechargeHistoryAdapter extends RecyclerView.Adapter<RechargeHistoryAdapter.HistoryViewHolder> {
 
     LastTransaction[] mLastTransaction;
-    View.OnClickListener mOnClick;
-    public RechargeHistoryAdapter(LastTransaction[] lastTransaction, View.OnClickListener callback) {
+    HistoryClickListner historyClickListner;
+    public RechargeHistoryAdapter(LastTransaction[] lastTransaction, HistoryClickListner historyClickListner) {
         mLastTransaction = lastTransaction;
-        mOnClick = callback;
+        this.historyClickListner = historyClickListner;
     }
 
     @NonNull
@@ -40,7 +41,8 @@ public class RechargeHistoryAdapter extends RecyclerView.Adapter<RechargeHistory
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
         LastTransaction data = mLastTransaction[position];
-
+        holder.itemView.setOnClickListener(view -> historyClickListner.onSelect(data));
+        holder.bind(data);
     }
 
     @Override
@@ -59,7 +61,7 @@ public class RechargeHistoryAdapter extends RecyclerView.Adapter<RechargeHistory
         }
 
         public void bind(Object obj) {
-            binding.setVariable(BR.HomePageData, obj);
+            binding.setVariable(BR.LastTransaction, obj);
             binding.executePendingBindings();
         }
     }

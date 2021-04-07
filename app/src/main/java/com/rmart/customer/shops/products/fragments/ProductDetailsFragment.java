@@ -149,7 +149,6 @@ public class ProductDetailsFragment extends Fragment {
                     imageURLResponse.setProductVideoSelected(false);
                     lUpdatedImagesList.add(imageURLResponse);
                 }
-
                 String videoLink = productDetailsDescModel.getProductVideoLink();
                 if (!TextUtils.isEmpty(videoLink)) {
                     if (Utils.isValidYoutubeUrl(videoLink)) {
@@ -163,16 +162,20 @@ public class ProductDetailsFragment extends Fragment {
                         }
                     }
                 }
-                ImageAdapter imageAdapter = new ImageAdapter(requireActivity(), lUpdatedImagesList);
-                imageAdapter.setCallBackListener(pObject -> {
-                    if (pObject instanceof ImageURLResponse) {
-                        ImageURLResponse imageURLResponse = (ImageURLResponse) pObject;
-                        showProductPreviewSelected(imageURLResponse.getImageURL());
-                    }
-                });
-                binding.viewPager.setAdapter(imageAdapter);
-                binding.productImagesDotIndicatorField.setVisibility(lUpdatedImagesList.size() == 1 ? View.GONE : View.VISIBLE);
-                binding.productImagesDotIndicatorField.setupWithViewPager(binding.viewPager);
+                try {
+                    ImageAdapter imageAdapter = new ImageAdapter(requireActivity(), lUpdatedImagesList);
+                    imageAdapter.setCallBackListener(pObject -> {
+                        if (pObject instanceof ImageURLResponse) {
+                            ImageURLResponse imageURLResponse = (ImageURLResponse) pObject;
+                            showProductPreviewSelected(imageURLResponse.getImageURL());
+                        }
+                    });
+                    binding.viewPager.setAdapter(imageAdapter);
+                    binding.productImagesDotIndicatorField.setVisibility(lUpdatedImagesList.size() == 1 ? View.GONE : View.VISIBLE);
+                    binding.productImagesDotIndicatorField.setupWithViewPager(binding.viewPager);
+                } catch ( Exception e ){
+
+                }
             }
         }
     }
@@ -184,10 +187,10 @@ public class ProductDetailsFragment extends Fragment {
             try {
                 this.startActivity(webIntent);
             } catch (ActivityNotFoundException ex) {
-                //showDialog(ex.getMessage());
+
             }
         } else {
-            //showDialog(getString(R.string.no_video_link_found));
+
         }
     }
     @Override
