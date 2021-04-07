@@ -31,7 +31,6 @@ public class MobileRechargeRepository {
 
         MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstanceRokad().create(MobileRechargeService.class);
         final MutableLiveData<ResponseGetHistory> resultMutableLiveData = new MutableLiveData<>();
-        MyProfile.getInstance().getUserID();
         Call<ResponseGetHistory> call = mobileRechargeService.getHistory("8614","25");
         final ResponseGetHistory result = new ResponseGetHistory();
 

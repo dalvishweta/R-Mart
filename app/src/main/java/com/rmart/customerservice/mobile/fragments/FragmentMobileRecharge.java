@@ -83,7 +83,7 @@ public class FragmentMobileRecharge extends Fragment {
         if(requestCode ==200 && data!=null ) {
             String name = data.getStringExtra("name");
             String number = data.getStringExtra("number");
-            String type = binding.rgServiceType.getCheckedRadioButtonId()==R.id.rb_prepaid?"Prepaid":"Postpaid";
+            String type = binding.rgServiceType.getCheckedRadioButtonId()==R.id.rb_prepaid?"M_PRE":"M_POST";
             name = name==null?number:name;
             changefragment(name, number, type);
         }

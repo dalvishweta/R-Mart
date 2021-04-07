@@ -41,7 +41,7 @@ public class CircleAdapter extends RecyclerView.Adapter<CircleAdapter.OperatoreV
 
     @Override
     public int getItemCount() {
-        return circles.size();
+        return circles==null?0:circles.size();
     }
 
 

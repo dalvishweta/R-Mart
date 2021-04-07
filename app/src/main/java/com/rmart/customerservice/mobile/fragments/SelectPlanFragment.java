@@ -91,7 +91,7 @@ public class SelectPlanFragment extends Fragment {
         fragmentSelectPlan2Binding.setSelectPlanViewModel(mViewModel);
         fragmentSelectPlan2Binding.setLifecycleOwner(this);
         fragmentSelectPlan2Binding.operatorSelect.setOnClickListener(view -> {
-            bottomSheet = new SelectOperatorBottomSheet(slectOperator);
+            bottomSheet = new SelectOperatorBottomSheet(slectOperator,type);
             bottomSheet.show(getActivity().getSupportFragmentManager(),
                     "ModalBottomSheet");
         });

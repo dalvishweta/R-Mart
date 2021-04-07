@@ -9,11 +9,15 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.rmart.R;
 import com.rmart.customerservice.mobile.circle.adapter.CircleAdapter;
 import com.rmart.customerservice.mobile.circle.model.Circle;
+import com.rmart.customerservice.mobile.circle.model.CircleResponse;
+import com.rmart.customerservice.mobile.circle.repositories.CircleRepository;
 import com.rmart.customerservice.mobile.listners.SlectCircle;
 import com.rmart.customerservice.mobile.listners.SlectOperator;
 import com.rmart.customerservice.mobile.operators.adapter.OperatorAdapter;
 import com.rmart.customerservice.mobile.operators.bottomheet.SelectOperatorBottomSheet;
 import com.rmart.customerservice.mobile.operators.model.Operator;
+import com.rmart.customerservice.mobile.operators.model.OperatorResponse;
+import com.rmart.customerservice.mobile.operators.repositories.OpratorsRepository;
 import com.rmart.databinding.CircleBottomSheetLayoutBinding;
 import com.rmart.databinding.OpratoreBottomSheetLayoutBinding;
 
@@ -21,6 +25,7 @@ import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 
 public class SelectCircleBottomSheet extends BottomSheetDialogFragment {
     SlectCircle slectCircle ;
@@ -34,22 +39,12 @@ public class SelectCircleBottomSheet extends BottomSheetDialogFragment {
     {
 
         CircleBottomSheetLayoutBinding binding = DataBindingUtil.inflate(inflater, R.layout.circle_bottom_sheet_layout, container, false);
-        ArrayList arrayList = new ArrayList<Circle>();
-        arrayList.add(new Circle("Andhra Pradesh Telangana","https://testingrokad.msrtcors.com/assets/venus_mart/airtel-tv-icon.png","ATM"));
-        arrayList.add(new Circle("Assam","https://testingrokad.msrtcors.com/assets/venus_mart/airtel-tv-icon.png","ATM"));
-        arrayList.add(new Circle("Bihar Jharkhand","https://testingrokad.msrtcors.com/assets/venus_mart/airtel-tv-icon.png","ATM"));
-        arrayList.add(new Circle("Bihar Jharkhand","https://testingrokad.msrtcors.com/assets/venus_mart/airtel-tv-icon.png","ATM"));
-        arrayList.add(new Circle("Bihar Jharkhand","https://testingrokad.msrtcors.com/assets/venus_mart/airtel-tv-icon.png","ATM"));
-        arrayList.add(new Circle("Bihar Jharkhand","https://testingrokad.msrtcors.com/assets/venus_mart/airtel-tv-icon.png","ATM"));
-        arrayList.add(new Circle("Bihar Jharkhand","https://testingrokad.msrtcors.com/assets/venus_mart/airtel-tv-icon.png","ATM"));
-        arrayList.add(new Circle("Bihar Jharkhand","https://testingrokad.msrtcors.com/assets/venus_mart/airtel-tv-icon.png","ATM"));
-        arrayList.add(new Circle("Bihar Jharkhand","https://testingrokad.msrtcors.com/assets/venus_mart/airtel-tv-icon.png","ATM"));
-        arrayList.add(new Circle("Bihar Jharkhand","https://testingrokad.msrtcors.com/assets/venus_mart/airtel-tv-icon.png","ATM"));
-        arrayList.add(new Circle("Bihar Jharkhand","https://testingrokad.msrtcors.com/assets/venus_mart/airtel-tv-icon.png","ATM"));
-        CircleAdapter operatorAdapter = new CircleAdapter(getContext(), arrayList,slectCircle);
-        binding.setCircleAdapter(operatorAdapter);
         binding.close.setOnClickListener(view -> SelectCircleBottomSheet.this.dismiss());
 
+        CircleRepository.getCircles().observeForever(circleResponse -> {
+            CircleAdapter operatorAdapter = new CircleAdapter(getContext(), circleResponse.circleData.locations,slectCircle);
+            binding.setCircleAdapter(operatorAdapter);
+        });
         return binding.getRoot();
     }
 }

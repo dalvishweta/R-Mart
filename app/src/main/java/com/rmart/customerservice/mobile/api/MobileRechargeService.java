@@ -2,15 +2,18 @@ package com.rmart.customerservice.mobile.api;
 
 
 import com.rmart.BuildConfig;
+import com.rmart.customerservice.mobile.circle.model.CircleResponse;
 import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
 import com.rmart.customerservice.mobile.models.ResponseGetHistory;
 import com.rmart.customerservice.mobile.models.ResponseMobileRecharge;
 import com.rmart.customerservice.mobile.models.mPlans.ResponseGetPlans;
 import com.rmart.customerservice.mobile.models.mPlans.ResponseGetPostpaidPlans;
+import com.rmart.customerservice.mobile.operators.model.OperatorResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface MobileRechargeService {
@@ -73,6 +76,12 @@ public interface MobileRechargeService {
     @POST(BuildConfig.HISTORY)
     @FormUrlEncoded
     Call<ResponseGetHistory> getHistory(@Field("user_id") String userID,@Field("service_id") String serviceID );
+
+    @POST(BuildConfig.operator)
+    @FormUrlEncoded
+    Call<OperatorResponse> operators(@Field("type") String type);
+    @GET(BuildConfig.location)
+    Call<CircleResponse> circles();
 
 
     @POST(BuildConfig.Mobile_recharge)
