@@ -1,6 +1,8 @@
 package com.rmart.customer.views;
 
+import android.content.DialogInterface;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,8 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.gson.Gson;
@@ -25,9 +29,9 @@ import com.google.gson.JsonParser;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.customer.models.ProductOrderedResponseModel;
 import com.rmart.customer.models.RSAKeyResponseDetails;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -166,6 +170,7 @@ public class PaymentOptionsFragment extends BaseFragment {
             Call<ProductOrderedResponseModel> call = customerProductsService.savePlaceToOrder(clientID, vendorShopDetails.getVendorId(), myProfile.getPrimaryAddressId(),
                     myProfile.getUserID(), vendorShopDetails.getShopId(), selectedPaymentType,vendorShopDetails.deliveryMethod,MyProfile.getInstance().getRoleID());
             call.enqueue(new Callback<ProductOrderedResponseModel>() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void onResponse(@NotNull Call<ProductOrderedResponseModel> call, @NotNull Response<ProductOrderedResponseModel> response) {
 
@@ -181,7 +186,7 @@ public class PaymentOptionsFragment extends BaseFragment {
                                     paymentOptionsLayoutField.setVisibility(View.GONE);
                                     webview.setVisibility(View.VISIBLE);
                                     rsaKeyResponseDetails = productOrderedResponseDetails.getRsaKeyResponseDetails();
-                                    initWebView();
+                                   initWebView();
                                 }
                             } else {
                                 showDialog(body.getMsg());
@@ -210,7 +215,8 @@ public class PaymentOptionsFragment extends BaseFragment {
         }
     }
 
-    private void initWebView() {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void initWebView() {
         webview.getSettings().setJavaScriptEnabled(true);
         webview.addJavascriptInterface(new MyJavaScriptInterface(), "HTMLOUT"); // javaScriptInterface
         webview.setWebViewClient(new WebViewClient() {
@@ -224,10 +230,27 @@ public class PaymentOptionsFragment extends BaseFragment {
 
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError er) {
-                handler.proceed();
+                //handler.proceed();
                 // Ignore SSL certificate errors
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("The Loading Web Page is not SSL certified");
+                builder.setPositiveButton("continue", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handler.proceed();
+                    }
+                });
+                builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        handler.cancel();
+                    }
+                });
+                final AlertDialog dialog = builder.create();
+                dialog.show();
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.M)
             public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError rerr) {
                 // Redirect to deprecated method, so you can use it in all SDK versions
                 showDialog("", rerr.getDescription().toString());
@@ -279,7 +302,9 @@ public class PaymentOptionsFragment extends BaseFragment {
             String vPostParams = params.substring(0, params.length() - 1);
 
             String vTransUrl = (BuildConfig.PAYMENT_URL);
-            webview.postUrl(vTransUrl, vPostParams.getBytes(StandardCharsets.UTF_8));// EncodingUtils.getBytes(vPostParams, "UTF-8"));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                webview.postUrl(vTransUrl, vPostParams.getBytes(StandardCharsets.UTF_8));// EncodingUtils.getBytes(vPostParams, "UTF-8"));
+            }
         } catch (Exception e) {
             showDialog(e.getMessage());
         }
