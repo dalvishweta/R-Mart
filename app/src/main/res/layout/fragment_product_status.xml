@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="productViewModel"
+            type="com.rmart.retiler.inventory.product_from_inventory.viewmodel.ProductFromInventoryViewModel" />
+    </data>
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ProgressBar
+        android:visibility="@{productViewModel.isLoading?View.VISIBLE:View.GONE}"
+        android:id="@+id/progressBar1"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/product_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#DADADA"
+        android:visibility='@{productViewModel.productListResponseMutableLiveData.status.equalsIgnoreCase("Failure")?View.GONE:View.VISIBLE}'
+        tools:visibility="visible"
+        tools:itemCount="8"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_row_product_status"/>
+
+
+
+
+</FrameLayout>
+
+
+</layout>
