@@ -43,6 +43,11 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2" />
+        <activity
+            android:name=".customerservice.dth.actvities.DTHRechargeActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2" />
         <activity android:name=".retiler.inventory.brand.activities.BrandFilterActivity" />
         <activity android:name=".retiler.inventory.product_from_library.activities.ProductListActivity" />
         <activity android:name=".retiler.inventory.category.activities.CategoryFilterActivity" />

@@ -14,6 +14,7 @@ import com.rmart.inventory.models.UnitObject;
 import com.rmart.inventory.viewmodel.InventoryViewModel;
 import com.rmart.retiler.inventory.product_from_inventory.activities.ProductFromInvetoryList;
 import com.rmart.retiler.product.OnUnitSaveListner;
+import com.rmart.retiler.productstatus.fragments.ProductStatusMainFragment;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.pojos.APIStockListResponse;
 import com.rmart.utilits.pojos.APIStockResponse;
@@ -36,7 +37,7 @@ public class InventoryActivity extends BaseNavigationDrawerActivity implements O
         super.onCreate(savedInstanceState);
         // inventoryViewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
         getStockList();
-        addFragment(ProductFromInvetoryList.newInstance(), ProductFromInvetoryList.class.getName(), false);
+        addFragment(ProductStatusMainFragment.newInstance(), ProductStatusMainFragment.class.getName(), false);
     }
 
     @Override
