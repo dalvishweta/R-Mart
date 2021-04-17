@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,6 +21,7 @@ import com.rmart.customer.dashboard.model.ServiceOffer;
 import com.rmart.customer.dashboard.model.ShopType;
 import com.rmart.customer.dashboard.viewmodel.HomeViewModel;
 import com.rmart.customer.shops.list.fragments.VendorShopsListFragment;
+import com.rmart.customerservice.dth.actvities.DTHRechargeActivity;
 import com.rmart.customerservice.mobile.activities.MobileRechargeActivity;
 import com.rmart.databinding.FragmentDashBoardBinding;
 import com.rmart.electricity.activities.ElectricityActivity;
@@ -70,9 +70,9 @@ public class DashBoardFragment extends BaseFragment {
                         startActivity(intent);
                     }
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("dth-recharge")){
-//                        Intent intent = new Intent(getContext(), ActivityElectricity.class);
-//                        startActivity(intent);
-                        Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_LONG).show();
+                       Intent intent = new Intent(getContext(), DTHRechargeActivity.class);
+                       startActivity(intent);
+                        // Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_LONG).show();
                     }
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("light-bill")){
                         Intent intent = new Intent(getContext(), ElectricityActivity.class);

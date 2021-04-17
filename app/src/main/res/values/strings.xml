@@ -463,5 +463,7 @@
     <string name="recent_recharge">Recent Recharge</string>
     <string name="mrp">MRP</string>
     <string name="weight">Weight</string>
+    <string name="enter_subscription_id_mobile_number">Enter Subscription ID/ Mobile Number</string>
+    <string name="dth_subscriptionid_text">Your service id is located on your TV menu, on the bottom of the screen</string>
 
 </resources>
