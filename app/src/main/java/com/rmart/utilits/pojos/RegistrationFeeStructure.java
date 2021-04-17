@@ -22,10 +22,6 @@ public class RegistrationFeeStructure {
         return payType;
     }
 
-    public void setPayType(String payType) {
-        this.payType = payType;
-    }
-
     public String getAmount() {
         return amount;
     }

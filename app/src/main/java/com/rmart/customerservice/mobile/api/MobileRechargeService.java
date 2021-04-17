@@ -64,6 +64,16 @@ public interface MobileRechargeService {
 
     @POST(BuildConfig.GET_PLANS)
     @FormUrlEncoded
+    Call<ResponseGetPlans> getPrepaidPlansPOST(
+            @Field("operator") String operator,
+            @Field("cricle") String cricle,
+            @Field("service_type") String serviceType,
+            @Field("mobileapp") String mobileApp,
+            @Field("mobileversionid") String mobileVersionID
+    );
+
+    @POST(BuildConfig.GET_PLANS)
+    @FormUrlEncoded
     Call<ResponseGetPostpaidPlans> getPostpaidPlans(
             @Field("operator") String operator,
             @Field("cricle") String cricle,

@@ -167,6 +167,7 @@
             android:layout_height="wrap_content"
             android:background="@color/gray"
             android:padding="5dp"
+            android:visibility="gone"
             android:orientation="horizontal"
             >
             <TextView
@@ -201,29 +202,29 @@
 
     </LinearLayout>
     <LinearLayout
+        android:layout_above="@+id/layout_footer"
         android:id="@+id/rel_one"
         android:layout_below="@+id/filter_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
     <com.google.android.material.tabs.TabLayout
-        android:layout_below="@id/filter_text"
         android:id="@+id/product_status_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabGravity="fill"
-        app:tabTextAppearance="@style/TextAppearance.AppCompat.Title"
+        app:tabTextAppearance="@style/MineCustomTabText"
         app:tabTextColor="@android:color/black"
-        android:background="@color/white"
-        android:minHeight="?attr/actionBarSize" />
+        android:background="@color/white" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/product_pager"
-        android:layout_below="@id/product_status_tabs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/backgrounndgray"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+
     </LinearLayout>
     <FrameLayout
         android:id="@+id/layout_footer"

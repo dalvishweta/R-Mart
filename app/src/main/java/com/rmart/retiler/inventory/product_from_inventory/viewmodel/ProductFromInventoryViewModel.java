@@ -9,6 +9,7 @@ import com.rmart.retiler.inventory.brand.model.Brand;
 import com.rmart.retiler.inventory.category.model.Category;
 import com.rmart.retiler.inventory.product_from_inventory.model.ProductFromInventoryListResponse;
 import com.rmart.retiler.inventory.product_from_inventory.repositories.ProductFromInventroyListRepository;
+import com.rmart.utilits.pojos.BaseResponse;
 
 
 public class ProductFromInventoryViewModel extends ViewModel {
@@ -18,17 +19,27 @@ public class ProductFromInventoryViewModel extends ViewModel {
     public MutableLiveData<String> searchPhrase = new MutableLiveData<>();
 
    public MutableLiveData<ProductFromInventoryListResponse> productListResponseMutableLiveData = new MutableLiveData<>();
-    public void getProductList(String page)
+    public void getProductList(String page,String isactive)
     {
-        isLoading.setValue(true);
-        MutableLiveData<ProductFromInventoryListResponse> resultMutableLiveData= ProductFromInventroyListRepository.getProductList(categoryID.getValue()!=null?categoryID.getValue().getId()+"":null, MyProfile.getInstance()!=null?MyProfile.getInstance().getMobileNumber():null,brandID.getValue()!=null?brandID.getValue().getId()+"":null,searchPhrase.getValue(),page);
-        resultMutableLiveData.observeForever(new Observer<ProductFromInventoryListResponse>() {
-            @Override
-            public void onChanged(ProductFromInventoryListResponse productListResponse) {
-                productListResponseMutableLiveData.setValue(productListResponse);
-                isLoading.setValue(false);
+        if(Integer.parseInt(page)==0) {
+            isLoading.setValue(true);
+        }
+        MutableLiveData<ProductFromInventoryListResponse> resultMutableLiveData= ProductFromInventroyListRepository.getProductList(categoryID.getValue()!=null?categoryID.getValue().getId()+"":null, MyProfile.getInstance()!=null?MyProfile.getInstance().getMobileNumber():null,brandID.getValue()!=null?brandID.getValue().getId()+"":null,searchPhrase.getValue(),page,isactive);
+        resultMutableLiveData.observeForever(productListResponse -> {
 
+            isLoading.setValue(false);
+            if(productListResponse.getCode()!=null && !productListResponse.getCode().equalsIgnoreCase("200")) {
+                if(Integer.parseInt(page)==0) {
+                    productListResponseMutableLiveData.setValue(productListResponse);
+                }
+            } else {
+                productListResponseMutableLiveData.setValue(productListResponse);
             }
         });
     }
+    public void isactive(String product_id, String isActive,String client_id ){
+
+    }
+
+
 }

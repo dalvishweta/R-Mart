@@ -34,21 +34,28 @@ public class OperatorAdapter extends RecyclerView.Adapter<OperatorAdapter.Operat
         OperatoreViewHolder vh = new OperatoreViewHolder(binding);
         return vh;
     }
-
     @Override
     public void onBindViewHolder(@NonNull OperatoreViewHolder holder, int position) {
 
         holder.bind(operators.get(position));
-        holder.contactListItemBinding.getRoot().setOnClickListener(view -> slectOperator.onSelect(operators.get(position)));
-    }
+        holder.contactListItemBinding.getRoot().setOnClickListener(view -> {
+            try{
+                if(slectOperator!=null) {
+                    slectOperator.onSelect(operators.get(position));
+                }
+            }
+            catch (Exception e){
 
+            }
+
+
+        });
+    }
     @Override
     public int getItemCount() {
         return operators.size();
     }
-
-
-    class OperatoreViewHolder extends RecyclerView.ViewHolder {
+    static class OperatoreViewHolder extends RecyclerView.ViewHolder {
        public OperatorRowBinding contactListItemBinding ;
         OperatoreViewHolder(OperatorRowBinding contactListItemBinding) {
             super(contactListItemBinding.getRoot());

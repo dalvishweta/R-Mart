@@ -184,7 +184,7 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                 tvBusinessType.setText(addressResponse.getBusinessType());
                 if(addressResponse.getBusinessType().equalsIgnoreCase("Wholeseller")){
                     sellRetailers.setVisibility(View.VISIBLE);
-                    String msg =  MyProfile.getInstance().getWholeselar()?"You are selling to customer":"You are not selling to customer";
+                    String msg =  ( MyProfile.getInstance().getWholeselar())?"You are selling to customer":"You are not selling to customer";
                     sellRetailers.setText(msg);
                     String msg2 =  MyProfile.getInstance().getCredit_option()?"You are selling Credit":"You are not selling on Credit";
                     creditoption.setText(msg2);

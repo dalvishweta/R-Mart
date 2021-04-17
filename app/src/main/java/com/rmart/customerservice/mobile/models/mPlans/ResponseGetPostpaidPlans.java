@@ -16,7 +16,7 @@ public class ResponseGetPostpaidPlans {
 
     @SerializedName("data")
     @Expose
-    private PostpaidData data;
+    private PostPaidData data;
 
     public String getStatus() {
         return status;
@@ -34,11 +34,11 @@ public class ResponseGetPostpaidPlans {
         this.time = time;
     }
 
-    public PostpaidData getData() {
+    public PostPaidData getData() {
         return data;
     }
 
-    public void setData(PostpaidData data) {
+    public void setData(PostPaidData data) {
         this.data = data;
     }
 

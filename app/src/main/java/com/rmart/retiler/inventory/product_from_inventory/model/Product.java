@@ -16,15 +16,24 @@ import com.bumptech.glide.signature.ObjectKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rmart.R;
+import com.rmart.customer.models.CustomerProductsDetailsUnitModel;
 import com.rmart.glied.GlideApp;
 
 import java.util.List;
 
 public class Product {
 
-        @SerializedName("product_id")
+        @SerializedName("vendor_active")
         @Expose
-        private int productId;
+        private String vendorActive;
+
+    public String getVendorActive() {
+        return vendorActive;
+    }
+
+    @SerializedName("product_id")
+    @Expose
+    private int productId;
         @SerializedName("product_cat_id")
         @Expose
         private int productCatId;
@@ -49,8 +58,15 @@ public class Product {
         @SerializedName("images")
         @Expose
         private List<ProductImage> images = null;
+        @SerializedName("product_unit")
+        @Expose
+        private List<CustomerProductsDetailsUnitModel> units = null;
 
-        public int getProductId() {
+    public List<CustomerProductsDetailsUnitModel> getUnits() {
+        return units;
+    }
+
+    public int getProductId() {
             return productId;
         }
 

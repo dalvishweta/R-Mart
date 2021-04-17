@@ -23,9 +23,7 @@ public interface VendorInventoryService {
 
     @POST(BuildConfig.VENDOR_INVENTORY_GET_PRODUCT_LIST)
     @FormUrlEncoded
-    Call<ProductListResponse> getProductList(@Field("start_index") String startIndex,
-                                             @Field("mobile") String mobile,
-                                             @Field("stock_type") String stockType);
+    Call<ProductListResponse> getProductList(@Field("start_index") String startIndex,@Field("mobile") String mobile, @Field("stock_type") String stockType);
 
     @POST(BuildConfig.VENDOR_INVENTORY_GET_PRODUCT)
     @FormUrlEncoded

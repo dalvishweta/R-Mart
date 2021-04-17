@@ -464,7 +464,7 @@ public class RechargeHomeFragment extends BaseFragment implements View.OnClickLi
                                     Records records = new Records();
                                     // progressBar.dismiss();
                                     if (response.code() == 200) {
-                                        if (response.body().getStatus().equalsIgnoreCase("Success")) {
+                                        if (response.body().getStatus()==200) {
                                             records = response.body().getData().getRecords();
                                             /*if (null == records) {
                                                 showDialog("", "Plans are not available");
@@ -534,7 +534,7 @@ public class RechargeHomeFragment extends BaseFragment implements View.OnClickLi
                 progressBar.dismiss();
                 if (response.code() == 200) {
                     if (response.body().getStatus().equalsIgnoreCase("Success")) {
-                        List<RechargePlans> data = response.body().getData().getRecords();
+                        List<RechargePlans> data = (List<RechargePlans>) response.body().getData().getRecords();
                         if (null == data || null == data.get(0).getDesc()|| data.get(0).getDesc().contains("Not Available")) {
                             // showDialog("", "Plans are not available");
                         } else {

@@ -3,14 +3,18 @@ package com.rmart.customerservice.mobile.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -61,6 +65,19 @@ public class SelectMobileNumberActivity extends AppCompatActivity implements Loa
         });
         // Sets the adapter for the ListView
         activitySelectMobileNumberBinding.contactListView.setAdapter(cursorAdapter);
+        if(ContextCompat.checkSelfPermission(this,Manifest.permission.READ_CONTACTS)!= PackageManager.PERMISSION_GRANTED)
+        {
+            // Permission is not granted
+            ActivityCompat.requestPermissions(SelectMobileNumberActivity.this,
+                    new String[] { Manifest.permission.READ_CONTACTS },
+                    200);
+        } else {
+            loadcontact();
+        }
+
+    }
+
+    private void loadcontact() {
         LoaderManager.getInstance(this).initLoader(0, null, this);
         activitySelectMobileNumberBinding.simpleSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -72,9 +89,9 @@ public class SelectMobileNumberActivity extends AppCompatActivity implements Loa
 
             @Override
             public boolean onQueryTextChange(String s) {
-               searchString = s;
-               LoaderManager.getInstance(SelectMobileNumberActivity.this).restartLoader(0,null,SelectMobileNumberActivity.this);
-               return false;
+                searchString = s;
+                LoaderManager.getInstance(SelectMobileNumberActivity.this).restartLoader(0,null,SelectMobileNumberActivity.this);
+                return false;
             }
         });
         activitySelectMobileNumberBinding.newnumberlayout.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +108,7 @@ public class SelectMobileNumberActivity extends AppCompatActivity implements Loa
             }
         });
     }
+
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id,@Nullable Bundle args) {
@@ -151,7 +169,23 @@ public class SelectMobileNumberActivity extends AppCompatActivity implements Loa
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         cursorAdapter.swapCursor(null);
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults){
+        super
+                .onRequestPermissionsResult(requestCode,
+                        permissions,
+                        grantResults);
+
+        if (requestCode == 200) {
+            loadcontact();
+
+        }
+
+    }
 }
+
 
 
 
