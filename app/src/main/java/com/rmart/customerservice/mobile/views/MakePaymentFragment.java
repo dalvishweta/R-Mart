@@ -105,7 +105,6 @@ public class MakePaymentFragment extends BaseFragment implements View.OnClickLis
         ((AppCompatTextView)view.findViewById(R.id.state_name)).setText(data.getStateName());
         ((AppCompatTextView)view.findViewById(R.id.recharge_amt)).setText(data.getRechargeAmount());
         ((AppCompatTextView)view.findViewById(R.id.total_amt)).setText(data.getRechargeAmount());
-
         view.findViewById(R.id.payment_btn).setOnClickListener(this);
         view.findViewById(R.id.money_to_wallet_btn).setOnClickListener(this);
     }
@@ -247,7 +246,7 @@ public class MakePaymentFragment extends BaseFragment implements View.OnClickLis
             eleService = RetrofitClientInstance.getRetrofitInstance().create(ElecticityService.class);
 
 
-            eleService.electicityProcessRsaKeyVRecharge(MyProfile.getInstance().getUserID(),mdata.getRechargeAmount(),"31","V_RECHARGE")
+                eleService.electicityProcessRsaKeyVRecharge(MyProfile.getInstance().getUserID(),mdata.getRechargeAmount(),"31","V_RECHARGE")
                     // eleService.electicityProcessRsaKey("524","160","1","electricity","123124")
 
                     .enqueue(new Callback<rsakeyResponse>() {
