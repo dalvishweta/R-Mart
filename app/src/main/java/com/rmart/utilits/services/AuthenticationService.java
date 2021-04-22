@@ -40,7 +40,8 @@ public interface AuthenticationService {
                                             @Field("gender") String gender,
                                             @Field("password") String password,
                                             @Field("roll") String roll_no,
-                                            @Field("client_id") String client_id);
+                                            @Field("client_id") String client_id,
+                                            @Field("amount") String amount);
     @FormUrlEncoded
     @POST(BuildConfig.registration_rokad)
     Call<BaseResponse> registrationRokad(@Field("first_name") String fName,

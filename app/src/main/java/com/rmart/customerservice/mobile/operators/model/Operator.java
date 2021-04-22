@@ -27,12 +27,9 @@ public class Operator implements Serializable {
     public String image;
     @SerializedName("operator")
     public String type;
+    @SerializedName("mplan_operator")
+    public String mplanOperator;
 
-    public Operator(String name,String image,String type) {
-        this.name = name;
-        this.image = image;
-        this.type = type;
-    }
 
     @BindingAdapter("imageUrl")
     public static void loadImage(View view, Operator data) {

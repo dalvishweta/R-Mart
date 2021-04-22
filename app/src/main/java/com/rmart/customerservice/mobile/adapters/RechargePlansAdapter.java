@@ -6,13 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.customerservice.mobile.interfaces.OnPlanSelectedHandler;
 import com.rmart.customerservice.mobile.models.mPlans.RechargePlans;
+import com.rmart.utilits.Curruncy;
 
 import java.util.List;
 
@@ -37,13 +37,16 @@ public class RechargePlansAdapter extends RecyclerView.Adapter<RechargePlansAdap
 
     @Override
     public void onBindViewHolder(@NonNull PlanHolder holder, int position) {
-        holder.desc.setText(mRechargePlanList.get(position).getDesc());
-        String amt=String.valueOf(mRechargePlanList.get(position).getRs());
-        holder.planPrice.setText("\u20B9"+amt);
-        holder.validity.setText(mRechargePlanList.get(position).getValidity());
-        holder.lastUpdate.setText(mRechargePlanList.get(position).getLastUpdate());
+
+
+        RechargePlans rechargePlans=mRechargePlanList.get(position);
+        holder.desc.setText(rechargePlans.getDesc());
+        String amt=String.valueOf(rechargePlans.getRs());
+
+        holder.planPrice.setText(Curruncy.getCurruncy(amt));
+        holder.validity.setText(String.format("Validity: %s", mRechargePlanList.get(position).getValidity()));
         holder.mItemView.setTag(position);
-        holder.chooseButton.setOnClickListener(new View.OnClickListener() {
+        holder.mItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                int position = (int) v.getTag();
@@ -54,22 +57,19 @@ public class RechargePlansAdapter extends RecyclerView.Adapter<RechargePlansAdap
 
     @Override
     public int getItemCount() {
-        return mRechargePlanList.size();
+        return mRechargePlanList!=null?mRechargePlanList.size():0;
     }
 
     static class PlanHolder extends RecyclerView.ViewHolder{
 
-        AppCompatTextView desc, validity,lastUpdate, planPrice;
-        AppCompatButton chooseButton;
+        AppCompatTextView desc, validity, planPrice;
         View mItemView;
         PlanHolder(@NonNull View itemView) {
             super(itemView);
             mItemView = itemView;
             desc = itemView.findViewById(R.id.desc);
             validity = itemView.findViewById(R.id.validity);
-            lastUpdate = itemView.findViewById(R.id.last_update);
             planPrice = itemView.findViewById(R.id.top_up_plan_price);
-            chooseButton = itemView.findViewById(R.id.select_plan);
         }
     }
 }

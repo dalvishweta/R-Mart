@@ -24,7 +24,7 @@ android {
         buildConfigField("String", "VALIDATE_OTP", '"otpcheck"')
         buildConfigField("String", 'RESEND_OTP', '"Otpcheck/resendotp"')
         buildConfigField("String", 'FEGISTRATION_FEE', '"Login/regPayAmt"')
-        buildConfigField("String", "REGISTRATION", '"reg"')
+        buildConfigField("String", "REGISTRATION", '"reg/regNew"')
         buildConfigField("String", "LOGIN", '"login"')
         buildConfigField("String", "MOBILE_APPLICATION", "\"Y\"")
         buildConfigField("String", "MOBILE_VERSION_ID", "\"1.1\"")
@@ -36,7 +36,7 @@ android {
         buildConfigField('String', 'API_BRAND_LIST', '"lib/Brand/brand_list"')
         buildConfigField('String', 'API_PRODUCTSEARCH_LIST', '"lib/Category/product_search_test"')
         buildConfigField('String', 'API_PRODUCTSEARCH_FROM_INVENTORY_LIST', '"vendor/Product/product_list_search"')
-
+        buildConfigField('String', 'API_isactive', '"vendor/Product/isactive"')
         buildConfigField("String", 'UPDATE_PROFILE', '"updateprofile"')
 
         buildConfigField("String", 'ADD_ADDRESS', '"updateprofile/addAddress"')
@@ -106,7 +106,7 @@ android {
         buildConfigField("String", "electricity_pay_bill", '"rest_server/Electricityservice/billPayment"')
         buildConfigField("String", "electricity_rsa_key", '"customer/VendorShop/RokadmartPGinitiate"')
         buildConfigField("String", "RECHARGE", '"rest_server/Tsoapi/recharge/"')
-        buildConfigField("String", "GET_PLANS", '"rest_server/mplan/getDataPlans"')
+        buildConfigField("String", "GET_PLANS", '"rest_server/mplan/getDataPlans_new"')
         buildConfigField("String", "operator", '"rest_server/Venus_mart_api/operator"')
         buildConfigField("String", "location", '"rest_server/Venus_mart_api/mplan_location"')
         buildConfigField("String", "HISTORY", '"rest_server/Venus_mart_api/getHistory"')
@@ -177,7 +177,7 @@ android {
             dimension "rokard_mart"
             applicationIdSuffix ".customerprod"
             /*versionNameSuffix "-customer"*/
-            versionCode 7
+            versionCode 8
             versionName "2.2.0"
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"') //?command=initiateTransaction
@@ -197,8 +197,8 @@ android {
         retailer_production {
             dimension "rokard_mart"
             applicationIdSuffix ".retailer"
-            versionCode 5
-            versionName "2.1.0"
+            versionCode 8
+            versionName "2.1.2"
             /*versionNameSuffix "-retailer"*/
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"')
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
@@ -238,10 +238,10 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     // ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.3.1"
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1"
     implementation 'com.google.android.gms:play-services-location:17.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -255,7 +255,7 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.11'
     implementation platform('com.google.firebase:firebase-bom:26.1.0')
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation 'com.google.firebase:firebase-crashlytics:17.4.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.4.1'
     implementation 'com.google.firebase:firebase-analytics'
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     implementation "io.reactivex.rxjava2:rxjava:$rxjava"

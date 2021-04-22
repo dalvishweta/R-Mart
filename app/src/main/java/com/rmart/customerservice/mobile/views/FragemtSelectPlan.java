@@ -19,6 +19,7 @@ import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customerservice.mobile.adapters.RechargePlansPagerAdapter;
 import com.rmart.customerservice.mobile.api.MobileRechargeService;
+import com.rmart.customerservice.mobile.interfaces.OnPlanSelectedHandler;
 import com.rmart.customerservice.mobile.models.mPlans.RechargePlans;
 import com.rmart.customerservice.mobile.models.mPlans.Records;
 import com.rmart.customerservice.mobile.models.mPlans.ResponseGetPlans;
@@ -149,7 +150,7 @@ public class FragemtSelectPlan extends BaseFragment {
                             Records records = new Records();
                             // progressBar.dismiss();
                             if (response.code() == 200) {
-                                if (response.body().getStatus().equalsIgnoreCase("Success")) {
+                                if (response.body().getStatus()==200) {
                                     records = response.body().getData().getRecords();
                                             /*if (null == records) {
                                                 showDialog("", "Plans are not available");
@@ -188,7 +189,7 @@ public class FragemtSelectPlan extends BaseFragment {
                 progressBar.dismiss();
                 if (response.code() == 200) {
                     if (response.body().getStatus().equalsIgnoreCase("Success")) {
-                        List<RechargePlans> data = response.body().getData().getRecords();
+                        List<RechargePlans> data = (List<RechargePlans>) response.body().getData().getRecords();
                         if (null == data || null == data.get(0).getDesc()|| data.get(0).getDesc().contains("Not Available")) {
                             // showDialog("", "Plans are not available");
                         } else {
@@ -199,7 +200,9 @@ public class FragemtSelectPlan extends BaseFragment {
                     }
                     // showDialog("Sorry!!", "Plans are not available");
 
-                    viewPagerAdapter = new RechargePlansPagerAdapter(getChildFragmentManager(),0, records);
+                    viewPagerAdapter = new RechargePlansPagerAdapter(getChildFragmentManager(), 0, records, chosenSubscriber -> {
+
+                    });
                     plansPager.setAdapter(viewPagerAdapter);
                     plansTabs.setupWithViewPager(plansPager);
 

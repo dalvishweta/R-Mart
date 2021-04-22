@@ -1,17 +1,13 @@
-
 package com.rmart.customerservice.mobile.models.mPlans;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ResponseGetPlans {
+public class PostPaidResponseGetPlans {
 
     @SerializedName("status")
     @Expose
     private int status;
-    @SerializedName("data")
-    @Expose
-    private Data data;
 
     public String getMsg() {
         return msg;
@@ -24,6 +20,10 @@ public class ResponseGetPlans {
     @SerializedName("msg")
     @Expose
     private String msg;
+    @SerializedName("data")
+    @Expose
+    private PostPaidData data;
+
     public int getStatus() {
         return status;
     }
@@ -32,13 +32,12 @@ public class ResponseGetPlans {
         this.status = status;
     }
 
-    public Data getData() {
+    public PostPaidData getData() {
         return data;
     }
 
-    public void setData(Data data) {
+    public void setData(PostPaidData data) {
         this.data = data;
     }
 
 }
-

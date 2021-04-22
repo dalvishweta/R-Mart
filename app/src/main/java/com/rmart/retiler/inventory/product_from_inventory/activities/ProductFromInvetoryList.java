@@ -72,7 +72,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
         productViewModel = ViewModelProviders.of(this).get(ProductFromInventoryViewModel.class);
 
         binding = DataBindingUtil.inflate(inflater, R.layout.activity_productlist_from_inventory_retailer, container, false);
-        productViewModel.getProductList( page+"");
+        productViewModel.getProductList( page+"",null);
         binding.setProductViewModel(productViewModel);
         binding.setLifecycleOwner(this);
         binding.rvBrands.addItemDecoration(new GridSpacesItemDecoration(15));
@@ -104,7 +104,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
                         page=0;
                         productSearchListAdapter.products.clear();
                         productSearchListAdapter.notifyDataSetChanged();
-                        productViewModel.getProductList( page+"");
+                        productViewModel.getProductList( page+"",null);
                     }
 
                     return true;
@@ -118,7 +118,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
         binding.btnTryagain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productViewModel.getProductList( page+"");
+                productViewModel.getProductList( page+"",null);
             }
         });
 
@@ -166,7 +166,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
                 }
                 page = 0;
 
-                productViewModel.getProductList( page+"");
+                productViewModel.getProductList( page+"",null);
 
             }
 
@@ -190,7 +190,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
                 if (!productViewModel.isLoading.getValue()) {
                     if (productViewModel.productListResponseMutableLiveData.getValue().isNext_value()) {
                         page++;
-                        productViewModel.getProductList( page+"");
+                        productViewModel.getProductList( page+"",null);
 
                     }
                 }
@@ -214,7 +214,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
            }
            page=0;
 
-           productViewModel.getProductList( page+"");
+           productViewModel.getProductList( page+"",null);
        }
 
 

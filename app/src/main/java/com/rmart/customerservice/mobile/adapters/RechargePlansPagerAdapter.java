@@ -7,22 +7,24 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.customerservice.mobile.interfaces.OnPlanSelectedHandler;
 import com.rmart.customerservice.mobile.models.mPlans.Records;
-import com.rmart.customerservice.mobile.views.MobileRechargePlans;
+import com.rmart.customerservice.mobile.fragments.MobileRechargePlans;
 
 import java.util.ArrayList;
 
 public class RechargePlansPagerAdapter extends FragmentStatePagerAdapter {
 
-
+    private OnPlanSelectedHandler onPlanSelectedHandler;
     private ArrayList<BaseFragment> rechargePlansFrags;
     private ArrayList<String> fragTitles;
 
-    public RechargePlansPagerAdapter(@NonNull FragmentManager fm, int behavior, Records records) {
+    public RechargePlansPagerAdapter(@NonNull FragmentManager fm, int behavior, Records records, OnPlanSelectedHandler onPlanSelectedHandler) {
         super(fm,behavior);
 
         rechargePlansFrags = new ArrayList<>();
         fragTitles = new ArrayList<>();
+        this.onPlanSelectedHandler = onPlanSelectedHandler;
 
 //        rechargePlansFrags.add(RechargeTopUpPlans.newInstance(topup));
 //        rechargePlansFrags.add(RoamingPlans.newInstance(roaming));
@@ -38,47 +40,69 @@ public class RechargePlansPagerAdapter extends FragmentStatePagerAdapter {
 
         if(records.getTOPUP().size() > 0 ) {
             fragTitles.add("TopUp");
-            rechargePlansFrags.add(MobileRechargePlans.newInstance(records.getTOPUP()));
+            MobileRechargePlans mobileRechargePlans = MobileRechargePlans.newInstance(records.getTOPUP());
+            mobileRechargePlans.setOnPlanSelectedHandler(onPlanSelectedHandler);
+            rechargePlansFrags.add(mobileRechargePlans);
         }
         if(records.getRomaing().size() > 0 ) {
             fragTitles.add("Roaming");
-            rechargePlansFrags.add(MobileRechargePlans.newInstance(records.getRomaing()));
+            MobileRechargePlans mobileRechargePlans = MobileRechargePlans.newInstance(records.getRomaing());
+            mobileRechargePlans.setOnPlanSelectedHandler(onPlanSelectedHandler);
+            rechargePlansFrags.add(mobileRechargePlans);
         }
         if(records.getCOMBO().size() > 0 ) {
-            fragTitles.add("COMBO");
-            rechargePlansFrags.add(MobileRechargePlans.newInstance(records.getCOMBO()));
-        }
+            fragTitles.add("Combo");
+            MobileRechargePlans mobileRechargePlans = MobileRechargePlans.newInstance(records.getCOMBO());
+            mobileRechargePlans.setOnPlanSelectedHandler(onPlanSelectedHandler);
+            rechargePlansFrags.add(mobileRechargePlans);
+       }
         if(records.getRATECUTTER().size() > 0 ) {
             fragTitles.add("Rate Cutters");
-            rechargePlansFrags.add(MobileRechargePlans.newInstance(records.getRATECUTTER()));
+            MobileRechargePlans mobileRechargePlans = MobileRechargePlans.newInstance(records.getRATECUTTER());
+            mobileRechargePlans.setOnPlanSelectedHandler(onPlanSelectedHandler);
+            rechargePlansFrags.add(mobileRechargePlans);
         }
         if(records.getSMS().size() > 0 ) {
             fragTitles.add("SMS");
-            rechargePlansFrags.add(MobileRechargePlans.newInstance(records.getSMS()));
+            MobileRechargePlans mobileRechargePlans = MobileRechargePlans.newInstance(records.getSMS());
+            mobileRechargePlans.setOnPlanSelectedHandler(onPlanSelectedHandler);
+            rechargePlansFrags.add(mobileRechargePlans);
         }
 
         if(records.getG2().size() > 0 ) {
             fragTitles.add("2G");
-            rechargePlansFrags.add(MobileRechargePlans.newInstance(records.getG2()));
+            MobileRechargePlans mobileRechargePlans = MobileRechargePlans.newInstance(records.getG2());
+            mobileRechargePlans.setOnPlanSelectedHandler(onPlanSelectedHandler);
+            rechargePlansFrags.add(mobileRechargePlans);
+
         }
         if(records.getG4G3().size() > 0 ) {
             fragTitles.add("3G/4G");
-            rechargePlansFrags.add(MobileRechargePlans.newInstance(records.getG4G3()));
+            MobileRechargePlans mobileRechargePlans = MobileRechargePlans.newInstance(records.getG4G3());
+            mobileRechargePlans.setOnPlanSelectedHandler(onPlanSelectedHandler);
+            rechargePlansFrags.add(mobileRechargePlans);
+
         }
 
         if(records.getSpecialPlan().size() > 0 ) {
             fragTitles.add("Special Plans");
-            rechargePlansFrags.add(MobileRechargePlans.newInstance(records.getSpecialPlan()));
+            MobileRechargePlans mobileRechargePlans = MobileRechargePlans.newInstance(records.getSpecialPlan());
+            mobileRechargePlans.setOnPlanSelectedHandler(onPlanSelectedHandler);
+            rechargePlansFrags.add(mobileRechargePlans);
         }
 
         if(records.getFullTT().size() > 0 ) {
             fragTitles.add("Full Talk Time");
-            rechargePlansFrags.add(MobileRechargePlans.newInstance(records.getFullTT()));
+            MobileRechargePlans mobileRechargePlans = MobileRechargePlans.newInstance(records.getFullTT());
+            mobileRechargePlans.setOnPlanSelectedHandler(onPlanSelectedHandler);
+            rechargePlansFrags.add(mobileRechargePlans);
         }
 
         if(records.getFRC().size() > 0 ) {
             fragTitles.add("FRC");
-            rechargePlansFrags.add(MobileRechargePlans.newInstance(records.getFRC()));
+            MobileRechargePlans mobileRechargePlans = MobileRechargePlans.newInstance(records.getFRC());
+            mobileRechargePlans.setOnPlanSelectedHandler(onPlanSelectedHandler);
+            rechargePlansFrags.add(mobileRechargePlans);
         }
     }
 

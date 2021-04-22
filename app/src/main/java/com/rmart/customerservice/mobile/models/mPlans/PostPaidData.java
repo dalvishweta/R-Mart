@@ -1,34 +1,37 @@
+package com.rmart.customerservice.mobile.models.mPlans;
 
-package com.rmart.customerservice.mobile.mplan.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Data {
+import java.util.ArrayList;
+import java.util.List;
+
+public class PostPaidData {
 
     @SerializedName("records")
     @Expose
-    private Records records;
+    private List<RechargePlans> records;
     @SerializedName("status")
     @Expose
-    private int status;
+    private Integer status;
     @SerializedName("time")
     @Expose
     private Object time;
 
-    public Records getRecords() {
+    public List<RechargePlans> getRecords() {
         return records;
     }
 
-    public void setRecords(Records records) {
+    public void setRecords(ArrayList<RechargePlans> records) {
         this.records = records;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

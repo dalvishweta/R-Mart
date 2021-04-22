@@ -5,9 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="com.rmart.utilits.Curruncy"/>
         <variable
             name="product"
             type="com.rmart.retiler.inventory.product_from_inventory.model.Product" />
+     <variable
+            name="unit"
+            type="com.rmart.customer.models.CustomerProductsDetailsUnitModel" />
     </data>
     <RelativeLayout
     android:layout_width="match_parent"
@@ -31,7 +35,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{product.productName}"
+            android:ellipsize="end"
             android:layout_marginLeft="5dp"
+            android:singleLine="true"
             android:textStyle="bold"
             android:textSize="18dp"
             android:textColor="@color/black"/>
@@ -45,7 +51,8 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="30"
+                android:layout_weight="25"
+                android:textColor="@color/black2"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/mrp"/>
             <TextView
@@ -58,15 +65,18 @@
                 android:id="@+id/product_mrp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="40"
-                android:text="\u20B9 100"
+                android:layout_weight="30"
+                android:textColor="@color/black2"
+                tools:text="\u20B9 100"
+                android:text='@{Curruncy.getCurruncy(unit.unitPrice.toString())}'
                 android:layout_marginLeft="10dp"
                 android:fontFamily="@font/roboto_regular"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="18"
+                android:layout_weight="10"
                 android:text="@string/weight"
+                android:textColor="@color/black2"
                 android:gravity="right"
                 android:layout_marginRight="3dp"
                 android:fontFamily="@font/roboto_regular"/>
@@ -80,8 +90,11 @@
                 android:id="@+id/product_mrp_weight"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="10"
-               android:text="1kg"
+                android:layout_weight="18"
+                android:textColor="@color/black2"
+                tools:text="1kg"
+                android:text='@{unit.unitNumber+" "+unit.unitMeasure}'
+
                 android:gravity="left"
                 android:layout_marginLeft="3dp"
                 android:fontFamily="@font/roboto_regular"/>
@@ -103,7 +116,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="30"
-                    android:text="Selling Price"/>
+                    android:textColor="@color/black2"
+                    android:text="@string/selling_price"/>
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -114,34 +128,51 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="40"
-                    android:text="\u20B9 100"
+                    tools:text="\u20B9 100"
+                    android:textColor="@color/black2"
+                    android:text='@{Curruncy.getCurruncy(unit.sellingPrice.toString())}'
+
                     android:layout_marginLeft="10dp"
                     android:fontFamily="@font/roboto_regular"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="30"
+                android:layout_weight="35"
                 android:weightSum="2"
                 android:orientation="horizontal">
                 <TextView
                     android:id="@+id/tv_edit"
-                    android:layout_width="30dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Edit"
+                    android:paddingTop="5dp"
+                    android:textColor="@color/white"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
                     android:gravity="center"
-                    android:layout_marginLeft="10dp"
                     android:background="@drawable/button_round_edges_gray"
                     android:fontFamily="@font/roboto_regular"/>
 
                 <Switch
+                    android:id="@+id/sweetch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:checked="true"
-                  >
+                    android:checked='@{product.vendorActive.equalsIgnoreCase("NO")?false:true}'
+                    tools:ignore="UseSwitchCompatOrMaterialXml"
+                    android:layout_marginStart="5dp" />
 
-                </Switch>
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="gone"
+                    android:layout_marginLeft="5dp"
+                    tools:ignore="UseSwitchCompatOrMaterialXml"
+                    android:layout_marginStart="5dp"  />
+
             </LinearLayout>
 
 

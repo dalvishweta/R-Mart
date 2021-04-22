@@ -40,7 +40,6 @@
 
 
         <LinearLayout
-
             android:layout_marginTop="10dp"
             android:layout_below="@+id/app_logo"
             android:layout_marginLeft="20dp"
@@ -230,6 +229,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:text="Default Amount"
+                android:textColor="@color/item_sub_title_color"
+                android:textSize="12sp"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
              <LinearLayout
                 android:orientation="vertical"
                 android:id="@+id/payment_base"
@@ -239,6 +246,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_height="wrap_content"
+                android:hint="Custom Amount">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/customamount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:inputType="numberDecimal"
+                    android:digits="@string/allow_digits_email"
+                    android:minHeight="50dp"
+                    android:paddingEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
 
             <androidx.appcompat.widget.AppCompatButton
@@ -278,7 +307,8 @@
                     android:fontFamily="@font/montserrat_semibold"
                     android:text="@string/login_right"
                     android:textColor="@color/register_color"
-                    android:textSize="@dimen/text_regular_size" />
+                    android:textSize="@dimen/text_regular_size"
+                    android:layout_marginLeft="8dp" />
             </LinearLayout>
         </LinearLayout>
 

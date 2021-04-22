@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customerservice.mobile.adapters.RechargePlansPagerAdapter;
+import com.rmart.customerservice.mobile.interfaces.OnPlanSelectedHandler;
 import com.rmart.customerservice.mobile.models.mPlans.RechargePlans;
 import com.rmart.customerservice.mobile.models.mPlans.Records;
 
@@ -97,7 +98,12 @@ public class MobileRechargePlansHome extends BaseFragment {
          plansTabs.setTabMode(TabLayout.MODE_SCROLLABLE);
          plansPager = view.findViewById(R.id.plans_pager);
 
-         viewPagerAdapter = new RechargePlansPagerAdapter(getChildFragmentManager(),0, plansData);
+         viewPagerAdapter = new RechargePlansPagerAdapter(getChildFragmentManager(), 0, plansData, new OnPlanSelectedHandler() {
+             @Override
+             public void onClick(RechargePlans chosenSubscriber) {
+
+             }
+         });
          plansPager.setAdapter(viewPagerAdapter);
          plansTabs.setupWithViewPager(plansPager);
 

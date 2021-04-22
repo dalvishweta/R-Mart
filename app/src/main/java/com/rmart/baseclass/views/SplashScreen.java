@@ -67,17 +67,21 @@ public class SplashScreen extends BaseActivity {
             deviceToken = instanceIdResult.getToken();
             LoggerInfo.printLog("FCM Token", deviceToken);
         }).addOnFailureListener(e -> checkLoginCache()).addOnCompleteListener(task -> checkLoginCache()).addOnCanceledListener(this::checkLoginCache);*/
-
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        LoggerInfo.errorLog( "Fetching FCM registration token failed", task.getException());
+        try {
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()) {
+                            LoggerInfo.errorLog("Fetching FCM registration token failed", task.getException());
+                            checkLoginCache();
+                            return;
+                        }
+                        deviceToken = task.getResult();
                         checkLoginCache();
-                        return;
-                    }
-                    deviceToken = task.getResult();
-                    checkLoginCache();
-                }).addOnFailureListener(e -> checkLoginCache());
+                    }).addOnFailureListener(e -> checkLoginCache());
+        }
+        catch (Exception e){
+            checkLoginCache();
+        }
     }
 
     private void checkLoginCache() {

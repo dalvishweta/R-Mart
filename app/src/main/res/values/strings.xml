@@ -462,8 +462,9 @@
     <string name="disclaimer_we_support_most_typees_of_recharges_but_please_check_with_your_operator_before_you_proceed">Disclaimer: We support most typees of recharges, but please check with your operator before you proceed</string>
     <string name="recent_recharge">Recent Recharge</string>
     <string name="mrp">MRP</string>
-    <string name="weight">Weight</string>
     <string name="enter_subscription_id_mobile_number">Enter Subscription ID/ Mobile Number</string>
     <string name="dth_subscriptionid_text">Your service id is located on your TV menu, on the bottom of the screen</string>
 
+    <string name="weight">Unit</string>
+    <string name="selling_price">Selling Price</string>
 </resources>

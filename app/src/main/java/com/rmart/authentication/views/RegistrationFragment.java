@@ -16,6 +16,8 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.customer.adapters.CustomSpinnerAdapter;
@@ -27,6 +29,9 @@ import com.rmart.utilits.services.AuthenticationService;
 import com.rmart.utilits.services.RegPayAmtResponse;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
@@ -41,7 +46,7 @@ import retrofit2.Response;
 
 public class RegistrationFragment extends LoginBaseFragment implements View.OnClickListener {
 
-    private AppCompatEditText tvFirstName, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
+    private AppCompatEditText tvFirstName,customamount, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
     private String selectedGender;
 
     TextView login;
@@ -63,7 +68,47 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     }
 
     private void getFeeDetails(LinearLayout paymentBase) {
-        progressDialog.show();
+
+//        String json= "{\n" +
+//                "    \"status\": \"success\",\n" +
+//                "    \"msg\": \"Registration payment details\",\n" +
+//                "    \"Code\": \"200\",\n" +
+//                "    \"data\": [\n" +
+//                "        {\n" +
+//                "            \"pay_type\": \"Montly(Inc GST)\",\n" +
+//                "            \"amount\": \"700\",\n" +
+//                "            \"position\": 1\n" +
+//                "        },\n" +
+//                "        {\n" +
+//                "            \"pay_type\": \"Quarterly(Inc GST)\",\n" +
+//                "            \"amount\": \"2000\",\n" +
+//                "            \"position\": 2\n" +
+//                "        },\n" +
+//                "        {\n" +
+//                "            \"pay_type\": \"Half-yearly(Inc GST)\",\n" +
+//                "            \"amount\": \"3540\",\n" +
+//                "            \"position\": 3\n" +
+//                "        },\n" +
+//                "        {\n" +
+//                "            \"pay_type\": \"Annual(Inc GST)\",\n" +
+//                "            \"amount\": \"6000\",\n" +
+//                "            \"position\": 4\n" +
+//                "        }\n" +
+//                "    ],\n" +
+//                "    \"request_id\": 55414\n" +
+//                "}";
+//
+//        Gson gson = new Gson();
+//        RegPayAmtResponse obj2 = gson.fromJson(json, RegPayAmtResponse.class);
+//        registrationFeeStructuresList = obj2.getPaymentObjects();
+//
+//        for (RegistrationFeeStructure feeStructure : registrationFeeStructuresList) {
+//                View v = View.inflate(requireActivity(), R.layout.layout, null);
+//                ((AppCompatTextView) v.findViewById(R.id.pay_type)).setText(feeStructure.getPayType());
+//                ((AppCompatTextView) v.findViewById(R.id.pay_amt)).setText("Rs. "+String.format("%.2f",Double.parseDouble(feeStructure.getAmount())));
+//                paymentBase.addView(v);
+//            }
+                progressDialog.show();
         AuthenticationService service = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
         service.regPayAmt().enqueue(new Callback<RegPayAmtResponse>() {
             @Override
@@ -121,6 +166,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         Button register = view.findViewById(R.id.register);
         register.setOnClickListener(this);
         tvFirstName = view.findViewById(R.id.first_name);
+        customamount = view.findViewById(R.id.customamount);
         login = view.findViewById(R.id.login);
         tvLastName = view.findViewById(R.id.lase_name);
         tVMobileNumber = view.findViewById(R.id.mobile_number);
@@ -159,6 +205,8 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         } else {
             view.findViewById(R.id.tv_payment_information_field).setVisibility(View.GONE);
             paymentBase.setVisibility(View.GONE);
+            customamount.setVisibility(View.GONE);
+
             register.setText(R.string.register_right);
         }
 
@@ -190,23 +238,29 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         firstName = Objects.requireNonNull(tvFirstName.getText()).toString().trim();
         lastName = Objects.requireNonNull(tvLastName.getText()).toString().trim();
         mobileNumber = Objects.requireNonNull(tVMobileNumber.getText()).toString().trim();
+        String amount = Objects.requireNonNull(customamount.getText()).toString().trim();
         email = Objects.requireNonNull(tvEmail.getText()).toString().trim();
         password = Objects.requireNonNull(tvPassword.getText()).toString().trim();
         confirmPassword = Objects.requireNonNull(tvConformPassword.getText()).toString().trim();
         String passwordError = Utils.isValidPassword(password);
         String confirmPasswordError = Utils.isValidPassword(confirmPassword);
-        /*firstName = "ffff";
-        lastName = "lllll";
-        mobileNumber = "1234556";
-        email = "v@v.com";
-        password= "1234";
-        conformPassword = "1234";*/
+
+        Double amount2 = Double.valueOf(0);
+        try{
+            amount2=  Double.parseDouble(amount);
+        } catch (Exception e){
+
+        }
 
         if (firstName.length() <= 2) {
             showDialog("", getString(R.string.error_full_name));
         } else if (lastName.length() <= 2) {
             showDialog("", getString(R.string.error_last_name));
-        } else if (TextUtils.isEmpty(selectedGender) || selectedGender.equalsIgnoreCase(Utils.SELECT_YOUR_GENDER)) {
+        }
+        else if (amount2 < Double.valueOf(100.00)) {
+            showDialog("", "Please enter Amount" );
+        }
+        else if (TextUtils.isEmpty(selectedGender) || selectedGender.equalsIgnoreCase(Utils.SELECT_YOUR_GENDER)) {
             showDialog(getString(R.string.required_gender));
         } else if (mobileNumber.length() <= 2) {
             showDialog("", getString(R.string.required_mobile_number));
@@ -233,7 +287,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             }
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-            authenticationService.registration(firstName, lastName, mobileNumber, email, selectedGender, password, getString(R.string.role_id), Utils.CLIENT_ID).enqueue(
+            authenticationService.registration(firstName, lastName, mobileNumber, email, selectedGender, password, getString(R.string.role_id), Utils.CLIENT_ID,amount).enqueue(
                     new Callback<RegistrationResponse>() {
                         @Override
                         public void onResponse(@NotNull Call<RegistrationResponse> call, @NotNull Response<RegistrationResponse> response) {
@@ -243,7 +297,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
                                     if (data.getStatus().equals("Success")) {
 
                                         String otpMsg = data.getMsg() + " OTP: " + data.getOtp();
-                                        resetFields();
+
                                         if(BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
                                             data.getRsaKeyResponseDetails().setOTPMsg(otpMsg);
 
@@ -252,7 +306,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
                                         } else {
                                             showDialog("", otpMsg, (click, i) -> mListener.validateOTP(mobileNumber, false));
                                         }
-
+                                        resetFields();
                                     } else {
                                         showDialog("", data.getMsg());
                                     }

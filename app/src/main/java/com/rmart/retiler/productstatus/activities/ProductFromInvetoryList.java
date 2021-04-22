@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
+import com.rmart.customer.shops.home.model.ProductData;
+import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.databinding.FragmentProductStatusBinding;
 import com.rmart.inventory.views.BaseInventoryFragment;
 import com.rmart.retiler.inventory.brand.model.Brand;
@@ -22,6 +25,7 @@ import com.rmart.retiler.inventory.category.model.Category;
 import com.rmart.retiler.inventory.product_from_inventory.model.Product;
 import com.rmart.retiler.inventory.product_from_inventory.model.ProductFromInventoryListResponse;
 import com.rmart.retiler.inventory.product_from_inventory.viewmodel.ProductFromInventoryViewModel;
+import com.rmart.retiler.productstatus.UdateListner;
 import com.rmart.retiler.productstatus.adapters.ProductFromInventorySearchListAdapter;
 
 import java.io.Serializable;
@@ -33,9 +37,15 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
     final int CATEGORY_REQUEST=2;
     final int BRAND_REQUEST=3;
     int page=0;
+    String isactive;
     int total_product_count= 0;
     FragmentProductStatusBinding binding;
     ProductFromInventoryViewModel productViewModel;
+    UdateListner udateListner;
+
+    public void setUdateListner(UdateListner udateListner) {
+        this.udateListner = udateListner;
+    }
 
     public ProductFromInvetoryList() {
         // Required empty public constructor
@@ -46,14 +56,22 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
 
         return fragment;
     }
-    public static BaseInventoryFragment newInstance(List<Product> sm) {
+    public static ProductFromInvetoryList newInstance(String isActive) {
         ProductFromInvetoryList fragment = new ProductFromInvetoryList();
         Bundle args = new Bundle();
-        args.putSerializable("sm", (Serializable) sm);
+        args.putString("sm", isActive);
         fragment.setArguments(args);
         return fragment;
     }
 
+    public void  onTextChange(String searchText){
+        productViewModel.searchPhrase.setValue(searchText);
+        productViewModel.getProductList( page+"",isactive);
+    }
+    public void  onUpdate(){
+        page=0;
+        productViewModel.getProductList( page+"",isactive);
+    }
     @Override
     public void onResume() {
         super.onResume();
@@ -63,49 +81,34 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            isactive =  getArguments().getString("sm");
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         productViewModel = ViewModelProviders.of(this).get(ProductFromInventoryViewModel.class);
-
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_status, container, false);
-
-
-        productViewModel.getProductList( page+"");
+        productViewModel.getProductList( page+"",isactive);
         binding.setProductViewModel(productViewModel);
         binding.setLifecycleOwner(this);
-       // binding.productList.addItemDecoration(new GridSpacesItemDecoration(15));
-
-        productSearchListAdapter = new ProductFromInventorySearchListAdapter(getActivity(),new ArrayList<>(),mListener);
+        productSearchListAdapter = new ProductFromInventorySearchListAdapter(getActivity(),new ArrayList<>(),mListener,udateListner);
         binding.productList.setAdapter(productSearchListAdapter);
-
-
-
-
-        productViewModel.productListResponseMutableLiveData.observeForever(new Observer<ProductFromInventoryListResponse>() {
-            @Override
-            public void onChanged(ProductFromInventoryListResponse productListResponse) {
-                try {
-                    if(page==0) {
-                        productSearchListAdapter.products.clear();
-                        productSearchListAdapter.notifyDataSetChanged();
-                    }
-                    productSearchListAdapter.addProducts(productListResponse.getProduct());
-                    total_product_count = productListResponse.getTotal_count();
-
-                } catch (Exception e){
-
+        productViewModel.productListResponseMutableLiveData.observeForever(productListResponse -> {
+            try {
+                if(page==0) {
+                    productSearchListAdapter.products.clear();
+                    productSearchListAdapter.notifyDataSetChanged();
                 }
+                productSearchListAdapter.addProducts(productListResponse.getProduct());
+                total_product_count = productListResponse.getTotal_count();
+
+            } catch (Exception e){
+
             }
         });
-
-
-
-
-
-
         binding.productList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -119,7 +122,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
                 if (!productViewModel.isLoading.getValue()) {
                     if (productViewModel.productListResponseMutableLiveData.getValue().isNext_value()) {
                         page++;
-                        productViewModel.getProductList( page+"");
+                        productViewModel.getProductList( page+"",isactive);
 
                     }
                 }
@@ -143,7 +146,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
            }
            page=0;
 
-           productViewModel.getProductList( page+"");
+           productViewModel.getProductList( page+"",isactive);
        }
 
 
