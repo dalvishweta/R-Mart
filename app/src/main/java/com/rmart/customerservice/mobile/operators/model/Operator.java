@@ -4,6 +4,9 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
+import androidx.databinding.BindingAdapter;
+
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -13,12 +16,10 @@ import com.bumptech.glide.signature.ObjectKey;
 import com.google.gson.annotations.SerializedName;
 import com.rmart.R;
 import com.rmart.glied.GlideApp;
-import com.rmart.retiler.inventory.brand.model.Brand;
 
-import androidx.annotation.Nullable;
-import androidx.databinding.BindingAdapter;
+import java.io.Serializable;
 
-public class Operator {
+public class Operator implements Serializable {
     @SerializedName("operator_name")
    public String name;
 

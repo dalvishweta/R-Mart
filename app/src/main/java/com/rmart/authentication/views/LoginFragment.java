@@ -167,7 +167,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                         loginDetailsModel.setMobileNumber(mMobileNumber);
                                         loginDetailsModel.setPassword(mPassword);
                                          profileResponse = data.getLoginData();
-                                        checkRegistration(profileResponse,mMobileNumber,"12345678");
+                                        checkRegistration(profileResponse,mMobileNumber,mPassword);
 
                                         MyProfile.setInstance(getActivity(),profileResponse);
                                         //MyProfile.getInstance().setCartCount(profileResponse.getTotalCartCount());
