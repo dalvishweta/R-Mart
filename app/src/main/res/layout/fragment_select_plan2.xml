@@ -11,9 +11,6 @@
         <variable
             name="myAdapter"
             type="com.rmart.customer.dashboard.adapters.HomeAdapter" />
-    <variable
-            name="RechargePlans"
-            type="com.rmart.customerservice.mobile.models.mPlans.RechargePlans" />
 
         <variable
             name="selectPlanViewModel"
@@ -191,7 +188,7 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 tools:visibility="gone"
-                android:visibility="@{RechargePlans==null?View.VISIBLE:View.GONE}"
+                android:visibility="@{selectPlanViewModel.rechargePlansMutableLiveData  ==null?View.VISIBLE:View.GONE}"
                 android:layout_height="match_parent">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -310,7 +307,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:visibility="@{RechargePlans==null?View.GONE:View.VISIBLE}"
+                android:visibility="@{selectPlanViewModel.rechargePlansMutableLiveData==null?View.GONE:View.VISIBLE}"
                 android:background="@drawable/cart_background"
                 android:orientation="vertical">
                     <LinearLayout
@@ -328,7 +325,7 @@
                             android:fontFamily="@font/roboto_bold"
                             android:padding="3dp"
                             android:layout_weight="1"
-                            android:text='@{Curruncy.getCurruncy(RechargePlans.rs+"")}'
+                            android:text='@{Curruncy.getCurruncy(selectPlanViewModel.rechargePlansMutableLiveData.rs+"")}'
                             tools:text="Rs. 100.00"
                             android:textStyle="bold"
                             android:textColor="@color/black2"
@@ -343,6 +340,7 @@
                             >
 
                             <Button
+                                android:id="@+id/change"
                                 android:layout_width="wrap_content"
                                 android:text="Change Plan"
                                 android:background="@drawable/button_round_edges"
@@ -361,7 +359,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/validity"
                     tools:text="Validity: N/A"
-                    android:text='@{"Validity : "+RechargePlans.validity+""}'
+                    android:text='@{"Validity : "+selectPlanViewModel.rechargePlansMutableLiveData.validity+""}'
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:textSize="14sp"
@@ -372,7 +370,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/desc"
-                    android:text='@{"Validity : "+RechargePlans.desc}'
+                    android:text='@{"Validity : "+selectPlanViewModel.rechargePlansMutableLiveData.desc}'
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     tools:text="Get Talktime of Rs. 7.47"
@@ -392,8 +390,24 @@
             android:id="@+id/bootomtext"
             android:paddingBottom="10dp"
             android:paddingLeft="5dp"
+            android:visibility="@{selectPlanViewModel.rechargePlansMutableLiveData!=null?View.GONE:View.VISIBLE}"
+
             android:paddingRight="5dp"
             android:text="@string/disclaimer_we_support_most_typees_of_recharges_but_please_check_with_your_operator_before_you_proceed"
             />
+
+        <Button
+            android:id="@+id/recharge"
+            android:layout_width="match_parent"
+            android:text="Recharge"
+            android:gravity="center"
+            android:padding="10dp"
+            android:visibility="@{selectPlanViewModel.rechargePlansMutableLiveData==null?View.GONE:View.VISIBLE}"
+            android:background="@color/colorPrimary"
+            android:textAllCaps="false"
+            android:layout_alignParentBottom="true"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"/>
     </RelativeLayout>
 </layout>

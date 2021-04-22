@@ -89,7 +89,7 @@ public class MobileRechargeHistoryFragment extends BaseFragment implements View.
     public void loadRechargeHistory(){
         progressSpinner.setVisibility(View.VISIBLE);
         MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstance().create(MobileRechargeService.class);
-        mobileRechargeService.getHistory(MyProfile.getInstance().getUserID(),"25").enqueue(new Callback<ResponseGetHistory>() {
+        mobileRechargeService.getHistory(MyProfile.getInstance(getContext()).getUserID(),"25").enqueue(new Callback<ResponseGetHistory>() {
             @Override
             public void onResponse(Call<ResponseGetHistory> call, Response<ResponseGetHistory> response) {
                 progressSpinner.setVisibility(View.GONE);
@@ -120,7 +120,6 @@ public class MobileRechargeHistoryFragment extends BaseFragment implements View.
                                     mListener.getMobileRechargeModule().setImage(operator.getImage());
                                     mListener.getMobileRechargeModule().setMobileOperator(operator.getName());
                                     mListener.getMobileRechargeModule().setRechargeAmount(data.getLastTransactionAmount());
-                                    mListener.getMobileRechargeModule().setUserID(MyProfile.getInstance().getUserID());
                                     mListener.goToMakePaymentFragment();
                                 }
                             });

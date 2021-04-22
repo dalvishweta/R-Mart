@@ -1,9 +1,14 @@
 package com.rmart.profile.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
+import com.rmart.R;
+import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.AddressResponse;
 import com.rmart.utilits.pojos.ProfileResponse;
 
@@ -16,7 +21,11 @@ public class MyProfile {
     public static final String DELIVERY = "Delivery";
     public static final String RETAILER = "Retailer";
     public static final String CUSTOMER = "Customer";
+    public static final String PREF_NAME = "Rokad Client";
 
+
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
     private String userID;
     private String firstName;
     private String lastName;
@@ -31,6 +40,9 @@ public class MyProfile {
     private String roleID;
     private String deliveryInDays;
     private Boolean wholeselar;
+    private Boolean credit_option;
+    private String primaryAddressId;
+
 
     public Boolean getWholeselar() {
         return wholeselar;
@@ -40,13 +52,22 @@ public class MyProfile {
         return credit_option;
     }
 
-    private Boolean credit_option;
-    private String primaryAddressId;
+
     private ArrayList<AddressResponse> addressResponses;
     private MutableLiveData<Bitmap> userProfileImage = new MutableLiveData<>();
     private MutableLiveData<Integer> cartCount = new MutableLiveData<>(0);
 
-    public static MyProfile getInstance() {
+    public static MyProfile getInstance(Context context) {
+
+
+            Gson gson = new Gson();
+
+            SharedPreferences sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            String json =  sharedPref.getString(CUSTOMER,null);
+            myProfile =gson.fromJson(json,MyProfile.class);
+
+
+
         return myProfile;
     }
 
@@ -58,7 +79,7 @@ public class MyProfile {
         this.credit_option = credit_option;
     }
 
-    public static void setInstance(ProfileResponse profileResponse) {
+    public static void setInstance(Context context,ProfileResponse profileResponse) {
         myProfile = new MyProfile();
         myProfile.userID = profileResponse.getUserID();
         myProfile.credit_option = profileResponse.getCredit_option();
@@ -80,6 +101,14 @@ public class MyProfile {
         if(profileResponse.getAddressResponses().size() > 0) {
             myProfile.setAddressResponses(profileResponse.getAddressResponses());
         }
+        Gson gson = new Gson();
+        String str = gson.toJson(myProfile);
+        SharedPreferences sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(CUSTOMER, str);
+        editor.apply();
+        editor.commit();
+
 
     }
 

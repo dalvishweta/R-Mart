@@ -245,7 +245,7 @@ public class PaymentActivity extends AppCompatActivity {
             }
            JsonArray ccavenuejsonArray = element.getAsJsonArray();
             ElecticityService eleService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(ElecticityService.class);
-            eleService.electicitybillProcess(MyProfile.getInstance().getUserID(), operator,String.valueOf(ob.getConsumerID()),bill_unit,
+            eleService.electicitybillProcess(MyProfile.getInstance(getApplicationContext()).getUserID(), operator,String.valueOf(ob.getConsumerID()),bill_unit,
                    mobile_number,String.valueOf(ob.getDueAmount()),ob.getConsumerName(),String.valueOf(ob.getOrderId()),ccavenuejsonArray.toString())
                     .enqueue(new Callback<paybill>() {
                         @Override

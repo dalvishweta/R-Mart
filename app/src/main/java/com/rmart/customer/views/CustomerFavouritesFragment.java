@@ -121,7 +121,7 @@ public class CustomerFavouritesFragment extends BaseFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<BaseResponse> call = customerProductsService.deleteShopFromWishList(clientID, selectedShopDetails.getVendorId(), selectedShopDetails.getShopId(),
-                    MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
+                    MyProfile.getInstance(getContext()).getUserID(),MyProfile.getInstance(getContext()).getRoleID());
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
@@ -177,7 +177,7 @@ public class CustomerFavouritesFragment extends BaseFragment {
             favoritesShopsList.clear();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<ShopFavouritesListResponseModel> call = customerProductsService.getShowShopFavouritesList(clientID, MyProfile.getInstance().getUserID(), 0,MyProfile.getInstance().getRoleID());
+            Call<ShopFavouritesListResponseModel> call = customerProductsService.getShowShopFavouritesList(clientID, MyProfile.getInstance(getContext()).getUserID(), 0,MyProfile.getInstance(getContext()).getRoleID());
             call.enqueue(new Callback<ShopFavouritesListResponseModel>() {
                 @Override
                 public void onResponse(@NotNull Call<ShopFavouritesListResponseModel> call, @NotNull Response<ShopFavouritesListResponseModel> response) {

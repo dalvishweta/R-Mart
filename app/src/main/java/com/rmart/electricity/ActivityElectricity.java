@@ -132,7 +132,7 @@ public class ActivityElectricity extends AppCompatActivity {
                             progressBar.show();
 
                             eleService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(ElecticityService.class);
-                            eleService.electicityProcess(MyProfile.getInstance().getUserID(), SelectedValue, consumer_no_one.getText().toString(), bill_unit_two.getText().toString(),
+                            eleService.electicityProcess(MyProfile.getInstance(getApplicationContext()).getUserID(), SelectedValue, consumer_no_one.getText().toString(), bill_unit_two.getText().toString(),
                                     mobile_two.getText().toString())
                                     .enqueue(new Callback<ElecProcessPOJO>() {
                                         @Override
@@ -225,7 +225,7 @@ public class ActivityElectricity extends AppCompatActivity {
                             progressBar.show();
 
                             eleService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(ElecticityService.class);
-                            eleService.electicityProcess(MyProfile.getInstance().getUserID(), SelectedValue, consumer_no_one.getText().toString(), bill_unit_two.getText().toString(),
+                            eleService.electicityProcess(MyProfile.getInstance(getApplicationContext()).getUserID(), SelectedValue, consumer_no_one.getText().toString(), bill_unit_two.getText().toString(),
                                     mobile_two.getText().toString())
                                     .enqueue(new Callback<ElecProcessPOJO>() {
                                         @Override

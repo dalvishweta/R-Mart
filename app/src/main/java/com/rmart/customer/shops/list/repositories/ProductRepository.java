@@ -1,5 +1,7 @@
 package com.rmart.customer.shops.list.repositories;
 
+import android.content.Context;
+
 import com.rmart.customer.shops.list.models.ProductSearchResponce;
 import com.rmart.customer.shops.products.api.Products;
 import com.rmart.profile.model.MyProfile;
@@ -14,11 +16,11 @@ import static com.rmart.utilits.Utils.CLIENT_ID;
 
 public class ProductRepository {
 
-    public static MutableLiveData<ProductSearchResponce> searchProduct(int page, Double latitude,Double longitude,String search_phrase){
+    public static MutableLiveData<ProductSearchResponce> searchProduct(Context c,int page, Double latitude, Double longitude, String search_phrase){
 
         Products products = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
         final MutableLiveData<ProductSearchResponce> resultMutableLiveData = new MutableLiveData<>();
-        Call<ProductSearchResponce> call = products.searchProduct(page,CLIENT_ID,latitude,longitude,search_phrase, MyProfile.getInstance().getRoleID());
+        Call<ProductSearchResponce> call = products.searchProduct(page,CLIENT_ID,latitude,longitude,search_phrase, MyProfile.getInstance(c).getRoleID());
         final ProductSearchResponce result = new ProductSearchResponce();
 
         call.enqueue(new Callback<ProductSearchResponce>() {

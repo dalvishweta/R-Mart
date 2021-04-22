@@ -1,5 +1,6 @@
 package com.rmart.customer.shops.products.viewmodel;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
@@ -31,10 +32,10 @@ public class ProductDetailsViewModel extends ViewModel {
     public MutableLiveData<CustomerProductsDetailsUnitModel> customerProductsDetailsUnitModelMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<ProductDetailsDescResponse> productDetailsDescResponseMutableLiveData = new MutableLiveData<>();
 
-    public  void getProductDetails() {
+    public  void getProductDetails(Context context) {
         isLoading.setValue(true);
-        ProductsRepository.getProductDetails("2", vendorShopDetails.getValue().getVendorId(), vendorShopDetails.getValue().getShopId(),
-                vendorProductDataDetails.getValue().getProductId(), MyProfile.getInstance().getUserID()).observeForever(new Observer<ProductDetailsDescResponse>() {
+        ProductsRepository.getProductDetails(context,"2", vendorShopDetails.getValue().getVendorId(), vendorShopDetails.getValue().getShopId(),
+                vendorProductDataDetails.getValue().getProductId(), MyProfile.getInstance(context).getUserID()).observeForever(new Observer<ProductDetailsDescResponse>() {
             @Override
             public void onChanged(ProductDetailsDescResponse productDetailsDescResponse) {
                 if(productDetailsDescResponse!=null) {
@@ -82,7 +83,7 @@ public class ProductDetailsViewModel extends ViewModel {
 
 
    public void  addToCart(View view,int type){
-        ProductsRepository.addToCart(vendorShopDetails.getValue().getVendorId(),MyProfile.getInstance().getUserID(),customerProductsDetailsUnitModelMutableLiveData.getValue().getProductUnitId(),customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty()+1,"").observeForever(new Observer<AddToCartResponseDetails>() {
+        ProductsRepository.addToCart(view.getContext(),vendorShopDetails.getValue().getVendorId(),MyProfile.getInstance(view.getContext()).getUserID(),customerProductsDetailsUnitModelMutableLiveData.getValue().getProductUnitId(),customerProductsDetailsUnitModelMutableLiveData.getValue().getTotalProductCartQty()+1,"").observeForever(new Observer<AddToCartResponseDetails>() {
             @Override
             public void onChanged(AddToCartResponseDetails addToCartResponseDetails) {
                 if (addToCartResponseDetails.getStatus().equalsIgnoreCase("success")) {
@@ -131,7 +132,7 @@ public class ProductDetailsViewModel extends ViewModel {
         }
         else {
             if(vendorShopDetails.getValue()!=null) {
-                ProductsRepository.addProductToWishList(vendorShopDetails.getValue().getVendorId(), productDetailsDescResponseMutableLiveData.getValue().getProductDetailsDescProductDataModel().getProductDetailsDescModel().getProductId()).observeForever(new Observer<AddProductToWishListResponse>() {
+                ProductsRepository.addProductToWishList(view.getContext(),vendorShopDetails.getValue().getVendorId(), productDetailsDescResponseMutableLiveData.getValue().getProductDetailsDescProductDataModel().getProductDetailsDescModel().getProductId()).observeForever(new Observer<AddProductToWishListResponse>() {
                     @Override
                     public void onChanged(AddProductToWishListResponse addProductToWishListResponse) {
 

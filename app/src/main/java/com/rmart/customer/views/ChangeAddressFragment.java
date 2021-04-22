@@ -71,7 +71,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     }
 
     private void getAddressesList() {
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(getContext());
         if (myProfile != null) {
             addressList = myProfile.getAddressResponses();
             if (addressList != null && !addressList.isEmpty()) {
@@ -121,11 +121,11 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     private final CallBackInterface callBackListener = pObject -> {
         if (pObject instanceof AddressResponse) {
             resetAddressList();
-            MyProfile.getInstance().setAddressResponses(addressList);
+            MyProfile.getInstance(getContext()).setAddressResponses(addressList);
             myAddress = (AddressResponse) pObject;
             int index = addressList.indexOf(myAddress);
             if (index > -1) {
-                MyProfile.getInstance().setPrimaryAddressId(myAddress.getId().toString());
+                MyProfile.getInstance(getContext()).setPrimaryAddressId(myAddress.getId().toString());
                 myAddress.setPrimaryAddress(true);
                 addressList.set(index, myAddress);
                 changeAddressAdapter.notifyItemChanged(index);
@@ -148,7 +148,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
             ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
             profileService.updateAddress(myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                     myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
-                    myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
+                    myAddress.getLongitude(), MyProfile.getInstance(getContext()).getUserID(), MyProfile.getInstance(getContext()).getRoleID(),
                     myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), "", myAddress.getDeliveryCharges(),
                     myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(), myAddress.getId().toString(),myAddress.getBusinessType(),myAddress.getShopTypeId()+"",myAddress.getBankName(),myAddress.getIfscCode(),myAddress.getBranchName(),myAddress.getBankAccNo(),false,false).enqueue(new Callback<AddressListResponse>() {
                 @Override
@@ -158,8 +158,8 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 showDialog(data.getMsg(), pObject -> {
-                                    MyProfile.getInstance().setPrimaryAddressId(myAddress.getId().toString());
-                                    MyProfile.getInstance().setAddressResponses(addressList);
+                                    MyProfile.getInstance(getContext()).setPrimaryAddressId(myAddress.getId().toString());
+                                    MyProfile.getInstance(getContext()).setAddressResponses(addressList);
                                     Objects.requireNonNull(requireActivity()).onBackPressed();
                                 });
                             } else {

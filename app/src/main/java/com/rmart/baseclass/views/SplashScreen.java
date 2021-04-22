@@ -7,16 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCanceledListener;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.rmart.BuildConfig;
 import com.rmart.R;
@@ -85,19 +75,24 @@ public class SplashScreen extends BaseActivity {
     }
 
     private void checkLoginCache() {
-        if (BuildConfig.FLAVOR.contains(Utils.CUSTOMER)) {
-            Object lObject = RokadMartCache.getData(Constants.CACHE_CUSTOMER_DETAILS, this);
-            if (lObject == null) {
-                setDelayHandler();
+        try {
+            if (BuildConfig.FLAVOR.contains(Utils.CUSTOMER)) {
+                Object lObject = RokadMartCache.getData(Constants.CACHE_CUSTOMER_DETAILS, this);
+                if (lObject == null) {
+                    setDelayHandler();
+                } else {
+                    getLoginDetails(getApplicationContext(),(LoginDetailsModel) lObject);
+                }
             } else {
-                getLoginDetails((LoginDetailsModel) lObject);
+                setDelayHandler();
             }
-        } else {
-            setDelayHandler();
+        } catch (Exception e){
+            gotoAuthenticationActivity();
+
         }
     }
 
-    private void getLoginDetails(LoginDetailsModel loginDetails) {
+    private void getLoginDetails(Context context,LoginDetailsModel loginDetails) {
         if (Utils.isNetworkConnected(this)) {
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
@@ -112,9 +107,9 @@ public class SplashScreen extends BaseActivity {
                                 if (data.getLoginData().getRoleID().equalsIgnoreCase(getString(R.string.role_id))) {
                                     try {
                                         ProfileResponse profileResponse = data.getLoginData();
-                                        MyProfile.setInstance(profileResponse);
+                                        MyProfile.setInstance(context,profileResponse);
                                         UpdateCartCountDetails.updateCartCountDetails.onNext(profileResponse.getTotalCartCount());
-                                        if (MyProfile.getInstance().getPrimaryAddressId() == null) {
+                                        if (MyProfile.getInstance(context).getPrimaryAddressId() == null) {
                                             gotoProfileActivity();
                                         } else {
                                             switch (data.getLoginData().getRoleID()) {

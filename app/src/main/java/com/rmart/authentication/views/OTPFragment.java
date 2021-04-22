@@ -128,12 +128,16 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
 
             @Override
             public void onFailure(@NotNull Call<ResendOTPResponse> call, @NotNull Throwable t) {
-                if(t instanceof SocketTimeoutException){
-                    showDialog("", getString(R.string.network_slow));
-                } else {
-                    showDialog("", t.getMessage());
-                }
-                progressDialog.dismiss();
+               try {
+                   if (t instanceof SocketTimeoutException) {
+                       showDialog("", getString(R.string.network_slow));
+                   } else {
+                       showDialog("", t.getMessage());
+                   }
+                   progressDialog.dismiss();
+               }catch (Exception e){
+
+               }
             }
         });
     }

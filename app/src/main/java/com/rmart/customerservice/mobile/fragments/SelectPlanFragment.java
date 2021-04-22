@@ -118,14 +118,18 @@ public class SelectPlanFragment extends Fragment {
         fragmentSelectPlan2Binding.setSelectPlanViewModel(mViewModel);
         fragmentSelectPlan2Binding.setLifecycleOwner(this);
         fragmentSelectPlan2Binding.operatorSelect.setOnClickListener(view -> {
-            bottomSheet = new SelectOperatorBottomSheet(slectOperator,type);
-            bottomSheet.show(getActivity().getSupportFragmentManager(),
-                    "ModalBottomSheet");
+            if(mViewModel.rechargePlansMutableLiveData.getValue()!=null) {
+                bottomSheet = new SelectOperatorBottomSheet(slectOperator, type);
+                bottomSheet.show(getActivity().getSupportFragmentManager(),
+                        "ModalBottomSheet");
+            }
         });
         fragmentSelectPlan2Binding.selctCircle.setOnClickListener(view -> {
-            selectCircleBottomSheet = new SelectCircleBottomSheet(slectCircle);
-            selectCircleBottomSheet.show(getActivity().getSupportFragmentManager(),
-                    "ModalBottomSheet");
+            if(mViewModel.rechargePlansMutableLiveData.getValue()!=null) {
+                selectCircleBottomSheet = new SelectCircleBottomSheet(slectCircle);
+                selectCircleBottomSheet.show(getActivity().getSupportFragmentManager(),
+                        "ModalBottomSheet");
+            }
         });
         if(type.equalsIgnoreCase(FragmentMobileRecharge.POSTPAID)) {
             fragmentSelectPlan2Binding.plansPager.setVisibility(View.GONE);
@@ -138,7 +142,7 @@ public class SelectPlanFragment extends Fragment {
             if (mplanBaseResponse!=null && mplanBaseResponse.getData() != null){
                 Records records = mplanBaseResponse.getData().getRecords();
                 RechargePlansPagerAdapter viewPagerAdapter = new RechargePlansPagerAdapter(getChildFragmentManager(), 0, records, chosenSubscriber -> {
-                    fragmentSelectPlan2Binding.setRechargePlans(chosenSubscriber);
+                    mViewModel.rechargePlansMutableLiveData.setValue(chosenSubscriber);
                 });
             fragmentSelectPlan2Binding.plansPager.setAdapter(viewPagerAdapter);
             fragmentSelectPlan2Binding.rechargePlanTabs.setupWithViewPager(fragmentSelectPlan2Binding.plansPager);
@@ -150,9 +154,15 @@ public class SelectPlanFragment extends Fragment {
 
             if(postPaidResponseGetPlans!=null && postPaidResponseGetPlans.getData()!=null) {
 
-                    RechargePlansAdapter adapter = new RechargePlansAdapter(chosenSubscriber -> fragmentSelectPlan2Binding.setRechargePlans(chosenSubscriber), getContext(), postPaidResponseGetPlans.getData().getRecords());
+                    RechargePlansAdapter adapter = new RechargePlansAdapter(chosenSubscriber -> mViewModel.rechargePlansMutableLiveData.setValue(chosenSubscriber), getContext(), postPaidResponseGetPlans.getData().getRecords());
                     fragmentSelectPlan2Binding.postPaidPlans.setAdapter(adapter);
 
+            }
+        });
+        fragmentSelectPlan2Binding.change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewModel.rechargePlansMutableLiveData.setValue(null);
             }
         });
 

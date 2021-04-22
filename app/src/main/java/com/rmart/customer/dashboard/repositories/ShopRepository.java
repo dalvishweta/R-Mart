@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.rmart.customer.dashboard.api.Shops;
 import com.rmart.customer.dashboard.model.HomePageData;
 import com.rmart.customer.dashboard.model.HomePageResponse;
-import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 
 import retrofit2.Call;

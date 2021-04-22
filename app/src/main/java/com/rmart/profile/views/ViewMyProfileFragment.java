@@ -116,9 +116,12 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
             view.findViewById(R.id.map).setVisibility(View.GONE);
 
         }
+        try {
+            Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.view_my_profile));
+        }catch (Exception e){
 
-        Objects.requireNonNull(requireActivity()).setTitle(getString(R.string.view_my_profile));
-        updateUI(Objects.requireNonNull(MyProfile.getInstance()));
+        }
+        updateUI(Objects.requireNonNull(MyProfile.getInstance(getContext())));
     }
 
     private void setCustomerView(View view) {
@@ -131,9 +134,9 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
 
     private void setCustomerAddressData() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        AddressAdapter addressAdapter = new AddressAdapter(view1 -> {
+        AddressAdapter addressAdapter = new AddressAdapter(getContext(),view1 -> {
             int position = (int) view1.getTag();
-            mListener.gotoEditAddress(MyProfile.getInstance().getAddressResponses().get(position));
+            mListener.gotoEditAddress(MyProfile.getInstance(getContext()).getAddressResponses().get(position));
         });
         recyclerView.setAdapter(addressAdapter);
     }
@@ -175,7 +178,7 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
     }
 
     private void setRetailerAddressData() {
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(getContext());
         if (myProfile != null) {
             List<AddressResponse> addressResponseList = myProfile.getAddressResponses();
             if (addressResponseList != null && !addressResponseList.isEmpty()) {
@@ -184,9 +187,9 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                 tvBusinessType.setText(addressResponse.getBusinessType());
                 if(addressResponse.getBusinessType().equalsIgnoreCase("Wholeseller")){
                     sellRetailers.setVisibility(View.VISIBLE);
-                    String msg =  ( MyProfile.getInstance().getWholeselar())?"You are selling to customer":"You are not selling to customer";
+                    String msg =  ( MyProfile.getInstance(getContext()).getWholeselar())?"You are selling to customer":"You are not selling to customer";
                     sellRetailers.setText(msg);
-                    String msg2 =  MyProfile.getInstance().getCredit_option()?"You are selling Credit":"You are not selling on Credit";
+                    String msg2 =  MyProfile.getInstance(getContext()).getCredit_option()?"You are selling Credit":"You are not selling on Credit";
                     creditoption.setText(msg2);
                 }
                 else {
@@ -332,7 +335,7 @@ public class ViewMyProfileFragment extends BaseFragment implements View.OnClickL
                 mListener.gotoEditAddress(addressResponse);
                 break;
             case R.id.edit_retailer:
-                mListener.gotoEditAddress(MyProfile.getInstance().getAddressResponses().get(0));
+                mListener.gotoEditAddress(MyProfile.getInstance(getContext()).getAddressResponses().get(0));
                 break;
             case R.id.edit_profile:
                 mListener.gotoEditProfile();

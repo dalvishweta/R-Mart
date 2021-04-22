@@ -1,5 +1,7 @@
 package com.rmart.retiler.inventory.product_from_inventory.viewmodel;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -19,12 +21,12 @@ public class ProductFromInventoryViewModel extends ViewModel {
     public MutableLiveData<String> searchPhrase = new MutableLiveData<>();
 
    public MutableLiveData<ProductFromInventoryListResponse> productListResponseMutableLiveData = new MutableLiveData<>();
-    public void getProductList(String page,String isactive)
+    public void getProductList(String page, String isactive, Context context)
     {
-        if(Integer.parseInt(page)==0) {
+        if(Integer.parseInt(page)==0 || (searchPhrase.getValue()!=null && searchPhrase.getValue().length()>0)) {
             isLoading.setValue(true);
         }
-        MutableLiveData<ProductFromInventoryListResponse> resultMutableLiveData= ProductFromInventroyListRepository.getProductList(categoryID.getValue()!=null?categoryID.getValue().getId()+"":null, MyProfile.getInstance()!=null?MyProfile.getInstance().getMobileNumber():null,brandID.getValue()!=null?brandID.getValue().getId()+"":null,searchPhrase.getValue(),page,isactive);
+        MutableLiveData<ProductFromInventoryListResponse> resultMutableLiveData= ProductFromInventroyListRepository.getProductList(categoryID.getValue()!=null?categoryID.getValue().getId()+"":null, MyProfile.getInstance(context)!=null?MyProfile.getInstance(context).getMobileNumber():null,brandID.getValue()!=null?brandID.getValue().getId()+"":null,searchPhrase.getValue(),page,isactive);
         resultMutableLiveData.observeForever(productListResponse -> {
 
             isLoading.setValue(false);

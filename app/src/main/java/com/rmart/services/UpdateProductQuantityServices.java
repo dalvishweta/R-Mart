@@ -52,8 +52,8 @@ public class UpdateProductQuantityServices extends JobIntentService {
         if(Utils.isNetworkConnected(this)) {
             Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
             String clientID = "2";
-            Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, productInCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                    productInCartDetails.getProductUnitId(), productInCartDetails.getTotalProductCartQty(), event,MyProfile.getInstance().getRoleID());
+            Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, productInCartDetails.getVendorId(), MyProfile.getInstance(getApplicationContext()).getUserID(),
+                    productInCartDetails.getProductUnitId(), productInCartDetails.getTotalProductCartQty(), event,MyProfile.getInstance(getApplicationContext()).getRoleID());
             call.enqueue(new Callback<AddToCartResponseDetails>() {
                 @Override
                 public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {

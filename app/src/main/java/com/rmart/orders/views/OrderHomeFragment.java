@@ -93,7 +93,7 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         try {
-            ((AppCompatTextView) view.findViewById(R.id.shop_name)).setText(String.format(getString(R.string.shop_name), MyProfile.getInstance().getAddressResponses().get(0).getShopName()));
+            ((AppCompatTextView) view.findViewById(R.id.shop_name)).setText(String.format(getString(R.string.shop_name), MyProfile.getInstance(getContext()).getAddressResponses().get(0).getShopName()));
             view.findViewById(R.id.accepted_orders).setOnClickListener(this);
             openOrderCount = view.findViewById(R.id.open_order_count);
             recyclerView = view.findViewById(R.id.other_order_names);
@@ -116,7 +116,7 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
         }
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(getContext());
         if(myProfile != null) {
             String userId = myProfile.getUserID();
             orderService.getOrderHome(userId).enqueue(new Callback<OrderStateListResponse>() {
@@ -170,7 +170,7 @@ public class OrderHomeFragment extends BaseOrderFragment implements View.OnClick
 //        list.add(orderStatus.get( mapOrderStatus.get(CANCEL_BY_RETAILER)));
 //        list.add(orderStatus.get( mapOrderStatus.get(CANCEL_BY_CUSTOMER)));
         try {
-            AddressResponse addressResponse = MyProfile.getInstance().getAddressResponses().get(0);
+            AddressResponse addressResponse = MyProfile.getInstance(getActivity()).getAddressResponses().get(0);
             shopname.setText(addressResponse.getShopName());
             address.setText(addressResponse.getAddress());
             ivShareField.setOnClickListener(view -> {

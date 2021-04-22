@@ -1,5 +1,6 @@
 package com.rmart.customer.order.summary.viewmodel;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
@@ -27,10 +28,10 @@ public class OrderSumaryViewModel extends ViewModel {
     public MutableLiveData<ShopDetailsModel> vendorShoppingCartDetails = new MutableLiveData<>();
 
 
-    public void showOrderSummary(int vendorId, int shop_id, String user_address_id, String delivery_method,String coupon_code){
+    public void showOrderSummary(Context context,int vendorId, int shop_id, String user_address_id, String delivery_method, String coupon_code){
         isLoading.setValue(true);
 
-        OrderSummaryRepository.showCartOrderDetails(vendorId,shop_id,user_address_id,delivery_method,coupon_code).observeForever(orderedSummaryResponse -> {
+        OrderSummaryRepository.showCartOrderDetails(context,vendorId,shop_id,user_address_id,delivery_method,coupon_code).observeForever(orderedSummaryResponse -> {
             orderedSummaryResponseMutableLiveData.setValue(orderedSummaryResponse);
             isLoading.postValue(false);
             if(orderedSummaryResponse.getStatus().equalsIgnoreCase("success")) {
@@ -48,18 +49,18 @@ public class OrderSumaryViewModel extends ViewModel {
     }
 
     public void onClick(final View view) {
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(view.getContext());
 
         switch(view.getId()) {
             case R.id.pick_fromStore:
-                showOrderSummary(vendorShoppingCartDetails.getValue().getVendorId(), vendorShoppingCartDetails.getValue().getShopId(), myProfile.getPrimaryAddressId(), PICKUP, DiscountCode.getValue());
+                showOrderSummary(view.getContext(),vendorShoppingCartDetails.getValue().getVendorId(), vendorShoppingCartDetails.getValue().getShopId(), myProfile.getPrimaryAddressId(), PICKUP, DiscountCode.getValue());
                 break;
             case R.id.home_delivery:
-                showOrderSummary(vendorShoppingCartDetails.getValue().getVendorId(), vendorShoppingCartDetails.getValue().getShopId(), myProfile.getPrimaryAddressId(), DELIVERY, DiscountCode.getValue());
+                showOrderSummary(view.getContext(),vendorShoppingCartDetails.getValue().getVendorId(), vendorShoppingCartDetails.getValue().getShopId(), myProfile.getPrimaryAddressId(), DELIVERY, DiscountCode.getValue());
             break;
             case R.id.btnpromocodeapply:
                 if(DiscountCode.getValue()!=null && !DiscountCode.getValue().equalsIgnoreCase("")) {
-                    showOrderSummary(vendorShoppingCartDetails.getValue().getVendorId(), vendorShoppingCartDetails.getValue().getShopId(), myProfile.getPrimaryAddressId(), orderedSummaryResponseMutableLiveData.getValue().getCustomerOrderedDataResponseModel().deliveryMethod, DiscountCode.getValue());
+                    showOrderSummary(view.getContext(),vendorShoppingCartDetails.getValue().getVendorId(), vendorShoppingCartDetails.getValue().getShopId(), myProfile.getPrimaryAddressId(), orderedSummaryResponseMutableLiveData.getValue().getCustomerOrderedDataResponseModel().deliveryMethod, DiscountCode.getValue());
                 } else {
                     Toast.makeText(view.getContext(),"Pease Enter Promocode",Toast.LENGTH_LONG).show();
                 }

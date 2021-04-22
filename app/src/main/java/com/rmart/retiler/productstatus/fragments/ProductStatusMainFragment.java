@@ -78,13 +78,13 @@ public class ProductStatusMainFragment extends BaseInventoryFragment {
 
                 if(item.getTitle().toString().equalsIgnoreCase(Utils.CATEGORY)){
                     Intent intent=new Intent(getContext(), CategoryFilterActivity.class);
-                    MyProfile profile = MyProfile.getInstance();
-                    intent.putExtra("venderID", MyProfile.getInstance().getUserID());
+                    MyProfile profile = MyProfile.getInstance(getContext());
+                    intent.putExtra("venderID", MyProfile.getInstance(getContext()).getUserID());
                     startActivityForResult(intent, CATEGORY_REQUEST);
                 }
                 if(item.getTitle().toString().equalsIgnoreCase(Utils.BRAND)) {
                     Intent intent=new Intent(getContext(), BrandFilterActivity.class);
-                    intent.putExtra("venderID", MyProfile.getInstance().getUserID());
+                    intent.putExtra("venderID", MyProfile.getInstance(getContext()).getUserID());
                     startActivityForResult(intent, BRAND_REQUEST);
 
                 }
@@ -107,6 +107,7 @@ public class ProductStatusMainFragment extends BaseInventoryFragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+
                 String text = charSequence.toString();
                 if(text!=null && text.length()>0) {
 
@@ -118,7 +119,6 @@ public class ProductStatusMainFragment extends BaseInventoryFragment {
                     viewPagerAdapter.onTextChange(null);
                 }
 
-
             }
 
             @Override
@@ -126,6 +126,13 @@ public class ProductStatusMainFragment extends BaseInventoryFragment {
 
             }
         });
+        binding.ivSearchField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         binding.addCustomProduct.setOnClickListener(v -> {
             FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.base_container, ProductList.newInstance(), ProductList.class.getName());

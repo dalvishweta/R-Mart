@@ -382,8 +382,7 @@ public class RechargeHomeFragment extends BaseFragment implements View.OnClickLi
                         mListener.getMobileRechargeModule().setStateName(String.valueOf(stateSelector.getSelectedItem()));
                         mListener.getMobileRechargeModule().setMobileOperator(subscriberModules.get(subscriber).getName());
                         mListener.getMobileRechargeModule().setImage(subscriberModules.get(subscriber).getImage());
-                        mListener.getMobileRechargeModule().setUserID(MyProfile.getInstance().getUserID());
-                        BigDecimal balance = new BigDecimal(MyProfile.getInstance().getUserID());
+                        BigDecimal balance = new BigDecimal(MyProfile.getInstance(getContext()).getUserID());
                         BigDecimal rechargeAmount = new BigDecimal(mListener.getMobileRechargeModule().getRechargeAmount());
                   /*  if(balance.compareTo(rechargeAmount) >= 0) {
                         mListener.goToMakePaymentFragment();

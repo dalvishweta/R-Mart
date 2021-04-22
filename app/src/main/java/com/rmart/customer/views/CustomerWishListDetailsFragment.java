@@ -171,7 +171,7 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<WishListResponseModel> call = customerProductsService.getShowWishListData(clientID, vendorShopDetails.getVendorId(), currentPage, MyProfile.getInstance().getUserID());
+            Call<WishListResponseModel> call = customerProductsService.getShowWishListData(clientID, vendorShopDetails.getVendorId(), currentPage, MyProfile.getInstance(getContext()).getUserID());
             call.enqueue(new Callback<WishListResponseModel>() {
                 @Override
                 public void onResponse(@NotNull Call<WishListResponseModel> call, @NotNull Response<WishListResponseModel> response) {
@@ -258,8 +258,8 @@ public class CustomerWishListDetailsFragment extends BaseFragment {
                 progressDialog.show();
                 Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
                 String clientID = "2";
-                Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                        productUnitDetails.getProductUnitId(), 1, "add",MyProfile.getInstance().getRoleID());
+                Call<AddToCartResponseDetails> call = customerProductsService.addToCart(clientID, vendorShopDetails.getVendorId(), MyProfile.getInstance(getContext()).getUserID(),
+                        productUnitDetails.getProductUnitId(), 1, "add",MyProfile.getInstance(getContext()).getRoleID());
                 call.enqueue(new Callback<AddToCartResponseDetails>() {
                     @Override
                     public void onResponse(@NotNull Call<AddToCartResponseDetails> call, @NotNull Response<AddToCartResponseDetails> response) {

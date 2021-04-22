@@ -134,7 +134,7 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
         CustomSpinnerAdapter customStringAdapter = new CustomSpinnerAdapter(requireActivity(), gendersList,true);
         spinner.setAdapter(customStringAdapter);
         view.findViewById(R.id.submit).setOnClickListener(this);
-        updateUI(Objects.requireNonNull(MyProfile.getInstance()));
+        updateUI(Objects.requireNonNull(MyProfile.getInstance(getContext())));
         view.findViewById(R.id.submit).setOnClickListener(this);
     }
     private void updateUI(MyProfile myProfile) {
@@ -149,12 +149,12 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
     }
 
     private void updateUserProfileImage() {
-        Bitmap bitmap = MyProfile.getInstance().getUserProfileImage().getValue();
+        Bitmap bitmap = MyProfile.getInstance(getContext()).getUserProfileImage().getValue();
         if (bitmap != null) {
             profileCircularBar.setVisibility(View.GONE);
             ivProfileImageField.setImageBitmap(bitmap);
         } else {
-            String imageUrl = MyProfile.getInstance().getProfileImage();
+            String imageUrl = MyProfile.getInstance(getContext()).getProfileImage();
             if (!TextUtils.isEmpty(imageUrl)) {
                 HttpsTrustManager.allowAllSSL();
                 ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
@@ -174,7 +174,7 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
                 });
                 ivProfileImageField.setImageUrl(imageUrl, imageLoader);
             } else {
-                Bitmap newBitmap = MyProfile.getInstance().getUserProfileImage().getValue();
+                Bitmap newBitmap = MyProfile.getInstance(getContext()).getUserProfileImage().getValue();
                 if (newBitmap != null) {
                     profileImageBitmap = newBitmap;
                     ivProfileImageField.setImageBitmap(profileImageBitmap);
@@ -266,9 +266,9 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
         progressDialog.show();
         String encodedImage = getEncodedImage();
         ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
-        profileService.updateProfile(MyProfile.getInstance().getMobileNumber(),
-                Objects.requireNonNull(tvFirstName.getText()).toString(), Objects.requireNonNull(tvLastName.getText()).toString(), MyProfile.getInstance().getUserID(),
-                selectedGender, email, MyProfile.getInstance().getPrimaryAddressId(), encodedImage).enqueue(new Callback<LoginResponse>() {
+        profileService.updateProfile(MyProfile.getInstance(getContext()).getMobileNumber(),
+                Objects.requireNonNull(tvFirstName.getText()).toString(), Objects.requireNonNull(tvLastName.getText()).toString(), MyProfile.getInstance(getContext()).getUserID(),
+                selectedGender, email, MyProfile.getInstance(getContext()).getPrimaryAddressId(), encodedImage).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
                 try {
@@ -276,12 +276,12 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
                         LoginResponse data = response.body();
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
-                                data.getLoginData().setAddressResponses(MyProfile.getInstance().getAddressResponses());
-                                MyProfile.setInstance(data.getLoginData());
+                                data.getLoginData().setAddressResponses(MyProfile.getInstance(getContext()).getAddressResponses());
+                                MyProfile.setInstance(getActivity(),data.getLoginData());
 
                                 showDialog("", data.getMsg(), pObject -> {
                                     if (profileImageBitmap != null) {
-                                        MyProfile.getInstance().setUserProfileImage(profileImageBitmap);
+                                        MyProfile.getInstance(getActivity()).setUserProfileImage(profileImageBitmap);
                                     }
                                     Objects.requireNonNull(requireActivity()).onBackPressed();
                                 });

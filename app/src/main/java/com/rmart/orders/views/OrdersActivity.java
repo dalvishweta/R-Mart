@@ -24,7 +24,7 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            if (MyProfile.getInstance().getRoleID().equals(Utils.DELIVERY_ID)) {
+            if (MyProfile.getInstance(getApplicationContext()).getRoleID().equals(Utils.DELIVERY_ID)) {
                 StateOfOrders stateOfOrders =  new StateOfOrders();
                 stateOfOrders.setStatus(Utils.SHIPPED_ORDER_STATUS);
                 stateOfOrders.setStatusName("Shipped Orders");
@@ -36,7 +36,7 @@ public class OrdersActivity extends BaseNavigationDrawerActivity implements OnOr
                     toolbar.setVisibility(View.INVISIBLE);
                     actionBarDrawerToggle.syncState();
                 }
-            } else if (MyProfile.getInstance().getRoleID().equals(Utils.RETAILER_ID)) {
+            } else if (MyProfile.getInstance(getApplicationContext()).getRoleID().equals(Utils.RETAILER_ID)) {
                 Bundle extras = getIntent().getExtras();
                 if (extras != null) {
                     hideHamburgerIcon();

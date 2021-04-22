@@ -157,7 +157,7 @@ public class ConfirmOrdersAdapter extends RecyclerView.Adapter<ConfirmOrdersAdap
             }
         }
         if(perform) {
-            ProductsRepository.addToCart(vendorShoppingCartDetails.getVendorId(), MyProfile.getInstance().getUserID(), productInCartDetailsModel.getProductUnitId(), productInCartDetailsModel.getTotalProductCartQty(), "").observeForever(new Observer<AddToCartResponseDetails>() {
+            ProductsRepository.addToCart(context,vendorShoppingCartDetails.getVendorId(), MyProfile.getInstance(context).getUserID(), productInCartDetailsModel.getProductUnitId(), productInCartDetailsModel.getTotalProductCartQty(), "").observeForever(new Observer<AddToCartResponseDetails>() {
                 @Override
                 public void onChanged(AddToCartResponseDetails addToCartResponseDetails) {
                     if (addToCartResponseDetails.getStatus().equalsIgnoreCase("success")) {

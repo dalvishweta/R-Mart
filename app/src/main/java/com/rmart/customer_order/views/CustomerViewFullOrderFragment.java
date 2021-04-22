@@ -90,13 +90,13 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
         if(Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
             String mobile="";
-            if(MyProfile.getInstance()!=null) {
-                mobile= MyProfile.getInstance().getMobileNumber();
+            if(MyProfile.getInstance(getContext())!=null) {
+                mobile= MyProfile.getInstance(getContext()).getMobileNumber();
             } else {
 
             }
             CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
-            customerOrderService.viewOrderById(mOrderObject.getOrderID(),mobile,MyProfile.getInstance().getRoleID() ).enqueue(new Callback<CustomerOrderProductResponse>() {
+            customerOrderService.viewOrderById(mOrderObject.getOrderID(),mobile,MyProfile.getInstance(getContext()).getRoleID() ).enqueue(new Callback<CustomerOrderProductResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<CustomerOrderProductResponse> call, @NotNull Response<CustomerOrderProductResponse> response) {
                     if (response.isSuccessful()) {
@@ -319,7 +319,7 @@ public class CustomerViewFullOrderFragment extends BaseOrderFragment implements 
     private void updateOrderStatus(String reasonStatus) { // cancel
         progressDialog.show();
         OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), Utils.CANCEL_BY_CUSTOMER, reasonStatus).enqueue(new Callback<UpdatedOrderStatus>() {
+        orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance(getContext()).getUserID(), Utils.CANCEL_BY_CUSTOMER, reasonStatus).enqueue(new Callback<UpdatedOrderStatus>() {
             @Override
             public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
                 if (response.isSuccessful()) {

@@ -104,7 +104,7 @@ public class CustomerOrderDetailsFragment extends BaseFragment {
     private void showCartOrderDetails(String menthod) {
         if (Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
-            MyProfile myProfile = MyProfile.getInstance();
+            MyProfile myProfile = MyProfile.getInstance(getActivity());
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<CustomerOrderedResponseModel> call = customerProductsService.showCartOrderDetails(clientID, vendorShoppingCartDetails.getVendorId(), vendorShoppingCartDetails.getShopId(),

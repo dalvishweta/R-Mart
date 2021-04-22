@@ -52,7 +52,7 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
             orderID = extras.getString(ORDER_ID);
         }
         if (getIntent().getBooleanExtra(getString(R.string.change_password), false)) {
-            addFragment(ChangePassword.newInstance("", MyProfile.getInstance().getMobileNumber()), "changePassword", false);
+            addFragment(ChangePassword.newInstance("", MyProfile.getInstance(getApplicationContext()).getMobileNumber()), "changePassword", false);
         } else {
             addFragment(LoginFragment.newInstance("", ""), "login", false);
         }

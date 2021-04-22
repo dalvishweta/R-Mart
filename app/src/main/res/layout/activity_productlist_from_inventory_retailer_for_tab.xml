@@ -85,20 +85,13 @@
         android:background="@drawable/grey_rounded_borders_bg"
         android:minHeight="40dp">
 
-        <ImageView
-            android:id="@+id/iv_search_field"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/search" />
+
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edt_product_search_field"
             style="@style/text_style_medium_normal"
             android:layout_width="match_parent"
-            android:layout_toRightOf="@+id/iv_search_field"
+            android:layout_toLeftOf="@+id/iv_search_field"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
@@ -106,12 +99,21 @@
             android:hint="Search for product"
             android:inputType="textCapSentences"
             android:lines="1"
-            android:layout_marginLeft="5dp"
             android:textColor="@color/black"
             android:textColorHint="@color/gray"
             android:textSize="16sp"
+            android:layout_marginLeft="10dp"
+             />
+        <ImageView
+            android:id="@+id/iv_search_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            />
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/search" />
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/filter_text"

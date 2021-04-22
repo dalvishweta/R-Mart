@@ -36,7 +36,7 @@ public class FetchElectricityBillViewModule extends ViewModel {
 
         if(validate() && !isLoading.getValue()){
             isLoading.setValue(true);
-            FetchBillRepository.getBillDetails(operatorMutableLiveData.getValue().slug,cumsumerNumber.getValue(),units.getValue(),mobilenumber.getValue()).observeForever(new Observer<ElecProcessPOJO>() {
+            FetchBillRepository.getBillDetails(view.getContext(),operatorMutableLiveData.getValue().slug,cumsumerNumber.getValue(),units.getValue(),mobilenumber.getValue()).observeForever(new Observer<ElecProcessPOJO>() {
                 @Override
                 public void onChanged(ElecProcessPOJO elecProcessPOJO) {
 

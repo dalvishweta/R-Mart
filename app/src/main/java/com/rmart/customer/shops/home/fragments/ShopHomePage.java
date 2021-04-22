@@ -63,12 +63,12 @@ public class ShopHomePage extends BaseFragment {
         binding.setShopDetails(productsShopDetailsModel);
         binding.setProductData(productData);
         binding.setLifecycleOwner(this);
-        shopHomeViewModel.loadShopHomePage(productsShopDetailsModel);
+        shopHomeViewModel.loadShopHomePage(getContext(),productsShopDetailsModel);
 
         binding.btnTryagain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shopHomeViewModel.loadShopHomePage(productsShopDetailsModel);
+                    shopHomeViewModel.loadShopHomePage(getContext(),productsShopDetailsModel);
 
             }
         });

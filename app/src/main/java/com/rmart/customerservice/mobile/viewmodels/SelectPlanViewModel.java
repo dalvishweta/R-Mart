@@ -3,6 +3,7 @@ package com.rmart.customerservice.mobile.viewmodels;
 import com.rmart.customerservice.mobile.circle.model.Circle;
 import com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge;
 import com.rmart.customerservice.mobile.models.mPlans.PostPaidResponseGetPlans;
+import com.rmart.customerservice.mobile.models.mPlans.RechargePlans;
 import com.rmart.customerservice.mobile.models.mPlans.ResponseGetPlans;
 import com.rmart.customerservice.mobile.mplan.repositories.MplanRepository;
 import com.rmart.customerservice.mobile.operators.model.Operator;
@@ -15,6 +16,7 @@ public class SelectPlanViewModel  extends ViewModel {
     public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     public MutableLiveData<Boolean> isError = new MutableLiveData<>();
     public MutableLiveData<String> mobile = new MutableLiveData<>();
+    public MutableLiveData<RechargePlans> rechargePlansMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<String> type = new MutableLiveData<>();
     public MutableLiveData<String> name = new MutableLiveData<>();
     public MutableLiveData<String> errorMessage = new MutableLiveData<>();
@@ -23,6 +25,8 @@ public class SelectPlanViewModel  extends ViewModel {
     public MutableLiveData<Boolean> isLoadingPlan = new MutableLiveData<>();
     public MutableLiveData<ResponseGetPlans> mplanListResponseMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<PostPaidResponseGetPlans> postPaidResponseGetPlansMutableLiveData = new MutableLiveData<>();
+
+
     public void getPrePaidPlanList()
     {
 

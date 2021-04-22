@@ -61,9 +61,9 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
     @Override
     public int getItemViewType(int position) {
-        if( results.get(position).type.equalsIgnoreCase("benner")){
+        if(position < results.size() && results.get(position).type.equalsIgnoreCase("benner")){
             return VIEW_SLIDER;
-        } else if( results.get(position).type.equalsIgnoreCase("addvertise")){
+        } else if( position < results.size() && results.get(position).type.equalsIgnoreCase("addvertise")){
             return VIEW_MENU;
         } else {
             if(productData2!=null){
@@ -189,12 +189,7 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         }
         if(holder2 instanceof SearchHolder) {
-            ((SearchHolder) holder2).binding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onClickListner.onProductSelected(productData2);
-                }
-            });
+            ((SearchHolder) holder2).binding.getRoot().setOnClickListener(view -> onClickListner.onProductSelected(productData2));
             SearchHolder myViewHolder = ((SearchHolder) holder2);
             ((SearchHolder) holder2).binding.setSearchProduct(productData2);
             List<CustomerProductsDetailsUnitModel> units = productData2.getUnits();
@@ -234,9 +229,9 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public int getItemCount() {
         if(productData2!=null)
         {
-            return results.size()+1;
+            return results!=null?results.size()+1:0;
         }
-        return results.size();
+        return results!=null?results.size():0;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

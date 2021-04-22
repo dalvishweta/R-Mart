@@ -334,7 +334,7 @@ public class AddNewProductActivity extends AppCompatActivity implements BaseInte
 
     private void sendProductRequestToServer(String stockType) {
         addNewProductViewModel.getAllProducts(new ProductListRequest("0", "100",
-                MyProfile.getInstance().getMobileNumber(), stockType));//"1,2,3,4,5,6,7"
+                MyProfile.getInstance(getApplicationContext()).getMobileNumber(), stockType));//"1,2,3,4,5,6,7"
     }
 
     private void sendBrandRequestToServer(String brandId) {
@@ -820,7 +820,7 @@ public class AddNewProductActivity extends AppCompatActivity implements BaseInte
             jsonObject.addProperty("quantity", "1");
             jsonObject.addProperty("brand", "1");
             jsonObject.addProperty("client_id", "2");
-            jsonObject.addProperty("user_id", MyProfile.getInstance().getUserID());//"449");//
+            jsonObject.addProperty("user_id", MyProfile.getInstance(getApplicationContext()).getUserID());//"449");//
             jsonObject.addProperty("product_video_link", "" + binding.etProductVideoLink.getText().toString().replaceAll("&", "And"));
             jsonObject.add("units", getUnitJsonArray()); // array
             jsonObject.addProperty("stock_id", selectedStockIds);

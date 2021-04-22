@@ -225,7 +225,7 @@ public class VendorSameProductsListScreen extends BaseFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<VendorProductDetailsResponse> call;
-            String customerId = MyProfile.getInstance().getUserID();
+            String customerId = MyProfile.getInstance(getContext()).getUserID();
             if (TextUtils.isEmpty(searchProductName) && currentPage != 0) {
                 call = customerProductsService.getVendorShopDetails(clientID, vendorShopDetails.getVendorId(), vendorShopDetails.getShopId(),
                         productCategoryDetails.getProductCategoryId(), currentPage, customerId);

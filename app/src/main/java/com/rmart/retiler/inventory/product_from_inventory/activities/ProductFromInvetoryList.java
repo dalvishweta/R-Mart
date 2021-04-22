@@ -72,7 +72,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
         productViewModel = ViewModelProviders.of(this).get(ProductFromInventoryViewModel.class);
 
         binding = DataBindingUtil.inflate(inflater, R.layout.activity_productlist_from_inventory_retailer, container, false);
-        productViewModel.getProductList( page+"",null);
+        productViewModel.getProductList( page+"",null,getContext());
         binding.setProductViewModel(productViewModel);
         binding.setLifecycleOwner(this);
         binding.rvBrands.addItemDecoration(new GridSpacesItemDecoration(15));
@@ -88,13 +88,13 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
 
                     if(item.getTitle().toString().equalsIgnoreCase(Utils.CATEGORY)){
                         Intent intent=new Intent(getContext(), CategoryFilterActivity.class);
-                        MyProfile profile = MyProfile.getInstance();
-                        intent.putExtra("venderID", MyProfile.getInstance().getUserID());
+                        MyProfile profile = MyProfile.getInstance(getContext());
+                        intent.putExtra("venderID", MyProfile.getInstance(getContext()).getUserID());
                         startActivityForResult(intent, CATEGORY_REQUEST);
                     }
                     if(item.getTitle().toString().equalsIgnoreCase(Utils.BRAND)) {
                         Intent intent=new Intent(getContext(), BrandFilterActivity.class);
-                        intent.putExtra("venderID", MyProfile.getInstance().getUserID());
+                        intent.putExtra("venderID", MyProfile.getInstance(getContext()).getUserID());
                         startActivityForResult(intent, BRAND_REQUEST);
 
                     }
@@ -104,7 +104,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
                         page=0;
                         productSearchListAdapter.products.clear();
                         productSearchListAdapter.notifyDataSetChanged();
-                        productViewModel.getProductList( page+"",null);
+                        productViewModel.getProductList( page+"",null,getContext());
                     }
 
                     return true;
@@ -118,7 +118,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
         binding.btnTryagain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                productViewModel.getProductList( page+"",null);
+                productViewModel.getProductList( page+"",null,getContext());
             }
         });
 
@@ -166,7 +166,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
                 }
                 page = 0;
 
-                productViewModel.getProductList( page+"",null);
+                productViewModel.getProductList( page+"",null,getContext());
 
             }
 
@@ -190,7 +190,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
                 if (!productViewModel.isLoading.getValue()) {
                     if (productViewModel.productListResponseMutableLiveData.getValue().isNext_value()) {
                         page++;
-                        productViewModel.getProductList( page+"",null);
+                        productViewModel.getProductList( page+"",null,getContext());
 
                     }
                 }
@@ -214,7 +214,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
            }
            page=0;
 
-           productViewModel.getProductList( page+"",null);
+           productViewModel.getProductList( page+"",null,getContext());
        }
 
 

@@ -111,7 +111,7 @@ public class CustomerWishListFragment extends BaseFragment {
             wishListCart.clear();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<ShopWiseWishListResponseModel> call = customerProductsService.getShowShopWiseWishListData(clientID, MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
+            Call<ShopWiseWishListResponseModel> call = customerProductsService.getShowShopWiseWishListData(clientID, MyProfile.getInstance(getContext()).getUserID(),MyProfile.getInstance(getContext()).getRoleID());
             call.enqueue(new Callback<ShopWiseWishListResponseModel>() {
                 @Override
                 public void onResponse(@NotNull Call<ShopWiseWishListResponseModel> call, @NotNull Response<ShopWiseWishListResponseModel> response) {

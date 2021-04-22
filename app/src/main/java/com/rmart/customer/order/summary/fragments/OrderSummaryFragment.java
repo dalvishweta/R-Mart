@@ -65,10 +65,10 @@ public class OrderSummaryFragment extends BaseFragment {
         OrderSumaryViewModel  orderSumaryViewModel = ViewModelProviders.of(this).get(OrderSumaryViewModel.class);
         binding.setOrderSumaryViewModel(orderSumaryViewModel);
         binding.setLifecycleOwner(this);
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(getContext());
         orderSumaryViewModel.vendorShoppingCartDetails.setValue(vendorShoppingCartDetails);
         orderSumaryViewModel.DiscountCode.setValue("");
-        orderSumaryViewModel.showOrderSummary(vendorShoppingCartDetails.getVendorId(),vendorShoppingCartDetails.getShopId(),myProfile.getPrimaryAddressId(),DELIVERY,"");
+        orderSumaryViewModel.showOrderSummary(getContext(),vendorShoppingCartDetails.getVendorId(),vendorShoppingCartDetails.getShopId(),myProfile.getPrimaryAddressId(),DELIVERY,"");
         orderSumaryViewModel.orderedSummaryResponseMutableLiveData.observeForever(new Observer<OrderedSummaryResponse>() {
             @Override
             public void onChanged(OrderedSummaryResponse orderedSummaryResponse) {

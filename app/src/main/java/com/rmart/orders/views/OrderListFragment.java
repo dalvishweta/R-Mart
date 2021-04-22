@@ -141,10 +141,10 @@ public class OrderListFragment extends BaseOrderFragment implements View.OnClick
         super.onViewCreated(view, savedInstanceState);
         tvTotalOrder = view.findViewById(R.id.total_order);
         orderList = view.findViewById(R.id.order_list);
-        if (MyProfile.getInstance().getRoleID().equals(Utils.DELIVERY_ID)) {
+        if (MyProfile.getInstance(getContext()).getRoleID().equals(Utils.DELIVERY_ID)) {
             mobileNumber = "7416226233";// MyProfile.getInstance().getMobileNumber();
         } else {
-            mobileNumber = MyProfile.getInstance().getMobileNumber();
+            mobileNumber = MyProfile.getInstance(getContext()).getMobileNumber();
         }
     }
 

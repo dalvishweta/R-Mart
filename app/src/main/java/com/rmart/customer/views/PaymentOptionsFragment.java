@@ -166,9 +166,9 @@ public class PaymentOptionsFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            MyProfile myProfile = MyProfile.getInstance();
+            MyProfile myProfile = MyProfile.getInstance(getContext());
             Call<ProductOrderedResponseModel> call = customerProductsService.savePlaceToOrder(clientID, vendorShopDetails.getVendorId(), myProfile.getPrimaryAddressId(),
-                    myProfile.getUserID(), vendorShopDetails.getShopId(), selectedPaymentType,vendorShopDetails.deliveryMethod,MyProfile.getInstance().getRoleID());
+                    myProfile.getUserID(), vendorShopDetails.getShopId(), selectedPaymentType,vendorShopDetails.deliveryMethod,MyProfile.getInstance(getContext()).getRoleID());
             call.enqueue(new Callback<ProductOrderedResponseModel>() {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
@@ -275,9 +275,9 @@ public class PaymentOptionsFragment extends BaseFragment {
             cancel_url = rsaKeyResponseDetails.getCancelUrl(); // getString(R.string.cancel_url);
             billing_country = rsaKeyResponseDetails.getBillingCountry();
             // merchant_param1 = merchantParams.ticket_id;
-            billing_name = MyProfile.getInstance().getFirstName();//"shweta";
-            billing_email = MyProfile.getInstance().getEmail(); // "shwetadalvi9@gmail.com";
-            billing_tel = MyProfile.getInstance().getMobileNumber(); // "8446399429";
+            billing_name = MyProfile.getInstance(getContext()).getFirstName();//"shweta";
+            billing_email = MyProfile.getInstance(getContext()).getEmail(); // "shwetadalvi9@gmail.com";
+            billing_tel = MyProfile.getInstance(getContext()).getMobileNumber(); // "8446399429";
             StringBuilder vEncVal = new StringBuilder();
 
             String amount = String.valueOf(rsaKeyResponseDetails.getAmount());

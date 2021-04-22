@@ -98,7 +98,7 @@ public class CheckAvailableProducts extends BaseFragment {
         if(Utils.isNetworkConnected(requireActivity())) {
             progressDialog.show();
             CustomerOrderService customerOrderService = RetrofitClientInstance.getRetrofitInstance().create(CustomerOrderService.class);
-            MyProfile myProfile = MyProfile.getInstance();
+            MyProfile myProfile = MyProfile.getInstance(getContext());
             if (myProfile != null) {
                 String userId = myProfile.getUserID();
                 String mobileNumber = myProfile.getMobileNumber();
@@ -243,7 +243,7 @@ public class CheckAvailableProducts extends BaseFragment {
                         jsonObject.put("product_quantity", orderAgainProductModel.getProductQuantity());
                         jsonArray.put(jsonObject);
                     }
-                    Call<AddToCartResponseDetails> call = customerProductsService.addReOrderToCart(clientID, order.getVendorInfo().getUserID(), MyProfile.getInstance().getUserID(),
+                    Call<AddToCartResponseDetails> call = customerProductsService.addReOrderToCart(clientID, order.getVendorInfo().getUserID(), MyProfile.getInstance(getContext()).getUserID(),
                             jsonArray);
                     call.enqueue(new Callback<AddToCartResponseDetails>() {
                         @Override

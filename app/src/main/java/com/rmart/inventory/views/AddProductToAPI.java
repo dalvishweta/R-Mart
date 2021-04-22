@@ -84,7 +84,7 @@ public class AddProductToAPI extends BaseInventoryFragment implements View.OnCli
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.save) {
-            showDialog(String.format(getString(R.string.hello), MyProfile.getInstance().getFirstName()), getString(R.string.request_new_product_msg),
+            showDialog(String.format(getString(R.string.hello), MyProfile.getInstance(getActivity()).getFirstName()), getString(R.string.request_new_product_msg),
                     (dialogInterface, i) -> Objects.requireNonNull(requireActivity()).onBackPressed());
         }
     }

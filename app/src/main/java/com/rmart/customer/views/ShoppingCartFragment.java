@@ -133,7 +133,7 @@ public class ShoppingCartFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<ShoppingCartResponse> call = customerProductsService.getShoppingCartList(clientID, MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
+            Call<ShoppingCartResponse> call = customerProductsService.getShoppingCartList(clientID, MyProfile.getInstance(getContext()).getUserID(),MyProfile.getInstance(getContext()).getRoleID());
             call.enqueue(new Callback<ShoppingCartResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<ShoppingCartResponse> call, @NotNull Response<ShoppingCartResponse> response) {
@@ -143,7 +143,7 @@ public class ShoppingCartFragment extends BaseFragment {
                         if (body != null) {
                             if (body.getStatus().equalsIgnoreCase("success")) {
                                 List<ShoppingCartResponseDetails> lShopWiseCartList = body.getShoppingCartResponse().getShopWiseCartDataList();
-                                MyProfile.getInstance().getCartCount().setValue(lShopWiseCartList.size());
+                                MyProfile.getInstance(getContext()).getCartCount().setValue(lShopWiseCartList.size());
                                 if (!lShopWiseCartList.isEmpty()) {
                                     shopWiseCartList.addAll(lShopWiseCartList);
                                     setAdapter();

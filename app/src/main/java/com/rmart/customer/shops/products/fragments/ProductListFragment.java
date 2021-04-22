@@ -68,7 +68,7 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
             viewall = getArguments().getString(VIEWALL);
         }
         productListViewModel = ViewModelProviders.of(this).get(ProductListViewModel.class);
-        productListViewModel.loadProductList(productsShopDetailsModel,category!=null?category.parentCategoryId:null,searchPrase,start_page+"",sub_category_id,viewall);
+        productListViewModel.loadProductList(getContext(),productsShopDetailsModel,category!=null?category.parentCategoryId:null,searchPrase,start_page+"",sub_category_id,viewall);
         productsAdapter = new  ProductsAdapter(getActivity(),new ArrayList<>(),this,false,productsShopDetailsModel);
 
         categoryAdapter = new  CategoryAdapter(getActivity(),new ArrayList<>(),this,CategoryAdapter.PRODUCTLISTPAGECATEGORY);
@@ -126,7 +126,7 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
                 int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
                 if (!productListViewModel.isLoading.getValue()) {
                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= productsAdapter.productData.size() && total_product_count>productsAdapter.productData.size()) {
-                            productListViewModel.loadProductList(productsShopDetailsModel,category!=null?category.parentCategoryId:null,searchPrase,(productsAdapter.productData.size())+"",sub_category_id,viewall);
+                            productListViewModel.loadProductList(getContext(),productsShopDetailsModel,category!=null?category.parentCategoryId:null,searchPrase,(productsAdapter.productData.size())+"",sub_category_id,viewall);
 
                     }
                 }
@@ -152,7 +152,7 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
                 sub_category_id=null;
                 productsAdapter.productData.clear();
                 productsAdapter.notifyDataSetChanged();
-                productListViewModel.loadProductList(productsShopDetailsModel,category!=null?category.parentCategoryId:null,searchPrase,"0",sub_category_id,viewall);
+                productListViewModel.loadProductList(getContext(),productsShopDetailsModel,category!=null?category.parentCategoryId:null,searchPrase,"0",sub_category_id,viewall);
 
                 return false;
             }
@@ -162,7 +162,7 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
             @Override
             public void onClick(View view) {
 
-                productListViewModel.loadProductList(productsShopDetailsModel,category!=null?category.parentCategoryId:null,searchPrase,start_page+"",sub_category_id,viewall);
+                productListViewModel.loadProductList(getContext(),productsShopDetailsModel,category!=null?category.parentCategoryId:null,searchPrase,start_page+"",sub_category_id,viewall);
 
             }
         });
@@ -175,7 +175,7 @@ public class ProductListFragment extends Fragment  implements OnClickListner {
         productsAdapter.productData.clear();
         productsAdapter.notifyDataSetChanged();
         sub_category_id=category2.subcategory_id;
-        productListViewModel.loadProductList(productsShopDetailsModel,category!=null?category.parentCategoryId:null,searchPrase,"0",sub_category_id,viewall);
+        productListViewModel.loadProductList(getContext(),productsShopDetailsModel,category!=null?category.parentCategoryId:null,searchPrase,"0",sub_category_id,viewall);
     }
 
     @Override

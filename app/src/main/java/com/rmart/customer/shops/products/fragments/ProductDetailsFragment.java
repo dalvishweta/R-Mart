@@ -95,7 +95,7 @@ public class ProductDetailsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel.getProductDetails();
+        mViewModel.getProductDetails(getContext());
 
         binding.viewPager.startAutoScroll();
         binding.viewPager.setInterval(1000);

@@ -212,7 +212,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            String customerId = MyProfile.getInstance().getUserID();
+            String customerId = MyProfile.getInstance(getContext()).getUserID();
             Call<VendorProductDetailsResponse> call;
             if (TextUtils.isEmpty(searchProductName)) {
                 call = customerProductsService.getVendorShopDetails(clientID, productsShopDetailsModel.getVendorId(),
@@ -376,7 +376,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<BaseResponse> call = customerProductsService.deleteShopFromWishList(clientID, productsShopDetailsModel.getVendorId(), productsShopDetailsModel.getShopId(),
-                    MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
+                    MyProfile.getInstance(getContext()).getUserID(),MyProfile.getInstance(getContext()).getRoleID());
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
@@ -423,7 +423,7 @@ public class VendorProductDetailsFragment extends BaseFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<AddShopToWishListResponse> call = customerProductsService.addShopToWishList(clientID, productsShopDetailsModel.getVendorId(),
-                    productsShopDetailsModel.getShopId(), MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
+                    productsShopDetailsModel.getShopId(), MyProfile.getInstance(getContext()).getUserID(),MyProfile.getInstance(getContext()).getRoleID());
             call.enqueue(new Callback<AddShopToWishListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AddShopToWishListResponse> call, @NotNull Response<AddShopToWishListResponse> response) {

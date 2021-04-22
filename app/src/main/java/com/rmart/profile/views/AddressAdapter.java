@@ -1,5 +1,6 @@
 package com.rmart.profile.views;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,10 @@ import com.rmart.profile.model.MyProfile;
 
 public class AddressAdapter extends RecyclerView.Adapter<AddressViewHolder> {
     private View.OnClickListener listener;
-
-    public AddressAdapter(View.OnClickListener listener) {
+    Context context;
+    public AddressAdapter(Context context,View.OnClickListener listener) {
         this.listener = listener;
+        this.context = context;
     }
     @NonNull
     @Override
@@ -31,11 +33,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressViewHolder> {
 
         }*/
         StringBuffer address = new StringBuffer();
-        address.append(MyProfile.getInstance().getAddressResponses().get(position).getAddress());
+        address.append(MyProfile.getInstance(holder.itemView.getContext()).getAddressResponses().get(position).getAddress());
         address.append("\n");
-        address.append(MyProfile.getInstance().getAddressResponses().get(position).getCity()).append(", ").append(MyProfile.getInstance().getAddressResponses().get(position).getState());
+        address.append(MyProfile.getInstance(holder.itemView.getContext()).getAddressResponses().get(position).getCity()).append(", ").append(MyProfile.getInstance(holder.itemView.getContext()).getAddressResponses().get(position).getState());
         address.append("\n");
-        address.append(MyProfile.getInstance().getAddressResponses().get(position).getPinCode());
+        address.append(MyProfile.getInstance(holder.itemView.getContext()).getAddressResponses().get(position).getPinCode());
         holder.edit.setTag(position);
         holder.primary.setVisibility(View.GONE);
         holder.edit.setOnClickListener(listener);
@@ -46,6 +48,6 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressViewHolder> {
 
     @Override
     public int getItemCount() {
-        return MyProfile.getInstance().getAddressResponses().size();
+        return MyProfile.getInstance(context).getAddressResponses().size();
     }
 }

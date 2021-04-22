@@ -110,7 +110,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         }
         progressDialog.show();
         VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
-        vendorInventoryService.getProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<ShowProductResponse>() {
+        vendorInventoryService.getProduct(product.getProductID(), MyProfile.getInstance(getActivity()).getUserID()).enqueue(new Callback<ShowProductResponse>() {
             @Override
             public void onResponse(@NotNull Call<ShowProductResponse> call, @NotNull Response<ShowProductResponse> response) {
                 if (response.isSuccessful()) {
@@ -184,7 +184,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
                     }
                     progressDialog.show();
                     VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
-                    vendorInventoryService.deleteProduct(product.getProductID(), MyProfile.getInstance().getUserID()).enqueue(new Callback<BaseResponse>() {
+                    vendorInventoryService.deleteProduct(product.getProductID(), MyProfile.getInstance(getActivity()).getUserID()).enqueue(new Callback<BaseResponse>() {
                         @Override
                         public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
                             BaseResponse data = response.body();
@@ -265,7 +265,7 @@ public class ShowProductPreviewFragment extends BaseInventoryFragment {
         dotIndicatorLayoutField.setupWithViewPager(autoScrollViewPager);
         tvProductName.setText(product.getProductName());
 
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(getActivity());
         if (myProfile != null) {
             ArrayList<AddressResponse> addressResponsesList = myProfile.getAddressResponses();
             if(addressResponsesList != null && !addressResponsesList.isEmpty()) {

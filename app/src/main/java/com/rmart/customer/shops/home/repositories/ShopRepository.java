@@ -1,5 +1,7 @@
 package com.rmart.customer.shops.home.repositories;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.rmart.customer.shops.home.api.Shops;
@@ -15,12 +17,12 @@ import static com.rmart.utilits.Utils.CLIENT_ID;
 
 public class ShopRepository {
 
-    public static MutableLiveData<ShopHomePageResponce> getShopHomePage( int vendorId, int shop_id){
+    public static MutableLiveData<ShopHomePageResponce> getShopHomePage(Context c, int vendorId, int shop_id){
 
         Shops shope = RetrofitClientInstance.getRetrofitInstance().create(Shops.class);
         final MutableLiveData<ShopHomePageResponce> resultMutableLiveData = new MutableLiveData<>();
-        String type = MyProfile.getInstance().getRoleID();
-        Call<ShopHomePageResponce> call = shope.getShopHomePage(CLIENT_ID,vendorId,shop_id, MyProfile.getInstance()!=null?MyProfile.getInstance().getUserID():"",type);
+        String type = MyProfile.getInstance(c).getRoleID();
+        Call<ShopHomePageResponce> call = shope.getShopHomePage(CLIENT_ID,vendorId,shop_id, MyProfile.getInstance(c)!=null?MyProfile.getInstance(c).getUserID():"",type);
         final ShopHomePageResponce result = new ShopHomePageResponce();
 
         call.enqueue(new Callback<ShopHomePageResponce>() {

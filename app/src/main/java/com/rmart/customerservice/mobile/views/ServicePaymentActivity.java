@@ -302,7 +302,7 @@ public class ServicePaymentActivity extends AppCompatActivity implements OnMobil
             MobileRechargeService mService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(MobileRechargeService.class);
             mService.VRecharge(paymentrp.getServicetype(),paymentrp.getPreOperatorDth(),paymentrp.getVc_number(),
                     paymentrp.getRechargetype(),paymentrp.getPreOperator(),paymentrp.getPostOperator(),paymentrp.getLocation(),
-                    paymentrp.getMobileNumber(),paymentrp.getRechargeTypeRegular(),paymentrp.getRechargeAmount(),MyProfile.getInstance().getUserID(),ccavenuejsonArray.toString())
+                    paymentrp.getMobileNumber(),paymentrp.getRechargeTypeRegular(),paymentrp.getRechargeAmount(),MyProfile.getInstance(this).getUserID(),ccavenuejsonArray.toString())
                     .enqueue(new Callback<MRechargeBaseClass>() {
                         @Override
                         public void onResponse(Call<MRechargeBaseClass> call, Response<MRechargeBaseClass> response) {

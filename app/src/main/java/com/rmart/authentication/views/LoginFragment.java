@@ -169,10 +169,10 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                          profileResponse = data.getLoginData();
                                         checkRegistration(profileResponse,mMobileNumber,"12345678");
 
-                                        MyProfile.setInstance(profileResponse);
+                                        MyProfile.setInstance(getActivity(),profileResponse);
                                         //MyProfile.getInstance().setCartCount(profileResponse.getTotalCartCount());
                                         UpdateCartCountDetails.updateCartCountDetails.onNext(profileResponse.getTotalCartCount());
-                                        if (MyProfile.getInstance().getPrimaryAddressId() == null) {
+                                        if (MyProfile.getInstance(getActivity()).getPrimaryAddressId() == null) {
                                             mListener.goToProfileActivity(true);
                                         } else {
                                             switch (data.getLoginData().getRoleID()) {

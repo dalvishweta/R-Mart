@@ -1,5 +1,6 @@
 package com.rmart.customer.shops.products.repositories;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,11 +25,11 @@ import static com.rmart.utilits.Utils.CLIENT_ID;
 
 public class ProductsRepository {
 
-    public static MutableLiveData<ProductsResponce> getVenderProducts(int vendorId, int shop_id, String categoeryid, String searchPrase,String start_page,String sub_category_id,String productstype){
+    public static MutableLiveData<ProductsResponce> getVenderProducts(Context context, int vendorId, int shop_id, String categoeryid, String searchPrase, String start_page, String sub_category_id, String productstype){
 
         Products shope = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
         final MutableLiveData<ProductsResponce> resultMutableLiveData = new MutableLiveData<>();
-        Call<ProductsResponce> call = shope.getVenderProducts(CLIENT_ID,vendorId,shop_id, MyProfile.getInstance().getUserID(),categoeryid,searchPrase,start_page,sub_category_id,MyProfile.getInstance().getRoleID(),productstype);
+        Call<ProductsResponce> call = shope.getVenderProducts(CLIENT_ID,vendorId,shop_id, MyProfile.getInstance(context).getUserID(),categoeryid,searchPrase,start_page,sub_category_id,MyProfile.getInstance(context).getRoleID(),productstype);
         final ProductsResponce result = new ProductsResponce();
 
         call.enqueue(new Callback<ProductsResponce>() {
@@ -53,13 +54,13 @@ public class ProductsRepository {
 
     }
 
-    public static MutableLiveData<ProductDetailsDescResponse> getProductDetails(String clientID,int venderID,int shopID,int productID,String customerID){
+    public static MutableLiveData<ProductDetailsDescResponse> getProductDetails(Context c ,String clientID,int venderID,int shopID,int productID,String customerID){
 
 
         Products shope = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
         final MutableLiveData<ProductDetailsDescResponse> resultMutableLiveData = new MutableLiveData<>();
         final ProductDetailsDescResponse result = new ProductDetailsDescResponse();
-        Call<ProductDetailsDescResponse> call = shope.getVendorProductDetails(clientID,venderID,shopID,productID,customerID,MyProfile.getInstance().getRoleID());
+        Call<ProductDetailsDescResponse> call = shope.getVendorProductDetails(clientID,venderID,shopID,productID,customerID,MyProfile.getInstance(c).getRoleID());
         call.enqueue(new Callback<ProductDetailsDescResponse>() {
             @Override
             public void onResponse(Call<ProductDetailsDescResponse> call, Response<ProductDetailsDescResponse> response) {
@@ -111,12 +112,12 @@ public class ProductsRepository {
 
     }
 
-    public static MutableLiveData<AddToCartResponseDetails> addToCart(int venderID,String customerID,int productID,int productQty,String event){
+    public static MutableLiveData<AddToCartResponseDetails> addToCart(Context c,int venderID,String customerID,int productID,int productQty,String event){
 
         Products productsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
         final AddToCartResponseDetails result = new AddToCartResponseDetails();
         final MutableLiveData<AddToCartResponseDetails> resultMutableLiveData = new MutableLiveData<>();
-        productsService.addToCart("2",venderID,customerID,productID,productQty,event,MyProfile.getInstance().getRoleID()).enqueue(new Callback<AddToCartResponseDetails>() {
+        productsService.addToCart("2",venderID,customerID,productID,productQty,event,MyProfile.getInstance(c).getRoleID()).enqueue(new Callback<AddToCartResponseDetails>() {
             @Override
             public void onResponse(Call<AddToCartResponseDetails> call, Response<AddToCartResponseDetails> response) {
                 AddToCartResponseDetails data = response.body();
@@ -140,14 +141,14 @@ public class ProductsRepository {
     }
 
 
-    public static MutableLiveData<AddProductToWishListResponse> addProductToWishList(int venderID,int productID){
+    public static MutableLiveData<AddProductToWishListResponse> addProductToWishList(Context c,int venderID,int productID){
 
         Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
         final AddProductToWishListResponse result = new AddProductToWishListResponse();
         final MutableLiveData<AddProductToWishListResponse> resultMutableLiveData = new MutableLiveData<>();
 
         Call<AddProductToWishListResponse> call = customerProductsService.moveToWishList("2", venderID,
-                MyProfile.getInstance().getUserID(), productID,MyProfile.getInstance().getRoleID());
+                MyProfile.getInstance(c).getUserID(), productID,MyProfile.getInstance(c).getRoleID());
 
         call.enqueue(new Callback<AddProductToWishListResponse>() {
             @Override

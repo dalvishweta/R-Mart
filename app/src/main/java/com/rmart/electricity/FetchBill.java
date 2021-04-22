@@ -119,7 +119,7 @@ public class FetchBill extends BaseActivity {
                     eleService = RetrofitClientInstance.getRetrofitInstance().create(ElecticityService.class);
 
 
-                    eleService.electicityProcessRsaKey(MyProfile.getInstance().getUserID(),amt,serviceid.toString(),"Electricity",orderid.toString())
+                    eleService.electicityProcessRsaKey(MyProfile.getInstance(getApplicationContext()).getUserID(),amt,serviceid.toString(),"Electricity",orderid.toString())
                    // eleService.electicityProcessRsaKey("524","160","1","electricity","123124")
 
                             .enqueue(new Callback<rsakeyResponse>() {

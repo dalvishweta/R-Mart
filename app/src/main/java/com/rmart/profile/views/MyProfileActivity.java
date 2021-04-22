@@ -35,7 +35,7 @@ public class MyProfileActivity extends BaseNavigationDrawerActivity implements O
             isAddNewAddress = extras.getBoolean("IsNewAddress", false);
         }
 
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(this);
         if (myProfile != null) {
             String primaryAddressId = myProfile.getPrimaryAddressId();
             if(TextUtils.isEmpty(primaryAddressId) || isAddNewAddress) {

@@ -147,7 +147,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        userID = MyProfile.getInstance().getUserID();
+        userID = MyProfile.getInstance(getActivity()).getUserID();
 
         recyclerView = view.findViewById(R.id.product_list);
         mCancelOrderBtn = view.findViewById(R.id.cancel_order);
@@ -321,15 +321,15 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
                     progressDialog.show();
                     OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
                     String retailerID = "", deliveryBoy = "";
-                    if (MyProfile.getInstance().getRoleID().equalsIgnoreCase(Utils.RETAILER_ID)) {
-                        retailerID = MyProfile.getInstance().getUserID();
+                    if (MyProfile.getInstance(getActivity()).getRoleID().equalsIgnoreCase(Utils.RETAILER_ID)) {
+                        retailerID = MyProfile.getInstance(getActivity()).getUserID();
                         deliveryBoy = retailerID;
                         if (null != selectedDeliveryBoy) {
                             deliveryBoy = selectedDeliveryBoy.getUserID();
                         }
                     } else {
-                        retailerID = MyProfile.getInstance().getVendorInfo().getRoleID();
-                        deliveryBoy = MyProfile.getInstance().getUserID();
+                        retailerID = MyProfile.getInstance(getActivity()).getVendorInfo().getRoleID();
+                        deliveryBoy = MyProfile.getInstance(getActivity()).getUserID();
                     }
                     if ((deliveryBoyList.size()<=0) || (deliveryBoy != null && deliveryBoy.length()>0 )) {
                         orderService.updateOrderStatus(mOrderObject.getOrderID(), retailerID, newStatusID, reason, deliveryBoy).enqueue(new Callback<UpdatedOrderStatus>() {
@@ -373,7 +373,7 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
             if (Utils.isNetworkConnected(requireActivity())) {
                 progressDialog.show();
                 OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-                orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance().getUserID(), newStatusID, reason).enqueue(new Callback<UpdatedOrderStatus>() {
+                orderService.updateOrderStatus(mOrderObject.getOrderID(), MyProfile.getInstance(getContext()).getUserID(), newStatusID, reason).enqueue(new Callback<UpdatedOrderStatus>() {
                     @Override
                     public void onResponse(@NotNull Call<UpdatedOrderStatus> call, @NotNull Response<UpdatedOrderStatus> response) {
                         if (response.isSuccessful()) {
@@ -466,16 +466,16 @@ public class ViewFullOrderFragment extends BaseOrderFragment implements View.OnC
         mCancelOrderBtn.setBackgroundResource(R.drawable.btn_bg_canceled);
         mCancelOrderBtn.setText(R.string.cancel);
         deliveryBoyInfo.setVisibility(View.VISIBLE);
-        if (MyProfile.getInstance().getRoleID().equals(Utils.DELIVERY_ID)) {
+        if (MyProfile.getInstance(getContext()).getRoleID().equals(Utils.DELIVERY_ID)) {
             deliveryBoyNumber.setVisibility(View.VISIBLE);
             deliveryBoySpinner.setVisibility(View.GONE);
-            deliveryBoyNumber.setText(MyProfile.getInstance().getMobileNumber());
-            deliveryBoyName.setText(MyProfile.getInstance().getFirstName()+" "+MyProfile.getInstance().getLastName());
+            deliveryBoyNumber.setText(MyProfile.getInstance(getContext()).getMobileNumber());
+            deliveryBoyName.setText(MyProfile.getInstance(getContext()).getFirstName()+" "+MyProfile.getInstance(getContext()).getLastName());
             deliveryBoyName.setVisibility(View.VISIBLE);
         } else {
             progressDialog.show();
             OrderService orderService = RetrofitClientInstance.getRetrofitInstance().create(OrderService.class);
-            orderService.getDeliveryBoyList(MyProfile.getInstance().getMobileNumber(), MyProfile.getInstance().getUserID()).enqueue(new Callback<DeliveryBoyList>() {
+            orderService.getDeliveryBoyList(MyProfile.getInstance(getContext()).getMobileNumber(), MyProfile.getInstance(getContext()).getUserID()).enqueue(new Callback<DeliveryBoyList>() {
                 @Override
                 public void onResponse(@NotNull Call<DeliveryBoyList> call, @NotNull Response<DeliveryBoyList> response) {
                     if (response.isSuccessful()) {

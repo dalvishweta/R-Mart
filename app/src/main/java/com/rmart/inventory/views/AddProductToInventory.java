@@ -418,9 +418,9 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
         jsonObject.addProperty("quantity", "2");
         jsonObject.addProperty("brand", 2);
         jsonObject.addProperty("expiry_date", mClonedProduct.getExpiry_date());
-        jsonObject.addProperty("delivery_days", MyProfile.getInstance().getDeliveryInDays());
+        jsonObject.addProperty("delivery_days", MyProfile.getInstance(getActivity()).getDeliveryInDays());
         jsonObject.addProperty("client_id", "2");
-        jsonObject.addProperty("user_id", MyProfile.getInstance().getUserID());
+        jsonObject.addProperty("user_id", MyProfile.getInstance(getActivity()).getUserID());
         jsonObject.addProperty("product_video_link", Objects.requireNonNull(tvProductVideoLink.getText()).toString().trim());
 
         VendorInventoryService vendorInventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);

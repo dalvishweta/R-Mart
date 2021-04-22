@@ -66,7 +66,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setLoading(boolean loading) {
         isLoading = loading;
-        notifyItemChanged(productData.size());
+        notifyDataSetChanged();
     }
 
     @Override
@@ -158,7 +158,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         }
         if(perform) {
-            ProductsRepository.addToCart(vendorShopDetails.getVendorId(), MyProfile.getInstance().getUserID(), unitModel.getProductUnitId(), unitModel.getTotalProductCartQty(), "").observeForever(new Observer<AddToCartResponseDetails>() {
+            ProductsRepository.addToCart(context,vendorShopDetails.getVendorId(), MyProfile.getInstance(context).getUserID(), unitModel.getProductUnitId(), unitModel.getTotalProductCartQty(), "").observeForever(new Observer<AddToCartResponseDetails>() {
                 @Override
                 public void onChanged(AddToCartResponseDetails addToCartResponseDetails) {
                     if (addToCartResponseDetails.getStatus().equalsIgnoreCase("success")) {

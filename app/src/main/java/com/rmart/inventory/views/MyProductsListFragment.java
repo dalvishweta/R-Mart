@@ -158,7 +158,11 @@ public class MyProductsListFragment extends BaseInventoryFragment implements Vie
         }
         resetProductsList();
         progressDialog.show();
-        vendorInventoryService.getProductList("0", MyProfile.getInstance().getMobileNumber(), stockType).enqueue(new Callback<ProductListResponse>() {
+        String mob="";
+        if( MyProfile.getInstance(getActivity())!=null) {
+             mob =MyProfile.getInstance(getActivity()).getMobileNumber();
+        }
+        vendorInventoryService.getProductList("0",mob , stockType).enqueue(new Callback<ProductListResponse>() {
             @Override
             public void onResponse(@NotNull Call<ProductListResponse> call, @NotNull Response<ProductListResponse> response) {
                 if (response.isSuccessful()) {

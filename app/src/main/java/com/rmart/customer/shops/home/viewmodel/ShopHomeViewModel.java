@@ -1,5 +1,6 @@
 package com.rmart.customer.shops.home.viewmodel;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -74,9 +75,9 @@ public class ShopHomeViewModel extends ViewModel {
 
     }
 
-    public void loadShopHomePage(ShopDetailsModel productsShopDetailsModel){
+    public void loadShopHomePage(Context context, ShopDetailsModel productsShopDetailsModel){
         isLoading.setValue(true);
-        ShopRepository.getShopHomePage(productsShopDetailsModel.getVendorId(),productsShopDetailsModel.getShopId()).observeForever(hotelResult -> {
+        ShopRepository.getShopHomePage(context,productsShopDetailsModel.getVendorId(),productsShopDetailsModel.getShopId()).observeForever(hotelResult -> {
             shopHomePageResponceMutableLiveData.setValue(hotelResult);
             isLoading.postValue(false);
         });

@@ -166,7 +166,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     }
 
     private void loadUIComponents() {
-        myProfile = MyProfile.getInstance();
+        myProfile = MyProfile.getInstance(getActivity());
         map_or_list_view = view.findViewById(R.id.map_or_list_view);
         changeAddressLayout = view.findViewById(R.id.changeAddressLayout);
         btnTryAgain = view.findViewById(R.id.btn_tryagain);
@@ -227,7 +227,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                     searchProductsListField.setVisibility(View.VISIBLE);
                     vendorShopsListField.setVisibility(View.GONE);
 
-                    ProductRepository.searchProduct(0,latitude,longitude,etProductsSearchField.getText().toString()).observeForever(new Observer<ProductSearchResponce>() {
+                    ProductRepository.searchProduct(getActivity(),0,latitude,longitude,etProductsSearchField.getText().toString()).observeForever(new Observer<ProductSearchResponce>() {
                         @Override
                         public void onChanged(ProductSearchResponce productSearchResponce) {
 
@@ -291,7 +291,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     }
 
     private void mapAddress() {
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(getActivity());
 
         if (myProfile != null) {
             if(myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)){
@@ -340,7 +340,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     }
 
     public void updateToolBar() {
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(getActivity());
         if (myProfile != null) {
             try {
                 int cartCount = myProfile.getCartCount().getValue();
@@ -400,7 +400,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<BaseResponse> call = customerProductsService.deleteShopFromWishList(clientID, selectedShopDetails.getVendorId(), selectedShopDetails.getShopId(),
-                    MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
+                    MyProfile.getInstance(getActivity()).getUserID(),MyProfile.getInstance(getActivity()).getRoleID());
             call.enqueue(new Callback<BaseResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
@@ -454,7 +454,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
             Call<AddShopToWishListResponse> call = customerProductsService.addShopToWishList(clientID, selectedShopDetails.getVendorId(),
-                    selectedShopDetails.getShopId(), MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
+                    selectedShopDetails.getShopId(), MyProfile.getInstance(getActivity()).getUserID(),MyProfile.getInstance(getActivity()).getRoleID());
             call.enqueue(new Callback<AddShopToWishListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AddShopToWishListResponse> call, @NotNull Response<AddShopToWishListResponse> response) {
@@ -520,7 +520,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
 
-            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, myProfile.getUserID(), latitude, longitude,null,null,MyProfile.getInstance().getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)?"Customer":"Retailer",ShopTypeID).enqueue(new Callback<CustomerProductsResponse>() {
+            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, myProfile.getUserID(), latitude, longitude,null,null,MyProfile.getInstance(getActivity()).getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)?"Customer":"Retailer",ShopTypeID).enqueue(new Callback<CustomerProductsResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<CustomerProductsResponse> call, @NotNull Response<CustomerProductsResponse> response) {
                     progressDialog.dismiss();

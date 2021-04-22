@@ -150,7 +150,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
             /*if(productId != -1) {
 
             }*/
-            Call<ProductInCartResponse> call = customerProductsService.getVendorShowCartList(clientID, vendorShoppingCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),MyProfile.getInstance().getRoleID());
+            Call<ProductInCartResponse> call = customerProductsService.getVendorShowCartList(clientID, vendorShoppingCartDetails.getVendorId(), MyProfile.getInstance(getContext()).getUserID(),MyProfile.getInstance(getContext()).getRoleID());
             call.enqueue(new Callback<ProductInCartResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<ProductInCartResponse> call, @NotNull Response<ProductInCartResponse> response) {
@@ -231,8 +231,8 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
             progressDialog.show();
             Products customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(Products.class);
             String clientID = "2";
-            Call<AddProductToWishListResponse> call = customerProductsService.moveToWishList(clientID, selectedProductInCartDetails.getVendorId(), MyProfile.getInstance().getUserID(),
-                    selectedProductInCartDetails.getProductId(),MyProfile.getInstance().getRoleID());
+            Call<AddProductToWishListResponse> call = customerProductsService.moveToWishList(clientID, selectedProductInCartDetails.getVendorId(), MyProfile.getInstance(getContext()).getUserID(),
+                    selectedProductInCartDetails.getProductId(),MyProfile.getInstance(getContext()).getRoleID());
             call.enqueue(new Callback<AddProductToWishListResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<AddProductToWishListResponse> call, @NotNull Response<AddProductToWishListResponse> response) {
@@ -269,7 +269,7 @@ public class ShoppingCartDetailsFragment extends BaseFragment {
             progressDialog.show();
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
-            Call<ProductInCartResponse> call = customerProductsService.deleteProductDetails(clientID, selectedProductInCartDetails.getCartId(),MyProfile.getInstance().getRoleID());
+            Call<ProductInCartResponse> call = customerProductsService.deleteProductDetails(clientID, selectedProductInCartDetails.getCartId(),MyProfile.getInstance(getContext()).getRoleID());
             call.enqueue(new Callback<ProductInCartResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<ProductInCartResponse> call, @NotNull Response<ProductInCartResponse> response) {

@@ -36,7 +36,7 @@ public class BillDetailsModule extends ViewModel {
             progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
             //progressBar.show();
             BillDetails billDetails = billDetailsMutableLiveData.getValue();
-            ProcessRSAKeyRepository.getElecticityProcessRsaKey(billDetails.getDueAmount()+"",billDetails.getServiceId()+"",billDetails.getOrderId()+"").observeForever(new Observer<rsakeyResponse>() {
+            ProcessRSAKeyRepository.getElecticityProcessRsaKey(view.getContext(),billDetails.getDueAmount()+"",billDetails.getServiceId()+"",billDetails.getOrderId()+"").observeForever(new Observer<rsakeyResponse>() {
                 @Override
                 public void onChanged(rsakeyResponse rsakeyResponse) {
 

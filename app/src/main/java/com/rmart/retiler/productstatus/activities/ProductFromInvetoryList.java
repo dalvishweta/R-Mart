@@ -66,11 +66,14 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
 
     public void  onTextChange(String searchText){
         productViewModel.searchPhrase.setValue(searchText);
-        productViewModel.getProductList( page+"",isactive);
+        productSearchListAdapter.products.clear();
+        productSearchListAdapter.notifyDataSetChanged();
+        page=0;
+        productViewModel.getProductList( page+"",isactive,getContext());
     }
     public void  onUpdate(){
         page=0;
-        productViewModel.getProductList( page+"",isactive);
+        productViewModel.getProductList( page+"",isactive,getContext());
     }
     @Override
     public void onResume() {
@@ -91,14 +94,14 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         productViewModel = ViewModelProviders.of(this).get(ProductFromInventoryViewModel.class);
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_product_status, container, false);
-        productViewModel.getProductList( page+"",isactive);
+        productViewModel.getProductList( page+"",isactive,getContext());
         binding.setProductViewModel(productViewModel);
         binding.setLifecycleOwner(this);
         productSearchListAdapter = new ProductFromInventorySearchListAdapter(getActivity(),new ArrayList<>(),mListener,udateListner);
         binding.productList.setAdapter(productSearchListAdapter);
         productViewModel.productListResponseMutableLiveData.observeForever(productListResponse -> {
             try {
-                if(page==0) {
+                if(page==0 || (productViewModel.searchPhrase.getValue()!=null && productViewModel.searchPhrase.getValue().length()>0)) {
                     productSearchListAdapter.products.clear();
                     productSearchListAdapter.notifyDataSetChanged();
                 }
@@ -122,7 +125,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
                 if (!productViewModel.isLoading.getValue()) {
                     if (productViewModel.productListResponseMutableLiveData.getValue().isNext_value()) {
                         page++;
-                        productViewModel.getProductList( page+"",isactive);
+                        productViewModel.getProductList( page+"",isactive,getContext());
 
                     }
                 }
@@ -146,7 +149,7 @@ public class ProductFromInvetoryList extends BaseInventoryFragment {
            }
            page=0;
 
-           productViewModel.getProductList( page+"",isactive);
+           productViewModel.getProductList( page+"",isactive,getContext());
        }
 
 

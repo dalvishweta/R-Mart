@@ -147,7 +147,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
 
         ivProfileImageField = findViewById(R.id.iv_user_profile_image);
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(getApplicationContext());
         if (myProfile != null) {
             String roleId = myProfile.getRoleID();
             if(!TextUtils.isEmpty(roleId)) {
@@ -245,7 +245,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         getMenuInflater().inflate(R.menu.badge_menu_drawer, menu);
         menuItem = menu.findItem(R.id.badge_menu);
         menu.findItem(R.id.app_logo).getActionView().setOnClickListener(view -> {
-            MyProfile myProfile = MyProfile.getInstance();
+            MyProfile myProfile = MyProfile.getInstance(getApplicationContext());
             if (myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
                 Intent in = new Intent(this, CustomerHomeActivity.class);
                 in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -265,12 +265,12 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
             // Toast.makeText(getApplicationContext(),"Logo selected", Toast.LENGTH_SHORT).show();
         });
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(this);
         if (myProfile != null) {
             //if (myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
                 View actionView = menuItem.getActionView();
                 tvCartCountField = actionView.findViewById(R.id.tv_cart_count_field);
-                if (MyProfile.getInstance() != null) {
+                if (MyProfile.getInstance(this) != null) {
                     if (cartCount > 0) {
                         Fragment currentFragment = getActiveFragment();
                         if (currentFragment instanceof ShoppingCartFragment) {
@@ -360,7 +360,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     break;
 
                 case R.id.share_app:
-                    MyProfile myProfile = MyProfile.getInstance();
+                    MyProfile myProfile = MyProfile.getInstance(this);
 
                     if (Permisions.checkWriteExternlStoragePermission(this)) {
                         GlideApp.with(this)
@@ -415,7 +415,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
     private void logoutConfirmed() {
         hideCartIcon();
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(this);
         if (myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
             RokadMartCache.putData(Constants.CACHE_CUSTOMER_DETAILS, this, null);
         } else if (myProfile.getRoleID().equalsIgnoreCase(Utils.RETAILER_ID)) {
@@ -550,17 +550,20 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         updateUI();
     }
 
+    @SuppressLint("CheckResult")
     private void updateUI() {
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(this);
         if (myProfile != null) {
             nameField.setText(myProfile.getFirstName());
             mobileField.setText(myProfile.getMobileNumber());
             emailIdField.setText(myProfile.getEmail());
+            try {
+                String userProfileBitmap = myProfile.getProfileImage();
+                if (userProfileBitmap != null) {
+                GlideApp.with(getBaseContext()).load(userProfileBitmap);
+                }
+            }catch (Exception e){
 
-            Bitmap userProfileBitmap = myProfile.getUserProfileImage().getValue();
-            if (userProfileBitmap != null) {
-                Bitmap newBitmap = CommonUtils.getCircularBitmap(userProfileBitmap);
-                ivProfileImageField.setImageBitmap(newBitmap);
             }
         }
     }

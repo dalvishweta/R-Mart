@@ -110,111 +110,7 @@ public class MakePaymentFragment extends BaseFragment implements View.OnClickLis
         view.findViewById(R.id.money_to_wallet_btn).setOnClickListener(this);
     }
 
-    private void doToRecharge() {
 
-        ProgressDialog progressBar = new ProgressDialog(getActivity(), R.style.mySpinnerTheme);
-        progressBar.setCancelable(false);
-        progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-        progressBar.show();
-
-        MobileRecharge data = mListener.getMobileRechargeModule();
-        MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstance().create(MobileRechargeService.class);
-        user = getResponseMobileRechargeCall(data, mobileRechargeService);
-        user.enqueue(new Callback<ResponseMobileRecharge>() {
-            @Override
-            public void onResponse(Call<ResponseMobileRecharge> call, Response<ResponseMobileRecharge> response) {
-                Log.d("onResponse", "onResponse: ");
-                if (response.body().getStatus().equalsIgnoreCase("Failed")) {
-//                    Toast.makeText(getContext(), BuildConfig.BASE_URL +BuildConfig.RECHARGE ,Toast.LENGTH_LONG).show();
-                    String bod = response.body().getMsg();
-                    if (bod.isEmpty()){
-                        bod = "Transaction Failed. Please try again after sometime.";
-                    }
-                    showDialog(response.body().getStatus(), bod);
-                    progressBar.dismiss();
-                } else {
-                    FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
-                    Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("RechargeDialogFragment");
-                    if (prev != null) {
-                        ft.remove(prev);
-                    }
-                    ft.addToBackStack(null);
-                    DialogFragment dialogFragment;
-                    if (response.body().getStatus().equalsIgnoreCase("success")) {
-                        //dialogFragment = RechargeDialogFragment.newInstance(true, "");
-                    } else {
-                        //dialogFragment = RechargeDialogFragment.newInstance(false, "");
-                    }
-                    //dialogFragment.setCancelable(false);
-                    //dialogFragment.show(ft, "dialog fragment");
-                    progressBar.dismiss();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseMobileRecharge> call, Throwable t) {
-                Log.d("onFailure", "onFailure: ");
-                try {
-                    if(t instanceof SocketTimeoutException){
-                        showDialog(getString(R.string.time_out_title), getString(R.string.time_out_msg));
-                    } else if (call.isCanceled()) {
-                        Log.e("TAG", "request was cancelled");
-                    } else {
-                        showDialog("Sorry..!!", getString(R.string.server_failed_case));
-                        Toast.makeText(requireActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                    progressBar.cancel();
-                } catch (Exception e) {
-                    Log.d("Exception", "Exception: "+e.getMessage());
-                }
-                /*FragmentTransaction ft = requireActivity().getSupportFragmentManager().beginTransaction();
-                Fragment prev = requireActivity().getSupportFragmentManager().findFragmentByTag("vehicleLockFragment");
-                if (prev != null) {
-                    ft.remove(prev);
-                }
-                ft.addToBackStack(null);
-                DialogFragment dialogFragment = RechargeDialogFragment.newInstance(false, "");
-                dialogFragment.setCancelable(false);
-                dialogFragment.show(getChildFragmentManager(), "dialog fragment");
-                progressBar.dismiss();*/
-            }
-        });
-    }
-
-    private Call<ResponseMobileRecharge> getResponseMobileRechargeCall(MobileRecharge data, MobileRechargeService mobileRechargeService) {
-        if(data.getRecType().equals(getResources().getString(R.string.postpaid_radio_btn))) {
-            return mobileRechargeService.postPaidRecharge(
-                    data.getRechargeFrom(),
-                    data.getPlanType(),
-                    data.getService(),
-                    data.getPreOperator(),
-                    data.getMobileNumber(),
-                    data.getRechargeAmount(),
-                    data.getUserID(),
-                    data.getMobileOperator(),
-                    data.getRecType(),
-                    data.getRechargeType(),
-                    data.getMobileApp(),
-                    data.getMobileAppVersionId(),
-                    data.getPaymentType());
-        } else {
-            return mobileRechargeService.prePaidRecharge(
-                    data.getRechargeFrom(),
-                    data.getPlanType(),
-                    data.getService(),
-                    data.getPreOperator(),
-                    data.getMobileNumber(),
-                    data.getRechargeAmount(),
-                    data.getUserID(),
-                    data.getMobileOperator(),
-                    data.getRecType(),
-                    data.getRechargeType(),
-                    data.getMobileApp(),
-                    data.getMobileAppVersionId(),
-                    data.getPaymentType());
-        }
-
-    }
 
     @Override
     public void onStop() {
@@ -247,7 +143,7 @@ public class MakePaymentFragment extends BaseFragment implements View.OnClickLis
             eleService = RetrofitClientInstance.getRetrofitInstance().create(ElecticityService.class);
 
 
-            eleService.electicityProcessRsaKeyVRecharge(MyProfile.getInstance().getUserID(),mdata.getRechargeAmount(),"31","V_RECHARGE")
+            eleService.electicityProcessRsaKeyVRecharge(MyProfile.getInstance(getContext()).getUserID(),mdata.getRechargeAmount(),"31","V_RECHARGE")
                     // eleService.electicityProcessRsaKey("524","160","1","electricity","123124")
 
                     .enqueue(new Callback<rsakeyResponse>() {
@@ -350,7 +246,7 @@ public class MakePaymentFragment extends BaseFragment implements View.OnClickLis
             MobileRechargeService mService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(MobileRechargeService.class);
             mService.VRecharge(paymentrp.getServicetype(),paymentrp.getPreOperatorDth(),paymentrp.getVc_number(),
                     paymentrp.getRechargetype(),paymentrp.getPreOperator(),paymentrp.getPostOperator(),paymentrp.getLocation(),
-                    paymentrp.getMobileNumber(),paymentrp.getRechargeTypeRegular(),paymentrp.getRechargeAmount(),MyProfile.getInstance().getUserID(),ccavenuejsonArray.toString())
+                    paymentrp.getMobileNumber(),paymentrp.getRechargeTypeRegular(),paymentrp.getRechargeAmount(),MyProfile.getInstance(getContext()).getUserID(),ccavenuejsonArray.toString())
                     .enqueue(new Callback<MRechargeBaseClass>() {
                         @Override
                         public void onResponse(Call<MRechargeBaseClass> call, Response<MRechargeBaseClass> response) {

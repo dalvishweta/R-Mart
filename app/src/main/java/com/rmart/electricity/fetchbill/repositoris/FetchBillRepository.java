@@ -1,5 +1,7 @@
 package com.rmart.electricity.fetchbill.repositoris;
 
+import android.content.Context;
+
 import com.rmart.BuildConfig;
 import com.rmart.electricity.fetchbill.model.ElecProcessPOJO;
 import com.rmart.electricity.api.ElecticityService;
@@ -13,11 +15,11 @@ import retrofit2.Response;
 
 public class FetchBillRepository {
 
-    public static MutableLiveData<ElecProcessPOJO> getBillDetails(String operator,String consumerno,String unit,String mobileno){
-
+    public static MutableLiveData<ElecProcessPOJO> getBillDetails(Context context,String operator, String consumerno, String unit, String mobileno){
+      String id =  MyProfile.getInstance(context).getUserID();
         ElecticityService electicityService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(ElecticityService.class);
         final MutableLiveData<ElecProcessPOJO> resultMutableLiveData = new MutableLiveData<>();
-        Call<ElecProcessPOJO> call = electicityService.electicityProcess(MyProfile.getInstance().getUserID(), operator,consumerno , unit,
+        Call<ElecProcessPOJO> call = electicityService.electicityProcess(id, operator,consumerno , unit,
                 mobileno);
         final ElecProcessPOJO result = new ElecProcessPOJO();
 

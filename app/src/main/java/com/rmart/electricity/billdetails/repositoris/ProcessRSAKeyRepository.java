@@ -1,5 +1,7 @@
 package com.rmart.electricity.billdetails.repositoris;
 
+import android.content.Context;
+
 import com.rmart.BuildConfig;
 import com.rmart.electricity.api.ElecticityService;
 import com.rmart.electricity.fetchbill.model.ElecProcessPOJO;
@@ -14,10 +16,10 @@ import retrofit2.Response;
 
 public class ProcessRSAKeyRepository {
 
-    public static MutableLiveData<rsakeyResponse> getElecticityProcessRsaKey(String trnAmount,String serviceID,String OrderID){
+    public static MutableLiveData<rsakeyResponse> getElecticityProcessRsaKey(Context context, String trnAmount, String serviceID, String OrderID){
         ElecticityService electicityService =  RetrofitClientInstance.getRetrofitInstance().create(ElecticityService.class);
         final MutableLiveData<rsakeyResponse> resultMutableLiveData = new MutableLiveData<>();
-        Call<rsakeyResponse> call = electicityService.electicityProcessRsaKey(MyProfile.getInstance().getUserID(),trnAmount,serviceID,"Electricity",OrderID);
+        Call<rsakeyResponse> call = electicityService.electicityProcessRsaKey(MyProfile.getInstance(context).getUserID(),trnAmount,serviceID,"Electricity",OrderID);
         final rsakeyResponse result = new rsakeyResponse();
 
         call.enqueue(new Callback<rsakeyResponse>() {

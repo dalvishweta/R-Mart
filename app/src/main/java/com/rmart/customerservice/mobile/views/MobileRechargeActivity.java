@@ -16,13 +16,12 @@ import java.util.List;
 
 public class MobileRechargeActivity extends ServicesBaseActivity implements OnMobileRechargeListener {
 
-    MobileRecharge mobileRecharge = new MobileRecharge();
+    MobileRecharge mobileRecharge = new MobileRecharge(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_root_view);
-        mobileRecharge.setUserID(MyProfile.getInstance().getUserID());
         addFragment(RechargeHomeFragment.newInstance("",""),"FragemtSelectPlan",false);
     }
 
@@ -33,7 +32,7 @@ public class MobileRechargeActivity extends ServicesBaseActivity implements OnMo
 
     @Override
     public void resetMobileRechargeModule() {
-        mobileRecharge = new MobileRecharge();
+        mobileRecharge = new MobileRecharge(this);
     }
 
     @Override

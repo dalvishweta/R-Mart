@@ -64,7 +64,7 @@ public class UpdateProfileImageServices extends JobIntentService {
                     InputStream imageStream = getContentResolver().openInputStream(profileImageUri);
                     Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
                     ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
-                    Call<BaseResponse> call = profileService.uploadPhotoImage(clientID, MyProfile.getInstance().getUserID(),
+                    Call<BaseResponse> call = profileService.uploadPhotoImage(clientID, MyProfile.getInstance(getApplicationContext()).getUserID(),
                             imageType, getEncodedImage(bitmap));
                     call.enqueue(new Callback<BaseResponse>() {
                         @Override

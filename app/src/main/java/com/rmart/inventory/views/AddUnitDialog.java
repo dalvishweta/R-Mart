@@ -447,7 +447,7 @@ public class AddUnitDialog extends DialogFragment implements View.OnClickListene
             Dialog progressDialog = CustomLoadingDialog.getInstance(getActivity());
             progressDialog.show();
             VendorInventoryService inventoryService = RetrofitClientInstance.getRetrofitInstance().create(VendorInventoryService.class);
-            inventoryService.deleteProductUnit(MyProfile.getInstance().getUserID(), unitObject.getProductUnitID()).enqueue(new Callback<ShowProductResponse>() {
+            inventoryService.deleteProductUnit(MyProfile.getInstance(getActivity()).getUserID(), unitObject.getProductUnitID()).enqueue(new Callback<ShowProductResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<ShowProductResponse> call, @NotNull Response<ShowProductResponse> response) {
                     if (response.isSuccessful()) {

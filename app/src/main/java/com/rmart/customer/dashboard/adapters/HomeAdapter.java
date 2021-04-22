@@ -75,7 +75,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             SliderAdapter imageSliderAdapter = new SliderAdapter(context,homePageData.get(position).getSliders() );
             holder.binding.pager.setAdapter(imageSliderAdapter);
-            holder.binding.indicator.setViewPager(holder.binding.pager);
+            try {
+                holder.binding.indicator.setViewPager(holder.binding.pager);
+            } catch (Exception e){
+
+            }
         }
         else if(holder2 instanceof  ServicesHolder){
             ServicesHolder servicesHolder = (ServicesHolder) holder2;

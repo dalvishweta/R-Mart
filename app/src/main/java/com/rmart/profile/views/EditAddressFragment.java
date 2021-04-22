@@ -122,10 +122,10 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         editAdreesViewModel.addressResponseMutableLiveData.setValue(myAddress);
         creditDetails=new CreditDetails();
         textWatchers();
-        if(MyProfile.getInstance().getRoleID()==MyProfile.RETAILER) {
-            binding.radioyes.setChecked(MyProfile.getInstance().getWholeselar());
-            binding.radiono.setChecked(!MyProfile.getInstance().getWholeselar());
-            boolean b = MyProfile.getInstance().getCredit_option();
+        if(MyProfile.getInstance(getActivity()).getRoleID()==MyProfile.RETAILER) {
+            binding.radioyes.setChecked(MyProfile.getInstance(getActivity()).getWholeselar());
+            binding.radiono.setChecked(!MyProfile.getInstance(getActivity()).getWholeselar());
+            boolean b = MyProfile.getInstance(getActivity()).getCredit_option();
             binding.switchon.setChecked(b);
             binding.radioGroup.setOnCheckedChangeListener((rg, checkedId) -> {
 
@@ -777,7 +777,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                     InputStream imageStream = requireActivity().getContentResolver().openInputStream(photoImagePath);
                     Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
                     ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
-                    Call<BaseResponse> call = profileService.uploadPhotoImage(clientID, MyProfile.getInstance().getUserID(),
+                    Call<BaseResponse> call = profileService.uploadPhotoImage(clientID, MyProfile.getInstance(getActivity()).getUserID(),
                             imageType, getEncodedImage(bitmap));
                     call.enqueue(new Callback<BaseResponse>() {
                         @Override
@@ -1125,7 +1125,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                 ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
                 profileService.addAddress(myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                         myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
-                        myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
+                        myAddress.getLongitude(), MyProfile.getInstance(getActivity()).getUserID(), MyProfile.getInstance(getActivity()).getRoleID(),
                         myAddress.getDeliveryRadius(), Utils.CLIENT_ID, aadharNo, myAddress.getDeliveryCharges(),
                         myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(),myAddress.getBusinessType(),myAddress.getShopTypeId()+"",myAddress.getBankName(),myAddress.getIfscCode(),myAddress.getBranchName(),myAddress.getBankAccNo(),CreditOption,SellingToConsumer).enqueue(new Callback<AddressListResponse>() {
                     @Override
@@ -1139,10 +1139,10 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                                         int size = addressesList.size();
                                         if (size > 0) {
                                             AddressResponse lastAddressDetails = addressesList.get(size - 1);
-                                            MyProfile.getInstance().setCredit_option(CreditOption);
-                                            MyProfile.getInstance().setWholeselar(SellingToConsumer);
-                                            MyProfile.getInstance().setPrimaryAddressId(lastAddressDetails.getId().toString());
-                                            MyProfile.getInstance().setAddressResponses(data.getResponse());
+                                            MyProfile.getInstance(getActivity()).setCredit_option(CreditOption);
+                                            MyProfile.getInstance(getActivity()).setWholeselar(SellingToConsumer);
+                                            MyProfile.getInstance(getActivity()).setPrimaryAddressId(lastAddressDetails.getId().toString());
+                                            MyProfile.getInstance(getActivity()).setAddressResponses(data.getResponse());
                                             if (isAddNewAddress) {
                                                 gotoCustomerHomeScreen();
                                             }
@@ -1175,7 +1175,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                 ProfileService profileService = RetrofitClientInstance.getRetrofitInstance().create(ProfileService.class);
                 profileService.updateAddress(myAddress.getShopACT(), myAddress.getMinimumOrder(), myAddress.getShopName(), myAddress.getPan_no(), myAddress.getGstInNo(), myAddress.getStore_number(),
                         myAddress.getAddress(), myAddress.getCity(), myAddress.getState(), myAddress.getPinCode(), myAddress.getLatitude(),
-                        myAddress.getLongitude(), MyProfile.getInstance().getUserID(), MyProfile.getInstance().getRoleID(),
+                        myAddress.getLongitude(), MyProfile.getInstance(getActivity()).getUserID(), MyProfile.getInstance(getActivity()).getRoleID(),
                         myAddress.getDeliveryRadius(), Utils.CLIENT_ID, myAddress.getId(), aadharNo, myAddress.getDeliveryCharges(),
                         myAddress.getOpeningTime(), myAddress.getClosingTime(), myAddress.getDeliveryDaysAfterTime(), myAddress.getDeliveryDaysBeforeTime(), myAddress.getId().toString(), myAddress.getBusinessType(),myAddress.getShopTypeId()+"",myAddress.getBankName(),myAddress.getIfscCode(),myAddress.getBranchName(),myAddress.getBankAccNo(),CreditOption,SellingToConsumer).enqueue(new Callback<AddressListResponse>() {
                     @Override
@@ -1185,9 +1185,9 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                             if (data != null) {
                                 if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                     showDialog(data.getMsg(), pObject -> {
-                                        MyProfile.getInstance().setAddressResponses(data.getResponse());
-                                        MyProfile.getInstance().setCredit_option(CreditOption);
-                                        MyProfile.getInstance().setWholeselar(SellingToConsumer);
+                                        MyProfile.getInstance(getActivity()).setAddressResponses(data.getResponse());
+                                        MyProfile.getInstance(getActivity()).setCredit_option(CreditOption);
+                                        MyProfile.getInstance(getActivity()).setWholeselar(SellingToConsumer);
                                         Objects.requireNonNull(requireActivity()).onBackPressed();
                                     });
                                 } else {
@@ -1217,7 +1217,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             }
     }
     private void gotoCustomerHomeScreen() {
-        MyProfile myProfile = MyProfile.getInstance();
+        MyProfile myProfile = MyProfile.getInstance(getActivity());
         Intent intent;
         if (myProfile != null) {
             String roleId = myProfile.getRoleID();

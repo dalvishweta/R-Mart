@@ -1,6 +1,8 @@
 package com.rmart.customerservice.mobile.models;
 
 
+import android.content.Context;
+
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.profile.model.MyProfile;
@@ -17,7 +19,7 @@ public class MobileRecharge {
     private String service = "TSO";
     private String mobileNumber = "";
     private String rechargeAmount ="";
-    private String userID = "";
+
     private String preOperator = ""; // V
     private String mobileOperator =""; // Vodafone
     private String rechargeType = "0"; //TODO: pass 0 for topup and 1 for any chosen plan
@@ -25,7 +27,7 @@ public class MobileRecharge {
     private String paymentType = "cash";
     private int selectedSubscriber = -1;
     private String vcNumber = "";
-    public MobileRecharge() {
+    public MobileRecharge(Context context) {
         this.prepaidSubscriberList = new ArrayList<>();
         prepaidSubscriberMap = new HashMap<>();
         this.prepaidSubscriberList.add(new SubscriberModule(0, R.drawable.airtel, "AIRTEL", "A","Airtel"));
@@ -53,7 +55,6 @@ public class MobileRecharge {
         prepaidSubscriberMap.put("TI", prepaidSubscriberList.get(8));
 
 
-        userID = MyProfile.getInstance().getUserID();
     }
 
     public ArrayList<SubscriberModule> getPrepaidSubscriberList() {
@@ -211,13 +212,7 @@ public class MobileRecharge {
         this.rechargeAmount = rechargeAmount;
     }
 
-    public String getUserID() {
-        return userID;
-    }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
 
     public String getMobileOperator() {
         return mobileOperator;
