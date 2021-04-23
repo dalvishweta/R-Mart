@@ -1,29 +1,15 @@
 package com.rmart.customerservice.mobile.repositories;
 
-import android.app.Activity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
+import androidx.lifecycle.MutableLiveData;
 
-import com.rmart.R;
-import com.rmart.customer.shops.home.api.Shops;
-import com.rmart.customer.shops.home.model.ShopHomePageResponce;
 import com.rmart.customerservice.mobile.api.MobileRechargeService;
-import com.rmart.customerservice.mobile.models.LastTransaction;
+import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
 import com.rmart.customerservice.mobile.models.ResponseGetHistory;
-import com.rmart.customerservice.mobile.models.SubscriberModule;
-import com.rmart.customerservice.mobile.views.MobileRechargeHistoryFragment;
-import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 
-import java.net.SocketTimeoutException;
-
-import androidx.lifecycle.MutableLiveData;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.rmart.utilits.Utils.CLIENT_ID;
 
 public class MobileRechargeRepository {
 
@@ -57,6 +43,42 @@ public class MobileRechargeRepository {
                 }
                 resultMutableLiveData.setValue(result);
            }
+        });
+        return resultMutableLiveData;
+    }
+
+
+    public static MutableLiveData<MRechargeBaseClass> getVRecharge(int service_type,String preOperator_dth,String customer_number,String recharge_type,String preOperator,String PostOperator,
+                                                                   String Location,String Mobile_number,String rechargeType,String Recharge_amount, String user_id,String ccavneuData) {
+
+        MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstanceRokad().create(MobileRechargeService.class);
+        final MutableLiveData<MRechargeBaseClass> resultMutableLiveData = new MutableLiveData<>();
+        Call<MRechargeBaseClass> call = mobileRechargeService.VRecharge(service_type, preOperator_dth, customer_number, recharge_type, preOperator, PostOperator, Location, Mobile_number, rechargeType, Recharge_amount, user_id, ccavneuData);
+        final MRechargeBaseClass result = new MRechargeBaseClass();
+
+        call.enqueue(new Callback<MRechargeBaseClass>() {
+            @Override
+            public void onResponse(Call<MRechargeBaseClass> call, Response<MRechargeBaseClass> response) {
+                MRechargeBaseClass data = response.body();
+                if(data!=null && data.getData()!=null) {
+                    resultMutableLiveData.setValue(data);
+                } else {
+
+                    result.setStatus("failed");
+                    resultMutableLiveData.setValue(result);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MRechargeBaseClass> call, Throwable t) {
+                if(t.getLocalizedMessage().equalsIgnoreCase("Unable to resolve host \"hungryindia.co.in\": No address associated with hostname"))
+                {
+                    result.setMsg("Please Check Internet Connection");
+                } else {
+                    result.setMsg(t.getLocalizedMessage());
+                }
+                resultMutableLiveData.setValue(result);
+            }
         });
         return resultMutableLiveData;
     }
