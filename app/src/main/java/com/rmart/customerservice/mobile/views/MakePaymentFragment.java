@@ -20,7 +20,7 @@ import com.rmart.customerservice.mobile.models.MobileRecharge;
 import com.rmart.customerservice.mobile.models.ResponseMobileRecharge;
 import com.rmart.customerservice.mobile.models.RokadPaymentRequest;
 import com.rmart.electricity.api.ElecticityService;
-import com.rmart.electricity.rsakeyResponse;
+import com.rmart.electricity.RSAKeyResponse;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
@@ -126,11 +126,11 @@ public class MakePaymentFragment extends BaseFragment implements View.OnClickLis
             eleService = RetrofitClientInstance.getRetrofitInstance().create(ElecticityService.class);
             eleService.electicityProcessRsaKeyVRecharge(MyProfile.getInstance(getContext()).getUserID(),mdata.getRechargeAmount(),"31","V_RECHARGE")
 
-                    .enqueue(new Callback<rsakeyResponse>() {
+                    .enqueue(new Callback<RSAKeyResponse>() {
                         @Override
-                        public void onResponse(Call<rsakeyResponse> call, Response<rsakeyResponse> response) {
+                        public void onResponse(Call<RSAKeyResponse> call, Response<RSAKeyResponse> response) {
                             progressBar.cancel();
-                            rsakeyResponse data = response.body();
+                            RSAKeyResponse data = response.body();
                             if (data.getStatus().equalsIgnoreCase("success")) {
                                 Intent ii= new Intent(getContext(), ServicePaymentActivity.class);
                                 ii.putExtra("rsakeyresonse",  data.getData());
@@ -193,7 +193,7 @@ public class MakePaymentFragment extends BaseFragment implements View.OnClickLis
                         }
 
                         @Override
-                        public void onFailure(Call<rsakeyResponse> call, Throwable t) {
+                        public void onFailure(Call<RSAKeyResponse> call, Throwable t) {
                             showDialog("", t.getMessage());
                             progressBar.cancel();
                         }

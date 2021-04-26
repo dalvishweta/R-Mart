@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.view.View;
 
 import com.rmart.R;
-import com.rmart.electricity.FetchBill;
 import com.rmart.electricity.PaymentActivity;
 import com.rmart.electricity.billdetails.repositoris.ProcessRSAKeyRepository;
 import com.rmart.electricity.fetchbill.model.BillDetails;
-import com.rmart.electricity.fetchbill.model.ElecProcessPOJO;
-import com.rmart.electricity.rsakeyResponse;
+import com.rmart.electricity.RSAKeyResponse;
 import com.rmart.electricity.selectoperator.model.Operator;
 import com.rmart.utilits.Utils;
 
@@ -23,7 +21,7 @@ public class BillDetailsModule extends ViewModel {
     public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
     public MutableLiveData<Operator> operatorMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<BillDetails> billDetailsMutableLiveData = new MutableLiveData<>();
-    public MutableLiveData<rsakeyResponse> rsakeyResponseMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<RSAKeyResponse> rsakeyResponseMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<String> mobilenumber = new MutableLiveData<>();
     public MutableLiveData<String> bill_unit = new MutableLiveData<>();
 
@@ -36,9 +34,9 @@ public class BillDetailsModule extends ViewModel {
             progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
             //progressBar.show();
             BillDetails billDetails = billDetailsMutableLiveData.getValue();
-            ProcessRSAKeyRepository.getElecticityProcessRsaKey(view.getContext(),billDetails.getDueAmount()+"",billDetails.getServiceId()+"",billDetails.getOrderId()+"").observeForever(new Observer<rsakeyResponse>() {
+            ProcessRSAKeyRepository.getElecticityProcessRsaKey(view.getContext(),billDetails.getDueAmount()+"",billDetails.getServiceId()+"",billDetails.getOrderId()+"").observeForever(new Observer<RSAKeyResponse>() {
                 @Override
-                public void onChanged(rsakeyResponse rsakeyResponse) {
+                public void onChanged(RSAKeyResponse rsakeyResponse) {
 
 
                     if (rsakeyResponse.getStatus().equalsIgnoreCase("success")) {

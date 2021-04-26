@@ -1,35 +1,24 @@
 package com.rmart.customerservice.mobile.fragments;
-
 import android.os.Bundle;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.rmart.R;
 import com.rmart.customerservice.mobile.adapters.RechargePlansAdapter;
-import com.rmart.customerservice.mobile.interfaces.OnPlanSelectedHandler;
-import com.rmart.customerservice.mobile.models.mPlans.PostPaidResponseGetPlans;
-import com.rmart.customerservice.mobile.models.mPlans.RechargePlans;
 import com.rmart.customerservice.mobile.models.mPlans.Records;
 import com.rmart.customerservice.mobile.adapters.RechargePlansPagerAdapter;
 import com.rmart.customerservice.mobile.circle.bottomsheets.SelectCircleBottomSheet;
 import com.rmart.customerservice.mobile.circle.model.Circle;
 import com.rmart.customerservice.mobile.listners.SlectCircle;
 import com.rmart.customerservice.mobile.listners.SlectOperator;
-import com.rmart.customerservice.mobile.models.mPlans.ResponseGetPlans;
 import com.rmart.customerservice.mobile.operators.bottomheet.SelectOperatorBottomSheet;
 import com.rmart.customerservice.mobile.operators.model.Operator;
 import com.rmart.customerservice.mobile.viewmodels.SelectPlanViewModel;
 import com.rmart.databinding.FragmentSelectPlan2Binding;
-
-import java.util.List;
+import com.rmart.profile.model.MyProfile;
 
 public class SelectPlanFragment extends Fragment {
 
@@ -118,14 +107,14 @@ public class SelectPlanFragment extends Fragment {
         fragmentSelectPlan2Binding.setSelectPlanViewModel(mViewModel);
         fragmentSelectPlan2Binding.setLifecycleOwner(this);
         fragmentSelectPlan2Binding.operatorSelect.setOnClickListener(view -> {
-            if(mViewModel.rechargePlansMutableLiveData.getValue()!=null) {
+            if(mViewModel.rechargePlansMutableLiveData.getValue()==null) {
                 bottomSheet = new SelectOperatorBottomSheet(slectOperator, type);
                 bottomSheet.show(getActivity().getSupportFragmentManager(),
                         "ModalBottomSheet");
             }
         });
         fragmentSelectPlan2Binding.selctCircle.setOnClickListener(view -> {
-            if(mViewModel.rechargePlansMutableLiveData.getValue()!=null) {
+            if(mViewModel.rechargePlansMutableLiveData.getValue()==null) {
                 selectCircleBottomSheet = new SelectCircleBottomSheet(slectCircle);
                 selectCircleBottomSheet.show(getActivity().getSupportFragmentManager(),
                         "ModalBottomSheet");
@@ -163,6 +152,12 @@ public class SelectPlanFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 mViewModel.rechargePlansMutableLiveData.setValue(null);
+            }
+        });
+        fragmentSelectPlan2Binding.recharge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mViewModel.getRsaKey(MyProfile.getInstance(getContext()).getUserID());
             }
         });
 

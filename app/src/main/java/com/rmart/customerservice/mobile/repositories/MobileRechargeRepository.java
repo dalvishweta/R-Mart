@@ -5,7 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import com.rmart.customerservice.mobile.api.MobileRechargeService;
 import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
 import com.rmart.customerservice.mobile.models.ResponseGetHistory;
-import com.rmart.electricity.rsakeyResponse;
+
+import com.rmart.electricity.RSAKeyResponse;
 import com.rmart.utilits.RetrofitClientInstance;
 
 import retrofit2.Call;
@@ -85,17 +86,17 @@ public class MobileRechargeRepository {
     }
 
 
-    public static MutableLiveData<rsakeyResponse> getRSAKey(String user_id,String txt_amount,String service_id,String service_name) {
+    public static MutableLiveData<RSAKeyResponse> getRSAKey(String user_id, String txt_amount, String service_id, String service_name) {
 
         MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstanceRokad().create(MobileRechargeService.class);
-        final MutableLiveData<rsakeyResponse> resultMutableLiveData = new MutableLiveData<>();
-        Call<rsakeyResponse> call = mobileRechargeService.RsaKeyVRecharge(user_id,txt_amount, service_id, service_name);
-        final rsakeyResponse result = new rsakeyResponse();
+        final MutableLiveData<RSAKeyResponse> resultMutableLiveData = new MutableLiveData<>();
+        Call<RSAKeyResponse> call = mobileRechargeService.RsaKeyVRecharge(user_id,txt_amount, service_id, service_name);
+        final RSAKeyResponse result = new RSAKeyResponse();
 
-        call.enqueue(new Callback<rsakeyResponse>() {
+        call.enqueue(new Callback<RSAKeyResponse>() {
             @Override
-            public void onResponse(Call<rsakeyResponse> call, Response<rsakeyResponse> response) {
-                rsakeyResponse data = response.body();
+            public void onResponse(Call<RSAKeyResponse> call, Response<RSAKeyResponse> response) {
+                RSAKeyResponse data = response.body();
                 if(data!=null && data.getData()!=null) {
                     resultMutableLiveData.setValue(data);
                 } else {
@@ -106,13 +107,14 @@ public class MobileRechargeRepository {
             }
 
             @Override
-            public void onFailure(Call<rsakeyResponse> call, Throwable t) {
+            public void onFailure(Call<RSAKeyResponse> call, Throwable t) {
                 if(t.getLocalizedMessage().equalsIgnoreCase("Unable to resolve host \"hungryindia.co.in\": No address associated with hostname"))
                 {
                     result.setMsg("Please Check Internet Connection");
                 } else {
                     result.setMsg(t.getLocalizedMessage());
                 }
+                result.setStatus("failed");
                 resultMutableLiveData.setValue(result);
             }
         });

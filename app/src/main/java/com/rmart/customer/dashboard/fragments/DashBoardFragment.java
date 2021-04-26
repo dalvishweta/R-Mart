@@ -6,12 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.dashboard.adapters.HomeAdapter;
@@ -21,11 +19,8 @@ import com.rmart.customer.dashboard.model.ServiceOffer;
 import com.rmart.customer.dashboard.model.ShopType;
 import com.rmart.customer.dashboard.viewmodel.HomeViewModel;
 import com.rmart.customer.shops.list.fragments.VendorShopsListFragment;
-
-import com.rmart.customerservice.mobile.views.MobileRechargeActivity;
-
+import com.rmart.customerservice.mobile.activities.MobileRechargeActivity;
 import com.rmart.customerservice.dth.actvities.DTHRechargeActivity;
-
 import com.rmart.databinding.FragmentDashBoardBinding;
 import com.rmart.electricity.activities.ElectricityActivity;
 

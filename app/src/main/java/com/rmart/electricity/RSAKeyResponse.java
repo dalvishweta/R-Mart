@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.rmart.utilits.BaseResponse;
 
-public class rsakeyResponse extends BaseResponse {
+public class RSAKeyResponse extends BaseResponse {
 
     @SerializedName("request_id")
     @Expose

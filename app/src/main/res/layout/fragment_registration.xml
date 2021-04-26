@@ -231,6 +231,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:text="Default Amount"
+                android:id="@+id/default_amaount"
                 android:textColor="@color/item_sub_title_color"
                 android:textSize="12sp"
                 android:layout_marginTop="5dp"

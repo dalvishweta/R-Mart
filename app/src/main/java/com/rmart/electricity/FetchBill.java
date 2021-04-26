@@ -122,11 +122,11 @@ public class FetchBill extends BaseActivity {
                     eleService.electicityProcessRsaKey(MyProfile.getInstance(getApplicationContext()).getUserID(),amt,serviceid.toString(),"Electricity",orderid.toString())
                    // eleService.electicityProcessRsaKey("524","160","1","electricity","123124")
 
-                            .enqueue(new Callback<rsakeyResponse>() {
+                            .enqueue(new Callback<RSAKeyResponse>() {
                                 @Override
-                                public void onResponse(Call<rsakeyResponse> call, Response<rsakeyResponse> response) {
+                                public void onResponse(Call<RSAKeyResponse> call, Response<RSAKeyResponse> response) {
                                     progressBar.cancel();
-                                    rsakeyResponse data = response.body();
+                                    RSAKeyResponse data = response.body();
                                     if (data.getStatus().equalsIgnoreCase("success")) {
                                         Intent ii= new Intent(FetchBill.this,PaymentActivity.class);
                                         ii.putExtra("rsakeyresonse",  data.getData());
@@ -145,7 +145,7 @@ public class FetchBill extends BaseActivity {
                                 }
 
                                 @Override
-                                public void onFailure(Call<rsakeyResponse> call, Throwable t) {
+                                public void onFailure(Call<RSAKeyResponse> call, Throwable t) {
                                     showDialog("", t.getMessage());
                                     progressBar.cancel();
                                 }

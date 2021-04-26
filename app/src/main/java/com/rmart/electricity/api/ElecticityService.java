@@ -4,7 +4,7 @@ package com.rmart.electricity.api;
 import com.rmart.BuildConfig;
 import com.rmart.electricity.fetchbill.model.ElecProcessPOJO;
 import com.rmart.electricity.paybill;
-import com.rmart.electricity.rsakeyResponse;
+import com.rmart.electricity.RSAKeyResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -35,16 +35,16 @@ public interface ElecticityService {
 
     @POST(BuildConfig.electricity_rsa_key)
     @FormUrlEncoded
-    public Call<rsakeyResponse> electicityProcessRsaKey(@Field("user_id") String user_id,
+    public Call<RSAKeyResponse> electicityProcessRsaKey(@Field("user_id") String user_id,
                                                         @Field("txn_amount") String txn_amount,
                                                         @Field("service_id") String service_id,
                                                         @Field("service_name") String service_name,
                                                         @Field("order_id") String order_id);
     @POST(BuildConfig.electricity_rsa_key)
     @FormUrlEncoded
-    public Call<rsakeyResponse> electicityProcessRsaKeyVRecharge(@Field("user_id") String user_id,
-                                                        @Field("txn_amount") String txn_amount,
-                                                        @Field("service_id") String service_id,
-                                                        @Field("service_name") String service_name
+    public Call<RSAKeyResponse> electicityProcessRsaKeyVRecharge(@Field("user_id") String user_id,
+                                                                 @Field("txn_amount") String txn_amount,
+                                                                 @Field("service_id") String service_id,
+                                                                 @Field("service_name") String service_name
                                                        );
 }

@@ -9,7 +9,7 @@ import com.rmart.customerservice.mobile.models.ResponseMobileRecharge;
 import com.rmart.customerservice.mobile.models.mPlans.ResponseGetPlans;
 import com.rmart.customerservice.mobile.models.mPlans.ResponseGetPostpaidPlans;
 import com.rmart.customerservice.mobile.operators.model.OperatorResponse;
-import com.rmart.electricity.rsakeyResponse;
+import com.rmart.electricity.RSAKeyResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -113,10 +113,10 @@ public interface MobileRechargeService {
 
     @POST(BuildConfig.electricity_rsa_key)
     @FormUrlEncoded
-    public Call<rsakeyResponse> RsaKeyVRecharge(@Field("user_id") String user_id,
-                                                                 @Field("txn_amount") String txn_amount,
-                                                                 @Field("service_id") String service_id,
-                                                                 @Field("service_name") String service_name
+    public Call<RSAKeyResponse> RsaKeyVRecharge(@Field("user_id") String user_id,
+                                                @Field("txn_amount") String txn_amount,
+                                                @Field("service_id") String service_id,
+                                                @Field("service_name") String service_name
     );
 
 }

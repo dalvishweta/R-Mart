@@ -10,7 +10,7 @@ public class RechargePlans implements Serializable {
 
     @SerializedName("rs")
     @Expose
-    private Integer rs;
+    private int rs;
     @SerializedName("desc")
     @Expose
     private String desc;
@@ -21,11 +21,11 @@ public class RechargePlans implements Serializable {
     @Expose
     private String lastUpdate;
 
-    public Integer getRs() {
+    public int getRs() {
         return rs;
     }
 
-    public void setRs(Integer rs) {
+    public void setRs(int rs) {
         this.rs = rs;
     }
 

@@ -256,7 +256,6 @@
                     android:id="@+id/gst_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="@string/allow_digits_with_out_space"
                     android:inputType="text"
                     android:maxLength="16"
                     android:textAllCaps="true" />
@@ -558,7 +557,6 @@
                     android:id="@+id/pan_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:digits="@string/allow_digits_with_out_capital_letters"
                     android:inputType="textCapCharacters"
                     android:maxLength="10"
                     android:textAllCaps="true" />

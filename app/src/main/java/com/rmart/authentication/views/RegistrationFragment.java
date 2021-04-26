@@ -49,7 +49,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
     private AppCompatEditText tvFirstName,customamount, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
     private String selectedGender;
 
-    TextView login;
+    TextView login,default_amaount;
     ArrayList<RegistrationFeeStructure> registrationFeeStructuresList = new ArrayList<>();
 
     public RegistrationFragment() {
@@ -167,6 +167,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         register.setOnClickListener(this);
         tvFirstName = view.findViewById(R.id.first_name);
         customamount = view.findViewById(R.id.customamount);
+        default_amaount = view.findViewById(R.id.default_amaount);
         login = view.findViewById(R.id.login);
         tvLastName = view.findViewById(R.id.lase_name);
         tVMobileNumber = view.findViewById(R.id.mobile_number);
@@ -206,6 +207,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             view.findViewById(R.id.tv_payment_information_field).setVisibility(View.GONE);
             paymentBase.setVisibility(View.GONE);
             customamount.setVisibility(View.GONE);
+            default_amaount.setVisibility(View.GONE);
 
             register.setText(R.string.register_right);
         }
@@ -257,7 +259,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         } else if (lastName.length() <= 2) {
             showDialog("", getString(R.string.error_last_name));
         }
-        else if (amount2 < Double.valueOf(100.00)) {
+        else if ( BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID) && amount2 < Double.valueOf(100.00)) {
             showDialog("", "Please enter Amount" );
         }
         else if (TextUtils.isEmpty(selectedGender) || selectedGender.equalsIgnoreCase(Utils.SELECT_YOUR_GENDER)) {
@@ -306,7 +308,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
                                         } else {
                                             showDialog("", otpMsg, (click, i) -> mListener.validateOTP(mobileNumber, false));
                                         }
-                                        resetFields();
+
                                     } else {
                                         showDialog("", data.getMsg());
                                     }

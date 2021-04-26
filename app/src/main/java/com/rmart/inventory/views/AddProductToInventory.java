@@ -367,14 +367,14 @@ public class AddProductToInventory extends BaseInventoryFragment implements View
     }
 
     private void saveSelected() {
-        if (TextUtils.isEmpty(Objects.requireNonNull(productRegionalName.getText()).toString().trim())) {
-            showDialog("", getString(R.string.error_regional_name));
-            return;
-        }
-        if (TextUtils.isEmpty(Objects.requireNonNull(productDescription.getText()).toString().trim())) {
-            showDialog("", getString(R.string.error_product_description));
-            return;
-        }
+//        if (TextUtils.isEmpty(Objects.requireNonNull(productRegionalName.getText()).toString().trim())) {
+//            showDialog("", getString(R.string.error_regional_name));
+//            return;
+//        }
+//        if (TextUtils.isEmpty(Objects.requireNonNull(productDescription.getText()).toString().trim())) {
+//            showDialog("", getString(R.string.error_product_description));
+//            return;
+//        }
         mClonedProduct.setUnitObjects(unitsList);
         if (Objects.requireNonNull(mClonedProduct).getUnitObjects().size() < 1) {
             showDialog("", getString(R.string.unit_required));
