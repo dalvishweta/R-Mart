@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="DthServiceViewModule"
+            type="com.rmart.customerservice.dth.module.DthServicemodule" />
+    </data>
+    <RelativeLayout
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:background="@color/light_grey">
@@ -36,15 +43,29 @@
                 android:text="@string/enter_subscription_id_mobile_number"
                 />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mobile_no"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/consummerno_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_light"
-                android:inputType="text"
-                android:padding="10dp"
-                android:background="@drawable/grey_rounded_borders_bg"
-                android:maxLength="10" />
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:hint="@string/enter_consumer_number"
+                app:errorText="@{DthServiceViewModule.errorCumsumerNumber}"
+
+                >
+
+                <EditText
+                    android:id="@+id/consummerno"
+                    android:layout_width="match_parent"
+                    android:layout_height="61dp"
+                    android:inputType="number"
+                    android:onTextChanged="@{DthServiceViewModule.onCumsumerNumberTextChanged}"
+                    android:text="@={DthServiceViewModule.cumsumerNumber}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -73,6 +94,12 @@
             />
 
     </LinearLayout>
+        <ProgressBar
+            android:visibility="@{DthServiceViewModule.isLoading?View.VISIBLE:View.GONE}"
+            android:id="@+id/progressBar1"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/one_layout"
+            android:layout_height="wrap_content" />
     </LinearLayout>
     <FrameLayout
         android:id="@+id/layout_footer"
@@ -87,6 +114,9 @@
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:padding="10dp"
+            android:visibility="@{DthServiceViewModule.isLoading?View.GONE:View.VISIBLE}"
+            android:onClick="@{(v) -> DthServiceViewModule.onClick(v)}"
             android:text="CONFIRM" />
     </FrameLayout>
 </RelativeLayout>
+   </layout>

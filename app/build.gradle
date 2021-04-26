@@ -111,6 +111,7 @@ android {
         buildConfigField("String", "location", '"rest_server/Venus_mart_api/mplan_location"')
         buildConfigField("String", "HISTORY", '"rest_server/Venus_mart_api/getHistory"')
         buildConfigField("String", "Mobile_recharge", '"rest_server/Venus_mart_api/mobrecharge"')
+        buildConfigField("String", "DTH_CustomerIdInfo", '"rest_server/Mplan_operator/getCustomerinfo"')
 
 
         //registration

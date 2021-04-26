@@ -5,11 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.customerservice.dth.module.DthServicemodule;
 import com.rmart.customerservice.mobile.operators.model.Operator;
+import com.rmart.databinding.ActivityDthSubscriptitonNumberBinding;
 
 import java.io.Serializable;
 
@@ -26,7 +30,7 @@ public class FragmentDTHServiceNumber extends BaseFragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private Serializable mParam1;
     private String mParam2;
 
     public FragmentDTHServiceNumber() {
@@ -61,7 +65,7 @@ public class FragmentDTHServiceNumber extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam1 = getArguments().getSerializable("operator");
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
@@ -70,6 +74,13 @@ public class FragmentDTHServiceNumber extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_dth_subscriptiton_number, container, false);
+        ActivityDthSubscriptitonNumberBinding binding = DataBindingUtil.inflate(inflater, R.layout.activity_dth_subscriptiton_number, container, false);
+        DthServicemodule mViewModel = new ViewModelProvider(this).get(DthServicemodule.class);
+        mViewModel.isLoading.setValue(false);
+        mViewModel.operatorMutableLiveData.postValue((Operator) mParam1);
+        binding.setDthServiceViewModule(mViewModel);
+        binding.setLifecycleOwner(this);
+        binding.toolbar.setNavigationOnClickListener(view -> getActivity().onBackPressed());
+        return binding.getRoot();
     }
 }
