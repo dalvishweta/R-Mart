@@ -34,11 +34,14 @@ public class DthServicemodule extends ViewModel {
                     if (dthResponse!=null) {
 
                         if (null != dthResponse.getData()) {
+                            isLoading.setValue(false);
+                            dthResponse.setStatus(200);
                            ((DTHRechargeActivity)view.getContext()).getSupportFragmentManager()
                                     .beginTransaction()
                                     .replace(R.id.frame_container, MakeDTHPayment.newInstance(cumsumerNumber.getValue(),operatorMutableLiveData.getValue())).addToBackStack(null)
                                     .commit();
                         } else {
+
                             dthResponse.setStatus(400);
                         }
                     } else {

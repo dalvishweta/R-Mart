@@ -26,7 +26,7 @@ public class DTHRechargeRepository {
                 if(data!=null ) {
                     resultMutableLiveData.setValue(data);
                  } else {
-                    
+                    result.setMsg(data.getMsg());
                     result.setStatus(400);
                     resultMutableLiveData.setValue(result);
                 }
