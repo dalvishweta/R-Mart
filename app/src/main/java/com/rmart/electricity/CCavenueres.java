@@ -15,7 +15,7 @@ public class CCavenueres implements Serializable {
     private String orderMessage;
     @SerializedName("rokad_order_id")
     @Expose
-    private String rokadOrderId;
+    private int rokadOrderId;
 
     public CcavenueData getCcavenueData() {
         return ccavenueData;
@@ -33,11 +33,11 @@ public class CCavenueres implements Serializable {
         this.orderMessage = orderMessage;
     }
 
-    public String getRokadOrderId() {
+    public int getRokadOrderId() {
         return rokadOrderId;
     }
 
-    public void setRokadOrderId(String rokadOrderId) {
+    public void setRokadOrderId(int rokadOrderId) {
         this.rokadOrderId = rokadOrderId;
     }
 
