@@ -31,7 +31,7 @@ public class DthServicemodule extends ViewModel {
                 @Override
                 public void onChanged(DthResponse dthResponse) {
 
-                    if (dthResponse!=null && dthResponse.getStatus().equalsIgnoreCase("success")) {
+                    if (dthResponse!=null) {
 
                         if (null != dthResponse.getData()) {
                            ((DTHRechargeActivity)view.getContext()).getSupportFragmentManager()
@@ -39,7 +39,7 @@ public class DthServicemodule extends ViewModel {
                                     .replace(R.id.frame_container, MakeDTHPayment.newInstance(cumsumerNumber.getValue(),operatorMutableLiveData.getValue())).addToBackStack(null)
                                     .commit();
                         } else {
-                            dthResponse.setStatus("error");
+                            dthResponse.setStatus(400);
                         }
                     } else {
                         dthPOJOMutableLiveData.postValue(dthResponse);

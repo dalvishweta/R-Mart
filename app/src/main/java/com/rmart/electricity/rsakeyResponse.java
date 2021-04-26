@@ -8,16 +8,16 @@ public class rsakeyResponse extends BaseResponse {
 
     @SerializedName("request_id")
     @Expose
-    private String request_id = "";
+    private int request_id ;
     @SerializedName("data")
     @Expose
     private CCavenueres data;
 
-    public String getRequest_id() {
+    public int getRequest_id() {
         return request_id;
     }
 
-    public void setRequest_id(String request_id) {
+    public void setRequest_id(int request_id) {
         this.request_id = request_id;
     }
 

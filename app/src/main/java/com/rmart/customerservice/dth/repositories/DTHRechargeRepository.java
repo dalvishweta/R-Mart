@@ -27,7 +27,7 @@ public class DTHRechargeRepository {
                     resultMutableLiveData.setValue(data);
                  } else {
                     
-                    result.setStatus("failed");
+                    result.setStatus(400);
                     resultMutableLiveData.setValue(result);
                 }
             }
