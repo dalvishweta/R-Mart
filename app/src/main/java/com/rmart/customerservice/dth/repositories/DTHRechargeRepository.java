@@ -1,11 +1,14 @@
 package com.rmart.customerservice.dth.repositories;
 
+import android.widget.Toast;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.rmart.customerservice.dth.api.DthService;
 import com.rmart.customerservice.dth.model.DthResponse;
 import com.rmart.utilits.RetrofitClientInstance;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,12 +25,17 @@ public class DTHRechargeRepository {
         call.enqueue(new Callback<DthResponse>() {
             @Override
             public void onResponse(Call<DthResponse> call, Response<DthResponse> response) {
-                DthResponse data = response.body();
-                if(data!=null ) {
+
+                if( response.isSuccessful()) {
+
+                    DthResponse data = response.body();
                     resultMutableLiveData.setValue(data);
-                 } else {
-                    result.setMsg(data.getMsg());
-                    result.setStatus(400);
+
+                } else {
+
+                    String a= response.message();
+                    result.setMsg(a);
+                    result.setStatus(response.code());
                     resultMutableLiveData.setValue(result);
                 }
             }

@@ -88,7 +88,7 @@ public class MobileRechargeRepository {
 
     public static MutableLiveData<RSAKeyResponse> getRSAKey(String user_id, String txt_amount, String service_id, String service_name) {
 
-        MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstanceRokad().create(MobileRechargeService.class);
+        MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstance().create(MobileRechargeService.class);
         final MutableLiveData<RSAKeyResponse> resultMutableLiveData = new MutableLiveData<>();
         Call<RSAKeyResponse> call = mobileRechargeService.RsaKeyVRecharge(user_id,txt_amount, service_id, service_name);
         final RSAKeyResponse result = new RSAKeyResponse();

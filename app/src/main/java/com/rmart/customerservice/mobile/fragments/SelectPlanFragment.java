@@ -2,6 +2,7 @@ package com.rmart.customerservice.mobile.fragments;
 import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,20 +19,17 @@ import com.rmart.customerservice.mobile.operators.bottomheet.SelectOperatorBotto
 import com.rmart.customerservice.mobile.operators.model.Operator;
 import com.rmart.customerservice.mobile.viewmodels.SelectPlanViewModel;
 import com.rmart.databinding.FragmentSelectPlan2Binding;
+import com.rmart.electricity.RSAKeyResponse;
 import com.rmart.profile.model.MyProfile;
 
 public class SelectPlanFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM3 = "param3";
     SelectOperatorBottomSheet bottomSheet;
     SelectCircleBottomSheet selectCircleBottomSheet;
     SelectPlanViewModel mViewModel;
-
-    // TODO: Rename and change types of parameters
     private String mobile;
     private String name;
     private String type;
@@ -50,7 +48,6 @@ public class SelectPlanFragment extends Fragment {
         }
     };
     SlectCircle slectCircle= new SlectCircle(){
-
         @Override
         public void onSelect(Circle circle) {
             mViewModel.circleMutableLiveData.setValue(circle);
@@ -62,16 +59,10 @@ public class SelectPlanFragment extends Fragment {
                 mViewModel.getPrePaidPlanList();
             }
         }
-
-
     };
-
     public SelectPlanFragment() {
         // Required empty public constructor
     }
-
-
-    // TODO: Rename and change types and number of parameters
     public static SelectPlanFragment newInstance(String mobile, String name,String type) {
         SelectPlanFragment fragment = new SelectPlanFragment();
         Bundle args = new Bundle();
@@ -81,7 +72,6 @@ public class SelectPlanFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,10 +84,8 @@ public class SelectPlanFragment extends Fragment {
             }
         }
     }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         FragmentSelectPlan2Binding fragmentSelectPlan2Binding = DataBindingUtil.inflate(inflater, R.layout.fragment_select_plan2, container, false);
@@ -148,21 +136,15 @@ public class SelectPlanFragment extends Fragment {
 
             }
         });
-        fragmentSelectPlan2Binding.change.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mViewModel.rechargePlansMutableLiveData.setValue(null);
-            }
-        });
-        fragmentSelectPlan2Binding.recharge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mViewModel.getRsaKey(MyProfile.getInstance(getContext()).getUserID());
-            }
-        });
+        fragmentSelectPlan2Binding.change.setOnClickListener(view -> mViewModel.rechargePlansMutableLiveData.setValue(null));
+        fragmentSelectPlan2Binding.recharge.setOnClickListener(view -> mViewModel.getRsaKey(MyProfile.getInstance(getContext()).getUserID()));
+        mViewModel.responseRsakeyMutableLiveData.observeForever(rsaKeyResponse -> {
+              if(rsaKeyResponse!=null && rsaKeyResponse.getStatus().equals("success")) {
 
+                  
+              }
+        });
         return  fragmentSelectPlan2Binding.getRoot();
     }
-
 
 }
