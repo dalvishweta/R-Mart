@@ -46,7 +46,6 @@ public class ProductDetailsViewModel extends ViewModel {
                         iserror.postValue(true);
 
                     }
-                    List<CustomerProductsDetailsUnitModel> units = productDetailsDescResponse.getProductDetailsDescProductDataModel().getProductDetailsDescModel().getUnits();
                     productDetailsDescResponseMutableLiveData.setValue(productDetailsDescResponse);
                 } else {
                     iserror.postValue(true);
