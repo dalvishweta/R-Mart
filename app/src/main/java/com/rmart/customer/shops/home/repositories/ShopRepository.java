@@ -33,7 +33,7 @@ public class ShopRepository {
                     resultMutableLiveData.setValue(data);
 
                 } else {
-                    result.setMsg(data.getMsg());
+
                     result.setStatus(400);
                     resultMutableLiveData.setValue(result);
                 }
