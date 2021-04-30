@@ -29,6 +29,7 @@ public class ShopRepository {
             @Override
             public void onResponse(Call<ShopHomePageResponce> call, Response<ShopHomePageResponce> response) {
                 ShopHomePageResponce data = response.body();
+
                 if(response.isSuccessful()) {
                     if (data.results != null) {
                         resultMutableLiveData.setValue(data);
