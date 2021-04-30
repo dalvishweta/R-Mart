@@ -94,12 +94,21 @@ public class SplashScreen extends BaseActivity {
 
     private void getLoginDetails(Context context,LoginDetailsModel loginDetails) {
         if (Utils.isNetworkConnected(this)) {
-            progressDialog.show();
+            try {
+                progressDialog.show();
+            }catch (Exception e){
+
+            }
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
             authenticationService.login(deviceToken, loginDetails.getMobileNumber(), loginDetails.getPassword(), BuildConfig.ROLE_ID).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<LoginResponse> call, @NotNull Response<LoginResponse> response) {
-                    progressDialog.dismiss();
+
+                    try {
+                        progressDialog.dismiss();
+                    }catch (Exception e){
+
+                    }
                     if (response.isSuccessful()) {
                         LoginResponse data = response.body();
                         if (data != null) {
@@ -146,7 +155,12 @@ public class SplashScreen extends BaseActivity {
 
                 @Override
                 public void onFailure(@NotNull Call<LoginResponse> call, @NotNull Throwable t) {
-                    progressDialog.dismiss();
+
+                    try {
+                        progressDialog.dismiss();
+                    }catch (Exception e){
+
+                    }
                     gotoAuthenticationActivity();
                 }
             });

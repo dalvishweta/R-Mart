@@ -32,6 +32,14 @@ public class CustomerProductsResponse extends BaseResponse {
         @Expose
         private Integer shopTotalCount;
 
+        public Integer getNextPage() {
+            return nextPage;
+        }
+
+        @SerializedName("next_start_page")
+        @Expose
+        private Integer nextPage;
+
         public List<ShopDetailsModel> getCustomerShopsList() {
             return customerShopsList;
         }

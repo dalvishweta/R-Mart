@@ -29,12 +29,19 @@ public class ShopRepository {
             @Override
             public void onResponse(Call<ShopHomePageResponce> call, Response<ShopHomePageResponce> response) {
                 ShopHomePageResponce data = response.body();
-                if(data.results!=null) {
-                    resultMutableLiveData.setValue(data);
 
-                } else {
+                if(response.isSuccessful()) {
+                    if (data.results != null) {
+                        resultMutableLiveData.setValue(data);
 
-                    result.setStatus(400);
+                    } else {
+                        result.setMsg(data.getMsg());
+                        result.setStatus(400);
+                        resultMutableLiveData.setValue(result);
+                    }
+                }else {
+                    result.setMsg(response.message());
+                    result.setStatus(response.code());
                     resultMutableLiveData.setValue(result);
                 }
             }
