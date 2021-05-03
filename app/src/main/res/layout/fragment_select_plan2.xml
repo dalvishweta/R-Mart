@@ -30,6 +30,7 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
@@ -187,7 +188,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                tools:visibility="gone"
+                tools:visibility="visible"
                 android:visibility="@{selectPlanViewModel.rechargePlansMutableLiveData  ==null?View.VISIBLE:View.GONE}"
                 android:layout_height="match_parent">
             <LinearLayout
@@ -200,6 +201,21 @@
 
                 android:orientation="vertical"
                 >
+                <EditText
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/mobile_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_rounded_borders_bg"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/roboto_light"
+                    android:hint="Enter Custom Amount"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:padding="10dp"
+                    tools:ignore="Autofill,LabelFor" />
 
                 <TextView
                     android:layout_marginRight="10dp"
@@ -213,22 +229,7 @@
                     android:textColor="@color/black2"
                     android:textSize="14sp" />
 
-                <EditText
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:id="@+id/mobile_no"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/grey_rounded_borders_bg"
-                    android:drawableLeft="@drawable/search"
-                    android:drawablePadding="8dp"
-                    android:fontFamily="@font/roboto_light"
-                    android:hint="Search for a plan, eg. 499 or 28 days"
-                    android:inputType="text"
-                    android:maxLength="10"
-                    android:padding="10dp"
-                    tools:ignore="Autofill,LabelFor" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -265,6 +266,7 @@
 
             <LinearLayout
                 android:orientation="vertical"
+                tools:visibility="visible"
                 android:visibility="@{selectPlanViewModel.isError?View.GONE:View.VISIBLE}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -307,6 +309,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                tools:visibility="gone"
                 android:visibility="@{selectPlanViewModel.rechargePlansMutableLiveData==null?View.GONE:View.VISIBLE}"
                 android:background="@drawable/cart_background"
                 android:orientation="vertical">
@@ -391,10 +394,20 @@
             android:paddingBottom="10dp"
             android:paddingLeft="5dp"
             android:visibility="@{selectPlanViewModel.rechargePlansMutableLiveData!=null?View.GONE:View.VISIBLE}"
-
+            tools:visibility="gone"
             android:paddingRight="5dp"
             android:text="@string/disclaimer_we_support_most_typees_of_recharges_but_please_check_with_your_operator_before_you_proceed"
             />
+        <ProgressBar
+            android:layout_marginTop="5dp"
+            android:visibility="@{selectPlanViewModel.isLoading?View.VISIBLE:View.GONE}"
+            android:id="@+id/progressBar2"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:elevation="15dp"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/recharge"
@@ -407,7 +420,10 @@
             android:textAllCaps="false"
             android:layout_alignParentBottom="true"
             android:textSize="14sp"
+            tools:visibility="visible"
             android:textColor="@color/white"
             android:layout_height="wrap_content"/>
+
+
     </RelativeLayout>
 </layout>

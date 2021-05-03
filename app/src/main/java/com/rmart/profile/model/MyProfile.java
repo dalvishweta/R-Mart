@@ -22,7 +22,7 @@ public class MyProfile {
     public static final String RETAILER = "Retailer";
     public static final String CUSTOMER = "Customer";
     public static final String PREF_NAME = "Rokad Client";
-
+    Context context;
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -99,7 +99,7 @@ public class MyProfile {
             myProfile.vendorInfo = vendor;
         }
         if(profileResponse.getAddressResponses().size() > 0) {
-            myProfile.setAddressResponses(profileResponse.getAddressResponses());
+            myProfile.addressResponses = profileResponse.getAddressResponses();
         }
         Gson gson = new Gson();
         String str = gson.toJson(myProfile);
@@ -215,7 +215,9 @@ public class MyProfile {
         return addressResponses;
     }
 
-    public void setAddressResponses(ArrayList<AddressResponse> addressResponses) {
+    public void setAddressResponses(ArrayList<AddressResponse> addressResponses,Context c) {
+
+
         this.addressResponses = addressResponses;
     }
 

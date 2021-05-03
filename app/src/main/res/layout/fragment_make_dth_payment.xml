@@ -128,7 +128,7 @@
             android:padding="10dp"
             android:text="RECHARGE"
             android:visibility="@{DthServiceViewModule.isLoading?View.GONE:View.VISIBLE}"
-            android:onClick="@{(v) -> DthServiceViewModule.onPayClick(v)}"/>
+            android:onClick="@{(v) -> DthServiceViewModule.onClick(v)}"/>
     </FrameLayout>
 </RelativeLayout>
 </layout>

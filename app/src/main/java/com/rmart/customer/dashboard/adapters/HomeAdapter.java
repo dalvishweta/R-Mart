@@ -15,6 +15,7 @@ import com.rmart.databinding.SliderBinding;
 import java.util.List;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -84,12 +85,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         else if(holder2 instanceof  ServicesHolder){
             ServicesHolder servicesHolder = (ServicesHolder) holder2;
             ServicesAdapter categoryAdapter = new  ServicesAdapter(context, homePageData.get(position).getService(),onClickListner);
-
-            ;   servicesHolder.bind(homePageData.get(position));
-            LinearLayoutManager linearLayoutManager =new LinearLayoutManager(context);
-            linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+            servicesHolder.bind(homePageData.get(position));
+            GridLayoutManager linearLayoutManager =new GridLayoutManager(context,4);
+            //linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
             servicesHolder.binding.category.setLayoutManager(linearLayoutManager);
             servicesHolder.binding.category.setAdapter(categoryAdapter);
+
         }
         else {
             HomePageHolder homePageHolder = (HomePageHolder) holder2;

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class ElectricityCcavenue implements Serializable {
+public class CCAvenueResponceModel implements Serializable {
 
     @SerializedName("order_id")
     @Expose

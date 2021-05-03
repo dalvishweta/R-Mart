@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.rmart.R;
 import com.rmart.databinding.ActivityProductlistRetailerBinding;
 import com.rmart.inventory.views.BaseInventoryFragment;
+import com.rmart.profile.model.MyProfile;
 import com.rmart.retiler.inventory.brand.activities.BrandFilterActivity;
 import com.rmart.retiler.inventory.brand.model.Brand;
 import com.rmart.retiler.inventory.category.activities.CategoryFilterActivity;
@@ -70,7 +71,7 @@ public class ProductList extends BaseInventoryFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel.class);
         binding = DataBindingUtil.inflate(inflater, R.layout.activity_productlist_retailer, container, false);
-        productViewModel.getProductList( page+"");
+        productViewModel.getProductList( page+"", MyProfile.getInstance(getContext()).getUserID());
         binding.setProductViewModel(productViewModel);
         binding.setLifecycleOwner(this);
         binding.addCustomProduct.tvProductType.setText("Custom Product");
@@ -108,7 +109,7 @@ public class ProductList extends BaseInventoryFragment {
                         page=0;
                         productSearchListAdapter.products.clear();
                         productSearchListAdapter.notifyDataSetChanged();
-                        productViewModel.getProductList( page+"");
+                        productViewModel.getProductList( page+"", MyProfile.getInstance(getContext()).getUserID());
                     }
 
                     return true;
@@ -153,7 +154,7 @@ public class ProductList extends BaseInventoryFragment {
                 }
                 page = 0;
 
-                productViewModel.getProductList( page+"");
+                productViewModel.getProductList( page+"", MyProfile.getInstance(getContext()).getUserID());
 
             }
 
@@ -177,7 +178,7 @@ public class ProductList extends BaseInventoryFragment {
                 if (!productViewModel.isLoading.getValue()) {
                     if (productViewModel.productListResponseMutableLiveData.getValue().isNext_value()) {
                         page++;
-                        productViewModel.getProductList( page+"");
+                        productViewModel.getProductList( page+"", MyProfile.getInstance(getContext()).getUserID());
 
                     }
                 }
@@ -201,7 +202,7 @@ public class ProductList extends BaseInventoryFragment {
            }
            page=0;
 
-           productViewModel.getProductList( page+"");
+           productViewModel.getProductList( page+"", MyProfile.getInstance(getContext()).getUserID());
        }
 
 

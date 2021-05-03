@@ -66,7 +66,9 @@ public class FragmentMobileRecharge extends Fragment {
         binding.toolbar.setNavigationOnClickListener(view -> getActivity().onBackPressed());
         mViewModel.responseGetHistoryMutableLiveData.observeForever(responseGetHistory -> {
             RechargeHistoryAdapter rechargeHistoryAdapter = new RechargeHistoryAdapter(responseGetHistory.lastTransaction, view -> {
-                changefragment(view.getRechargeOn(), view.getRechargeOn(), null);
+                String type = binding.rgServiceType.getCheckedRadioButtonId()==R.id.rb_prepaid?PREPAID:POSTPAID;
+
+                changefragment(view.getRechargeOn(), view.getRechargeOn(), type);
             });
             binding.setRechargeHistoryAdapter(rechargeHistoryAdapter);
         });

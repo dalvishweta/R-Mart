@@ -39,9 +39,6 @@ public class ServicesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ServicesRowItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.services_row_item, parent, false);
         ServicesViewHolder vh = new ServicesViewHolder(binding); // pass the view to View Holder
         return vh;
-
-
-//
     }
 
     @Override
@@ -68,11 +65,7 @@ public class ServicesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-
-
         return serviceOffers.size();
-
-
     }
 
     public class ServicesViewHolder extends RecyclerView.ViewHolder {

@@ -15,6 +15,8 @@ import retrofit2.Response;
 
 public class MobileRechargeRepository {
 
+    public final static int MOBLIE_RECHARGE_SERVICE_TYPE= 1;
+    public final static int DTH_RECHARGE_SERVICE_TYPE= 2;
     public static MutableLiveData<ResponseGetHistory> getHistory() {
 
         MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstanceRokad().create(MobileRechargeService.class);
@@ -50,19 +52,19 @@ public class MobileRechargeRepository {
     }
 
 
-    public static MutableLiveData<MRechargeBaseClass> getVRecharge(int service_type,String preOperator_dth,String customer_number,String recharge_type,String preOperator,String PostOperator,
-                                                                   String Location,String Mobile_number,String rechargeType,String Recharge_amount, String user_id,String ccavneuData) {
+    public static MutableLiveData<MRechargeBaseClass> performVRecharge(int service_type, String preOperator_dth, String customer_number, int recharge_type, String preOperator, String PostOperator,
+                                                                   String Location, String Mobile_number, int rechargeType, String Recharge_amount, String user_id, String ccavneuData) {
 
         MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstanceRokad().create(MobileRechargeService.class);
         final MutableLiveData<MRechargeBaseClass> resultMutableLiveData = new MutableLiveData<>();
-        Call<MRechargeBaseClass> call = mobileRechargeService.VRecharge(service_type, preOperator_dth, customer_number, recharge_type, preOperator, PostOperator, Location, Mobile_number, rechargeType, Recharge_amount, user_id, ccavneuData);
+        Call<MRechargeBaseClass> call = mobileRechargeService.VRecharge(service_type, preOperator_dth, customer_number, recharge_type+"", preOperator, PostOperator, Location, Mobile_number, rechargeType+"", Recharge_amount, user_id, ccavneuData);
         final MRechargeBaseClass result = new MRechargeBaseClass();
 
         call.enqueue(new Callback<MRechargeBaseClass>() {
             @Override
             public void onResponse(Call<MRechargeBaseClass> call, Response<MRechargeBaseClass> response) {
                 MRechargeBaseClass data = response.body();
-                if(data!=null && data.getData()!=null) {
+                if(response.isSuccessful()) {
                     resultMutableLiveData.setValue(data);
                 } else {
 

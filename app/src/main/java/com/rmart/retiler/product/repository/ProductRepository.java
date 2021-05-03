@@ -1,8 +1,11 @@
 package com.rmart.retiler.product.repository;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.rmart.BuildConfig;
+import com.rmart.profile.model.MyProfile;
 import com.rmart.retiler.product.api.RetailerProductDetailsApi;
 import com.rmart.retiler.product.model.category.CategoryListRequest;
 import com.rmart.retiler.product.model.category.CategoryListResponse;
@@ -16,11 +19,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProductRepository {
-    public static MutableLiveData<ProductListResponse> getAllProducts(ProductListRequest request){
+    public static MutableLiveData<ProductListResponse> getAllProducts(Context context,ProductListRequest request){
         RetailerProductDetailsApi api = RetrofitClientInstance.getRetrofitInstance().create(RetailerProductDetailsApi.class);
         MutableLiveData<ProductListResponse> productListResponse = new MutableLiveData<>();
         Call<ProductListResponse> call = api.getAllProducts(request.getStartIndex(), request.getEndIndex(),
-                request.getMobile(), request.getStockType());
+                request.getMobile(), request.getStockType(), MyProfile.getInstance(context).getUserID());
 
         call.enqueue(new Callback<ProductListResponse>() {
             @Override

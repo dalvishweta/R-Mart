@@ -121,7 +121,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
     private final CallBackInterface callBackListener = pObject -> {
         if (pObject instanceof AddressResponse) {
             resetAddressList();
-            MyProfile.getInstance(getContext()).setAddressResponses(addressList);
+            MyProfile.getInstance(getContext()).setAddressResponses(addressList,getContext());
             myAddress = (AddressResponse) pObject;
             int index = addressList.indexOf(myAddress);
             if (index > -1) {
@@ -159,7 +159,7 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                 showDialog(data.getMsg(), pObject -> {
                                     MyProfile.getInstance(getContext()).setPrimaryAddressId(myAddress.getId().toString());
-                                    MyProfile.getInstance(getContext()).setAddressResponses(addressList);
+                                    MyProfile.getInstance(getContext()).setAddressResponses(addressList,getContext());
                                     Objects.requireNonNull(requireActivity()).onBackPressed();
                                 });
                             } else {

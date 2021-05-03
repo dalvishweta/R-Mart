@@ -32,7 +32,7 @@ public interface RetailerProductDetailsApi {
     @POST(BuildConfig.API_PRODUCT_LIST)
     @FormUrlEncoded
     Call<ProductListResponse> getAllProducts(@Field("start_index") String startIndex, @Field("end_index") String endIndex,
-                                             @Field("mobile") String mobile, @Field("stock_type") String stockType);
+                                             @Field("mobile") String mobile, @Field("stock_type") String stockType, @Field("user_id") String userId);
 
     @POST(BuildConfig.API_BRAND_LIST)
     @FormUrlEncoded

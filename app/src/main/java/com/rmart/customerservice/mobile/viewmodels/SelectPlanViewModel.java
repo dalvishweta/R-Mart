@@ -83,10 +83,10 @@ public class SelectPlanViewModel  extends ViewModel {
 
     }
 
-    public void doVRecharge(int service_type,String preOperator_dth,String customer_number,String recharge_type,String preOperator,String PostOperator,
-                            String Location,String Mobile_number,String rechargeType,String Recharge_amount, String user_id,String ccavneuData){
+    public void doVRecharge(int service_type,String preOperator_dth,String customer_number,int recharge_type,String preOperator,String PostOperator,
+                            String Location,String Mobile_number,int rechargeType,String Recharge_amount, String user_id,String ccavneuData){
         isLoading.setValue(true);
-        MobileRechargeRepository.getVRecharge(service_type, preOperator_dth, customer_number, recharge_type, preOperator, PostOperator, Location, Mobile_number, rechargeType, Recharge_amount, user_id, ccavneuData).observeForever(getRechargeResponse -> {
+        MobileRechargeRepository.performVRecharge(service_type, preOperator_dth, customer_number, recharge_type, preOperator, PostOperator, Location, Mobile_number, rechargeType, Recharge_amount, user_id, ccavneuData).observeForever(getRechargeResponse -> {
             responseVRechargeMutableLiveData.setValue(getRechargeResponse);
             isLoading.setValue(false);
         });
@@ -97,7 +97,7 @@ public class SelectPlanViewModel  extends ViewModel {
         MobileRechargeRepository.getRSAKey(user_id, String.valueOf(rechargePlansMutableLiveData.getValue().getRs()), BuildConfig.service_id,BuildConfig.service_name).observeForever(responseKeyResponse -> {
 
             responseRsakeyMutableLiveData.setValue(responseKeyResponse);
-            isLoading.setValue(false);
+
         });
 
     }

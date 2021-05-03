@@ -13,12 +13,12 @@ import retrofit2.Response;
 
 public class ProductListRepository {
 
-    public static MutableLiveData<ProductListResponse> getProductList(String category_id, String brand_id, String search_phrase,String page){
+    public static MutableLiveData<ProductListResponse> getProductList(String category_id, String brand_id, String search_phrase,String page,String UserID){
 
         ProductListSearchApi productListSearchApi = RetrofitClientInstance.getRetrofitInstance().create(ProductListSearchApi.class);
         final MutableLiveData<ProductListResponse> resultMutableLiveData = new MutableLiveData<>();
 
-        Call<ProductListResponse> call = productListSearchApi.getProductSearch(category_id,brand_id,search_phrase,page);
+        Call<ProductListResponse> call = productListSearchApi.getProductSearch(category_id,brand_id,search_phrase,page,UserID);
 
         call.enqueue(new Callback<ProductListResponse>() {
             @Override

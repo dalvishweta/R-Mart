@@ -149,38 +149,42 @@ public class EditMyProfileFragment extends BaseFragment implements View.OnClickL
     }
 
     private void updateUserProfileImage() {
-        Bitmap bitmap = MyProfile.getInstance(getContext()).getUserProfileImage().getValue();
-        if (bitmap != null) {
-            profileCircularBar.setVisibility(View.GONE);
-            ivProfileImageField.setImageBitmap(bitmap);
-        } else {
-            String imageUrl = MyProfile.getInstance(getContext()).getProfileImage();
-            if (!TextUtils.isEmpty(imageUrl)) {
-                HttpsTrustManager.allowAllSSL();
-                ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
-                imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
-                    @Override
-                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        profileCircularBar.setVisibility(View.GONE);
-                        profileImageBitmap = response.getBitmap();
+        try {
+            Bitmap bitmap = MyProfile.getInstance(getContext()).getUserProfileImage().getValue();
+            if (bitmap != null) {
+                profileCircularBar.setVisibility(View.GONE);
+                ivProfileImageField.setImageBitmap(bitmap);
+            } else {
+                String imageUrl = MyProfile.getInstance(getContext()).getProfileImage();
+                if (!TextUtils.isEmpty(imageUrl)) {
+                    HttpsTrustManager.allowAllSSL();
+                    ImageLoader imageLoader = RMartApplication.getInstance().getImageLoader();
+                    imageLoader.get(imageUrl, new ImageLoader.ImageListener() {
+                        @Override
+                        public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                            profileCircularBar.setVisibility(View.GONE);
+                            profileImageBitmap = response.getBitmap();
+                            ivProfileImageField.setImageBitmap(profileImageBitmap);
+                        }
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            profileCircularBar.setVisibility(View.GONE);
+                            ivProfileImageField.setImageResource(R.drawable.avatar);
+                        }
+                    });
+                    ivProfileImageField.setImageUrl(imageUrl, imageLoader);
+                } else {
+                    Bitmap newBitmap = MyProfile.getInstance(getContext()).getUserProfileImage().getValue();
+                    if (newBitmap != null) {
+                        profileImageBitmap = newBitmap;
                         ivProfileImageField.setImageBitmap(profileImageBitmap);
                     }
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        profileCircularBar.setVisibility(View.GONE);
-                        ivProfileImageField.setImageResource(R.drawable.avatar);
-                    }
-                });
-                ivProfileImageField.setImageUrl(imageUrl, imageLoader);
-            } else {
-                Bitmap newBitmap = MyProfile.getInstance(getContext()).getUserProfileImage().getValue();
-                if (newBitmap != null) {
-                    profileImageBitmap = newBitmap;
-                    ivProfileImageField.setImageBitmap(profileImageBitmap);
+                    profileCircularBar.setVisibility(View.GONE);
                 }
-                profileCircularBar.setVisibility(View.GONE);
             }
+        }catch (Exception e){
+
         }
     }
 

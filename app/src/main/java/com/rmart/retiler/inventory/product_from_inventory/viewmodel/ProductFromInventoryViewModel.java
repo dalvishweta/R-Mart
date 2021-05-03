@@ -39,9 +39,7 @@ public class ProductFromInventoryViewModel extends ViewModel {
             }
         });
     }
-    public void isactive(String product_id, String isActive,String client_id ){
 
-    }
 
 
 }

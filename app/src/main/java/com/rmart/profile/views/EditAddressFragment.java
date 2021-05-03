@@ -1,6 +1,8 @@
 package com.rmart.profile.views;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -29,6 +31,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
@@ -71,6 +74,8 @@ import retrofit2.Response;
 import retrofit2.http.Field;
 
 import static android.app.Activity.RESULT_OK;
+import static com.rmart.profile.model.MyProfile.PREF_NAME;
+
 public class EditAddressFragment extends BaseFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -865,76 +870,76 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
             boolean isAdharBackImageValid =true;
             boolean isPanValid =true;
             boolean isShopActValid =true;
-            String actNumber = Objects.requireNonNull(binding.shopAct.getText()).toString().trim();
-            if (TextUtils.isEmpty(actNumber)) {
-                isShopActValid =false;
-            } else if (actNumber.length() != 12) {
-                //showDialog(getString(R.string.valid_act_number_required));
-                isShopActValid =false;
-            }
-            aadharNo  = Objects.requireNonNull(binding.tvAadharNumberNoField.getText()).toString().trim();
-            if (TextUtils.isEmpty(aadharNo)) {
-                ///showDialog(getString(R.string.enter_your_aadhar_number));
-                isAdharValid = false;
-                isAdharNoValid = false;
-            } else if (aadharNo.length() != 12) {
-                //showDialog(getString(R.string.aadhar_number_error));
-                isAdharValid =false;
-                isAdharNoValid =false;
-            } else {
-                if (TextUtils.isEmpty(editAdreesViewModel.aadharFrontImageUrl.getValue())) {
-                //showDialog(getString(R.string.aadhar_front_image_required));
-                binding.aadharFrontLayoutField.setBackground(getResources().getDrawable(R.drawable.error_image_border));
-                isAdharValid =false;
-                isAdharFrontImageValid =false;
-                }
-                    if (TextUtils.isEmpty(editAdreesViewModel.aadharBackImageUrl.getValue())) {
-                    //showDialog(getString(R.string.aadhar_back_image_required));
-                    binding.aadharBackLayoutField.setBackground(getResources().getDrawable(R.drawable.error_image_border));
-                    isAdharBackImageValid =false;
-
-                    isAdharValid =false;
-                }
-            }
-            String panCardNo = Objects.requireNonNull(binding.panNumber.getText()).toString().trim();
-            panCardNo = panCardNo.toUpperCase();
-            if (TextUtils.isEmpty(panCardNo)) {
-                //showDialog(getString(R.string.enter_your_pan_number));
-                isPanValid =false;
-            } else {
-                boolean data = Utils.isValidPanCardNo(panCardNo);
-                if (!data) {
-                   // showDialog(getString(R.string.invalid_PAN));
-                    isPanValid = false;
-                } else        if (TextUtils.isEmpty(editAdreesViewModel.panCardImageUrl.getValue())) {
-                   // showDialog(getString(R.string.pancard_image_required));
-                    binding.panCardLayoutField.setBackground(getResources().getDrawable(R.drawable.error_image_border));
-
-                    isPanValid = false;
-                }
-            }
-
-            if( !isPanValid && !isAdharValid && !isShopActValid) {
-                //showDialog("Please Enter any one KYC Document Number");
-                if(!isPanValid) {
-                    editAdreesViewModel.errorPanNumberMutableLiveData.setValue("Please Enter valid PAN Number (Optional KYC Document)");
-                }
-                if(!isAdharValid){
-                    if(!isAdharNoValid) {
-                        editAdreesViewModel.errorAadharNoMutableLiveData.setValue("Please Enter valid Aadhar Number (Optional KYC Document)");
-                    }
-                }
-                if(!isShopActValid){
-                    editAdreesViewModel.errorShopActStringMutableLiveData.setValue("Please Enter valid Shop Act Number(Optional KYC Document)");
-                }
-                validation = false;
-
-            } else {
-                editAdreesViewModel.errorShopActStringMutableLiveData.setValue(null);
-                editAdreesViewModel.errorAadharNoMutableLiveData.setValue(null);
-                editAdreesViewModel.errorPanNumberMutableLiveData.setValue(null);
-
-            }
+//            String actNumber = Objects.requireNonNull(binding.shopAct.getText()).toString().trim();
+//            if (TextUtils.isEmpty(actNumber)) {
+//                isShopActValid =false;
+//            } else if (actNumber.length() != 12) {
+//                //showDialog(getString(R.string.valid_act_number_required));
+//                isShopActValid =false;
+//            }
+//            aadharNo  = Objects.requireNonNull(binding.tvAadharNumberNoField.getText()).toString().trim();
+//            if (TextUtils.isEmpty(aadharNo)) {
+//                ///showDialog(getString(R.string.enter_your_aadhar_number));
+//                isAdharValid = false;
+//                isAdharNoValid = false;
+//            } else if (aadharNo.length() != 12) {
+//                //showDialog(getString(R.string.aadhar_number_error));
+//                isAdharValid =false;
+//                isAdharNoValid =false;
+//            } else {
+//                if (TextUtils.isEmpty(editAdreesViewModel.aadharFrontImageUrl.getValue())) {
+//                //showDialog(getString(R.string.aadhar_front_image_required));
+//                binding.aadharFrontLayoutField.setBackground(getResources().getDrawable(R.drawable.error_image_border));
+//                isAdharValid =false;
+//                isAdharFrontImageValid =false;
+//                }
+//                    if (TextUtils.isEmpty(editAdreesViewModel.aadharBackImageUrl.getValue())) {
+//                    //showDialog(getString(R.string.aadhar_back_image_required));
+//                    binding.aadharBackLayoutField.setBackground(getResources().getDrawable(R.drawable.error_image_border));
+//                    isAdharBackImageValid =false;
+//
+//                    isAdharValid =false;
+//                }
+//            }
+//            String panCardNo = Objects.requireNonNull(binding.panNumber.getText()).toString().trim();
+//            panCardNo = panCardNo.toUpperCase();
+//            if (TextUtils.isEmpty(panCardNo)) {
+//                //showDialog(getString(R.string.enter_your_pan_number));
+//                isPanValid =false;
+//            } else {
+//                boolean data = Utils.isValidPanCardNo(panCardNo);
+//                if (!data) {
+//                   // showDialog(getString(R.string.invalid_PAN));
+//                    isPanValid = false;
+//                } else        if (TextUtils.isEmpty(editAdreesViewModel.panCardImageUrl.getValue())) {
+//                   // showDialog(getString(R.string.pancard_image_required));
+//                    binding.panCardLayoutField.setBackground(getResources().getDrawable(R.drawable.error_image_border));
+//
+//                    isPanValid = false;
+//                }
+//            }
+//
+//            if( !isPanValid && !isAdharValid && !isShopActValid) {
+//                //showDialog("Please Enter any one KYC Document Number");
+//                if(!isPanValid) {
+//                    editAdreesViewModel.errorPanNumberMutableLiveData.setValue("Please Enter valid PAN Number (Optional KYC Document)");
+//                }
+//                if(!isAdharValid){
+//                    if(!isAdharNoValid) {
+//                        editAdreesViewModel.errorAadharNoMutableLiveData.setValue("Please Enter valid Aadhar Number (Optional KYC Document)");
+//                    }
+//                }
+//                if(!isShopActValid){
+//                    editAdreesViewModel.errorShopActStringMutableLiveData.setValue("Please Enter valid Shop Act Number(Optional KYC Document)");
+//                }
+//                validation = false;
+//
+//            } else {
+//                editAdreesViewModel.errorShopActStringMutableLiveData.setValue(null);
+//                editAdreesViewModel.errorAadharNoMutableLiveData.setValue(null);
+//                editAdreesViewModel.errorPanNumberMutableLiveData.setValue(null);
+//
+//            }
 
             String shopName = Objects.requireNonNull(binding.shopName.getText()).toString().trim();
             if (TextUtils.isEmpty(shopName)) {
@@ -943,23 +948,23 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                 validation =false;
             }
 
-            String banckAccountno = Objects.requireNonNull(binding.bankAccNo.getText()).toString().trim();
-            if (!TextUtils.isEmpty(banckAccountno)) {
-                if(banckAccountno.length()<9 && banckAccountno.length()>18) {
-                    editAdreesViewModel.errorBanckAccountStringMutableLiveData.setValue(getString(R.string.bank_account_required));
-                    //showDialog(getString(R.string.shop_name_required));
-                    validation = false;
-                }
-            }
-
-            String ifscCode = Objects.requireNonNull(binding.bankIfsc.getText()).toString().trim();
-            if (!TextUtils.isEmpty(ifscCode)) {
-                if(Utils.isValidIFSCode(ifscCode)) {
-                    editAdreesViewModel.errorBanckIFSCStringMutableLiveData.setValue(getString(R.string.bank_ifsc_required));
-                    //showDialog(getString(R.string.shop_name_required));
-                    validation = false;
-                }
-            }
+//            String banckAccountno = Objects.requireNonNull(binding.bankAccNo.getText()).toString().trim();
+//            if (!TextUtils.isEmpty(banckAccountno)) {
+//                if(banckAccountno.length()<9 && banckAccountno.length()>18) {
+//                    editAdreesViewModel.errorBanckAccountStringMutableLiveData.setValue(getString(R.string.bank_account_required));
+//                    //showDialog(getString(R.string.shop_name_required));
+//                    validation = false;
+//                }
+//            }
+//
+//            String ifscCode = Objects.requireNonNull(binding.bankIfsc.getText()).toString().trim();
+//            if (!TextUtils.isEmpty(ifscCode)) {
+//                if(Utils.isValidIFSCode(ifscCode)) {
+//                    editAdreesViewModel.errorBanckIFSCStringMutableLiveData.setValue(getString(R.string.bank_ifsc_required));
+//                    //showDialog(getString(R.string.shop_name_required));
+//                    validation = false;
+//                }
+//            }
 
             if (binding.businessType.getSelectedItemPosition()==0) {
                 //editAdreesViewModel.errorBanckIFSCStringMutableLiveData.setValue(getString(R.string.bank_ifsc_required));
@@ -976,11 +981,11 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                 validation =false;
             }
 
-            if (TextUtils.isEmpty(editAdreesViewModel.shopImageUrl.getValue())) {
-                //showDialog(getString(R.string.shop_image_required));
-                binding.shopImageLayoutField.setBackground(getResources().getDrawable(R.drawable.error_image_border));
-                validation =false;
-            }
+//            if (TextUtils.isEmpty(editAdreesViewModel.shopImageUrl.getValue())) {
+//                //showDialog(getString(R.string.shop_image_required));
+//                binding.shopImageLayoutField.setBackground(getResources().getDrawable(R.drawable.error_image_border));
+//                validation =false;
+//            }
 
 
 
@@ -1142,7 +1147,8 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                                             MyProfile.getInstance(getActivity()).setCredit_option(CreditOption);
                                             MyProfile.getInstance(getActivity()).setWholeselar(SellingToConsumer);
                                             MyProfile.getInstance(getActivity()).setPrimaryAddressId(lastAddressDetails.getId().toString());
-                                            MyProfile.getInstance(getActivity()).setAddressResponses(data.getResponse());
+                                            MyProfile.getInstance(getActivity()).setAddressResponses(data.getResponse(),getContext());
+
                                             if (isAddNewAddress) {
                                                 gotoCustomerHomeScreen();
                                             }
@@ -1184,10 +1190,19 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                             AddressListResponse data = response.body();
                             if (data != null) {
                                 if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                    MyProfile profile=  MyProfile.getInstance(getActivity());
+                                    profile.setAddressResponses(data.getResponse(),getContext());
+                                    profile.setCredit_option(CreditOption);
+                                    profile.setWholeselar(SellingToConsumer);
+                                    Gson gson = new Gson();
+                                    String str = gson.toJson(profile);
+                                    SharedPreferences sharedPref = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.putString(MyProfile.CUSTOMER, str);
+                                    editor.apply();
+                                    editor.commit();
                                     showDialog(data.getMsg(), pObject -> {
-                                        MyProfile.getInstance(getActivity()).setAddressResponses(data.getResponse());
-                                        MyProfile.getInstance(getActivity()).setCredit_option(CreditOption);
-                                        MyProfile.getInstance(getActivity()).setWholeselar(SellingToConsumer);
+
                                         Objects.requireNonNull(requireActivity()).onBackPressed();
                                     });
                                 } else {

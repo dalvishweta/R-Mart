@@ -1,5 +1,6 @@
 package com.rmart.retiler.product.viewModel;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -68,8 +69,8 @@ public class AddNewProductViewModel extends ViewModel {
         });
     }
 
-    public void getAllProducts(ProductListRequest request) {
-        MutableLiveData<ProductListResponse> _productListResponse = ProductRepository.getAllProducts(request);
+    public void getAllProducts(ProductListRequest request, Context context) {
+        MutableLiveData<ProductListResponse> _productListResponse = ProductRepository.getAllProducts(context,request);
         _productListResponse.observeForever(new Observer<ProductListResponse>() {
             @Override
             public void onChanged(ProductListResponse response) {

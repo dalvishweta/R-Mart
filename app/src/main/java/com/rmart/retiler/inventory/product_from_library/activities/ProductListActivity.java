@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.rmart.R;
 import com.rmart.databinding.ActivityProductlistRetailerBinding;
+import com.rmart.profile.model.MyProfile;
 import com.rmart.retiler.inventory.product_from_library.model.ProductListResponse;
 import com.rmart.retiler.inventory.product_from_library.viewmodel.ProductViewModel;
 import com.rmart.utilits.GridSpacesItemDecoration;
@@ -21,7 +22,7 @@ public class ProductListActivity extends AppCompatActivity {
         //setContentView(R.layout.activity_brand_filter);
          binding = DataBindingUtil.setContentView(this,R.layout.activity_productlist_retailer);
         ProductViewModel productViewModel = ViewModelProviders.of(this).get(ProductViewModel.class);
-        productViewModel.getProductList("0");
+        productViewModel.getProductList("0",MyProfile.getInstance(this).getUserID());
         binding.setProductViewModel(productViewModel);
         binding.setLifecycleOwner(this);
         binding.rvBrands.addItemDecoration(new GridSpacesItemDecoration(15));

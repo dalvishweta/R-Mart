@@ -16,10 +16,10 @@ public class ProductViewModel extends ViewModel {
     public MutableLiveData<String> searchPhrase = new MutableLiveData<>();
 
    public MutableLiveData<ProductListResponse> productListResponseMutableLiveData = new MutableLiveData<>();
-    public void getProductList(String page)
+    public void getProductList(String page,String UserID)
     {
         isLoading.setValue(true);
-        MutableLiveData<ProductListResponse> resultMutableLiveData= ProductListRepository.getProductList(categoryID.getValue()!=null?categoryID.getValue().getId()+"":null,brandID.getValue()!=null?brandID.getValue().getId()+"":null,searchPhrase.getValue(),page);
+        MutableLiveData<ProductListResponse> resultMutableLiveData= ProductListRepository.getProductList(categoryID.getValue()!=null?categoryID.getValue().getId()+"":null,brandID.getValue()!=null?brandID.getValue().getId()+"":null,searchPhrase.getValue(),page,UserID);
         resultMutableLiveData.observeForever(new Observer<ProductListResponse>() {
             @Override
             public void onChanged(ProductListResponse productListResponse) {

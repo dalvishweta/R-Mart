@@ -208,6 +208,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:visibility="gone"
                 app:errorText='@{myAddress.errorShopActStringMutableLiveData}'
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
@@ -248,6 +249,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 android:gravity="center"
                 app:errorText='@{myAddress.errorgstNoStringMutableLiveData}'
                 android:hint="@string/enter_your_gst_number"
@@ -280,6 +282,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:digits="@string/allow_digits_for_numbers"
+                    android:text="15"
                     android:inputType="numberSigned"
                     android:maxLength="3" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -305,6 +308,7 @@
                         android:id="@+id/delivery_charges"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text="0"
                         android:inputType="numberSigned" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -316,7 +320,9 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
+                    android:text="0"
                     android:gravity="center"
+
                     app:errorText='@{myAddress.errorgstMinimumOrderMutableLiveData}'
                     android:hint="@string/minimum_order">
 
@@ -326,6 +332,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="numberSigned"
+                        android:text="0"
                         android:maxLength="4" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
@@ -351,7 +358,7 @@
                         android:id="@+id/open_time"
                         android:editable="false"
                         android:focusable="false"
-
+                        android:text="09:00 am"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -370,7 +377,7 @@
                     <EditText
                         android:id="@+id/close_time"
                         android:focusable="false"
-
+                        android:text="09:00 pm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1" />
@@ -410,6 +417,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:digits="@string/allow_digits_for_numbers"
+                        android:text="0"
                         android:inputType="numberDecimal"
 
                         android:maxLength="1" />
@@ -431,6 +439,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:digits="@string/allow_digits_for_numbers"
+                        android:text="1"
                         android:inputType="numberDecimal"
                         android:maxLength="1" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -443,6 +452,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 android:gravity="center"
                 app:errorText='@{myAddress.errorAadharNoMutableLiveData}'
                 android:hint="@string/aadhar_number"
@@ -459,6 +469,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:weightSum="2"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
@@ -547,6 +558,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:visibility="gone"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:gravity="center"
@@ -567,6 +579,7 @@
                 android:layout_marginLeft="15dp"
                 android:orientation="vertical"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:layout_marginRight="15dp" >
                 <TextView
                     android:layout_above="@+id/adharcard_front_image_field"
@@ -607,6 +620,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
                 android:text="@string/banck_details_text"
+                android:visibility="gone"
                 android:textColor="@color/black" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -617,6 +631,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:gravity="center"
+                android:visibility="gone"
                 app:errorText='@{myAddress.errorBanckAccountStringMutableLiveData}'
                 android:hint="@string/enter_your_bank_acc_no">
 
@@ -633,6 +648,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:visibility="gone"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:gravity="center"
@@ -652,6 +668,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 android:gravity="center"
                 app:errorText='@{myAddress.errorBanckIFSCStringMutableLiveData}'
                 android:hint="@string/enter_your_bank_ifsc_code">
@@ -670,6 +687,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
+                android:visibility="gone"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:hint="@string/enter_your_bank_branch">

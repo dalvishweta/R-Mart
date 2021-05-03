@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
@@ -175,7 +174,7 @@ public class PaymentActivity extends AppCompatActivity {
             Log.d("JsonObject", "html data: " + html);
             jsonObject = new JsonParser().parse(html).getAsJsonObject();
             Gson g = new Gson();
-            ElectricityCcavenue ccAvenueResponse = g.fromJson(html, ElectricityCcavenue.class);
+            CCAvenueResponceModel ccAvenueResponse = g.fromJson(html, CCAvenueResponceModel.class);
             if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
                 CcavenueRequestData(ccAvenueResponse);
             }else{
@@ -224,7 +223,7 @@ public class PaymentActivity extends AppCompatActivity {
 
 
 
-    public void CcavenueRequestData(ElectricityCcavenue ccAvenueResponse){
+    public void CcavenueRequestData(CCAvenueResponceModel ccAvenueResponse){
 
         if (Utils.isNetworkConnected(PaymentActivity.this)) {
 
@@ -232,11 +231,11 @@ public class PaymentActivity extends AppCompatActivity {
             progressBar.setCancelable(false);
             progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
             progressBar.show();
-             ArrayList<ElectricityCcavenue> ccabledata = new ArrayList<>();
+            ArrayList<CCAvenueResponceModel> ccabledata = new ArrayList<>();
             ccabledata.add(ccAvenueResponse);
 
             Gson gson = new Gson();
-            JsonElement element = gson.toJsonTree(ccabledata, new TypeToken<List<ElectricityCcavenue>>() {
+            JsonElement element = gson.toJsonTree(ccabledata, new TypeToken<List<CCAvenueResponceModel>>() {
             }.getType());
 
             if (!element.isJsonArray()) {

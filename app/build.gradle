@@ -185,6 +185,7 @@ android {
             versionName "2.2.2"
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"') //?command=initiateTransaction
+           // buildConfigField("String", "PAYMENT_URL", '"https://test.ccavenue.com/transaction/initTrans"')
             buildConfigField("String", "ROLE_ID", '"5"')
             buildConfigField("String", "LOGIN_USERNAME", '"9912592822"')
             buildConfigField("String", "LOGIN_PASSWORD", '"Qwerty@123"')
@@ -203,8 +204,8 @@ android {
         retailer_production {
             dimension "rokard_mart"
             applicationIdSuffix ".retailer"
-            versionCode 10
-            versionName "2.1.3"
+            versionCode 13
+            versionName "2.1.4"
             /*versionNameSuffix "-retailer"*/
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"')
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')

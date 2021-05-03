@@ -1,7 +1,6 @@
 package com.rmart.customerservice.mobile.views;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,52 +25,28 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomLoadingDialog;
-import com.rmart.customerservice.mobile.api.MobileRechargeService;
-import com.rmart.customerservice.mobile.interfaces.OnMobileRechargeListener;
-import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
-import com.rmart.customerservice.mobile.models.MobileRecharge;
-import com.rmart.customerservice.mobile.models.RokadPaymentRequest;
 import com.rmart.customerservice.mobile.models.Vrecharge;
-import com.rmart.customerservice.mobile.models.mPlans.RechargePlans;
-import com.rmart.customerservice.mobile.models.mPlans.Records;
 import com.rmart.electricity.CCavenueres;
-import com.rmart.electricity.ElectricityCcavenue;
-import com.rmart.electricity.fetchbill.model.BillDetails;
-import com.rmart.profile.model.MyProfile;
-import com.rmart.utilits.RetrofitClientInstance;
-import com.rmart.utilits.Utils;
+import com.rmart.electricity.CCAvenueResponceModel;
 import com.rmart.utilits.ccavenue.AvenuesParams;
 import com.rmart.utilits.ccavenue.RSAUtility;
 import com.rmart.utilits.ccavenue.ServiceUtility;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class ServicePaymentActivity extends AppCompatActivity implements OnMobileRechargeListener {
+public class ServicePaymentActivity extends AppCompatActivity  {
     protected Dialog progressDialog;
     private WebView webview;
     CCavenueres ccavenue_data;
-    RokadPaymentRequest paymentrp;
-    String mobile_number,bill_unit,operator;
-    private OnMobileRechargeListener mListener;
-    private String mobile_no,bill_unitt,name,id,amt,orderid,duedate,billdate,Merchant_ref;
     Context context;
+    public static final String RESULT= "result";
 
-    BillDetails ob;
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,16 +55,8 @@ public class ServicePaymentActivity extends AppCompatActivity implements OnMobil
         webview = findViewById(R.id.web_view);
         context=this;
         progressDialog = CustomLoadingDialog.getInstance(this);
-
-
         Intent ii =getIntent();
-        mobile_number=ii.getStringExtra("mobile_number");
-
-        operator=ii.getStringExtra("operator");
-        paymentrp = (RokadPaymentRequest) getIntent().getSerializableExtra("details");
-
         ccavenue_data = (CCavenueres) getIntent().getSerializableExtra("rsakeyresonse");
-
         initWebView();
     }
 
@@ -185,40 +152,7 @@ public class ServicePaymentActivity extends AppCompatActivity implements OnMobil
         }
     }
 
-    @Override
-    public MobileRecharge getMobileRechargeModule() {
-        return null;
-    }
 
-    @Override
-    public void resetMobileRechargeModule() {
-
-    }
-
-    @Override
-    public void goToMakePaymentFragment() {
-
-    }
-
-    @Override
-    public void goToSeePlansFragment(List<RechargePlans> topup) {
-
-    }
-
-    @Override
-    public void makeAnotherPayment() {
-
-    }
-
-    @Override
-    public void updatePrice() {
-
-    }
-
-    @Override
-    public void goToSeePlansFragment(Records data) {
-
-    }
 
     class MyJavaScriptInterface {
         private JsonObject jsonObject;
@@ -228,20 +162,24 @@ public class ServicePaymentActivity extends AppCompatActivity implements OnMobil
             Log.d("JsonObject", "html data: " + html);
             jsonObject = new JsonParser().parse(html).getAsJsonObject();
             Gson g = new Gson();
-            ElectricityCcavenue ccAvenueResponse = g.fromJson(html, ElectricityCcavenue.class);
+            CCAvenueResponceModel ccAvenueResponse = g.fromJson(html, CCAvenueResponceModel.class);
             if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
-                //showDialog(ccAvenueResponse.getMessage(),"");
-                CcavenueRequestData(ccAvenueResponse);
-            }else{
-                showDialog(getString(R.string.message), ccAvenueResponse.getMessage());
 
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(RESULT,ccAvenueResponse);
+                setResult(ServicePaymentActivity.RESULT_OK,returnIntent);
+                finish();
+            } else{
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(RESULT,ccAvenueResponse);
+                setResult(ServicePaymentActivity.RESULT_CANCELED,returnIntent);
+                finish();
             }
         }
 
         @JavascriptInterface
         public void gotMsg(String msg) {
             showDialog("", msg);
-            // Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
         }
     }
     protected void showDialog(String title, String msg) {
@@ -277,75 +215,8 @@ public class ServicePaymentActivity extends AppCompatActivity implements OnMobil
 
 
 
-    public void CcavenueRequestData(ElectricityCcavenue ccAvenueResponse){
-
-        if (Utils.isNetworkConnected(ServicePaymentActivity.this)) {
-
-            ProgressDialog progressBar = new ProgressDialog(ServicePaymentActivity.this, R.style.mySpinnerTheme);
-            progressBar.setCancelable(false);
-            progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-            progressBar.show();
 
 
-            ArrayList<ElectricityCcavenue> ccabledata = new ArrayList<>();
-            ccabledata.add(ccAvenueResponse);
-
-            Gson gson = new Gson();
-            JsonElement element = gson.toJsonTree(ccabledata, new TypeToken<List<ElectricityCcavenue>>() {
-            }.getType());
-
-            if (!element.isJsonArray()) {
-                // fail appropriately
-                throw new NullPointerException();
-            }
-           JsonArray ccavenuejsonArray = element.getAsJsonArray();
-            MobileRechargeService mService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(MobileRechargeService.class);
-            mService.VRecharge(paymentrp.getServicetype(),paymentrp.getPreOperatorDth(),paymentrp.getVc_number(),
-                    paymentrp.getRechargetype(),paymentrp.getPreOperator(),paymentrp.getPostOperator(),paymentrp.getLocation(),
-                    paymentrp.getMobileNumber(),paymentrp.getRechargeTypeRegular(),paymentrp.getRechargeAmount(),MyProfile.getInstance(this).getUserID(),ccavenuejsonArray.toString())
-                    .enqueue(new Callback<MRechargeBaseClass>() {
-                        @Override
-                        public void onResponse(Call<MRechargeBaseClass> call, Response<MRechargeBaseClass> response) {
-
-                            progressBar.cancel();
-                            MRechargeBaseClass datap = response.body();
-                            if (datap.getStatus().equalsIgnoreCase("success")) {
-                               // Toast.makeText(getApplicationContext(), "Payment success"+datap, Toast.LENGTH_LONG).show();
-
-                                //setData(data);
-                                openDialog1(datap.getData());
-
-                            } else {
-                                showDialog("", datap.getMsg());
-                                //Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
-                                Intent ii = new Intent(ServicePaymentActivity.this, MobileRechargeActivity.class);
-                                startActivity(ii);
-                                finishAffinity();
-                            }
-
-                            progressBar.cancel();
-                        }
-
-                        @Override
-                        public void onFailure(Call<MRechargeBaseClass> call, Throwable t) {
-                            // Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
-                            showDialog("", t.getMessage());
-                            progressBar.cancel();
-                            // Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
-                            Intent ii = new Intent(ServicePaymentActivity.this, MobileRechargeActivity.class);
-                            startActivity(ii);
-                            finishAffinity();
-                        }
-                    });
-
-        }else{
-            showDialog("Sorry!!", getString(R.string.error_internet));
-            Intent ii = new Intent(ServicePaymentActivity.this, MobileRechargeActivity.class);
-            startActivity(ii);
-            finishAffinity();
-        }
-
-    }
 
 
 
