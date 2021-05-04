@@ -159,22 +159,13 @@ public class ServicePaymentActivity extends AppCompatActivity  {
 
         @JavascriptInterface
         public void processHTML(String html) {
-            Log.d("JsonObject", "html data: " + html);
-            jsonObject = new JsonParser().parse(html).getAsJsonObject();
-            Gson g = new Gson();
-            CCAvenueResponceModel ccAvenueResponse = g.fromJson(html, CCAvenueResponceModel.class);
-            if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
+            //Log.d("JsonObject", "html data: " + html);
+
 
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra(RESULT,ccAvenueResponse);
-                setResult(ServicePaymentActivity.RESULT_OK,returnIntent);
+                returnIntent.putExtra(RESULT, html);
+                setResult(ServicePaymentActivity.RESULT_OK, returnIntent);
                 finish();
-            } else{
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(RESULT,ccAvenueResponse);
-                setResult(ServicePaymentActivity.RESULT_CANCELED,returnIntent);
-                finish();
-            }
         }
 
         @JavascriptInterface

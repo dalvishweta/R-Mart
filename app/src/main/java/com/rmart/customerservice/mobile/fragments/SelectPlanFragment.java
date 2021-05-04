@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.rmart.R;
 import com.rmart.customerservice.mobile.adapters.RechargePlansAdapter;
@@ -168,40 +170,69 @@ public class SelectPlanFragment extends Fragment {
                   ii.putExtra("rsakeyresonse",  rsaKeyResponse.getData());
                   startActivityForResult(ii,3333);
                   mViewModel.isLoading.setValue(false);
+              } else {
+
+                  // error Screen
               }
         });
         return  fragmentSelectPlan2Binding.getRoot();
+    }
+    private void displayStatus(int statusType,CCAvenueResponceModel ccavanueResponse)
+    {
+        getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame_container, PaymentStatusFragment.newInstance(statusType, ccavanueResponse, mobile, name)).addToBackStack(null)
+                    .commit();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        CCAvenueResponceModel result = (CCAvenueResponceModel) data.getSerializableExtra(RESULT);
+        String result = data.getStringExtra(RESULT);
 
-        if(requestCode==3333 && resultCode == ServicePaymentActivity.RESULT_OK) {
-            ArrayList<CCAvenueResponceModel> ccabledata = new ArrayList<>();
-            ccabledata.add(result);
-            Gson gson = new Gson();
-            JsonElement element = gson.toJsonTree(ccabledata, new TypeToken<List<CCAvenueResponceModel>>() {
-            }.getType());
-            if (!element.isJsonArray()) {
-                throw new NullPointerException();
-            }
-            JsonArray ccavenuejsonArray = element.getAsJsonArray();
-            MobileRechargeRepository.performVRecharge(MOBLIE_RECHARGE_SERVICE_TYPE,null,null,type.equalsIgnoreCase(PREPAID)?1:2,type.equalsIgnoreCase(PREPAID)?mViewModel.selectedOperatorMutableLiveData.getValue().type:null,type.equalsIgnoreCase(POSTPAID)?mViewModel.selectedOperatorMutableLiveData.getValue().type:null,mViewModel.circleMutableLiveData.getValue().name,mobile,type.equalsIgnoreCase(PREPAID)?1:2,mViewModel.rechargePlansMutableLiveData.getValue().getRs()+"",MyProfile.getInstance(getContext()).getUserID(),ccavenuejsonArray.toString()).observeForever(new Observer<MRechargeBaseClass>() {
-                @Override
-                public void onChanged(MRechargeBaseClass mRechargeBaseClass) {
+        try {
+
+            //Note:-- suggesion dont use directly rokad.in server make call from Rokadmart server using proxy method and keep transaction status update with rokad mart
+
+            if (result!=null && requestCode == 3333 && resultCode == ServicePaymentActivity.RESULT_OK) {
+                ///JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
+                Gson g = new Gson();
+                CCAvenueResponceModel ccAvenueResponse = g.fromJson(result, CCAvenueResponceModel.class);
+
+
+
+                if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
+                    // inform to server transaction success and its server responsibility to perform recharge operation and paymanet validation and response witch transaction status
+                    // depending upon response display status message
+
+
+                } else {
+
+
+                    /// inform to server transaction failed with failed data
+                    displayStatus(PaymentStatusFragment.ERROR,ccAvenueResponse);
 
                 }
-            });
 
 
-        } else {
+//                MobileRechargeRepository.performVRecharge(MOBLIE_RECHARGE_SERVICE_TYPE, null, null, type.equalsIgnoreCase(PREPAID) ? 1 : 2, type.equalsIgnoreCase(PREPAID) ? mViewModel.selectedOperatorMutableLiveData.getValue().type : null, type.equalsIgnoreCase(POSTPAID) ? mViewModel.selectedOperatorMutableLiveData.getValue().type : null, mViewModel.circleMutableLiveData.getValue().name, mobile, type.equalsIgnoreCase(PREPAID) ? 1 : 2, mViewModel.rechargePlansMutableLiveData.getValue().getRs() + "", MyProfile.getInstance(getContext()).getUserID(), result).observeForever(new Observer<MRechargeBaseClass>() {
+//                    @Override
+//                    public void onChanged(MRechargeBaseClass mRechargeBaseClass) {
+//
+//                    }
+//                });
 
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.frame_container, PaymentStatusFragment.newInstance(PaymentStatusFragment.ERROR,result,mobile,name)).addToBackStack(null)
-                    .commit();
+
+            }
+            else {
+
+                //reporting to server regarding Transaction cancel by back press or other way and dispay appropriate message from Server so we get Dynamic error message
+            }
+        } catch (Exception e){
+
+            //reporting to server regarding Json Error or other error
+//
+
         }
 
     }

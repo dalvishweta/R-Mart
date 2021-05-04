@@ -35,11 +35,11 @@ public class PaymentStatusFragment extends Fragment {
     private PaymentStatusViewModel mViewModel;
     PaymentStatusFragmentBinding paymentStatusFragmentBinding;
 
-    public static PaymentStatusFragment newInstance(int type, CCAvenueResponceModel result,String mobile,String name)
+    public static PaymentStatusFragment newInstance(int statusType, CCAvenueResponceModel result,String mobile,String name)
     {
         PaymentStatusFragment paymentStatusFragment = new PaymentStatusFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_TYPE, type);
+        args.putInt(ARG_TYPE, statusType);
         args.putSerializable(ARG_CCAVAINUE, result);
         args.putString(ARG_MOBILE, mobile);
         args.putString(ARG_NAME, name);
