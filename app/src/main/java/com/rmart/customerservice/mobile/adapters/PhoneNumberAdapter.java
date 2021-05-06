@@ -62,6 +62,7 @@ public class PhoneNumberAdapter extends BaseCursorAdapter<PhoneNumberAdapter.Fri
         holder.contactListItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                
                 onContactSelectContactListner.onSelect(contactName,contactNumber);
             }
         });

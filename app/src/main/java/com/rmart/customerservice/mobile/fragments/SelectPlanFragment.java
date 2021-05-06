@@ -22,21 +22,24 @@ import com.rmart.customerservice.mobile.listners.SlectCircle;
 import com.rmart.customerservice.mobile.listners.SlectOperator;
 import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
 import com.rmart.customerservice.mobile.models.mPlans.Records;
+import com.rmart.customerservice.mobile.models.mobileRecharge.RechargeBaseClass;
 import com.rmart.customerservice.mobile.operators.bottomheet.SelectOperatorBottomSheet;
 import com.rmart.customerservice.mobile.operators.model.Operator;
 import com.rmart.customerservice.mobile.repositories.MobileRechargeRepository;
+import com.rmart.customerservice.mobile.repositories.RechargeRepository;
 import com.rmart.customerservice.mobile.viewmodels.SelectPlanViewModel;
 import com.rmart.customerservice.mobile.views.ServicePaymentActivity;
 import com.rmart.databinding.FragmentSelectPlan2Binding;
 import com.rmart.electricity.CCAvenueResponceModel;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.IOnBackPressed;
 
 import static com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge.POSTPAID;
 import static com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge.PREPAID;
 import static com.rmart.customerservice.mobile.repositories.MobileRechargeRepository.MOBLIE_RECHARGE_SERVICE_TYPE;
 import static com.rmart.customerservice.mobile.views.ServicePaymentActivity.RESULT;
 
-public class SelectPlanFragment extends Fragment {
+public class SelectPlanFragment extends Fragment implements IOnBackPressed {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -106,7 +109,9 @@ public class SelectPlanFragment extends Fragment {
         mViewModel.mobile.setValue(mobile);
         mViewModel.name.setValue(name);
         fragmentSelectPlan2Binding.toolbar.setNavigationOnClickListener(view -> {
-            getActivity().onBackPressed();
+            if(!onBackPressed() ) {
+                getActivity().onBackPressed();
+            }
         });
         fragmentSelectPlan2Binding.setSelectPlanViewModel(mViewModel);
         fragmentSelectPlan2Binding.setLifecycleOwner(this);
@@ -160,6 +165,7 @@ public class SelectPlanFragment extends Fragment {
 
                   Intent ii= new Intent(getContext(), ServicePaymentActivity.class);
                   ii.putExtra("rsakeyresonse",  rsaKeyResponse.getData());
+                  ii.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                   startActivityForResult(ii,3333);
                   mViewModel.isLoading.setValue(false);
               } else {
@@ -169,11 +175,11 @@ public class SelectPlanFragment extends Fragment {
         });
         return  fragmentSelectPlan2Binding.getRoot();
     }
-    private void displayStatus(int statusType,CCAvenueResponceModel ccavanueResponse)
+    private void displayStatus(RechargeBaseClass paymentResponse)
     {
         getActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.frame_container, PaymentStatusFragment.newInstance(statusType, ccavanueResponse, mobile, name)).addToBackStack(null)
+                    .replace(R.id.frame_container, PaymentStatusFragment.newInstance( paymentResponse, mobile, name,String.valueOf(mViewModel.rechargePlansMutableLiveData.getValue().getRs())))
                     .commit();
     }
 
@@ -182,50 +188,45 @@ public class SelectPlanFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         String result = data.getStringExtra(RESULT);
 
-        try {
+
 
             //Note:-- suggesion dont use directly rokad.in server make call from Rokadmart server using proxy method and keep transaction status update with rokad mart
 
             if (result!=null && requestCode == 3333 && resultCode == ServicePaymentActivity.RESULT_OK) {
                 ///JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
-                Gson g = new Gson();
-                CCAvenueResponceModel ccAvenueResponse = g.fromJson(result, CCAvenueResponceModel.class);
 
-
-
-                if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
-                    // inform to server transaction success and its server responsibility to perform recharge operation and paymanet validation and response witch transaction status
-                    // depending upon response display status message
-               MobileRechargeRepository.performVRecharge(MOBLIE_RECHARGE_SERVICE_TYPE, null, null, type.equalsIgnoreCase(PREPAID) ? 1 : 2, type.equalsIgnoreCase(PREPAID) ? mViewModel.selectedOperatorMutableLiveData.getValue().type : null, type.equalsIgnoreCase(POSTPAID) ? mViewModel.selectedOperatorMutableLiveData.getValue().type : null, mViewModel.circleMutableLiveData.getValue().name, mobile, type.equalsIgnoreCase(PREPAID) ? 1 : 2, mViewModel.rechargePlansMutableLiveData.getValue().getRs() + "", MyProfile.getInstance(getContext()).getUserID(), result).observeForever(new Observer<MRechargeBaseClass>() {
-                   @Override
-                   public void onChanged(MRechargeBaseClass mRechargeBaseClass) {
-
-                   }
-               });
-
-                } else {
-
-
-                    /// inform to server transaction failed with failed data
-                    displayStatus(PaymentStatusFragment.ERROR,ccAvenueResponse);
-
-                }
-
-
-
-
-
+                recharge(result);
             }
             else {
 
                 //reporting to server regarding Transaction cancel by back press or other way and dispay appropriate message from Server so we get Dynamic error message
             }
-        } catch (Exception e){
 
-            //reporting to server regarding Json Error or other error
-//
+    }
 
+    private void recharge(String data){
+
+        int rechargeType= type.equalsIgnoreCase(POSTPAID)?RechargeRepository.RECHARGE_TYPE_POSTPAID_RECHARGE:RechargeRepository.RECHARGE_TYPE_PREPAID_RECHARGE;
+        RechargeRepository.doMobileRecharge(RechargeRepository.SERVICE_TYPE_MOBILE_RECHARGE,null,rechargeType,mViewModel.selectedOperatorMutableLiveData.getValue().type,mViewModel.selectedOperatorMutableLiveData.getValue().type,mobile,RechargeRepository.PLAN_TYPE_SPECIAL_RECHARGE,mViewModel.rechargePlansMutableLiveData.getValue().getRs()+"",MyProfile.getInstance(getContext()).getUserID(),data).observeForever(new Observer<RechargeBaseClass>() {
+            @Override
+            public void onChanged(RechargeBaseClass rechargeBaseClass) {
+
+
+                    displayStatus(rechargeBaseClass);
+
+
+
+            }
+        });
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if(mViewModel.rechargePlansMutableLiveData.getValue()!=null){
+            mViewModel.rechargePlansMutableLiveData.setValue(null);
+            return true;
+        } else {
+            return false;
         }
-
     }
 }

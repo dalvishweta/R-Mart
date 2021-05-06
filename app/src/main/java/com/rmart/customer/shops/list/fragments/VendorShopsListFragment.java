@@ -120,6 +120,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
     String ShopTypeID;
     View view;
     LinearLayout erorolayout;
+    ImageView errorIcon;
     private ArrayList<AddressResponse> addressList = new ArrayList<>();
     RelativeLayout searchLayout;
     public static VendorShopsListFragment getInstance(String ShopTypeID) {
@@ -161,6 +162,39 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
         loadUIComponents();
+        setErrorIcon();
+    }
+    private void setErrorIcon(){
+
+        //errorIcon.setImageDrawable();
+        switch (ShopTypeID){
+
+
+            case "2": //Vegetable
+                errorIcon.setImageResource(R.mipmap.vegetable_shop_icon);
+                break;
+            case "3": //Bag Shop
+                errorIcon.setImageResource(R.mipmap.bag_shop_icon);
+                break;
+            case "4": // not define
+                errorIcon.setImageResource(R.mipmap.slwo_internet_icon1);
+                break;
+            case "5": //Furniture Shop
+                errorIcon.setImageResource(R.mipmap.furniture_shop_icon);
+                break;
+            case "9": //Handcrafted
+                errorIcon.setImageResource(R.mipmap.handcrafted);
+                break;
+            default:
+                errorIcon.setImageResource(R.mipmap.slwo_internet_icon1);
+                break;
+        }
+
+//        Vegetable  --- 2
+//        Bag Shop   -- 3
+//        Furniture Shop ---5
+//        Mobile Shop  --3
+
     }
 
     private void loadUIComponents() {
@@ -175,6 +209,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
         tvAddressField = view.findViewById(R.id.tv_address_field);
         shopCount = view.findViewById(R.id.shop_count);
         erorolayout = view.findViewById(R.id.erorolayout);
+        errorIcon = view.findViewById(R.id.errorIcon);
         etProductsSearchField = view.findViewById(R.id.edt_product_search_field);
         ivSearchField = view.findViewById(R.id.iv_search_field);
 //        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout_field);
@@ -256,26 +291,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
         vendorShopsListField.setLayoutManager(layoutManager);
         vendorShopsListField.setHasFixedSize(false);
         vendorShopsListField.setItemAnimator(new SlideInDownAnimator());
-//        vendorShopsListField.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//            }
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                int visibleItemCount = layoutManager.getChildCount();
-//                int totalItemCount = layoutManager.getItemCount();
-//                int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
-//                if (!isLoading && !isLastPage) {
-//                    if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-//                            && firstVisibleItemPosition >= 0
-//                            && totalItemCount >= PAGE_SIZE) {
-//                        loadMoreItems();
-//                    }
-//                }
-//            }
-//        });
+
         DividerItemDecoration divider = new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(requireActivity(), R.drawable.recycler_decoration_divider)));
         vendorShopsListAdapter = new VendorShopsListAdapterNew(requireActivity(), new ArrayList<>(), callBackListener);
@@ -383,112 +399,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
         Utils.openGmailWindow(requireActivity(), emailId);
     }
 
-//    private void shopFavouriteSelected() {
-//        boolean isWishListShop = selectedShopDetails.getShopWishListStatus() == 1;
-//        if (isWishListShop) deleteShopFromWishList();
-//        else addShopFromWishList();
-//    }
 
-//    private void deleteShopFromWishList() {
-//        if (Utils.isNetworkConnected(requireActivity())) {
-//            progressDialog.show();
-//            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
-//            String clientID = "2";
-//            Call<BaseResponse> call = customerProductsService.deleteShopFromWishList(clientID, selectedShopDetails.getVendorId(), selectedShopDetails.getShopId(),
-//                    MyProfile.getInstance(getActivity()).getUserID(),MyProfile.getInstance(getActivity()).getRoleID());
-//            call.enqueue(new Callback<BaseResponse>() {
-//                @Override
-//                public void onResponse(@NotNull Call<BaseResponse> call, @NotNull Response<BaseResponse> response) {
-//                    progressDialog.dismiss();
-//                    if (response.isSuccessful()) {
-//                        BaseResponse body = response.body();
-//                        if (body != null) {
-//                            if (body.getStatus().equalsIgnoreCase("success")) {
-//                                showDialog(getString(R.string.shop_removed_from_favourites_successfully), pObject -> {
-//                                    selectedShopDetails.setShopWishListStatus(0);
-//                                    selectedShopDetails.setShopWishListId(-1);
-//                                    updateShopDetailsAdapter();
-//                                });
-//                            } else {
-//                                showDialog(body.getMsg());
-//                            }
-//                        } else {
-//                            showDialog(getString(R.string.no_information_available));
-//                        }
-//                    } else {
-//                        showDialog(getString(R.string.no_information_available));
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(@NotNull Call<BaseResponse> call, @NotNull Throwable t) {
-//                    if(t instanceof SocketTimeoutException) {
-//                        showDialog("", getString(R.string.network_slow));
-//                    } else {
-//                        showDialog("", t.getMessage());
-//                    }
-//                    progressDialog.dismiss();
-//                }
-//            });
-//        } else {
-//            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
-//        }
-//    }
-//
-//    private void updateShopDetailsAdapter() {
-//        int index = shopsList.indexOf(selectedShopDetails);
-//        if (index > -1) {
-//            shopsList.set(index, selectedShopDetails);
-//            vendorShopsListAdapter.notifyItemChanged(index);
-//        }
-//    }
-//
-//    private void addShopFromWishList() {
-//        if (Utils.isNetworkConnected(requireActivity())) {
-//            progressDialog.show();
-//            CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
-//            String clientID = "2";
-//            Call<AddShopToWishListResponse> call = customerProductsService.addShopToWishList(clientID, selectedShopDetails.getVendorId(),
-//                    selectedShopDetails.getShopId(), MyProfile.getInstance(getActivity()).getUserID(),MyProfile.getInstance(getActivity()).getRoleID());
-//            call.enqueue(new Callback<AddShopToWishListResponse>() {
-//                @Override
-//                public void onResponse(@NotNull Call<AddShopToWishListResponse> call, @NotNull Response<AddShopToWishListResponse> response) {
-//                    progressDialog.dismiss();
-//                    if (response.isSuccessful()) {
-//                        AddShopToWishListResponse body = response.body();
-//                        if (body != null) {
-//                            if (body.getStatus().equalsIgnoreCase("success")) {
-//                                showDialog(getString(R.string.shop_added_to_favourites_successfully), pObject -> {
-//                                    int shopWishId = body.getShopToWishListDataResponse().getShopWishListId();
-//                                    selectedShopDetails.setShopWishListId(shopWishId);
-//                                    selectedShopDetails.setShopWishListStatus(1);
-//                                    updateShopDetailsAdapter();
-//                                });
-//                            } else {
-//                                showDialog(body.getMsg());
-//                            }
-//                        } else {
-//                            showDialog(getString(R.string.no_information_available));
-//                        }
-//                    } else {
-//                        showDialog(getString(R.string.no_information_available));
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(@NotNull Call<AddShopToWishListResponse> call, @NotNull Throwable t) {
-//                    if(t instanceof SocketTimeoutException){
-//                        showDialog("", getString(R.string.network_slow));
-//                    } else {
-//                        showDialog("", t.getMessage());
-//                    }
-//                    progressDialog.dismiss();
-//                }
-//            });
-//        } else {
-//            showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
-//        }
-//    }
 
     private void changeAddressSelected() {
         onCustomerHomeInteractionListener.gotoChangeAddress();
@@ -525,29 +436,19 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                                 shopCount.setText(":"+totalShopsCount);
                                 List<ShopDetailsModel> customerProductsList = data.getCustomerShopsList().getCustomerShopsList();
                                 updateAdapter(customerProductsList);
-                                try {
-//                                    if (customerProductsList != null && customerProductsList.get(0) != null && shopId != null && !shopId.equalsIgnoreCase("") && Integer.parseInt(shopId) == customerProductsList.get(0).getShopId()) {
-//                                        callBackListener.callBackReceived(customerProductsList.get(0));
-//                                        shopId = null;
-//                                        venderID = null;
-//                                    }
-                                } catch (Exception e ){
 
-                                }
 
                             } else {
-                                showDialog(data.getMsg());
-                                //displayDefaultMapLocation();
-                                //getLocation();
+                                if(currentPage==0) {
+                                    map_or_list_view.setVisibility(View.GONE);
+                                    searchLayout.setVisibility(View.GONE);
+                                    changeAddressLayout.setVisibility(View.GONE);
+
+                                    erorolayout.setVisibility(View.VISIBLE);
+                                }
                             }
                         } else {
                             showDialog(getString(R.string.no_products_error));
-                        }
-                        if(currentPage==0) {
-                            erorolayout.setVisibility(View.GONE);
-                            map_or_list_view.setVisibility(View.VISIBLE);
-                            searchLayout.setVisibility(View.VISIBLE);
-                            changeAddressLayout.setVisibility(View.VISIBLE);
                         }
 
                     } else {

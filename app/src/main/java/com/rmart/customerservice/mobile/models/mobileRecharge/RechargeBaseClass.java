@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class MobileRechargeBaseClass implements Serializable {
+public class RechargeBaseClass implements Serializable {
 
     @SerializedName("status")
     @Expose
@@ -15,7 +15,7 @@ public class MobileRechargeBaseClass implements Serializable {
     private String msg;
     @SerializedName("data")
     @Expose
-    private MobileRecharge data;
+    private Recharge data;
     @SerializedName("request_id")
     @Expose
     private int requestId;
@@ -35,11 +35,11 @@ public class MobileRechargeBaseClass implements Serializable {
         this.msg = msg;
     }
 
-    public MobileRecharge getData() {
+    public Recharge getData() {
         return data;
     }
 
-    public void setData(MobileRecharge data) {
+    public void setData(Recharge data) {
         this.data = data;
     }
     public int getRequestId() {

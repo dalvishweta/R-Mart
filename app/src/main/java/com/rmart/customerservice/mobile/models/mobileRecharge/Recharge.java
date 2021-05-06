@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class MobileRecharge implements Serializable  {
+public class Recharge implements Serializable  {
 
 
     @SerializedName("order_id")

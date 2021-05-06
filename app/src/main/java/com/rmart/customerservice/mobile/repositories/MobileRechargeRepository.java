@@ -51,7 +51,6 @@ public class MobileRechargeRepository {
         return resultMutableLiveData;
     }
 
-
     public static MutableLiveData<MRechargeBaseClass> performVRecharge(int service_type, String preOperator_dth, String customer_number, int recharge_type, String preOperator, String PostOperator,
                                                                    String Location, String Mobile_number, int rechargeType, String Recharge_amount, String user_id, String ccavneuData) {
 
@@ -87,7 +86,6 @@ public class MobileRechargeRepository {
         return resultMutableLiveData;
     }
 
-
     public static MutableLiveData<RSAKeyResponse> getRSAKey(String user_id, String txt_amount, String service_id, String service_name) {
 
         MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstance().create(MobileRechargeService.class);
@@ -122,5 +120,4 @@ public class MobileRechargeRepository {
         });
         return resultMutableLiveData;
     }
-
 }

@@ -1,7 +1,10 @@
 package com.rmart.customer.dashboard.repositories;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
 import com.rmart.customer.dashboard.api.Shops;
 import com.rmart.customer.dashboard.model.HomePageData;
 import com.rmart.customer.dashboard.model.HomePageResponse;
@@ -26,6 +29,8 @@ public class ShopRepository {
             @Override
             public void onResponse(Call<HomePageResponse> call, Response<HomePageResponse> response) {
                 HomePageResponse data = response.body();
+                Gson s =new Gson();
+                Log.d("vishal",s.toJson(data));
                 if(data!=null) {
                     resultMutableLiveData.setValue(data);
 

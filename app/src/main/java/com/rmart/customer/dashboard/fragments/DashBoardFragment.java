@@ -93,11 +93,9 @@ public class DashBoardFragment extends BaseFragment {
                 @Override
                 public void onBigShopClick(BigShopType bigShopType) {
 
-                    if(bigShopType.getName().equalsIgnoreCase("Hand crafted shop")) {
-                        Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_LONG).show();
-                    } else {
-                        openShopList(null);
-                    }
+
+                        openShopList("9");
+
 
 
 

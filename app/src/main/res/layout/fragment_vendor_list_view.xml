@@ -50,18 +50,49 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_below="@id/changeAddressLayout">
         <ImageView
-            android:id="@+id/app_logo"
-            android:layout_width="170dp"
+            android:id="@+id/errorIcon"
+            android:layout_width="wrap_content"
             android:layout_gravity="center"
-            android:layout_height="170dp"
-            android:scaleType="fitXY"
-            android:layout_marginTop="80dp"
+            android:layout_height="350dp"
+            android:layout_margin="15dp"
+            android:scaleType="centerInside"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/slwo_internet_icon1"
+            android:src="@mipmap/handcrafted"
             />
+
+        <TextView
+            android:textSize="14sp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_width="match_parent"
+            android:text="We are"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_width="match_parent"
+            android:text="Comming Soon"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textSize="14sp"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_width="match_parent"
+            android:text="To your society till then"
+            android:layout_height="wrap_content" />
         <TextView
             android:textSize="25sp"
             android:layout_marginTop="20dp"
@@ -69,7 +100,7 @@
             android:gravity="center"
             android:fontFamily="@font/montserrat_semibold"
             android:layout_width="match_parent"
-            android:text="Ooops!"
+            android:text="Stay Home, Stay Safe"
             android:layout_height="wrap_content" />
 
         <TextView
@@ -77,6 +108,7 @@
             android:gravity="center"
             android:layout_marginTop="10dp"
             android:textSize="@dimen/text_regular_size"
+            android:visibility="gone"
             android:textColor="@color/item_sub_title_color"
             android:fontFamily="@font/montserrat_regular"
             android:layout_width="match_parent"
@@ -93,6 +125,7 @@
             android:background="@drawable/submit_button_bg"
             android:layout_height="@dimen/field_height"
             android:textSize="@dimen/text_regular_size"
+            android:visibility="gone"
             android:layout_marginTop="20dp"
             android:text="@string/try_again" />
 
@@ -102,7 +135,7 @@
         android:layout_width="match_parent"
 
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_below="@id/changeAddressLayout">
 
 

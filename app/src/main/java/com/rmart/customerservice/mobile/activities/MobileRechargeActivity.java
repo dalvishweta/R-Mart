@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.rmart.R;
 import com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge;
 import com.rmart.electricity.selectoperator.fragments.SelectOperatorFragment;
+import com.rmart.utilits.IOnBackPressed;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -32,5 +33,13 @@ public class MobileRechargeActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_container);
+        if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
+            super.onBackPressed();
+        }
     }
 }

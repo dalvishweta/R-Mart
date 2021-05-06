@@ -29,13 +29,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
-        app:title="Payment " />
+        app:title="Transaction Status" />
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="0dp"
         android:layout_height="300dp"
-        android:src='@{PaymentStatusViewModel.messageType==PaymentStatusFragment.ERROR?@drawable/mrecharge_success:@drawable/payment_failed1}'
+        android:src='@{PaymentStatusViewModel.rechargeBaseClassMutableLiveData.status==PaymentStatusFragment.SUCCESS?@drawable/mrecharge_success:@drawable/payment_failed1}'
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_bold"
         android:gravity="center"
-        android:text='@{Curruncy.getCurruncy(PaymentStatusViewModel.ccAvenueResponceModelMutableLiveData.amount)}'
+        android:text='@{Curruncy.getCurruncy(PaymentStatusViewModel.amount)}'
         android:textColor="@color/black"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,9 +61,9 @@
         android:fontFamily="@font/roboto_bold"
         android:gravity="center"
         tools:text="Recharge Successfully"
-        android:text='@{PaymentStatusViewModel.ccAvenueResponceModelMutableLiveData.getMessage()}'
+        android:text='@{PaymentStatusViewModel.rechargeBaseClassMutableLiveData.msg}'
         android:textColor="@color/black"
-        android:textSize="36sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/amount" />
@@ -97,6 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_toEndOf="@+id/icon"
+
             android:layout_toRightOf="@+id/icon"
             android:orientation="vertical"
             android:padding="5dp">
