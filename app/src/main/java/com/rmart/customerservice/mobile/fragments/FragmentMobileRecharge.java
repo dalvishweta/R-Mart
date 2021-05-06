@@ -2,29 +2,21 @@ package com.rmart.customerservice.mobile.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.rmart.R;
-import com.rmart.customer.dashboard.viewmodel.HomeViewModel;
-import com.rmart.customerservice.mobile.activities.MobileRechargeActivity;
 import com.rmart.customerservice.mobile.activities.SelectMobileNumberActivity;
 import com.rmart.customerservice.mobile.adapters.RechargeHistoryAdapter;
-import com.rmart.customerservice.mobile.models.ResponseGetHistory;
 import com.rmart.customerservice.mobile.viewmodels.MobileRechargeViewModel;
-import com.rmart.databinding.FragmentDashBoardBinding;
 import com.rmart.databinding.FragmentMobileRechargeBinding;
+import com.rmart.profile.model.MyProfile;
 
 
 public class FragmentMobileRecharge extends Fragment {
@@ -62,7 +54,7 @@ public class FragmentMobileRecharge extends Fragment {
         MobileRechargeViewModel mViewModel = new ViewModelProvider(this).get(MobileRechargeViewModel.class);
         binding.setMobileRechargeViewModel(mViewModel);
         binding.setLifecycleOwner(this);
-        mViewModel.getHistory();
+        mViewModel.getHistory(MyProfile.getInstance(getContext()).getUserID());
         binding.toolbar.setNavigationOnClickListener(view -> getActivity().onBackPressed());
         mViewModel.responseGetHistoryMutableLiveData.observeForever(responseGetHistory -> {
             RechargeHistoryAdapter rechargeHistoryAdapter = new RechargeHistoryAdapter(responseGetHistory.lastTransaction, view -> {

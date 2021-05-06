@@ -1,6 +1,10 @@
 package com.rmart.customerservice.mobile.fragments;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -8,25 +12,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.rmart.R;
 import com.rmart.customerservice.mobile.adapters.RechargePlansAdapter;
-import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
-import com.rmart.customerservice.mobile.models.mPlans.Records;
 import com.rmart.customerservice.mobile.adapters.RechargePlansPagerAdapter;
 import com.rmart.customerservice.mobile.circle.bottomsheets.SelectCircleBottomSheet;
 import com.rmart.customerservice.mobile.circle.model.Circle;
 import com.rmart.customerservice.mobile.listners.SlectCircle;
 import com.rmart.customerservice.mobile.listners.SlectOperator;
+import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
+import com.rmart.customerservice.mobile.models.mPlans.Records;
 import com.rmart.customerservice.mobile.operators.bottomheet.SelectOperatorBottomSheet;
 import com.rmart.customerservice.mobile.operators.model.Operator;
 import com.rmart.customerservice.mobile.repositories.MobileRechargeRepository;
@@ -35,9 +30,6 @@ import com.rmart.customerservice.mobile.views.ServicePaymentActivity;
 import com.rmart.databinding.FragmentSelectPlan2Binding;
 import com.rmart.electricity.CCAvenueResponceModel;
 import com.rmart.profile.model.MyProfile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge.POSTPAID;
 import static com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge.PREPAID;
@@ -204,7 +196,12 @@ public class SelectPlanFragment extends Fragment {
                 if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
                     // inform to server transaction success and its server responsibility to perform recharge operation and paymanet validation and response witch transaction status
                     // depending upon response display status message
+               MobileRechargeRepository.performVRecharge(MOBLIE_RECHARGE_SERVICE_TYPE, null, null, type.equalsIgnoreCase(PREPAID) ? 1 : 2, type.equalsIgnoreCase(PREPAID) ? mViewModel.selectedOperatorMutableLiveData.getValue().type : null, type.equalsIgnoreCase(POSTPAID) ? mViewModel.selectedOperatorMutableLiveData.getValue().type : null, mViewModel.circleMutableLiveData.getValue().name, mobile, type.equalsIgnoreCase(PREPAID) ? 1 : 2, mViewModel.rechargePlansMutableLiveData.getValue().getRs() + "", MyProfile.getInstance(getContext()).getUserID(), result).observeForever(new Observer<MRechargeBaseClass>() {
+                   @Override
+                   public void onChanged(MRechargeBaseClass mRechargeBaseClass) {
 
+                   }
+               });
 
                 } else {
 
@@ -215,12 +212,7 @@ public class SelectPlanFragment extends Fragment {
                 }
 
 
-//                MobileRechargeRepository.performVRecharge(MOBLIE_RECHARGE_SERVICE_TYPE, null, null, type.equalsIgnoreCase(PREPAID) ? 1 : 2, type.equalsIgnoreCase(PREPAID) ? mViewModel.selectedOperatorMutableLiveData.getValue().type : null, type.equalsIgnoreCase(POSTPAID) ? mViewModel.selectedOperatorMutableLiveData.getValue().type : null, mViewModel.circleMutableLiveData.getValue().name, mobile, type.equalsIgnoreCase(PREPAID) ? 1 : 2, mViewModel.rechargePlansMutableLiveData.getValue().getRs() + "", MyProfile.getInstance(getContext()).getUserID(), result).observeForever(new Observer<MRechargeBaseClass>() {
-//                    @Override
-//                    public void onChanged(MRechargeBaseClass mRechargeBaseClass) {
-//
-//                    }
-//                });
+
 
 
             }

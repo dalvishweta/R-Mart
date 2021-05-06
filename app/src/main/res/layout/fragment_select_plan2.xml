@@ -127,7 +127,7 @@
                             android:layout_centerVertical="true"
                             android:layout_toLeftOf="@+id/icon2"
                             android:gravity="center"
-                            android:hint="Select Operatore"
+                            android:hint="Select Operator"
                             android:text="@{selectPlanViewModel.selectedOperatorMutableLiveData.name}"
                             android:textColor="@color/black2"
                             android:textSize="12sp" />

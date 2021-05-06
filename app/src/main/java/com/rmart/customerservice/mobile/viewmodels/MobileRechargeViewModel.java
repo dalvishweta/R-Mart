@@ -13,9 +13,9 @@ public class MobileRechargeViewModel extends ViewModel {
 
 
 
-    public void getHistory(){
+    public void getHistory(String userId){
         isLoading.setValue(true);
-        MobileRechargeRepository.getHistory().observeForever(responseGetHistory -> {
+        MobileRechargeRepository.getHistory(userId).observeForever(responseGetHistory -> {
             responseGetHistoryMutableLiveData.setValue(responseGetHistory);
             isLoading.setValue(false);
         });
