@@ -8,6 +8,7 @@ import com.rmart.customerservice.mobile.models.ResponseGetHistory;
 import com.rmart.customerservice.mobile.models.ResponseMobileRecharge;
 import com.rmart.customerservice.mobile.models.mPlans.ResponseGetPlans;
 import com.rmart.customerservice.mobile.models.mPlans.ResponseGetPostpaidPlans;
+import com.rmart.customerservice.mobile.models.mobileRecharge.MobileRechargeBaseClass;
 import com.rmart.customerservice.mobile.operators.model.OperatorResponse;
 import com.rmart.electricity.RSAKeyResponse;
 
@@ -107,6 +108,20 @@ public interface MobileRechargeService {
             @Field("location") String location,
             @Field("mobile_number") String mobile_number,
             @Field("recharge_type") String recharge_type,
+            @Field("recharge_amount") String recharge_amount, //TODO: pass 0 for top-up and 1 for any chosen plan
+            @Field("user_id") String user_id,
+            @Field("ccavenuedata") String ccavenue_data);
+
+    @POST(BuildConfig.Mobile_recharge_Rokadmart)
+    @FormUrlEncoded
+    Call<MobileRechargeBaseClass> do_mobile_Recharge(
+            @Field("servicetype") int servicetype,
+            @Field("customer_number") String customer_number,
+            @Field("rechargetype") int rechargetype,
+            @Field("operator") String operator,
+            @Field("location") String location,
+            @Field("mobile_number") String mobile_number,
+            @Field("plan_type") int plan_type,
             @Field("recharge_amount") String recharge_amount, //TODO: pass 0 for top-up and 1 for any chosen plan
             @Field("user_id") String user_id,
             @Field("ccavenuedata") String ccavenue_data);

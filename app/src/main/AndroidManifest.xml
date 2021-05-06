@@ -132,11 +132,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
         <activity
-            android:name=".electricity.PaymentActivity"
-            android:label="@string/Electricity_service"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
-        <activity
             android:name=".customerservice.mobile.views.MobileRechargeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"

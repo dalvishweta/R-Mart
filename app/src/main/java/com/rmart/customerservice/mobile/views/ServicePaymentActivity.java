@@ -24,15 +24,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomLoadingDialog;
 import com.rmart.customerservice.mobile.models.Vrecharge;
 import com.rmart.electricity.CCavenueres;
-import com.rmart.electricity.CCAvenueResponceModel;
 import com.rmart.utilits.ccavenue.AvenuesParams;
 import com.rmart.utilits.ccavenue.RSAUtility;
 import com.rmart.utilits.ccavenue.ServiceUtility;
@@ -159,7 +156,7 @@ public class ServicePaymentActivity extends AppCompatActivity  {
 
         @JavascriptInterface
         public void processHTML(String html) {
-            //Log.d("JsonObject", "html data: " + html);
+            Log.d("JsonObject", "html data: " + html);
 
 
                 Intent returnIntent = new Intent();

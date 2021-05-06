@@ -2,10 +2,10 @@ package com.rmart.customerservice.mobile.repositories;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.rmart.BuildConfig;
 import com.rmart.customerservice.mobile.api.MobileRechargeService;
 import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
 import com.rmart.customerservice.mobile.models.ResponseGetHistory;
-
 import com.rmart.electricity.RSAKeyResponse;
 import com.rmart.utilits.RetrofitClientInstance;
 
@@ -17,11 +17,11 @@ public class MobileRechargeRepository {
 
     public final static int MOBLIE_RECHARGE_SERVICE_TYPE= 1;
     public final static int DTH_RECHARGE_SERVICE_TYPE= 2;
-    public static MutableLiveData<ResponseGetHistory> getHistory() {
+    public static MutableLiveData<ResponseGetHistory> getHistory(String UserId) {
 
         MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstanceRokad().create(MobileRechargeService.class);
         final MutableLiveData<ResponseGetHistory> resultMutableLiveData = new MutableLiveData<>();
-        Call<ResponseGetHistory> call = mobileRechargeService.getHistory("8614","25");
+        Call<ResponseGetHistory> call = mobileRechargeService.getHistory(UserId, BuildConfig.service_id);
         final ResponseGetHistory result = new ResponseGetHistory();
 
         call.enqueue(new Callback<ResponseGetHistory>() {

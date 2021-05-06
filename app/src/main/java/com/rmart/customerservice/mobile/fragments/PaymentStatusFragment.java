@@ -1,25 +1,20 @@
 package com.rmart.customerservice.mobile.fragments;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.rmart.R;
 import com.rmart.customerservice.mobile.viewmodels.PaymentStatusViewModel;
-import com.rmart.databinding.FragmentSelectPlan2Binding;
 import com.rmart.databinding.PaymentStatusFragmentBinding;
 import com.rmart.electricity.CCAvenueResponceModel;
-
-import static com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge.PREPAID;
 
 public class PaymentStatusFragment extends Fragment {
     public static final int SUCCESS=292939;
@@ -54,7 +49,7 @@ public class PaymentStatusFragment extends Fragment {
             messageType = getArguments().getInt(ARG_TYPE);
             name = getArguments().getString(ARG_NAME);
             mobile = getArguments().getString(ARG_MOBILE);
-            result = getArguments().getParcelable(ARG_CCAVAINUE);
+            result = (CCAvenueResponceModel) getArguments().getSerializable(ARG_CCAVAINUE);
 
 
         }
