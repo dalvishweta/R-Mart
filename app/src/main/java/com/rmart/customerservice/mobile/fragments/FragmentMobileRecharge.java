@@ -70,6 +70,7 @@ public class FragmentMobileRecharge extends Fragment {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivityForResult(intent,200);
         });
+
         return binding.getRoot();
 
     }

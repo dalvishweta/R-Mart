@@ -6,16 +6,20 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rmart.R;
 import com.rmart.customerservice.mobile.listners.OnContactSelectContactListner;
 import com.rmart.databinding.ContactListItemBinding;
+import com.rmart.utilits.Utils;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,13 +66,31 @@ public class PhoneNumberAdapter extends BaseCursorAdapter<PhoneNumberAdapter.Fri
         holder.contactListItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
-                onContactSelectContactListner.onSelect(contactName,contactNumber);
+                if(Utils.isValidMobile(contactNumber)) {
+                    onContactSelectContactListner.onSelect(contactName, contactNumber);
+                } else {
+                    if(contactNumber!=null && contactNumber.length()>10){
+                        String contactNumber2=   phoeNumberWithOutCountryCode(contactNumber);
+                        if(Utils.isValidMobile(contactNumber2)) {
+                            onContactSelectContactListner.onSelect(contactName, contactNumber2);
+                        } else {
+                            Toast.makeText(context,"Please Select Valid Mobile Number",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    else {
+                        Toast.makeText(context,"Please Select Valid Mobile Number",Toast.LENGTH_LONG).show();
+                    }
+                }
             }
         });
 
     }
-
+    public String phoeNumberWithOutCountryCode(String phoneNumber) {
+        phoneNumber =  phoneNumber.replace(" ","");
+        int i = phoneNumber.length()-10;
+        String str_getMOBILE = phoneNumber.substring(i);
+        return str_getMOBILE;
+    }
     @Override
     public void swapCursor(Cursor newCursor) {
         super.swapCursor(newCursor);

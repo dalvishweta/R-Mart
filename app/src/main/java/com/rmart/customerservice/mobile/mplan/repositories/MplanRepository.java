@@ -25,20 +25,22 @@ public class MplanRepository {
         call.enqueue(new Callback<ResponseGetPlans>() {
             @Override
             public void onResponse(Call<ResponseGetPlans> call, Response<ResponseGetPlans> response) {
-                ResponseGetPlans data = response.body();
-                resultMutableLiveData.setValue(data);
+                if(response.isSuccessful()) {
+                    ResponseGetPlans data = response.body();
+                    resultMutableLiveData.setValue(data);
+                } else {
+                    final ResponseGetPlans result = new ResponseGetPlans();
+                    result.setMsg(response.message());
+                    result.setStatus(response.code());
+                    resultMutableLiveData.setValue(result);
+                    //Response{protocol=http/1.1, code=400, message=Bad Request, url=https://rokad.in/rest_server/mplan/getDataPlans_new?operator=Airtel&cricle=Andhra%20Pradesh%20Telangana&service_type=p&mobileapp=Y&mobileversionid=1.0&mobile_no=7453363818}
+                }
             }
 
             @Override
             public void onFailure(Call<ResponseGetPlans> call, Throwable t) {
                 final ResponseGetPlans result = new ResponseGetPlans();
-                if(t.getLocalizedMessage().contains("hostname"))
-                {
-                    result.setMsg("Please Check Internet Connection");
-
-                } else {
-                    result.setMsg(t.getMessage());
-                }
+                result.setMsg("Please make sure your phone is connected to internet");
                 result.setStatus(500);
                 resultMutableLiveData.setValue(result);
             }

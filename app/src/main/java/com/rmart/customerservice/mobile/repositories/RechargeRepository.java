@@ -1,7 +1,10 @@
 package com.rmart.customerservice.mobile.repositories;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
 import com.rmart.customerservice.mobile.api.MobileRechargeService;
 import com.rmart.customerservice.mobile.models.mobileRecharge.RechargeBaseClass;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -31,12 +34,14 @@ public class RechargeRepository {
             @Override
             public void onResponse(Call<RechargeBaseClass> call, Response<RechargeBaseClass> response) {
 
+                Gson s = new Gson();
                 if(response.isSuccessful()) {
                     RechargeBaseClass data = response.body();
+                    data.setStatus(response.code());
+                    Log.d("Recharge",s.toJson(data));
                     resultMutableLiveData.setValue(data);
                 } else {
                     final RechargeBaseClass result = new RechargeBaseClass();
-
                     result.setStatus(response.code());
                     result.setMsg(response.message());
                     resultMutableLiveData.setValue(result);

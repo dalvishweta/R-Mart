@@ -72,6 +72,14 @@ public class PaymentStatusFragment extends Fragment implements IOnBackPressed {
         mViewModel.nameStringMutableLiveData.setValue(name);
         mViewModel.amount.setValue(amount);
         paymentStatusFragmentBinding.setPaymentStatusViewModel(mViewModel);
+
+        if(result.getStatus()==200){
+            paymentStatusFragmentBinding.imageView2.setImageDrawable(getResources().getDrawable(R.drawable.mrecharge_success));
+        } else {
+            paymentStatusFragmentBinding.imageView2.setImageDrawable(getResources().getDrawable(R.drawable.payment_failed1));
+
+        }
+
     }
 
 

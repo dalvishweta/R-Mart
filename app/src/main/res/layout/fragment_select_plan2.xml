@@ -7,14 +7,13 @@
 
         <import type="android.view.View" />
         <import type="com.rmart.utilits.Curruncy" />
-
         <variable
             name="myAdapter"
             type="com.rmart.customer.dashboard.adapters.HomeAdapter" />
-
         <variable
             name="selectPlanViewModel"
             type="com.rmart.customerservice.mobile.viewmodels.SelectPlanViewModel" />
+
     </data>
 
     <RelativeLayout
@@ -196,6 +195,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
+
                 android:layout_marginRight="5dp"
                 android:background="@drawable/cart_background"
 
@@ -205,8 +205,9 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:id="@+id/mobile_no"
+                    android:id="@+id/customAmount"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:background="@drawable/grey_rounded_borders_bg"
                     android:drawablePadding="8dp"
@@ -237,12 +238,15 @@
                     android:padding="3dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
-                    android:visibility="@{selectPlanViewModel.selectedOperatorMutableLiveData.name!=null?View.VISIBLE:View.GONE}"
                     android:textStyle="bold"
+                    android:visibility="gone"
                     android:layout_marginLeft="10dp"
+
                     android:text='@{"Browse plan for "+selectPlanViewModel.selectedOperatorMutableLiveData.name}'
                     android:textColor="@color/black2"
                     android:textSize="14sp" />
+                <!--                    android:visibility="@{selectPlanViewModel.selectedOperatorMutableLiveData.name!=null?View.VISIBLE:View.GONE}"-->
+
                 <ProgressBar
                     android:layout_marginTop="5dp"
                     android:visibility="@{selectPlanViewModel.isLoadingPlan?View.VISIBLE:View.GONE}"

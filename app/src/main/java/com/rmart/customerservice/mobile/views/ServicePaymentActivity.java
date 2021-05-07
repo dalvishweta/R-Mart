@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
@@ -16,19 +17,15 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
-
-import com.google.gson.JsonObject;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomLoadingDialog;
-import com.rmart.customerservice.mobile.models.Vrecharge;
 import com.rmart.electricity.CCavenueres;
 import com.rmart.utilits.ccavenue.AvenuesParams;
 import com.rmart.utilits.ccavenue.RSAUtility;
@@ -108,9 +105,9 @@ public class ServicePaymentActivity extends AppCompatActivity  {
         try {
             /* An instance of this class will be registered as a JavaScript interface */
             StringBuilder params = new StringBuilder();
-            String access_code, merchant_id, redirect_url, cancel_url, billing_country, merchant_param1, merchant_param2, billing_name, billing_email, billing_tel, encVal = "";
-            access_code = ccavenue_data.getCcavenueData().getAccessCode(); //getString(R.string.access_code);
-            merchant_id = ccavenue_data.getCcavenueData().getMerchantId(); //getString(R.string.merchant_id);
+            String accessCode, merchantId, redirect_url, cancel_url, billing_country, merchant_param1, merchant_param2, billing_name, billing_email, billing_tel, encVal = "";
+            accessCode = ccavenue_data.getCcavenueData().getAccessCode(); //getString(R.string.access_code);
+            merchantId = ccavenue_data.getCcavenueData().getMerchantId(); //getString(R.string.merchant_id);
             redirect_url = ccavenue_data.getCcavenueData().getRedirectUrl(); // getString(R.string.redirect_url);
             cancel_url = ccavenue_data.getCcavenueData().getCancelUrl(); // getString(R.string.cancel_url);
             billing_country = ccavenue_data.getCcavenueData().getBillingCountry();
@@ -126,8 +123,8 @@ public class ServicePaymentActivity extends AppCompatActivity  {
             vEncVal.append(ServiceUtility.addToPostParams(AvenuesParams.CURRENCY, currency));
             encVal = RSAUtility.encrypt(vEncVal.substring(0, vEncVal.length() - 1), ccavenue_data.getCcavenueData().getRsaKey().replaceAll("[\n]", ""));
 
-            params.append(ServiceUtility.addToPostParams(AvenuesParams.ACCESS_CODE, access_code));
-            params.append(ServiceUtility.addToPostParams(AvenuesParams.MERCHANT_ID, merchant_id));
+            params.append(ServiceUtility.addToPostParams(AvenuesParams.ACCESS_CODE, accessCode));
+            params.append(ServiceUtility.addToPostParams(AvenuesParams.MERCHANT_ID, merchantId));
             params.append(ServiceUtility.addToPostParams(AvenuesParams.ORDER_ID, String.valueOf(ccavenue_data.getCcavenueData().getOrderId())));
             params.append(ServiceUtility.addToPostParams(AvenuesParams.REDIRECT_URL, redirect_url));
             params.append(ServiceUtility.addToPostParams(AvenuesParams.CANCEL_URL, cancel_url));
@@ -141,8 +138,6 @@ public class ServicePaymentActivity extends AppCompatActivity  {
 
             String vPostParams = params.substring(0, params.length() - 1);
             String vTransUrl = (BuildConfig.PAYMENT_URL);
-            Log.d("vPostParams", "vPostParams :"+vPostParams);
-            Log.d("vTransUrl", "vTransUrl :"+vPostParams);
             webview.postUrl(vTransUrl, vPostParams.getBytes(StandardCharsets.UTF_8));// EncodingUtils.getBytes(vPostParams, "UTF-8"));
         } catch (Exception e) {
             showDialog(e.getMessage(),"");
@@ -152,7 +147,6 @@ public class ServicePaymentActivity extends AppCompatActivity  {
 
 
     class MyJavaScriptInterface {
-        private JsonObject jsonObject;
 
         @JavascriptInterface
         public void processHTML(String html) {
@@ -188,9 +182,10 @@ public class ServicePaymentActivity extends AppCompatActivity  {
             builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    Intent ii = new Intent(ServicePaymentActivity.this, MobileRechargeActivity.class);
-                    startActivity(ii);
-                    finishAffinity();
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra(RESULT, msg);
+                    setResult(ServicePaymentActivity.RESULT_OK, returnIntent);
+                    finish();
                 }
             });
             AlertDialog alertDialog = builder.create();
@@ -200,53 +195,14 @@ public class ServicePaymentActivity extends AppCompatActivity  {
         }
     }
 
-
-
-
-
-
-
-
-
-    public void openDialog1(Vrecharge data) {
-        Dialog dialog = new Dialog(ServicePaymentActivity.this);
-        dialog.setCancelable(false);
-        AppCompatTextView consumer_namee, consumer_ide, DueAmounte, OrderIde, DueDatee, BillDatee, status;
-        AppCompatButton pay_bill;
-        dialog.setContentView(R.layout.dialogbrand_layout);
-        dialog.setTitle("Receipt");
-        consumer_namee = (AppCompatTextView) dialog.findViewById(R.id.consumer_name);
-        consumer_ide = (AppCompatTextView) dialog.findViewById(R.id.consumer_id);
-        DueAmounte = (AppCompatTextView) dialog.findViewById(R.id.DueAmount);
-        OrderIde = (AppCompatTextView) dialog.findViewById(R.id.OrderId);
-        DueDatee = (AppCompatTextView) dialog.findViewById(R.id.DueDate);
-        BillDatee = (AppCompatTextView) dialog.findViewById(R.id.BillDate);
-        pay_bill = (AppCompatButton) dialog.findViewById(R.id.pay_bill);
-        status = (AppCompatTextView) dialog.findViewById(R.id.status);
-
-            status.setText("Transaction Successful");
-            consumer_namee.setText("Mobile Number: " + data.getMobileNumber());
-            consumer_ide.setText("Operator: " + data.getMobileOperator());
-            DueAmounte.setText("Amount: " + ccavenue_data.getCcavenueData().getAmount());
-            OrderIde.setText("Order ID: " + data.getMerchantrefno());
-            DueDatee.setText("Transaction No: " + data.getTransactionId());
-            BillDatee.setText("Transaction_type: " + data.getTransactionType()  );
-
-
-            pay_bill.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent ii = new Intent(ServicePaymentActivity.this, MobileRechargeActivity.class);
-                    startActivity(ii);
-                    finishAffinity();
-                }
-            });
-
-
-            dialog.show();
-
-
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Toast toast = Toast.makeText(getApplicationContext(), "Please click the close/cancel button on the top right corner to cancel the payment.", Toast.LENGTH_SHORT);
+            toast.show();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

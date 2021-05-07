@@ -1,10 +1,14 @@
 package com.rmart.customerservice.mobile.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -21,6 +25,8 @@ import com.rmart.customerservice.mobile.circle.model.Circle;
 import com.rmart.customerservice.mobile.listners.SlectCircle;
 import com.rmart.customerservice.mobile.listners.SlectOperator;
 import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
+import com.rmart.customerservice.mobile.models.RokadPaymentRequest;
+import com.rmart.customerservice.mobile.models.mPlans.RechargePlans;
 import com.rmart.customerservice.mobile.models.mPlans.Records;
 import com.rmart.customerservice.mobile.models.mobileRecharge.RechargeBaseClass;
 import com.rmart.customerservice.mobile.operators.bottomheet.SelectOperatorBottomSheet;
@@ -113,6 +119,13 @@ public class SelectPlanFragment extends Fragment implements IOnBackPressed {
                 getActivity().onBackPressed();
             }
         });
+
+        RechargeBaseClass rechargeBaseClass =  new RechargeBaseClass();
+        rechargeBaseClass.setStatus(200);
+//        getActivity().getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.frame_container, PaymentStatusFragment.newInstance(rechargeBaseClass , mobile, name,"10"))
+//                .commit();
         fragmentSelectPlan2Binding.setSelectPlanViewModel(mViewModel);
         fragmentSelectPlan2Binding.setLifecycleOwner(this);
         fragmentSelectPlan2Binding.operatorSelect.setOnClickListener(view -> {
@@ -146,6 +159,33 @@ public class SelectPlanFragment extends Fragment implements IOnBackPressed {
             fragmentSelectPlan2Binding.rechargePlanTabs.setupWithViewPager(fragmentSelectPlan2Binding.plansPager);
         }
         });
+        fragmentSelectPlan2Binding.customAmount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if(fragmentSelectPlan2Binding.customAmount.getText().toString().length()>0){
+
+                    try {
+                        RechargePlans rechargePlans = new RechargePlans();
+                        rechargePlans.setRs(Integer.parseInt(fragmentSelectPlan2Binding.customAmount.getText().toString()));
+                        mViewModel.rechargePlansMutableLiveData.setValue(rechargePlans);
+                    } catch (Exception e){
+                        mViewModel.rechargePlansMutableLiveData.setValue(null);
+                    }
+                } else {
+                    mViewModel.rechargePlansMutableLiveData.setValue(null);
+                }
+            }
+        });
+
 
         mViewModel.postPaidResponseGetPlansMutableLiveData.observeForever(postPaidResponseGetPlans -> {
 
@@ -167,11 +207,11 @@ public class SelectPlanFragment extends Fragment implements IOnBackPressed {
                   ii.putExtra("rsakeyresonse",  rsaKeyResponse.getData());
                   ii.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                   startActivityForResult(ii,3333);
-                  mViewModel.isLoading.setValue(false);
               } else {
 
                   // error Screen
               }
+            mViewModel.isLoading.setValue(false);
         });
         return  fragmentSelectPlan2Binding.getRoot();
     }
@@ -186,40 +226,35 @@ public class SelectPlanFragment extends Fragment implements IOnBackPressed {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        String result = data.getStringExtra(RESULT);
-
-
-
+        if(data!=null) {
+            String result = data.getStringExtra(RESULT);
             //Note:-- suggesion dont use directly rokad.in server make call from Rokadmart server using proxy method and keep transaction status update with rokad mart
-
-            if (result!=null && requestCode == 3333 && resultCode == ServicePaymentActivity.RESULT_OK) {
+            if (result != null && requestCode == 3333 && resultCode == ServicePaymentActivity.RESULT_OK) {
                 ///JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
-
+                recharge(result);
+            } else {
                 recharge(result);
             }
-            else {
-
-                //reporting to server regarding Transaction cancel by back press or other way and dispay appropriate message from Server so we get Dynamic error message
-            }
+        } else {
+            Toast.makeText(getContext(),"Payment Gateway transaction Cancel",Toast.LENGTH_LONG).show();
+        }
 
     }
-
     private void recharge(String data){
-
+        ProgressDialog progressdialog = new ProgressDialog(getContext());
+        progressdialog.setMessage("Please Wait....");
+        progressdialog.show();
         int rechargeType= type.equalsIgnoreCase(POSTPAID)?RechargeRepository.RECHARGE_TYPE_POSTPAID_RECHARGE:RechargeRepository.RECHARGE_TYPE_PREPAID_RECHARGE;
         RechargeRepository.doMobileRecharge(RechargeRepository.SERVICE_TYPE_MOBILE_RECHARGE,null,rechargeType,mViewModel.selectedOperatorMutableLiveData.getValue().type,mViewModel.selectedOperatorMutableLiveData.getValue().type,mobile,RechargeRepository.PLAN_TYPE_SPECIAL_RECHARGE,mViewModel.rechargePlansMutableLiveData.getValue().getRs()+"",MyProfile.getInstance(getContext()).getUserID(),data).observeForever(new Observer<RechargeBaseClass>() {
             @Override
             public void onChanged(RechargeBaseClass rechargeBaseClass) {
-
-
+                    // API is not following Restfull gaidlines  so it may cause Error or Exception In future witch may cause in app crashhh
                     displayStatus(rechargeBaseClass);
-
-
-
+                    mViewModel.isLoading.setValue(false);
+                    progressdialog.dismiss();
             }
         });
     }
-
     @Override
     public boolean onBackPressed() {
         if(mViewModel.rechargePlansMutableLiveData.getValue()!=null){
