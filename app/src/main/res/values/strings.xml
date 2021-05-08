@@ -467,4 +467,5 @@
 
     <string name="weight">Unit</string>
     <string name="selling_price">Selling Price</string>
+    <string name="enter_custom_amount">Enter Custom Amount</string>
 </resources>

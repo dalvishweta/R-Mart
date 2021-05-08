@@ -62,7 +62,7 @@ public class SelectPlanFragment extends Fragment implements IOnBackPressed {
             mViewModel.selectedOperatorMutableLiveData.setValue(operator);
             bottomSheet.dismiss();
             if(type.equalsIgnoreCase(POSTPAID)){
-                mViewModel.getPostPaidPlanList();
+                //mViewModel.getPostPaidPlanList();
 
             } else {
                 mViewModel.getPrePaidPlanList();
@@ -75,7 +75,7 @@ public class SelectPlanFragment extends Fragment implements IOnBackPressed {
             mViewModel.circleMutableLiveData.setValue(circle);
             selectCircleBottomSheet.dismiss();
             if(type.equalsIgnoreCase(POSTPAID)){
-                mViewModel.getPostPaidPlanList();
+                //mViewModel.getPostPaidPlanList();
 
             } else {
                 mViewModel.getPrePaidPlanList();
@@ -114,18 +114,14 @@ public class SelectPlanFragment extends Fragment implements IOnBackPressed {
         mViewModel = new ViewModelProvider(this).get(SelectPlanViewModel.class);
         mViewModel.mobile.setValue(mobile);
         mViewModel.name.setValue(name);
+        mViewModel.type.setValue(type);
         fragmentSelectPlan2Binding.toolbar.setNavigationOnClickListener(view -> {
             if(!onBackPressed() ) {
                 getActivity().onBackPressed();
             }
         });
-
         RechargeBaseClass rechargeBaseClass =  new RechargeBaseClass();
         rechargeBaseClass.setStatus(200);
-//        getActivity().getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.frame_container, PaymentStatusFragment.newInstance(rechargeBaseClass , mobile, name,"10"))
-//                .commit();
         fragmentSelectPlan2Binding.setSelectPlanViewModel(mViewModel);
         fragmentSelectPlan2Binding.setLifecycleOwner(this);
         fragmentSelectPlan2Binding.operatorSelect.setOnClickListener(view -> {
@@ -171,21 +167,24 @@ public class SelectPlanFragment extends Fragment implements IOnBackPressed {
             }
             @Override
             public void afterTextChanged(Editable editable) {
-                if(fragmentSelectPlan2Binding.customAmount.getText().toString().length()>0){
 
-                    try {
-                        RechargePlans rechargePlans = new RechargePlans();
-                        rechargePlans.setRs(Integer.parseInt(fragmentSelectPlan2Binding.customAmount.getText().toString()));
-                        mViewModel.rechargePlansMutableLiveData.setValue(rechargePlans);
-                    } catch (Exception e){
-                        mViewModel.rechargePlansMutableLiveData.setValue(null);
-                    }
-                } else {
-                    mViewModel.rechargePlansMutableLiveData.setValue(null);
-                }
             }
         });
+        fragmentSelectPlan2Binding.done.setOnClickListener(view -> {
+            if(fragmentSelectPlan2Binding.customAmount.getText().toString().length()>0){
 
+                try {
+                    RechargePlans rechargePlans = new RechargePlans();
+
+                    rechargePlans.setRs(Integer.parseInt(fragmentSelectPlan2Binding.customAmount.getText().toString()));
+                    mViewModel.rechargePlansMutableLiveData.setValue(rechargePlans);
+                } catch (Exception e){
+                    mViewModel.rechargePlansMutableLiveData.setValue(null);
+                }
+            } else {
+                mViewModel.rechargePlansMutableLiveData.setValue(null);
+            }
+        });
 
         mViewModel.postPaidResponseGetPlansMutableLiveData.observeForever(postPaidResponseGetPlans -> {
 

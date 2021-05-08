@@ -41,6 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                tools:visibility="visible"
                 android:background="@drawable/cart_background"
                 android:orientation="vertical">
 
@@ -195,30 +196,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="5dp"
-
+                tools:visibility="visible"
                 android:layout_marginRight="5dp"
                 android:background="@drawable/cart_background"
-
                 android:orientation="vertical"
                 >
-                <EditText
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:id="@+id/customAmount"
+                <LinearLayout
+                    android:visibility='@{selectPlanViewModel.type.equalsIgnoreCase("M_PRE")?View.GONE:View.VISIBLE}'
                     android:layout_width="match_parent"
-                    android:visibility="gone"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/grey_rounded_borders_bg"
-                    android:drawablePadding="8dp"
-                    android:fontFamily="@font/roboto_light"
-                    android:hint="Enter Custom Amount"
-                    android:inputType="number"
-                    android:maxLength="10"
-                    android:padding="10dp"
-                    tools:ignore="Autofill,LabelFor" />
-
+                    android:orientation="vertical"
+                    >
                 <TextView
+                    android:id="@+id/label"
                     android:layout_marginRight="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
@@ -226,11 +216,44 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
                     android:padding="3dp"
-                    android:text="Select recharge plan"
+                    android:text="Enter Bill Amount"
                     android:textColor="@color/black2"
                     android:textSize="14sp" />
+                <EditText
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/customAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_rounded_borders_bg"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/roboto_light"
+                    android:hint="@string/enter_custom_amount"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    tools:ignore="Autofill,LabelFor" />
 
-
+                <Button
+                    android:id="@+id/done"
+                    android:layout_width="match_parent"
+                    android:text="Recharge "
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:visibility="@{selectPlanViewModel.rechargePlansMutableLiveData!=null?View.GONE:View.VISIBLE}"
+                    android:layout_weight="2"
+                    android:background="@color/colorPrimary"
+                    android:textAllCaps="false"
+                    android:textSize="14sp"
+                    tools:visibility="visible"
+                    android:textColor="@color/white"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -239,21 +262,18 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
                     android:textStyle="bold"
-                    android:visibility="gone"
+                    android:visibility="@{selectPlanViewModel.selectedOperatorMutableLiveData.name!=null?View.VISIBLE:View.GONE}"
                     android:layout_marginLeft="10dp"
-
                     android:text='@{"Browse plan for "+selectPlanViewModel.selectedOperatorMutableLiveData.name}'
                     android:textColor="@color/black2"
                     android:textSize="14sp" />
-                <!--                    android:visibility="@{selectPlanViewModel.selectedOperatorMutableLiveData.name!=null?View.VISIBLE:View.GONE}"-->
-
+<!-- android:visibility="@{selectPlanViewModel.selectedOperatorMutableLiveData.name!=null?View.VISIBLE:View.GONE}"-->
                 <ProgressBar
                     android:layout_marginTop="5dp"
                     android:visibility="@{selectPlanViewModel.isLoadingPlan?View.VISIBLE:View.GONE}"
                     android:id="@+id/progressBar1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
-
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/recharge_plan_tabs"
                     android:layout_width="match_parent"
@@ -264,13 +284,11 @@
                     app:tabTextColor="@color/black2"
                     android:background="@color/white"/>
 
-
-
             </LinearLayout>
 
             <LinearLayout
                 android:orientation="vertical"
-                tools:visibility="visible"
+                tools:visibility="gone"
                 android:visibility="@{selectPlanViewModel.isError?View.GONE:View.VISIBLE}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -295,7 +313,6 @@
 
 
             </LinearLayout>
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -308,7 +325,6 @@
                 android:textColor="@color/black2"
                 android:textSize="12sp" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -349,7 +365,8 @@
                             <Button
                                 android:id="@+id/change"
                                 android:layout_width="wrap_content"
-                                android:text="Change Plan"
+                                android:text='@{selectPlanViewModel.type.equalsIgnoreCase("M_PRE")?"Change Plan":"Change Amount"}'
+                                tools:text="Change Plan"
                                 android:background="@drawable/button_round_edges"
                                 android:gravity="center"
                                 android:textAllCaps="false"
@@ -365,6 +382,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/validity"
+                    android:visibility="@{selectPlanViewModel.rechargePlansMutableLiveData.validity==null?View.GONE:View.VISIBLE}"
                     tools:text="Validity: N/A"
                     android:text='@{"Validity : "+selectPlanViewModel.rechargePlansMutableLiveData.validity+""}'
                     android:layout_marginLeft="10dp"
@@ -372,7 +390,6 @@
                     android:textSize="14sp"
                     android:layout_gravity="center"
                     android:textColor="@color/black2" />
-
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -380,6 +397,7 @@
                     android:text='@{"Validity : "+selectPlanViewModel.rechargePlansMutableLiveData.desc}'
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:visibility="@{selectPlanViewModel.rechargePlansMutableLiveData.validity==null?View.GONE:View.VISIBLE}"
                     tools:text="Get Talktime of Rs. 7.47"
                     android:textSize="14sp"
                     android:layout_gravity="center"
@@ -398,7 +416,7 @@
             android:paddingBottom="10dp"
             android:paddingLeft="5dp"
             android:visibility="@{selectPlanViewModel.rechargePlansMutableLiveData!=null?View.GONE:View.VISIBLE}"
-            tools:visibility="gone"
+            tools:visibility="visible"
             android:paddingRight="5dp"
             android:text="@string/disclaimer_we_support_most_typees_of_recharges_but_please_check_with_your_operator_before_you_proceed"
             />
@@ -416,7 +434,7 @@
         <Button
             android:id="@+id/recharge"
             android:layout_width="match_parent"
-            android:text="Recharge"
+            android:text="Make Payment"
             android:gravity="center"
             android:padding="10dp"
             android:visibility="@{selectPlanViewModel.rechargePlansMutableLiveData==null?View.GONE:View.VISIBLE}"
