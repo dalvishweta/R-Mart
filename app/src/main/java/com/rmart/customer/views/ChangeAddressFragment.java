@@ -1,7 +1,9 @@
 package com.rmart.customer.views;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
@@ -35,6 +38,8 @@ import jp.wasabeef.recyclerview.animators.SlideInDownAnimator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.rmart.profile.model.MyProfile.PREF_NAME;
 
 /**
  * Created by Satya Seshu on 07/09/20.
@@ -157,9 +162,8 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
                         AddressListResponse data = response.body();
                         if (data != null) {
                             if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                updateselectedAddress(data);
                                 showDialog(data.getMsg(), pObject -> {
-                                    MyProfile.getInstance(getContext()).setPrimaryAddressId(myAddress.getId().toString());
-                                    MyProfile.getInstance(getContext()).setAddressResponses(addressList,getContext());
                                     Objects.requireNonNull(requireActivity()).onBackPressed();
                                 });
                             } else {
@@ -200,5 +204,32 @@ public class ChangeAddressFragment extends CustomerHomeFragment {
         if(requestCode == Constants.KEY_CHANGE_ADDRESS) {
             requireActivity().getSupportFragmentManager().popBackStackImmediate();
         }
+    }
+
+    private void updateselectedAddress(AddressListResponse data) {
+        MyProfile profile=  MyProfile.getInstance(getActivity());
+        ArrayList<AddressResponse> newAdress = profile.getAddressResponses();
+        ArrayList<AddressResponse> newAdress2 = new ArrayList<>();
+        AddressResponse updated = data.getResponse().get(0);
+        profile.setPrimaryAddressId(updated.getId()+"");
+        for(AddressResponse aa:newAdress) {
+
+            if(updated.getId() ==aa.getId()){
+                aa.setPrimaryAddress(true);
+
+            } else {
+                aa.setPrimaryAddress(false);
+            }
+
+            newAdress2.add(aa);
+        }
+        profile.setAddressResponses(newAdress2,getContext());
+        Gson gson = new Gson();
+        String str = gson.toJson(profile);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(MyProfile.CUSTOMER, str);
+        editor.apply();
+        editor.commit();
     }
 }
