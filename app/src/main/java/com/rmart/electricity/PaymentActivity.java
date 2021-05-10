@@ -15,7 +15,6 @@ import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -33,6 +32,9 @@ import com.google.gson.reflect.TypeToken;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomLoadingDialog;
+import com.rmart.customerservice.mobile.fragments.PaymentStatusFragment;
+import com.rmart.customerservice.mobile.models.mobileRecharge.Recharge;
+import com.rmart.customerservice.mobile.models.mobileRecharge.RechargeBaseClass;
 import com.rmart.electricity.activities.ElectricityActivity;
 import com.rmart.electricity.api.ElecticityService;
 import com.rmart.electricity.fetchbill.model.BillDetails;
@@ -51,7 +53,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-public class PaymentActivity extends AppCompatActivity {
+public class PaymentActivity extends AppCompatActivity  {
     protected Dialog progressDialog;
     private WebView webview;
     CCavenueres ccavenue_data;
@@ -69,7 +71,7 @@ public class PaymentActivity extends AppCompatActivity {
         mobile_number=ii.getStringExtra("mobile_number");
         bill_unit=ii.getStringExtra("bill_unit");
         operator=ii.getStringExtra("operator");
-       ob = (BillDetails) getIntent().getSerializableExtra("cust_details");
+        ob = (BillDetails) getIntent().getSerializableExtra("cust_details");
 
         ccavenue_data = (CCavenueres) getIntent().getSerializableExtra("rsakeyresonse");
         initWebView();
@@ -175,13 +177,23 @@ public class PaymentActivity extends AppCompatActivity {
             jsonObject = new JsonParser().parse(html).getAsJsonObject();
             Gson g = new Gson();
             CCAvenueResponceModel ccAvenueResponse = g.fromJson(html, CCAvenueResponceModel.class);
+
             if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
                 CcavenueRequestData(ccAvenueResponse);
             }else{
-                showDialog(getString(R.string.message), ccAvenueResponse.getMessage());
-                Intent ii = new Intent(PaymentActivity.this, ElectricityActivity.class);
-                startActivity(ii);
-                finishAffinity();
+                RechargeBaseClass rs = new RechargeBaseClass();
+                rs.setStatus(400);
+                rs.setMsg("Transaction Unsuccessful");
+                Recharge recharge = new Recharge();
+                recharge.setAmount(String.valueOf(ccAvenueResponse.getAmount()));
+                recharge.setTrackingId(ccAvenueResponse.getTrackingId());
+                recharge.setMessage(ccAvenueResponse.getMessage());
+                //recharge.setBillingName(ob.getConsumerName());
+               // recharge.setTransDate(ob.getBillDate());
+                //recharge.setServiceId(Long.getLong(ob.getConsumerID()));
+
+                rs.setData(recharge);
+                displayStatus(rs);
             }
         }
 
@@ -233,7 +245,8 @@ public class PaymentActivity extends AppCompatActivity {
             progressBar.show();
             ArrayList<CCAvenueResponceModel> ccabledata = new ArrayList<>();
             ccabledata.add(ccAvenueResponse);
-
+            Recharge recharge = new Recharge();
+            RechargeBaseClass rs = new RechargeBaseClass();
             Gson gson = new Gson();
             JsonElement element = gson.toJsonTree(ccabledata, new TypeToken<List<CCAvenueResponceModel>>() {
             }.getType());
@@ -252,18 +265,42 @@ public class PaymentActivity extends AppCompatActivity {
 
                             progressBar.cancel();
                             paybill datap = response.body();
+
                             if (datap.getMsg().equalsIgnoreCase("success")) {
-                                Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(), datap.getData().getDescription(), Toast.LENGTH_LONG).show();
 
                                 //setData(data);
-                                openDialog1(datap);
+                               // openDialog1(datap);
 
+                                rs.setStatus(200);
+                                rs.setMsg("Transaction Successful");
+
+                                recharge.setAmount(String.valueOf(datap.getData().getDueAmount()));
+                                recharge.setTrackingId(ccAvenueResponse.getTrackingId());
+                                recharge.setMessage(datap.getData().getDescription());
+                                recharge.setBillingName(ob.getConsumerName());
+                                recharge.setTransDate(datap.getData().getBillDate());
+                                recharge.setServiceId((int) datap.getData().getConsumerID());
+
+
+                                rs.setData(recharge);
+                                displayStatus(rs);
                             } else {
-                                showDialog("", datap.getMsg());
-                                //Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
-                                Intent ii = new Intent(PaymentActivity.this, ElectricityActivity.class);
-                                startActivity(ii);
-                                finishAffinity();
+
+                                rs.setStatus(400);
+                                rs.setMsg("Transaction Unsuccessful");
+                                recharge.setAmount(String.valueOf(ccAvenueResponse.getAmount()));
+                                recharge.setTrackingId(ccAvenueResponse.getTrackingId());
+                                recharge.setMessage(ccAvenueResponse.getMessage());
+                                recharge.setAmount(String.valueOf(datap.getData().getDueAmount()));
+                                recharge.setTrackingId(datap.getData().getMerTxnID());
+                                recharge.setMessage(datap.getData().getDescription());
+                                recharge.setBillingName(ob.getConsumerName());
+                                recharge.setTransDate(datap.getData().getBillDate());
+                                recharge.setServiceId((int) datap.getData().getConsumerID());
+
+                                rs.setData(recharge);
+                                displayStatus(rs);
                             }
 
                             progressBar.cancel();
@@ -271,14 +308,13 @@ public class PaymentActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<paybill> call, Throwable t) {
-                            // Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
-                            showDialog("", t.getMessage());
-                            progressBar.cancel();
-                            Intent ii = new Intent(PaymentActivity.this, ElectricityActivity.class);
-                            startActivity(ii);
-                            finishAffinity();
-                            // Toast.makeText(getApplicationContext(), "No bill data available", Toast.LENGTH_LONG).show();
-
+                            rs.setStatus(400);
+                            rs.setMsg("Transaction Unsuccessful");
+                            recharge.setAmount(String.valueOf(ccAvenueResponse.getAmount()));
+                            recharge.setTrackingId(ccAvenueResponse.getTrackingId());
+                            recharge.setMessage(ccAvenueResponse.getMessage());
+                            rs.setData(recharge);
+                            displayStatus(rs);
                         }
                     });
 
@@ -326,4 +362,15 @@ public class PaymentActivity extends AppCompatActivity {
 
 
     }
+
+    private void displayStatus(RechargeBaseClass paymentResponse) {
+        PaymentActivity.this.getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_container, PaymentStatusFragment.newInstance(paymentResponse, null, null, paymentResponse.getData().getAmount()))
+                .commit();
+       /* FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_container, PaymentStatusFragment.newInstance(paymentResponse, null, null,paymentResponse.getData().getAmount()));
+        transaction.commit();*/
+    }
 }
+

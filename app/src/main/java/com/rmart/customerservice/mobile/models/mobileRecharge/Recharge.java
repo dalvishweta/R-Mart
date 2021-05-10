@@ -106,7 +106,7 @@ public class Recharge implements Serializable  {
     private String serviceOrderId;
     @SerializedName("service_id")
     @Expose
-    private int serviceId;
+    private long serviceId;
     @SerializedName("service_name")
     @Expose
     private String serviceName;
@@ -373,11 +373,11 @@ public class Recharge implements Serializable  {
         this.serviceOrderId = serviceOrderId;
     }
 
-    public int getServiceId() {
+    public long getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(int serviceId) {
+    public void setServiceId(long serviceId) {
         this.serviceId = serviceId;
     }
 
