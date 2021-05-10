@@ -468,4 +468,6 @@
     <string name="weight">Unit</string>
     <string name="selling_price">Selling Price</string>
     <string name="enter_custom_amount">Enter Custom Amount</string>
+    <string name="bill_date">Bill Date:</string>
+    <string name="transaction_date">Transaction Date</string>
 </resources>

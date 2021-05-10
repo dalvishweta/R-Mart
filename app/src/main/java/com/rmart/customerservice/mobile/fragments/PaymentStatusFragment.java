@@ -15,7 +15,6 @@ import com.rmart.R;
 import com.rmart.customerservice.mobile.models.mobileRecharge.RechargeBaseClass;
 import com.rmart.customerservice.mobile.viewmodels.PaymentStatusViewModel;
 import com.rmart.databinding.PaymentStatusFragmentBinding;
-import com.rmart.electricity.CCAvenueResponceModel;
 import com.rmart.utilits.IOnBackPressed;
 
 public class PaymentStatusFragment extends Fragment implements IOnBackPressed {
@@ -71,6 +70,7 @@ public class PaymentStatusFragment extends Fragment implements IOnBackPressed {
         mViewModel.mobileNumberMutableLiveData.setValue(mobile);
         mViewModel.nameStringMutableLiveData.setValue(name);
         mViewModel.amount.setValue(amount);
+
         paymentStatusFragmentBinding.setPaymentStatusViewModel(mViewModel);
 
         if(result.getStatus()==200){
@@ -79,6 +79,9 @@ public class PaymentStatusFragment extends Fragment implements IOnBackPressed {
             paymentStatusFragmentBinding.imageView2.setImageDrawable(getResources().getDrawable(R.drawable.payment_failed1));
 
         }
+       /* if(result.getData().getTrackingId()!=null) {
+            paymentStatusFragmentBinding.txtTransctionId.setText(result.getData().getTrackingId());
+        }*/
 
     }
 

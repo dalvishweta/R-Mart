@@ -4,17 +4,17 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.view.View;
 
-import com.rmart.R;
-import com.rmart.electricity.PaymentActivity;
-import com.rmart.electricity.billdetails.repositoris.ProcessRSAKeyRepository;
-import com.rmart.electricity.fetchbill.model.BillDetails;
-import com.rmart.electricity.RSAKeyResponse;
-import com.rmart.electricity.selectoperator.model.Operator;
-import com.rmart.utilits.Utils;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
+
+import com.rmart.R;
+import com.rmart.electricity.PaymentActivity;
+import com.rmart.electricity.RSAKeyResponse;
+import com.rmart.electricity.billdetails.repositoris.ProcessRSAKeyRepository;
+import com.rmart.electricity.fetchbill.model.BillDetails;
+import com.rmart.electricity.selectoperator.model.Operator;
+import com.rmart.utilits.Utils;
 
 public class BillDetailsModule extends ViewModel {
 

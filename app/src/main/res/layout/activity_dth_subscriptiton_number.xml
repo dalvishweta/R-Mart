@@ -136,6 +136,7 @@
             android:padding="10dp"
             android:visibility="@{DthServiceViewModule.isLoading?View.GONE:View.VISIBLE}"
             android:onClick="@{(v) -> DthServiceViewModule.onClick(v)}"
+
             android:text="CONFIRM" />
     </FrameLayout>
 </RelativeLayout>

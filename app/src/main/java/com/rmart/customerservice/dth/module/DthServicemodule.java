@@ -21,7 +21,8 @@ public class DthServicemodule extends ViewModel {
     public MutableLiveData<DthResponse> dthPOJOMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<String> cumsumerNumber = new MutableLiveData<>();
     public MutableLiveData<String> errorCumsumerNumber = new MutableLiveData<>();
-
+    public MutableLiveData<String> cumsumerAmount = new MutableLiveData<>();
+    public MutableLiveData<String> errorCumsumerAmount = new MutableLiveData<>();
 
     public void onClick(final View view) {
 
@@ -62,7 +63,7 @@ public class DthServicemodule extends ViewModel {
     public boolean validate() {
         boolean result = true;
 
-        if (cumsumerNumber.getValue() == null || cumsumerNumber.getValue().isEmpty() || cumsumerNumber.getValue().length() < 11) {
+        if (cumsumerNumber.getValue() == null || cumsumerNumber.getValue().isEmpty() || cumsumerNumber.getValue().length() < 10) {
             errorCumsumerNumber.setValue("Please Enter Subscription ID");
 
             result = false;
@@ -74,5 +75,32 @@ public class DthServicemodule extends ViewModel {
     public void onCumsumerNumberTextChanged(CharSequence s, int start, int before, int count) {
         errorCumsumerNumber.setValue(null);
     }
+
+    public void onPayClick(final View view) {
+
+        if(validateAmount() && !isLoading.getValue()){
+            isLoading.setValue(true);
+
+            //Call GET RSA key
+        } else {
+
+            isLoading.setValue(false);
+        }
+
+
+    }
+
+    public boolean validateAmount() {
+        boolean result = true;
+
+        if (cumsumerAmount.getValue() == null || cumsumerAmount.getValue().isEmpty() || cumsumerAmount.getValue().length() < 10) {
+            errorCumsumerAmount.setValue("Please Enter Valid Amount");
+
+            result = false;
+        }
+
+        return result;
+    }
+
 
 }

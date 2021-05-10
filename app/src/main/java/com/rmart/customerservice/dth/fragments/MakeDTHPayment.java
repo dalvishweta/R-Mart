@@ -5,10 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.rmart.R;
+import com.rmart.customerservice.dth.module.DthServicemodule;
 import com.rmart.customerservice.mobile.operators.model.Operator;
+import com.rmart.databinding.FragmentMakeDthPaymentBinding;
 
 import java.io.Serializable;
 
@@ -62,6 +66,13 @@ public class MakeDTHPayment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_make_dth_payment, container, false);
+        FragmentMakeDthPaymentBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_make_dth_payment, container, false);
+        DthServicemodule mViewModel = new ViewModelProvider(this).get(DthServicemodule.class);
+        mViewModel.isLoading.setValue(false);
+        mViewModel.operatorMutableLiveData.postValue((Operator) mParam2);
+        binding.setDthServiceViewModule(mViewModel);
+        binding.setLifecycleOwner(this);
+        binding.toolbar.setNavigationOnClickListener(view -> getActivity().onBackPressed());
+        return binding.getRoot();
     }
 }

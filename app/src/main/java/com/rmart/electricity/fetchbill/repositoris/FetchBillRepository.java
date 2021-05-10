@@ -2,13 +2,14 @@ package com.rmart.electricity.fetchbill.repositoris;
 
 import android.content.Context;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.rmart.BuildConfig;
-import com.rmart.electricity.fetchbill.model.ElecProcessPOJO;
 import com.rmart.electricity.api.ElecticityService;
+import com.rmart.electricity.fetchbill.model.ElecProcessPOJO;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.RetrofitClientInstance;
 
-import androidx.lifecycle.MutableLiveData;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
