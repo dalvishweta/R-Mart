@@ -56,11 +56,11 @@ public class FragmentMobileRecharge extends Fragment {
         binding.setLifecycleOwner(this);
         mViewModel.getHistory(MyProfile.getInstance(getContext()).getUserID());
         binding.toolbar.setNavigationOnClickListener(view -> getActivity().onBackPressed());
-        mViewModel.responseGetHistoryMutableLiveData.observeForever(responseGetHistory -> {
-            RechargeHistoryAdapter rechargeHistoryAdapter = new RechargeHistoryAdapter(responseGetHistory.lastTransaction, view -> {
+        mViewModel.responseGetHistoryMutableLiveData.observeForever(GetHistoryBaseclass -> {
+            RechargeHistoryAdapter rechargeHistoryAdapter = new RechargeHistoryAdapter(GetHistoryBaseclass.getData(), view -> {
                 String type = binding.rgServiceType.getCheckedRadioButtonId()==R.id.rb_prepaid?PREPAID:POSTPAID;
 
-                changefragment(view.getRechargeOn(), view.getRechargeOn(), type);
+                changefragment(view.getDate(), view.getDate(), type);
             });
             binding.setRechargeHistoryAdapter(rechargeHistoryAdapter);
         });

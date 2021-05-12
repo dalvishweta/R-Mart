@@ -20,8 +20,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatTextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -187,7 +185,8 @@ public class PaymentActivity extends AppCompatActivity  {
                 Recharge recharge = new Recharge();
                 recharge.setAmount(String.valueOf(ccAvenueResponse.getAmount()));
                 recharge.setTrackingId(ccAvenueResponse.getTrackingId());
-                recharge.setMessage(ccAvenueResponse.getMessage());
+                recharge.setTransDate(ccAvenueResponse.getTransDate());
+                //recharge.setMessage(ccAvenueResponse.getMessage());
                 //recharge.setBillingName(ob.getConsumerName());
                // recharge.setTransDate(ob.getBillDate());
                 //recharge.setServiceId(Long.getLong(ob.getConsumerID()));
@@ -275,12 +274,12 @@ public class PaymentActivity extends AppCompatActivity  {
                                 rs.setStatus(200);
                                 rs.setMsg("Transaction Successful");
 
-                                recharge.setAmount(String.valueOf(datap.getData().getDueAmount()));
+                                recharge.setAmount((ccAvenueResponse.getAmount()));
                                 recharge.setTrackingId(ccAvenueResponse.getTrackingId());
-                                recharge.setMessage(datap.getData().getDescription());
-                                recharge.setBillingName(ob.getConsumerName());
-                                recharge.setTransDate(datap.getData().getBillDate());
-                                recharge.setServiceId((int) datap.getData().getConsumerID());
+                              //  recharge.setMessage(datap.getData().getDescription());
+                              //  recharge.setBillingName(ob.getConsumerName());
+                               recharge.setTransDate(ccAvenueResponse.getTransDate());
+                               // recharge.setServiceId((int) datap.getData().getConsumerID());
 
 
                                 rs.setData(recharge);
@@ -289,16 +288,13 @@ public class PaymentActivity extends AppCompatActivity  {
 
                                 rs.setStatus(400);
                                 rs.setMsg("Transaction Unsuccessful");
-                                recharge.setAmount(String.valueOf(ccAvenueResponse.getAmount()));
+                                //recharge.setAmount(String.valueOf(ccAvenueResponse.getAmount()));
                                 recharge.setTrackingId(ccAvenueResponse.getTrackingId());
-                                recharge.setMessage(ccAvenueResponse.getMessage());
-                                recharge.setAmount(String.valueOf(datap.getData().getDueAmount()));
-                                recharge.setTrackingId(datap.getData().getMerTxnID());
-                                recharge.setMessage(datap.getData().getDescription());
-                                recharge.setBillingName(ob.getConsumerName());
-                                recharge.setTransDate(datap.getData().getBillDate());
-                                recharge.setServiceId((int) datap.getData().getConsumerID());
-
+                                //recharge.setTrackingId(datap.getData().getMerTxnID());
+                               // recharge.setMessage(datap.getData().getDescription());
+                                //recharge.setBillingName(ob.getConsumerName());
+                                recharge.setAmount(ccAvenueResponse.getAmount());
+                                recharge.setTransDate(ccAvenueResponse.getTransDate());
                                 rs.setData(recharge);
                                 displayStatus(rs);
                             }
@@ -310,9 +306,10 @@ public class PaymentActivity extends AppCompatActivity  {
                         public void onFailure(Call<paybill> call, Throwable t) {
                             rs.setStatus(400);
                             rs.setMsg("Transaction Unsuccessful");
-                            recharge.setAmount(String.valueOf(ccAvenueResponse.getAmount()));
+                            recharge.setAmount((ccAvenueResponse.getAmount()));
                             recharge.setTrackingId(ccAvenueResponse.getTrackingId());
                             recharge.setMessage(ccAvenueResponse.getMessage());
+                            recharge.setTransDate(ccAvenueResponse.getTransDate());
                             rs.setData(recharge);
                             displayStatus(rs);
                         }
@@ -325,43 +322,6 @@ public class PaymentActivity extends AppCompatActivity  {
 
     }
 
-    public void openDialog1(paybill data) {
-        Dialog dialog = new Dialog(PaymentActivity.this);
-        dialog.setCancelable(false);
-        AppCompatTextView consumer_namee, consumer_ide, DueAmounte, OrderIde, DueDatee, BillDatee, status;
-        AppCompatButton pay_bill;
-        dialog.setContentView(R.layout.dialogbrand_layout);
-        dialog.setTitle("Receipt");
-        consumer_namee = (AppCompatTextView) dialog.findViewById(R.id.consumer_name);
-        consumer_ide = (AppCompatTextView) dialog.findViewById(R.id.consumer_id);
-        DueAmounte = (AppCompatTextView) dialog.findViewById(R.id.DueAmount);
-        OrderIde = (AppCompatTextView) dialog.findViewById(R.id.OrderId);
-        DueDatee = (AppCompatTextView) dialog.findViewById(R.id.DueDate);
-        BillDatee = (AppCompatTextView) dialog.findViewById(R.id.BillDate);
-        pay_bill = (AppCompatButton) dialog.findViewById(R.id.pay_bill);
-        status = (AppCompatTextView) dialog.findViewById(R.id.status);
-
-            status.setText("Transaction Successful");
-            consumer_namee.setText("Consumer Name: " + ob.getConsumerName());
-            consumer_ide.setText("Consumer ID: " + data.getData().getConsumerID());
-            DueAmounte.setText("Amount: " + ccavenue_data.getCcavenueData().getAmount());
-            OrderIde.setText("Order ID: " + data.getData().getOrderId());
-            DueDatee.setText("Transaction No: " + data.getData().getMerTxnID());
-            BillDatee.setText("Bill Date: " +  data.getData().getBillDate());
-
-
-            pay_bill.setOnClickListener(v -> {
-                Intent ii = new Intent(PaymentActivity.this, ElectricityActivity.class);
-                startActivity(ii);
-                finishAffinity();
-            });
-
-
-            dialog.show();
-
-
-
-    }
 
     private void displayStatus(RechargeBaseClass paymentResponse) {
         PaymentActivity.this.getSupportFragmentManager()

@@ -1,9 +1,8 @@
 package com.rmart.customerservice.mobile.listners;
 
-import com.rmart.customerservice.mobile.circle.model.Circle;
-import com.rmart.customerservice.mobile.models.LastTransaction;
+import com.rmart.customerservice.mobile.models.History;
 
 public interface HistoryClickListner {
 
-    public void onSelect(LastTransaction lastTransaction);
+    public void onSelect(History lastTransaction);
 }
