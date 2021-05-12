@@ -103,7 +103,7 @@ android {
         //elescctricity
         buildConfigField("String", "electicity_operator", '"rest_server/Electricityservice/getOperator"')
         buildConfigField("String", "electricity_fetch_bill", '"rest_server/Electricityservice/fetchBill"')
-        buildConfigField("String", "electricity_pay_bill", '"rest_server/Electricityservice/billPayment"')
+        buildConfigField("String", "electricity_pay_bill", '"rest_server/Electricityservice_new/billPayment"')
         buildConfigField("String", "electricity_rsa_key", '"customer/VendorShop/RokadmartPGinitiate"')
         buildConfigField("String", "Mobile_recharge_Rokadmart", '"Recharge/recharge"')
 
@@ -114,6 +114,8 @@ android {
         buildConfigField("String", "HISTORY", '"rest_server/Venus_mart_api/getHistory"')
         buildConfigField("String", "Mobile_recharge", '"rest_server/Venus_mart_api/recharge"')
         buildConfigField("String", "DTH_CustomerIdInfo", '"rest_server/Mplan_operator/getCustomerinfo"')
+        buildConfigField("String", "GETHISTORY", '"https://rokad.in/rest_server/get_history_api/getHistory"')
+
         buildConfigField("String", "service_id", '"31"')
         buildConfigField("String", "service_name", '"V_RECHARGE"')
 

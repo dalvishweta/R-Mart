@@ -1,11 +1,14 @@
 package com.rmart.customerservice.mobile.repositories;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
 import com.rmart.BuildConfig;
 import com.rmart.customerservice.mobile.api.MobileRechargeService;
+import com.rmart.customerservice.mobile.models.GetHistroryBaseClass;
 import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
-import com.rmart.customerservice.mobile.models.ResponseGetHistory;
 import com.rmart.electricity.RSAKeyResponse;
 import com.rmart.utilits.RetrofitClientInstance;
 
@@ -17,28 +20,32 @@ public class MobileRechargeRepository {
 
     public final static int MOBLIE_RECHARGE_SERVICE_TYPE= 1;
     public final static int DTH_RECHARGE_SERVICE_TYPE= 2;
-    public static MutableLiveData<ResponseGetHistory> getHistory(String UserId) {
+    public static MutableLiveData<GetHistroryBaseClass> getHistory(String UserId) {
 
         MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstanceRokad().create(MobileRechargeService.class);
-        final MutableLiveData<ResponseGetHistory> resultMutableLiveData = new MutableLiveData<>();
-        Call<ResponseGetHistory> call = mobileRechargeService.getHistory(UserId, BuildConfig.service_id);
-        final ResponseGetHistory result = new ResponseGetHistory();
+        final MutableLiveData<GetHistroryBaseClass> resultMutableLiveData = new MutableLiveData<>();
+        Call<GetHistroryBaseClass> call = mobileRechargeService.getCustomerHistory(UserId, BuildConfig.service_name,"1");
+        final GetHistroryBaseClass result = new GetHistroryBaseClass();
 
-        call.enqueue(new Callback<ResponseGetHistory>() {
+        call.enqueue(new Callback<GetHistroryBaseClass>() {
             @Override
-            public void onResponse(Call<ResponseGetHistory> call, Response<ResponseGetHistory> response) {
-                ResponseGetHistory data = response.body();
-                if(data!=null && data.getLastTransaction()!=null) {
+            public void onResponse(Call<GetHistroryBaseClass> call, Response<GetHistroryBaseClass> response) {
+                Gson s = new Gson();
+                if(response.isSuccessful()) {
+                    GetHistroryBaseClass data = response.body();
+                    data.setStatus(response.code());
+                    Log.d("Recharge",s.toJson(data));
                     resultMutableLiveData.setValue(data);
-                 } else {
-                    
-                    result.setStatus("failed");
+                } else {
+                    final GetHistroryBaseClass result = new GetHistroryBaseClass();
+                    result.setStatus(response.code());
+                    result.setMsg(response.message());
                     resultMutableLiveData.setValue(result);
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseGetHistory> call, Throwable t) {
+            public void onFailure(Call<GetHistroryBaseClass> call, Throwable t) {
                 if(t.getLocalizedMessage().equalsIgnoreCase("Unable to resolve host \"hungryindia.co.in\": No address associated with hostname"))
                 {
                     result.setMsg("Please Check Internet Connection");

@@ -18,10 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.customerservice.mobile.adapters.RechargeHistoryAdapter;
 import com.rmart.customerservice.mobile.api.MobileRechargeService;
 import com.rmart.customerservice.mobile.interfaces.OnMobileRechargeListener;
-import com.rmart.customerservice.mobile.listners.HistoryClickListner;
 import com.rmart.customerservice.mobile.models.LastTransaction;
 import com.rmart.customerservice.mobile.models.ResponseGetHistory;
 import com.rmart.customerservice.mobile.models.SubscriberModule;
@@ -105,7 +103,7 @@ public class MobileRechargeHistoryFragment extends BaseFragment implements View.
                                 lastTransaction.setOperatorName(operator.getName());
                                 lastTransaction.setStateName(lastTransaction.getStateName());
                             }
-
+/*
                             RechargeHistoryAdapter recyclerAdapter = new RechargeHistoryAdapter(response.body().getLastTransaction()
                                     , new HistoryClickListner() {
                                 @Override
@@ -123,7 +121,7 @@ public class MobileRechargeHistoryFragment extends BaseFragment implements View.
                                     mListener.goToMakePaymentFragment();
                                 }
                             });
-                            recyclerView.setAdapter(recyclerAdapter);
+                            recyclerView.setAdapter(recyclerAdapter);*/
                         } else {
                             showDialog("", response.message());
                         }

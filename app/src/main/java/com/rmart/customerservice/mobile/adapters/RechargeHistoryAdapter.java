@@ -1,29 +1,26 @@
 package com.rmart.customerservice.mobile.adapters;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.rmart.BR;
 import com.rmart.R;
-import com.rmart.customer.dashboard.adapters.HomeAdapter;
 import com.rmart.customerservice.mobile.listners.HistoryClickListner;
-import com.rmart.customerservice.mobile.models.LastTransaction;
+import com.rmart.customerservice.mobile.models.History;
 import com.rmart.databinding.MobileHistoryBinding;
-import com.rmart.databinding.ServicesBinding;
+
+import java.util.List;
 
 
 public class RechargeHistoryAdapter extends RecyclerView.Adapter<RechargeHistoryAdapter.HistoryViewHolder> {
 
-    LastTransaction[] mLastTransaction;
+    List<History> mLastTransaction;
     HistoryClickListner historyClickListner;
-    public RechargeHistoryAdapter(LastTransaction[] lastTransaction, HistoryClickListner historyClickListner) {
+    public RechargeHistoryAdapter(List<History> lastTransaction, HistoryClickListner historyClickListner) {
         mLastTransaction = lastTransaction;
         this.historyClickListner = historyClickListner;
     }
@@ -40,14 +37,14 @@ public class RechargeHistoryAdapter extends RecyclerView.Adapter<RechargeHistory
 
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
-        LastTransaction data = mLastTransaction[position];
+        History data = mLastTransaction.get(position);
         holder.itemView.setOnClickListener(view -> historyClickListner.onSelect(data));
         holder.bind(data);
     }
 
     @Override
     public int getItemCount() {
-        return mLastTransaction.length;
+        return mLastTransaction.size();
     }
 
     public class HistoryViewHolder extends RecyclerView.ViewHolder {

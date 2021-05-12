@@ -3,6 +3,7 @@ package com.rmart.customerservice.mobile.api;
 
 import com.rmart.BuildConfig;
 import com.rmart.customerservice.mobile.circle.model.CircleResponse;
+import com.rmart.customerservice.mobile.models.GetHistroryBaseClass;
 import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
 import com.rmart.customerservice.mobile.models.ResponseGetHistory;
 import com.rmart.customerservice.mobile.models.ResponseMobileRecharge;
@@ -17,6 +18,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface MobileRechargeService {
 
@@ -88,6 +90,9 @@ public interface MobileRechargeService {
     @POST(BuildConfig.HISTORY)
     @FormUrlEncoded
     Call<ResponseGetHistory> getHistory(@Field("user_id") String userID,@Field("service_id") String serviceID );
+
+    @GET(BuildConfig.GETHISTORY)
+    Call<GetHistroryBaseClass> getCustomerHistory(@Query("user_id") String user_id, @Query("service_name") String service_name, @Query("page")String page);
 
     @POST(BuildConfig.operator)
     @FormUrlEncoded
