@@ -237,7 +237,7 @@ public class Utils {
         StringBuilder stringBuffer = new StringBuilder();
         // matcher = pattern.matcher(password);
 
-        if(!Pattern.compile(".*[0-9].*").matcher(password).matches()) {
+      /*  if(!Pattern.compile(".*[0-9].*").matcher(password).matches()) {
             stringBuffer.append("* Must contains one digit from 0-9.").append("\n");
         }
         if(!Pattern.compile(".*[a-z].*").matcher(password).matches()) {
@@ -248,9 +248,9 @@ public class Utils {
         }
         if (!Pattern.compile(".*[@#$%].*").matcher(password).matches()) {
             stringBuffer.append("* Must contains one special symbols in the list \"@#$%\".").append("\n");
-        }
-        if (password.length() < 8 || password.length() > 11) {
-            stringBuffer.append("* Length at least 8 characters and maximum of 11.").append("\n");
+        }*/
+        if (password.length() < 1 || password.length() > 4) {
+            stringBuffer.append("*password Length only 4 characters ").append("\n");
         }
         return stringBuffer.toString();
     }
