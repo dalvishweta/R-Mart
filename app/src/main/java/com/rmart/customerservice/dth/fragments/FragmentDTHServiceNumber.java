@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.customerservice.dth.module.DthServicemodule;
+import com.rmart.customerservice.dth.viewmodels.DthServicemodule;
 import com.rmart.customerservice.mobile.operators.model.Operator;
 import com.rmart.databinding.ActivityDthSubscriptitonNumberBinding;
 
@@ -22,7 +22,7 @@ import java.io.Serializable;
  * Use the {@link FragmentDTHServiceNumber#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentDTHServiceNumber extends BaseFragment {
+public class    FragmentDTHServiceNumber extends BaseFragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,7 +45,7 @@ public class FragmentDTHServiceNumber extends BaseFragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment FragmentDTHServiceNumber.
      */
-    // TODO: Rename and change types and number of parameters
+    // TODO: Rename and change types and number of pa322ewrameters
     public static FragmentDTHServiceNumber newInstance(String param1, String param2) {
         FragmentDTHServiceNumber fragment = new FragmentDTHServiceNumber();
         Bundle args = new Bundle();

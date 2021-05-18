@@ -23,6 +23,7 @@ import com.rmart.customer.shops.products.fragments.ProductDetailsFragment;
 import com.rmart.customer.shops.products.fragments.ProductListFragment;
 import com.rmart.customer.views.ProductCartDetailsFragment;
 import com.rmart.databinding.FragmentShopHomePageBinding;
+import com.rmart.utilits.ActionCall;
 
 public class ShopHomePage extends BaseFragment {
     private ShopDetailsModel productsShopDetailsModel;
@@ -64,6 +65,14 @@ public class ShopHomePage extends BaseFragment {
         binding.setProductData(productData);
         binding.setLifecycleOwner(this);
         shopHomeViewModel.loadShopHomePage(getContext(),productsShopDetailsModel);
+
+        binding.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ActionCall.createCall(getActivity(),productsShopDetailsModel.getShopMobileNo());
+
+            }
+        });
 
         binding.btnTryagain.setOnClickListener(new View.OnClickListener() {
             @Override

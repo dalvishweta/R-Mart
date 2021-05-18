@@ -54,6 +54,7 @@ import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
+import com.rmart.utilits.ActionCall;
 import com.rmart.utilits.CommonUtils;
 import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
@@ -265,6 +266,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
             // Toast.makeText(getApplicationContext(),"Logo selected", Toast.LENGTH_SHORT).show();
         });
+         MenuItem call = menu.findItem(R.id.call);
+        call.getActionView().setOnClickListener(view ->  Utils.openDialPad(BaseNavigationDrawerActivity.this,"022-42931001"));
+
         MyProfile myProfile = MyProfile.getInstance(this);
         if (myProfile != null) {
             //if (myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {

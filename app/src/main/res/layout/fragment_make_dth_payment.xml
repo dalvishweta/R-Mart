@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="android.view.View"/>
+        <import type="com.rmart.utilits.Curruncy"/>
 
         <variable
-            name="DthServiceViewModule"
-            type="com.rmart.customerservice.dth.module.DthServicemodule" />
+            name="DTHRechargeMakePaymentViewModel"
+            type="com.rmart.customerservice.dth.viewmodels.DTHRechargeMakePaymentViewModel" />
     </data>
 <RelativeLayout
     android:layout_width="match_parent"
@@ -39,13 +41,29 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/dish_tv_icon">
-        </ImageView>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            app:imageUrl="@{DTHRechargeMakePaymentViewModel.operatorMutableLiveData}"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/imageview"
+                android:layout_width="80dp"
+                tools:src="@drawable/dish_tv_icon"
+                android:layout_margin="5dp"
+                android:layout_centerInParent="true"
+                android:layout_height="80dp"/>
+            <ImageView
+                android:id="@+id/selectedgreeting"
+                android:layout_width="50dp"
+                android:layout_centerInParent="true"
+                android:layout_height="50dp"
+                android:src="@drawable/loader_newrelease"
+                android:background="@null"
+                android:elevation="2dp"
+                />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,9 +76,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{DthServiceViewModule.operatorMutableLiveData.name"
+                android:text='@{"Name: "+DTHRechargeMakePaymentViewModel.dthPOJOMutableLiveData.data.records.get(0).customerName}'
                 android:textSize="14sp"
-                android:padding="5dp"
+
+                tools:text="Name of Customer"
                 android:textColor="@color/black2"
                 android:fontFamily="@font/roboto_light">
 
@@ -68,12 +87,41 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{DthServiceViewModule.cumsumerNumber"
+                android:text='@{"ID: "+DTHRechargeMakePaymentViewModel.cumsumerNumber}'
                 android:textSize="14sp"
                 android:textColor="@color/black2"
                 android:fontFamily="@font/roboto_light"
-                android:padding="5dp">
-            </TextView>
+                tools:text="ID of Customer"
+               />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"Monthly Recharge: "+Curruncy.getCurruncy(DTHRechargeMakePaymentViewModel.dthPOJOMutableLiveData.data.records.get(0).monthlyRecharge+"")}'
+                android:textSize="14sp"
+                android:textColor="@color/black2"
+                android:fontFamily="@font/roboto_light"
+                tools:text="ID of Customer"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"Balance: "+Curruncy.getCurruncy(DTHRechargeMakePaymentViewModel.dthPOJOMutableLiveData.data.records.get(0).balance+"")}'
+                android:textSize="14sp"
+                android:textColor="@color/black2"
+                android:fontFamily="@font/roboto_light"
+                tools:text="ID of Customer"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text='@{"Next Recharge Date: "+DTHRechargeMakePaymentViewModel.dthPOJOMutableLiveData.data.records.get(0).nextRechargeDate}'
+                android:textSize="14sp"
+                android:textColor="@color/black2"
+                android:fontFamily="@font/roboto_light"
+                tools:text="ID of Customer"
+                />
+
+
 
         </LinearLayout>
 
@@ -99,7 +147,7 @@
                 android:layout_marginBottom="15dp"
                 android:gravity="center"
                 android:hint="@string/enter_amount"
-                app:errorText="@{DthServiceViewModule.errorCumsumerAmount}">
+                app:errorText="@{DTHRechargeMakePaymentViewModel.errorCumsumerAmount}">
                 <EditText
                     android:id="@+id/mobile_number"
                     android:layout_width="match_parent"
@@ -107,7 +155,7 @@
                     android:layout_height="wrap_content"
                     android:maxLength="10"
                     android:inputType="number"
-                    app:Text="@{DthServiceViewModule.cumsumerNumber}"/>
+                    android:text="@={DTHRechargeMakePaymentViewModel.cumsumerAmount}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
             <TextView
@@ -136,6 +184,12 @@
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"
         >
+        <ProgressBar
+            android:layout_marginTop="5dp"
+            android:visibility="@{DTHRechargeMakePaymentViewModel.isLoading?View.VISIBLE:View.GONE}"
+            android:id="@+id/progressBar1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <Button
             android:id="@+id/add_custom_product"
             android:layout_width="match_parent"
@@ -143,8 +197,8 @@
             android:layout_alignParentBottom="true"
             android:padding="10dp"
             android:text="RECHARGE"
-            android:visibility="@{DthServiceViewModule.isLoading?View.GONE:View.VISIBLE}"
-            android:onClick="@{(v) -> DthServiceViewModule.onClick(v)}"/>
+            android:visibility="@{DTHRechargeMakePaymentViewModel.isLoading?View.GONE:View.VISIBLE}"
+            android:onClick="@{(v) -> DTHRechargeMakePaymentViewModel.onClick(v)}"/>
     </FrameLayout>
 </RelativeLayout>
 </layout>

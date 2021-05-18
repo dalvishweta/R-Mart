@@ -34,26 +34,30 @@ public class Operator implements Serializable {
     @BindingAdapter("imageUrl")
     public static void loadImage(View view, Operator data) {
 
-        ImageView imageview = view.findViewById(R.id.imageview);
-        ImageView selectedgreeting = view.findViewById(R.id.selectedgreeting);
-        selectedgreeting.setVisibility(View.VISIBLE);
-        GlideApp.with(view.getContext()).load(data.image) .listener(new RequestListener<Drawable>() {
+        try {
+            ImageView imageview = view.findViewById(R.id.imageview);
+            ImageView selectedgreeting = view.findViewById(R.id.selectedgreeting);
+            selectedgreeting.setVisibility(View.VISIBLE);
+            GlideApp.with(view.getContext()).load(data.image).listener(new RequestListener<Drawable>() {
 
-            @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                selectedgreeting.setVisibility(View.GONE);
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    selectedgreeting.setVisibility(View.GONE);
 
-                return false;
-            }
+                    return false;
+                }
 
-            @Override
-            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                selectedgreeting.setVisibility(View.GONE);
-                return false;
-            }
-        }).dontAnimate().
-                diskCacheStrategy(DiskCacheStrategy.ALL).
-                signature(new ObjectKey(data.image==null?"":data.image)).
-                error(R.mipmap.default_product_image).thumbnail(0.5f).into(imageview);
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    selectedgreeting.setVisibility(View.GONE);
+                    return false;
+                }
+            }).dontAnimate().
+                    diskCacheStrategy(DiskCacheStrategy.ALL).
+                    signature(new ObjectKey(data.image == null ? "" : data.image)).
+                    error(R.mipmap.default_product_image).thumbnail(0.5f).into(imageview);
+        } catch (Exception e){
+
+        }
     }
 }

@@ -3,7 +3,9 @@ package com.rmart.customerservice.dth.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Records {
+import java.io.Serializable;
+
+public class Records implements  Serializable {
     @SerializedName("MonthlyRecharge")
     @Expose
     private int monthlyRecharge;

@@ -150,7 +150,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     }
 
     private void checkCredentials() {
-        if (Utils.isNetworkConnected(requireActivity())) {
+        if (Utils.isNetworkConnected(requireActivity())){
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
             // mPassword = "12345";
@@ -166,7 +166,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
                                         LoginDetailsModel loginDetailsModel = new LoginDetailsModel();
                                         loginDetailsModel.setMobileNumber(mMobileNumber);
                                         loginDetailsModel.setPassword(mPassword);
-                                         profileResponse = data.getLoginData();
+                                        profileResponse = data.getLoginData();
                                         checkRegistration(profileResponse,mMobileNumber,mPassword);
 
                                         MyProfile.setInstance(getActivity(),profileResponse);

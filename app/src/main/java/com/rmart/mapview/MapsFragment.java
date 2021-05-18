@@ -42,8 +42,6 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     private FusedLocationProviderClient fusedLocationProviderClient;
     private SupportMapFragment mapFragment;
     private LocationManager locationManager;
-    // private double latitude = 0.0;
-    // private double longitude = 0.0;
     GoogleMap googleMap;
     private boolean isEditable;
     private Location currentLocation;
@@ -221,6 +219,18 @@ public class MapsFragment extends BaseFragment implements OnMapReadyCallback, Go
     @Override
     public void onMapClick(LatLng latLng) {
         MarkerOptions marker = new MarkerOptions().position(new LatLng(latLng.latitude, latLng.longitude)).title("New Marker");
+        googleMap.clear();
+        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        googleMap.addMarker(marker);
+        currentLocation = new Location("");
+        currentLocation.setLatitude(latLng.latitude);
+        currentLocation.setLongitude(latLng.longitude);
+        mListener.getMapGeoCoordinates(latLng);
+        onLocationUpdateListner.onLocationUpdate(latLng);
+    }
+    public void setUpdateIcon(LatLng latLng) {
+        MarkerOptions marker = new MarkerOptions().position(latLng).title("New Marker");
         googleMap.clear();
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));

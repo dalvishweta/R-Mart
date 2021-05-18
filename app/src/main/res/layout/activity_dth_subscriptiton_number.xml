@@ -6,7 +6,7 @@
 
         <variable
             name="DthServiceViewModule"
-            type="com.rmart.customerservice.dth.module.DthServicemodule" />
+            type="com.rmart.customerservice.dth.viewmodels.DthServicemodule" />
     </data>
     <RelativeLayout
     android:layout_height="match_parent"

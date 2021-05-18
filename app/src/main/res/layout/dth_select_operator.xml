@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-     <!--   <import type="android.view.View"/>-->
+        <import type="android.view.View"/>
         <variable
             name="OperatorAdapter"
             type="com.rmart.customerservice.dth.adapter.OperatorAdapter" />
@@ -88,9 +88,15 @@
                     android:layout_marginRight="5dp"
                     android:adapter="@{OperatorAdapter}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    >
+                    />
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/one_layout"
+                />
 
-                </androidx.recyclerview.widget.RecyclerView>
+
         </LinearLayout>
         </LinearLayout>
 

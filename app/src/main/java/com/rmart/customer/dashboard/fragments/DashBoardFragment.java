@@ -21,6 +21,7 @@ import com.rmart.customer.dashboard.model.ServiceOffer;
 import com.rmart.customer.dashboard.model.ShopType;
 import com.rmart.customer.dashboard.viewmodel.HomeViewModel;
 import com.rmart.customer.shops.list.fragments.VendorShopsListFragment;
+import com.rmart.customerservice.dth.actvities.DTHRechargeActivity;
 import com.rmart.customerservice.mobile.activities.MobileRechargeActivity;
 import com.rmart.databinding.FragmentDashBoardBinding;
 import com.rmart.electricity.activities.ElectricityActivity;
@@ -54,7 +55,6 @@ public class DashBoardFragment extends BaseFragment {
                              Bundle savedInstanceState) {
 
        FragmentDashBoardBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dash_board, container, false);
-
         HomeViewModel mViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         binding.setHomeViewModel(mViewModel);
         binding.setLifecycleOwner(this);
@@ -69,9 +69,11 @@ public class DashBoardFragment extends BaseFragment {
                         startActivity(intent);
                     }
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("dth-recharge")){
-                      /* Intent intent = new Intent(getContext(), DTHRechargeActivity.class);
-                       startActivity(intent);*/
+
+//                        Intent intent = new Intent(getContext(), DTHRechargeActivity.class);
+//                       startActivity(intent);
                         Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_LONG).show();
+                        //5857131402
                     }
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("light-bill")){
                         Intent intent = new Intent(getContext(), ElectricityActivity.class);
@@ -80,7 +82,7 @@ public class DashBoardFragment extends BaseFragment {
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("travel-booking")){
 //                        Intent intent = new Intent(getContext(), ActivityElectricity.class);
 //                        startActivity(intent);
-                        Toast.makeText(getContext(),"Comming Soon",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -92,18 +94,11 @@ public class DashBoardFragment extends BaseFragment {
 
                 @Override
                 public void onBigShopClick(BigShopType bigShopType) {
-
-
-                        openShopList("9");
-
-
-
-
+                        openShopList(bigShopType.getClick()+"");
                 }
             },homePageResponse.getData());
             binding.setMyAdapter(homeAdapter);
         });
-
        return binding.getRoot();
     }
 

@@ -145,6 +145,16 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
-
+      <com.google.android.material.floatingactionbutton.FloatingActionButton
+          android:id="@+id/fab"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentBottom="true"
+          android:layout_alignParentRight="true"
+          android:src="@drawable/phone"
+          app:backgroundTint="@color/colorPrimary"
+          app:tint="@color/buy_now_color"
+          android:contentDescription="@string/submit"
+          android:layout_margin="16dp" />
    </RelativeLayout>
 </layout>

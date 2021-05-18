@@ -442,7 +442,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                                 if(currentPage==0) {
                                     map_or_list_view.setVisibility(View.GONE);
                                     searchLayout.setVisibility(View.GONE);
-                                    changeAddressLayout.setVisibility(View.GONE);
+                                    changeAddressLayout.setVisibility(View.VISIBLE);
 
                                     erorolayout.setVisibility(View.VISIBLE);
                                 }
@@ -456,7 +456,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                         if(currentPage==0) {
                             map_or_list_view.setVisibility(View.GONE);
                             searchLayout.setVisibility(View.GONE);
-                            changeAddressLayout.setVisibility(View.GONE);
+                            changeAddressLayout.setVisibility(View.VISIBLE);
                             erorolayout.setVisibility(View.VISIBLE);
                             errormessage.setText(response.message());
                         }
@@ -477,7 +477,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                     if(currentPage==0) {
                         map_or_list_view.setVisibility(View.GONE);
                         searchLayout.setVisibility(View.GONE);
-                        changeAddressLayout.setVisibility(View.GONE);
+                        changeAddressLayout.setVisibility(View.VISIBLE);
 
                         erorolayout.setVisibility(View.VISIBLE);
                     }
@@ -491,7 +491,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             if(currentPage==0) {
                 map_or_list_view.setVisibility(View.GONE);
                 searchLayout.setVisibility(View.GONE);
-                changeAddressLayout.setVisibility(View.GONE);
+                changeAddressLayout.setVisibility(View.VISIBLE);
                 errormessage.setText(getString(R.string.network_slow));
                 erorolayout.setVisibility(View.VISIBLE);
             }

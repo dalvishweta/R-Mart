@@ -1,5 +1,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="myAddress"
@@ -19,6 +20,7 @@
             android:id="@+id/retailer_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            tools:visibility="gone"
             android:orientation="vertical">
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/my_profile_title"
@@ -703,6 +705,20 @@
 
 
         </LinearLayout>
+
+
+
+
+        <SearchView
+            android:layout_marginTop="10dp"
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:queryHint="Search Address"
+            android:iconifiedByDefault="false"
+            />
+
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
@@ -759,6 +775,7 @@
                 android:inputType="text"
                 android:visibility="gone" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"

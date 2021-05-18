@@ -6,6 +6,12 @@
         android:title="@string/cart"
         app:actionLayout="@layout/badge_menu"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/call"
+        android:icon="@drawable/phone"
+        app:showAsAction="always"
+        app:actionLayout="@layout/call_icon"
+        android:title="call" />
 
     <item
         android:id="@+id/app_logo"

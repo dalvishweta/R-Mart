@@ -185,8 +185,8 @@ android {
             dimension "rokard_mart"
             applicationIdSuffix ".customerprod"
             /*versionNameSuffix "-customer"*/
-            versionCode 9
-            versionName "2.2.2"
+            versionCode 12
+            versionName "3.0.0"
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"') //?command=initiateTransaction
            // buildConfigField("String", "PAYMENT_URL", '"https://test.ccavenue.com/transaction/initTrans"')
@@ -278,5 +278,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-dynamic-links'
     implementation 'com.google.firebase:firebase-analytics'
     implementation project(':CircleIndicatore')
+
 
 }

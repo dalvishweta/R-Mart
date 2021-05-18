@@ -44,7 +44,7 @@ public class RechargeHistoryAdapter extends RecyclerView.Adapter<RechargeHistory
 
     @Override
     public int getItemCount() {
-        return mLastTransaction.size();
+        return mLastTransaction!=null? mLastTransaction.size():0;
     }
 
     public class HistoryViewHolder extends RecyclerView.ViewHolder {

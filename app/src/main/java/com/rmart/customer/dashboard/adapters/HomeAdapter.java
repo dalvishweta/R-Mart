@@ -98,7 +98,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if(homePageData.get(position).getType().equalsIgnoreCase("ShopTypes")){
 
                 ShopCategoryAdapter categoryAdapter = new  ShopCategoryAdapter(context,homePageData.get(position).getShopTypes(),onClickListner);
-
                 LinearLayoutManager linearLayoutManager =new LinearLayoutManager(context);
                 linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
                 homePageHolder.binding.category.setLayoutManager(linearLayoutManager);
@@ -107,8 +106,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             else if(homePageData.get(position).getType().equalsIgnoreCase("bigShopType")){
 
                 BigShopCategoryAdapter categoryAdapter = new  BigShopCategoryAdapter(context,homePageData.get(position).getBigShopType(), onClickListner);
-
-                ;
                 LinearLayoutManager linearLayoutManager =new LinearLayoutManager(context);
                 linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
                 homePageHolder.binding.category.setLayoutManager(linearLayoutManager);
@@ -118,8 +115,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if(homePageData.get(position).getType().equalsIgnoreCase("offers")){
 
                 AdvertiseAdapter categoryAdapter = new  AdvertiseAdapter(context,homePageData.get(position).getOffers());
-
-                ;
                 LinearLayoutManager linearLayoutManager =new LinearLayoutManager(context);
                 linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
                 homePageHolder.binding.category.setLayoutManager(linearLayoutManager);

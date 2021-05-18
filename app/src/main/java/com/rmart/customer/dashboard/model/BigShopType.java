@@ -30,7 +30,7 @@ public class BigShopType implements Serializable {
     private String images;
     @SerializedName("click")
     @Expose
-    private Object click;
+    private String click;
 
     public String getName() {
         return name;
@@ -52,7 +52,7 @@ public class BigShopType implements Serializable {
         return click;
     }
 
-    public void setClick(Object click) {
+    public void setClick(String click) {
         this.click = click;
     }
 

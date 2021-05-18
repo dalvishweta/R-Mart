@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -563,7 +564,6 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         try {
             if (TextUtils.isEmpty(editAdreesViewModel.shopImageUrl.getValue())) {
 
-              //  updateImageUI(new URI(editAdreesViewModel.shopImageUrl.getValue()), SHOP_IMAGE);
             }
         } catch (Exception e){
 
@@ -600,7 +600,18 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
             }
         });
+    binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String s) {
+            searchAdress(s);
+            return false;
+        }
 
+        @Override
+        public boolean onQueryTextChange(String s) {
+            return false;
+        }
+    });
 
     }
     private void setAdress(LatLng latLng){
@@ -614,9 +625,14 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
             String line1 = "",lines2 = "";
             try {
+
+
                 addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 5);
+
+
                 line1 = addresses.get(0).getAddressLine(0);
                 lines2 = addresses.get(0).getFeatureName();
+
             }catch (Exception e ){
                 Toast.makeText(getActivity(),"Point6",Toast.LENGTH_LONG).show();
             }
@@ -639,6 +655,25 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         } catch (Exception e) {
 
         }
+
+
+
+    }
+    private void searchAdress(String text){
+        Geocoder geocoder;
+        List<Address> addresses = null;
+        geocoder = new Geocoder(getActivity(), Locale.getDefault());
+
+        try {
+                if(mapsFragment!=null) {
+                    addresses = geocoder.getFromLocationName(text, 5);
+                    mapsFragment.setUpdateIcon(new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude()));
+                }
+            }
+            catch (Exception e ){
+                Toast.makeText(getActivity(),"Address Can't Search",Toast.LENGTH_LONG).show();
+            }
+
 
 
 
@@ -681,12 +716,30 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         }
         if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.RETAILER_ID)) {
             binding.retailerView.setVisibility(View.VISIBLE);
+            binding.searchView.setVisibility(View.GONE);
             if (myAddress.getId() != -1) {
                 binding.streetAddress.setText(myAddress.getAddress());
             }
         } else {
             binding.retailerView.setVisibility(View.GONE);
+            binding.searchView.setVisibility(View.VISIBLE);
         }
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                if(Utils.isValidPinCode(query)){
+
+                }
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         editAdreesViewModel.loadImage(binding.shopImageLayoutField, myAddress.getShopImage(), R.id.iv_shop_image_field, R.id.selectedgreeting, R.drawable.ic_shop, url -> editAdreesViewModel.shopImageUrl.setValue(url));
         editAdreesViewModel.loadImage(binding.aadharFrontLayoutField, myAddress.getAadharFrontImage(), R.id.adharcard_front_image_field, R.id.adharcard_loader, R.drawable.ic_aadhar_front, url -> editAdreesViewModel.aadharFrontImageUrl.setValue(url));
         editAdreesViewModel.loadImage(binding.aadharBackLayoutField, myAddress.getAadharBackImage(), R.id.adharcard_back_image_field, R.id.adharcard_back_loader, R.drawable.ic_aadhar_back, url -> editAdreesViewModel.aadharBackImageUrl.setValue(url));

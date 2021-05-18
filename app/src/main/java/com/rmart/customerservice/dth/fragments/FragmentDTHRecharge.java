@@ -57,25 +57,14 @@ public class FragmentDTHRecharge extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         DthSelectOperatorBinding binding = DataBindingUtil.inflate(inflater, R.layout.dth_select_operator, container, false);
-        OpratorsRepository.getOperators("DTH").observeForever(new Observer<OperatorResponse>() {
-            @Override
-            public void onChanged(OperatorResponse operatorResponse) {
-             /*   ArrayList<Operator> preOperators = new ArrayList<>();
-                if(type.equalsIgnoreCase("M_PRE")){
-                    preOperators=operatorResponse.operatorData.preOperators;
-                } else if(type.equalsIgnoreCase("M_POST")){
-                    preOperators= operatorResponse.operatorData.postOperators;
-
-                } else if(type.equalsIgnoreCase("DTH")){
-                    preOperators= operatorResponse.operatorData.dthOperators;
-
-                }*/
-                ArrayList<Operator> preOperators = new ArrayList<>();
-                    preOperators= operatorResponse.operatorData.dthOperators;
-
-                OperatorAdapter operatorAdapter = new OperatorAdapter(getContext(), preOperators,slectOperator);
-                binding.setOperatorAdapter(operatorAdapter);
-            }
+        binding.progressBar1.setVisibility(View.VISIBLE);
+        binding.listRecentSelectOperator.setVisibility(View.GONE);
+        OpratorsRepository.getOperators("DTH").observeForever(operatorResponse -> {
+            ArrayList<Operator> preOperators = operatorResponse.operatorData.dthOperators;
+            OperatorAdapter operatorAdapter = new OperatorAdapter(getContext(), preOperators,slectOperator);
+            binding.setOperatorAdapter(operatorAdapter);
+            binding.progressBar1.setVisibility(View.GONE);
+            binding.listRecentSelectOperator.setVisibility(View.VISIBLE);
         });
 
         return binding.getRoot();

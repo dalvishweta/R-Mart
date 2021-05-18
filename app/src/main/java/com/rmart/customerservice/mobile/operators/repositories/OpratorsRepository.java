@@ -30,12 +30,8 @@ public class OpratorsRepository {
 
             @Override
             public void onFailure(Call<OperatorResponse> call, Throwable t) {
-                if(t.getLocalizedMessage().equalsIgnoreCase("Unable to resolve host \"hungryindia.co.in\": No address associated with hostname"))
-                {
-                    result.setMsg("Please Check Internet Connection");
-                } else {
-                    result.setMsg(t.getLocalizedMessage());
-                }
+                result.setMsg("Please Check Internet Connection");
+                result.setStatus(400);
                 resultMutableLiveData.setValue(result);
             }
         });
