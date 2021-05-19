@@ -64,6 +64,7 @@ android {
        // buildConfigField("String", "VENDOR_ADD_TO_CART", '"customer/VendorShop/addToCartsaler"')
          buildConfigField("String", "VENDOR_ADD_TO_CART", '"customer/VendorShop/new_addToCart"')
         buildConfigField("String", "CUSTOMER_SHOPS_HOME_PAGE_NEW", '"customer/VendorShop/homepage"')
+        buildConfigField("String", "PRODUCT_CATEGORY_NEW", '"customer/VendorShop/categoryShow"')
 
         buildConfigField("String", "VENDOR_REMOVE_FROM_CART", '"customer/VendorShop/deleteAddToCart"')
         buildConfigField("String", "VENDORS_SHOW_SHOP_WISE_CART", '"customer/VendorShop/showShopWiseCart"')
