@@ -34,7 +34,9 @@ public class Category  implements Serializable {
     @SerializedName("category_desc")
     public String categoryDesc ="";
     @SerializedName("category_name")
-    public String categoryName ="";
+    public String categoryName =""  ;
+    @SerializedName("chield_check")
+    public boolean chield_check = false;
 
     public Category(String categoryName) {
         this.categoryName = categoryName;

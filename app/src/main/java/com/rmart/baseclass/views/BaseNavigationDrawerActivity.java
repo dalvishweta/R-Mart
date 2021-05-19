@@ -41,6 +41,7 @@ import com.rmart.R;
 import com.rmart.RMartApplication;
 import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.baseclass.Constants;
+import com.rmart.customer.shops.home.fragments.ShopHomePage;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer.views.CustomerWishListActivity;
 import com.rmart.customer.views.ShoppingCartFragment;
@@ -84,6 +85,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     private AppCompatTextView emailIdField;
     private TextView tvCartCountField;
     private MenuItem menuItem;
+    MenuItem callItemMenu;
     private int cartCount = 0;
 
     @Override
@@ -104,6 +106,8 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         getSupportFragmentManager().addOnBackStackChangedListener(this::checkBackStack);
 
         loadUIComponents();
+
+
     }
 
     private void loadUIComponents() {
@@ -266,8 +270,8 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
             // Toast.makeText(getApplicationContext(),"Logo selected", Toast.LENGTH_SHORT).show();
         });
-         MenuItem call = menu.findItem(R.id.call);
-        call.getActionView().setOnClickListener(view ->  Utils.openDialPad(BaseNavigationDrawerActivity.this,"022-42931001"));
+        callItemMenu = menu.findItem(R.id.call);
+        callItemMenu.getActionView().setOnClickListener(view ->  Utils.openDialPad(BaseNavigationDrawerActivity.this,"022-42931001"));
 
         MyProfile myProfile = MyProfile.getInstance(this);
         if (myProfile != null) {
@@ -298,8 +302,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                 });
 
             if (myProfile.getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)) {
+                callItemMenu.setVisible(true);
             } else {
                 menuItem.setVisible(false);
+                callItemMenu.setVisible(false);
             }
         }
         return true;
@@ -455,6 +461,16 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
             }
             actionBarDrawerToggle.syncState();
             //setTitle(getResources().getString(R.string.app_name));
+        }
+
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.base_container);
+        if(f instanceof ShopHomePage){
+            // do something with f
+            try {
+                callItemMenu.setVisible(false);
+            }catch (Exception e){
+
+            }
         }
     }
 

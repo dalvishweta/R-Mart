@@ -190,10 +190,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
                 break;
         }
 
-//        Vegetable  --- 2
-//        Bag Shop   -- 3
-//        Furniture Shop ---5
-//        Mobile Shop  --3
+
 
     }
 

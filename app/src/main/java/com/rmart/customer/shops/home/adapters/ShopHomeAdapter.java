@@ -153,7 +153,6 @@ public class ShopHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             if(rs.type.equalsIgnoreCase("category")){
                 category = rs.category;
                 CategoryAdapter categoryAdapter = new  CategoryAdapter(context,rs.category,onClickListner,CategoryAdapter.HOMEPAGECATEGORY);
-
                 myViewHolder.binding.category.setLayoutManager(new GridLayoutManager(context, 3));
                 myViewHolder.binding.category.setAdapter(categoryAdapter);
                 myViewHolder.binding.viewall.setVisibility(View.GONE);

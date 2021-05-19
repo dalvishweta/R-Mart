@@ -14,7 +14,7 @@ import static com.rmart.utilits.Utils.CLIENT_ID;
 
 public class ProductCategoryRepository {
 
-    public static MutableLiveData<CategoryBaseResponse> getProductCategory(int client_id, int vendorId, String cat_ids,int parent_cat_ids){
+    public static MutableLiveData<CategoryBaseResponse> getProductCategory(String client_id, String vendorId, String cat_ids, String parent_cat_ids){
 
         Category cat = RetrofitClientInstance.getRetrofitInstance().create(Category.class);
         final MutableLiveData<CategoryBaseResponse> resultMutableLiveData = new MutableLiveData<>();
@@ -45,12 +45,8 @@ public class ProductCategoryRepository {
 
             @Override
             public void onFailure(Call<CategoryBaseResponse> call, Throwable t) {
-                if(t.getLocalizedMessage().equalsIgnoreCase("Unable to resolve host \"hungryindia.co.in\": No address associated with hostname"))
-                { result.setMsg("Please Check Enternet Connection");
-
-                } else {
-                    result.setMsg(t.getLocalizedMessage());
-                }
+                result.setMsg(t.getMessage());
+                result.setStatus(400);
                 resultMutableLiveData.setValue(result);
 
 

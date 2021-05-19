@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+
+
+
+        <variable
+            name="categoryAdapter"
+            type="com.rmart.customer.shops.home.adapters.CategoryAdapter" />
+        <variable
+            name="productCategoryViewModel"
+            type="com.rmart.customer.shops.category.viewmodel.ProductCategoryViewModel" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".customer.shops.category.CategoryListFragment">
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="@{productCategoryViewModel.isLoading?View.VISIBLE:View.GONE}"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/category_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/progressBar1"
+        android:adapter="@{categoryAdapter}"
+        android:background="#E1E1E1"
+        android:visibility="@{productCategoryViewModel.productCategoryMutableLiveData.status==200?View.VISIBLE:View.GONE}"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/erorolayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility='@{(productCategoryViewModel.isLoading||productCategoryViewModel.productCategoryMutableLiveData.status==200)?View.GONE:View.VISIBLE}'
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/app_logo"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="80dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/slwo_internet_icon1" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:gravity="center"
+            android:text="Ooops!"
+            android:textColor="@color/buy_now_color"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/errormessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="center"
+            android:text="@{productCategoryViewModel.productCategoryMutableLiveData.msg}"
+            android:textColor="@color/item_sub_title_color"
+            android:textSize="@dimen/text_regular_size" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_tryagain"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/field_height"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/submit_button_bg"
+            android:gravity="center"
+            android:paddingLeft="30sp"
+            android:paddingRight="30sp"
+            android:text="@string/try_again"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_regular_size" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

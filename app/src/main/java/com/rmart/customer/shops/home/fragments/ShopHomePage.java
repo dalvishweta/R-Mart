@@ -2,6 +2,7 @@ package com.rmart.customer.shops.home.fragments;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
+import com.rmart.customer.shops.category.CategoryListFragment;
 import com.rmart.customer.shops.home.adapters.ShopHomeAdapter;
 import com.rmart.customer.shops.home.listner.OnClickListner;
 import com.rmart.customer.shops.home.model.Category;
@@ -61,6 +64,7 @@ public class ShopHomePage extends BaseFragment {
         FragmentShopHomePageBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_shop_home_page, container, false);
         shopHomeViewModel = ViewModelProviders.of(this).get(ShopHomeViewModel.class);
         binding.setShopViewModel(shopHomeViewModel);
+        ((BaseNavigationDrawerActivity)getActivity()).setTitle(productsShopDetailsModel.getShopName());
         binding.setShopDetails(productsShopDetailsModel);
         binding.setProductData(productData);
         binding.setLifecycleOwner(this);
@@ -74,25 +78,28 @@ public class ShopHomePage extends BaseFragment {
             }
         });
 
-        binding.btnTryagain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    shopHomeViewModel.loadShopHomePage(getContext(),productsShopDetailsModel);
-
-            }
-        });
+        binding.btnTryagain.setOnClickListener(view -> shopHomeViewModel.loadShopHomePage(getContext(),productsShopDetailsModel));
 
         shopHomeViewModel.shopHomePageResponceMutableLiveData.observeForever(shopHomePageResponce -> {
 
             ShopHomeAdapter shopHomeAdapter = new ShopHomeAdapter(getActivity(), shopHomePageResponce.results, productsShopDetailsModel, productData,new OnClickListner() {
                 @Override
                 public void onCategorySelected(Category category) {
-                    ProductListFragment baseFragment=  ProductListFragment.newInstance(productsShopDetailsModel,category,null );
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fm.beginTransaction();
-                    fragmentTransaction.replace(R.id.base_container, baseFragment, ProductCartDetailsFragment.class.getName());
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                    if(category.chield_check) {
+                        CategoryListFragment baseFragment = CategoryListFragment.newInstance(category, productsShopDetailsModel);
+                        FragmentManager fm = getActivity().getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                        fragmentTransaction.replace(R.id.base_container, baseFragment, ProductCartDetailsFragment.class.getName());
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    } else {
+                        ProductListFragment baseFragment=  ProductListFragment.newInstance(productsShopDetailsModel,category,null );
+                        FragmentManager fm = getActivity().getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                        fragmentTransaction.replace(R.id.base_container, baseFragment, ProductCartDetailsFragment.class.getName());
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    }
                 }
 
                 @Override

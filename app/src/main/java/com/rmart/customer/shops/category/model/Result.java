@@ -2,6 +2,7 @@ package com.rmart.customer.shops.category.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.rmart.customer.shops.home.model.Category;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class Result implements Serializable {
     private String name;
     @SerializedName("category")
     @Expose
-    private ArrayList<com.rmart.customer.shops.category.model.Category> category = null;
+    private ArrayList<Category> category = null;
 
     public String getType() {
         return type;
@@ -34,7 +35,7 @@ public class Result implements Serializable {
         this.name = name;
     }
 
-    public ArrayList<com.rmart.customer.shops.category.model.Category> getCategory() {
+    public ArrayList<Category> getCategory() {
         return category;
     }
 

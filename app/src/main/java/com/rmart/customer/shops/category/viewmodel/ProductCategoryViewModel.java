@@ -17,11 +17,12 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.signature.ObjectKey;
 import com.rmart.R;
-import com.rmart.customer.shops.category.model.Category;
+import com.rmart.customer.shops.home.model.Category;
 import com.rmart.customer.shops.category.model.CategoryBaseResponse;
 import com.rmart.customer.shops.category.repositories.ProductCategoryRepository;
 import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.glied.GlideApp;
+import com.rmart.profile.model.MyProfile;
 
 public class ProductCategoryViewModel extends ViewModel {
 
@@ -30,9 +31,10 @@ public class ProductCategoryViewModel extends ViewModel {
 
 
 
-    public void loadCategoryData(Context context, ShopDetailsModel productsShopDetailsModel,String Cat_ids,int Parent_id){
+    public void loadCategoryData(Context context,String venderID,Category category){
         isLoading.setValue(true);
-        ProductCategoryRepository.getProductCategory(productsShopDetailsModel.getClientId(),productsShopDetailsModel.getVendorId(),Cat_ids,Parent_id).observeForever(hotelResult -> {
+
+        ProductCategoryRepository.getProductCategory(MyProfile.getInstance(context).getUserID(),venderID,category.categoryIds,category.parentCategoryId).observeForever(hotelResult -> {
             productCategoryMutableLiveData.setValue(hotelResult);
             isLoading.postValue(false);
         });
@@ -47,7 +49,7 @@ public class ProductCategoryViewModel extends ViewModel {
             ImageView imageview = view.findViewById(R.id.imageview);
             ImageView selectedgreeting = view.findViewById(R.id.selectedgreeting);
             selectedgreeting.setVisibility(View.VISIBLE);
-            GlideApp.with(view.getContext()).load(data.getParentImage()).listener(new RequestListener<Drawable>() {
+            GlideApp.with(view.getContext()).load(data.parentImage).listener(new RequestListener<Drawable>() {
 
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -63,7 +65,7 @@ public class ProductCategoryViewModel extends ViewModel {
                 }
             }).dontAnimate().
                     diskCacheStrategy(DiskCacheStrategy.ALL).
-                    signature(new ObjectKey(data.getParentImage())).
+                    signature(new ObjectKey(data.parentImage)).
                     error(R.mipmap.default_product_image).thumbnail(0.5f).into(imageview);
         }
     }
