@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +36,7 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
     private static final String ARG_PARAM1 = "param1";
     public static final int INT_OTP_LENGTH = 4;
     AppCompatEditText otpEditText;
+    EditText editTextOne,editTextTwo,editTextThree,editTextFour;
     // private String mParam1;
     private String mParam2;
     private String mMobileNumber;
@@ -92,8 +95,16 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
 
 
         }
-        otpEditText = view.findViewById(R.id.otp);
-        otpEditText.addTextChangedListener(this);
+        editTextOne = view.findViewById(R.id.editTextOne);
+        editTextTwo = view.findViewById(R.id.editTextTwo);
+        editTextThree = view.findViewById(R.id.editTextThree);
+        editTextFour = view.findViewById(R.id.editTextFour);
+
+        //otpEditText = view.findViewById(R.id.otp);
+        editTextOne.addTextChangedListener(this);
+        editTextTwo.addTextChangedListener(this);
+        editTextThree.addTextChangedListener(this);
+        editTextFour.addTextChangedListener(this);
         view.findViewById(R.id.resend).setOnClickListener(v -> resendOTP());
         ((TextView) view.findViewById(R.id.otp_mobile_sent)).setText(String.format(getString(R.string.verification_code_mobile_hint), mMobileNumber));
     }
@@ -149,14 +160,18 @@ public class OTPFragment extends LoginBaseFragment implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        if (s.toString().length() >= INT_OTP_LENGTH) {
+        Log.d("DATA",s.toString());
+        String otp_data = editTextOne.getText().toString().trim()+editTextTwo.getText().toString().trim()+editTextThree.getText().toString().trim()+editTextFour.getText().toString().trim();
+        Log.d("data1",otp_data);
+        if (otp_data.length() == INT_OTP_LENGTH) {
             if(!Utils.isNetworkConnected(requireActivity())) {
                 showDialog(getString(R.string.error_internet), getString(R.string.error_internet_text));
                 return;
             }
+            Log.d("DATA123",otp_data);
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-            authenticationService.validateOTP(mMobileNumber, s.toString()).enqueue(new Callback<ValidateOTP>() {
+            authenticationService.validateOTP(mMobileNumber, otp_data).enqueue(new Callback<ValidateOTP>() {
                 @Override
                 public void onResponse(@NotNull Call<ValidateOTP> call, @NotNull Response<ValidateOTP> response) {
                     if (response.isSuccessful()) {

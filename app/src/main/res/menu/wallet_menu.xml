@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/notification"
+        android:title="@string/notification"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_bell"
+        app:actionLayout="@layout/menu_notification"
+        android:iconTint="@color/white"
+        />
+    <item
+        android:id="@+id/shopping_backet_menu"
+        android:title="@string/shopping"
+        app:showAsAction="always"
+        app:actionLayout="@layout/menu_shopping_basket"
+        android:icon="@drawable/ic_shopping_basket"
+        android:iconTint="@color/white"/>
+
+</menu>

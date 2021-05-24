@@ -19,10 +19,10 @@
     <string name="error_last_name">Please enter last name minimum of 3 characters</string>
     <string name="register_left">Don\'t have an account?</string>
     <string name="login_left">Have an account?</string>
-    <string name="register_right">Register</string>
+    <string name="register_right">Sign Up</string>
     <string name="login_right">Login</string>
     <string name="proceed_to_pay">proceed to pay</string>
-    <string name="forgot_password">Forgot password</string>
+    <string name="forgot_password">Forgot Security Pin?</string>
     <string name="full_name">Full Name</string>
     <string name="last_name">Last Name</string>
     <string name="time_out_title">Time out error</string>
@@ -46,8 +46,9 @@
     <string name="otp">OTP</string>
     <string name="resend_otp">Resend OTP?</string>
     <string name="send_otp">Send OTP</string>
-    <string name="change_password">Change Password</string>
-    <string name="subchange_password">Your identy has been verified!</string>
+    <string name="change_password">Set Security Pin</string>
+    <string name="subchange_password">Please enter your 4 digit security pin</string>
+    <!--<string name="subchange_password">Your identy has been verified!</string>-->
     <string name="forgot_message">Please Enter your register mobile number, to reset your password</string>
     <string name="subchange_password2">Set your new password</string>
 
@@ -106,6 +107,8 @@
     <string name="status_order">Status: %1$s Order</string>
     <string name="payment_info">Payment Info</string>
     <string name="mode_of_payment">Mode of Payment:</string>
+    <string name="security_pin">Enter Security Pin</string>
+    <string name="confirm_security_pin">Confirm 4 digit Security pin</string>
     <string name="delivery_charges">Delivery Charges:</string>
     <string name="discount_amount">Discount :</string>
     <string name="delivery_charge">Delivery Charges</string>
@@ -216,7 +219,10 @@
     <string name="error_valid_quantity">Please enter valid Quantity</string>
     <string name="add_success_product"> is Successfully added in your inventory.</string>
     <string name="updated_success_product"> is Successfully updated in your inventory.</string>
-
+    <string name="add_money_text">Add Money</string>
+    <string name="amount_text">Enter your amount....</string>
+    <string name="recommended_text">Recommended</string>
+    <string name="notification_message">We will remind you to keep your wallet loaded. \n If you want to disabled this option click bellow button</string>
     <string name="navigation_drawer_open">Navigation Drawer Open</string>
     <string name="navigation_drawer_close">Navigation Drawer Close</string>
     <string name="add_new_address">Add New Address</string>
@@ -237,8 +243,12 @@
     <string name="choose_payment_mode">Choose Payment Mode</string>
     <string name="cash_on_delivery">Cash On Delivery</string>
     <string name="internet_banking">Internet Banking</string>
+    <string name="notification">Notification</string>
     <string name="my_wallet">My Wallet</string>
+    <string name="billing_history_text">Billing History</string>
     <string name="proceed">Proceed</string>
+    <string name="billing_history">Billing \n History</string>
+    <string name="recharge_history">Recharge \n History</string>
     <string name="please_select_payment_type">Please Select Payment Type</string>
     <string name="product_details">Product details</string>
     <string name="remove_from_cart">Remove From Cart</string>
@@ -470,4 +480,11 @@
     <string name="enter_custom_amount">Enter Custom Amount</string>
     <string name="bill_date">Bill Date:</string>
     <string name="transaction_date">Transaction Date</string>
+    <string name="welcome">Welcome !</string>
+    <string name="nice_to_see_you_again">Nice to see you again</string>
+    <string name="rokadmark_wallet">Rokadmark Wallet</string>
+    <string name="low_balance">Low Balance</string>
+    <string name="_1_000">+₹1,000</string>
+    <string name="add_money">Add money</string>
+    <string name="todo">TODO</string>
 </resources>

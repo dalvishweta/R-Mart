@@ -89,8 +89,8 @@
                     android:id="@+id/my_wallet"
                     style="@style/nv_item_view"
                     android:drawableTint="@color/black"
-                    android:drawableLeft="@drawable/password_nv"
-                    android:visibility="gone"
+                    android:drawableLeft="@drawable/ic_wallet"
+                    android:visibility="visible"
                     android:text="@string/my_wallet" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -115,6 +115,7 @@
                     style="@style/nv_item_view"
                     android:drawableLeft="@drawable/password_nv"
                     android:text="@string/change_password" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/share_app"
                     android:drawableTint="@color/black"

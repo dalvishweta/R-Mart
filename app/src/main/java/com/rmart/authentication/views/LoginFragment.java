@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -50,8 +51,9 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public String mMobileNumber;
-    private String mPassword;
-    private AppCompatEditText etPassword, etMobileNumber;
+    private String mPassword,etPassword;
+    private AppCompatEditText  etMobileNumber;
+    EditText editTextOne,editTextTwo,editTextThree,editTextFour;
     private String deviceToken;
     ProfileResponse profileResponse;
     private ImageView slice,app_logo;
@@ -81,7 +83,11 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
         etMobileNumber = view.findViewById(R.id.mobile_number);
         slice = view.findViewById(R.id.slice);
         app_logo = view.findViewById(R.id.app_logo);
-        etPassword = view.findViewById(R.id.password);
+        editTextOne = view.findViewById(R.id.editTextOne);
+        editTextTwo = view.findViewById(R.id.editTextTwo);
+        editTextThree = view.findViewById(R.id.editTextThree);
+        editTextFour = view.findViewById(R.id.editTextFour);
+        //etPassword = view.findViewById(R.id.password);
         try{
 
 
@@ -128,7 +134,8 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     public void onClick(View view) {
         if(view.getId() == R.id.login) {
             mMobileNumber = Objects.requireNonNull(etMobileNumber.getText()).toString().trim();
-            mPassword = Objects.requireNonNull(etPassword.getText()).toString();
+            etPassword = editTextOne.getText().toString().trim()+editTextTwo.getText().toString().trim()+editTextThree.getText().toString().trim()+editTextFour.getText().toString().trim();
+            mPassword = Objects.requireNonNull(etPassword).toString();
             if (TextUtils.isEmpty(mMobileNumber) || !Utils.isValidMobile(mMobileNumber)) {
                 showDialog(getString(R.string.error_mobile));
             } else if (TextUtils.isEmpty(mPassword)) {

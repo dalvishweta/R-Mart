@@ -14,6 +14,17 @@
         <item name="android:windowSoftInputMode">stateHidden</item>
     </style>
 
+    <style name="MyThemeOverlay_Toolbar2" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <!-- This attributes is used by title -->
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
+    <style name="TabNotSelected">
+        <item name="android:layout_width">@dimen/button_curve</item>
+        <item name="android:layout_height">@dimen/button_curve</item>
+        <item name="android:padding">@dimen/_10sdp</item>
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppTheme2" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
