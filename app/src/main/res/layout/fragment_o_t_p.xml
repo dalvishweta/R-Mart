@@ -4,10 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/login_root"
-
-
-    tools:context="com.rmart.authentication.views.LoginFragment"
-    >
+    tools:context="com.rmart.authentication.views.LoginFragment">
 
     <ImageView
         android:id="@+id/slice"
@@ -56,7 +53,78 @@
         android:fontFamily="@font/montserrat_regular"
         android:layout_width="wrap_content"/>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/otp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/item_sub_title_color"
+        android:textSize="@dimen/text_regular_size"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:weightSum="4"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/security_textView"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="55dp"
+            android:layout_height="42dp"
+            android:maxLength="1"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/otp_background"
+            android:layout_marginRight="10dp"
+            android:id="@+id/editTextOne"
+            android:imeOptions="actionNone"
+            android:inputType="number"
+            android:nextFocusRight="@id/editTextTwo"/>
+
+
+        <EditText
+            android:layout_width="55dp"
+            android:layout_height="42dp"
+            android:maxLength="1"
+            android:layout_weight="1"
+            android:imeOptions="actionNone"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/editTextTwo"
+            android:background="@drawable/otp_background"
+            android:inputType="number"
+            android:nextFocusRight="@id/editTextThree"/>
+
+        <EditText
+            android:layout_width="55dp"
+            android:layout_height="42dp"
+            android:imeOptions="actionNone"
+            android:maxLength="1"
+            android:background="@drawable/otp_background"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:nextFocusRight="@id/editTextFour"
+            android:inputType="number"
+            android:id="@+id/editTextThree"/>
+        <EditText
+            android:layout_width="55dp"
+            android:layout_height="42dp"
+            android:maxLength="1"
+            android:gravity="center"
+            android:imeOptions="actionNone"
+            android:layout_weight="1"
+            android:background="@drawable/otp_background"
+            android:layout_marginLeft="10dp"
+            android:inputType="number"
+            android:id="@+id/editTextFour"/>
+    </LinearLayout>
+
+ <!--  <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/current_password_layout"
         android:layout_width="match_parent"
         android:layout_marginTop="20dp"
@@ -76,7 +144,7 @@
         android:minHeight="40dp"
         android:paddingStart="20dp"
         android:paddingEnd="20dp" />
-    </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>-->
     <TextView
         android:id="@+id/resend"
         android:textColor="@color/register_color"

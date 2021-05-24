@@ -17,6 +17,13 @@
         android:id="@+id/app_logo"
         android:title="@string/app_logo"
         app:actionLayout="@layout/app_logo"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/my_wallet"
+        android:title="@string/my_wallet"
+        app:actionLayout="@layout/wallet"
+        app:showAsAction="always" />
+
 
 </menu>

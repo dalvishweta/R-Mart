@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -46,9 +47,9 @@ import retrofit2.Response;
 
 public class RegistrationFragment extends LoginBaseFragment implements View.OnClickListener {
 
-    private AppCompatEditText tvFirstName,customamount, tvLastName, tVMobileNumber, tvEmail, tvPassword, tvConformPassword;
-    private String selectedGender;
-
+    private AppCompatEditText tvFirstName,customamount, tvLastName, tVMobileNumber, tvEmail,  tvConformPassword;
+    private String selectedGender,tvPassword;
+    EditText editTextOne,editTextTwo,editTextThree,editTextFour,confirm_editTextOne,confirm_editTextTwo,confirm_editTextThree,confirm_editTextFour;
     TextView login,default_amaount;
     ArrayList<RegistrationFeeStructure> registrationFeeStructuresList = new ArrayList<>();
 
@@ -172,8 +173,16 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         tvLastName = view.findViewById(R.id.lase_name);
         tVMobileNumber = view.findViewById(R.id.mobile_number);
         tvEmail = view.findViewById(R.id.email);
-        tvPassword = view.findViewById(R.id.password);
-        tvConformPassword = view.findViewById(R.id.confirm_password);
+        editTextOne = view.findViewById(R.id.editTextOne);
+        editTextTwo = view.findViewById(R.id.editTextTwo);
+        editTextThree = view.findViewById(R.id.editTextThree);
+        editTextFour = view.findViewById(R.id.editTextFour);
+        confirm_editTextOne = view.findViewById(R.id.confirm_password_editTextOne);
+        confirm_editTextTwo = view.findViewById(R.id.confirm_password_editTextTwo);
+        confirm_editTextThree = view.findViewById(R.id.confirm_password_editTextThree);
+        confirm_editTextFour = view.findViewById(R.id.confirm_password_editTextFour);
+        //tvPassword = view.findViewById(R.id.password);
+        //tvConformPassword = view.findViewById(R.id.confirm_password);
         AppCompatSpinner genderSpinnerField = view.findViewById(R.id.gender_spinner_field);
 
         List<Object> gendersList = new ArrayList<>();
@@ -242,8 +251,8 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         mobileNumber = Objects.requireNonNull(tVMobileNumber.getText()).toString().trim();
         String amount = Objects.requireNonNull(customamount.getText()).toString().trim();
         email = Objects.requireNonNull(tvEmail.getText()).toString().trim();
-        password = Objects.requireNonNull(tvPassword.getText()).toString().trim();
-        confirmPassword = Objects.requireNonNull(tvConformPassword.getText()).toString().trim();
+        password = Objects.requireNonNull(editTextOne.getText().toString().trim()+editTextTwo.getText().toString().trim()+editTextThree.getText().toString().trim()+editTextFour.getText().toString().trim()).toString().trim();
+        confirmPassword = Objects.requireNonNull(confirm_editTextOne.getText().toString().trim()+confirm_editTextTwo.getText().toString().trim()+confirm_editTextThree.getText().toString().trim()+confirm_editTextFour.getText().toString().trim()).toString().trim();
         String passwordError = Utils.isValidPassword(password);
         String confirmPasswordError = Utils.isValidPassword(confirmPassword);
 
@@ -340,7 +349,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         tvLastName.setText("");
         tVMobileNumber.setText("");
         tvEmail.setText("");
-        tvPassword.setText("");
+        //tvPassword.setText("");
         tvConformPassword.setText("");
     }
 }

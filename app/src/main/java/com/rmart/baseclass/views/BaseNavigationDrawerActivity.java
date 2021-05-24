@@ -1,7 +1,6 @@
 package com.rmart.baseclass.views;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -23,11 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -38,7 +33,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.bumptech.glide.signature.ObjectKey;
 import com.google.android.material.navigation.NavigationView;
 import com.rmart.R;
-import com.rmart.RMartApplication;
 import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.shops.home.fragments.ShopHomePage;
@@ -46,23 +40,19 @@ import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer.views.CustomerWishListActivity;
 import com.rmart.customer.views.ShoppingCartFragment;
 import com.rmart.customer_order.views.CustomerOrdersActivity;
-import com.rmart.customerservice.mobile.views.MobileRechargeActivity;
 import com.rmart.deeplinking.LinkGenerator;
-import com.rmart.electricity.ActivityElectricity;
 import com.rmart.glied.GlideApp;
 import com.rmart.inventory.views.AddProductToInventory;
 import com.rmart.inventory.views.InventoryActivity;
 import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.profile.views.MyProfileActivity;
-import com.rmart.utilits.ActionCall;
-import com.rmart.utilits.CommonUtils;
-import com.rmart.utilits.HttpsTrustManager;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.Permisions;
 import com.rmart.utilits.RokadMartCache;
 import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
+import com.rmart.wallet.view.WalletActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -86,6 +76,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     private TextView tvCartCountField;
     private MenuItem menuItem;
     MenuItem callItemMenu;
+    MenuItem walletItemMenu;
     private int cartCount = 0;
 
     @Override
@@ -147,6 +138,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         findViewById(R.id.logout).setOnClickListener(this);
         findViewById(R.id.my_favourites_list).setOnClickListener(this);
         findViewById(R.id.my_wish_list).setOnClickListener(this);
+        findViewById(R.id.my_wallet).setOnClickListener(this);
         findViewById(R.id.share_app).setOnClickListener(this);
         findViewById(R.id.wholesaler).setOnClickListener(this);
 
@@ -270,6 +262,12 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
             // Toast.makeText(getApplicationContext(),"Logo selected", Toast.LENGTH_SHORT).show();
         });
+        walletItemMenu = menu.findItem(R.id.my_wallet);
+        walletItemMenu.getActionView().setOnClickListener(view ->{
+                    Intent intent = new Intent(this,WalletActivity.class);
+                    startActivity(intent);
+                }
+                );
         callItemMenu = menu.findItem(R.id.call);
         callItemMenu.getActionView().setOnClickListener(view ->  Utils.openDialPad(BaseNavigationDrawerActivity.this,"022-42931001"));
 
@@ -366,9 +364,13 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     showCartIcon();
                     intent = new Intent(BaseNavigationDrawerActivity.this, CustomerHomeActivity.class);
                     startActivity(intent);
-
                     break;
-
+                case R.id.my_wallet:
+                    showCartIcon();
+                    intent = new Intent(this, WalletActivity.class);
+                    intent.putExtra(getString(R.string.my_wallet), true);
+                    startActivity(intent);
+                    break;
                 case R.id.share_app:
                     MyProfile myProfile = MyProfile.getInstance(this);
 

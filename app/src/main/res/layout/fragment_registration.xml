@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context="com.rmart.authentication.views.LoginFragment">
 
     <ScrollView
@@ -16,15 +15,6 @@
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
             android:orientation="vertical">
-
-            <ImageView
-
-                android:layout_alignParentTop="true"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:scaleType="fitXY"
-                android:src="@mipmap/cornner"
-                />
 
 
             <ImageView
@@ -86,6 +76,7 @@
                     android:digits="@string/allow_digits"
                     android:maxLength="50"
                     android:paddingEnd="10dp"
+                    android:tooltipText="34343434"
                     android:paddingStart="10dp"
                     android:textSize="16sp" />
 
@@ -126,6 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
                     android:maxLength="50"
                     android:minHeight="50dp" />
             </LinearLayout>
@@ -173,10 +165,148 @@
                     android:paddingEnd="10dp"
                     android:paddingStart="10dp"
                     android:textSize="16sp" />
-
             </com.google.android.material.textfield.TextInputLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_password"
+                android:layout_marginTop="20dp"
+                android:id="@+id/password_textView"
+                android:textSize="15sp"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:id="@+id/layout_opt"
+                android:layout_marginTop="10dp"
+                android:weightSum="4"
+                android:layout_below="@+id/password_textView"
+                android:orientation="horizontal">
+                <EditText
+                    android:layout_width="55dp"
+                    android:layout_height="42dp"
+                    android:maxLength="1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:background="@drawable/sign_up_password_background"
+                    android:layout_marginRight="10dp"
+                    android:id="@+id/editTextOne"
+                    android:inputType="number"
+                    android:nextFocusRight="@id/editTextTwo"/>
 
-            <com.google.android.material.textfield.TextInputLayout
+
+                <EditText
+                    android:layout_width="55dp"
+                    android:layout_height="42dp"
+                    android:maxLength="1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/editTextTwo"
+                    android:background="@drawable/sign_up_password_background"
+                    android:inputType="number"
+                    android:nextFocusRight="@id/editTextThree"/>
+
+                <EditText
+                    android:layout_width="55dp"
+                    android:layout_height="42dp"
+                    android:maxLength="1"
+                    android:background="@drawable/sign_up_password_background"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:nextFocusRight="@id/editTextFour"
+                    android:inputType="number"
+                    android:id="@+id/editTextThree"/>
+                <EditText
+                    android:layout_width="55dp"
+                    android:layout_height="42dp"
+                    android:maxLength="1"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/sign_up_password_background"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="number"
+                    android:id="@+id/editTextFour"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_conform_password"
+                android:layout_marginTop="20dp"
+                android:id="@+id/confirm_password_textView"
+                android:textSize="15sp"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:id="@+id/confirm_password_layout"
+                android:layout_marginTop="10dp"
+                android:weightSum="4"
+                android:layout_below="@+id/password_textView"
+                android:orientation="horizontal">
+                <EditText
+                    android:layout_width="55dp"
+                    android:layout_height="42dp"
+                    android:maxLength="1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:background="@drawable/sign_up_password_background"
+                    android:layout_marginRight="10dp"
+                    android:id="@+id/confirm_password_editTextOne"
+                    android:inputType="number"
+                    android:nextFocusRight="@id/editTextTwo"/>
+
+
+                <EditText
+                    android:layout_width="55dp"
+                    android:layout_height="42dp"
+                    android:maxLength="1"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/confirm_password_editTextTwo"
+                    android:background="@drawable/sign_up_password_background"
+                    android:inputType="number"
+                    android:nextFocusRight="@id/editTextThree"/>
+
+                <EditText
+                    android:layout_width="55dp"
+                    android:layout_height="42dp"
+                    android:maxLength="1"
+                    android:background="@drawable/sign_up_password_background"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:nextFocusRight="@id/editTextFour"
+                    android:inputType="number"
+                    android:id="@+id/confirm_password_editTextThree"/>
+                <EditText
+                    android:layout_width="55dp"
+                    android:layout_height="42dp"
+                    android:maxLength="1"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/sign_up_password_background"
+                    android:layout_marginLeft="10dp"
+                    android:inputType="number"
+                    android:id="@+id/confirm_password_editTextFour"/>
+
+            </LinearLayout>
+
+
+
+
+
+            <!--<com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
@@ -196,9 +326,9 @@
                     android:paddingEnd="10dp"
                     android:paddingStart="10dp"
                     android:textSize="16sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>-->
 
-            <com.google.android.material.textfield.TextInputLayout
+            <!--<com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
@@ -219,7 +349,7 @@
                     android:paddingEnd="10dp"
                     android:paddingStart="10dp"
                     android:textSize="16sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>-->
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_payment_information_field"
                 android:text="@string/payment_information"
@@ -311,6 +441,13 @@
                     android:textSize="@dimen/text_regular_size"
                     android:layout_marginLeft="8dp" />
             </LinearLayout>
+
+            <ImageView
+
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/cornner" />
         </LinearLayout>
 
         </RelativeLayout>
