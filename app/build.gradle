@@ -97,7 +97,8 @@ android {
         buildConfigField("String", 'CUSTOMER_VIEW_ALL_ORDERS', '"customer/order/ordersList"')
         buildConfigField("String", 'CUSTOMER_REORDER_PRODUCTS', '"customer/order/checkOrder"')
         buildConfigField("String", "DELERY_BOY_LIST",'"Deliveryboys"')
-
+        /*Wallet*/
+        buildConfigField("String", "Wallet_Transction",'"Wallet/transaction"')
         buildConfigField("String", "AUTH_USERNAME_ROKAD", '"9960703227"')
         buildConfigField("String", "AUTH_PASSWORD_ROKAD", '"Trimax@123"')
         buildConfigField("String", "BASE_URL_ROKAD", '"https://rokad.in/"')

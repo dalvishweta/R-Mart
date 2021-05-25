@@ -2,6 +2,7 @@ package com.rmart.electricity.api;
 
 
 import com.rmart.BuildConfig;
+import com.rmart.electricity.billdetails.model.BillDataBaseClass;
 import com.rmart.electricity.fetchbill.model.ElecProcessPOJO;
 import com.rmart.electricity.paybill;
 import com.rmart.electricity.RSAKeyResponse;
@@ -32,7 +33,19 @@ public interface ElecticityService {
                                                @Field("ccavenuedata") String ccavenuedata
 
     );
+    @POST(BuildConfig.electricity_pay_bill)
+    @FormUrlEncoded
+    public Call<BillDataBaseClass> electicitybillPayment(@Field("user_id") String user_id,
+                                                         @Field("operator") String operator,
+                                                         @Field("ConsumerID") String bankIINNumber,
+                                                         @Field("bill_unit") String bill_unit,
+                                                         @Field("mobile_number") String mobileNumber,
+                                                         @Field("amount") String amount,
+                                                         @Field("ConsumerName") String ConsumerName,
+                                                         @Field("Orderid") String Orderid,
+                                                         @Field("ccavenuedata") String ccavenuedata
 
+    );
     @POST(BuildConfig.electricity_rsa_key)
     @FormUrlEncoded
     public Call<RSAKeyResponse> electicityProcessRsaKey(@Field("user_id") String user_id,

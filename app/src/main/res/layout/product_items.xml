@@ -34,7 +34,7 @@
                     android:id="@+id/imageview"
                     android:layout_width="match_parent"
                     android:scaleType="fitXY"
-                    android:layout_height="100dp"
+                    android:layout_height="80dp"
                     />
                 <ImageView
                     android:id="@+id/selectedgreeting"
@@ -159,9 +159,9 @@
 
               <Spinner
                       android:id="@+id/quantity_spinner_field"
-                      android:layout_width="wrap_content"
+                      android:layout_width="80dp"
                       android:layout_gravity="center"
-                      android:layout_height="wrap_content"
+                      android:layout_height="30dp"
                        />
               </LinearLayout>
               </LinearLayout>
@@ -213,7 +213,7 @@
                   android:background="@color/green"
                   android:textColor="@color/white"
                   android:gravity="center"
-                  android:layout_marginTop="5dp"
+                  android:layout_marginTop="10dp"
                     android:padding="4dp"
                   android:text="Add To Cart"
                   />
