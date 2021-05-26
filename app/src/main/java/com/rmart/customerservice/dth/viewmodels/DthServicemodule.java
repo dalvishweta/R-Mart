@@ -60,31 +60,8 @@ public class DthServicemodule extends ViewModel {
         errorCumsumerNumber.setValue(null);
     }
 
-    public void onPayClick(final View view) {
-
-        if(validateAmount() && !isLoading.getValue()){
-            isLoading.setValue(true);
-
-            //Call GET RSA key
-        } else {
-
-            isLoading.setValue(false);
-        }
 
 
-    }
-
-    public boolean validateAmount() {
-        boolean result = true;
-
-        if (cumsumerAmount.getValue() == null || cumsumerAmount.getValue().isEmpty() || cumsumerAmount.getValue().length() < 10) {
-            errorCumsumerAmount.setValue("Please Enter Valid Amount");
-
-            result = false;
-        }
-
-        return result;
-    }
 
 
 }
