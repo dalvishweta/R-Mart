@@ -25,6 +25,7 @@ android {
         buildConfigField("String", 'RESEND_OTP', '"Otpcheck/resendotp"')
         buildConfigField("String", 'FEGISTRATION_FEE', '"Login/regPayAmt"')
         buildConfigField("String", "REGISTRATION", '"reg/regNew"')
+        buildConfigField("String","NEW_LOGIN",'"login/newlogin"')
         buildConfigField("String", "LOGIN", '"login"')
         buildConfigField("String", "MOBILE_APPLICATION", "\"Y\"")
         buildConfigField("String", "MOBILE_VERSION_ID", "\"1.1\"")
