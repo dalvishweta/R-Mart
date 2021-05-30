@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -77,6 +78,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     private MenuItem menuItem;
     MenuItem callItemMenu;
     MenuItem walletItemMenu;
+    String full_name,last_name,email;
     private int cartCount = 0;
 
     @Override
@@ -88,6 +90,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        full_name = getIntent().getStringExtra("full_name");
+        last_name = getIntent().getStringExtra("last_name");
+        email = getIntent().getStringExtra("emailid");
+        Log.d("last_name",last_name+" ");
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.Open, R.string.Close);
 
@@ -214,6 +220,8 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         nameField = findViewById(R.id.customer_name);
         mobileField = findViewById(R.id.mobile);
         emailIdField = findViewById(R.id.email_id_field);
+        nameField.setText(full_name);
+        emailIdField.setText(email);
         TextView tvAppVersionField = findViewById(R.id.tv_version_field);
         try {
             String versionNo = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
