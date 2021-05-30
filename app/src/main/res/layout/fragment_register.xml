@@ -1,0 +1,349 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="RegisterServicemodule"
+            type="com.rmart.authentication.registration.viewmodel.RegisterServicemodule" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.rmart.authentication.views.LoginFragment">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:id="@+id/app_logo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitXY"
+                    android:layout_marginTop="15dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@mipmap/applogo" />
+
+
+                <LinearLayout
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/app_logo"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textSize="35dp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/montserrat_semibold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/cardview_dark_background"
+                        android:text="Create Account," />
+
+                    <TextView
+                        android:textSize="@dimen/text_title"
+                        android:textStyle="bold"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/item_sub_title_color"
+                        android:text="Sign up to get started!" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_height="wrap_content"
+                        app:errorText="@{RegisterServicemodule.errorFirst_name}"
+                        android:hint="@string/first_name">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/first_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textCapSentences"
+                            android:maxLines="1"
+                            android:minHeight="50dp"
+                            android:onTextChanged="@{RegisterServicemodule.onRegistrationTextChanged}"
+                            android:layout_marginTop="20dp"
+                            android:digits="@string/allow_digits"
+                            android:maxLength="50"
+                            android:text="@={RegisterServicemodule.first_name}"
+                            android:paddingEnd="10dp"
+                            android:tooltipText="34343434"
+                            android:paddingStart="10dp"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/last_name"
+                        app:errorText="@{RegisterServicemodule.errorLast_name}">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/lase_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="@string/allow_digits"
+                            android:maxLines="1"
+                            android:maxLength="50"
+                            android:minHeight="50dp"
+                            android:onTextChanged="@{RegisterServicemodule.onRegistrationTextChanged}"
+                            android:text="@={RegisterServicemodule.last_name}"
+                            android:layout_marginTop="20dp"
+                            android:inputType="textCapSentences"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/rounded_corners_edit_text_bg"
+                        android:minHeight="50dp"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/gender_spinner_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:entries="@array/item_list"
+                            android:onItemSelected="@{(parent,view,pos,id)->RegisterServicemodule.onSelectItem(parent,view,pos,id)}"
+                            android:maxLength="50"
+                            android:minHeight="50dp" />
+                    </LinearLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/mobile_number">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/mobile_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone"
+                            android:digits="@string/allow_number_digits"
+                            android:layout_marginTop="20dp"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:minHeight="50dp"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        app:errorText="@{RegisterServicemodule.errorEmailid}"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/email">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:inputType="textEmailAddress"
+                            android:onTextChanged="@{RegisterServicemodule.onRegistrationTextChanged}"
+                            android:text="@={RegisterServicemodule.emailid}"
+                            android:digits="@string/allow_digits_email"
+                            android:minHeight="50dp"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!--<com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_password">
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="@string/allow_digits_for_password"
+                            android:inputType="textPassword"
+                            android:maxLength="11"
+                            android:maxLines="1"
+                            android:minHeight="50dp"
+                            android:layout_marginTop="20dp"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>-->
+
+                    <!--<com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_conform_password">
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/confirm_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:digits="@string/allow_digits_for_password"
+                            android:inputType="textPassword"
+                            android:maxLength="11"
+
+                            android:maxLines="1"
+                            android:layout_marginTop="20dp"
+                            android:minHeight="50dp"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:textSize="16sp" />
+                    </com.google.android.material.textfield.TextInputLayout>-->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_payment_information_field"
+                        android:text="@string/payment_information"
+                        android:textColor="@color/item_sub_title_color"
+                        android:textSize="20sp"
+                        android:visibility="gone"
+                        android:layout_marginTop="24dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:text="Default Amount"
+                        android:id="@+id/default_amaount"
+                        android:textColor="@color/item_sub_title_color"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:id="@+id/payment_base"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginStart="24dp"
+                        android:visibility="gone"
+                        android:layout_marginEnd="24dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_height="wrap_content"
+                        android:hint="Custom Amount">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/customamount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:inputType="numberDecimal"
+                            android:digits="@string/allow_digits_email"
+                            android:minHeight="50dp"
+                            android:paddingEnd="10dp"
+                            android:paddingStart="10dp"
+                            android:textSize="16sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/register"
+                        android:layout_marginTop="24dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/field_height"
+                        android:layout_alignParentBottom="true"
+                        android:visibility="visible"
+                        android:onClick="@{(v) ->RegisterServicemodule.OnClick(v)}"
+                        android:background="@drawable/submit_button_bg"
+                        android:text="@string/register_right"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_regular_size" />
+
+                    <LinearLayout
+                        android:id="@+id/footer"
+                        android:visibility="gone"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+
+                        android:layout_marginTop="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:text="@string/login_left"
+                            android:textColor="@color/forgot_password"
+                            android:fontFamily="@font/montserrat_regular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/text_regular_size" />
+
+                        <TextView
+                            android:id="@+id/login"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:text="@string/login_right"
+                            android:textColor="@color/register_color"
+                            android:textSize="@dimen/text_regular_size"
+                            android:layout_marginLeft="8dp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:scaleType="fitXY"
+                        android:visibility="gone"
+                        android:src="@mipmap/cornner" />
+                </LinearLayout>
+
+            </RelativeLayout>
+        </ScrollView>
+
+
+    </RelativeLayout>
+</layout>
