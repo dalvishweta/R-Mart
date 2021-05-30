@@ -9,7 +9,7 @@ import com.rmart.baseclass.views.BaseFragment;
 
 public class LoginBaseFragment extends BaseFragment {
 
-    OnAuthenticationClickedListener mListener;
+    public OnAuthenticationClickedListener mListener;
 
     @Override
     public void onAttach(@NonNull Context context) {

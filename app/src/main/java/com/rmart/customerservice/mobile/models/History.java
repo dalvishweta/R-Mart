@@ -43,6 +43,18 @@ public class History {
     @Expose
     private String imgPath;
 
+    public String getMobile_no() {
+        return mobile_no;
+    }
+
+    public void setMobile_no(String mobile_no) {
+        this.mobile_no = mobile_no;
+    }
+
+    @SerializedName("mobile_no")
+    @Expose
+    private String mobile_no;
+
     public String getType() {
         return type;
     }

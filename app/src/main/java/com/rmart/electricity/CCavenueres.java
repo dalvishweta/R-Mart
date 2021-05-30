@@ -16,6 +16,31 @@ public class CCavenueres implements Serializable {
     @SerializedName("rokad_order_id")
     @Expose
     private int rokadOrderId;
+    @SerializedName("payment_total_amount")
+    @Expose
+    private int payment_total_amount = 0;
+    @SerializedName("ccavenue")
+    @Expose
+    private int ccavenue ;
+    @SerializedName("wallet")
+    @Expose
+    private boolean wallet ;
+
+    public int getPayment_total_amount() {
+        return payment_total_amount;
+    }
+
+    public void setPayment_total_amount(int payment_total_amount) {
+        this.payment_total_amount = payment_total_amount;
+    }
+
+    public boolean isWallet() {
+        return wallet;
+    }
+
+    public void setWallet(boolean wallet) {
+        this.wallet = wallet;
+    }
 
     public CcavenueData getCcavenueData() {
         return ccavenueData;
@@ -41,7 +66,23 @@ public class CCavenueres implements Serializable {
         this.rokadOrderId = rokadOrderId;
     }
 
-   public class CcavenueData implements Serializable{
+    public int getTotalCartCount() {
+        return payment_total_amount;
+    }
+
+    public void setTotalCartCount(int totalCartCount) {
+        this.payment_total_amount = totalCartCount;
+    }
+
+    public int getCcavenue() {
+        return ccavenue;
+    }
+
+    public void setCcavenue(int ccavenue) {
+        this.ccavenue = ccavenue;
+    }
+
+    public class CcavenueData implements Serializable{
 
         @SerializedName("billing_name")
         @Expose

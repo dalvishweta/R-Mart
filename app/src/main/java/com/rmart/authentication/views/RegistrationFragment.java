@@ -16,9 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.customer.adapters.CustomSpinnerAdapter;
@@ -30,17 +30,12 @@ import com.rmart.utilits.services.AuthenticationService;
 import com.rmart.utilits.services.RegPayAmtResponse;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,7 +43,7 @@ import retrofit2.Response;
 public class RegistrationFragment extends LoginBaseFragment implements View.OnClickListener {
 
     private AppCompatEditText tvFirstName,customamount, tvLastName, tVMobileNumber, tvEmail,  tvConformPassword;
-    private String selectedGender,tvPassword;
+    private String selectedGender,tvPassword,SelectArea;
     EditText editTextOne,editTextTwo,editTextThree,editTextFour,confirm_editTextOne,confirm_editTextTwo,confirm_editTextThree,confirm_editTextFour;
     TextView login,default_amaount;
     ArrayList<RegistrationFeeStructure> registrationFeeStructuresList = new ArrayList<>();
@@ -184,6 +179,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         //tvPassword = view.findViewById(R.id.password);
         //tvConformPassword = view.findViewById(R.id.confirm_password);
         AppCompatSpinner genderSpinnerField = view.findViewById(R.id.gender_spinner_field);
+        AppCompatSpinner areaSpinnerField = view.findViewById(R.id.area_spinner_field);
 
         List<Object> gendersList = new ArrayList<>();
 
@@ -191,6 +187,12 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
         gendersList.add("Male");
         gendersList.add("Female");
         gendersList.add("Other");
+
+        List<Object> areasList = new ArrayList<>();
+        areasList.add(" Select Business Area");
+        areasList.add("Within City");
+        areasList.add("Within State");
+        areasList.add("Out of State");
 
         genderSpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -206,6 +208,20 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
 
         CustomSpinnerAdapter customStringAdapter = new CustomSpinnerAdapter(requireActivity(), gendersList,false);
         genderSpinnerField.setAdapter(customStringAdapter);
+        areaSpinnerField.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+                SelectArea = (String) areasList.get(pos);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        CustomSpinnerAdapter customStringAdapterr = new CustomSpinnerAdapter(requireActivity(), areasList,false);
+        areaSpinnerField.setAdapter(customStringAdapterr);
 
         LinearLayout paymentBase = view.findViewById(R.id.payment_base);
         paymentBase.removeAllViews();
@@ -298,7 +314,7 @@ public class RegistrationFragment extends LoginBaseFragment implements View.OnCl
             }
             progressDialog.show();
             AuthenticationService authenticationService = RetrofitClientInstance.getRetrofitInstance().create(AuthenticationService.class);
-            authenticationService.registration(firstName, lastName, mobileNumber, email, selectedGender, password, getString(R.string.role_id), Utils.CLIENT_ID,amount).enqueue(
+            authenticationService.registration(firstName, lastName, mobileNumber, email, selectedGender, password, getString(R.string.role_id), Utils.CLIENT_ID,amount,SelectArea).enqueue(
                     new Callback<RegistrationResponse>() {
                         @Override
                         public void onResponse(@NotNull Call<RegistrationResponse> call, @NotNull Response<RegistrationResponse> response) {

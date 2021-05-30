@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.rmart.BuildConfig;
 import com.rmart.customerservice.dth.model.DthResponse;
-import com.rmart.customerservice.dth.repositories.DTHRechargeRepository;
 import com.rmart.customerservice.mobile.operators.model.Operator;
 import com.rmart.customerservice.mobile.repositories.MobileRechargeRepository;
 import com.rmart.electricity.RSAKeyResponse;
@@ -24,8 +23,6 @@ public class DTHRechargeMakePaymentViewModel extends ViewModel {
     public MutableLiveData<RSAKeyResponse> responseRsakeyMutableLiveData = new MutableLiveData<>();
 
     public void onClick(final View view) {
-
-
         if(cumsumerAmount.getValue()!=null && Double.parseDouble(cumsumerAmount.getValue())>0) {
             errorCumsumerAmount.setValue(null);
             getRsaKey(MyProfile.getInstance(view.getContext()).getUserID());
@@ -37,7 +34,6 @@ public class DTHRechargeMakePaymentViewModel extends ViewModel {
     public void getRsaKey(String user_id){
         isLoading.setValue(true);
         MobileRechargeRepository.getRSAKey(user_id, String.valueOf(cumsumerAmount.getValue()), BuildConfig.service_id,BuildConfig.service_name).observeForever(responseKeyResponse -> {
-
             responseRsakeyMutableLiveData.setValue(responseKeyResponse);
 
         });

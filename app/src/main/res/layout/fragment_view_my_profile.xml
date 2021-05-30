@@ -35,31 +35,36 @@
                         android:layout_marginTop="0dp"
                         android:drawableEnd="@drawable/pencil_white"
                         android:background="@color/colorPrimary"
-                        android:layout_width="match_parent"/>
+                        android:layout_width="match_parent"
+                        android:drawableRight="@drawable/pencil_white" />
                     <androidx.appcompat.widget.AppCompatTextView
                         android:hint="@string/please_enter_your_first_name"
                         android:id="@+id/first_name"
                         android:drawableStart="@drawable/user"
                         style="@style/my_profile_tv"
-                        android:inputType="text"/>
+                        android:inputType="text"
+                        android:drawableLeft="@drawable/user" />
                     <androidx.appcompat.widget.AppCompatTextView
                         android:hint="@string/please_enter_your_last_name"
                         android:id="@+id/last_name"
                         android:drawableStart="@drawable/user"
                         style="@style/my_profile_tv"
-                        android:inputType="text"/>
+                        android:inputType="text"
+                        android:drawableLeft="@drawable/user" />
                     <androidx.appcompat.widget.AppCompatTextView
                         android:hint="@string/hint_mobile_number"
                         android:id="@+id/mobile_number"
                         android:drawableStart="@drawable/ic_phone"
                         style="@style/my_profile_tv"
-                        android:inputType="number|numberSigned"/>
+                        android:inputType="number|numberSigned"
+                        android:drawableLeft="@drawable/ic_phone" />
                     <androidx.appcompat.widget.AppCompatTextView
                         android:hint="@string/please_enter_your_e_mail"
                         android:id="@+id/email"
                         android:drawableStart="@drawable/mail"
                         style="@style/my_profile_tv"
-                        android:inputType="textEmailAddress"/>
+                        android:inputType="textEmailAddress"
+                        android:drawableLeft="@drawable/mail" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:visibility="gone"
@@ -67,14 +72,16 @@
                         android:id="@+id/dob"
                         android:drawableStart="@drawable/user"
                         style="@style/my_profile_tv"
-                        android:inputType="textEmailAddress"/>
+                        android:inputType="textEmailAddress"
+                        android:drawableLeft="@drawable/user" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:hint="@string/gender"
                         android:id="@+id/gender"
                         android:drawableStart="@drawable/user"
                         style="@style/my_profile_tv"
-                        android:inputType="textEmailAddress"/>
+                        android:inputType="textEmailAddress"
+                        android:drawableLeft="@drawable/user" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
             <androidx.cardview.widget.CardView
@@ -100,20 +107,23 @@
                             android:layout_marginTop="0dp"
                             android:drawableEnd="@drawable/pencil_white"
                             android:background="@color/colorPrimary"
-                            android:layout_width="match_parent" />
+                            android:layout_width="match_parent"
+                            android:drawableRight="@drawable/pencil_white" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/enter_your_business_name"
                             android:id="@+id/shop_name"
                             android:drawableStart="@drawable/shop"
                             style="@style/my_profile_tv"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:drawableLeft="@drawable/shop" />
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/enter_your_business_name"
                             android:id="@+id/business_type"
                             android:drawableStart="@drawable/shop"
                             style="@style/my_profile_tv"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:drawableLeft="@drawable/shop" />
                         <TextView
                             android:id="@+id/SellRetailers"
                             android:layout_width="match_parent"
@@ -139,33 +149,38 @@
                             android:layout_width="120dp"
                             android:layout_marginStart="24dp"
                             android:layout_marginTop="10dp"
-                            android:layout_height="80dp" />
+                            android:layout_height="80dp"
+                            android:layout_marginLeft="24dp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/enter_shop_act_number"
                             android:id="@+id/shop_act"
                             android:drawableStart="@drawable/ic_note"
                             style="@style/my_profile_tv"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:drawableLeft="@drawable/ic_note" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/enter_your_gst_number"
                             android:id="@+id/gst_number"
                             android:drawableStart="@drawable/ic_note"
                             style="@style/my_profile_tv"
-                            android:inputType="text"/>
+                            android:inputType="text"
+                            android:drawableLeft="@drawable/ic_note" />
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/shop_no"
                             android:id="@+id/shop_no"
                             android:drawableStart="@drawable/shop"
                             style="@style/my_profile_tv"
-                            android:inputType="text"/>
+                            android:inputType="text"
+                            android:drawableLeft="@drawable/shop" />
                         <androidx.appcompat.widget.AppCompatTextView
                             android:hint="@string/delivery_radius"
                             android:id="@+id/delivery_radius"
                             android:drawableStart="@drawable/ic_address"
                             style="@style/my_profile_tv"
-                            android:inputType="number"/>
+                            android:inputType="number"
+                            android:drawableLeft="@drawable/ic_address" />
                         <LinearLayout
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
@@ -180,7 +195,8 @@
                                 android:inputType="number"
                                 android:background="@drawable/curve_left_bg"
                                 android:layout_width="0dp"
-                                android:layout_weight="1"/>
+                                android:layout_weight="1"
+                                android:drawableLeft="@drawable/ic_rupee" />
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:id="@+id/minimum_order"
                                 android:hint="@string/minimum_order"

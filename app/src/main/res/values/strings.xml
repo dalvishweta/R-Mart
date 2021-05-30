@@ -459,7 +459,7 @@
     <string name="label_customer_name">Customer Name</string>
     <string name="vishal_landepatil">: Vishal Landepatil</string>
     <string name="enter_amount">Enter Recharge Amount</string>
-    <string name="Rs_symbol">\u20B9</string>
+    <string name="Rs_symbol">\u20B9 %s</string>
     <string name="prepaid">Prepaid</string>
     <string name="postpaid">Postpaid</string>
     <string name="enter_your_mobile_number">Enter Your Mobile Number</string>

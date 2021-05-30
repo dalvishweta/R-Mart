@@ -328,9 +328,7 @@ public class PaymentActivity extends AppCompatActivity  {
                 .beginTransaction()
                 .replace(R.id.frame_container, PaymentStatusFragment.newInstance(paymentResponse, null, null, paymentResponse.getData().getAmount()))
                 .commit();
-       /* FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_container, PaymentStatusFragment.newInstance(paymentResponse, null, null,paymentResponse.getData().getAmount()));
-        transaction.commit();*/
+
     }
 }
 

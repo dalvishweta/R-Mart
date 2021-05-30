@@ -1,52 +1,156 @@
 package com.rmart.authentication.login.view;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.rmart.R;
-import com.rmart.authentication.login.model.LoginResponse;
 import com.rmart.authentication.login.viewmodels.LoginServicemodule;
 import com.rmart.authentication.views.LoginBaseFragment;
-import com.rmart.baseclass.views.BaseFragment;
+import com.rmart.baseclass.Constants;
+import com.rmart.baseclass.LoginDetailsModel;
 import com.rmart.databinding.FragmentLoginBinding;
+import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.LoggerInfo;
+import com.rmart.utilits.RokadMartCache;
+import com.rmart.utilits.UpdateCartCountDetails;
+import com.rmart.utilits.Utils;
+import com.rmart.utilits.pojos.LoginResponse;
+import com.rmart.utilits.pojos.ProfileResponse;
+
+import java.util.Objects;
 
 
 public class LoginFragment extends LoginBaseFragment {
 
-
-
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+    private String deviceToken;
+    public String mMobileNumber;
+    ProfileResponse profileResponse;
+    LoginServicemodule mViewModel;
     public LoginFragment() {
         // Required empty public constructor
     }
 
-
+    public static LoginFragment newInstance(String param1, String param2) {
+     LoginFragment fragment = new LoginFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-       /* return inflater.inflate(R.layout.fragment_login, container, false);*/
-        FragmentLoginBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false);
-        LoginServicemodule mViewModel = new ViewModelProvider(this).get(LoginServicemodule.class);
-        mViewModel.isLoading.setValue(false);
-        binding.setLoginServiceModule(mViewModel);
-        binding.setLifecycleOwner(this);
-        mViewModel.LoginPOJOMutableLiveData.observeForever(new Observer<LoginResponse>() {
-            @Override
-            public void onChanged(LoginResponse loginResponse) {
-                if (loginResponse.getStatus().equals("success") && loginResponse.getOtp()==200){
 
-                }
+        FragmentLoginBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false);
+
+        mViewModel = new ViewModelProvider(this).get(LoginServicemodule.class);
+        mViewModel.isLoading.setValue(false);
+        mViewModel.isVisibleLogin.setValue(true);
+        mViewModel.isVisibleOTP.setValue(false);
+
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(requireActivity(), instanceIdResult -> {
+            deviceToken = instanceIdResult.getToken();
+            LoggerInfo.printLog("FCM Token", deviceToken);
+        });
+        mViewModel.device_id.setValue(deviceToken);
+        binding.setLoginOtpModule(mViewModel);
+        binding.setLifecycleOwner(this);
+        mViewModel.VerifyOTPPOJOMutableLiveData.observeForever(new Observer<LoginResponse>() {
+            @Override
+            public void onChanged(com.rmart.utilits.pojos.LoginResponse loginResponse) {
+
+               checkCredentials(loginResponse);
             }
         });
         return binding.getRoot();
 
     }
+
+
+    private void checkCredentials(LoginResponse data) {
+
+        if (data != null) {
+            if (data.getStatus().equalsIgnoreCase("success")) {
+                if (data.getLoginData().getRoleID().equalsIgnoreCase(getString(R.string.role_id))) {
+                    try {
+                        LoginDetailsModel loginDetailsModel = new LoginDetailsModel();
+                      //  loginDetailsModel.setMobileNumber(mMobileNumber);
+                        //loginDetailsModel.setPassword(mPassword);
+                        profileResponse = data.getLoginData();
+                        //checkRegistration(profileResponse,mMobileNumber,"1234");
+
+                        MyProfile.setInstance(getActivity(),profileResponse);
+                        //MyProfile.getInstance().setCartCount(profileResponse.getTotalCartCount());
+                        UpdateCartCountDetails.updateCartCountDetails.onNext(profileResponse.getTotalCartCount());
+                        if (MyProfile.getInstance(getActivity()).getPrimaryAddressId() == null) {
+                            mListener.goToProfileActivity(true);
+                        } else {
+                            switch (data.getLoginData().getRoleID()) {
+                                case Utils.CUSTOMER_ID:
+
+                                    RokadMartCache.putData(Constants.CACHE_CUSTOMER_DETAILS, requireActivity(), loginDetailsModel);
+                                    mListener.goToCustomerHomeActivity();
+                                    SharedPreferences sharedPref = Objects.requireNonNull(requireActivity()).getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                    editor.putString(getString(R.string.uid), Utils.CUSTOMER_ID);
+                                    editor.apply();
+                                    break;
+                                case Utils.RETAILER_ID:
+                                    // RokadMartCache.putData(Constants.CACHE_RETAILER_DETAILS, requireActivity(), loginDetailsModel);
+                                    mListener.goToHomeActivity();
+                                    break;
+                                case Utils.DELIVERY_ID:
+                                    // RokadMartCache.putData(Constants.CACHE_DELIVERY_DETAILS, requireActivity(), loginDetailsModel);
+                                    mListener.goToHomeActivity();
+                                    break;
+                            }
+                        }
+
+                        // mListener.goToProfileActivity();
+                        Objects.requireNonNull(requireActivity()).onBackPressed();
+                    } catch (Exception e) {
+                        if (data.getMsg().contains("role id")) {
+                            showDialog("", getString(R.string.error_role_login));
+                        } else {
+                            showDialog(e.getMessage());
+                        }
+                    }
+                } else {
+                    showDialog("", getString(R.string.error_role_login));
+                }
+            } else {
+                if (data.getMsg().contains("role id")) {
+                    showDialog("", getString(R.string.error_role_login));
+                } else {
+                    showDialog("", data.getMsg(), (dialogInterface, i) -> {
+                        if (data.getMsg().contains("verify")) {
+                            //resendOTP();
+                        } else if (data.getMsg().contains("mail_verify")) {
+                            mListener.validateMailOTP();
+                        } else if (data.getMsg().contains("pay")) {
+                            mListener.proceedToPayment(data.getPaymentData());
+                        }
+                    });
+                }
+            }
+        } else {
+            showDialog(getString(R.string.no_information_available));
+        }
+    }
+
+
 }

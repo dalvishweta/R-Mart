@@ -1,10 +1,10 @@
 package com.rmart.wallet.view;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseActivity;
@@ -31,29 +31,6 @@ private CardView billing_history_cardView;
 
     }
 
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.wallet_menu,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.ivNotification:
-            {
-
-            }
-            break;
-            case R.id.ivShoppingBasket:
-            {
-
-            }
-            break;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
 
     @Override
     public void showBadge(boolean b) {

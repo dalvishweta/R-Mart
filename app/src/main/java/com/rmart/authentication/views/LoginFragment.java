@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,6 +57,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     EditText editTextOne,editTextTwo,editTextThree,editTextFour;
     private String deviceToken;
     ProfileResponse profileResponse;
+    LinearLayout layout_opt;
     private ImageView slice,app_logo;
     public LoginFragment() {
         // Required empty public constructor
@@ -108,11 +110,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
 
         } catch (Exception e){
 
-
-
         }
-
-
         view.findViewById(R.id.login).setOnClickListener(this);
         view.findViewById(R.id.register).setOnClickListener(this);
         if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.DELIVERY_ID)) {
