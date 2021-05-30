@@ -96,7 +96,6 @@
                 android:layout_below="@+id/one_layout"
                 />
 
-
         </LinearLayout>
         </LinearLayout>
 

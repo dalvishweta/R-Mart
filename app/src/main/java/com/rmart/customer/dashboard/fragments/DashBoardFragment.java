@@ -70,9 +70,9 @@ public class DashBoardFragment extends BaseFragment {
                     }
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("dth-recharge")){
 
-//                        Intent intent = new Intent(getContext(), DTHRechargeActivity.class);
-//                       startActivity(intent);
-                        Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getContext(), DTHRechargeActivity.class);
+                       startActivity(intent);
+                        //Toast.makeText(getContext(),"Coming Soon",Toast.LENGTH_LONG).show();
                         //5857131402
                     }
                     if(serviceOffer.getServiceCaption().equalsIgnoreCase("light-bill")){

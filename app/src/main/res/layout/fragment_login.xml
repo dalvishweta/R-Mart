@@ -5,7 +5,7 @@
     <data>
         <import type="android.view.View"/>
         <variable
-            name="LoginServiceModule"
+            name="LoginOtpModule"
             type="com.rmart.authentication.login.viewmodels.LoginServicemodule" />
 
     </data>
@@ -41,7 +41,14 @@
                     android:layout_marginTop="120dp"
                     android:layout_centerHorizontal="true"
                     android:src="@mipmap/applogo" />
-
+                <ProgressBar
+                    android:visibility="@{LoginOtpModule.isLoading?View.VISIBLE:View.GONE}"
+                    android:id="@+id/progressBar1"
+                    tools:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/app_logo"
+                    />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -86,21 +93,31 @@
                             android:background="@drawable/login_edit_background"
                             android:orientation="horizontal"
                             tools:ignore="UselessParent">
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/consummerno_layout"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:gravity="center"
+                                app:errorText="@{LoginOtpModule.errorMobileNumber}">
 
                             <EditText
                                 android:id="@+id/mobile_number"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:digits="@string/allow_number_digits"
                                 android:inputType="numberSigned"
                                 android:maxLength="10"
-                                android:text="@{LoginServiceModule.mobile_number}"
+                                android:onTextChanged="@{LoginOtpModule.onCumsumerNumberTextChanged}"
+                                android:text="@={LoginOtpModule.mobile_numberr}"
                                 android:background="@android:color/transparent"
                                 android:maxLines="1"
                                 android:padding="16dp"
                                 android:paddingStart="10dp"
                                 android:paddingEnd="10dp"
                                 android:textSize="16sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
                         <TextView
@@ -129,112 +146,93 @@
                         android:background="@android:color/transparent"
                         android:id="@+id/layout_opt"
                         android:weightSum="4"
-                        android:visibility="gone"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:layout_below="@id/security_textView"
-                        android:orientation="horizontal">
+                        android:orientation="vertical"
+                        android:visibility="@{LoginOtpModule.isVisibleOTP?View.VISIBLE:View.GONE}"
 
-                        <EditText
-                            android:layout_width="55dp"
-                            android:layout_height="42dp"
-                            android:maxLength="1"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:imeOptions="actionNone"
-                            android:background="@drawable/otp_background"
-                            android:layout_marginRight="10dp"
-                            android:id="@+id/editTextOne"
-                            android:inputType="number"
-                            android:nextFocusRight="@id/editTextTwo" />
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <EditText
+                                android:layout_width="55dp"
+                                android:layout_height="42dp"
+                                android:maxLength="1"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:imeOptions="actionNone"
+                                android:background="@drawable/otp_background"
+                                android:layout_marginRight="10dp"
+                                android:id="@+id/editTextOne"
+                                android:inputType="number"
+                                android:nextFocusRight="@id/editTextTwo" />
 
 
-                        <EditText
-                            android:layout_width="55dp"
-                            android:layout_height="42dp"
-                            android:maxLength="1"
-                            android:imeOptions="actionNone"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:id="@+id/editTextTwo"
-                            android:background="@drawable/otp_background"
-                            android:inputType="number"
-                            android:nextFocusRight="@id/editTextThree" />
+                            <EditText
+                                android:layout_width="55dp"
+                                android:layout_height="42dp"
+                                android:maxLength="1"
+                                android:imeOptions="actionNone"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:id="@+id/editTextTwo"
+                                android:background="@drawable/otp_background"
+                                android:inputType="number"
+                                android:nextFocusRight="@id/editTextThree" />
 
-                        <EditText
-                            android:layout_width="55dp"
-                            android:layout_height="42dp"
-                            android:maxLength="1"
-                            android:background="@drawable/otp_background"
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:imeOptions="actionNone"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:nextFocusRight="@id/editTextFour"
-                            android:inputType="number"
-                            android:id="@+id/editTextThree" />
+                            <EditText
+                                android:layout_width="55dp"
+                                android:layout_height="42dp"
+                                android:maxLength="1"
+                                android:background="@drawable/otp_background"
+                                android:gravity="center"
+                                android:layout_weight="1"
+                                android:imeOptions="actionNone"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:nextFocusRight="@id/editTextFour"
+                                android:inputType="number"
+                                android:id="@+id/editTextThree" />
 
-                        <EditText
-                            android:layout_width="55dp"
-                            android:layout_height="42dp"
-                            android:maxLength="1"
-                            android:gravity="center"
-                            android:imeOptions="actionNone"
-                            android:layout_weight="1"
-                            android:background="@drawable/otp_background"
-                            android:layout_marginLeft="10dp"
-                            android:inputType="number"
-                            android:id="@+id/editTextFour" />
+                            <EditText
+                                android:layout_width="55dp"
+                                android:layout_height="42dp"
+                                android:maxLength="1"
+                                android:gravity="center"
+                                android:imeOptions="actionNone"
+                                android:layout_weight="1"
+                                android:background="@drawable/otp_background"
+                                android:layout_marginLeft="10dp"
+                                android:inputType="number"
+                                android:id="@+id/editTextFour" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatButton
+                                android:id="@+id/verify_otp"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/field_height"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:onClick="@{(v) ->LoginOtpModule.onClick(v)}"
+                                android:background="@drawable/submit_button_bg"
+                                android:fontFamily="@font/montserrat_bold"
+                                android:padding="10dp"
+                                android:text="Verify OTP"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_regular_size" />
+                        </LinearLayout>
+
                     </LinearLayout>
-
-
-                    <!-- <com.google.android.material.textfield.TextInputLayout
-                         android:id="@+id/current_password_layout"
-                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                         android:layout_width="match_parent"
-                         android:layout_height="wrap_content"
-                         android:layout_marginTop="15dp"
-                         android:gravity="center"
-                         android:hint="@string/mobile_number">
-
-                         <androidx.appcompat.widget.AppCompatEditText
-                             android:id="@+id/mobile_number"
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:digits="@string/allow_number_digits"
-                             android:inputType="numberSigned"
-                             android:maxLength="10"
-                             android:maxLines="1"
-                             android:paddingStart="10dp"
-                             android:paddingEnd="10dp"
-                             android:textSize="16sp"
-                             />
-
-                     </com.google.android.material.textfield.TextInputLayout>-->
-
-                    <!--  <com.google.android.material.textfield.TextInputLayout
-                          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="15dp"
-                          android:gravity="center"
-                          android:hint="@string/hint_password">
-
-                          <androidx.appcompat.widget.AppCompatEditText
-                              android:id="@+id/password"
-                              android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:digits="@string/allow_digits_for_password"
-                              android:inputType="textPassword"
-                              android:maxLength="11"
-                              android:maxLines="1"
-                              android:paddingStart="10dp"
-                              android:paddingEnd="10dp"
-                              android:textSize="16sp" />
-                      </com.google.android.material.textfield.TextInputLayout>-->
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/login"
@@ -243,13 +241,14 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:onClick="@{(v) ->LoginServiceModule.onClick(v)}"
+                        android:onClick="@{(v) ->LoginOtpModule.onClick(v)}"
                         android:background="@drawable/submit_button_bg"
                         android:fontFamily="@font/montserrat_bold"
                         android:padding="10dp"
                         android:text="@string/send_otp"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/text_regular_size" />
+                        android:textSize="@dimen/text_regular_size"
+                        android:visibility="@{LoginOtpModule.isVisibleLogin?View.VISIBLE:View.GONE}"/>
 
                     <TextView
                         android:id="@+id/forgot_password"
@@ -259,39 +258,10 @@
                         android:layout_marginTop="15dp"
                         android:fontFamily="@font/montserrat_regular"
                         android:gravity="center"
-                        android:text="@string/forgot_password"
+                        android:text="@string/resend_otp"
                         android:textColor="@color/register_color"
                         android:textSize="@dimen/text_regular_size" />
 
-                    <LinearLayout
-                        android:id="@+id/footer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginTop="15dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/montserrat_regular"
-                            android:text="@string/register_left"
-                            android:textColor="@color/forgot_password"
-                            android:textSize="@dimen/text_regular_size" />
-
-                        <TextView
-                            android:id="@+id/register"
-
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginLeft="8dp"
-                            android:fontFamily="@font/montserrat_semibold"
-                            android:text="@string/register_right"
-                            android:textColor="#75055D"
-                            android:textSize="@dimen/text_regular_size" />
-                    </LinearLayout>
 
                 </LinearLayout>
             </RelativeLayout>

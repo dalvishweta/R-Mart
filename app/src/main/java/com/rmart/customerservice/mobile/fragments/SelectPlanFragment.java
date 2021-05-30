@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.gson.Gson;
 import com.rmart.R;
 import com.rmart.customerservice.mobile.adapters.RechargePlansAdapter;
 import com.rmart.customerservice.mobile.adapters.RechargePlansPagerAdapter;
@@ -24,25 +23,20 @@ import com.rmart.customerservice.mobile.circle.bottomsheets.SelectCircleBottomSh
 import com.rmart.customerservice.mobile.circle.model.Circle;
 import com.rmart.customerservice.mobile.listners.SlectCircle;
 import com.rmart.customerservice.mobile.listners.SlectOperator;
-import com.rmart.customerservice.mobile.models.MRechargeBaseClass;
-import com.rmart.customerservice.mobile.models.RokadPaymentRequest;
 import com.rmart.customerservice.mobile.models.mPlans.RechargePlans;
 import com.rmart.customerservice.mobile.models.mPlans.Records;
 import com.rmart.customerservice.mobile.models.mobileRecharge.RechargeBaseClass;
 import com.rmart.customerservice.mobile.operators.bottomheet.SelectOperatorBottomSheet;
 import com.rmart.customerservice.mobile.operators.model.Operator;
-import com.rmart.customerservice.mobile.repositories.MobileRechargeRepository;
 import com.rmart.customerservice.mobile.repositories.RechargeRepository;
 import com.rmart.customerservice.mobile.viewmodels.SelectPlanViewModel;
 import com.rmart.customerservice.mobile.views.ServicePaymentActivity;
 import com.rmart.databinding.FragmentSelectPlan2Binding;
-import com.rmart.electricity.CCAvenueResponceModel;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.IOnBackPressed;
 
 import static com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge.POSTPAID;
 import static com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge.PREPAID;
-import static com.rmart.customerservice.mobile.repositories.MobileRechargeRepository.MOBLIE_RECHARGE_SERVICE_TYPE;
 import static com.rmart.customerservice.mobile.views.ServicePaymentActivity.RESULT;
 
 public class SelectPlanFragment extends Fragment implements IOnBackPressed {
@@ -201,11 +195,14 @@ public class SelectPlanFragment extends Fragment implements IOnBackPressed {
         mViewModel.responseRsakeyMutableLiveData.observeForever(rsaKeyResponse -> {
 
               if(rsaKeyResponse!=null && rsaKeyResponse.getStatus().equals("success")) {
-
-                  Intent ii= new Intent(getContext(), ServicePaymentActivity.class);
-                  ii.putExtra("rsakeyresonse",  rsaKeyResponse.getData());
-                  ii.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                  startActivityForResult(ii,3333);
+                  if (rsaKeyResponse.getData().getCcavenue() == 1) {
+                      Intent ii = new Intent(getContext(), ServicePaymentActivity.class);
+                      ii.putExtra("rsakeyresonse", rsaKeyResponse.getData());
+                      ii.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                      startActivityForResult(ii, 3333);
+                  }else{
+                      Toast.makeText(getContext(),rsaKeyResponse.getMsg(),Toast.LENGTH_LONG).show();
+                  }
               } else {
 
                   // error Screen

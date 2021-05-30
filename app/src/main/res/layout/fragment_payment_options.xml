@@ -50,7 +50,9 @@
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="10dp"
-                android:text="@string/internet_banking" />
+                android:text="@string/internet_banking"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -82,7 +84,9 @@
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="10dp"
-                android:text="@string/cash_on_delivery" />
+                android:text="@string/cash_on_delivery"
+                android:paddingRight="10dp"
+                android:paddingLeft="15dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -115,7 +119,9 @@
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="10dp"
-                android:text="@string/my_wallet" />
+                android:text="@string/my_wallet"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp" />
         </LinearLayout>
 
         <Button

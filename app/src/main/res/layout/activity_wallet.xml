@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="walletViewModel"
+            type="com.rmart.wallet.viewmodel.WalletViewModel" />
+    </data>
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgrounndgray"
@@ -65,7 +72,7 @@
                    <TextView
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
-                       android:text="₹ 0.00"
+                       android:text="@{@string/Rs_symbol(walletViewModel.walletResponseMutableLiveData.data.walletAmount)}"
                        android:layout_marginTop="@dimen/spacing_standard"
                        android:layout_marginLeft="@dimen/spacing_standard"
                        android:textSize="15pt"
@@ -302,3 +309,4 @@
         android:layout_height="match_parent"/>
 
 </RelativeLayout>
+</layout>

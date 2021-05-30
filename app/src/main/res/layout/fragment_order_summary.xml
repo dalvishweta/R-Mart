@@ -396,6 +396,71 @@
             android:layout_marginTop="5dp"
             android:weightSum="2"
             android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:visibility="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.payment_total_amount==0?View.GONE:View.VISIBLE}">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text=" Payment Amount"
+                android:textSize="14dp"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:text='@{Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.payment_total_amount+"")}'
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_below="@+id/paymentmethodlabel"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:visibility="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.payment_total_amount==0?View.GONE:View.VISIBLE}"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:text="Wallet Amount"
+                android:textSize="14dp"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:text='@{Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.wallet_amount+"")}'
+                android:textSize="14dp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/paymentmethodlabel"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:weightSum="2"
+            android:orientation="horizontal"
             android:layout_height="wrap_content">
 
             <TextView
@@ -417,6 +482,7 @@
 
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_below="@+id/paymentmethodlabel"
             android:layout_width="match_parent"
@@ -606,7 +672,19 @@
             android:text="Place Order"
             android:textColor="@color/white"
             android:textSize="@dimen/text_regular_size" />
+        <TextView
+            android:textSize="10sp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/red"
+            android:gravity="center"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/placeorder"
+            android:visibility="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.payment_total_amount==0?View.GONE:View.VISIBLE}"
 
+            android:text='@{"Note:Your Order Amount "+OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.orderAmount+" will be deducted from your Wallet"}'
+            />
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/erorolayout"
@@ -614,7 +692,7 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         tools:visibility="gone"
-        android:visibility="@{(OrderSumaryViewModel.iserror)?View.VISIBLE:View.GONE}"
+        android:visibility="@{OrderSumaryViewModel.iserror?View.VISIBLE:View.GONE}"
         android:orientation="vertical"
        >
         <ImageView
