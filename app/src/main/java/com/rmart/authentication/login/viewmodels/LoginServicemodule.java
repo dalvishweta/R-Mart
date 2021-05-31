@@ -61,7 +61,6 @@ public class LoginServicemodule extends ViewModel {
                         public void onChanged(com.rmart.utilits.pojos.LoginResponse loginResponse) {
                             if (loginResponse.getStatus().equalsIgnoreCase("success")) {
                                 VerifyOTPPOJOMutableLiveData.postValue(loginResponse);
-
                             }
                             isLoading.setValue(false);
                             VerifyOTPPOJOMutableLiveData.postValue(loginResponse);

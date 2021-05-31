@@ -16,9 +16,13 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.rmart.R;
 import com.rmart.authentication.login.viewmodels.LoginServicemodule;
+import com.rmart.authentication.registration.view.RegisterFragment;
 import com.rmart.authentication.views.LoginBaseFragment;
 import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.LoginDetailsModel;
+import com.rmart.customerservice.dth.actvities.DTHRechargeActivity;
+import com.rmart.customerservice.dth.fragments.MakeDTHPayment;
+import com.rmart.customerservice.mobile.fragments.SelectPlanFragment;
 import com.rmart.databinding.FragmentLoginBinding;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
@@ -75,12 +79,26 @@ public class LoginFragment extends LoginBaseFragment {
         mViewModel.VerifyOTPPOJOMutableLiveData.observeForever(new Observer<LoginResponse>() {
             @Override
             public void onChanged(com.rmart.utilits.pojos.LoginResponse loginResponse) {
+                Log.d("loginResponse",loginResponse.getMsg());
+                  if (loginResponse.getMsg() !=("Mobile Number not exist")){
+                        showDialog("Wrong OTP");
+                    }
+                    else {
+                        changefragment(mViewModel.mobile_numberr.getValue());
+                    }
 
-               checkCredentials(loginResponse);
+                    checkCredentials(loginResponse);
             }
         });
         return binding.getRoot();
 
+    }
+
+    private void changefragment(String mMobileNumber) {
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.base_container, RegisterFragment.newInstance(mMobileNumber)).addToBackStack(null)
+                .commit();
     }
 
 

@@ -344,6 +344,15 @@
             </RelativeLayout>
         </ScrollView>
 
+        <ProgressBar
+            android:visibility="@{RegisterServicemodule.isLoading?View.VISIBLE:View.GONE}"
+            android:id="@+id/progressBar1"
+            tools:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            />
+
 
     </RelativeLayout>
 </layout>

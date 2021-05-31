@@ -31,20 +31,25 @@ import static com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge.
 
 public class RegisterFragment extends BaseFragment {
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-
+    private String mobile;
     public RegisterFragment() {
         // Required empty public constructor
     }
 
-    public static RegisterFragment newInstance(String param1, String param2) {
+    public static RegisterFragment newInstance(String param1) {
         RegisterFragment fragment = new RegisterFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mobile = getArguments().getString(ARG_PARAM1);
+        }
     }
 
     @Override
@@ -54,6 +59,7 @@ public class RegisterFragment extends BaseFragment {
         /* return inflater.inflate(R.layout.fragment_register, container, false);*/
         FragmentRegisterBinding fragmentRegisterBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false);
         RegisterServicemodule mViewModel = new ViewModelProvider(this).get(RegisterServicemodule.class);
+        mViewModel.mobileNumber.setValue(mobile);
         mViewModel.isLoading.setValue(false);
         fragmentRegisterBinding.setRegisterServicemodule(mViewModel);
         fragmentRegisterBinding.setLifecycleOwner(this);
@@ -61,7 +67,7 @@ public class RegisterFragment extends BaseFragment {
             @Override
             public void onChanged(RegisterResponse registerResponse) {
                 if (registerResponse.getStatus().equals("Success") && registerResponse.getCode() == 200) {
-                    goToCustomerHomeActivity(mViewModel.first_name.getValue(), mViewModel.last_name.getValue(), mViewModel.gender.getValue(), mViewModel.emailid.getValue());
+                    goToCustomerHomeActivity(mViewModel.first_name.getValue(), mViewModel.last_name.getValue(), mViewModel.gender.getValue(),mViewModel.mobileNumber.getValue(), mViewModel.emailid.getValue());
                 }
             }
         });
@@ -69,11 +75,12 @@ public class RegisterFragment extends BaseFragment {
 
     }
 
-    private void goToCustomerHomeActivity(String first_name, String last_name, String gender, String emailid) {
+    private void goToCustomerHomeActivity(String first_name, String last_name, String gender, String mobileNumber,String emailid) {
         Intent in = new Intent(getContext(), CustomerHomeActivity.class);
         in.putExtra("full_name", first_name);
         in.putExtra("last_name", last_name);
         in.putExtra("gender", gender);
+        in.putExtra("mobileNumber",mobileNumber);
         in.putExtra("emailid", emailid);
         //in.putExtra("mobile_number",m)
         startActivity(in);
