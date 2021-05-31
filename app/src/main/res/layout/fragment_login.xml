@@ -82,14 +82,12 @@
                         android:id="@+id/mobile_relative"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="15dp"
-                        android:layout_weight="1">
+                        android:layout_margin="15dp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="1dp"
-                            android:layout_weight="1"
                             android:background="@drawable/login_edit_background"
                             android:orientation="horizontal"
                             tools:ignore="UselessParent">
@@ -101,6 +99,7 @@
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="5dp"
                                 android:gravity="center"
+                                android:minHeight="5dp"
                                 app:errorText="@{LoginOtpModule.errorMobileNumber}">
 
                             <EditText
@@ -109,11 +108,11 @@
                                 android:layout_height="wrap_content"
                                 android:inputType="numberSigned"
                                 android:maxLength="10"
+                                android:singleLine="true"
                                 android:onTextChanged="@{LoginOtpModule.onCumsumerNumberTextChanged}"
                                 android:text="@={LoginOtpModule.mobile_numberr}"
                                 android:background="@android:color/transparent"
-                                android:maxLines="1"
-                                android:padding="16dp"
+                                android:padding="14dp"
                                 android:paddingStart="10dp"
                                 android:paddingEnd="10dp"
                                 android:textSize="16sp" />
@@ -163,6 +162,7 @@
                                 android:maxLength="1"
                                 android:layout_weight="1"
                                 android:gravity="center"
+                                android:text="@={LoginOtpModule.oneOtp}"
                                 android:imeOptions="actionNone"
                                 android:background="@drawable/otp_background"
                                 android:layout_marginRight="10dp"
@@ -178,6 +178,7 @@
                                 android:imeOptions="actionNone"
                                 android:layout_weight="1"
                                 android:gravity="center"
+                                android:text="@={LoginOtpModule.twoOtp}"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginLeft="10dp"
                                 android:id="@+id/editTextTwo"
@@ -192,6 +193,7 @@
                                 android:background="@drawable/otp_background"
                                 android:gravity="center"
                                 android:layout_weight="1"
+                                android:text="@={LoginOtpModule.threeOtp}"
                                 android:imeOptions="actionNone"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
@@ -204,6 +206,7 @@
                                 android:layout_height="42dp"
                                 android:maxLength="1"
                                 android:gravity="center"
+                                android:text="@={LoginOtpModule.fourOtp}"
                                 android:imeOptions="actionNone"
                                 android:layout_weight="1"
                                 android:background="@drawable/otp_background"
@@ -220,9 +223,7 @@
                                 android:id="@+id/verify_otp"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/field_height"
-                                android:layout_marginTop="20dp"
-                                android:layout_marginLeft="20dp"
-                                android:layout_marginRight="20dp"
+                                android:layout_marginTop="30dp"
                                 android:onClick="@{(v) ->LoginOtpModule.onClick(v)}"
                                 android:background="@drawable/submit_button_bg"
                                 android:fontFamily="@font/montserrat_bold"
@@ -258,6 +259,7 @@
                         android:layout_marginTop="15dp"
                         android:fontFamily="@font/montserrat_regular"
                         android:gravity="center"
+                        android:onClick="@{(v) ->LoginOtpModule.onClick(v)}"
                         android:text="@string/resend_otp"
                         android:textColor="@color/register_color"
                         android:textSize="@dimen/text_regular_size" />

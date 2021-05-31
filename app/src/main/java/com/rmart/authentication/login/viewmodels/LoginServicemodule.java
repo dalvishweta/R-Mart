@@ -22,45 +22,56 @@ public class LoginServicemodule extends ViewModel {
     public MutableLiveData<Boolean> isVisibleLogin = new MutableLiveData<>();
     public MutableLiveData<Boolean> isVisibleOTP = new MutableLiveData<>();
     public MutableLiveData<String> device_id = new MutableLiveData<>();
+    public MutableLiveData<String> oneOtp = new MutableLiveData<>();
+    public MutableLiveData<String> twoOtp = new MutableLiveData<>();
+    public MutableLiveData<String> threeOtp = new MutableLiveData<>();
+    public MutableLiveData<String> fourOtp = new MutableLiveData<>();
 
     public void onClick(final View view) {
-        if (validate() && !isLoading.getValue()) {
-            isLoading.setValue(true);
 
-            LoginRepository.getLoginInfo(mobile_numberr.getValue(), BuildConfig.ROLE_ID).observeForever(new Observer<LoginResponse>() {
-                @Override
-                public void onChanged(LoginResponse loginResponse) {
-                    if (loginResponse.getCode() == 200) {
-                        isVisibleOTP.setValue(true);
-                        isVisibleLogin.setValue(false);
-                        LoginPOJOMutableLiveData.postValue(loginResponse);
-                    }
-                    else {
-                        isLoading.setValue(false);
-                        isVisibleOTP.setValue(false);
-                        isVisibleLogin.setValue(true);
-                        LoginPOJOMutableLiveData.postValue(loginResponse);
-                    }
-
-                }
-            });
-        } else {
-            isLoading.setValue(false);
-        }
         switch(view.getId()) {
             case R.id.login:
+                if (validate() && !isLoading.getValue()) {
+                    isLoading.setValue(true);
 
+                    LoginRepository.getLoginInfo(mobile_numberr.getValue(), BuildConfig.ROLE_ID).observeForever(new Observer<LoginResponse>() {
+                        @Override
+                        public void onChanged(LoginResponse loginResponse) {
+                            if (loginResponse.getCode() == 200) {
+                                isLoading.setValue(false);
+                                isVisibleOTP.setValue(true);
+                                isVisibleLogin.setValue(false);
+                                LoginPOJOMutableLiveData.postValue(loginResponse);
+                            }
+                            else {
+                                isLoading.setValue(false);
+                                isVisibleOTP.setValue(false);
+                                isVisibleLogin.setValue(true);
+                                LoginPOJOMutableLiveData.postValue(loginResponse);
+                            }
+                        }
+                    });
+                } else {
+                    isLoading.setValue(false);
+                }
                 break;
             case R.id.verify_otp:
                 if (validate() && !isLoading.getValue()) {
                     isLoading.setValue(true);
                     Log.d("mobile_number",mobile_numberr.getValue());
                     System.out.println(device_id.getValue());
-                    LoginRepository.VerifyOTP(mobile_numberr.getValue(),BuildConfig.ROLE_ID,String.valueOf(LoginPOJOMutableLiveData.getValue().getOtp()),device_id.getValue()).observeForever(new Observer<com.rmart.utilits.pojos.LoginResponse>() {
+                    String otp = oneOtp.getValue()+twoOtp.getValue()+threeOtp.getValue()+fourOtp.getValue();
+                    LoginRepository.VerifyOTP(mobile_numberr.getValue(),BuildConfig.ROLE_ID,otp,device_id.getValue()).observeForever(new Observer<com.rmart.utilits.pojos.LoginResponse>() {
                         @Override
                         public void onChanged(com.rmart.utilits.pojos.LoginResponse loginResponse) {
                             if (loginResponse.getStatus().equalsIgnoreCase("success")) {
                                 VerifyOTPPOJOMutableLiveData.postValue(loginResponse);
+                            }
+                            if (loginResponse.getMsg().equalsIgnoreCase("Wrong OTP")){
+                                oneOtp.setValue(null);
+                                twoOtp.setValue(null);
+                                threeOtp.setValue(null);
+                                fourOtp.setValue(null);
                             }
                             isLoading.setValue(false);
                             VerifyOTPPOJOMutableLiveData.postValue(loginResponse);
@@ -70,14 +81,41 @@ public class LoginServicemodule extends ViewModel {
                     isLoading.setValue(false);
                 }
                 break;
+            case R.id.forgot_password:
+            {
+                if (validate() && !isLoading.getValue()) {
+                    isLoading.setValue(true);
+
+                    LoginRepository.getLoginInfo(mobile_numberr.getValue(), BuildConfig.ROLE_ID).observeForever(new Observer<LoginResponse>() {
+                        @Override
+                        public void onChanged(LoginResponse loginResponse) {
+                            if (loginResponse.getCode() == 200) {
+                                isLoading.setValue(false);
+                                isVisibleOTP.setValue(true);
+                                isVisibleLogin.setValue(false);
+                                LoginPOJOMutableLiveData.postValue(loginResponse);
+                            }
+                            else {
+                                isLoading.setValue(false);
+                                isVisibleOTP.setValue(false);
+                                isVisibleLogin.setValue(true);
+                                LoginPOJOMutableLiveData.postValue(loginResponse);
+                            }
+
+                        }
+                    });
+                } else {
+                    isLoading.setValue(false);
+                }
+            }
+            break;
+
         }
     }
 
-
-
     public boolean validate() {
         boolean result = true;
-        if (mobile_numberr.getValue() == null || mobile_numberr.getValue().isEmpty() || mobile_numberr.getValue().length() > 10) {
+        if (mobile_numberr.getValue() == null || mobile_numberr.getValue().isEmpty() || mobile_numberr.getValue().length() < 10) {
             errorMobileNumber.setValue("Please enter valid Mobile Number.");
             result = false;
         }
