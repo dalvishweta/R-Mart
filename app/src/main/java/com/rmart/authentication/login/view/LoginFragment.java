@@ -3,6 +3,7 @@ package com.rmart.authentication.login.view;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,8 +66,10 @@ public class LoginFragment extends LoginBaseFragment {
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(requireActivity(), instanceIdResult -> {
             deviceToken = instanceIdResult.getToken();
             LoggerInfo.printLog("FCM Token", deviceToken);
+            Log.d("DEVICE_TOKEN",deviceToken);
+            mViewModel.device_id.setValue(deviceToken);
+            System.out.println(mViewModel.device_id.getValue());
         });
-        mViewModel.device_id.setValue(deviceToken);
         binding.setLoginOtpModule(mViewModel);
         binding.setLifecycleOwner(this);
         mViewModel.VerifyOTPPOJOMutableLiveData.observeForever(new Observer<LoginResponse>() {

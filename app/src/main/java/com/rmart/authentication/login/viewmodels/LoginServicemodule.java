@@ -1,5 +1,6 @@
 package com.rmart.authentication.login.viewmodels;
 
+import android.util.Log;
 import android.view.View;
 
 import androidx.lifecycle.MutableLiveData;
@@ -33,12 +34,14 @@ public class LoginServicemodule extends ViewModel {
                         isVisibleOTP.setValue(true);
                         isVisibleLogin.setValue(false);
                         LoginPOJOMutableLiveData.postValue(loginResponse);
-                    }else {
+                    }
+                    else {
                         isLoading.setValue(false);
                         isVisibleOTP.setValue(false);
                         isVisibleLogin.setValue(true);
                         LoginPOJOMutableLiveData.postValue(loginResponse);
                     }
+
                 }
             });
         } else {
@@ -51,7 +54,9 @@ public class LoginServicemodule extends ViewModel {
             case R.id.verify_otp:
                 if (validate() && !isLoading.getValue()) {
                     isLoading.setValue(true);
-                    LoginRepository.VerifyOTP(mobile_numberr.getValue(),String.valueOf(LoginPOJOMutableLiveData.getValue().getOtp()),device_id.getValue()).observeForever(new Observer<com.rmart.utilits.pojos.LoginResponse>() {
+                    Log.d("mobile_number",mobile_numberr.getValue());
+                    System.out.println(device_id.getValue());
+                    LoginRepository.VerifyOTP(mobile_numberr.getValue(),BuildConfig.ROLE_ID,String.valueOf(LoginPOJOMutableLiveData.getValue().getOtp()),device_id.getValue()).observeForever(new Observer<com.rmart.utilits.pojos.LoginResponse>() {
                         @Override
                         public void onChanged(com.rmart.utilits.pojos.LoginResponse loginResponse) {
                             if (loginResponse.getStatus().equalsIgnoreCase("success")) {

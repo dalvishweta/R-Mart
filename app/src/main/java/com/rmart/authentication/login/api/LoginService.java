@@ -15,8 +15,7 @@ public interface LoginService {
 
     @POST(BuildConfig.VERIFY_OTP)
     @FormUrlEncoded
-    Call<com.rmart.utilits.pojos.LoginResponse> VerifyOTP(@Field("device_id") String deviceKey,
-                                                      @Field("username") String username,
-                                                      @Field("role_id") String role_id);
+    Call<com.rmart.utilits.pojos.LoginResponse> VerifyOTP(@Field("username") String username,
+                                                      @Field("role_id") String role_id,@Field("otp") String otp,@Field("device_id") String deviceKey);
 
 }
