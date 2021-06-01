@@ -1,5 +1,6 @@
 package com.rmart.authentication.registration.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +11,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.rmart.R;
-import com.rmart.authentication.login.view.LoginFragment;
 import com.rmart.authentication.registration.model.RegisterResponse;
 import com.rmart.authentication.registration.viewmodel.RegisterServicemodule;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.databinding.FragmentRegisterBinding;
+import com.rmart.profile.views.MyProfileActivity;
 
 
 public class RegisterFragment extends BaseFragment {
@@ -64,9 +65,11 @@ public class RegisterFragment extends BaseFragment {
     }
 
     private void goToLogin() {
-        getActivity().getSupportFragmentManager()
+        Intent intent = new Intent(getContext(), MyProfileActivity.class);
+        getActivity().startActivity(intent);
+       /* getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.base_container, LoginFragment.newInstance("","")).addToBackStack(null)
-                .commit();
+                .commit();*/
     }
 }
