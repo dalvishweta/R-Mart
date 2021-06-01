@@ -29,8 +29,13 @@
         <activity
             android:name=".electricity.PaymentActivity"
             android:theme="@style/AppTheme2" />
-        <activity
+      <activity
             android:name=".customerservice.mobile.activities.MobileRechargeActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2" />
+        <activity
+            android:name=".wallet.view.WalletActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2" />
@@ -53,7 +58,8 @@
         <activity
             android:name=".baseclass.views.SplashScreen"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar">
+            android:theme="@style/AppThemeNoActionBar"
+            tools:ignore="DuplicateActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -122,11 +128,11 @@
             android:label="@string/Electricity_service"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBar" />
-        <activity
+      <!--  <activity
             android:name=".customerservice.mobile.views.MobileRechargeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" />-->
         <activity
             android:name=".customerservice.mobile.views.ServicePaymentActivity"
             android:configChanges="orientation"

@@ -9,7 +9,7 @@ public class CCavenueres implements Serializable {
 
     @SerializedName("ccavenue_data")
     @Expose
-    private CcavenueData ccavenueData;
+    public CcavenueData ccavenueData;
     @SerializedName("order_message")
     @Expose
     private String orderMessage;
@@ -18,7 +18,7 @@ public class CCavenueres implements Serializable {
     private int rokadOrderId;
     @SerializedName("payment_total_amount")
     @Expose
-    private int payment_total_amount = 0;
+    private String payment_total_amount ;
     @SerializedName("ccavenue")
     @Expose
     private int ccavenue ;
@@ -26,11 +26,11 @@ public class CCavenueres implements Serializable {
     @Expose
     private boolean wallet ;
 
-    public int getPayment_total_amount() {
+    public String getPayment_total_amount() {
         return payment_total_amount;
     }
 
-    public void setPayment_total_amount(int payment_total_amount) {
+    public void setPayment_total_amount(String payment_total_amount) {
         this.payment_total_amount = payment_total_amount;
     }
 
@@ -66,13 +66,6 @@ public class CCavenueres implements Serializable {
         this.rokadOrderId = rokadOrderId;
     }
 
-    public int getTotalCartCount() {
-        return payment_total_amount;
-    }
-
-    public void setTotalCartCount(int totalCartCount) {
-        this.payment_total_amount = totalCartCount;
-    }
 
     public int getCcavenue() {
         return ccavenue;
@@ -82,7 +75,7 @@ public class CCavenueres implements Serializable {
         this.ccavenue = ccavenue;
     }
 
-    public class CcavenueData implements Serializable{
+    public static class CcavenueData implements Serializable{
 
         @SerializedName("billing_name")
         @Expose

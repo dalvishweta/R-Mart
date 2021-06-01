@@ -183,12 +183,20 @@ public class PaymentOptionsFragment extends BaseFragment {
                                     showSuccessDialog(productOrderedResponseDetails.getOrderMessage());
                                     UpdateCartCountDetails.updateCartCountDetails.onNext(productOrderedResponseDetails.getTotalCartCount());
                                 } else if (selectedPaymentType == 2) {
-                                    paymentOptionsLayoutField.setVisibility(View.GONE);
-                                    webview.setVisibility(View.VISIBLE);
-                                    rsaKeyResponseDetails = productOrderedResponseDetails.getRsaKeyResponseDetails();
-                                   initWebView();
+
+                                    if(productOrderedResponseDetails.getCcavenue()==1) {
+                                        paymentOptionsLayoutField.setVisibility(View.GONE);
+                                        webview.setVisibility(View.VISIBLE);
+                                        rsaKeyResponseDetails = productOrderedResponseDetails.getRsaKeyResponseDetails();
+                                        initWebView();
+                                    }else{
+                                        showSuccessDialog(productOrderedResponseDetails.getOrderMessage());
+                                        UpdateCartCountDetails.updateCartCountDetails.onNext(productOrderedResponseDetails.getTotalCartCount());
+
+                                    }
                                 }
                             } else {
+
                                 showDialog(body.getMsg());
                             }
                         } else {

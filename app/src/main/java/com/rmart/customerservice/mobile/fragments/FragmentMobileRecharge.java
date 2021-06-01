@@ -54,6 +54,7 @@ public class FragmentMobileRecharge extends Fragment {
         MobileRechargeViewModel mViewModel = new ViewModelProvider(this).get(MobileRechargeViewModel.class);
         binding.setMobileRechargeViewModel(mViewModel);
         binding.setLifecycleOwner(this);
+       // MyProfile.getInstance(getContext()).getUserID();
         mViewModel.getHistory(MyProfile.getInstance(getContext()).getUserID());
         binding.toolbar.setNavigationOnClickListener(view -> getActivity().onBackPressed());
         mViewModel.responseGetHistoryMutableLiveData.observeForever(GetHistoryBaseclass -> {

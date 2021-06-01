@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,6 +53,7 @@ import com.rmart.utilits.RokadMartCache;
 import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
 import com.rmart.wallet.view.WalletActivity;
+import com.rmart.wallet.view.WalletTransactionActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -90,11 +90,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        full_name = getIntent().getStringExtra("full_name");
-        last_name = getIntent().getStringExtra("last_name");
-        email = getIntent().getStringExtra("emailid");
-        mobileNumber = getIntent().getStringExtra("mobileNumber");
-        Log.d("last_name",last_name+" ");
+
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.Open, R.string.Close);
 
@@ -221,9 +217,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         nameField = findViewById(R.id.customer_name);
         mobileField = findViewById(R.id.mobile);
         emailIdField = findViewById(R.id.email_id_field);
-        nameField.setText(full_name);
-        emailIdField.setText(email);
-        mobileField.setText(mobileNumber);
+        nameField.setText(MyProfile.getInstance(getApplicationContext()).getFirstName());
+        emailIdField.setText(MyProfile.getInstance(getApplicationContext()).getEmail());
+        mobileField.setText(MyProfile.getInstance(getApplicationContext()).getMobileNumber());
         TextView tvAppVersionField = findViewById(R.id.tv_version_field);
         try {
             String versionNo = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -274,7 +270,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         });
         walletItemMenu = menu.findItem(R.id.my_wallet);
         walletItemMenu.getActionView().setOnClickListener(view ->{
-                    Intent intent = new Intent(this,WalletActivity.class);
+                    Intent intent = new Intent(this, WalletTransactionActivity.class);
                     startActivity(intent);
                 }
                 );

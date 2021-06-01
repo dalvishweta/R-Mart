@@ -23,7 +23,12 @@ public class CustomerOrderPaymentInfoDetails implements Serializable {
     @SerializedName("total_amount")
     @Expose
     private double totalAmount;
-
+    @SerializedName("payment_total_amount")
+    @Expose
+    private double payment_total_amount;
+    @SerializedName("wallet_amount")
+    @Expose
+    private double wallet_amount;
 
     @SerializedName("coupon_discount_amount")
     @Expose
@@ -89,4 +94,20 @@ public class CustomerOrderPaymentInfoDetails implements Serializable {
     public void setExpectedDateDelivery(Integer expectedDateDelivery) {
         this.expectedDateDelivery = expectedDateDelivery;
     }*/
+
+    public double getPayment_total_amount() {
+        return payment_total_amount;
+    }
+
+    public void setPayment_total_amount(double payment_total_amount) {
+        this.payment_total_amount = payment_total_amount;
+    }
+
+    public double getWallet_amount() {
+        return wallet_amount;
+    }
+
+    public void setWallet_amount(double wallet_amount) {
+        this.wallet_amount = wallet_amount;
+    }
 }

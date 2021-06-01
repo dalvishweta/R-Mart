@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.rmart.R;
 import com.rmart.customerservice.dth.model.DthResponse;
 import com.rmart.customerservice.dth.viewmodels.DTHRechargeMakePaymentViewModel;
-import com.rmart.customerservice.dth.viewmodels.DthServicemodule;
 import com.rmart.customerservice.mobile.fragments.PaymentStatusFragment;
 import com.rmart.customerservice.mobile.models.mobileRecharge.RechargeBaseClass;
 import com.rmart.customerservice.mobile.operators.model.Operator;
@@ -26,7 +25,6 @@ import com.rmart.customerservice.mobile.views.ServicePaymentActivity;
 import com.rmart.databinding.FragmentMakeDthPaymentBinding;
 import com.rmart.profile.model.MyProfile;
 
-import static com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge.POSTPAID;
 import static com.rmart.customerservice.mobile.views.ServicePaymentActivity.RESULT;
 
 /**
@@ -47,6 +45,7 @@ public class MakeDTHPayment extends Fragment {
     private Operator operator;
     private DthResponse dthResponse;
     DTHRechargeMakePaymentViewModel mViewModel;
+
     public MakeDTHPayment() {
         // Required empty public constructor
     }
@@ -55,7 +54,6 @@ public class MakeDTHPayment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-
      * @return A new instance of fragment MakeDTHPayment.
      */
     // TODO: Rename and change types and number of parameters
@@ -85,7 +83,7 @@ public class MakeDTHPayment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         FragmentMakeDthPaymentBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_make_dth_payment, container, false);
-        mViewModel= new ViewModelProvider(this).get(DTHRechargeMakePaymentViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(DTHRechargeMakePaymentViewModel.class);
         mViewModel.isLoading.setValue(false);
         mViewModel.operatorMutableLiveData.setValue(operator);
         mViewModel.cumsumerNumber.setValue(vcNumber);
@@ -94,25 +92,29 @@ public class MakeDTHPayment extends Fragment {
         binding.setLifecycleOwner(this);
         mViewModel.responseRsakeyMutableLiveData.observeForever(rsaKeyResponse -> {
 
-            if(rsaKeyResponse!=null && rsaKeyResponse.getStatus().equals("success")) {
+            if (rsaKeyResponse != null && rsaKeyResponse.getStatus().equals("success")) {
+                if (rsaKeyResponse.getData().getCcavenue() == 1) {
+                    Intent ii = new Intent(getContext(), ServicePaymentActivity.class);
+                    ii.putExtra("rsakeyresonse", rsaKeyResponse.getData());
+                    ii.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivityForResult(ii, 3333);
+                } else {
 
-                Intent ii= new Intent(getContext(), ServicePaymentActivity.class);
-                ii.putExtra("rsakeyresonse",  rsaKeyResponse.getData());
-                ii.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivityForResult(ii,3333);
+                }
             } else {
 
-                Toast.makeText(getContext(),"Some Thing Wrong Please Try After Some Time",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Some Thing Wrong Please Try After Some Time", Toast.LENGTH_LONG).show();
             }
             mViewModel.isLoading.setValue(false);
         });
         binding.toolbar.setNavigationOnClickListener(view -> getActivity().onBackPressed());
         return binding.getRoot();
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(data!=null) {
+        if (data != null) {
             String result = data.getStringExtra(RESULT);
             //Note:-- suggesion dont use directly rokad.in server make call from Rokadmart server using proxy method and keep transaction status update with rokad mart
             if (result != null && requestCode == 3333 && resultCode == ServicePaymentActivity.RESULT_OK) {
@@ -122,16 +124,16 @@ public class MakeDTHPayment extends Fragment {
                 recharge(result);
             }
         } else {
-            Toast.makeText(getContext(),"Payment Gateway transaction Cancel",Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Payment Gateway transaction Cancel", Toast.LENGTH_LONG).show();
         }
 
     }
 
-    private void recharge(String data){
+    private void recharge(String data) {
         ProgressDialog progressdialog = new ProgressDialog(getContext());
         progressdialog.setMessage("Please Wait....");
         progressdialog.show();
-        RechargeRepository.doMobileRecharge(RechargeRepository.SERVICE_TYPE_DTH_RECHARGE,vcNumber,0,operator.type,null,null,RechargeRepository.PLAN_TYPE_SPECIAL_RECHARGE,mViewModel.cumsumerAmount.getValue()+"", MyProfile.getInstance(getContext()).getUserID(),data).observeForever(new Observer<RechargeBaseClass>() {
+        RechargeRepository.doMobileRecharge(RechargeRepository.SERVICE_TYPE_DTH_RECHARGE, vcNumber, 0, operator.type, null, null, RechargeRepository.PLAN_TYPE_SPECIAL_RECHARGE, "10" + "", MyProfile.getInstance(getContext()).getUserID(), data,1,1,false).observeForever(new Observer<RechargeBaseClass>() {
             @Override
             public void onChanged(RechargeBaseClass rechargeBaseClass) {
                 // API is not following Restfull gaidlines  so it may cause Error or Exception In future witch may cause in app crashhh
@@ -141,11 +143,12 @@ public class MakeDTHPayment extends Fragment {
             }
         });
     }
-    private void displayStatus(RechargeBaseClass paymentResponse)
-    {
+
+    private void displayStatus(RechargeBaseClass paymentResponse) {
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_container, PaymentStatusFragment.newInstance( paymentResponse, null, null,String.valueOf(mViewModel.cumsumerAmount.getValue())))
+                .replace(R.id.frame_container, PaymentStatusFragment.newInstance(paymentResponse, null, null, String.valueOf(mViewModel.cumsumerAmount.getValue())))
                 .commit();
     }
 }
+

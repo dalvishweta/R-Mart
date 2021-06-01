@@ -2,15 +2,14 @@ package com.rmart.customer.order.summary.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
@@ -68,7 +67,7 @@ public class OrderSummaryFragment extends BaseFragment {
         MyProfile myProfile = MyProfile.getInstance(getContext());
         orderSumaryViewModel.vendorShoppingCartDetails.setValue(vendorShoppingCartDetails);
         orderSumaryViewModel.DiscountCode.setValue("");
-        orderSumaryViewModel.showOrderSummary(getContext(),vendorShoppingCartDetails.getVendorId(),vendorShoppingCartDetails.getShopId(),myProfile.getPrimaryAddressId(),DELIVERY,"");
+        orderSumaryViewModel.showOrderSummary(getContext(),vendorShoppingCartDetails.getVendorId(),vendorShoppingCartDetails.getShopId(),myProfile.getPrimaryAddressId(),DELIVERY,"","");
         orderSumaryViewModel.orderedSummaryResponseMutableLiveData.observeForever(new Observer<OrderedSummaryResponse>() {
             @Override
             public void onChanged(OrderedSummaryResponse orderedSummaryResponse) {

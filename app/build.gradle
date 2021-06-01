@@ -195,6 +195,8 @@ android {
             versionCode 12
             versionName "3.0.0"
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
+            buildConfigField("String","BASE_URL_LOGIN",'"https://martapi.rokad.in/apiv1/"')
+
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"') //?command=initiateTransaction
            // buildConfigField("String", "PAYMENT_URL", '"https://test.ccavenue.com/transaction/initTrans"')
             buildConfigField("String", "ROLE_ID", '"5"')

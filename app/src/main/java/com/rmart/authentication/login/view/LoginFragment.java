@@ -20,9 +20,6 @@ import com.rmart.authentication.registration.view.RegisterFragment;
 import com.rmart.authentication.views.LoginBaseFragment;
 import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.LoginDetailsModel;
-import com.rmart.customerservice.dth.actvities.DTHRechargeActivity;
-import com.rmart.customerservice.dth.fragments.MakeDTHPayment;
-import com.rmart.customerservice.mobile.fragments.SelectPlanFragment;
 import com.rmart.databinding.FragmentLoginBinding;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
@@ -80,14 +77,16 @@ public class LoginFragment extends LoginBaseFragment {
             @Override
             public void onChanged(com.rmart.utilits.pojos.LoginResponse loginResponse) {
                 Log.d("loginResponse",loginResponse.getMsg());
-                  if (loginResponse.getMsg() !=("Mobile Number not exist")){
-                        showDialog("Wrong OTP");
+                  if (loginResponse.getMsg().equalsIgnoreCase("Mobile Number not exist")){
+                      changefragment(mViewModel.mobile_numberr.getValue());
                     }
-                    else {
-                        changefragment(mViewModel.mobile_numberr.getValue());
-                    }
+                    else if(loginResponse.getMsg().equalsIgnoreCase("Wrong OTP")){
 
-                    checkCredentials(loginResponse);
+
+                    }else {
+
+                      checkCredentials(loginResponse);
+                  }
             }
         });
         return binding.getRoot();
