@@ -12,7 +12,7 @@ import retrofit2.Response;
 
 public class RegisterRepository {
     public static MutableLiveData<RegisterResponse> getRegistration(String first_name,String last_name,String gender,String email_id,String mobile_number,String role_id,String client_id) {
-       RegisterService registerService = RetrofitClientInstance.getRetrofitInstanceForCustomer().create(RegisterService.class);
+       RegisterService registerService = RetrofitClientInstance.getRetrofitInstanceForAddP().create(RegisterService.class);
         final MutableLiveData<RegisterResponse> resultMutableLiveData = new MutableLiveData<>();
         Call<RegisterResponse> call = registerService.getRegistration(first_name,last_name,gender,email_id,mobile_number,role_id,client_id);
         final RegisterResponse result = new RegisterResponse();

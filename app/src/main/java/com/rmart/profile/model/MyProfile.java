@@ -58,9 +58,7 @@ public class MyProfile {
     private MutableLiveData<Integer> cartCount = new MutableLiveData<>(0);
 
     public static MyProfile getInstance(Context context) {
-
-
-            Gson gson = new Gson();
+           Gson gson = new Gson();
 
             SharedPreferences sharedPref = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
             String json =  sharedPref.getString(CUSTOMER,null);

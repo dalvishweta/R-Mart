@@ -12,7 +12,7 @@ import retrofit2.Response;
 
 public class LoginRepository {
     public static MutableLiveData<LoginResponse> getLoginInfo(String mobile_number,String role_id) {
-        LoginService loginService = RetrofitClientInstance.getRetrofitInstanceForCustomer().create(LoginService.class);
+        LoginService loginService = RetrofitClientInstance.getRetrofitInstanceForAddP().create(LoginService.class);
         final MutableLiveData<LoginResponse> resultMutableLiveData = new MutableLiveData<>();
         Call<LoginResponse> call = loginService.getLoginInfo(mobile_number,role_id,"2");
         final LoginResponse result = new LoginResponse();
@@ -46,7 +46,7 @@ public class LoginRepository {
     }
 
     public static MutableLiveData<com.rmart.utilits.pojos.LoginResponse>VerifyOTP(String mobile_number,String role_id,String otp,String device_id) {
-        LoginService loginService = RetrofitClientInstance.getRetrofitInstance().create(LoginService.class);
+        LoginService loginService = RetrofitClientInstance.getRetrofitInstanceForAddP().create(LoginService.class);
         final MutableLiveData<com.rmart.utilits.pojos.LoginResponse> resultMutableLiveData = new MutableLiveData<>();
         Call<com.rmart.utilits.pojos.LoginResponse> call = loginService.VerifyOTP(mobile_number,role_id,otp,device_id);
         final com.rmart.utilits.pojos.LoginResponse result = new com.rmart.utilits.pojos.LoginResponse();

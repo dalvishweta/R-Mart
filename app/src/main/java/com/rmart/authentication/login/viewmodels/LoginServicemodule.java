@@ -1,7 +1,10 @@
 package com.rmart.authentication.login.viewmodels;
 
+import android.text.Editable;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -110,6 +113,7 @@ public class LoginServicemodule extends ViewModel {
             }
             break;
 
+
         }
     }
 
@@ -125,4 +129,16 @@ public class LoginServicemodule extends ViewModel {
     public void onCumsumerNumberTextChanged(CharSequence s, int start, int before, int count) {
         errorMobileNumber.setValue(null);
     }
+
+    View.OnKeyListener key=new View.OnKeyListener() {
+
+        @Override
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if(!((EditText) v).toString().isEmpty())
+                v.focusSearch(View.FOCUS_RIGHT).requestFocus();
+
+            return false;
+        }
+    };
+
 }

@@ -14,6 +14,7 @@ import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -229,6 +230,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             public void onSelected(SearchProducts productData) {
                 ;
                     ProductData productData1 = new ProductData();
+                    Log.d("PRODUCTDATA",productData.getProductName());
                     productData1.setProductId(productData.getProductId());
                     productData1.setProductImage(productData.getDisplayImage());
                     productData1.setParentCategoryId(productData.getProductCatId());

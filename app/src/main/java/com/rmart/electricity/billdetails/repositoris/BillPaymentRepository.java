@@ -20,7 +20,7 @@ public class BillPaymentRepository {
 
         ElecticityService electricityRechargeService = RetrofitClientInstance.getRetrofitInstance().create(ElecticityService.class);
         final MutableLiveData<BillDataBaseClass> resultMutableLiveData = new MutableLiveData<>();
-        Call<BillDataBaseClass> call = electricityRechargeService.electicitybillPayment(user_id,  operator, ConsumerID,bill_unit,mobile_number,amount,ConsumerName,Orderid,ccavenuedata);
+        /*Call<BillDataBaseClass> call = electricityRechargeService.electicitybillPayment(user_id,  operator, ConsumerID,bill_unit,mobile_number,amount,ConsumerName,Orderid,ccavenuedata);
         call.enqueue(new Callback<BillDataBaseClass>() {
             @Override
             public void onResponse(Call<BillDataBaseClass> call, Response<BillDataBaseClass> response) {
@@ -51,7 +51,7 @@ public class BillPaymentRepository {
                 }
                 resultMutableLiveData.setValue(result);
             }
-        });
+        });*/
         return resultMutableLiveData;
     }
 

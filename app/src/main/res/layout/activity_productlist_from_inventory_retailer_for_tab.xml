@@ -74,50 +74,70 @@
 
     </LinearLayout>
     <RelativeLayout
-        android:id="@+id/search_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/grey_rounded_borders_bg"
-        android:minHeight="40dp">
-
-
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edt_product_search_field"
-            style="@style/text_style_medium_normal"
+        android:id="@+id/search">
+      <RelativeLayout
+            android:id="@+id/search_layout"
             android:layout_width="match_parent"
-            android:layout_toLeftOf="@+id/iv_search_field"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:background="@android:color/transparent"
-            android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"
-            android:hint="Search for product"
-            android:inputType="textCapSentences"
-            android:lines="1"
-            android:textColor="@color/black"
-            android:textColorHint="@color/gray"
-            android:textSize="16sp"
-            android:layout_marginLeft="10dp"
-             />
-        <ImageView
-            android:id="@+id/iv_search_field"
+            android:layout_marginStart="5dp"
+            android:layout_toLeftOf="@id/filter_field"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/grey_rounded_borders_bg"
+            android:minHeight="40dp">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_product_search_field"
+                style="@style/text_style_medium_normal"
+                android:layout_width="match_parent"
+                android:layout_toLeftOf="@+id/iv_search_field"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@android:color/transparent"
+                android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"
+                android:hint="Search for product"
+                android:inputType="textCapSentences"
+                android:lines="1"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp"
+                android:layout_marginLeft="10dp"
+                />
+            <ImageView
+                android:id="@+id/iv_search_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/search" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/filter_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Filter"
+            android:layout_centerInParent="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_alignParentEnd="true"
+            android:drawableRight="@drawable/filter"
+            android:background="@drawable/product_bacgground"
             android:layout_marginRight="10dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/search" />
+            android:drawablePadding="10dp"
+            android:padding="10dp"
+            android:textColor="@color/black" />
     </RelativeLayout>
+
+
     <LinearLayout
         android:id="@+id/filter_text"
-        android:layout_below="@+id/search_layout"
+        android:layout_below="@+id/search"
         android:layout_width="match_parent"
         android:background="@color/white"
         android:layout_height="wrap_content"

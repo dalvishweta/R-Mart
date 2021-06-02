@@ -5,13 +5,13 @@
     <data>
         <import type="android.view.View"/>
         <import type="com.rmart.utilits.Curruncy"/>
-        <variable
+      <!--  <variable
             name="OrderSumaryViewModel"
             type="com.rmart.customer.order.summary.viewmodel.OrderSumaryViewModel" />
         <variable
             name="productAdapter"
             type="com.rmart.customer.order.summary.adapters.ProductsAdapter" />
-
+-->
 
     </data>
 
@@ -22,7 +22,6 @@
     >
     <androidx.core.widget.NestedScrollView
         android:id="@+id/sumary_layout"
-        android:visibility="@{(OrderSumaryViewModel.iserror||OrderSumaryViewModel.isLoading)?View.GONE:View.VISIBLE}"
         android:layout_above="@+id/bottomlayout"
         android:layout_width="match_parent"
         android:background="@color/item_order_list_bg"
@@ -50,7 +49,6 @@
         <TextView
             android:id="@+id/shopname"
             android:layout_width="match_parent"
-            android:text="@{OrderSumaryViewModel.vendorShoppingCartDetails.shopName}"
             android:layout_below="@+id/shoptitle"
             android:textSize="16dp"
             android:textColor="@color/black"
@@ -59,7 +57,6 @@
         <TextView
             android:id="@+id/mobile_number"
             android:layout_width="match_parent"
-            android:text="@{OrderSumaryViewModel.vendorShoppingCartDetails.shopMobileNo}"
             android:layout_below="@+id/shopname"
             android:textSize="16dp"
             android:textColor="@color/black"
@@ -69,7 +66,6 @@
             android:layout_below="@+id/mobile_number"
             android:layout_width="match_parent"
             android:hint="plot no 87, Lxmi Colony, near jay bhavani nagar,cidco, N-2, Aurangabad,9975294782"
-            android:text="@{OrderSumaryViewModel.vendorShoppingCartDetails.shopAddress}"
             android:textSize="14dp"
             android:lines="2"
             android:layout_marginRight="20dp"
@@ -103,10 +99,7 @@
             android:layout_below="@+id/header"
             android:layout_width="100dp"
             android:gravity="center"
-            android:background='@{(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.deliveryMethod.equalsIgnoreCase("Delivery")) ? @drawable/rounded_corners_edit_text_bg:@drawable/selected_backgound}'
             android:orientation="vertical"
-            android:onClick="@{(v) -> OrderSumaryViewModel.onClick(v)}"
-
             android:layout_height="wrap_content">
             <ImageView
                 android:layout_marginTop="3dp"
@@ -128,13 +121,10 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <LinearLayout
-            android:background='@{(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.deliveryMethod.equalsIgnoreCase("Pickup")) ? @drawable/rounded_corners_edit_text_bg:@drawable/selected_backgound}'
             android:layout_below="@+id/header"
             android:layout_width="100dp"
             android:gravity="center"
             android:id="@+id/home_delivery"
-            android:onClick="@{(v) -> OrderSumaryViewModel.onClick(v)}"
-
             android:layout_marginLeft="10dp"
             android:orientation="vertical"
             android:layout_height="wrap_content">
@@ -166,7 +156,6 @@
         android:layout_width="match_parent"
         android:layout_margin="5dp"
         android:padding="10dp"
-        android:visibility='@{(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.deliveryMethod.equalsIgnoreCase("Pickup"))?View.GONE:View.VISIBLE}'
         android:background="@drawable/rounded_corners_edit_text_bg"
         android:layout_height="wrap_content">
         <TextView
@@ -182,7 +171,6 @@
             android:layout_below="@+id/title"
             android:layout_width="match_parent"
             android:hint="plot no 87, Lxmi Colony,\n near jay bhavani nagar,\n cidco, N-2, Aurangabad,\n 9975294782"
-            android:text='@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPersonalDetails.address+"\n"+OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPersonalDetails.mobileNumber}'
             android:textSize="14dp"
             android:lines="4"
             android:layout_marginRight="20dp"
@@ -208,7 +196,6 @@
 
     </RelativeLayout>
     <RelativeLayout
-        android:visibility='@{(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.deliveryMethod.equalsIgnoreCase("Pickup"))?View.GONE:View.VISIBLE}'
         android:layout_width="match_parent"
         android:layout_margin="5dp"
         android:padding="10dp"
@@ -253,19 +240,15 @@
             android:layout_width="wrap_content"
             android:hint="Apply a Promo Code"
             android:textSize="18dp"
-            android:text="@={OrderSumaryViewModel.DiscountCode}"
             android:gravity="center_vertical"
             android:textColor="@color/black"
             tools:visibility="gone"
-            android:visibility="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.couponCodeStatus?View.GONE:View.VISIBLE}"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:layout_weight="4"
             android:layout_width="wrap_content"
-            android:text="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.couponMessage}"
             android:textSize="18dp"
-            android:visibility='@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.couponCodeStatus?View.VISIBLE:View.GONE}'
             tools:visibility="gone"
             android:gravity="center_vertical"
             android:textColor="@color/black"
@@ -277,8 +260,6 @@
             android:layout_weight="1"
             android:textSize="18dp"
             android:padding="15dp"
-            android:visibility='@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.couponCodeStatus?View.GONE:View.VISIBLE}'
-            android:onClick="@{(v) -> OrderSumaryViewModel.onClick(v)}"
             android:textStyle="bold"
             android:gravity="center_vertical"
             android:textColor="@color/buy_now_color"
@@ -287,8 +268,6 @@
     </LinearLayout>
         <TextView
             android:layout_width="match_parent"
-            android:text="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.couponMessage}"
-            android:visibility='@{(OrderSumaryViewModel.DiscountCode.trim().length()>1 &amp;&amp; !OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.couponCodeStatus)?View.VISIBLE:View.GONE}'
             android:textSize="12dp"
             android:textColor="@color/red"
             android:layout_weight="1"
@@ -327,7 +306,6 @@
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="match_parent"
-                android:text="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.expectedDateOfDelivery}"
                 android:textSize="14dp"
                 android:layout_weight="1"
                 android:gravity="right"
@@ -356,8 +334,6 @@
                 android:textSize="14dp"
                 android:layout_weight="1"
                 android:gravity="right"
-                android:text='@{Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.orderAmount+"")}'
-
                 android:fontFamily="@font/montserrat_semibold"
                 android:layout_height="wrap_content"/>
 
@@ -381,7 +357,6 @@
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="match_parent"
-                android:text='@{Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.deliveryCharges+"")}'
                 android:textSize="14dp"
                 android:layout_weight="1"
                 android:gravity="right"
@@ -396,8 +371,7 @@
             android:layout_marginTop="5dp"
             android:weightSum="2"
             android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:visibility="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.payment_total_amount==0?View.GONE:View.VISIBLE}">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="match_parent"
@@ -410,7 +384,6 @@
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="match_parent"
-                android:text='@{Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.payment_total_amount+"")}'
                 android:textSize="14dp"
                 android:textStyle="bold"
                 android:layout_weight="1"
@@ -428,9 +401,7 @@
             android:layout_marginTop="5dp"
             android:weightSum="2"
             android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:visibility="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.payment_total_amount==0?View.GONE:View.VISIBLE}"
-            >
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="match_parent"
@@ -443,8 +414,7 @@
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="match_parent"
-                android:text='@{Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.wallet_amount+"")}'
-                android:textSize="14dp"
+                android:textSize="@dimen/_14sdp"
                 android:textStyle="bold"
                 android:layout_weight="1"
                 android:gravity="right"
@@ -473,8 +443,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:hint="2709"
-                android:text='@{Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.siscountAmount+"")}'
-                android:textSize="14dp"
+                android:textSize="@dimen/_14sdp"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:fontFamily="@font/montserrat_semibold"
@@ -502,8 +471,6 @@
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="match_parent"
-                android:text='@{Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.totalAmount+"")}'
-                android:textSize="14dp"
                 android:textStyle="bold"
                 android:layout_weight="1"
                 android:gravity="right"
@@ -541,9 +508,6 @@
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:weightSum="4"
-                android:background="@{OrderSumaryViewModel.selectedPaymentType==1?@drawable/selected_backgound:@drawable/rounded_corners_edit_text_bg}"
-                android:padding="10dp"
-                android:onClick="@{(v) -> OrderSumaryViewModel.onClick(v)}"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content"
@@ -574,9 +538,6 @@
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:weightSum="4"
-                android:onClick="@{(v) -> OrderSumaryViewModel.onClick(v)}"
-                android:background="@{OrderSumaryViewModel.selectedPaymentType==2?@drawable/selected_backgound:@drawable/rounded_corners_edit_text_bg}"
-
                 android:gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:padding="10dp"
@@ -616,7 +577,6 @@
         android:layout_height="wrap_content"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/product_list_field"
-            android:adapter="@{productAdapter}"
             android:layout_width="match_parent"
             android:background="@color/item_order_list_bg"
             android:layout_height="wrap_content"
@@ -629,8 +589,6 @@
     <RelativeLayout
         android:layout_alignParentBottom="true"
         android:id="@+id/bottomlayout"
-
-        android:visibility="@{(OrderSumaryViewModel.iserror||OrderSumaryViewModel.isLoading)?View.GONE:View.VISIBLE}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -651,8 +609,7 @@
             android:layout_width="match_parent"
             android:paddingLeft="10dp"
             android:paddingBottom="10dp"
-            android:text='@{"Total "+Curruncy.getCurruncy(OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.totalAmount+"")}'
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/buy_now_color"
             android:fontFamily="@font/montserrat_semibold"
             android:layout_height="wrap_content"/>
@@ -662,7 +619,6 @@
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_marginRight="20dp"
-            android:onClick="@{(v) -> OrderSumaryViewModel.onClick(v)}"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:layout_height="@dimen/field_height"
@@ -681,9 +637,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/placeorder"
-            android:visibility="@{OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.payment_total_amount==0?View.GONE:View.VISIBLE}"
-
-            android:text='@{"Note:Your Order Amount "+OrderSumaryViewModel.orderedSummaryResponseMutableLiveData.customerOrderedDataResponseModel.customerOrderPaymentInfoDetails.orderAmount+" will be deducted from your Wallet"}'
             />
     </RelativeLayout>
     <LinearLayout
@@ -692,7 +645,6 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         tools:visibility="gone"
-        android:visibility="@{OrderSumaryViewModel.iserror?View.VISIBLE:View.GONE}"
         android:orientation="vertical"
        >
         <ImageView
@@ -742,7 +694,6 @@
     </LinearLayout>
 
     <ProgressBar
-        android:visibility="@{OrderSumaryViewModel.isLoading?View.VISIBLE:View.GONE}"
         android:id="@+id/progressBar1"
         android:layout_width="match_parent"
         android:layout_below="@+id/searchLayout"

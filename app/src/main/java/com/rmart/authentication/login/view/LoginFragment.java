@@ -3,6 +3,8 @@ package com.rmart.authentication.login.view;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +68,65 @@ public class LoginFragment extends LoginBaseFragment {
         mViewModel.isVisibleLogin.setValue(true);
         mViewModel.isVisibleOTP.setValue(false);
 
+        binding.editTextOne.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.d("cdata",charSequence.length()+" ");
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(binding.editTextOne.getText().toString().trim().length() >1) {
+                    binding.editTextOne.clearFocus();
+                    binding.editTextTwo.requestFocus();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        binding.editTextTwo.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 1) {
+                    binding.editTextThree.requestFocus();
+                }
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+
+            }
+        });
+        binding.editTextThree.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 1) {
+                    binding.editTextFour.requestFocus();
+                }
+
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+
+            }
+        });
+
+
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(requireActivity(), instanceIdResult -> {
             deviceToken = instanceIdResult.getToken();
@@ -80,14 +141,16 @@ public class LoginFragment extends LoginBaseFragment {
             @Override
             public void onChanged(com.rmart.utilits.pojos.LoginResponse loginResponse) {
                 Log.d("loginResponse",loginResponse.getMsg());
-                  if (loginResponse.getMsg() !=("Mobile Number not exist")){
-                        showDialog("Wrong OTP");
-                    }
-                    else {
-                        changefragment(mViewModel.mobile_numberr.getValue());
-                    }
+                if (loginResponse.getMsg().equalsIgnoreCase("Mobile Number not exist")){
+                    changefragment(mViewModel.mobile_numberr.getValue());
+                }
+                else if(loginResponse.getMsg().equalsIgnoreCase("Wrong OTP")){
+                     showDialog(loginResponse.getMsg());
+
+                }else {
 
                     checkCredentials(loginResponse);
+                }
             }
         });
         return binding.getRoot();

@@ -19,17 +19,23 @@ import android.view.ViewGroup;
 
 import com.rmart.R;
 import com.rmart.authentication.login.model.LoginResponse;
+import com.rmart.authentication.login.view.LoginFragment;
 import com.rmart.authentication.registration.model.RegisterResponse;
 import com.rmart.authentication.registration.viewmodel.RegisterServicemodule;
 import com.rmart.authentication.views.ChangePassword;
+import com.rmart.authentication.views.LoginBaseFragment;
+import com.rmart.authentication.views.OTPFragment;
+import com.rmart.authentication.views.RegistrationFragment;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.views.CustomerHomeActivity;
+import com.rmart.customerservice.dth.fragments.FragmentDTHServiceNumber;
 import com.rmart.databinding.FragmentRegisterBinding;
+import com.rmart.profile.views.MyProfileActivity;
 
 import static com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge.PREPAID;
 
 
-public class RegisterFragment extends BaseFragment {
+public class RegisterFragment extends LoginBaseFragment {
     private static final String ARG_PARAM1 = "param1";
     private String mobile;
     public RegisterFragment() {
@@ -76,7 +82,14 @@ public class RegisterFragment extends BaseFragment {
     }
 
     private void goToCustomerHomeActivity(String first_name, String last_name, String gender, String mobileNumber,String emailid) {
-        Intent in = new Intent(getContext(), CustomerHomeActivity.class);
+        Intent intent = new Intent(getContext(),MyProfileActivity.class);
+        getActivity().startActivity(intent);
+
+        /*getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.base_container, LoginFragment.newInstance("","")).addToBackStack(null)
+                .commit();*/
+       /* Intent in = new Intent(getContext(), CustomerHomeActivity.class);
         in.putExtra("full_name", first_name);
         in.putExtra("last_name", last_name);
         in.putExtra("gender", gender);
@@ -84,6 +97,6 @@ public class RegisterFragment extends BaseFragment {
         in.putExtra("emailid", emailid);
         //in.putExtra("mobile_number",m)
         startActivity(in);
-        getActivity().finish();
+        getActivity().finish();*/
     }
 }

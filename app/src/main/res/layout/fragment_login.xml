@@ -164,11 +164,14 @@
                                 android:gravity="center"
                                 android:text="@={LoginOtpModule.oneOtp}"
                                 android:imeOptions="actionNone"
+                                android:focusableInTouchMode="true"
+                                android:cursorVisible="false"
                                 android:background="@drawable/otp_background"
                                 android:layout_marginRight="10dp"
                                 android:id="@+id/editTextOne"
                                 android:inputType="number"
-                                android:nextFocusRight="@id/editTextTwo" />
+                                android:nextFocusDown="@id/editTextTwo"
+                                 />
 
 
                             <EditText
@@ -178,13 +181,14 @@
                                 android:imeOptions="actionNone"
                                 android:layout_weight="1"
                                 android:gravity="center"
+                                android:focusableInTouchMode="true"
                                 android:text="@={LoginOtpModule.twoOtp}"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginLeft="10dp"
                                 android:id="@+id/editTextTwo"
+                                android:cursorVisible="false"
                                 android:background="@drawable/otp_background"
-                                android:inputType="number"
-                                android:nextFocusRight="@id/editTextThree" />
+                                android:inputType="number" />
 
                             <EditText
                                 android:layout_width="55dp"
@@ -193,10 +197,12 @@
                                 android:background="@drawable/otp_background"
                                 android:gravity="center"
                                 android:layout_weight="1"
+                                android:focusableInTouchMode="true"
                                 android:text="@={LoginOtpModule.threeOtp}"
                                 android:imeOptions="actionNone"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginRight="10dp"
+                                android:cursorVisible="false"
                                 android:nextFocusRight="@id/editTextFour"
                                 android:inputType="number"
                                 android:id="@+id/editTextThree" />
@@ -206,9 +212,11 @@
                                 android:layout_height="42dp"
                                 android:maxLength="1"
                                 android:gravity="center"
+                                android:focusableInTouchMode="true"
                                 android:text="@={LoginOtpModule.fourOtp}"
                                 android:imeOptions="actionNone"
                                 android:layout_weight="1"
+                                android:cursorVisible="false"
                                 android:background="@drawable/otp_background"
                                 android:layout_marginLeft="10dp"
                                 android:inputType="number"

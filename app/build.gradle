@@ -128,6 +128,11 @@ android {
         //registration
         buildConfigField("String", "registration_rokad", '"rest_server/login_api/registration"')
 
+        //inventory
+        buildConfigField("String","INVENTORY_FILTER_BRAND",'"My_inventory_filter/filter_brand"')
+        buildConfigField("String","INVENTORY_FILTER_CATEGORY",'"My_inventory_filter/filter_category"')
+        buildConfigField("String","INVENTORY_FILTER_CLEAR",'"My_inventory_filter/my_inventory_clear_filter"')
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
@@ -195,6 +200,7 @@ android {
             versionCode 12
             versionName "3.0.0"
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
+            buildConfigField("String","BASE_URL_LOGIN",'"https://martapi.rokad.in/apiv1/"')
             buildConfigField("String", "PAYMENT_URL", '"https://secure.ccavenue.com/transaction/transaction/initTrans"') //?command=initiateTransaction
            // buildConfigField("String", "PAYMENT_URL", '"https://test.ccavenue.com/transaction/initTrans"')
             buildConfigField("String", "ROLE_ID", '"5"')

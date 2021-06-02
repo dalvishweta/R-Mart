@@ -1,7 +1,9 @@
 package com.rmart.baseclass.views;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -81,6 +83,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
     String full_name,last_name,email,mobileNumber;
     private int cartCount = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,11 +93,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        full_name = getIntent().getStringExtra("full_name");
-        last_name = getIntent().getStringExtra("last_name");
-        email = getIntent().getStringExtra("emailid");
-        mobileNumber = getIntent().getStringExtra("mobileNumber");
-        Log.d("last_name",last_name+" ");
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.Open, R.string.Close);
 
@@ -221,9 +219,10 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         nameField = findViewById(R.id.customer_name);
         mobileField = findViewById(R.id.mobile);
         emailIdField = findViewById(R.id.email_id_field);
-        nameField.setText(full_name);
-        emailIdField.setText(email);
-        mobileField.setText(mobileNumber);
+        nameField.setText(MyProfile.getInstance(getApplicationContext()).getFirstName());
+        mobileField.setText(MyProfile.getInstance(getApplicationContext()).getMobileNumber());
+        emailIdField.setText(MyProfile.getInstance(getApplicationContext()).getEmail());
+
         TextView tvAppVersionField = findViewById(R.id.tv_version_field);
         try {
             String versionNo = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;

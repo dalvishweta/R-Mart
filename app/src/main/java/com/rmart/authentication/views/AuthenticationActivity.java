@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
@@ -20,7 +21,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.Task;
 import com.rmart.R;
 import com.rmart.authentication.OnAuthenticationClickedListener;
-import com.rmart.authentication.login.view.LoginFragment;
 import com.rmart.baseclass.views.BaseActivity;
 import com.rmart.customer.models.RSAKeyResponseDetails;
 import com.rmart.customer.views.CustomerHomeActivity;
@@ -49,6 +49,7 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             orderID = extras.getString(ORDER_ID);
+            Log.d("ORDERID",orderID);
         }
         if (getIntent().getBooleanExtra(getString(R.string.change_password), false)) {
             addFragment(ChangePassword.newInstance("", MyProfile.getInstance(getApplicationContext()).getMobileNumber()), "changePassword", false);

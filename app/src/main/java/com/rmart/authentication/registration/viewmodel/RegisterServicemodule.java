@@ -33,7 +33,7 @@ public class RegisterServicemodule extends ViewModel {
     public void OnClick(final View view) {
         if (validate() && !isLoading.getValue()) {
             isLoading.setValue(true);
-            RegisterRepository.getRegistration(first_name.getValue(), last_name.getValue(), gender.getValue(), emailid.getValue(), mobileNumber.getValue(), BuildConfig.ROLE_ID, BuildConfig.CLIENT_ID).observeForever(new Observer<RegisterResponse>() {
+            RegisterRepository.getRegistration(first_name.getValue(), last_name.getValue(), gender.getValue(), emailid.getValue(), mobileNumber.getValue(), BuildConfig.ROLE_ID, "2").observeForever(new Observer<RegisterResponse>() {
                 @Override
                 public void onChanged(RegisterResponse registerResponse) {
                     if (registerResponse.getCode() == 500) {
