@@ -1,5 +1,7 @@
 package com.rmart.wallet.viewmodel;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -13,9 +15,9 @@ public class WalletViewModel extends ViewModel {
 
 
 
-    public void walletTransaction(){
+    public void walletTransaction(Context context){
         isLoading.setValue(true);
-        WalletRepository.getWalletInfo().observeForever(Result -> {
+        WalletRepository.getWalletInfo(context).observeForever(Result -> {
             walletResponseMutableLiveData.setValue(Result);
             isLoading.postValue(false);
         });

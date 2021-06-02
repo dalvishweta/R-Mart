@@ -27,8 +27,8 @@ public class LoginRepository {
                     resultMutableLiveData.setValue(data);
 
                 } else {
-                  //  String a= response.message();
-                  //  result.setMsg(a);
+                   String a= response.message();
+                    result.setMsg(a);
                     result.setCode(response.code());
                     resultMutableLiveData.setValue(result);
                 }

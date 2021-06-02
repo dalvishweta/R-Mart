@@ -45,7 +45,7 @@ public class FragmentWallet extends BaseFragment {
         walletViewModel = ViewModelProviders.of(this).get(WalletViewModel.class);
         binding.setWalletViewModel(walletViewModel);
         binding.setLifecycleOwner(this);
-        walletViewModel.walletTransaction();
+        walletViewModel.walletTransaction(getContext());
         return binding.getRoot();
 
     }
