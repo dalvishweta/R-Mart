@@ -52,7 +52,6 @@ import com.rmart.utilits.Permisions;
 import com.rmart.utilits.RokadMartCache;
 import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
-import com.rmart.wallet.view.WalletActivity;
 import com.rmart.wallet.view.WalletTransactionActivity;
 
 import org.jetbrains.annotations.NotNull;
@@ -373,7 +372,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     break;
                 case R.id.my_wallet:
                     showCartIcon();
-                    intent = new Intent(this, WalletActivity.class);
+                    intent = new Intent(this, WalletTransactionActivity.class);
                     intent.putExtra(getString(R.string.my_wallet), true);
                     startActivity(intent);
                     break;

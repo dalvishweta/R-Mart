@@ -1,7 +1,10 @@
 package com.rmart.wallet.viewmodel.repository;
 
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 
+import com.rmart.profile.model.MyProfile;
 import com.rmart.wallet.api.WalletTransction;
 import com.rmart.wallet.model.WalletResponse;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -12,11 +15,11 @@ import retrofit2.Response;
 
 public class WalletRepository {
 
-    public static MutableLiveData<WalletResponse> getWalletInfo() {
+    public static MutableLiveData<WalletResponse> getWalletInfo(Context context) {
 
         WalletTransction walletsevice = RetrofitClientInstance.getRetrofitInstance().create(WalletTransction.class);
         final MutableLiveData<WalletResponse> resultMutableLiveData = new MutableLiveData<>();
-        Call<WalletResponse> call = walletsevice.getWalletInfo("569","394");
+        Call<WalletResponse> call = walletsevice.getWalletInfo(MyProfile.getInstance(context).getUserID(),MyProfile.getInstance(context).getWallet_id());
         final WalletResponse result = new WalletResponse();
 
         call.enqueue(new Callback<WalletResponse>() {

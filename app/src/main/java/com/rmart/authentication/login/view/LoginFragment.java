@@ -3,6 +3,8 @@ package com.rmart.authentication.login.view;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +60,112 @@ public class LoginFragment extends LoginBaseFragment {
 
         FragmentLoginBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false);
 
+
+        StringBuilder sb=new StringBuilder();
+
+        binding.editTextOne.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+                if(sb.length()==0&binding.editTextOne.length()==1)
+                {
+                    sb.append(s);
+                    binding.editTextOne.clearFocus();
+                    binding.editTextTwo.requestFocus();
+                    binding.editTextTwo.setCursorVisible(true);
+
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+                if(sb.length()==1)
+                {
+
+                    sb.deleteCharAt(0);
+
+                }
+
+            }
+
+            public void afterTextChanged(Editable s) {
+                if(sb.length()==0)
+                {
+
+                    binding.editTextOne.requestFocus();
+                }
+
+            }
+        });
+        binding.editTextTwo.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+                if(sb.length()==0&binding.editTextOne.length()==1)
+                {
+                    sb.append(s);
+                    binding.editTextTwo.clearFocus();
+                    binding.editTextThree.requestFocus();
+                    binding.editTextThree.setCursorVisible(true);
+
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+                if(sb.length()==1)
+                {
+
+                    sb.deleteCharAt(0);
+
+                }
+
+            }
+
+            public void afterTextChanged(Editable s) {
+                if(sb.length()==0)
+                {
+
+                    binding.editTextTwo.requestFocus();
+                }
+
+            }
+        });
+        binding.editTextThree.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+                if(sb.length()==0&binding.editTextOne.length()==1)
+                {
+                    sb.append(s);
+                    binding.editTextThree.clearFocus();
+                    binding.editTextFour.requestFocus();
+                    binding.editTextFour.setCursorVisible(true);
+
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+                if(sb.length()==1)
+                {
+
+                    sb.deleteCharAt(0);
+
+                }
+
+            }
+
+            public void afterTextChanged(Editable s) {
+                if(sb.length()==0)
+                {
+
+                    binding.editTextThree.requestFocus();
+                }
+
+            }
+        });
+
         mViewModel = new ViewModelProvider(this).get(LoginServicemodule.class);
         mViewModel.isLoading.setValue(false);
         mViewModel.isVisibleLogin.setValue(true);
@@ -82,7 +190,7 @@ public class LoginFragment extends LoginBaseFragment {
                     }
                     else if(loginResponse.getMsg().equalsIgnoreCase("Wrong OTP")){
 
-
+                      showDialog(loginResponse.getMsg());
                     }else {
 
                       checkCredentials(loginResponse);

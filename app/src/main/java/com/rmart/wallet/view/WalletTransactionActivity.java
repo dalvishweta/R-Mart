@@ -17,8 +17,6 @@ public class WalletTransactionActivity extends AppCompatActivity {
 
         loadFragment(new FragmentWallet());
 
-
-
     }
     private boolean loadFragment(Fragment fragment) {
         //switching fragment
