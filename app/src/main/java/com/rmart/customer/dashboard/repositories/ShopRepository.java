@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 import com.rmart.customer.dashboard.api.Shops;
-import com.rmart.customer.dashboard.model.HomePageData;
 import com.rmart.customer.dashboard.model.HomePageResponse;
 import com.rmart.utilits.RetrofitClientInstance;
 
@@ -20,7 +19,7 @@ public class ShopRepository {
 
     public static MutableLiveData<HomePageResponse> getShopHomePageNEW(){
 
-        Shops shope = RetrofitClientInstance.getRetrofitInstance().create(Shops.class);
+        Shops shope = RetrofitClientInstance.getRetrofitInstanceForAddProduct().create(Shops.class);
         final MutableLiveData<HomePageResponse> resultMutableLiveData = new MutableLiveData<>();
         Call<HomePageResponse> call = shope.getShopHomePageNEW(CLIENT_ID);
         final HomePageResponse result = new HomePageResponse();
@@ -44,7 +43,8 @@ public class ShopRepository {
             @Override
             public void onFailure(Call<HomePageResponse> call, Throwable t) {
                 if(t.getLocalizedMessage().equalsIgnoreCase("Unable to resolve host \"hungryindia.co.in\": No address associated with hostname"))
-                { result.setMsg("Please Check Enternet Connection");
+                {
+                    result.setMsg("Please Check Enternet Connection");
 
                 } else {
                     result.setMsg(t.getLocalizedMessage());

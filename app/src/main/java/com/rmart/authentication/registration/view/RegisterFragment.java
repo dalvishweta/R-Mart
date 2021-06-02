@@ -1,32 +1,21 @@
 package com.rmart.authentication.registration.view;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.rmart.R;
-import com.rmart.authentication.login.model.LoginResponse;
 import com.rmart.authentication.registration.model.RegisterResponse;
 import com.rmart.authentication.registration.viewmodel.RegisterServicemodule;
-import com.rmart.authentication.views.ChangePassword;
 import com.rmart.baseclass.views.BaseFragment;
-import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.databinding.FragmentRegisterBinding;
-
-import static com.rmart.customerservice.mobile.fragments.FragmentMobileRecharge.PREPAID;
+import com.rmart.profile.views.MyProfileActivity;
 
 
 public class RegisterFragment extends BaseFragment {
@@ -67,7 +56,7 @@ public class RegisterFragment extends BaseFragment {
             @Override
             public void onChanged(RegisterResponse registerResponse) {
                 if (registerResponse.getStatus().equals("Success") && registerResponse.getCode() == 200) {
-                    goToCustomerHomeActivity(mViewModel.first_name.getValue(), mViewModel.last_name.getValue(), mViewModel.gender.getValue(),mViewModel.mobileNumber.getValue(), mViewModel.emailid.getValue());
+                    goToLogin();
                 }
             }
         });
@@ -75,15 +64,12 @@ public class RegisterFragment extends BaseFragment {
 
     }
 
-    private void goToCustomerHomeActivity(String first_name, String last_name, String gender, String mobileNumber,String emailid) {
-        Intent in = new Intent(getContext(), CustomerHomeActivity.class);
-        in.putExtra("full_name", first_name);
-        in.putExtra("last_name", last_name);
-        in.putExtra("gender", gender);
-        in.putExtra("mobileNumber",mobileNumber);
-        in.putExtra("emailid", emailid);
-        //in.putExtra("mobile_number",m)
-        startActivity(in);
-        getActivity().finish();
+    private void goToLogin() {
+        Intent intent = new Intent(getContext(), MyProfileActivity.class);
+        getActivity().startActivity(intent);
+       /* getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.base_container, LoginFragment.newInstance("","")).addToBackStack(null)
+                .commit();*/
     }
 }

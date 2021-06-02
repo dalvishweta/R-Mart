@@ -129,7 +129,10 @@ public interface MobileRechargeService {
             @Field("plan_type") int planType,
             @Field("recharge_amount") String rechargeAmount, //TODO: pass 0 for top-up and 1 for any chosen plan
             @Field("user_id") String userId,
-            @Field("ccavenuedata") String ccavenueData);
+            @Field("ccavenuedata") String ccavenueData,
+            @Field("ccavenue") int ccavenue, //TODO: pass 0 for top-up and 1 for any chosen plan
+              @Field("order_id") int order_id,
+            @Field("wallet") boolean wallet);
 
     @POST(BuildConfig.electricity_rsa_key)
     @FormUrlEncoded
