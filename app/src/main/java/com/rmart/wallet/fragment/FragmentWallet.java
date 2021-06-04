@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -18,6 +19,7 @@ import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customerservice.mobile.views.ServicePaymentActivity;
 import com.rmart.databinding.ActivityWalletBinding;
 import com.rmart.profile.model.MyProfile;
+import com.rmart.wallet.billing_history.view.BillingHistoryFragment;
 import com.rmart.wallet.model.CheckWalletTopup;
 import com.rmart.wallet.viewmodel.WalletViewModel;
 import com.rmart.wallet.viewmodel.repository.WalletRepository;
@@ -58,6 +60,13 @@ public class FragmentWallet extends BaseFragment {
         binding.setLifecycleOwner(this);
         binding.toolbar.setOnClickListener(view -> getActivity().onBackPressed());
 
+        binding.billingCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadFragment(new BillingHistoryFragment());
+            }
+        });
+
         walletViewModel.isLoading.setValue(false);
         walletViewModel.walletTransaction(getContext());
         walletViewModel.responseRsakeyMutableLiveData.observeForever(rsaKeyResponse -> {
@@ -76,6 +85,17 @@ public class FragmentWallet extends BaseFragment {
         binding.toolbar.setNavigationOnClickListener(view -> getActivity().onBackPressed());
         return binding.getRoot();
 
+    }
+
+    private boolean loadFragment(Fragment fragment) {
+        if (fragment != null) {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.base_container, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
     }
 
     @Override

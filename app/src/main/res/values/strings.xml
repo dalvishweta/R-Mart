@@ -51,7 +51,8 @@
     <!--<string name="subchange_password">Your identy has been verified!</string>-->
     <string name="forgot_message">Please Enter your register mobile number, to reset your password</string>
     <string name="subchange_password2">Set your new password</string>
-
+    <string name="from_date">From Date</string>
+    <string name="to_date">To Date</string>
     <string name="hint_current_password">Current Password</string>
     <string name="hint_new_password">New Password</string>
     <string name="category"><![CDATA[Grocery & Staples]]></string>
@@ -343,7 +344,6 @@
     <string name="status_update">Order %1$s successfully</string>
     <string name="error_product_description">Please enter valid product description</string>
     <string name="unit_required">Please add at least one unit</string>
-    <string name="date">Date</string>
     <string name="error_unit_value">Please enter valid unit value.</string>
     <string name="error_discount">Discount is required value from 0% to 99%</string>
     <string name="out_of_stock_error">Stock is not available</string>
@@ -487,4 +487,17 @@
     <string name="_1_000">+₹1,000</string>
     <string name="add_money">Add money</string>
     <string name="todo">TODO</string>
+    <string name="get_bill">get bill</string>
+    <string name="_11_02_2021">11-02-2021</string>
+    <string name="all_transaction_details">All Transaction Details</string>
+    <string name="date">Date</string>
+    <string name="serice_type">Serice Type</string>
+    <string name="debit">Debit</string>
+    <string name="credit">Credit</string>
+    <string name="balance">Balance</string>
+    <string name="details">details</string>
+    <string name="_524_25">₹524.25</string>
+    <string name="_2">₹2</string>
+    <string name="_13_mar_2021">13 Mar 2021</string>
+    <string name="ok">OK</string>
 </resources>
