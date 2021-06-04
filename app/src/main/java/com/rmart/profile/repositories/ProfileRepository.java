@@ -1,5 +1,7 @@
 package com.rmart.profile.repositories;
 
+import android.util.Log;
+
 import com.rmart.BuildConfig;
 import com.rmart.customer.shops.products.api.Products;
 import com.rmart.customer.shops.products.model.ProductsResponce;
@@ -22,6 +24,7 @@ public class ProfileRepository {
         Profile profile = RetrofitClientInstance.getRetrofitInstance().create(Profile.class);
         final MutableLiveData<ShopTypeResponce> resultMutableLiveData = new MutableLiveData<>();
         Call<ShopTypeResponce> call = profile.getShopTypes(CLIENT_ID);
+        Log.d("CLIENT_ID",CLIENT_ID);
         final ShopTypeResponce result = new ShopTypeResponce();
 
         call.enqueue(new Callback<ShopTypeResponce>() {

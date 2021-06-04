@@ -1,48 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <import type="android.view.View"/>
-        <variable
-            name="categoryViewModel"
-            type="com.rmart.retiler.inventory.category.viewmodels.CategoryViewModel" />
-    </data>
-
-
-<RelativeLayout
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:background="@color/colorPrimary">
     <RelativeLayout
-        android:layout_below="@+id/toolbar"
-        android:id="@+id/search_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="5dp"
-        android:layout_marginTop="5dp"
-        android:visibility="gone"
-        android:layout_marginBottom="5dp"
+        android:id="@+id/search_layout"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:background="@drawable/grey_rounded_borders_bg"
-        android:minHeight="40dp">
-
+        android:layout_centerHorizontal="true"
+        android:minHeight="@dimen/_40sdp">
         <ImageView
-            android:id="@+id/iv_search_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/search" />
-
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:src="@drawable/search"/>
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edt_product_search_field"
+            android:id="@+id/product_search_field"
             style="@style/text_style_medium_normal"
             android:layout_width="match_parent"
             android:layout_toRightOf="@+id/iv_search_field"
@@ -61,14 +45,12 @@
             />
     </RelativeLayout>
     <LinearLayout
-        android:id="@+id/erorr_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:id="@+id/linearLayout"
         android:orientation="vertical"
-        tools:visibility="gone"
-        android:visibility='@{categoryViewModel.categoryListResponceMutableLiveData.status.equalsIgnoreCase("Failure")?View.VISIBLE:View.GONE}'
-        android:layout_below="@id/search_layout">
+        android:layout_below="@id/search_layout"
+        android:background="@color/white">
         <ImageView
             android:id="@+id/app_logo"
             android:layout_width="170dp"
@@ -87,13 +69,11 @@
             android:layout_width="match_parent"
             android:text="@string/ooops"
             android:layout_height="wrap_content" />
-
         <TextView
             android:id="@+id/errormessage"
             android:gravity="center"
             android:layout_marginTop="10dp"
             android:textSize="@dimen/text_regular_size"
-            android:text="@{categoryViewModel.categoryListResponceMutableLiveData.msg}"
             android:textColor="@color/item_sub_title_color"
             android:fontFamily="@font/montserrat_regular"
             android:layout_width="match_parent"
@@ -112,24 +92,8 @@
             android:textSize="@dimen/text_regular_size"
             android:layout_marginTop="20dp"
             android:text="@string/try_again" />
-
     </LinearLayout>
-    <ProgressBar
-        android:visibility="@{categoryViewModel.isLoading?View.VISIBLE:View.GONE}"
-        android:id="@+id/progressBar1"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/search_layout"
-        android:layout_height="wrap_content" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_brands"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/progressBar1"
-        android:layout_marginTop="7dp"
-        android:background="#DADADA"
-        android:visibility='@{categoryViewModel.categoryListResponceMutableLiveData.status.equalsIgnoreCase("Failure")?View.GONE:View.VISIBLE}'
-        app:spanCount="3"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        tools:visibility="visible" />
+
+
+
 </RelativeLayout>
-</layout>

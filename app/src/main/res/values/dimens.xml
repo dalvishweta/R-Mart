@@ -18,4 +18,8 @@
     <dimen name="text_title">20sp</dimen>
     <dimen name="customer_product_bg">300dp</dimen>
     <dimen name="dp_3">3dp</dimen>
+    <dimen name="_42sdp">42dp</dimen>
+    <dimen name="_48sdp">48dp</dimen>
+    <dimen name="_50sdp">50dp</dimen>
+    <dimen name="_55sdp">55dp</dimen>
 </resources>

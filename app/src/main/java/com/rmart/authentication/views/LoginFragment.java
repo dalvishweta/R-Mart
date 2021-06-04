@@ -76,7 +76,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
+        return inflater.inflate(R.layout.fragment_login_retailer, container, false);
     }
 
     @Override
@@ -112,7 +112,7 @@ public class LoginFragment extends LoginBaseFragment implements View.OnClickList
 
         }
         view.findViewById(R.id.login).setOnClickListener(this);
-       // view.findViewById(R.id.register).setOnClickListener(this);
+
         if (BuildConfig.ROLE_ID.equalsIgnoreCase(Utils.DELIVERY_ID)) {
             view.findViewById(R.id.footer).setVisibility(View.INVISIBLE);
            // view.findViewById(R.id.login_root).setBackgroundResource(R.drawable.authentication_bg_2);

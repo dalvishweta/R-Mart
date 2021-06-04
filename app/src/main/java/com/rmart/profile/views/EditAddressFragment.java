@@ -16,6 +16,7 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -597,18 +598,18 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
             }
         });
-    binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String s) {
-            searchAdress(s);
-            return false;
-        }
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                searchAdress(s);
+                return false;
+            }
 
-        @Override
-        public boolean onQueryTextChange(String s) {
-            return false;
-        }
-    });
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
 
     }
     private void setAdress(LatLng latLng){
@@ -662,14 +663,14 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
         geocoder = new Geocoder(getActivity(), Locale.getDefault());
 
         try {
-                if(mapsFragment!=null) {
-                    addresses = geocoder.getFromLocationName(text, 5);
-                    mapsFragment.setUpdateIcon(new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude()));
-                }
+            if(mapsFragment!=null) {
+                addresses = geocoder.getFromLocationName(text, 5);
+                mapsFragment.setUpdateIcon(new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude()));
             }
-            catch (Exception e ){
-                Toast.makeText(getActivity(),"Address Can't Search",Toast.LENGTH_LONG).show();
-            }
+        }
+        catch (Exception e ){
+            Toast.makeText(getActivity(),"Address Can't Search",Toast.LENGTH_LONG).show();
+        }
 
 
 
@@ -840,6 +841,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                             progressDialog.dismiss();
                             if (response.isSuccessful()) {
                                 BaseResponse body = response.body();
+                                Log.d("AddressINFO",response.message());
                                 if (body != null) {
                                     showDialog(body.getMsg());
                                     updateImageUI(photoImagePath, imageType);
@@ -970,7 +972,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
             String deliveryCharges = Objects.requireNonNull(binding.deliveryCharges.getText()).toString().trim();
             if (TextUtils.isEmpty(deliveryCharges)) {
-               // showDialog(getString(R.string.delivery_charges_required));
+                // showDialog(getString(R.string.delivery_charges_required));
                 editAdreesViewModel.errorgstDeliveryChargesMutableLiveData.setValue(getString(R.string.delivery_charges_required));
 
                 validation =false;
@@ -984,7 +986,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
 
             String openingTime = Objects.requireNonNull(binding.openTime.getText()).toString().trim();
             if (TextUtils.isEmpty(openingTime)) {
-               // showDialog(getString(R.string.opening_time_required));
+                // showDialog(getString(R.string.opening_time_required));
                 editAdreesViewModel.errorgstOpenTimeMutableLiveData.setValue(getString(R.string.opening_time_required));
                 validation =false;
             }
@@ -1098,16 +1100,16 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                             AddressListResponse data = response.body();
                             if (data != null) {
                                 if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
+                                    Log.d("ADDRESS123",data.getMsg());
                                     saveAddress(data);
+
+
                                     showDialog("", data.getMsg());
                                     Intent in = new Intent(getActivity(), CustomerHomeActivity.class);
                                     in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
                                     startActivity(in);
 
-                                    /*showDialog(data.getMsg(), pObject -> {
 
-                                        Objects.requireNonNull(requireActivity()).onBackPressed();
-                                    });*/
 
                                 } else {
                                     myAddress = null;
@@ -1171,9 +1173,9 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                 });
             }
         } else
-            {
-               return;
-            }
+        {
+            return;
+        }
     }
 
     //need to refactore or Recdde

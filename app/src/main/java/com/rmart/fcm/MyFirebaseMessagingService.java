@@ -7,11 +7,7 @@ import android.content.Intent;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.rmart.authentication.views.AuthenticationActivity;
-import com.rmart.authentication.views.LoginFragment;
-import com.rmart.baseclass.views.SplashScreen;
-import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer_order.views.CustomerOrdersActivity;
-import com.rmart.orders.views.OrdersActivity;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.Utils;
 

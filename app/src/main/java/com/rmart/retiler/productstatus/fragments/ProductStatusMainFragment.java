@@ -39,6 +39,7 @@ public class ProductStatusMainFragment extends BaseInventoryFragment {
     ProductFromInventorySearchListAdapter productSearchListAdapter;
     final int CATEGORY_REQUEST=2;
     final int BRAND_REQUEST=3;
+    int page=0;
     ActivityProductlistFromInventoryRetailerForTabBinding binding;
     ProductFromInventoryViewModel productViewModel;
     private ProductPagerAdapter viewPagerAdapter;
@@ -63,6 +64,7 @@ public class ProductStatusMainFragment extends BaseInventoryFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         productViewModel = ViewModelProviders.of(this).get(ProductFromInventoryViewModel.class);
         binding = DataBindingUtil.inflate(inflater, R.layout.activity_productlist_from_inventory_retailer_for_tab, container, false);
+        productViewModel.getProductList( page+"", MyProfile.getInstance(getContext()).getUserID(),getContext());
         binding.setProductViewModel(productViewModel);
         binding.setLifecycleOwner(this);
         viewPagerAdapter = new ProductPagerAdapter(getChildFragmentManager(),0);
@@ -130,6 +132,37 @@ public class ProductStatusMainFragment extends BaseInventoryFragment {
             @Override
             public void onClick(View view) {
 
+            }
+        });
+
+        binding.filterField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(requireActivity(), binding.filterField);
+                popup.getMenu().add(Menu.NONE, 4, 4, Utils.CATEGORY);
+                popup.getMenu().add(Menu.NONE, 3, 3, Utils.BRAND);
+                popup.getMenu().add(Menu.NONE, 5, 5, "Clear Filter");
+                popup.show();
+                popup.setOnMenuItemClickListener(item -> {
+
+                    if(item.getTitle().toString().equalsIgnoreCase(Utils.CATEGORY)){
+                        Intent intent=new Intent(getContext(), CategoryFilterActivity.class);
+                        startActivityForResult(intent, CATEGORY_REQUEST);
+                    }
+                    if(item.getTitle().toString().equalsIgnoreCase(Utils.BRAND)) {
+                        Intent intent=new Intent(getContext(), BrandFilterActivity.class);
+                        startActivityForResult(intent, BRAND_REQUEST);
+
+                    }
+                    if(item.getTitle().toString().equalsIgnoreCase("Clear Filter")){
+                        productViewModel.categoryID.setValue(null);
+                        productViewModel.brandID.setValue(null);
+                        productSearchListAdapter.products.clear();
+                        productSearchListAdapter.notifyDataSetChanged();
+                    }
+
+                    return true;
+                });
             }
         });
 
