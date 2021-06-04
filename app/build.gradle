@@ -101,7 +101,7 @@ android {
         buildConfigField("String", 'CUSTOMER_REORDER_PRODUCTS', '"customer/order/checkOrder"')
         buildConfigField("String", "DELERY_BOY_LIST",'"Deliveryboys"')
         /*Wallet*/
-
+        buildConfigField("String","Billing_History",'"wallet/wallet_history"')
         buildConfigField("String", "Wallet_Toup",'"My_wallet/wallet_top"')
         buildConfigField("String", "Check_Wallet_Toup",'"My_wallet/check_wallet_topup_response"')
 
@@ -127,6 +127,11 @@ android {
 
         buildConfigField("String", "service_id", '"31"')
         buildConfigField("String", "service_name", '"V_RECHARGE"')
+
+        //filter api
+        buildConfigField("String","INVENTORY_FILTER_BRAND",'"My_inventory_filter/filter_brand"')
+        buildConfigField("String","INVENTORY_FILTER_CATEGORY",'"My_inventory_filter/filter_category"')
+        buildConfigField("String","INVENTORY_FILTER_CLEAR",'"My_inventory_filter/my_inventory_clear_filter"')
 
         //registration
         buildConfigField("String", "registration_rokad", '"rest_server/login_api/registration"')
