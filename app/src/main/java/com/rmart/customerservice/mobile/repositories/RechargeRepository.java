@@ -25,11 +25,11 @@ public class RechargeRepository {
 
 
     public static MutableLiveData<RechargeBaseClass> doMobileRecharge(int serviceType, String customerNumber, int rechargeType, String operator,
-                                                                            String location, String mobileNumber, int planType, String rechargeAmount, String userId, String ccavneuData) {
+                                                                      String location, String mobileNumber, int planType, String rechargeAmount, String userId, String ccavneuData, int ccavenue, int order_id,boolean wallet) {
 
         MobileRechargeService mobileRechargeService = RetrofitClientInstance.getRetrofitInstance().create(MobileRechargeService.class);
         final MutableLiveData<RechargeBaseClass> resultMutableLiveData = new MutableLiveData<>();
-        Call<RechargeBaseClass> call = mobileRechargeService.recharge(serviceType,  customerNumber, rechargeType,operator, location,mobileNumber,planType,rechargeAmount,userId,ccavneuData);
+        Call<RechargeBaseClass> call = mobileRechargeService.recharge(serviceType,  customerNumber, rechargeType,operator, location,mobileNumber,planType,rechargeAmount,userId,ccavneuData,ccavenue,order_id,wallet);
         call.enqueue(new Callback<RechargeBaseClass>() {
             @Override
             public void onResponse(Call<RechargeBaseClass> call, Response<RechargeBaseClass> response) {

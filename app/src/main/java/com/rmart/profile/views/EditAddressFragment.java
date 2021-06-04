@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -23,15 +22,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.rmart.BuildConfig;
@@ -40,8 +40,6 @@ import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.databinding.FragmentAddAddressBinding;
 import com.rmart.mapview.MapsFragment;
-import com.rmart.mapview.OnLocationUpdateListner;
-import com.rmart.orders.views.OrdersActivity;
 import com.rmart.profile.adapters.CustomAdapter;
 import com.rmart.profile.model.BusinessType;
 import com.rmart.profile.model.CreditDetails;
@@ -50,6 +48,7 @@ import com.rmart.profile.model.ShopType;
 import com.rmart.profile.model.ShopTypeResponce;
 import com.rmart.profile.repositories.ProfileRepository;
 import com.rmart.profile.viewmodel.EditAdreesViewModel;
+import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.InputFilterIntMinMax;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
@@ -57,10 +56,11 @@ import com.rmart.utilits.Utils;
 import com.rmart.utilits.custom_views.CustomTimePicker;
 import com.rmart.utilits.pojos.AddressListResponse;
 import com.rmart.utilits.pojos.AddressResponse;
-import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.services.ProfileService;
 import com.theartofdev.edmodo.cropper.CropImage;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.SocketTimeoutException;
@@ -68,12 +68,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Field;
 
 import static android.app.Activity.RESULT_OK;
 import static com.rmart.profile.model.MyProfile.PREF_NAME;
@@ -1105,14 +1102,15 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                                 if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                     Log.d("ADDRESS123",data.getMsg());
                                     saveAddress(data);
-                                    /*showDialog(data.getMsg(), pObject -> {
 
-                                        Objects.requireNonNull(requireActivity()).onBackPressed();
-                                    });*/
-                                    Intent in = new Intent(getContext(), CustomerHomeActivity.class);
+
+                                    showDialog("", data.getMsg());
+                                    Intent in = new Intent(getActivity(), CustomerHomeActivity.class);
                                     in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
                                     startActivity(in);
-                                    getActivity().finish();
+
+
+
                                 } else {
                                     myAddress = null;
                                     showDialog("", data.getMsg());

@@ -1,11 +1,12 @@
 package com.rmart.authentication.registration.repository;
 
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.rmart.authentication.registration.api.RegisterService;
 import com.rmart.authentication.registration.model.RegisterResponse;
 import com.rmart.utilits.RetrofitClientInstance;
 
-import androidx.lifecycle.MutableLiveData;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

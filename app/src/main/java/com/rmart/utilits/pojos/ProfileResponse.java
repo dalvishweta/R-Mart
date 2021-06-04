@@ -54,6 +54,25 @@ public class ProfileResponse implements Serializable {
     @SerializedName("wholeselar")
     @Expose
     Boolean wholeselar;
+    @SerializedName("wallet_id")
+    @Expose
+    String wallet_id;
+
+    public void setCredit_option(Boolean credit_option) {
+        this.credit_option = credit_option;
+    }
+
+    public void setWholeselar(Boolean wholeselar) {
+        this.wholeselar = wholeselar;
+    }
+
+    public String getWallet_id() {
+        return wallet_id;
+    }
+
+    public void setWallet_id(String wallet_id) {
+        this.wallet_id = wallet_id;
+    }
 
     public Boolean getWholeselar() {
         return wholeselar;

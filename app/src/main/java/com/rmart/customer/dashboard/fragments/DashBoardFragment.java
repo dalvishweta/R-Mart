@@ -1,7 +1,9 @@
 package com.rmart.customer.dashboard.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,17 @@ import com.rmart.customerservice.dth.actvities.DTHRechargeActivity;
 import com.rmart.customerservice.mobile.activities.MobileRechargeActivity;
 import com.rmart.databinding.FragmentDashBoardBinding;
 import com.rmart.electricity.activities.ElectricityActivity;
+import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.BaseResponse;
+import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.Utils;
+import com.rmart.utilits.services.AuthenticationService;
+
+import java.net.SocketTimeoutException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DashBoardFragment extends BaseFragment {
 
@@ -58,6 +71,8 @@ public class DashBoardFragment extends BaseFragment {
         HomeViewModel mViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         binding.setHomeViewModel(mViewModel);
         binding.setLifecycleOwner(this);
+        checkRegistration();
+
         mViewModel.loadShopHomePage();
         mViewModel.shopHomePageResponceMutableLiveData.observeForever(homePageResponse -> {
             HomeAdapter homeAdapter = new HomeAdapter(getActivity(), new OnClick() {
@@ -109,5 +124,50 @@ public class DashBoardFragment extends BaseFragment {
         fragmentTransaction.replace(R.id.base_container, vendorShopsListFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+    private void checkRegistration() {
+        if (Utils.isNetworkConnected(getContext())) {
+
+            ProgressDialog progressBar = new ProgressDialog(getActivity(), R.style.mySpinnerTheme);
+            progressBar.setCancelable(false);
+            progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+            progressBar.show();
+
+            AuthenticationService getUserDataService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(AuthenticationService.class);
+            Call<BaseResponse> user = getUserDataService.registrationRokad(MyProfile.getInstance(getContext()).getFirstName(),(MyProfile.getInstance(getContext()).getLastName()),(MyProfile.getInstance(getContext()).getMobileNumber()),(MyProfile.getInstance(getContext()).getEmail()), "rokad","rokad",(MyProfile.getInstance(getContext()).getUserID()));//("", "");
+            user.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    Log.d("onResponse", "onResponse: Login Fragment");
+                    progressBar.dismiss();
+                    if (response.body() != null && response.body().getStatus().equalsIgnoreCase("success")) {
+                      //  showDialog("success", response.body().getMsg());
+
+                    } else if (response.body() != null){
+                       /// showDialog("Sorry..", response.body().getMsg());
+                    } else {
+
+                    }
+                    progressBar.dismiss();
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    // Log.d("onFailure", "onFailure: Login Fragment ");
+                    progressBar.dismiss();
+                    if(t instanceof SocketTimeoutException){
+                        showDialog(getString(R.string.time_out_title), getString(R.string.time_out_msg));
+                    } else {
+                        showDialog("Sorry..!!", getString(R.string.server_failed_case));
+//                            Toast.makeText(requireActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                    // showDialog("Sorry..", getString(R.string.internet_failed_login_case));
+                }
+            });
+
+
+        } else {
+            showDialog("Sorry!!", getString(R.string.internet_check));
+        }
     }
 }

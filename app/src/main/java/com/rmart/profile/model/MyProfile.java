@@ -7,8 +7,6 @@ import android.graphics.Bitmap;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
-import com.rmart.R;
-import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.AddressResponse;
 import com.rmart.utilits.pojos.ProfileResponse;
 
@@ -17,13 +15,11 @@ import java.util.ArrayList;
 public class MyProfile {
 
     static MyProfile myProfile = null;
-
     public static final String DELIVERY = "Delivery";
     public static final String RETAILER = "Retailer";
     public static final String CUSTOMER = "Customer";
     public static final String PREF_NAME = "Rokad Client";
     Context context;
-
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     private String userID;
@@ -42,8 +38,7 @@ public class MyProfile {
     private Boolean wholeselar;
     private Boolean credit_option;
     private String primaryAddressId;
-
-
+    private String Wallet_id;
     public Boolean getWholeselar() {
         return wholeselar;
     }
@@ -92,6 +87,7 @@ public class MyProfile {
         myProfile.profileImage = profileResponse.getProfileImage();
         myProfile.roleID = profileResponse.getRoleID();
         myProfile.primaryAddressId = profileResponse.getPrimaryAddressId();
+        myProfile.Wallet_id=profileResponse.getWallet_id();
         ProfileResponse vendor = profileResponse.getVendorData();
         if (null != vendor) {
             myProfile.vendorInfo = vendor;
@@ -116,6 +112,14 @@ public class MyProfile {
 
     public void setVendorMobileNumber(String vendorMobileNumber) {
         this.vendorMobileNumber = vendorMobileNumber;
+    }
+
+    public String getWallet_id() {
+        return Wallet_id;
+    }
+
+    public void setWallet_id(String wallet_id) {
+        Wallet_id = wallet_id;
     }
 
     public String getUserID() {

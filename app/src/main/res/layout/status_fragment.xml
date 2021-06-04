@@ -6,7 +6,7 @@
     <data>
         <import type="android.view.View"/>
         <import type="com.rmart.utilits.Curruncy" />
-        <import type="com.rmart.customerservice.mobile.fragments.PaymentStatusFragment" />
+        <import type="com.rmart.wallet.fragment.StatusFragment" />
         <variable
             name="PaymentStatusViewModel"
             type="com.rmart.customerservice.mobile.viewmodels.PaymentStatusViewModel" />
@@ -47,7 +47,7 @@
         android:layout_margin="5dp"
         android:gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        android:visibility="@{PaymentStatusViewModel.rechargeBaseClassMutableLiveData.data.trackingId!=null?View.VISIBLE:View.GONE}"
+        android:visibility="@{PaymentStatusViewModel.WalletTOpUpClassMutableLiveData.data.trackingId!=null?View.VISIBLE:View.GONE}"
         android:orientation="vertical"
         android:padding="3dp">
 
@@ -72,7 +72,7 @@
             android:paddingLeft="@dimen/dp_3"
             android:textColor="@color/black2"
             android:textSize="14sp"
-            android:text='@{PaymentStatusViewModel.rechargeBaseClassMutableLiveData.data.trackingId}'
+            android:text='@{PaymentStatusViewModel.WalletTOpUpClassMutableLiveData.data.trackingId}'
             tools:ignore="RtlSymmetry"
             android:gravity="center"
             tools:text="9975294782" />
@@ -85,6 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:gravity="center"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/lin_one"
         android:orientation="vertical"
         android:padding="3dp">
@@ -108,7 +109,6 @@
             android:paddingLeft="@dimen/dp_3"
             android:textColor="@color/black2"
             android:textSize="14sp"
-            android:text='@{PaymentStatusViewModel.rechargeBaseClassMutableLiveData.data.transDate}'
             tools:ignore="RtlSymmetry"
             android:gravity="center"
             tools:text="2 May 2021" />
@@ -121,7 +121,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_bold"
         android:gravity="center"
-        android:text='@{Curruncy.getCurruncy(PaymentStatusViewModel.amount)}'
+        android:text='@{Curruncy.getCurruncy(PaymentStatusViewModel.WalletTOpUpClassMutableLiveData.data.amount)}'
         android:textColor="@color/black"
         android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -135,73 +135,12 @@
         android:fontFamily="@font/roboto_bold"
         android:gravity="center"
         tools:text="Recharge Successfully"
-        android:text='@{PaymentStatusViewModel.rechargeBaseClassMutableLiveData.msg}'
+        android:text='@{PaymentStatusViewModel.WalletTOpUpClassMutableLiveData.msg}'
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/amount" />
 
-    <RelativeLayout
-        android:id="@+id/contact"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:visibility="@{PaymentStatusViewModel.nameStringMutableLiveData!=null?View.VISIBLE:View.GONE}"
-        android:layout_margin="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textMessgae">
-
-
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="40dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_margin="4dp"
-            android:src="@mipmap/new_contact"
-            tools:ignore="ContentDescription">
-
-        </ImageView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_toEndOf="@+id/icon"
-
-            android:layout_toRightOf="@+id/icon"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:padding="3dp"
-                android:text="@{PaymentStatusViewModel.nameStringMutableLiveData}"
-                android:textColor="@color/black2"
-                tools:text="9975294782"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_regular"
-                android:paddingStart="@dimen/dp_3"
-                android:paddingLeft="@dimen/dp_3"
-                android:text="@{PaymentStatusViewModel.mobileNumberMutableLiveData}"
-                android:textColor="@color/black2"
-                android:textSize="14sp"
-                tools:ignore="RtlSymmetry"
-                tools:text="9975294782" />
-
-
-        </LinearLayout>
-
-    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

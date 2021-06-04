@@ -34,6 +34,9 @@ public class ProductOrderedResponseModel extends BaseResponse {
         @SerializedName("total_cart_count")
         @Expose
         private int totalCartCount = 0;
+        @SerializedName("ccavenue")
+        @Expose
+        private int ccavenue ;
 
         public RSAKeyResponseDetails getRsaKeyResponseDetails() {
             return rsaKeyResponseDetails;
@@ -58,5 +61,14 @@ public class ProductOrderedResponseModel extends BaseResponse {
         public void setTotalCartCount(int totalCartCount) {
             this.totalCartCount = totalCartCount;
         }
+
+        public int getCcavenue() {
+            return ccavenue;
+        }
+
+        public void setCcavenue(int ccavenue) {
+            this.ccavenue = ccavenue;
+        }
     }
+
 }

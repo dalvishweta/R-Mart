@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,7 +54,7 @@ import com.rmart.utilits.Permisions;
 import com.rmart.utilits.RokadMartCache;
 import com.rmart.utilits.UpdateCartCountDetails;
 import com.rmart.utilits.Utils;
-import com.rmart.wallet.view.WalletActivity;
+import com.rmart.wallet.view.WalletTransactionActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -93,7 +92,6 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.Open, R.string.Close);
 
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
@@ -220,8 +218,9 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         mobileField = findViewById(R.id.mobile);
         emailIdField = findViewById(R.id.email_id_field);
         nameField.setText(MyProfile.getInstance(getApplicationContext()).getFirstName());
-        mobileField.setText(MyProfile.getInstance(getApplicationContext()).getMobileNumber());
+
         emailIdField.setText(MyProfile.getInstance(getApplicationContext()).getEmail());
+        mobileField.setText(MyProfile.getInstance(getApplicationContext()).getMobileNumber());
 
         TextView tvAppVersionField = findViewById(R.id.tv_version_field);
         try {
@@ -273,7 +272,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
         });
         walletItemMenu = menu.findItem(R.id.my_wallet);
         walletItemMenu.getActionView().setOnClickListener(view ->{
-                    Intent intent = new Intent(this,WalletActivity.class);
+                    Intent intent = new Intent(this, WalletTransactionActivity.class);
                     startActivity(intent);
                 }
                 );
@@ -376,7 +375,7 @@ public abstract class BaseNavigationDrawerActivity extends BaseActivity implemen
                     break;
                 case R.id.my_wallet:
                     showCartIcon();
-                    intent = new Intent(this, WalletActivity.class);
+                    intent = new Intent(this, WalletTransactionActivity.class);
                     intent.putExtra(getString(R.string.my_wallet), true);
                     startActivity(intent);
                     break;

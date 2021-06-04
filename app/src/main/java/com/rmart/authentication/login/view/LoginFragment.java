@@ -22,9 +22,6 @@ import com.rmart.authentication.registration.view.RegisterFragment;
 import com.rmart.authentication.views.LoginBaseFragment;
 import com.rmart.baseclass.Constants;
 import com.rmart.baseclass.LoginDetailsModel;
-import com.rmart.customerservice.dth.actvities.DTHRechargeActivity;
-import com.rmart.customerservice.dth.fragments.MakeDTHPayment;
-import com.rmart.customerservice.mobile.fragments.SelectPlanFragment;
 import com.rmart.databinding.FragmentLoginBinding;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.LoggerInfo;
@@ -63,69 +60,116 @@ public class LoginFragment extends LoginBaseFragment {
 
         FragmentLoginBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false);
 
-        mViewModel = new ViewModelProvider(this).get(LoginServicemodule.class);
-        mViewModel.isLoading.setValue(false);
-        mViewModel.isVisibleLogin.setValue(true);
-        mViewModel.isVisibleOTP.setValue(false);
+
+        StringBuilder sb=new StringBuilder();
 
         binding.editTextOne.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Log.d("cdata",charSequence.length()+" ");
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(binding.editTextOne.getText().toString().trim().length() >1) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+                if(sb.length()==0&binding.editTextOne.length()==1)
+                {
+                    sb.append(s);
                     binding.editTextOne.clearFocus();
                     binding.editTextTwo.requestFocus();
+                    binding.editTextTwo.setCursorVisible(true);
+
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        binding.editTextTwo.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                if (s.length() == 1) {
-                    binding.editTextThree.requestFocus();
-                }
-
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
 
+                if(sb.length()==1)
+                {
+
+                    sb.deleteCharAt(0);
+
+                }
+
             }
 
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
+            public void afterTextChanged(Editable s) {
+                if(sb.length()==0)
+                {
+
+                    binding.editTextOne.requestFocus();
+                }
+
+            }
+        });
+        binding.editTextTwo.addTextChangedListener(new TextWatcher() {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+                if(sb.length()==0&binding.editTextOne.length()==1)
+                {
+                    sb.append(s);
+                    binding.editTextTwo.clearFocus();
+                    binding.editTextThree.requestFocus();
+                    binding.editTextThree.setCursorVisible(true);
+
+                }
+            }
+
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+
+                if(sb.length()==1)
+                {
+
+                    sb.deleteCharAt(0);
+
+                }
+
+            }
+
+            public void afterTextChanged(Editable s) {
+                if(sb.length()==0)
+                {
+
+                    binding.editTextTwo.requestFocus();
+                }
 
             }
         });
         binding.editTextThree.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-                if (s.length() == 1) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // TODO Auto-generated method stub
+                if(sb.length()==0&binding.editTextOne.length()==1)
+                {
+                    sb.append(s);
+                    binding.editTextThree.clearFocus();
                     binding.editTextFour.requestFocus();
-                }
+                    binding.editTextFour.setCursorVisible(true);
 
+                }
             }
 
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
 
+                if(sb.length()==1)
+                {
+
+                    sb.deleteCharAt(0);
+
+                }
+
             }
 
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
+            public void afterTextChanged(Editable s) {
+                if(sb.length()==0)
+                {
+
+                    binding.editTextThree.requestFocus();
+                }
 
             }
         });
 
+        mViewModel = new ViewModelProvider(this).get(LoginServicemodule.class);
+        mViewModel.isLoading.setValue(false);
+        mViewModel.isVisibleLogin.setValue(true);
+        mViewModel.isVisibleOTP.setValue(false);
 
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(requireActivity(), instanceIdResult -> {
@@ -140,17 +184,22 @@ public class LoginFragment extends LoginBaseFragment {
         mViewModel.VerifyOTPPOJOMutableLiveData.observeForever(new Observer<LoginResponse>() {
             @Override
             public void onChanged(com.rmart.utilits.pojos.LoginResponse loginResponse) {
-                Log.d("loginResponse",loginResponse.getMsg());
-                if (loginResponse.getMsg().equalsIgnoreCase("Mobile Number not exist")){
-                    changefragment(mViewModel.mobile_numberr.getValue());
-                }
-                else if(loginResponse.getMsg().equalsIgnoreCase("Wrong OTP")){
-                     showDialog(loginResponse.getMsg());
-
-                }else {
-
+                if(loginResponse.getStatus().equalsIgnoreCase("Success")) {
                     checkCredentials(loginResponse);
+                    Log.d("loginResponse", loginResponse.getMsg());
+
                 }
+                else{
+                    if (loginResponse.getMsg().equalsIgnoreCase("Mobile Number not exist")) {
+                        changefragment(mViewModel.mobile_numberr.getValue());
+                    }
+                    else {
+
+                        showDialog(loginResponse.getMsg());
+
+                    }
+                }
+
             }
         });
         return binding.getRoot();
