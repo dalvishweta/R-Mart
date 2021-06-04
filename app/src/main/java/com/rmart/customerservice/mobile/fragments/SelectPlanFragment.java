@@ -258,7 +258,7 @@ public class SelectPlanFragment extends Fragment implements IOnBackPressed {
             @Override
             public void onChanged(RechargeBaseClass rechargeBaseClass) {
                     // API is not following Restfull gaidlines  so it may cause Error or Exception In future witch may cause in app crashhh
-                    displayStatus(rechargeBaseClass);
+                displayStatus(rechargeBaseClass);
                     mViewModel.isLoading.setValue(false);
                     progressdialog.dismiss();
             }

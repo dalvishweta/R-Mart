@@ -184,17 +184,22 @@ public class LoginFragment extends LoginBaseFragment {
         mViewModel.VerifyOTPPOJOMutableLiveData.observeForever(new Observer<LoginResponse>() {
             @Override
             public void onChanged(com.rmart.utilits.pojos.LoginResponse loginResponse) {
-                Log.d("loginResponse",loginResponse.getMsg());
-                  if (loginResponse.getMsg().equalsIgnoreCase("Mobile Number not exist")){
-                      changefragment(mViewModel.mobile_numberr.getValue());
+                if(loginResponse.getStatus().equalsIgnoreCase("Success")) {
+                    checkCredentials(loginResponse);
+                    Log.d("loginResponse", loginResponse.getMsg());
+
+                }
+                else{
+                    if (loginResponse.getMsg().equalsIgnoreCase("Mobile Number not exist")) {
+                        changefragment(mViewModel.mobile_numberr.getValue());
                     }
-                    else if(loginResponse.getMsg().equalsIgnoreCase("Wrong OTP")){
+                    else {
 
-                      showDialog(loginResponse.getMsg());
-                    }else {
+                        showDialog(loginResponse.getMsg());
 
-                      checkCredentials(loginResponse);
-                  }
+                    }
+                }
+
             }
         });
         return binding.getRoot();

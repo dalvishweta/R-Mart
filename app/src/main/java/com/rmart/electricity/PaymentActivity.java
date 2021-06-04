@@ -255,9 +255,9 @@ public class PaymentActivity extends AppCompatActivity  {
                 throw new NullPointerException();
             }
            JsonArray ccavenuejsonArray = element.getAsJsonArray();
-            ElecticityService eleService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(ElecticityService.class);
+            ElecticityService eleService = RetrofitClientInstance.getInstance().getRetrofitInstanceForAddProduct().create(ElecticityService.class);
             eleService.electicitybillProcess(MyProfile.getInstance(getApplicationContext()).getUserID(), operator,String.valueOf(ob.getConsumerID()),bill_unit,
-                   mobile_number,String.valueOf(ob.getDueAmount()),ob.getConsumerName(),String.valueOf(ob.getOrderId()),ccavenuejsonArray.toString())
+                   mobile_number,String.valueOf(ob.getDueAmount()),ob.getConsumerName(),String.valueOf(ob.getOrderId()),ccavenuejsonArray.toString(),ccavenue_data.getCcavenue(),ccavenue_data.getRokadOrderId(),ccavenue_data.isWallet())
                     .enqueue(new Callback<paybill>() {
                         @Override
                         public void onResponse(Call<paybill> call, Response<paybill> response) {
@@ -273,7 +273,6 @@ public class PaymentActivity extends AppCompatActivity  {
 
                                 rs.setStatus(200);
                                 rs.setMsg("Transaction Successful");
-
                                 recharge.setAmount((ccAvenueResponse.getAmount()));
                                 recharge.setTrackingId(ccAvenueResponse.getTrackingId());
                               //  recharge.setMessage(datap.getData().getDescription());
@@ -285,7 +284,6 @@ public class PaymentActivity extends AppCompatActivity  {
                                 rs.setData(recharge);
                                 displayStatus(rs);
                             } else {
-
                                 rs.setStatus(400);
                                 rs.setMsg("Transaction Unsuccessful");
                                 //recharge.setAmount(String.valueOf(ccAvenueResponse.getAmount()));

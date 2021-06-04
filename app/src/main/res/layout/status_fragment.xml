@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.rmart.utilits.Curruncy" />
+        <import type="com.rmart.wallet.fragment.StatusFragment" />
+        <variable
+            name="PaymentStatusViewModel"
+            type="com.rmart.customerservice.mobile.viewmodels.PaymentStatusViewModel" />
+
+    </data>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:titleTextColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+        app:title="Transaction Status" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
+
+    <LinearLayout
+        android:id="@+id/lin_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        android:visibility="@{PaymentStatusViewModel.WalletTOpUpClassMutableLiveData.data.trackingId!=null?View.VISIBLE:View.GONE}"
+        android:orientation="vertical"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/tx_transction_id"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="Transaction ID "
+            android:textColor="@color/black2"
+            android:textSize="16sp"
+            tools:text="Transaction ID " />
+
+        <TextView
+            android:id="@+id/txt_transction_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:paddingStart="@dimen/dp_3"
+            android:paddingLeft="@dimen/dp_3"
+            android:textColor="@color/black2"
+            android:textSize="14sp"
+            android:text='@{PaymentStatusViewModel.WalletTOpUpClassMutableLiveData.data.trackingId}'
+            tools:ignore="RtlSymmetry"
+            android:gravity="center"
+            tools:text="9975294782" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lin_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/lin_one"
+        android:orientation="vertical"
+        android:padding="3dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:padding="3dp"
+            android:text="@string/transaction_date"
+            android:textColor="@color/black2"
+            tools:text="Transaction Date "
+            android:textSize="16sp"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:paddingStart="@dimen/dp_3"
+            android:paddingLeft="@dimen/dp_3"
+            android:textColor="@color/black2"
+            android:textSize="14sp"
+            tools:ignore="RtlSymmetry"
+            android:gravity="center"
+            tools:text="2 May 2021" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:gravity="center"
+        android:text='@{Curruncy.getCurruncy(PaymentStatusViewModel.WalletTOpUpClassMutableLiveData.data.amount)}'
+        android:textColor="@color/black"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lin_two" />
+
+    <TextView
+        android:id="@+id/textMessgae"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:gravity="center"
+        tools:text="Recharge Successfully"
+        android:text='@{PaymentStatusViewModel.WalletTOpUpClassMutableLiveData.msg}'
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/amount" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

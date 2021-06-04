@@ -20,7 +20,7 @@ public interface ElecticityService {
                                                    @Field("ConsumerID") String bankIINNumber,
                                                    @Field("bill_unit") String bill_unit,
                                                    @Field("mobile_number") String mobileNumber);
-    @POST(BuildConfig.electricity_pay_bill)
+    @POST(BuildConfig.Electricity_recharge_Rokadmart)
     @FormUrlEncoded
     public Call<paybill> electicitybillProcess(@Field("user_id") String user_id,
                                                @Field("operator") String operator,
@@ -30,7 +30,10 @@ public interface ElecticityService {
                                                @Field("amount") String amount,
                                                @Field("ConsumerName") String ConsumerName,
                                                @Field("Orderid") String Orderid,
-                                               @Field("ccavenuedata") String ccavenuedata
+                                               @Field("ccavenuedata") String ccavenuedata,
+                                               @Field("ccavenue") int ccavenue, //TODO: pass 0 for top-up and 1 for any chosen plan
+                                               @Field("order_id") int order_id,
+                                               @Field("wallet") boolean wallet
 
     );
     @POST(BuildConfig.electricity_pay_bill)

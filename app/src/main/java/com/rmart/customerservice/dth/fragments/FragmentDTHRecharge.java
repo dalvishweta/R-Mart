@@ -8,14 +8,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.customerservice.dth.adapter.OperatorAdapter;
 import com.rmart.customerservice.mobile.listners.SlectOperator;
 import com.rmart.customerservice.mobile.operators.model.Operator;
-import com.rmart.customerservice.mobile.operators.model.OperatorResponse;
 import com.rmart.customerservice.mobile.operators.repositories.OpratorsRepository;
 import com.rmart.databinding.DthSelectOperatorBinding;
 
@@ -59,6 +57,12 @@ public class FragmentDTHRecharge extends BaseFragment {
         DthSelectOperatorBinding binding = DataBindingUtil.inflate(inflater, R.layout.dth_select_operator, container, false);
         binding.progressBar1.setVisibility(View.VISIBLE);
         binding.listRecentSelectOperator.setVisibility(View.GONE);
+        binding.linLayoutOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
         OpratorsRepository.getOperators("DTH").observeForever(operatorResponse -> {
             ArrayList<Operator> preOperators = operatorResponse.operatorData.dthOperators;
             OperatorAdapter operatorAdapter = new OperatorAdapter(getContext(), preOperators,slectOperator);
