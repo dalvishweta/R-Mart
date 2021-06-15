@@ -1,16 +1,7 @@
 package com.rmart.inventory.filter.repository;
 
-import com.rmart.customerservice.dth.api.DthService;
-import com.rmart.customerservice.dth.model.DthResponse;
-import com.rmart.inventory.filter.models.ProductBrandReponse;
-import com.rmart.utilits.RetrofitClientInstance;
-
-import androidx.lifecycle.MutableLiveData;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class ProductBrandRepository {
+/*
     public static MutableLiveData<ProductBrandReponse> getProductBrand(String vc_number, String operator) {
 
         DthService dthRechargeService = RetrofitClientInstance.getRetrofitInstanceForAddP().create(ProductBr.class);
@@ -45,4 +36,5 @@ public class ProductBrandRepository {
         });
         return resultMutableLiveData;
     }
+*/
 }

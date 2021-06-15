@@ -10,7 +10,7 @@ public class DthCustomerInfo implements Serializable {
 
     @SerializedName("tel")
     @Expose
-    private int tel;
+    private long tel;
     @SerializedName("operator")
     @Expose
     private String operator;
@@ -21,11 +21,11 @@ public class DthCustomerInfo implements Serializable {
     @Expose
     private int status;
 
-    public int getTel() {
+    public long getTel() {
         return tel;
     }
 
-    public void setTel(int tel) {
+    public void setTel(long tel) {
         this.tel = tel;
     }
 

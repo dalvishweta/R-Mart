@@ -4,15 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,19 +11,23 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+
 import com.rmart.R;
 import com.rmart.baseclass.views.BaseFragment;
 import com.rmart.databinding.FragmentBillingHistoryBinding;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.wallet.billing_history.adapter.BillHistoryAdapter;
-import com.rmart.wallet.billing_history.models.BillingResponse;
 import com.rmart.wallet.billing_history.models.Datum;
 import com.rmart.wallet.billing_history.repository.BillingRepository;
 import com.rmart.wallet.billing_history.viewmodels.BillingServicemodule;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class BillingHistoryFragment extends BaseFragment {
     Toolbar toolbar;
@@ -56,6 +51,7 @@ public class BillingHistoryFragment extends BaseFragment {
         // Inflate the layout for this fragment
         /*return inflater.inflate(R.layout.fragment_billing_history, container, false);*/
         FragmentBillingHistoryBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_billing_history, container, false);
+        binding.toolbar.setOnClickListener(view -> getActivity().onBackPressed());
         binding.btnGetDetailsTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -44,6 +44,10 @@ public interface Products {
     @FormUrlEncoded
     Call<ProductSearchResponce> searchProduct(@Field("page") int page, @Field("client_id") String clientId, @Field("latitude") Double latitude, @Field("longitude") Double longitude,
                                               @Field("search_phrase") String search_phrase,@Field("role_id") String roleID);
+    @POST(BuildConfig.CUSTOMER_ALL_SHOPS_PRODUCT)
+    @FormUrlEncoded
+    Call<ProductSearchResponce> searchShopProduct(@Field("page") int page, @Field("client_id") String clientId, @Field("latitude") Double latitude, @Field("longitude") Double longitude,
+                                              @Field("search_phrase") String search_phrase,@Field("role_id") String roleID);
 
 
 }

@@ -1,7 +1,6 @@
 package com.rmart.electricity.billdetails.modules;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.view.View;
 
 import androidx.lifecycle.MutableLiveData;
@@ -9,7 +8,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.rmart.R;
-import com.rmart.electricity.PaymentActivity;
 import com.rmart.electricity.RSAKeyResponse;
 import com.rmart.electricity.billdetails.repositoris.ProcessRSAKeyRepository;
 import com.rmart.electricity.fetchbill.model.BillDetails;
@@ -34,24 +32,10 @@ public class BillDetailsModule extends ViewModel {
             progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
             //progressBar.show();
             BillDetails billDetails = billDetailsMutableLiveData.getValue();
-            ProcessRSAKeyRepository.getElecticityProcessRsaKey(view.getContext(),billDetails.getDueAmount()+"",billDetails.getServiceId()+"",billDetails.getOrderId()+"").observeForever(new Observer<RSAKeyResponse>() {
+           // billDetails.getDueAmount()
+            ProcessRSAKeyRepository.getElecticityProcessRsaKey(view.getContext(),billDetails.getBillDate()+"",billDetails.getServiceId()+"",billDetails.getOrderId()+"").observeForever(new Observer<RSAKeyResponse>() {
                 @Override
                 public void onChanged(RSAKeyResponse rsakeyResponse) {
-
-
-                    if (rsakeyResponse.getStatus().equalsIgnoreCase("success")) {
-                        Intent ii= new Intent(view.getContext(), PaymentActivity.class);
-                        ii.putExtra("rsakeyresonse",  rsakeyResponse.getData());
-                        ii.putExtra("cust_details",billDetailsMutableLiveData.getValue());
-                        ii.putExtra("mobile_number",mobilenumber.getValue());
-                        ii.putExtra("bill_unit",bill_unit.getValue());
-                        ii.putExtra("operator",operatorMutableLiveData.getValue().slug);
-                        view.getContext().startActivity(ii);
-
-
-                    } else {
-
-                    }
 
                     rsakeyResponseMutableLiveData.postValue(rsakeyResponse);
 
@@ -61,4 +45,6 @@ public class BillDetailsModule extends ViewModel {
 
         }
     }
+
+
 }

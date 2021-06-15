@@ -32,14 +32,15 @@ public class OrderSumaryViewModel extends ViewModel {
         isLoading.setValue(true);
 
         OrderSummaryRepository.showCartOrderDetails(context,vendorId,shop_id,user_address_id,delivery_method,coupon_code,mode_of_payment).observeForever(orderedSummaryResponse -> {
-            orderedSummaryResponseMutableLiveData.setValue(orderedSummaryResponse);
+
             isLoading.postValue(false);
             if(orderedSummaryResponse.getStatus().equalsIgnoreCase("success")) {
-
+                orderedSummaryResponseMutableLiveData.setValue(orderedSummaryResponse);
                 iserror.setValue(false);
-
+                isLoading.postValue(false);
             } else {
                 iserror.setValue(true);
+                isLoading.postValue(false);
             }
         });
 

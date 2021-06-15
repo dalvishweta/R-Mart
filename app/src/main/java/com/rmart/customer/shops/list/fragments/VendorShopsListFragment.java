@@ -1,18 +1,10 @@
 package com.rmart.customer.shops.list.fragments;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,65 +12,41 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatRadioButton;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.Task;
 import com.rmart.R;
 import com.rmart.baseclass.CallBackInterface;
 import com.rmart.baseclass.Constants;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
-import com.rmart.customer.dashboard.model.ShopType;
-import com.rmart.customer.shops.home.listner.OnClickListner;
+import com.rmart.customer.models.ContentModel;
+import com.rmart.customer.models.CustomerProductsResponse;
 import com.rmart.customer.shops.home.listner.onProdcutClick;
-import com.rmart.customer.shops.home.model.Category;
 import com.rmart.customer.shops.home.model.ProductData;
 import com.rmart.customer.shops.list.adapters.AllProductsAdapter;
 import com.rmart.customer.shops.list.adapters.VendorShopsListAdapterNew;
-import com.rmart.customer.models.AddShopToWishListResponse;
-import com.rmart.customer.models.ContentModel;
-import com.rmart.customer.models.CustomerProductsResponse;
 import com.rmart.customer.shops.list.models.ProductSearchResponce;
 import com.rmart.customer.shops.list.models.SearchProducts;
 import com.rmart.customer.shops.list.models.ShopDetailsModel;
 import com.rmart.customer.shops.list.repositories.ProductRepository;
 import com.rmart.customer.views.CustomerHomeActivity;
 import com.rmart.customer.views.CustomerHomeFragment;
-import com.rmart.mapview.MyLocation;
 import com.rmart.profile.model.MyProfile;
 import com.rmart.utilits.CommonUtils;
 import com.rmart.utilits.LoggerInfo;
 import com.rmart.utilits.RetrofitClientInstance;
 import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.AddressResponse;
-import com.rmart.utilits.BaseResponse;
 import com.rmart.utilits.services.CustomerProductsService;
 
 import org.jetbrains.annotations.NotNull;
@@ -420,7 +388,7 @@ public class VendorShopsListFragment extends CustomerHomeFragment {
             CustomerProductsService customerProductsService = RetrofitClientInstance.getRetrofitInstance().create(CustomerProductsService.class);
             String clientID = "2";
 
-            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, myProfile.getUserID(), latitude, longitude,null,null,MyProfile.getInstance(getActivity()).getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)?"Customer":"Retailer",ShopTypeID).enqueue(new Callback<CustomerProductsResponse>() {
+            customerProductsService.getCustomerShopsList(clientID, currentPage, searchShopName, myProfile.getUserID(), latitude, longitude,null,null,MyProfile.getInstance(getActivity()).getRoleID().equalsIgnoreCase(Utils.CUSTOMER_ID)?"Customer":"Retailer","2").enqueue(new Callback<CustomerProductsResponse>() {
                 @Override
                 public void onResponse(@NotNull Call<CustomerProductsResponse> call, @NotNull Response<CustomerProductsResponse> response) {
                     //progressDialog.dismiss();

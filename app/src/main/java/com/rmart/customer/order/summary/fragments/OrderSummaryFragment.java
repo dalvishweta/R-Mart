@@ -62,7 +62,7 @@ public class OrderSummaryFragment extends BaseFragment {
         // Inflate the layout for this fragment
         FragmentOrderSummaryBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_order_summary, container, false);
         OrderSumaryViewModel  orderSumaryViewModel = ViewModelProviders.of(this).get(OrderSumaryViewModel.class);
-        //binding.setOrderSumaryViewModel(orderSumaryViewModel);
+        binding.setOrderSumaryViewModel(orderSumaryViewModel);
         binding.setLifecycleOwner(this);
         MyProfile myProfile = MyProfile.getInstance(getContext());
         orderSumaryViewModel.vendorShoppingCartDetails.setValue(vendorShoppingCartDetails);
@@ -75,7 +75,7 @@ public class OrderSummaryFragment extends BaseFragment {
                     if(orderedSummaryResponse.getCustomerOrderedDataResponseModel()!=null) {
 
                         ProductsAdapter categoryAdapter = new ProductsAdapter(getActivity(), (ArrayList<CustomerOrderProductOrderedDetails>) orderedSummaryResponse.getCustomerOrderedDataResponseModel().getCustomerOrderProductDetailsList());
-                        //binding.setProductAdapter(categoryAdapter);
+                        binding.setProductAdapter(categoryAdapter);
                     }
                 }  else {
 

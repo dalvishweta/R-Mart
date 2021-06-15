@@ -25,6 +25,11 @@ public class CustomerOrderedDataResponseModel {
     @Expose
     private List<CustomerOrderProductOrderedDetails> customerOrderProductDetailsList;
 
+    @SerializedName("total_cart_count")
+    @Expose
+    public int  total_cart_count;
+
+
     public CustomerOrderPersonalDetails getCustomerOrderPersonalDetails() {
         return customerOrderPersonalDetails;
     }
@@ -47,5 +52,21 @@ public class CustomerOrderedDataResponseModel {
 
     public void setCustomerOrderProductDetailsList(List<CustomerOrderProductOrderedDetails> customerOrderProductDetailsList) {
         this.customerOrderProductDetailsList = customerOrderProductDetailsList;
+    }
+
+    public String getDeliveryMethod() {
+        return deliveryMethod;
+    }
+
+    public void setDeliveryMethod(String deliveryMethod) {
+        this.deliveryMethod = deliveryMethod;
+    }
+
+    public int getTotal_cart_count() {
+        return total_cart_count;
+    }
+
+    public void setTotal_cart_count(int total_cart_count) {
+        this.total_cart_count = total_cart_count;
     }
 }

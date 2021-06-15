@@ -22,11 +22,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 import com.rmart.BuildConfig;
 import com.rmart.R;
 import com.rmart.baseclass.views.CustomLoadingDialog;
@@ -45,8 +42,6 @@ import com.rmart.utilits.ccavenue.ServiceUtility;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -175,9 +170,9 @@ public class PaymentActivity extends AppCompatActivity  {
             jsonObject = new JsonParser().parse(html).getAsJsonObject();
             Gson g = new Gson();
             CCAvenueResponceModel ccAvenueResponse = g.fromJson(html, CCAvenueResponceModel.class);
+            CcavenueRequestData(ccAvenueResponse,html);
+            /*if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
 
-            if (ccAvenueResponse.getOrderStatus().equalsIgnoreCase("success")) {
-                CcavenueRequestData(ccAvenueResponse);
             }else{
                 RechargeBaseClass rs = new RechargeBaseClass();
                 rs.setStatus(400);
@@ -193,7 +188,7 @@ public class PaymentActivity extends AppCompatActivity  {
 
                 rs.setData(recharge);
                 displayStatus(rs);
-            }
+            }*/
         }
 
         @JavascriptInterface
@@ -234,7 +229,7 @@ public class PaymentActivity extends AppCompatActivity  {
 
 
 
-    public void CcavenueRequestData(CCAvenueResponceModel ccAvenueResponse){
+    public void CcavenueRequestData(CCAvenueResponceModel ccAvenueResponse, String html){
 
         if (Utils.isNetworkConnected(PaymentActivity.this)) {
 
@@ -242,10 +237,11 @@ public class PaymentActivity extends AppCompatActivity  {
             progressBar.setCancelable(false);
             progressBar.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
             progressBar.show();
-            ArrayList<CCAvenueResponceModel> ccabledata = new ArrayList<>();
-            ccabledata.add(ccAvenueResponse);
             Recharge recharge = new Recharge();
             RechargeBaseClass rs = new RechargeBaseClass();
+       /*     ArrayList<CCAvenueResponceModel> ccabledata = new ArrayList<>();
+            ccabledata.add(ccAvenueResponse);
+
             Gson gson = new Gson();
             JsonElement element = gson.toJsonTree(ccabledata, new TypeToken<List<CCAvenueResponceModel>>() {
             }.getType());
@@ -254,10 +250,10 @@ public class PaymentActivity extends AppCompatActivity  {
                 // fail appropriately
                 throw new NullPointerException();
             }
-           JsonArray ccavenuejsonArray = element.getAsJsonArray();
+           JsonArray ccavenuejsonArray = element.getAsJsonArray();*/
             ElecticityService eleService = RetrofitClientInstance.getInstance().getRetrofitInstanceForAddProduct().create(ElecticityService.class);
             eleService.electicitybillProcess(MyProfile.getInstance(getApplicationContext()).getUserID(), operator,String.valueOf(ob.getConsumerID()),bill_unit,
-                   mobile_number,String.valueOf(ob.getDueAmount()),ob.getConsumerName(),String.valueOf(ob.getOrderId()),ccavenuejsonArray.toString(),ccavenue_data.getCcavenue(),ccavenue_data.getRokadOrderId(),ccavenue_data.isWallet())
+                   mobile_number,String.valueOf(ob.getDueAmount()),ob.getConsumerName(),String.valueOf(ob.getOrderId()),html,ccavenue_data.getCcavenue(),ccavenue_data.getRokadOrderId(),ccavenue_data.isWallet())
                     .enqueue(new Callback<paybill>() {
                         @Override
                         public void onResponse(Call<paybill> call, Response<paybill> response) {
@@ -265,37 +261,50 @@ public class PaymentActivity extends AppCompatActivity  {
                             progressBar.cancel();
                             paybill datap = response.body();
 
-                            if (datap.getMsg().equalsIgnoreCase("success")) {
-                                //Toast.makeText(getApplicationContext(), datap.getData().getDescription(), Toast.LENGTH_LONG).show();
+                            if(datap!=null){
+                                if (datap.getStatus()==200) {
+                                    //Toast.makeText(getApplicationContext(), datap.getData().getDescription(), Toast.LENGTH_LONG).show();
 
-                                //setData(data);
-                               // openDialog1(datap);
+                                    //setData(data);
+                                    // openDialog1(datap);
 
-                                rs.setStatus(200);
-                                rs.setMsg("Transaction Successful");
-                                recharge.setAmount((ccAvenueResponse.getAmount()));
-                                recharge.setTrackingId(ccAvenueResponse.getTrackingId());
-                              //  recharge.setMessage(datap.getData().getDescription());
-                              //  recharge.setBillingName(ob.getConsumerName());
-                               recharge.setTransDate(ccAvenueResponse.getTransDate());
-                               // recharge.setServiceId((int) datap.getData().getConsumerID());
+                                    rs.setStatus(200);
+                                    rs.setMsg("Transaction Successful");
+                                    recharge.setAmount((ccAvenueResponse.getAmount()));
+                                    recharge.setTrackingId(ccAvenueResponse.getTrackingId());
+                                    //  recharge.setMessage(datap.getData().getDescription());
+                                    //  recharge.setBillingName(ob.getConsumerName());
+                                    recharge.setTransDate(ccAvenueResponse.getTransDate());
+                                    // recharge.setServiceId((int) datap.getData().getConsumerID());
 
+                                    rs.setData(recharge);
+                                    displayStatus(rs);
+                                }
+                                else {
+                                    rs.setStatus(400);
+                                    rs.setMsg("Transaction Unsuccessful");
+                                    //recharge.setAmount(String.valueOf(ccAvenueResponse.getAmount()));
+                                    recharge.setTrackingId(ccAvenueResponse.getTrackingId());
+                                    //recharge.setTrackingId(datap.getData().getMerTxnID());
+                                    // recharge.setMessage(datap.getData().getDescription());
+                                    //recharge.setBillingName(ob.getConsumerName());
+                                    recharge.setAmount(ccAvenueResponse.getAmount());
+                                    recharge.setTransDate(ccAvenueResponse.getTransDate());
+                                    rs.setData(recharge);
+                                    displayStatus(rs);
+                                }
 
-                                rs.setData(recharge);
-                                displayStatus(rs);
-                            } else {
+                            }else{
                                 rs.setStatus(400);
                                 rs.setMsg("Transaction Unsuccessful");
-                                //recharge.setAmount(String.valueOf(ccAvenueResponse.getAmount()));
+                                recharge.setAmount((ccAvenueResponse.getAmount()));
                                 recharge.setTrackingId(ccAvenueResponse.getTrackingId());
-                                //recharge.setTrackingId(datap.getData().getMerTxnID());
-                               // recharge.setMessage(datap.getData().getDescription());
-                                //recharge.setBillingName(ob.getConsumerName());
-                                recharge.setAmount(ccAvenueResponse.getAmount());
+                                recharge.setMessage(ccAvenueResponse.getMessage());
                                 recharge.setTransDate(ccAvenueResponse.getTransDate());
                                 rs.setData(recharge);
                                 displayStatus(rs);
                             }
+
 
                             progressBar.cancel();
                         }

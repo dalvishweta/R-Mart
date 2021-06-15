@@ -56,7 +56,7 @@ public class WalletRepository {
 
         WalletTransction walletRechargeService = RetrofitClientInstance.getRetrofitInstanceForAddP().create(WalletTransction.class);
         final MutableLiveData<RSAKeyResponse> resultMutableLiveData = new MutableLiveData<>();
-        Call<RSAKeyResponse> call = walletRechargeService.RsaKeyVRecharge(user_id,wallet_id,txt_amount, "29", "wallet_topup");
+        Call<RSAKeyResponse> call = walletRechargeService.RsaKeyVRecharge(user_id,wallet_id,txt_amount, "27", "wallet-topup");
         final RSAKeyResponse result = new RSAKeyResponse();
 
         call.enqueue(new Callback<RSAKeyResponse>() {

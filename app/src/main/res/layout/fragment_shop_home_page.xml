@@ -16,6 +16,9 @@
     <variable
         name="productData"
         type="com.rmart.customer.shops.home.model.ProductData" />
+    <variable
+        name="myAdapterSearch"
+        type="com.rmart.customer.shops.list.adapters.AllProductsAdapter" />
 </data>
   <RelativeLayout
 
@@ -32,7 +35,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_marginBottom="5dp"
         android:background="@drawable/grey_rounded_borders_bg"
         android:minHeight="40dp">
@@ -144,6 +147,15 @@
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/search_products_list_field"
+          android:background="#DADADA"
+          android:visibility="gone"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:adapter="@{myAdapterSearch}"
+
+          app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
       <com.google.android.material.floatingactionbutton.FloatingActionButton
           android:id="@+id/fab"

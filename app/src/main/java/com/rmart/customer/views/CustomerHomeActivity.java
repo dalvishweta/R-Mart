@@ -1,13 +1,13 @@
 package com.rmart.customer.views;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -15,34 +15,53 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.rmart.R;
+import com.rmart.authentication.views.AuthenticationActivity;
 import com.rmart.baseclass.views.BaseNavigationDrawerActivity;
 import com.rmart.customer.OnCustomerHomeInteractionListener;
 import com.rmart.customer.dashboard.fragments.DashBoardFragment;
 import com.rmart.customer.models.CustomerProductDetailsModel;
+import com.rmart.customer.models.ProductBaseModel;
+import com.rmart.customer.models.ShopWiseWishListResponseDetails;
+import com.rmart.customer.models.ShoppingCartResponseDetails;
 import com.rmart.customer.order.summary.fragments.OrderSummaryFragment;
 import com.rmart.customer.shops.home.fragments.ShopHomePage;
 import com.rmart.customer.shops.home.model.ProductData;
 import com.rmart.customer.shops.list.models.ShopDetailsModel;
-import com.rmart.customer.models.ProductBaseModel;
-import com.rmart.customer.models.ShopWiseWishListResponseDetails;
-import com.rmart.customer.models.ShoppingCartResponseDetails;
-import com.rmart.customer.shops.list.fragments.VendorShopsListFragment;
+import com.rmart.profile.model.MyProfile;
+import com.rmart.utilits.BaseResponse;
+import com.rmart.utilits.RetrofitClientInstance;
+import com.rmart.utilits.Utils;
 import com.rmart.utilits.pojos.AddressResponse;
+import com.rmart.utilits.services.AuthenticationService;
 
+import java.net.SocketTimeoutException;
 import java.util.Timer;
 
-import androidx.annotation.NonNull;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CustomerHomeActivity extends BaseNavigationDrawerActivity implements OnCustomerHomeInteractionListener {
-
+SharedPreferences sharedPreferences;
+String userLoginStatus;
     //private VendorShopsListFragment vendorShopsListFragment;
     private Timer timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_authentication);
-        Bundle data = getIntent().getExtras();
 
+        sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.preference_file_key), 0);
+        userLoginStatus = sharedPreferences.getString("userLoginStatus", null);
+        if (userLoginStatus.equalsIgnoreCase("yes")) {
+        }
+        else {
+            Intent  intent = new Intent(this, AuthenticationActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        Bundle data = getIntent().getExtras();
+        checkRegistration();
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
@@ -67,7 +86,7 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
                               if(parameter.equalsIgnoreCase("created_by")){ // vendor_id
                                   VenderID=value;
                               }
-;
+
                             }
 
                         }
@@ -233,6 +252,45 @@ public class CustomerHomeActivity extends BaseNavigationDrawerActivity implement
 //            if(vendorShopsListFragment!=null && !vendorShopsListFragment.isAdded()) {
 //                replaceFragment(vendorShopsListFragment, VendorShopsListFragment.class.getName(), false);
 //            }
+        }
+    }
+    private void checkRegistration() {
+        if (Utils.isNetworkConnected(getApplicationContext())) {
+
+
+
+            AuthenticationService getUserDataService = RetrofitClientInstance.getInstance().getRetrofitInstanceRokad().create(AuthenticationService.class);
+            Call<BaseResponse> user = getUserDataService.registrationRokad(MyProfile.getInstance(getApplicationContext()).getFirstName(),(MyProfile.getInstance(getApplicationContext()).getLastName()),(MyProfile.getInstance(getApplicationContext()).getMobileNumber()),(MyProfile.getInstance(getApplicationContext()).getEmail()), "rokad","rokad",(MyProfile.getInstance(getApplicationContext()).getUserID()));//("", "");
+            user.enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                    Log.d("onResponse", "onResponse: Login Fragment");
+
+                    if (response.body() != null && response.body().getStatus().equalsIgnoreCase("success")) {
+                        //  showDialog("success", response.body().getMsg());
+
+                    } else if (response.body() != null){
+                        /// showDialog("Sorry..", response.body().getMsg());
+                    } else {
+
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+                    // Log.d("onFailure", "onFailure: Login Fragment ");
+
+                    if(t instanceof SocketTimeoutException){
+                    } else {
+//                            Toast.makeText(requireActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                    // showDialog("Sorry..", getString(R.string.internet_failed_login_case));
+                }
+            });
+
+
+        } else {
         }
     }
 

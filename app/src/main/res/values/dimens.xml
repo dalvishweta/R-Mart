@@ -22,4 +22,5 @@
     <dimen name="_48sdp">48dp</dimen>
     <dimen name="_50sdp">50dp</dimen>
     <dimen name="_55sdp">55dp</dimen>
+    <dimen name="item_offset">3dp</dimen>
 </resources>

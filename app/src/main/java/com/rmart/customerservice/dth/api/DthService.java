@@ -11,4 +11,6 @@ public interface DthService {
 
     @GET(BuildConfig.DTH_CustomerIdInfo)
     Call<DthResponse> getCustomerIdInfo(@Query("vcnumber") String vcNumber, @Query("operator") String Operator);
+    @GET(BuildConfig.DTH_CustomerIdInfomobile)
+    Call<DthResponse> getCustomerIdInfoMobile(@Query("mobile_no") String vcNumber, @Query("operator") String Operator);
 }
