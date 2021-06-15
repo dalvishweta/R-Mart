@@ -9,7 +9,15 @@ public class paybill  implements Serializable {
 
     @SerializedName("status")
     @Expose
-    private String status;
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     @SerializedName("data")
     @Expose

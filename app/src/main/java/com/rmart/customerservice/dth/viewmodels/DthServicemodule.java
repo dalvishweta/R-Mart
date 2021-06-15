@@ -28,27 +28,45 @@ public class DthServicemodule extends ViewModel {
 
         if(validate() && !isLoading.getValue()){
             isLoading.setValue(true);
-            DTHRechargeRepository.getCustomerInfo(cumsumerNumber.getValue(),operatorMutableLiveData.getValue().mplanOperator).observeForever(new Observer<DthResponse>() {
-                @Override
-                public void onChanged(DthResponse dthResponse) {
-                            if(dthResponse.getStatus()==200) {
-                                ((DTHRechargeActivity) view.getContext()).getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .replace(R.id.frame_container, MakeDTHPayment.newInstance(cumsumerNumber.getValue(), operatorMutableLiveData.getValue(),dthResponse)).addToBackStack(null)
-                                        .commit();
-                            } else {
-                                dthPOJOMutableLiveData.postValue(dthResponse);
-                            }
-                            isLoading.setValue(false);
-                }
-            });
-        } else {
+            if(cumsumerNumber.getValue().length()==10){
+                DTHRechargeRepository.getCustomerInfoMobile(cumsumerNumber.getValue(), operatorMutableLiveData.getValue().mplanOperator).observeForever(new Observer<DthResponse>() {
+                    @Override
+                    public void onChanged(DthResponse dthResponse) {
+                        if (dthResponse.getMsg().equalsIgnoreCase("success")) {
+                            ((DTHRechargeActivity) view.getContext()).getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.frame_container, MakeDTHPayment.newInstance(cumsumerNumber.getValue(), operatorMutableLiveData.getValue(), dthResponse)).addToBackStack(null)
+                                    .commit();
+                        } else {
+                            dthPOJOMutableLiveData.postValue(dthResponse);
+                        }
+                        isLoading.setValue(false);
+                    }
+                });
+
+            }else {
+                DTHRechargeRepository.getCustomerInfo(cumsumerNumber.getValue(), operatorMutableLiveData.getValue().mplanOperator).observeForever(new Observer<DthResponse>() {
+                    @Override
+                    public void onChanged(DthResponse dthResponse) {
+                        if (dthResponse.getStatus() == 200) {
+                            ((DTHRechargeActivity) view.getContext()).getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.frame_container, MakeDTHPayment.newInstance(cumsumerNumber.getValue(), operatorMutableLiveData.getValue(), dthResponse)).addToBackStack(null)
+                                    .commit();
+                        } else {
+                            dthPOJOMutableLiveData.postValue(dthResponse);
+                        }
+                        isLoading.setValue(false);
+                    }
+                });
+
+            } } else {
             isLoading.setValue(false);
         }
     }
     public boolean validate() {
         boolean result = true;
-        if (cumsumerNumber.getValue() == null || cumsumerNumber.getValue().isEmpty() || cumsumerNumber.getValue().length() < 10) {
+        if (cumsumerNumber.getValue() == null || cumsumerNumber.getValue().isEmpty()) {
             errorCumsumerNumber.setValue("Please Enter Subscription ID");
             result = false;
         }

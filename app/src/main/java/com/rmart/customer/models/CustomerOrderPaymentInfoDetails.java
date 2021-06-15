@@ -15,7 +15,7 @@ public class CustomerOrderPaymentInfoDetails implements Serializable {
     private double orderAmount;
     @SerializedName("delivery_charges")
     @Expose
-    private Integer deliveryCharges;
+    private int deliveryCharges;
     @SerializedName("expected_date_of_delivery")
     @Expose
     private String expectedDateOfDelivery;

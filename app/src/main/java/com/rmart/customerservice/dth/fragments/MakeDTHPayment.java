@@ -23,6 +23,7 @@ import com.rmart.customerservice.mobile.operators.model.Operator;
 import com.rmart.customerservice.mobile.repositories.RechargeRepository;
 import com.rmart.customerservice.mobile.views.ServicePaymentActivity;
 import com.rmart.databinding.FragmentMakeDthPaymentBinding;
+import com.rmart.electricity.CCavenueres;
 import com.rmart.profile.model.MyProfile;
 
 import static com.rmart.customerservice.mobile.views.ServicePaymentActivity.RESULT;
@@ -45,7 +46,7 @@ public class MakeDTHPayment extends Fragment {
     private Operator operator;
     private DthResponse dthResponse;
     DTHRechargeMakePaymentViewModel mViewModel;
-
+    CCavenueres reskdata;
     public MakeDTHPayment() {
         // Required empty public constructor
     }
@@ -91,19 +92,26 @@ public class MakeDTHPayment extends Fragment {
         binding.setDTHRechargeMakePaymentViewModel(mViewModel);
         binding.setLifecycleOwner(this);
         mViewModel.responseRsakeyMutableLiveData.observeForever(rsaKeyResponse -> {
-
-            if (rsaKeyResponse != null && rsaKeyResponse.getStatus().equals("success")) {
+            if(rsaKeyResponse!=null && rsaKeyResponse.getStatus().equals("success")) {
+                reskdata=rsaKeyResponse.getData();
                 if (rsaKeyResponse.getData().getCcavenue() == 1) {
                     Intent ii = new Intent(getContext(), ServicePaymentActivity.class);
                     ii.putExtra("rsakeyresonse", rsaKeyResponse.getData());
+
                     ii.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivityForResult(ii, 3333);
-                } else {
+                }else{
+                    reskdata.setCcavenue(0);
+                    reskdata.setWallet(true);
+                    CCavenueres.CcavenueData cc= new CCavenueres.CcavenueData();
+                    cc.setAmount(reskdata.getPayment_total_amount());
+                    reskdata.setCcavenueData(cc);
+                    recharge("null",reskdata);
 
+                    Toast.makeText(getContext(),rsaKeyResponse.getMsg(),Toast.LENGTH_LONG).show();
                 }
             } else {
-
-                Toast.makeText(getContext(), "Some Thing Wrong Please Try After Some Time", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), rsaKeyResponse.getMsg(), Toast.LENGTH_LONG).show();
             }
             mViewModel.isLoading.setValue(false);
         });
@@ -119,9 +127,9 @@ public class MakeDTHPayment extends Fragment {
             //Note:-- suggesion dont use directly rokad.in server make call from Rokadmart server using proxy method and keep transaction status update with rokad mart
             if (result != null && requestCode == 3333 && resultCode == ServicePaymentActivity.RESULT_OK) {
                 ///JsonObject jsonObject = new JsonParser().parse(result).getAsJsonObject();
-                recharge(result);
+                recharge(result, reskdata);
             } else {
-                recharge(result);
+                recharge(result, reskdata);
             }
         } else {
             Toast.makeText(getContext(), "Payment Gateway transaction Cancel", Toast.LENGTH_LONG).show();
@@ -129,11 +137,11 @@ public class MakeDTHPayment extends Fragment {
 
     }
 
-    private void recharge(String data) {
+    private void recharge(String data, CCavenueres rsaKeyResponse) {
         ProgressDialog progressdialog = new ProgressDialog(getContext());
         progressdialog.setMessage("Please Wait....");
         progressdialog.show();
-        RechargeRepository.doMobileRecharge(RechargeRepository.SERVICE_TYPE_DTH_RECHARGE, vcNumber, 0, operator.type, null, null, RechargeRepository.PLAN_TYPE_SPECIAL_RECHARGE, "10" + "", MyProfile.getInstance(getContext()).getUserID(), data,1,1,false).observeForever(new Observer<RechargeBaseClass>() {
+        RechargeRepository.doMobileRecharge(RechargeRepository.SERVICE_TYPE_DTH_RECHARGE, vcNumber, 0, operator.type, null, null, RechargeRepository.PLAN_TYPE_SPECIAL_RECHARGE, "10" + "", MyProfile.getInstance(getContext()).getUserID(), data,rsaKeyResponse.getCcavenue(),rsaKeyResponse.getRokadOrderId(),rsaKeyResponse.isWallet()).observeForever(new Observer<RechargeBaseClass>() {
             @Override
             public void onChanged(RechargeBaseClass rechargeBaseClass) {
                 // API is not following Restfull gaidlines  so it may cause Error or Exception In future witch may cause in app crashhh

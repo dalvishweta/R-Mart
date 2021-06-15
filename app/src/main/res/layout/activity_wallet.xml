@@ -26,6 +26,7 @@
                android:layout_height="wrap_content"
                app:titleTextColor="@color/white"
                app:title="@string/my_wallet"
+               app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
                android:id="@+id/toolbar"
                app:theme="@style/MyThemeOverlay_Toolbar2"
                android:background="@color/colorPrimary"/>

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.gson.Gson;
 import com.rmart.R;
 import com.rmart.customerservice.mobile.adapters.RechargePlansAdapter;
 import com.rmart.customerservice.mobile.adapters.RechargePlansPagerAdapter;
@@ -23,8 +24,10 @@ import com.rmart.customerservice.mobile.circle.bottomsheets.SelectCircleBottomSh
 import com.rmart.customerservice.mobile.circle.model.Circle;
 import com.rmart.customerservice.mobile.listners.SlectCircle;
 import com.rmart.customerservice.mobile.listners.SlectOperator;
+import com.rmart.customerservice.mobile.models.CCAVenueResponse;
 import com.rmart.customerservice.mobile.models.mPlans.RechargePlans;
 import com.rmart.customerservice.mobile.models.mPlans.Records;
+import com.rmart.customerservice.mobile.models.mobileRecharge.Recharge;
 import com.rmart.customerservice.mobile.models.mobileRecharge.RechargeBaseClass;
 import com.rmart.customerservice.mobile.operators.bottomheet.SelectOperatorBottomSheet;
 import com.rmart.customerservice.mobile.operators.model.Operator;
@@ -224,7 +227,9 @@ public class SelectPlanFragment extends Fragment implements IOnBackPressed {
         return  fragmentSelectPlan2Binding.getRoot();
     }
     private void displayStatus(RechargeBaseClass paymentResponse)
+
     {
+
         getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.frame_container, PaymentStatusFragment.newInstance( paymentResponse, mobile, name,String.valueOf(mViewModel.rechargePlansMutableLiveData.getValue().getRs())))
@@ -258,7 +263,20 @@ public class SelectPlanFragment extends Fragment implements IOnBackPressed {
             @Override
             public void onChanged(RechargeBaseClass rechargeBaseClass) {
                     // API is not following Restfull gaidlines  so it may cause Error or Exception In future witch may cause in app crashhh
-                displayStatus(rechargeBaseClass);
+                if(data.equalsIgnoreCase("null")){
+                    displayStatus(rechargeBaseClass);
+                }
+                else{
+                    Gson g = new Gson();
+                    CCAVenueResponse s = g.fromJson(data, CCAVenueResponse.class);
+                    Recharge rs= new Recharge();
+                    rs.setTransDate(s.getTransDate());
+                    rs.setTrackingId(s.getTrackingId());
+                    rechargeBaseClass.setData(rs);
+                    displayStatus(rechargeBaseClass);
+
+                }
+
                     mViewModel.isLoading.setValue(false);
                     progressdialog.dismiss();
             }

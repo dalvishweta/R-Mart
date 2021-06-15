@@ -4,20 +4,21 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.rmart.BR;
-import com.rmart.R;
-import com.rmart.customer.dashboard.model.HomePageData;
-import com.rmart.customer.dashboard.listners.OnClick;
-import com.rmart.databinding.HomePageItemRowBinding;
-import com.rmart.databinding.ServicesBinding;
-import com.rmart.databinding.SliderBinding;
-
-import java.util.List;
-
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.rmart.BR;
+import com.rmart.R;
+import com.rmart.customer.dashboard.listners.OnClick;
+import com.rmart.customer.dashboard.model.HomePageData;
+import com.rmart.databinding.HomePageItemRowBinding;
+import com.rmart.databinding.ServicesBinding;
+import com.rmart.databinding.SliderBinding;
+import com.rmart.utilits.IteamDoration;
+
+import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_SLIDER = 29792;
@@ -86,8 +87,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ServicesHolder servicesHolder = (ServicesHolder) holder2;
             ServicesAdapter categoryAdapter = new  ServicesAdapter(context, homePageData.get(position).getService(),onClickListner);
             servicesHolder.bind(homePageData.get(position));
-            GridLayoutManager linearLayoutManager =new GridLayoutManager(context,4);
+           // GridLayoutManager linearLayoutManager =new GridLayoutManager(context,4);
             //linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+            LinearLayoutManager linearLayoutManager =new GridLayoutManager(context,3);
+            IteamDoration itemDecoration = new IteamDoration(context, R.dimen.item_offset);
+            servicesHolder.binding.category.addItemDecoration(itemDecoration);
+
             servicesHolder.binding.category.setLayoutManager(linearLayoutManager);
             servicesHolder.binding.category.setAdapter(categoryAdapter);
 

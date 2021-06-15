@@ -55,6 +55,8 @@ android {
         /* customer api services */
         buildConfigField("String", "CUSTOMER_SHOPS_LIST", '"customer/VendorShop/getShopList"')
         buildConfigField("String", "CUSTOMER_ALL_SHOPS_PRODUCT", '"lib/Product/all_product_search"')
+        buildConfigField("String", "CUSTOMER_SHOPS_PRODUCT", '"Customer_vendorshop_search/search_all_product"')
+
         buildConfigField("String", "CUSTOMER_SHOPS_HOME_PAGE", '"customer/VendorShop/new_shophomepage"')
         buildConfigField("String", "VENDOR_PRODUCT_DETAILS", '"customer/VendorShop/getCatProductList"')
         buildConfigField("String", "VENDOR_PRODUCTS_LIST", '"customer/VendorShop/getCatProductList"')
@@ -123,6 +125,8 @@ android {
         buildConfigField("String", "HISTORY", '"rest_server/Venus_mart_api/getHistory"')
         buildConfigField("String", "Mobile_recharge", '"rest_server/Venus_mart_api/recharge"')
         buildConfigField("String", "DTH_CustomerIdInfo", '"rest_server/Mplan_operator/getCustomerinfo"')
+        buildConfigField("String", "DTH_CustomerIdInfomobile", '"rest_server/Mplan_operator/getCustomerinfomobile"')
+
         buildConfigField("String", "GETHISTORY", '"https://rokad.in/rest_server/get_history_api/getHistory"')
 
         buildConfigField("String", "service_id", '"31"')
@@ -200,8 +204,8 @@ android {
             dimension "rokard_mart"
             applicationIdSuffix ".customerprod"
             /*versionNameSuffix "-customer"*/
-            versionCode 16
-            versionName "3.0.4"
+            versionCode 17
+            versionName "3.0.5"
             buildConfigField("String", "BASE_URL", '"https://martapi.rokad.in/api/"')
             buildConfigField("String","BASE_URL_LOGIN",'"https://martapi.rokad.in/apiv1/"')
 

@@ -94,6 +94,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
     private CreditDetails creditDetails;
     private MapsFragment mapsFragment;
     private EditAdreesViewModel editAdreesViewModel;
+    SharedPreferences sp;
     public EditAddressFragment() {
     }
 
@@ -117,9 +118,8 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         LoggerInfo.printLog("Fragment", "EditAddressFragment");
-
-
         binding= DataBindingUtil.inflate(inflater, R.layout.fragment_add_address, container, false);
+        sp = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         editAdreesViewModel = ViewModelProviders.of(getActivity()).get(EditAdreesViewModel.class);
         binding.setLifecycleOwner(this);
         binding.setMyAddress(editAdreesViewModel);
@@ -1102,8 +1102,6 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                                 if (data.getStatus().equalsIgnoreCase(Utils.SUCCESS)) {
                                     Log.d("ADDRESS123",data.getMsg());
                                     saveAddress(data);
-
-
                                     showDialog("", data.getMsg());
                                     Intent in = new Intent(getActivity(), CustomerHomeActivity.class);
                                     in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
