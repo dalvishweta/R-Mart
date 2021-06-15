@@ -4,13 +4,16 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
@@ -18,8 +21,14 @@ import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.rmart.BuildConfig;
 import com.rmart.R;
+import com.rmart.RMartApplication;
 import com.rmart.authentication.OnAuthenticationClickedListener;
 import com.rmart.baseclass.views.BaseActivity;
 import com.rmart.customer.models.RSAKeyResponseDetails;
@@ -41,24 +50,100 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     private LocationManager locationManager;
     private int REQUEST_CHECK_SETTINGS = 199;
     private String orderID;
-
+    SharedPreferences sharedPreferences;
+    String userLoginStatus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authenticatin);
+        sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key),0);
+        userLoginStatus = sharedPreferences.getString("userLoginStatus", null);
+
+        if (userLoginStatus != null) {
+            if (userLoginStatus.equalsIgnoreCase("yes")) {
+                Log.d("userLogin123", userLoginStatus + " ");
+                goToCustomerHomeActivity();
+            }
+        }
+
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        // Get deep link from result (may be null if no link is found)
+                        Uri deepLink = null;
+                        String mobile_no = "";
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                            Log.d("DEEPLINK", deepLink.toString());
+                            try {
+                                String url[] = deepLink.toString().split(".link/");
+                                if (url != null) {
+                                    for (int i = 0; i < url.length; i++) {
+                                        Log.d("URL", url[1] + " ");
+                                        String url_value[] = url[1].split("=");
+                                        String param[] = url_value[1].split("/");
+                                        Log.d("param", param[0]);
+                                        String refer_no = param[0];
+                                        Log.d("param", refer_no);
+                                        String user_id = url_value[2];
+                                        Log.d("User_id", user_id);
+                                        RMartApplication rMartApplication = (RMartApplication) getApplicationContext();
+                                        rMartApplication.setRefer_no(refer_no);
+                                        Log.d("rMarRefer",rMartApplication.getRefer_no());
+                                        rMartApplication.setUser_id(user_id);
+                                        Log.d("rMarUser",rMartApplication.getUser_id());
+                                       /* SharedPreferences sp = getSharedPreferences("ROKAD",Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sp.edit();
+                                        editor.putString("refer_no", refer_no);
+                                        editor.putString("user_id", user_id);
+                                        Log.d("User_id",user_id);
+                                        editor.commit();
+                                        editor.apply();*/
+                                    }
+                                }
+                            } catch (NullPointerException exception) {
+                                exception.printStackTrace();
+                            }
+
+                        }
+
+
+                        // Handle the deep link. For example, open the linked content,
+                        // or apply promotional credit to the user's account.
+                        // ...
+
+                        // ...
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Auth", "getDynamicLink:onFailure", e);
+                    }
+                });
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             orderID = extras.getString(ORDER_ID);
-            Log.d("ORDERID",orderID);
         }
         if (getIntent().getBooleanExtra(getString(R.string.change_password), false)) {
             addFragment(ChangePassword.newInstance("", MyProfile.getInstance(getApplicationContext()).getMobileNumber()), "changePassword", false);
         } else {
-            addFragment(LoginFragment.newInstance("", ""), "login", false);
+            if (BuildConfig.ROLE_ID.equalsIgnoreCase("5")) {
+                Log.d("BUILDROLE1",BuildConfig.ROLE_ID);
+                addFragment(com.rmart.authentication.login.view.LoginFragment.newInstance("",""), "login", false);
+            } else {
+                Log.d("BUILDROLE",BuildConfig.ROLE_ID);
+                addFragment(com.rmart.authentication.views.LoginFragment.newInstance("", ""), "login", false);
+            }
         }
+
 
         AuthenticationActivity.super.requestAppPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                 R.string.runtime_permissions_txt, 100);
+
     }
 
     @Override
@@ -191,7 +276,7 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     @Override
     public void goToHomeActivity() {
         Intent intent = new Intent(AuthenticationActivity.this, OrdersActivity.class);
-        if(null!=orderID) {
+        if (null != orderID) {
             intent.putExtra(ORDER_ID, orderID);
         }
         // intent.putExtra(ORDER_ID, "106");
@@ -210,8 +295,8 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
 
     @Override
     public void validateOTP(String mobileNumber, boolean closePreviousScreen) {
-        if(closePreviousScreen) {
-            replaceFragment(OTPFragment.newInstance(mobileNumber),  OTPFragment.class.getName(), false);
+        if (closePreviousScreen) {
+            replaceFragment(OTPFragment.newInstance(mobileNumber), OTPFragment.class.getName(), false);
         } else {
             replaceFragment(OTPFragment.newInstance(mobileNumber), OTPFragment.class.getName(), true);
         }
@@ -239,7 +324,7 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     @Override
     public void goToHomePage() {
         Intent in = new Intent(this, AuthenticationActivity.class);
-        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
+        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(in);
         finish();
     }
@@ -247,7 +332,7 @@ public class AuthenticationActivity extends BaseActivity implements OnAuthentica
     @Override
     public void goToCustomerHomeActivity() {
         Intent in = new Intent(this, CustomerHomeActivity.class);
-        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
+        in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(in);
         finish();
     }

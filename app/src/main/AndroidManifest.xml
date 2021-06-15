@@ -17,8 +17,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="n">
-        <activity android:name=".inventory.filter.view.ProductBrandFilter"></activity>
-        <activity android:name=".inventory.filter.ProductCategoryFilter" />
+        <activity android:name=".inventory.filter.brand.view.ProductBrandFilter"></activity>
+        <activity android:name=".inventory.filter.category.view.ProductCategoryFilter" />
         <activity
             android:name=".wallet.view.WalletTransactionActivity"
             android:theme="@style/AppTheme2" />
@@ -30,9 +30,6 @@
             android:name=".electricity.activities.ElectricityActivity"
             android:theme="@style/AppTheme2" />
         <activity
-            android:name=".electricity.PaymentActivity"
-            android:theme="@style/AppTheme2" />
-      <activity
             android:name=".customerservice.mobile.activities.MobileRechargeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
@@ -90,14 +87,20 @@
         <activity
             android:name=".authentication.views.AuthenticationActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar" />
+            android:theme="@style/AppThemeNoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="example.com"
+                    android:scheme="https"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".customer.views.CustomerHomeActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeNoActionBar"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+            android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".customer_order.views.CustomerOrdersActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

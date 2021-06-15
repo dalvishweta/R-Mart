@@ -72,21 +72,27 @@ String userLoginStatus;
                         String VenderID="";
                         if (pendingDynamicLinkData != null) {
                             deepLink = pendingDynamicLinkData.getLink();
+                            String url = deepLink.getEncodedFragment();
+                           try {
+                                String[] str = deepLink.getQuery().split("&");
+                                if (str != null) {
+                                    for (int i = 0; i < str.length; i++) {
+                                        String[] key = str[i].split("=");
+                                        String parameter = key[0];
+                                        String value = key[1];
 
-                           String url = deepLink.getEncodedFragment();
-                          String[] str =  deepLink.getQuery().split("&");
-                          for (int i=0;i<str.length;i++){
-                           String[] key =  str[i].split("=");
-                              String parameter= key[0];
-                              String value = key[1];
-
-                              if(parameter.equalsIgnoreCase("shop_id")){
-                                  shopId = value;
-                              }
-                              if(parameter.equalsIgnoreCase("created_by")){ // vendor_id
-                                  VenderID=value;
-                              }
-
+                                        if (parameter.equalsIgnoreCase("shop_id")) {
+                                            shopId = value;
+                                        }
+                                        if (parameter.equalsIgnoreCase("created_by")) { // vendor_id
+                                            VenderID = value;
+                                        }
+                                        ;
+                                    }
+                                }
+                            }
+                            catch (NullPointerException e){
+                                e.printStackTrace();
                             }
 
                         }

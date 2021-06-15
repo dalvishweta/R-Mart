@@ -137,6 +137,9 @@ android {
         buildConfigField("String","INVENTORY_FILTER_CATEGORY",'"My_inventory_filter/filter_category"')
         buildConfigField("String","INVENTORY_FILTER_CLEAR",'"My_inventory_filter/my_inventory_clear_filter"')
 
+        //referral api
+        buildConfigField("String","Referral_CodeInfo",'"Referral_code/share_offer_link"')
+
         //registration
         buildConfigField("String", "registration_rokad", '"rest_server/login_api/registration"')
 
@@ -164,6 +167,7 @@ android {
             dimension "rokard_mart"
             applicationIdSuffix ".customer"
             /*versionNameSuffix "-customer"*/
+            buildConfigField("String","REFER_NO",'"ROKAD123"')
             buildConfigField("String", "ROLE_ID", '"5"')
             buildConfigField("String","CLIENT_ID",'"2"')
             buildConfigField("String", "PAYMENT_URL", '"https://test.ccavenue.com/transaction/initTrans"')
