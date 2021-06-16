@@ -132,11 +132,7 @@
         android:layout_below="@+id/searchLayout"
         android:layout_height="wrap_content" />
 
-
-
-
-
-    <androidx.recyclerview.widget.RecyclerView
+      <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/products_list_field"
         android:background="#E1E1E1"
         android:layout_below="@+id/progressBar1"
@@ -147,14 +143,21 @@
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
+      <ProgressBar
+          android:id="@+id/progressBar2"
+          android:layout_width="wrap_content"
+          android:layout_centerInParent="true"
+          android:visibility="gone"
+          android:layout_height="wrap_content" />
       <androidx.recyclerview.widget.RecyclerView
+          android:layout_below="@id/searchLayout"
           android:id="@+id/search_products_list_field"
           android:background="#DADADA"
           android:visibility="gone"
+          tools:listitem="@layout/search_shop_product_row_item"
           android:layout_width="match_parent"
-          android:layout_height="match_parent"
+          android:layout_height="wrap_content"
           android:adapter="@{myAdapterSearch}"
-
           app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
       <com.google.android.material.floatingactionbutton.FloatingActionButton
