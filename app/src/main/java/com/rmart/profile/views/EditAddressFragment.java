@@ -1106,9 +1106,7 @@ public class EditAddressFragment extends BaseFragment implements View.OnClickLis
                                     Intent in = new Intent(getActivity(), CustomerHomeActivity.class);
                                     in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK );
                                     startActivity(in);
-
-
-
+                                    getActivity().finish();
                                 } else {
                                     myAddress = null;
                                     showDialog("", data.getMsg());

@@ -1,14 +1,9 @@
 package com.rmart.authentication.registration.viewmodel;
 
-import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.rmart.BuildConfig;
-import com.rmart.R;
-import com.rmart.authentication.login.model.LoginResponse;
-import com.rmart.authentication.login.repository.LoginRepository;
 import com.rmart.authentication.registration.model.RegisterResponse;
 import com.rmart.authentication.registration.repository.RegisterRepository;
 
@@ -22,21 +17,25 @@ public class RegisterServicemodule extends ViewModel {
     public MutableLiveData<String> first_name = new MutableLiveData<>();
     public MutableLiveData<String> last_name = new MutableLiveData<>();
     public MutableLiveData<String> mobileNumber = new MutableLiveData<>();
+    public MutableLiveData<String> refer_no = new MutableLiveData<>();
+    public MutableLiveData<String> refer_user_id = new MutableLiveData<>();
+    public MutableLiveData<String> device_id = new MutableLiveData<>();
     public MutableLiveData<String> gender = new MutableLiveData<>();
     public MutableLiveData<String> emailid = new MutableLiveData<>();
     public MutableLiveData<String> errorFirst_name = new MutableLiveData<>();
     public MutableLiveData<String> errorLast_name = new MutableLiveData<>();
     public MutableLiveData<String> errorGender = new MutableLiveData<>();
     public MutableLiveData<String> errorEmailid = new MutableLiveData<>();
+    public MutableLiveData<com.rmart.utilits.pojos.RegisterResponse>  RegisterPOJOMutableLiveData = new MutableLiveData<>();
     public MutableLiveData<RegisterResponse> RegistrationPOJOMutableLiveData = new MutableLiveData<>();
 
     public void OnClick(final View view) {
         if (validate() && !isLoading.getValue()) {
             isLoading.setValue(true);
-            RegisterRepository.getRegistration(first_name.getValue(), last_name.getValue(), gender.getValue(), emailid.getValue(), mobileNumber.getValue(), BuildConfig.ROLE_ID, "2").observeForever(new Observer<RegisterResponse>() {
+            RegisterRepository.getRegistration(first_name.getValue(), last_name.getValue(), gender.getValue(), emailid.getValue(), mobileNumber.getValue(), BuildConfig.ROLE_ID, "2",refer_no.getValue(),refer_user_id.getValue(),device_id.getValue()).observeForever(new Observer<RegisterResponse>() {
                 @Override
                 public void onChanged(RegisterResponse registerResponse) {
-                    if (registerResponse.getCode() == 500) {
+                    if (registerResponse.getCode() == 400) {
                         if (registerResponse.getMsg().equals("Please enter valid email.")) {
                             errorEmailid.setValue(registerResponse.getMsg());
                         } else if (registerResponse.getMsg().equals("Email already exist")) {
@@ -45,6 +44,7 @@ public class RegisterServicemodule extends ViewModel {
                     }
                     if (registerResponse.getCode() == 200) {
                         RegistrationPOJOMutableLiveData.postValue(registerResponse);
+
                     }
                     isLoading.setValue(false);
                 }

@@ -1,6 +1,7 @@
 package com.rmart.customer.shops.home.fragments;
 
 import android.content.Context;
+import android.hardware.input.InputManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -38,6 +41,7 @@ import com.rmart.customer.views.ProductCartDetailsFragment;
 import com.rmart.databinding.FragmentShopHomePageBinding;
 import com.rmart.utilits.ActionCall;
 import com.rmart.utilits.CommonUtils;
+import com.rmart.wallet.billing_history.models.Datum;
 
 import java.util.ArrayList;
 
@@ -180,25 +184,25 @@ public class ShopHomePage extends BaseFragment {
             public void afterTextChanged(Editable s) {
 
                 if( binding.edtProductSearchField.getText().toString().length()>0){
+                    binding.progressBar2.setVisibility(View.VISIBLE);
                     binding.searchProductsListField.setVisibility(View.VISIBLE);
                     binding.productsListField.setVisibility(View.GONE);
 
                     ProductRepository.searchShopProduct(getActivity(),0,0.0,0.0,binding.edtProductSearchField.getText().toString()).observeForever(new Observer<ProductSearchResponce>() {
                         @Override
                         public void onChanged(ProductSearchResponce productSearchResponce) {
-
+                            ArrayList<SearchProducts> searchProductsArrayList = (ArrayList<SearchProducts>) productSearchResponce.data;
                             if(productSearchResponce.getStatus().equalsIgnoreCase("Success")){
+                                binding.progressBar2.setVisibility(View.GONE);
                                 allProductsAdapter.clear();
-                                allProductsAdapter.addProducts(productSearchResponce.data);
+                                allProductsAdapter.addProducts(searchProductsArrayList);
+                                binding.setMyAdapterSearch(allProductsAdapter);
 
                             }
 
                         }
                     });
 
-                } else {
-                    binding.searchProductsListField.setVisibility(View.GONE);
-                    binding.productsListField.setVisibility(View.VISIBLE);
                 }
 
 
@@ -208,4 +212,5 @@ public class ShopHomePage extends BaseFragment {
 
         return binding.getRoot();
     }
+
 }

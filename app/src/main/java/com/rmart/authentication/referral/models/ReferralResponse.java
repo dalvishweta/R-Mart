@@ -1,14 +1,11 @@
-package com.rmart.authentication.registration.model;
+package com.rmart.authentication.referral.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.rmart.utilits.pojos.Data;
-import com.rmart.utilits.pojos.ProfileResponse;
 
 import java.io.Serializable;
 
-public class RegisterResponse implements Serializable {
-
+public class ReferralResponse implements Serializable {
     @SerializedName("status")
     @Expose
     private String status;
@@ -49,7 +46,7 @@ public class RegisterResponse implements Serializable {
         this.code = code;
     }
 
-    public ProfileResponse getData() {
+    public Data getData() {
         return data;
     }
 
@@ -64,7 +61,5 @@ public class RegisterResponse implements Serializable {
     public void setRequestId(Integer requestId) {
         this.requestId = requestId;
     }
-
-
 
 }

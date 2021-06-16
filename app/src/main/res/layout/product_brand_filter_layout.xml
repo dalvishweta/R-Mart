@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="productbrandViewModel"
+            type="com.rmart.inventory.filter.brand.viewmodels.ProductBrandServicemodule" />
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_below="@+id/toolbar"
+            android:id="@+id/search_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/grey_rounded_borders_bg"
+            android:minHeight="40dp">
+
+            <ImageView
+                android:id="@+id/iv_search_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/search" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edt_product_search_field"
+                style="@style/text_style_medium_normal"
+                android:layout_width="match_parent"
+                android:layout_toRightOf="@+id/iv_search_field"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@android:color/transparent"
+                android:digits="qwertyuiopasdfghjklzxcvbnm 1234567890 QWERTYUIOPASDFGHJKLZXCVBNM"
+                android:hint="Search for Brand"
+                android:inputType="textCapSentences"
+                android:lines="1"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp"
+                android:layout_marginRight="10dp"
+                />
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/erorr_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            tools:visibility="gone"
+            android:visibility='@{productbrandViewModel.brandListResponseMutableLiveData.status.equalsIgnoreCase("Failure")?View.VISIBLE:View.GONE}'
+            android:layout_below="@id/search_layout">
+            <ImageView
+                android:id="@+id/app_logo"
+                android:layout_width="170dp"
+                android:layout_gravity="center"
+                android:layout_height="170dp"
+                android:scaleType="fitXY"
+                android:layout_marginTop="80dp"
+                android:src="@mipmap/slwo_internet_icon1"
+                tools:ignore="ContentDescription" />
+            <TextView
+                android:textSize="25sp"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/buy_now_color"
+                android:gravity="center"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_width="match_parent"
+                android:text="@string/ooops"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/errormessage"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:textSize="@dimen/text_regular_size"
+                android:text="@{productbrandViewModel.brandListResponseMutableLiveData.msg}"
+                android:textColor="@color/item_sub_title_color"
+                android:fontFamily="@font/montserrat_regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_tryagain"
+                android:layout_width="wrap_content"
+                android:textColor="@color/white"
+                android:paddingLeft="30sp"
+                android:paddingRight="30sp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/submit_button_bg"
+                android:layout_height="@dimen/field_height"
+                android:textSize="@dimen/text_regular_size"
+                android:layout_marginTop="20dp"
+                android:text="@string/try_again" />
+
+        </LinearLayout>
+        <ProgressBar
+            android:visibility="@{productbrandViewModel.isLoading?View.VISIBLE:View.GONE}"
+            android:id="@+id/progressBar1"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/search_layout"
+
+            android:layout_height="wrap_content" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_brands"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/search_layout"
+            android:layout_marginTop="7dp"
+            android:background="#DADADA"
+            android:visibility='@{productbrandViewModel.brandListResponseMutableLiveData.status.equalsIgnoreCase("Failure")?View.GONE:View.VISIBLE}'
+            app:spanCount="3"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            tools:visibility="visible" />
+    </RelativeLayout>
+</layout>
