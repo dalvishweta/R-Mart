@@ -1,6 +1,10 @@
 package com.rmart.authentication.login.view;
 
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,14 +13,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.credentials.Credential;
+import com.google.android.gms.auth.api.credentials.Credentials;
+import com.google.android.gms.auth.api.credentials.HintRequest;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.rmart.R;
+import com.rmart.RMartApplication;
 import com.rmart.authentication.login.viewmodels.LoginServicemodule;
 import com.rmart.authentication.registration.view.RegisterFragment;
 import com.rmart.authentication.views.LoginBaseFragment;
@@ -39,7 +51,7 @@ public class LoginFragment extends LoginBaseFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private String deviceToken;
-    public String mMobileNumber;
+    SharedPreferences mSharedPreferences;
     ProfileResponse profileResponse;
     LoginServicemodule mViewModel;
     public LoginFragment() {
@@ -59,9 +71,23 @@ public class LoginFragment extends LoginBaseFragment {
                              Bundle savedInstanceState) {
 
         FragmentLoginBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_login,container,false);
-
-
+        mSharedPreferences = getActivity().getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE);
         StringBuilder sb=new StringBuilder();
+
+        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(requireContext())
+                .addApi(Auth.CREDENTIALS_API)
+                .build();
+        googleApiClient.connect();
+
+        HintRequest hintRequest = new HintRequest.Builder()
+                .setPhoneNumberIdentifierSupported(true)
+                .build();
+        PendingIntent pendingIntent = Auth.CredentialsApi.getHintPickerIntent(googleApiClient,hintRequest);
+        try{
+            startIntentSenderForResult(pendingIntent.getIntentSender(),1008,null,0,0,0,null);
+        }catch (IntentSender.SendIntentException sendIntentException){
+            sendIntentException.printStackTrace();
+        }
 
         binding.editTextOne.addTextChangedListener(new TextWatcher() {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -185,6 +211,12 @@ public class LoginFragment extends LoginBaseFragment {
             @Override
             public void onChanged(com.rmart.utilits.pojos.LoginResponse loginResponse) {
                 if(loginResponse.getStatus().equalsIgnoreCase("Success")) {
+                    SharedPreferences.Editor editor = mSharedPreferences.edit();
+                    editor.putString("userLoginStatus", "yes");
+                    editor.commit();
+                    editor.apply();
+                    checkCredentials(loginResponse);
+                    Log.d("loginResponse", loginResponse.getMsg());
                     checkCredentials(loginResponse);
                     Log.d("loginResponse", loginResponse.getMsg());
 
@@ -206,10 +238,28 @@ public class LoginFragment extends LoginBaseFragment {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1008){
+            if (resultCode == Activity.RESULT_OK){
+                Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
+                EditText mobile = getActivity().findViewById(R.id.mobile_number);
+                String mobile_no[] = credential.getId().split("91");
+                mobile.setText(mobile_no[1]);
+            }
+        }
+    }
+
     private void changefragment(String mMobileNumber) {
+        final RMartApplication rMartApplication = ((RMartApplication)getActivity().getApplication());
+        String refer_no = rMartApplication.getRefer_no();
+        System.out.println(refer_no);
+        String refer_user_id = rMartApplication.getUser_id();
+        System.out.println(refer_user_id);
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.base_container, RegisterFragment.newInstance(mMobileNumber)).addToBackStack(null)
+                .replace(R.id.base_container, RegisterFragment.newInstance(mMobileNumber,refer_no,refer_user_id,deviceToken)).addToBackStack(null)
                 .commit();
     }
 
@@ -227,6 +277,14 @@ public class LoginFragment extends LoginBaseFragment {
                         //checkRegistration(profileResponse,mMobileNumber,"1234");
 
                         MyProfile.setInstance(getActivity(),profileResponse);
+                        mSharedPreferences = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                        SharedPreferences.Editor edit = mSharedPreferences.edit();
+                        edit.putString("userLoginStatus", "yes");
+                        edit.putBoolean("isUserLogin", true);
+                        edit.putString("UserName",MyProfile.getInstance(getContext()).getFirstName());
+                        edit.putString("Email",MyProfile.getInstance(getContext()).getEmail()+" ");
+                        edit.commit();
+                        edit.apply();
                         //MyProfile.getInstance().setCartCount(profileResponse.getTotalCartCount());
                         UpdateCartCountDetails.updateCartCountDetails.onNext(profileResponse.getTotalCartCount());
                         if (MyProfile.getInstance(getActivity()).getPrimaryAddressId() == null) {
